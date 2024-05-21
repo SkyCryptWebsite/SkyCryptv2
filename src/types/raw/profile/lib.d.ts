@@ -22,8 +22,13 @@ export type Profile = {
 export type Member = {
 	player_data?: PlayerData;
 	jacobs_contest?: JacobsContest;
+	leveling?: Leveling;
 };
 
 export type JacobsContest = {
 	perks?: Record<string, number>;
+};
+
+export type Leveling = {
+	experience: number;
 };

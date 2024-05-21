@@ -39,7 +39,6 @@ export function getLevelByXp(
 	}
 ) {
 	const xpTable = getXpTable(extra.type);
-
 	if (typeof xp !== 'number' || isNaN(xp)) {
 		xp = 0;
 	}

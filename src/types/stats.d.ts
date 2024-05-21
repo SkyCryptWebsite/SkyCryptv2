@@ -10,4 +10,5 @@ export type Stats = {
 	members: string[];
 	skills: Skills;
 	rank: Rank;
+	skyblock_level: Skill;
 };
