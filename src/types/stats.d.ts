@@ -5,6 +5,14 @@ export type Stats = {
 };
 
 export type Skills = {
+	skills: SkillsData;
+	disabled?: boolean;
+	totalSkillXp: number;
+	averageSkillLevel: number;
+	averageSkillLevelWithProgress: number;
+};
+
+export type SkillsData = {
 	fishing: Skill;
 	alchemy: Skill;
 	runecrafting: Skill;

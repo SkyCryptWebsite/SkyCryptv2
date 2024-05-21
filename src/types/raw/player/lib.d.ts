@@ -5,7 +5,7 @@ export type PlayerResponse = {
 };
 
 export type Player = {
-	achievements?: Achievements;
+	achievements: Achievements;
 	newPackageRank?: string;
 };
 

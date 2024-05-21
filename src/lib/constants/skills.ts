@@ -210,6 +210,6 @@ export const SKYBLOCK_XP = {
 	1: 100
 };
 
-export const SKYBLOCK_COSMETIC_SKILLS = ['runecrafting', 'social'];
+export const COSMETIC_SKILLS = ['runecrafting', 'social'];
 
 export const INFINITE = ['dungeoneering', 'skyblockLevel'];

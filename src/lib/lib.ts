@@ -1,4 +1,4 @@
-import type { ProfilesResponse, Options, Profile } from '$types/global';
+import type { ProfilesResponse, Profile } from '$types/global';
 import { HYPIXEL_API_KEY } from '$env/static/private';
 import { SkyCryptError } from './constants/error';
 import { isUUID } from '$params/uuid';
@@ -24,13 +24,13 @@ export async function getProfiles(paramPlayer: string) {
 	return output;
 }
 
-export async function fetchProfiles(uuid: string, options: Options = { cacheOnly: false }): Promise<Profile[]> {
+export async function fetchProfiles(uuid: string): Promise<Profile[]> {
 	if (!isUUID(uuid)) {
 		uuid = await getUUID(uuid);
 	}
 
 	const cache = await REDIS.get(`PROFILES:${uuid}`);
-	if (cache || options.cacheOnly) {
+	if (cache) {
 		return JSON.parse(cache);
 	}
 
@@ -55,13 +55,13 @@ export async function fetchProfiles(uuid: string, options: Options = { cacheOnly
 	return profiles;
 }
 
-export async function getUUID(paramPlayer: string, options: Options = { cacheOnly: false }) {
+export async function getUUID(paramPlayer: string) {
 	if (isUUID(paramPlayer)) {
 		return paramPlayer;
 	}
 
 	const uuid = REDIS.get(`UUID:${paramPlayer}`);
-	if (uuid || options.cacheOnly) {
+	if (uuid) {
 		return uuid;
 	}
 
@@ -107,4 +107,30 @@ export async function getProfile(uuid: string, profileId: string) {
 	profile.uuid = await getUUID(uuid);
 
 	return profile;
+}
+
+export async function fetchPlayer(uuid: string) {
+	if (!isUUID(uuid)) {
+		uuid = await getUUID(uuid);
+	}
+
+	const cache = await REDIS.get(`PLAYER:${uuid}`);
+	if (cache) {
+		return JSON.parse(cache);
+	}
+
+	const headers = { Accept: 'application/json', 'User-Agent': 'SkyCrypt', 'API-KEY': HYPIXEL_API_KEY };
+	const response = await fetch(`https://api.hypixel.net/v2/player?uuid=${uuid}`, {
+		headers
+	});
+
+	const data = await response.json();
+	if (data.success === false) {
+		throw new SkyCryptError(data?.cause ?? 'Request to Hypixel API failed. Please try again!');
+	}
+
+	// 30 minutes
+	REDIS.SETEX(`PLAYER:${uuid}`, 60 * 30, JSON.stringify(data.player));
+
+	return data.player;
 }
