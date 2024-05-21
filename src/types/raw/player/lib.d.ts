@@ -5,8 +5,13 @@ export type PlayerResponse = {
 };
 
 export type Player = {
+	displayname: string;
 	achievements: Achievements;
 	newPackageRank?: string;
+	monthlyRankColor?: string;
+	monthlyPackageRank?: string;
+	prefix: string;
+	rank: string;
 };
 
 export type Achievements = {

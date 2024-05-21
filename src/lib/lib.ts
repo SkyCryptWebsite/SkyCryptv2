@@ -60,7 +60,7 @@ export async function getUUID(paramPlayer: string) {
 		return paramPlayer;
 	}
 
-	const uuid = REDIS.get(`UUID:${paramPlayer}`);
+	const uuid = await REDIS.get(`UUID:${paramPlayer}`);
 	if (uuid) {
 		return uuid;
 	}
