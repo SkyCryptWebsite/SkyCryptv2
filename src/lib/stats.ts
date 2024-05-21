@@ -15,6 +15,7 @@ export async function getStats(profile: Profile, player: Player): Promise<Stats>
 		members: Object.keys(profile.members).filter((uuid) => uuid !== profile.uuid),
 		rank: stats.getRank(player),
 		skills: stats.getSkills(userProfile, profile, player),
-		skyblock_level: stats.getSkyblockLevel(userProfile)
+		skyblock_level: stats.getSkyblockLevel(userProfile),
+		stats: stats.getMainStats(userProfile, profile)
 	};
 }
