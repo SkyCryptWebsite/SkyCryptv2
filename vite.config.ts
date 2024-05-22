@@ -11,5 +11,8 @@ export default defineConfig({
 			// Allow serving files from static/resourcepacks
 			allow: ['..']
 		}
+	},
+	optimizeDeps: {
+		exclude: ['fs', '@napi-rs/canvas']
 	}
 });

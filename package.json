@@ -43,7 +43,6 @@
 		"@types/upng-js": "^2.1.5",
 		"apng2gif-bin": "^1.7.1",
 		"canvas": "^2.11.2",
-		"fs": "0.0.1-security",
 		"fs-extra": "^11.2.0",
 		"lodash": "^4.17.21",
 		"micromatch": "^4.0.6",
