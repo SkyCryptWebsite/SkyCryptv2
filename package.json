@@ -33,7 +33,25 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@napi-rs/canvas": "^0.1.52",
+		"@types/fs-extra": "^11.0.4",
+		"@types/lodash": "^4.17.4",
+		"@types/micromatch": "^4.0.7",
+		"@types/relaxed-json": "^1.0.4",
+		"@types/upng-js": "^2.1.5",
+		"apng2gif-bin": "^1.7.1",
+		"canvas": "^2.11.2",
+		"fs-extra": "^11.2.0",
+		"lodash": "^4.17.21",
+		"micromatch": "^4.0.6",
+		"minecraft-data": "^3.65.0",
 		"mongodb": "^6.6.2",
-		"redis": "^4.6.14"
+		"os": "^0.1.2",
+		"path": "^0.12.7",
+		"redis": "^4.6.14",
+		"relaxed-json": "^1.0.3",
+		"sharp": "^0.33.4",
+		"upng-js": "^2.1.0",
+		"util": "^0.12.5"
 	}
 }
