@@ -12,6 +12,7 @@ export type Item = {
 	};
 	texture?: string;
 	texture_path?: string;
+	material?: string;
 };
 
 export type DatabaseItem = {

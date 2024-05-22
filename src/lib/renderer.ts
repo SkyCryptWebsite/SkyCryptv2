@@ -465,7 +465,10 @@ export async function renderItem(skyblockId: string | undefined, query: SkyBlock
 	}
 
 	const sbId = skyblockId?.toLowerCase();
-	if (item.id !== (mcData.itemsByName[sbId] ?? mcData.blocksByName[sbId]).id) {
+	const material = item.material?.toLowerCase();
+	if (material !== undefined) {
+		Object.assign(item, mcData.itemsByName[material] ?? mcData.blocksByName[material]);
+	} else if (item.id !== (mcData.itemsByName[sbId] ?? mcData.blocksByName[sbId])?.id) {
 		Object.assign(item, mcData.itemsByName[sbId] ?? mcData.blocksByName[sbId]);
 	}
 

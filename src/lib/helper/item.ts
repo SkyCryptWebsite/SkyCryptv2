@@ -78,5 +78,9 @@ export async function getItemData(query: ItemQuery) {
 		}
 	}
 
+	if ('material' in dbItem) {
+		item.material = dbItem.material as string;
+	}
+
 	return item;
 }

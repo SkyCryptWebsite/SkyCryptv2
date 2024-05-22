@@ -599,7 +599,6 @@ const timeoutId = setTimeout(async () => {
 
 			const itemId = texture.id;
 			const damage = texture.damage ?? 0;
-
 			if (itemId !== undefined && itemId !== 397) {
 				const key = `${pack.config.id}:${itemId}:${damage}`;
 				const data = itemIdTextureMap.get(key) ?? [];

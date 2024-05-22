@@ -11,11 +11,9 @@ export const GET: RequestHandler = async ({ params }) => {
 	try {
 		const attachment = await renderItem(id, {});
 
-		const resized = await sharp(attachment.image ?? attachment.path)
-			.resize(128, 128)
-			.toBuffer();
+		const upscaledImage = await sharp(attachment.image).resize(512, 512).toBuffer();
 
-		return new Response(resized, { headers: { 'Content-Type': 'image/png' } });
+		return new Response(upscaledImage, { headers: { 'Content-Type': 'image/png' } });
 	} catch (errorMsg) {
 		console.log('ERROR:', errorMsg);
 		throw error(500, 'Internal server error');
