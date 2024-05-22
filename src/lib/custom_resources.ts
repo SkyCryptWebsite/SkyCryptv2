@@ -18,8 +18,6 @@ import minecraftData from 'minecraft-data';
 const mcData = minecraftData('1.20.5');
 import UPNG from 'upng-js';
 import RJSON from 'relaxed-json';
-import { base } from '$app/paths';
-import { fileURLToPath } from 'url';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -343,8 +341,26 @@ async function loadResourcePacks() {
 				);
 			}
 
-			if (UPNG.decode(await fs.readFile(textureFile)).frames.length > 0) {
-				texture.animated = true;
+			try {
+				const imageData = await fs.readFile(textureFile).catch(() => {
+					console.log('Error reading file', textureFile);
+				});
+
+				if (!imageData) {
+					continue;
+				}
+
+				const decode = UPNG.decode(imageData);
+				if (decode == null) {
+					continue;
+				}
+
+				if (decode.frames.length > 0) {
+					texture.animated = true;
+				}
+			} catch (e) {
+				console.log('Error reading file', textureFile);
+				texture.animated = false;
 			}
 
 			for (const property in properties) {
@@ -355,9 +371,7 @@ async function loadResourcePacks() {
 
 				if (property == 'items' || property == 'matchItems') {
 					const itemName = properties[property].trim().replace('minecraft:', '');
-					// console.log(itemName);
 					const item = mcData.itemsByName[itemName] ?? mcData.blocksByName[itemName];
-					if (item.name === 'dirt') console.log(item);
 					if (item) {
 						texture.id = item.id;
 						texture.damage ??= 0;
@@ -585,9 +599,6 @@ const timeoutId = setTimeout(async () => {
 
 			const itemId = texture.id;
 			const damage = texture.damage ?? 0;
-			if (itemId === 184) {
-				console.log(texture);
-			}
 
 			if (itemId !== undefined && itemId !== 397) {
 				const key = `${pack.config.id}:${itemId}:${damage}`;
@@ -686,7 +697,6 @@ function processTextures(
 			matches++;
 		}
 
-		console.log(texture);
 		if (matches === texture.match.length) {
 			outputTexture = Object.assign({ pack: { base_path: pack.base_path, config: pack.config } }, texture);
 		}

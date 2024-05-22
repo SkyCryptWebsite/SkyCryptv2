@@ -1,14 +1,13 @@
 import minecraftData from 'minecraft-data';
 const mcData = minecraftData('1.20.5');
 import fs from 'node:fs';
-import { text } from 'stream/consumers';
 
 const files = fs.readdirSync('static/resourcepacks/Vanilla/assets/minecraft/mcpatcher/cit/textures/');
 for (const texture of files) {
 	if (texture.endsWith('.properties')) {
 		continue;
 	}
-	
+
 	const item = texture.split('.').at(0) as string;
 	if (mcData.blocksByName[item]) {
 		const data = mcData.blocksByName[item];

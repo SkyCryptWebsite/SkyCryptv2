@@ -465,12 +465,9 @@ export async function renderItem(skyblockId: string | undefined, query: SkyBlock
 	}
 
 	const sbId = skyblockId?.toLowerCase();
-	console.log(item);
 	if (item.id !== (mcData.itemsByName[sbId] ?? mcData.blocksByName[sbId]).id) {
 		Object.assign(item, mcData.itemsByName[sbId] ?? mcData.blocksByName[sbId]);
 	}
-
-	console.log(item);
 
 	const customTexture = customResources.getTexture(item, {
 		ignore_id: 'name' in query,
