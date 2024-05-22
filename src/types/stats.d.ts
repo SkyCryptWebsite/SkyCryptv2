@@ -1,6 +1,7 @@
 export * from './processed/profile/main_stats';
 export * from './processed/profile/skills';
 export * from './processed/profile/rank';
+export * from './processed/profile/items';
 
 import type { Skills } from '$types/processed/profile/skills';
 import type { Rank } from './processed/profile/rank';

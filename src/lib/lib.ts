@@ -4,6 +4,8 @@ import { SkyCryptError } from './constants/error';
 import { isUUID } from '$params/uuid';
 import { REDIS } from '$db/redis';
 
+const headers = { Accept: 'application/json', 'User-Agent': 'SkyCrypt', 'API-KEY': HYPIXEL_API_KEY };
+
 export async function getProfiles(paramPlayer: string) {
 	const uuid = await getUUID(paramPlayer);
 	if (!uuid) {
@@ -34,7 +36,6 @@ export async function fetchProfiles(uuid: string): Promise<Profile[]> {
 		return JSON.parse(cache);
 	}
 
-	const headers = { Accept: 'application/json', 'User-Agent': 'SkyCrypt', 'API-KEY': HYPIXEL_API_KEY };
 	const response = await fetch(`https://api.hypixel.net/v2/skyblock/profiles?uuid=${uuid}`, {
 		headers
 	});
@@ -119,7 +120,6 @@ export async function fetchPlayer(uuid: string) {
 		return JSON.parse(cache);
 	}
 
-	const headers = { Accept: 'application/json', 'User-Agent': 'SkyCrypt', 'API-KEY': HYPIXEL_API_KEY };
 	const response = await fetch(`https://api.hypixel.net/v2/player?uuid=${uuid}`, {
 		headers
 	});

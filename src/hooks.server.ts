@@ -2,7 +2,7 @@ import { startMongo } from '$db/mongo';
 import { startRedis } from '$db/redis';
 import { init } from '$lib/custom_resources';
 
-init()
+init();
 
 startMongo().then(() => {
 	console.log('Mongo started!');

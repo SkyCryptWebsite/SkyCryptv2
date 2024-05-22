@@ -13,10 +13,11 @@
 		"format": "prettier --write ."
 	},
 	"devDependencies": {
-		"@sveltejs/adapter-auto": "^3.0.0",
 		"@sveltejs/kit": "^2.0.0",
 		"@sveltejs/vite-plugin-svelte": "^3.0.0",
 		"@types/eslint": "^8.56.0",
+		"@types/mongo-sanitize": "^1.0.3",
+		"@types/node": "^20.12.12",
 		"@typescript-eslint/eslint-plugin": "^7.0.0",
 		"@typescript-eslint/parser": "^7.0.0",
 		"eslint": "^8.56.0",
@@ -34,6 +35,7 @@
 	"type": "module",
 	"dependencies": {
 		"@napi-rs/canvas": "^0.1.52",
+		"@sveltejs/adapter-node": "^5.0.1",
 		"@types/fs-extra": "^11.0.4",
 		"@types/lodash": "^4.17.4",
 		"@types/micromatch": "^4.0.7",
@@ -41,10 +43,12 @@
 		"@types/upng-js": "^2.1.5",
 		"apng2gif-bin": "^1.7.1",
 		"canvas": "^2.11.2",
+		"fs": "0.0.1-security",
 		"fs-extra": "^11.2.0",
 		"lodash": "^4.17.21",
 		"micromatch": "^4.0.6",
 		"minecraft-data": "^3.65.0",
+		"mongo-sanitize": "^1.1.0",
 		"mongodb": "^6.6.2",
 		"os": "^0.1.2",
 		"path": "^0.12.7",

@@ -18,6 +18,8 @@ import minecraftData from 'minecraft-data';
 const mcData = minecraftData('1.20.5');
 import UPNG from 'upng-js';
 import RJSON from 'relaxed-json';
+import { base } from '$app/paths';
+import { fileURLToPath } from 'url';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -43,7 +45,7 @@ const NORMALIZED_SIZE = 128;
 const RESOURCE_CACHING = process.env.NODE_ENV == 'development' ? false : false;
 
 const FOLDER_PATH = getFolderPath();
-const RESOURCE_PACK_FOLDER = path.resolve(getFolderPath(), '..', '..', 'static', 'resourcepacks');
+const RESOURCE_PACK_FOLDER = path.resolve(getFolderPath(), 'static', 'resourcepacks');
 
 const CACHE_FOLDER_PATH = getCacheFolderPath();
 const PACK_HASH_CACHE_FILE = getCacheFilePath(CACHE_FOLDER_PATH, 'json', 'pack_hashes', 'json');
@@ -107,7 +109,6 @@ export async function init() {
 		}
 
 		resourcePacks.forEach((pack) => {
-			console.log(packConfigHashes[pack.config.id], pack.config.hash);
 			if (packConfigHashes[pack.config.id] !== pack.config.hash) {
 				throw new Error('Config hashes were not matching!');
 			}
@@ -289,7 +290,7 @@ async function loadResourcePacks() {
 						const leatherImage = sharp(leather[part]);
 						const leatherMetadata = await leatherImage.metadata();
 
-						if (leatherMetadata.width != NORMALIZED_SIZE) {
+						if (leatherMetadata.width != NORMALIZED_SIZE && leatherMetadata.height && leatherMetadata.width) {
 							await fs.writeFile(
 								leather[part],
 								await leatherImage
@@ -326,11 +327,12 @@ async function loadResourcePacks() {
 			}
 
 			texture.path = textureFile;
+			// console.log(texture.path);
 
 			const textureImage = sharp(textureFile);
 			const textureMetadata = await textureImage.metadata();
 
-			if (textureMetadata.width != NORMALIZED_SIZE) {
+			if (textureMetadata.width != NORMALIZED_SIZE && textureMetadata.height && textureMetadata.width) {
 				await fs.writeFile(
 					textureFile,
 					await textureImage
@@ -353,8 +355,9 @@ async function loadResourcePacks() {
 
 				if (property == 'items' || property == 'matchItems') {
 					const itemName = properties[property].trim().replace('minecraft:', '');
-					
+					// console.log(itemName);
 					const item = mcData.itemsByName[itemName] ?? mcData.blocksByName[itemName];
+					if (item.name === 'dirt') console.log(item);
 					if (item) {
 						texture.id = item.id;
 						texture.damage ??= 0;
@@ -582,6 +585,10 @@ const timeoutId = setTimeout(async () => {
 
 			const itemId = texture.id;
 			const damage = texture.damage ?? 0;
+			if (itemId === 184) {
+				console.log(texture);
+			}
+
 			if (itemId !== undefined && itemId !== 397) {
 				const key = `${pack.config.id}:${itemId}:${damage}`;
 				const data = itemIdTextureMap.get(key) ?? [];
@@ -646,7 +653,8 @@ function processTextures(
 		let matches = 0;
 
 		for (const match of texture.match) {
-			const { value, regex } = match;
+			const regex = match.regex;
+			let value = match.value;
 
 			if (value.endsWith('.*')) {
 				value = value.slice(0, -2);
@@ -678,6 +686,7 @@ function processTextures(
 			matches++;
 		}
 
+		console.log(texture);
 		if (matches === texture.match.length) {
 			outputTexture = Object.assign({ pack: { base_path: pack.base_path, config: pack.config } }, texture);
 		}
@@ -702,6 +711,7 @@ export function getTexture(item: Item, { ignore_id = false, pack_ids = [], debug
 		itemIdListMap.has(`${item.id}:${item.damage ?? 0}`) === true;
 
 	if (ifExists === false && hotm === false) {
+		console.log('Texture not found', getId(item), getTextureValue(item), `${item.id}:${item.damage ?? 0}`);
 		return null;
 	}
 
@@ -757,10 +767,9 @@ export function getTexture(item: Item, { ignore_id = false, pack_ids = [], debug
 			.relative(path.resolve(FOLDER_PATH, '..', '..', 'static'), outputTexture.path as string)
 			.replace(/\\/g, '/');
 	} else {
-		outputTexture.path = path.posix.relative(
-			path.resolve(FOLDER_PATH, '..', '..', 'static'),
-			outputTexture.path as string
-		);
+		// console.log('befrore', outputTexture.path);
+		// outputTexture.path = path.posix.relative(path.resolve(FOLDER_PATH, 'static'), outputTexture.path as string);
+		// console.log('after', outputTexture.path);
 	}
 
 	// debugStats.time_spent_ms = Date.now() - timeStarted;

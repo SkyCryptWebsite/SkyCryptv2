@@ -1,4 +1,15 @@
-export * from "$lib/helper/cache";
+export * from '$lib/helper/cache';
+
+/**
+ * Converts an RGB color value to its corresponding hexadecimal representation.
+ * @param rgb - The RGB color value in the format "r, g, b".
+ * @returns The hexadecimal representation of the RGB color value.
+ */
+export function rgbToHex(rgb: string) {
+	const [r, g, b] = rgb.split(',').map((c) => parseInt(c.trim()));
+
+	return [r, g, b].map((c) => c.toString(16).padStart(2, '0')).join('');
+}
 
 /**
  * converts a string to a number if it can be converted
@@ -71,5 +82,5 @@ export function getId(item: any) {
 }
 
 export function getTextureValue(item: any) {
-    return item?.tag?.SkullOwner?.Properties?.textures?.at(0)?.Value ?? "";
-  }
+	return item?.tag?.SkullOwner?.Properties?.textures?.at(0)?.Value ?? '';
+}
