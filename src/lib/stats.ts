@@ -16,6 +16,7 @@ export async function getStats(profile: Profile, player: Player): Promise<Stats>
 		rank: stats.getRank(player),
 		skills: stats.getSkills(userProfile, profile, player),
 		skyblock_level: stats.getSkyblockLevel(userProfile),
-		stats: stats.getMainStats(userProfile, profile)
+		stats: stats.getMainStats(userProfile, profile),
+		items: await stats.getItems(userProfile)
 	};
 }

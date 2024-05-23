@@ -1,4 +1,8 @@
+import type { Item, ProcessedItem } from '$types/stats';
+import * as constants from './constants';
+
 export * from '$lib/helper/cache';
+export * from '$lib/helper/item';
 
 /**
  * Converts an RGB color value to its corresponding hexadecimal representation.
@@ -77,10 +81,41 @@ export function getPath(obj: { [key: string]: any }, ...keys: string[]) {
  * @param item The SkyBlock item.
  * @returns The ID of the item, or an empty string if the ID is not found.
  */
-export function getId(item: any) {
+export function getId(item: ProcessedItem | Item) {
 	return item?.tag?.ExtraAttributes?.id ?? '';
 }
 
-export function getTextureValue(item: any) {
+export function getTextureValue(item: Item) {
 	return item?.tag?.SkullOwner?.Properties?.textures?.at(0)?.Value ?? '';
+}
+
+/**
+ * Get Minecraft lore without the color and formatting codes
+ * @param {string} text lore with color codes
+ * @returns {string} lore without color codes
+ */
+export function getRawLore(text: string) {
+	return text.replaceAll(/§[0-9a-fk-or]/g, '');
+}
+
+/**
+ * @param {string} s
+ * @returns {string}
+ */
+export function titleCase(s: string) {
+	return s[0].toUpperCase() + s.slice(1);
+}
+
+export function rarityNameToInt(string: string) {
+	return constants.RARITIES.indexOf(string.toLowerCase());
+}
+
+export function formatNumber(n: number, digits = 2) {
+	return Intl.NumberFormat('en-US', {
+		notation: 'compact',
+		minimumFractionDigits: digits,
+		maximumFractionDigits: digits
+	})
+		.format(n)
+		.replace(/\.0+([A-Za-z])?$/, '$1');
 }

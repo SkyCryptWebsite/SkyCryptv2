@@ -32,7 +32,6 @@ export type ItemTexture = {
 	skyblock_id: string;
 };
 
-
 export type OutputResourcePack = {
 	base_path: string;
 	id: string;
@@ -64,10 +63,23 @@ export type AnimationFrame = {
 	totalTime?: number;
 };
 
-
 export type OutputTexture = {
+	pack: {
+		base_path: string;
+		config: {
+			id: string;
+			name: string;
+			version: string;
+			author: string;
+			url: string;
+			priority: number;
+			hash: string;
+		};
+	};
 	weight: number;
+	animated?: boolean;
 	file: string;
 	path: string;
 	debug: CustomResourcesDebugStats;
+	skyblock_id: string;
 };

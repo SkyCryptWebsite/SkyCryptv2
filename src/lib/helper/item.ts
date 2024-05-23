@@ -1,4 +1,4 @@
-import * as constants from '$constants/items';
+import * as constants from '../constants';
 import sanitize from 'mongo-sanitize';
 import * as helper from '../helper';
 import type { DatabaseItem, Item, ItemQuery } from '$types/stats';

@@ -36,7 +36,7 @@ import type {
 	TextureAnimation,
 	TextureModel
 } from '$types/custom-resources';
-import type { Item } from '$types/processed/profile/items';
+import type { Item, getTextureParams } from '$types/processed/profile/items';
 const execFile = util.promisify(child_process.execFile);
 
 const NORMALIZED_SIZE = 128;
@@ -714,14 +714,13 @@ function processTextures(
  * @param {boolean} [options.debug]
  * @returns {object} Item's texture
  */
-export function getTexture(item: Item, { ignore_id = false, pack_ids = [], debug = false, hotm = false } = {}) {
+export function getTexture(item: Item, { pack_ids = [], hotm = false }: getTextureParams = {}) {
 	const ifExists =
 		skyblockIDListMap.has(getId(item)) === true ||
 		textureValueListMap.has(getTextureValue(item)) === true ||
 		itemIdListMap.has(`${item.id}:${item.damage ?? 0}`) === true;
 
 	if (ifExists === false && hotm === false) {
-		console.log('Texture not found', getId(item), getTextureValue(item), `${item.id}:${item.damage ?? 0}`);
 		return null;
 	}
 

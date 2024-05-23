@@ -3,6 +3,7 @@ import { HYPIXEL_API_KEY } from '$env/static/private';
 import { SkyCryptError } from './constants/error';
 import { isUUID } from '$params/uuid';
 import { REDIS } from '$db/redis';
+import { isPlayer } from '$params/player';
 
 const headers = { Accept: 'application/json', 'User-Agent': 'SkyCrypt', 'API-KEY': HYPIXEL_API_KEY };
 
@@ -71,6 +72,26 @@ export async function getUUID(paramPlayer: string) {
 		// 24 hours
 		REDIS.SETEX(`UUID:${paramPlayer}`, 60 * 60 * 24, data.id);
 		return data.id;
+	}
+
+	return null;
+}
+
+export async function getUsername(paramPlaer: string) {
+	if (isPlayer(paramPlaer)) {
+		return paramPlaer;
+	}
+
+	const username = await REDIS.get(`USERNAME:${paramPlaer}`);
+	if (username) {
+		return username;
+	}
+
+	const data = await resolveUsernameOrUUID(paramPlaer);
+	if (data.name) {
+		// 24 hours
+		REDIS.SETEX(`USERNAME:${paramPlaer}`, 60 * 60 * 24, data.name);
+		return data.name;
 	}
 
 	return null;

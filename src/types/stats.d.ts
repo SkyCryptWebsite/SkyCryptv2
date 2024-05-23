@@ -18,4 +18,5 @@ export type Stats = {
 	rank: Rank | undefined;
 	skyblock_level: Skill;
 	stats: MainStats;
+	items: Items;
 };

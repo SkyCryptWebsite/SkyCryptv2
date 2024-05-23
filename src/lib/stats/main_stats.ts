@@ -1,4 +1,4 @@
-import { FAIRY_SOULS } from '$lib/constants/misc';
+import { FAIRY_SOULS } from '../constants';
 import type { Profile, Member } from '$types/global';
 
 export function getMainStats(userProfile: Member, profile: Profile) {
