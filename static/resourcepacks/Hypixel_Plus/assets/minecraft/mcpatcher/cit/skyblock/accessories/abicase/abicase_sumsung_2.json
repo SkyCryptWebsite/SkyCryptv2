@@ -1,0 +1,7 @@
+{
+	"parent": "item/hplus_handheld_abicase",
+	"textures": {
+		"0": "./abicase_sumsung_2_front",
+		"1": "./abicase_sumsung_2_back"
+	}
+}

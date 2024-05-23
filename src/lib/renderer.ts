@@ -464,16 +464,16 @@ export async function renderItem(skyblockId: string | undefined, query: SkyBlock
 	const item = await getItemData({ skyblockId, ...itemQuery });
 	const outputTexture: Partial<RenderItemOutput> = { mime: 'image/png' };
 
-	if ('texture' in item) {
-		outputTexture.image = await getHead(item.texture);
-	}
-
 	const sbId = skyblockId?.toLowerCase();
 	const material = item.material?.toLowerCase();
-	if (material !== undefined) {
+	if (material !== undefined && item.texture === undefined) {
 		Object.assign(item, mcData.itemsByName[material] ?? mcData.blocksByName[material]);
 	} else if (item.id !== (mcData.itemsByName[sbId] ?? mcData.blocksByName[sbId])?.id) {
 		Object.assign(item, mcData.itemsByName[sbId] ?? mcData.blocksByName[sbId]);
+	}
+
+	if ('texture' in item) {
+		outputTexture.image = await getHead(item.texture);
 	}
 
 	const customTexture = customResources.getTexture(item, {

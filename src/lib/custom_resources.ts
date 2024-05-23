@@ -40,7 +40,7 @@ import type { Item } from '$types/processed/profile/items';
 const execFile = util.promisify(child_process.execFile);
 
 const NORMALIZED_SIZE = 128;
-const RESOURCE_CACHING = process.env.NODE_ENV == 'development' ? false : false;
+const RESOURCE_CACHING = process.env.NODE_ENV == 'development' ? true : false;
 
 const FOLDER_PATH = getFolderPath();
 const RESOURCE_PACK_FOLDER = path.resolve(getFolderPath(), 'static', 'resourcepacks');
@@ -605,13 +605,14 @@ const timeoutId = setTimeout(async () => {
 
 				itemIdListMap.set(`${itemId}:${damage}`, true);
 				itemIdTextureMap.set(key, [...data, texture]);
-			} else if (itemId !== undefined && itemId === 397) {
-				const key = `${pack.config.id}:${itemId}:${damage}`;
-				const data = headTextureMap.get(key) ?? [];
-
-				itemIdListMap.set(`${itemId}:${damage}`, true);
-				headTextureMap.set(key, [...data, texture]);
 			}
+			// else if (itemId !== undefined && itemId === 397) {
+			//	const key = `${pack.config.id}:${itemId}:${damage}`;
+			//	const data = headTextureMap.get(key) ?? [];
+			//
+			//	itemIdListMap.set(`${itemId}:${damage}`, true);
+			//	headTextureMap.set(key, [...data, texture]);
+			/// }
 		}
 	}
 
@@ -756,10 +757,10 @@ export function getTexture(item: Item, { ignore_id = false, pack_ids = [], debug
 			outputTexture = processTextures(outputTexture, cachedTextureValueTexture, pack, item);
 		}
 
-		const cachedHeadTexture = headTextureMap.get(`${pack.config.id}:${item.id}:${item.damage ?? 0}`);
-		if (cachedHeadTexture) {
-			outputTexture = processTextures(outputTexture, cachedHeadTexture, pack, item);
-		}
+		// const cachedHeadTexture = headTextureMap.get(`${pack.config.id}:${item.id}:${item.damage ?? 0}`);
+		// if (cachedHeadTexture) {
+		// 	outputTexture = processTextures(outputTexture, cachedHeadTexture, pack, item);
+		// }
 
 		const cachedItemIdTextureMap = itemIdTextureMap.get(`${pack.config.id}:${item.id}:${item.damage ?? 0}`);
 		if (cachedItemIdTextureMap) {
