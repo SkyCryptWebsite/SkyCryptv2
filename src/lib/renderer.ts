@@ -216,9 +216,13 @@ async function renderHead(textureId: string, scale: number) {
 	const headCanvas = createCanvas(scale * 20 * hatFactor, scale * 18.5);
 
 	const ctx = canvas.getContext('2d');
+	ctx.imageSmoothingEnabled = false;
 	const hat = hatCanvas.getContext('2d');
+	hat.imageSmoothingEnabled = false;
 	const hatBg = hatBgCanvas.getContext('2d');
+	hatBg.imageSmoothingEnabled = false;
 	const head = headCanvas.getContext('2d');
+	head.imageSmoothingEnabled = false;
 
 	const skin = await loadImage(`https://textures.minecraft.net/texture/${textureId}`);
 
