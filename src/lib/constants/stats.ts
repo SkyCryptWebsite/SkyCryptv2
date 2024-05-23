@@ -1,4 +1,6 @@
-export const STATS_DATA = {
+import type { StatsData } from '$types/processed/profile/stats';
+
+export const STATS_DATA: StatsData = {
 	health: {
 		name: 'Health',
 		nameLore: 'Health',
@@ -337,20 +339,26 @@ export const STATS_DATA = {
 		nameLore: 'Bonus Pest Chance',
 		nameShort: 'Bonus Pest Chance',
 		nameTiny: 'BPC',
-		symbol: 'ൠ'
+		symbol: 'ൠ',
+		suffix: '',
+		color: '2'
 	},
 	swing_range: {
 		name: 'Swing Range',
 		nameLore: 'Swing Range',
 		nameShort: 'Swing Range',
 		nameTiny: 'SR',
-		symbol: 'Ⓢ'
+		symbol: 'Ⓢ',
+		suffix: '',
+		color: 'e'
 	},
 	cold_resistence: {
 		name: 'Cold Resistence',
 		nameLore: 'Cold Resistence',
 		nameShort: 'Cold Resistence',
 		nameTiny: 'CR',
-		symbol: '❄'
+		symbol: '❄',
+		suffix: '',
+		color: 'b'
 	}
 };

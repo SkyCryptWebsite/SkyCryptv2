@@ -1,6 +1,7 @@
 import type { ProcessedItem } from '$types/stats.js';
 import * as constants from '$constants';
 import * as helper from '$lib/helper';
+import { getStatsFromItems } from './stats';
 
 export function getArmor(armor: ProcessedItem[]) {
 	if (armor.length === 1) {
@@ -15,6 +16,7 @@ export function getArmor(armor: ProcessedItem[]) {
 
 		return {
 			armor,
+			stats: getStatsFromItems(armor),
 			set_name: armorPiece.display_name,
 			set_rarity: armorPiece.rarity
 		};
@@ -81,12 +83,14 @@ export function getArmor(armor: ProcessedItem[]) {
 
 		return {
 			armor,
+			stats: getStatsFromItems(armor),
 			set_name: outputName,
 			set_rarity: constants.RARITIES[Math.max(...armor.map((a) => helper.rarityNameToInt(a.rarity)))]
 		};
 	}
 
 	return {
-		armor
+		armor,
+		stats: getStatsFromItems(armor)
 	};
 }

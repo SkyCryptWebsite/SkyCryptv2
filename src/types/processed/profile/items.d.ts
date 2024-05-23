@@ -1,3 +1,5 @@
+import type { ItemStats } from './stats';
+
 export type Item = {
 	id: number;
 	damage: number;
@@ -125,5 +127,10 @@ export type Gemstone = {
 };
 
 export type Items = {
-	armor: Item[];
+	armor: {
+		armor: ProcessedItem[];
+		stats: ItemStats;
+		set_name?: string;
+		set_rarity?: string;
+	};
 };

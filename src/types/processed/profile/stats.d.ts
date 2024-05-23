@@ -9,3 +9,7 @@ export type StatsData = {
 		color: string;
 	};
 };
+
+type ItemStats = {
+	[key in StatName]?: number;
+};
