@@ -12,8 +12,8 @@ export async function getItems(userProfile: Member) {
 
 	const outputPromises = {
 		// INVENTORIES
-		// inventory: processItems(INVENTORY?.inv_contents?.data ?? '', 'inventory', true, []),
-		// enderchest: processItems(INVENTORY?.ender_chest_contents?.data ?? '', 'enderchest', true, []),
+		inventory: processItems(INVENTORY?.inv_contents?.data ?? '', 'inventory', true, []),
+		enderchest: processItems(INVENTORY?.ender_chest_contents?.data ?? '', 'enderchest', true, []),
 		armor: processItems(INVENTORY?.inv_armor?.data ?? '', 'armor', true, []),
 		equipment: processItems(INVENTORY?.equipment_contents?.data ?? '', 'equipment', true, []),
 		personal_vault: processItems(INVENTORY?.personal_vault_contents?.data ?? '', 'personal_vault', true, []),
