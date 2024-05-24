@@ -1,4 +1,4 @@
-import type { PlayerData } from './player_data';
+import type { ItemStats } from '$types/processed/profile/stats';
 
 export type Options = {
 	cacheOnly: boolean;
@@ -28,6 +28,8 @@ export type Member = {
 	currencies?: Currencies;
 	fairy_soul?: FairySouls;
 	inventory?: Inventory;
+	rift?: Rift;
+	nether_island_player_data?: CrimsonIsle;
 };
 
 export type JacobsContest = {
@@ -74,4 +76,54 @@ export type BagContents = {
 export type DecodedInventory = {
 	type: number;
 	data: string;
+};
+
+export type PlayerData = {
+	experience?: Experience;
+};
+
+export type Experience = {
+	SKILL_FISHING?: number;
+	SKILL_ALCHEMY?: number;
+	SKILL_DUNGEONEERING?: number;
+	SKILL_RUNECRAFTING?: number;
+	SKILL_MINING?: number;
+	SKILL_FARMING?: number;
+	SKILL_ENCHANTING?: number;
+	SKILL_TAMING?: number;
+	SKILL_FORAGING?: number;
+	SKILL_SOCIAL?: number;
+	SKILL_CARPENTRY?: number;
+	SKILL_COMBAT?: number;
+};
+
+export type Rift = {
+	access?: {
+		consumed_prism?: boolean;
+	};
+};
+
+export type CrimsonIsle = {
+	abiphone?: {
+		active_contacts: string[];
+	};
+};
+
+export type AccessoriesOutput = {
+	accessories: ProcessedItem[];
+	missing: ProcessedItem[];
+	upgrades: ProcessedItem[];
+	stats: ItemStats;
+	enrichments: Record<string, number>;
+	unique: number;
+	total: number;
+	recombobulated: number;
+	total_recombobulated: number;
+	magical_power: {
+		total: number;
+		accessories: number;
+		abiphone: number;
+		rift_prism: number;
+		rarities: Record<string, { amount: number; magical_power: number }>;
+	};
 };

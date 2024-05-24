@@ -4,6 +4,7 @@ export * from './processed/profile/rank';
 export * from './processed/profile/items';
 
 import type { Skills } from '$types/processed/profile/skills';
+import type { AccessoriesOutput } from './global';
 import type { Rank } from './processed/profile/rank';
 
 export type Stats = {
@@ -19,4 +20,5 @@ export type Stats = {
 	skyblock_level: Skill;
 	stats: MainStats;
 	items: Items;
+	accessories: AccessoriesOutput;
 };

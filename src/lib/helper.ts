@@ -1,5 +1,7 @@
 import type { Item, ProcessedItem } from '$types/stats';
+import { getPrices } from 'skyhelper-networth';
 import * as constants from './constants';
+import { getTexture } from './custom_resources';
 
 export * from '$lib/helper/cache';
 export * from '$lib/helper/item';
@@ -118,4 +120,85 @@ export function formatNumber(n: number, digits = 2) {
 	})
 		.format(n)
 		.replace(/\.0+([A-Za-z])?$/, '$1');
+}
+
+/**
+ * Returns the price of the item. Returns 0 if the item is not found or if the item argument is falsy.
+ * @param {string} item - The ID of the item to retrieve the price for.
+ * @returns {number}
+ * @returns {Promise<number>}
+ */
+export async function getItemPrice(item: string | ProcessedItem) {
+	if (!item) return 0;
+
+	const prices = await getPrices(true);
+
+	if (typeof item === 'string') {
+		return prices[item.toLowerCase() as keyof typeof prices] ?? 0;
+	}
+
+	return prices[getId(item).toLowerCase() as keyof typeof prices] ?? 0;
+}
+
+/**
+ * Adds lore to an item's display tag.
+ *
+ * @param {Item} item - The item to add lore to.
+ * @param {string|string[]} lore - The lore to add to the item. If a string is provided, it will be converted to an array.
+ * @returns {Item} The modified item.
+ */
+export function addToItemLore(item: Partial<ProcessedItem>, lore: string | string[]) {
+	if (typeof lore === 'string') {
+		lore = [lore];
+	}
+
+	item.tag ??= {};
+	item.tag.display ??= {};
+	item.tag.display.Lore ??= [];
+	item.tag.display.Lore = item.tag.display.Lore.concat(lore);
+
+	return item;
+}
+
+/**
+ * Applies a resource pack to an item, modifying its texture and animation properties if a custom texture is found.
+ *
+ * @param {Item} item - The item to apply the resource pack to.
+ * @param {string[]} packs - The ID or array of IDs of the resource pack(s) to search for the custom texture.
+ * @returns {Promise<Item>} A Promise that resolves with the modified item.
+ */
+export async function applyResourcePack(item: ProcessedItem, packs: string[]) {
+	const customTexture = getTexture(item, {
+		pack_ids: packs
+	});
+
+	if (customTexture) {
+		item.texture_path = (customTexture.path ?? '').toString();
+	}
+
+	return item;
+}
+
+/**
+ * Returns the magical power of an item based on its rarity and optional ID.
+ * @param {string} rarity - The rarity of the item. See {@link MAGICAL_POWER}.
+ * @param {string|null} [id=null] - (Optional) The ID of the item.
+ * @returns {number} Returns 0 if `rarity` is undefined or if `rarity` is not a valid rarity value.
+ */
+export function getMagicalPower(rarity: string, id: string) {
+	if (rarity === undefined) return 0;
+
+	if (id !== null && typeof id === 'string') {
+		// Hegemony artifact provides double MP
+		if (id === 'HEGEMONY_ARTIFACT') {
+			return 2 * (constants.MAGICAL_POWER[rarity as keyof typeof constants.MAGICAL_POWER] ?? 0);
+		}
+
+		// Rift Prism grants 11 MP
+		if (id === 'RIFT_PRISM') {
+			return 11;
+		}
+	}
+
+	return constants.MAGICAL_POWER[rarity as keyof typeof constants.MAGICAL_POWER] ?? 0;
 }

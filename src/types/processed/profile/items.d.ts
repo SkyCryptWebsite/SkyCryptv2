@@ -7,7 +7,7 @@ export type Item = {
 	tag: {
 		ExtraAttributes: {
 			id?: string;
-			enchantments: Record<string, number>;
+			enchantments?: Record<string, number>;
 		};
 		display?: {
 			Name: string;
@@ -78,6 +78,7 @@ export type ProcessedItem = {
 				candyUsed: number;
 				skin: string | null;
 			};
+			talisman_enrichment?: string;
 		};
 		SkullOwner: {
 			Properties: {
@@ -93,6 +94,9 @@ export type ProcessedItem = {
 		timestamp?: number;
 		reforge?: string;
 		source?: string;
+		model?: string;
+		enrichment?: string;
+		price?: number;
 	};
 	texture_path: string;
 	display_name: string;
@@ -107,6 +111,8 @@ export type ProcessedItem = {
 	categories?: string[];
 	backpackIndex?: number;
 	hidden?: boolean;
+	isInactive?: boolean;
+	isUnique?: boolean;
 };
 
 export type getTextureParams = {
@@ -133,4 +139,56 @@ export type Items = {
 		set_name?: string;
 		set_rarity?: string;
 	};
+	talisman_bag: ProcessedItem[];
+	inventory: ProcessedItem[];
+	enderchest: ProcessedItem[];
+	backpack: Record<string, ProcessedItem>;
+};
+
+export type SpecialAccessory = {
+	id: string;
+	rarity: string;
+	allowsRecomb?: boolean;
+	allowsEnrichment?: boolean;
+	rarities?: string[];
+	customPrice?: boolean;
+	upgrade?: {
+		item: string;
+		cost: Record<string, number>;
+	};
+};
+
+export type Accessory = {
+	id: string;
+	rarity: string;
+	name: string;
+};
+
+export type AccessoryRarities = {
+	common: number;
+	uncommon: number;
+	rare: number;
+	epic: number;
+	legendary: number;
+	mythic: number;
+	special: number;
+	very_special: number;
+	abicase: {
+		model: string;
+	};
+	rift_prism: boolean;
+};
+
+export type Accessories = {
+	accessories: ProcessedItem[];
+	accessory_ids: { id: string; rarity: string }[];
+	accessory_rarities: Partial<AccessoryRarities>;
+};
+
+export type allAccessories = {
+	id: string;
+	texture_path?: string;
+	rarity?: string;
+	item_id?: number;
+	damage?: number;
 };

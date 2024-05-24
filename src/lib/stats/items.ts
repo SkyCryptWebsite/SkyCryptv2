@@ -1,13 +1,13 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
-import type { Member, ProcessedItem } from '$types/global';
+import type { Items, Member, ProcessedItem } from '$types/global';
 import { processItems } from '$lib/stats/items/processing';
 import { getWardrobe } from '$lib/stats/items/wardrobe';
 import { getArmor } from '$lib/stats/items/armor';
 import { getEquipment } from '$lib/stats/items/equipment';
 import { getPets, getSkilllTools, getWeapons } from './items/category';
 
-export async function getItems(userProfile: Member) {
+export async function getItems(userProfile: Member): Items {
 	const INVENTORY = userProfile.inventory;
 
 	const outputPromises = {

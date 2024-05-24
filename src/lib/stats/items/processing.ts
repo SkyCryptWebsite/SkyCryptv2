@@ -386,6 +386,10 @@ export async function processItems(
 			item.extra.reforge = item.tag.ExtraAttributes.modifier;
 		}
 
+		if (item.tag?.ExtraAttributes?.talisman_enrichment !== undefined) {
+			item.extra.enrichment = item.tag.ExtraAttributes.talisman_enrichment;
+		}
+
 		if (item.tag?.ExtraAttributes?.ability_scroll != undefined) {
 			item.extra.ability_scroll = item.tag.ExtraAttributes.ability_scroll;
 		}

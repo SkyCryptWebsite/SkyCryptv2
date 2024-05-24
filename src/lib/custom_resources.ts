@@ -36,7 +36,7 @@ import type {
 	TextureAnimation,
 	TextureModel
 } from '$types/custom-resources';
-import type { Item, getTextureParams } from '$types/processed/profile/items';
+import type { Item, ProcessedItem, getTextureParams } from '$types/processed/profile/items';
 const execFile = util.promisify(child_process.execFile);
 
 const NORMALIZED_SIZE = 128;
@@ -325,7 +325,6 @@ async function loadResourcePacks() {
 			}
 
 			texture.path = textureFile;
-			// console.log(texture.path);
 
 			const textureImage = sharp(textureFile);
 			const textureMetadata = await textureImage.metadata();
@@ -714,7 +713,7 @@ function processTextures(
  * @param {boolean} [options.debug]
  * @returns {object} Item's texture
  */
-export function getTexture(item: Item, { pack_ids = [], hotm = false }: getTextureParams = {}) {
+export function getTexture(item: ProcessedItem, { pack_ids = [], hotm = false }: getTextureParams = {}) {
 	const ifExists =
 		skyblockIDListMap.has(getId(item)) === true ||
 		textureValueListMap.has(getTextureValue(item)) === true ||

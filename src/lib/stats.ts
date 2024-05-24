@@ -5,6 +5,7 @@ import type { Player } from '$types/raw/player/lib';
 export async function getStats(profile: Profile, player: Player): Promise<Stats> {
 	const userProfile = profile.members[profile.uuid];
 
+	const items = await stats.getItems(userProfile);
 	return {
 		username: player.displayname,
 		uuid: profile.uuid,
@@ -17,6 +18,16 @@ export async function getStats(profile: Profile, player: Player): Promise<Stats>
 		skills: stats.getSkills(userProfile, profile, player),
 		skyblock_level: stats.getSkyblockLevel(userProfile),
 		stats: stats.getMainStats(userProfile, profile),
-		items: await stats.getItems(userProfile)
+		items: items,
+		accessories: await stats.getAccessories(
+			userProfile,
+			items.armor.armor,
+			items.talisman_bag,
+			items.inventory,
+			items.enderchest,
+			Object.values(items.backpack)
+				.map((i) => i.containsItems ?? [])
+				.flat()
+		)
 	};
 }

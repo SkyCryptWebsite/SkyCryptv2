@@ -5,3 +5,4 @@ export * from '$constants/skills';
 export * from '$constants/gemstones';
 export * from '$constants/stats';
 export * from '$constants/armor';
+export * from '$constants/accessories';
