@@ -12,7 +12,7 @@ export type Item = {
 		display?: {
 			Name: string;
 		};
-		SkullOwner: {
+		SkullOwner?: {
 			Properties: {
 				textures: {
 					Value: string;

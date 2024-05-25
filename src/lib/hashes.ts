@@ -37,17 +37,17 @@ export function getFileHashes() {
 
 		const fileHashes = await Promise.all(filePromises);
 
-		const hashesObject = {};
+		const hashesObject = {} as Record<string, string>;
 
 		for (let i = 0; i < fileNames.length; i++) {
-			hashesObject[fileNames[i]] = fileHashes[i];
+			hashesObject[fileNames[i]] = fileHashes[i] as string;
 		}
 
 		return hashesObject;
 	});
 
 	return Promise.all(directoryPromises).then((directories) => {
-		const directoriesObject = {};
+		const directoriesObject = {} as Record<string, Record<string, string>>;
 
 		for (let i = 0; i < HASHED_DIRECTORIES.length; i++) {
 			directoriesObject[HASHED_DIRECTORIES[i]] = directories[i];
