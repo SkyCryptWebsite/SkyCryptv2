@@ -3,4 +3,8 @@ export type MainStats = {
 	cookie_buff_active: boolean;
 	purse: number;
 	bank: number;
+	fairy_souls: {
+		found: number;
+		total: number;
+	};
 };
