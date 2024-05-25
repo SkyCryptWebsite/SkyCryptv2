@@ -152,9 +152,17 @@ export function addToItemLore(item: Partial<ProcessedItem>, lore: string | strin
 		lore = [lore];
 	}
 
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	// @ts-ignore
 	item.tag ??= {};
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	// @ts-ignore
 	item.tag.display ??= {};
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	// @ts-ignore
 	item.tag.display.Lore ??= [];
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	// @ts-ignore
 	item.tag.display.Lore = item.tag.display.Lore.concat(lore);
 
 	return item;
@@ -201,4 +209,63 @@ export function getMagicalPower(rarity: string, id: string) {
 	}
 
 	return constants.MAGICAL_POWER[rarity as keyof typeof constants.MAGICAL_POWER] ?? 0;
+}
+
+/**
+ * floors a number to a certain number of decimal places
+ * @param {number} num the number to be floored
+ * @param {number} decimals the number of decimal places to floor to
+ * @returns {number} the floored number
+ */
+export function floor(num: number, decimals = 0) {
+	return Math.floor(Math.pow(10, decimals) * num) / Math.pow(10, decimals);
+}
+
+/**
+ * rounds a number to a certain number of decimal places
+ * @param {number} num the number to be rounded
+ * @param {number} decimals the number of decimal places to round to
+ * @returns {number} the rounded number
+ */
+export function round(num: number, decimals = 0) {
+	return Math.round(Math.pow(10, decimals) * num) / Math.pow(10, decimals);
+}
+
+export function romanize(num: number) {
+	const lookup = {
+		M: 1000,
+		CM: 900,
+		D: 500,
+		CD: 400,
+		C: 100,
+		XC: 90,
+		L: 50,
+		XL: 40,
+		X: 10,
+		IX: 9,
+		V: 5,
+		IV: 4,
+		I: 1
+	} as Record<string, number>;
+	let roman = '';
+
+	for (const i in lookup) {
+		while (num >= lookup[i]) {
+			roman += i;
+			num -= lookup[i];
+		}
+	}
+	return roman;
+}
+
+export function generateUUID() {
+	let u = '',
+		i = 0;
+	while (i++ < 36) {
+		const c = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'[i - 1],
+			r = (Math.random() * 16) | 0,
+			v = c == 'x' ? r : (r & 0x3) | 0x8;
+		u += c == '-' || c == '4' ? c : v.toString(16);
+	}
+	return u;
 }

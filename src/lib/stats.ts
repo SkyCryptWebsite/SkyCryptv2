@@ -1,6 +1,7 @@
 import type { Stats, Profile } from '$types/global';
 import * as stats from '$lib/stats/stats';
 import type { Player } from '$types/raw/player/lib';
+import { getPets } from './stats/pets';
 
 export async function getStats(profile: Profile, player: Player): Promise<Stats> {
 	const userProfile = profile.members[profile.uuid];
@@ -28,6 +29,7 @@ export async function getStats(profile: Profile, player: Player): Promise<Stats>
 			Object.values(items.backpack)
 				.map((i) => i.containsItems ?? [])
 				.flat()
-		)
+		),
+		pets: await getPets(userProfile, items.pets, profile)
 	};
 }

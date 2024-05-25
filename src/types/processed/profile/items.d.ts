@@ -143,6 +143,16 @@ export type Items = {
 	inventory: ProcessedItem[];
 	enderchest: ProcessedItem[];
 	backpack: Record<string, ProcessedItem>;
+	equipment: {
+		equipment: ProcessedItem[];
+		stats: ItemStats;
+	};
+	wardrobe: ProcessedItem[];
+	weapons: ProcessedItem[];
+	farming_tools: ProcessedItem[];
+	mining_tools: ProcessedItem[];
+	fishing_tools: ProcessedItem[];
+	pets: ProcessedItem[];
 };
 
 export type SpecialAccessory = {

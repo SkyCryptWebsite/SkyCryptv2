@@ -1,3 +1,4 @@
+import type { Pet } from '$types/global';
 import type { ItemStats } from '$types/processed/profile/stats';
 
 export type Options = {
@@ -30,6 +31,9 @@ export type Member = {
 	inventory?: Inventory;
 	rift?: Rift;
 	nether_island_player_data?: CrimsonIsle;
+	kills: Record<string, number>;
+	collections: Collections;
+	pets_data: ProfilePets;
 };
 
 export type JacobsContest = {
@@ -101,6 +105,10 @@ export type Rift = {
 	access?: {
 		consumed_prism?: boolean;
 	};
+	dead_cats?: {
+		found_cats?: string[];
+		montezuma?: Pet;
+	};
 };
 
 export type CrimsonIsle = {
@@ -126,4 +134,8 @@ export type AccessoriesOutput = {
 		rift_prism: number;
 		rarities: Record<string, { amount: number; magical_power: number }>;
 	};
+};
+
+export type ProfilePets = {
+	pets: Pet[];
 };

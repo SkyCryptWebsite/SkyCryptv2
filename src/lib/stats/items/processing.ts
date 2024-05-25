@@ -39,8 +39,6 @@ export function parseItemTypeFromLore(lore: string[], item: Item) {
 		).join('|')}) ?)(?<dungeon>DUNGEON )?(?<type>[A-Z ]+)?(?<recomb2>a)?$`
 	);
 
-	// Executing the regex on every lore line
-	// Reverse array and breaks after first find to optimize speed
 	let match = null;
 	for (const line of lore.reverse()) {
 		match = regex.exec(line);
@@ -50,7 +48,6 @@ export function parseItemTypeFromLore(lore: string[], item: Item) {
 		}
 	}
 
-	// No match found (glitched items, like /sbmenu gui items)
 	if (match == null) {
 		return {
 			categories: [],
@@ -61,7 +58,6 @@ export function parseItemTypeFromLore(lore: string[], item: Item) {
 		};
 	}
 
-	// Parsing the match and returning data
 	const r = match.groups as {
 		rarity: string;
 		type: string;

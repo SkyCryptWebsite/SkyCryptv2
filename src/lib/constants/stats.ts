@@ -362,3 +362,5 @@ export const STATS_DATA: StatsData = {
 		color: 'b'
 	}
 };
+
+export const SYMBOLS = Object.fromEntries(Object.entries(STATS_DATA).map(([key, value]) => [key, value.symbol]));
