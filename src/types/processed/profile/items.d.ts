@@ -202,3 +202,22 @@ export type allAccessories = {
 	item_id?: number;
 	damage?: number;
 };
+
+export type AccessoriesOutput = {
+	accessories: ProcessedItem[];
+	missing: ProcessedItem[];
+	upgrades: ProcessedItem[];
+	stats: ItemStats;
+	enrichments: Record<string, number>;
+	unique: number;
+	total: number;
+	recombobulated: number;
+	total_recombobulated: number;
+	magical_power: {
+		total: number;
+		accessories: number;
+		abiphone: number;
+		rift_prism: number;
+		rarities: Record<string, { amount: number; magical_power: number }>;
+	};
+};

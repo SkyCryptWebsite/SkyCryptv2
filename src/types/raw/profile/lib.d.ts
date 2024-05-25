@@ -1,5 +1,4 @@
 import type { Pet } from '$types/global';
-import type { ItemStats } from '$types/processed/profile/stats';
 
 export type Options = {
 	cacheOnly: boolean;
@@ -114,25 +113,6 @@ export type Rift = {
 export type CrimsonIsle = {
 	abiphone?: {
 		active_contacts: string[];
-	};
-};
-
-export type AccessoriesOutput = {
-	accessories: ProcessedItem[];
-	missing: ProcessedItem[];
-	upgrades: ProcessedItem[];
-	stats: ItemStats;
-	enrichments: Record<string, number>;
-	unique: number;
-	total: number;
-	recombobulated: number;
-	total_recombobulated: number;
-	magical_power: {
-		total: number;
-		accessories: number;
-		abiphone: number;
-		rift_prism: number;
-		rarities: Record<string, { amount: number; magical_power: number }>;
 	};
 };
 
