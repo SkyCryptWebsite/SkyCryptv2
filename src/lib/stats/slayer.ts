@@ -71,7 +71,18 @@ export function getSlayer(userProfile: Member) {
 		};
 	}
 
+	const stats = {} as Record<string, number>;
+	for (const id in output.data) {
+		const statsBonus = constants.STATS_BONUS[`slayer_${id}`];
+		const level = output.data[id].level.level;
+
+		for (const stat in constants.getBonusStats(level, statsBonus)) {
+			stats[stat] = (stats[stat] || 0) + constants.getBonusStats(level, statsBonus)[stat];
+		}
+	}
+
 	output.total_slayer_xp = Object.values(slayerData).reduce((acc, boss) => acc + boss.xp, 0);
+	output.stats = Object.fromEntries(Object.entries(stats).sort(([, a], [, b]) => b - a));
 
 	return output;
 }

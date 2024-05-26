@@ -1,5 +1,6 @@
 export type Slayer = {
 	data: Record<string, SlayerData>;
+	stats: Record<string, number>;
 	total_slayer_xp: number;
 };
 
