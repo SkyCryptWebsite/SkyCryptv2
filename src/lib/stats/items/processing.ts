@@ -1,7 +1,7 @@
 import { getTexture } from '$lib/custom_resources';
 import { getItemNetworth } from 'skyhelper-networth';
 
-import * as constants from '../../constants';
+import * as constants from '../../constants/constants';
 import minecraftData from 'minecraft-data';
 import * as helper from '$lib/helper';
 const mcData = minecraftData('1.8.9');

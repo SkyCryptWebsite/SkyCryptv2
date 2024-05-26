@@ -1,6 +1,6 @@
 import { getLevelByXp } from '$lib/stats/leveling/leveling';
 import type { Member, NodeData, ProcessedItem } from '$types/global';
-import * as constants from '$constants';
+import * as constants from '$constants/constants';
 import * as helper from '$lib/helper';
 import { calcHotmTokens } from './mining';
 

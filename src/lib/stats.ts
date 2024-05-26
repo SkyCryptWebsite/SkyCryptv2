@@ -33,6 +33,7 @@ export async function getStats(profile: Profile, player: Player): Promise<Stats>
 		mining: stats.getMining(userProfile, player),
 		farming: stats.getFarming(userProfile),
 		fishing: stats.getFishing(userProfile),
-		slayer: stats.getSlayer(userProfile)
+		slayer: stats.getSlayer(userProfile),
+		dungeons: stats.getDungeons(userProfile)
 	};
 }

@@ -1,4 +1,4 @@
-import { RANKS, RANK_PLUS_COLORS } from '../constants';
+import { RANKS, RANK_PLUS_COLORS } from '../constants/constants';
 import type { PlusColor, Rank, RankName } from '$types/processed/profile/rank';
 import type { Player } from '$types/raw/player/lib';
 

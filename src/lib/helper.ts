@@ -1,6 +1,6 @@
 import type { Item, ProcessedItem } from '$types/stats';
 import { getPrices } from 'skyhelper-networth';
-import * as constants from './constants';
+import * as constants from './constants/constants';
 import { getTexture } from './custom_resources';
 import { v4 } from 'uuid';
 

@@ -1,7 +1,7 @@
 import type { Player } from '$types/raw/player/lib';
 import { getLevelByXp } from '$lib/stats/leveling/leveling';
 import type { Member } from '$types/global';
-import * as constants from '$lib/constants';
+import * as constants from '$constants/constants';
 import { getHotmItems } from './hotm';
 
 /**

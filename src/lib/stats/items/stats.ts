@@ -1,6 +1,6 @@
 import { getRawLore } from '$lib/helper';
 import type { ProcessedItem } from '$types/stats';
-import * as constants from '$lib/constants';
+import * as constants from '$constants/constants';
 import type { ItemStats } from '$types/processed/profile/stats';
 
 export function getStatsFromItem(item: ProcessedItem) {

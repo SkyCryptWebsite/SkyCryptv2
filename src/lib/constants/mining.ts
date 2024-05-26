@@ -1,4 +1,4 @@
-import * as constants from '$constants';
+import * as constants from '$constants/constants';
 import * as helper from '$lib/helper';
 import type { Crystal, HotmItemData, NodeData, Skill } from '$types/global';
 

@@ -1,4 +1,4 @@
-import * as constants from '../constants';
+import * as constants from '../constants/constants';
 import type { Member, Profile, Skills, SkillsData } from '$types/global';
 import type { Player } from '$types/raw/player/lib';
 import { getLevelByXp, getSkillLevelCaps, getSocialSkillExperience, getXpByLevel } from './leveling/leveling';

@@ -1,4 +1,4 @@
-import { SYMBOLS, RARITIES } from '$constants';
+import { SYMBOLS, RARITIES } from '$constants/constants';
 import { round, floor, romanize } from '$lib/helper';
 import { getLevelByXp } from '$lib/stats/leveling/leveling';
 import type { Member, PetStatsExtra } from '$types/global';

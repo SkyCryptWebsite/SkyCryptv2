@@ -1,4 +1,4 @@
-import * as constants from '$constants';
+import * as constants from '$constants/constants';
 import * as helper from '$lib/helper';
 import { itemSorter } from '$lib/stats/items/processing';
 import type { Accessories, Accessory, AccessoryRarities, Member, ProcessedItem } from '$types/global';

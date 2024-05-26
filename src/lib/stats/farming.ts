@@ -1,6 +1,6 @@
 import type { Contest, Farming, Medal, Member } from '$types/global';
 import { getLevelByXp } from './leveling/leveling';
-import * as constants from '$constants';
+import * as constants from '$constants/constants';
 
 function getMedalType(contest: Contest) {
 	const position = contest.claimed_position;

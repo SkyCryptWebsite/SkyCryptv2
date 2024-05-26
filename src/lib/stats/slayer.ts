@@ -1,5 +1,5 @@
 import type { Member, SlayerBoss } from '$types/global';
-import * as constants from '$constants';
+import * as constants from '$constants/constants';
 import type { Slayer } from '$types/processed/profile/slayer';
 
 function getKills(slayer: SlayerBoss) {

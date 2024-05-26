@@ -1,4 +1,4 @@
-import * as constants from '$constants';
+import * as constants from '$constants/constants';
 import * as helper from '$lib/helper';
 import type { AccessoriesOutput, Member } from '$types/global';
 import type { Accessories, Accessory, ProcessedItem, SpecialAccessory } from '$types/stats';

@@ -1,4 +1,4 @@
-import { SYMBOLS } from '$constants';
+import { SYMBOLS } from '$constants/constants';
 
 export const TROPHY_FISH = {
 	BLOBFISH: {

@@ -1,5 +1,5 @@
 import type { ProcessedItem } from '$types/stats.js';
-import * as constants from '$constants';
+import * as constants from '$constants/constants';
 import * as helper from '$lib/helper';
 import { getStatsFromItems } from './stats';
 

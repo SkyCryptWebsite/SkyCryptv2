@@ -9,3 +9,4 @@ export * from '$lib/stats/mining';
 export * from '$lib/stats/farming';
 export * from '$lib/stats/fishing';
 export * from '$lib/stats/slayer';
+export * from '$lib/stats/dungeons';
