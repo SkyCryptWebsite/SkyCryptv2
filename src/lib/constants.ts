@@ -11,3 +11,6 @@ export * from '$constants/skins';
 export * from '$constants/pet_stats';
 export * from '$constants/mining';
 export * from '$constants/farming';
+export * from '$constants/fishing';
+export * from '$constants/mobs';
+export * from '$constants/trophy_fish';

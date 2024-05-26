@@ -7,6 +7,7 @@ export * from './processed/profile/pets';
 export * from './processed/profile/pet-stats';
 export * from './processed/profile/mining';
 export * from './processed/profile/farming';
+export * from './processed/profile/fishing';
 
 export type Stats = {
 	username: string;
@@ -25,4 +26,5 @@ export type Stats = {
 	pets: Pets;
 	mining: MiningStats;
 	farming: Farming;
+	fishing: Fishing;
 };

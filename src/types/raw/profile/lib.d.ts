@@ -36,6 +36,8 @@ export type Member = {
 	mining_core: Mining;
 	objectives: Objectives;
 	quests: Quests;
+	player_stats: PlayerStats;
+	trophy_fish: TrophyFish;
 };
 
 export type Medal = 'gold' | 'silver' | 'bronze';
@@ -180,4 +182,25 @@ export type Crystal = {
 	state: string;
 	total_found: number;
 	total_placed: number;
+};
+
+export type PlayerStats = {
+	kills: Record<string, number>;
+	items_fished?: {
+		total: number;
+		normal: number;
+		treasure: number;
+		large_treasure: number;
+		trophy_fish: number;
+	};
+	shredder_rod?: {
+		fished: number;
+		bait: number;
+	};
+};
+
+export type TrophyFish = {
+	rewards: number[];
+	total_caught: number;
+	[string: string]: number;
 };

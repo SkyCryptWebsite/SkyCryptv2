@@ -7,3 +7,4 @@ export * from '$lib/stats/accessories';
 export * from '$lib/stats/pets';
 export * from '$lib/stats/mining';
 export * from '$lib/stats/farming';
+export * from '$lib/stats/fishing';
