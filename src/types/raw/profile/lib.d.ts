@@ -38,6 +38,7 @@ export type Member = {
 	quests: Quests;
 	player_stats: PlayerStats;
 	trophy_fish: TrophyFish;
+	slayer: Slayer;
 };
 
 export type Medal = 'gold' | 'silver' | 'bronze';
@@ -203,4 +204,18 @@ export type TrophyFish = {
 	rewards: number[];
 	total_caught: number;
 	[string: string]: number;
+};
+
+export type Slayer = {
+	slayer_bosses: Record<string, SlayerBoss>;
+};
+
+export type SlayerBoss = {
+	claimed_levels: Record<string, boolean>;
+	xp: number;
+	boss_kills_tier_0: number;
+	boss_kills_tier_1: number;
+	boss_kills_tier_2: number;
+	boss_kills_tier_3: number;
+	boss_kills_tier_4: number;
 };

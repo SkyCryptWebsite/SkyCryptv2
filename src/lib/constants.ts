@@ -14,3 +14,4 @@ export * from '$constants/farming';
 export * from '$constants/fishing';
 export * from '$constants/mobs';
 export * from '$constants/trophy_fish';
+export * from '$constants/slayer';
