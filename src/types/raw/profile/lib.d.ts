@@ -35,10 +35,30 @@ export type Member = {
 	pets_data: ProfilePets;
 	mining_core: Mining;
 	objectives: Objectives;
+	quests: Quests;
 };
+
+export type Medal = 'gold' | 'silver' | 'bronze';
 
 export type JacobsContest = {
 	perks?: Record<string, number>;
+	unique_brackets?: Record<Medal, string[]>;
+	medals_inv?: Record<Medal, number>;
+	contests: Record<string, Contest>;
+};
+
+export type Quests = {
+	trapper_quest: {
+		pelt_count: number;
+	};
+};
+
+export type Contest = {
+	collected: number;
+	claimed_rewards?: boolean;
+	claimed_position?: number;
+	claimed_participants?: number;
+	claimed_medal: Medal;
 };
 
 export type Leveling = {

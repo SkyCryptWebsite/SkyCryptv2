@@ -30,6 +30,7 @@ export async function getStats(profile: Profile, player: Player): Promise<Stats>
 				.flat()
 		),
 		pets: await stats.getPets(userProfile, items.pets, profile),
-		mining: stats.getMining(userProfile, player)
+		mining: stats.getMining(userProfile, player),
+		farming: stats.getFarming(userProfile)
 	};
 }

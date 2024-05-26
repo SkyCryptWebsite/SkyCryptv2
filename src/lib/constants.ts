@@ -10,3 +10,4 @@ export * from '$constants/pets';
 export * from '$constants/skins';
 export * from '$constants/pet_stats';
 export * from '$constants/mining';
+export * from '$constants/farming';
