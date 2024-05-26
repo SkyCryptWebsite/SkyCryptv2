@@ -1,5 +1,6 @@
 import { SYMBOLS, RARITIES } from '$constants';
 import { round, floor, romanize } from '$lib/helper';
+import { getLevelByXp } from '$lib/stats/leveling/leveling';
 import type { Member, PetStatsExtra } from '$types/global';
 
 const COMMON = RARITIES.indexOf('common');
@@ -2774,9 +2775,10 @@ class BlueWhale extends Pet {
 
 class Ammonite extends Pet {
 	get stats() {
+		const HOTM = getLevelByXp(this.profile.mining_core.experience || 0, { type: 'hotm' });
+
 		return {
-			// TODO: add HOTM
-			// sea_creature_chance: this.level * (0.05 + 0.01 * (this.profile?.mining?.core?.level?.level || 0))
+			sea_creature_chance: this.level * (0.05 + 0.01 * HOTM.level)
 		};
 	}
 
