@@ -2,6 +2,7 @@ import type { Item, ProcessedItem } from '$types/stats';
 import { getPrices } from 'skyhelper-networth';
 import * as constants from './constants';
 import { getTexture } from './custom_resources';
+import { v4 } from 'uuid';
 
 export * from '$lib/helper/cache';
 export * from '$lib/helper/item';
@@ -18,34 +19,39 @@ export function rgbToHex(rgb: string) {
 }
 
 /**
- * converts a string to a number if it can be converted
+ * Converts a string to a number if it can be converted.
  * @param {string} key
- * @returns {string|number}
+ * @returns {string | number}
  */
-function getKey(key: string): string {
+function getKey(key: string): string | number {
 	const intKey = Number(key);
 
 	if (!isNaN(intKey)) {
-		return intKey.toString();
+		return intKey;
 	}
 
 	return key;
 }
 
 /**
- * @param {any} obj an object
- * @param  {...(string|number)} keys a path
- * @returns {boolean} if the path exists on the object
+ * Checks if a path exists on the object.
+ * @param {object} obj - An object.
+ * @param  {...(string | number)} keys - A path.
+ * @returns {boolean} - If the path exists on the object.
  */
-export function hasPath(obj: { [key: string]: any }, ...keys: string[]) {
+export function hasPath<T extends object>(obj: T, ...keys: (string | number)[]): boolean {
 	if (obj == null) {
 		return false;
 	}
 
-	let loc = obj;
+	let loc: unknown = obj;
 
 	for (let i = 0; i < keys.length; i++) {
-		loc = loc[getKey(keys[i])];
+		if (typeof loc === 'object' && loc !== null) {
+			loc = (loc as Record<string, unknown>)[getKey(keys[i] as string)];
+		} else {
+			return false;
+		}
 
 		if (loc === undefined) {
 			return false;
@@ -56,26 +62,31 @@ export function hasPath(obj: { [key: string]: any }, ...keys: string[]) {
 }
 
 /**
- * @param {any} obj an object
- * @param  {...(string|number)} keys a path
- * @returns {any} the value at the path on the object
+ * Gets the value at the path on the object.
+ * @param {object} obj - An object.
+ * @param  {...(string | number)} keys - A path.
+ * @returns {any} - The value at the path on the object.
  */
-export function getPath(obj: { [key: string]: any }, ...keys: string[]) {
+export function getPath<T extends object, K = unknown>(obj: T, ...keys: (string | number)[]): K | undefined {
 	if (obj == null) {
 		return undefined;
 	}
 
-	let loc = obj;
+	let loc: unknown = obj;
 
 	for (let i = 0; i < keys.length; i++) {
-		loc = loc[getKey(keys[i])];
+		if (typeof loc === 'object' && loc !== null) {
+			loc = (loc as Record<string, unknown>)[getKey(keys[i] as string)];
+		} else {
+			return undefined;
+		}
 
 		if (loc === undefined) {
 			return undefined;
 		}
 	}
 
-	return loc;
+	return loc as K;
 }
 
 /**
@@ -231,6 +242,16 @@ export function round(num: number, decimals = 0) {
 	return Math.round(Math.pow(10, decimals) * num) / Math.pow(10, decimals);
 }
 
+/**
+ * ceils a number to a certain number of decimal places
+ * @param {number} num the number to be ceiled
+ * @param {number} decimals the number of decimal places to ceil to
+ * @returns {number} the ceiled number
+ */
+export function ceil(num: number, decimals = 0) {
+	return Math.ceil(Math.pow(10, decimals) * num) / Math.pow(10, decimals);
+}
+
 export function romanize(num: number) {
 	const lookup = {
 		M: 1000,
@@ -268,4 +289,59 @@ export function generateUUID() {
 		u += c == '-' || c == '4' ? c : v.toString(16);
 	}
 	return u;
+}
+
+export function generateItem(data: Partial<ProcessedItem>) {
+	if (!data) {
+		return {
+			itemId: v4(),
+			item_index: Date.now()
+		} as ProcessedItem;
+	}
+
+	const DEFAULT_DATA = {
+		id: 389,
+		Damage: 0,
+		Count: 1,
+		display_name: '',
+		rarity: null,
+		categories: [],
+		type: 'misc',
+		tag: {
+			display: {
+				Name: '',
+				Lore: ['']
+			}
+		},
+		itemId: v4(),
+		item_index: Date.now()
+	};
+
+	// Making sure rarity is lowercase
+	if (data.rarity) {
+		data.rarity = data.rarity.toLowerCase();
+	}
+
+	if (data.name && (data.display_name === undefined || data.display_name?.length === 0)) {
+		data.display_name = data.name;
+	}
+
+	if (!data.rarity && data.tier) {
+		data.rarity = data.tier.toLowerCase();
+	}
+
+	if (data.item_id) {
+		data.id = data.item_id;
+	}
+
+	// Setting tag.display.Name using display_name if not specified
+	if (data.display_name && !data.tag?.display?.Name) {
+		data.tag ??= {} as ProcessedItem['tag'];
+		data.tag.display ??= {} as ProcessedItem['tag']['display'];
+
+		const rarityColor = data.rarity ? `§${constants.RARITY_COLORS[data.rarity ?? 'common']}` : '';
+		data.tag.display.Name = `${rarityColor}${data.display_name}`;
+	}
+
+	return Object.assign(DEFAULT_DATA, data) as ProcessedItem;
 }

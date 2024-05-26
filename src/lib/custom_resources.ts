@@ -675,8 +675,8 @@ function processTextures(
 				break;
 			}
 
-			let matchValues = getPath(item, 'tag', ...valueSplit);
-			matchValues = Array.isArray(matchValues) ? matchValues : [matchValues];
+			const path = getPath(item, 'tag', ...valueSplit);
+			const matchValues = Array.isArray(path) ? path : [path];
 
 			const slash = regex.lastIndexOf('/');
 			const regexPattern = new RegExp(regex.slice(1, slash), regex.slice(slash + 1));
@@ -716,7 +716,7 @@ function processTextures(
 export function getTexture(item: ProcessedItem, { pack_ids = [], hotm = false }: getTextureParams = {}) {
 	const ifExists =
 		skyblockIDListMap.has(getId(item)) === true ||
-		textureValueListMap.has(getTextureValue(item)) === true ||
+		textureValueListMap.has(getTextureValue(item as Item)) === true ||
 		itemIdListMap.has(`${item.id}:${item.damage ?? 0}`) === true;
 
 	if (ifExists === false && hotm === false) {
@@ -747,12 +747,12 @@ export function getTexture(item: ProcessedItem, { pack_ids = [], hotm = false }:
 	for (const pack of tempPacks) {
 		const cachedItemIdTexture = skyblockIDTextureMap.get(`${pack.config.id}:${getId(item)}`);
 		if (cachedItemIdTexture) {
-			outputTexture = processTextures(outputTexture, cachedItemIdTexture, pack, item);
+			outputTexture = processTextures(outputTexture, cachedItemIdTexture, pack, item as Item);
 		}
 
-		const cachedTextureValueTexture = textureValueTextureMap.get(`${pack.config.id}:${getTextureValue(item)}`);
+		const cachedTextureValueTexture = textureValueTextureMap.get(`${pack.config.id}:${getTextureValue(item as Item)}`);
 		if (cachedTextureValueTexture) {
-			outputTexture = processTextures(outputTexture, cachedTextureValueTexture, pack, item);
+			outputTexture = processTextures(outputTexture, cachedTextureValueTexture, pack, item as Item);
 		}
 
 		// const cachedHeadTexture = headTextureMap.get(`${pack.config.id}:${item.id}:${item.damage ?? 0}`);
@@ -762,7 +762,7 @@ export function getTexture(item: ProcessedItem, { pack_ids = [], hotm = false }:
 
 		const cachedItemIdTextureMap = itemIdTextureMap.get(`${pack.config.id}:${item.id}:${item.damage ?? 0}`);
 		if (cachedItemIdTextureMap) {
-			outputTexture = processTextures(outputTexture, cachedItemIdTextureMap, pack, item);
+			outputTexture = processTextures(outputTexture, cachedItemIdTextureMap, pack, item as Item);
 		}
 	}
 

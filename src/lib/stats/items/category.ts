@@ -70,8 +70,8 @@ export function getPets(allItems: ProcessedItem[]) {
 
 		output.push(
 			...item.containsItems
-				.filter((a) => a.tag?.ExtraAttributes?.petInfo)
-				.map((a) => ({
+				.filter((a) => a.tag?.ExtraAttributes?.petInfo !== undefined)
+				.map((a: ProcessedItem) => ({
 					uuid: a.tag.ExtraAttributes.uuid,
 					type: a.tag.ExtraAttributes.petInfo.type,
 					exp: a.tag.ExtraAttributes.petInfo.exp,

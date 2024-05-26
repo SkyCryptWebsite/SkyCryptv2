@@ -33,6 +33,8 @@ export type Member = {
 	kills: Record<string, number>;
 	collections: Collections;
 	pets_data: ProfilePets;
+	mining_core: Mining;
+	objectives: Objectives;
 };
 
 export type JacobsContest = {
@@ -118,4 +120,44 @@ export type CrimsonIsle = {
 
 export type ProfilePets = {
 	pets: Pet[];
+};
+
+export type Mining = {
+	nodes: Record<string, number>;
+
+	experience: number;
+
+	greater_mines_last_access: number;
+	last_reset: number;
+
+	tokens_spent: number;
+	selected_pickaxe_ability: string;
+
+	powder_mithril: number;
+	powder_mithril_total: number;
+	powder_spent_mithril: number;
+	powder_gemstone: number;
+	powder_gemstone_total: number;
+	powder_spent_gemstone: number;
+	powder_glacite: number;
+	powder_glacite_total: number;
+	powder_spent_glacite: number;
+
+	crystals: Record<string, Crystal>;
+
+	biomes: {
+		precursor: {
+			parts_delivered: string[];
+		};
+	};
+};
+
+export type Objectives = {
+	tutorial?: string[];
+};
+
+export type Crystal = {
+	state: string;
+	total_found: number;
+	total_placed: number;
 };

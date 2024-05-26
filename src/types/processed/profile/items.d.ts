@@ -53,7 +53,7 @@ export type ProcessedItem = {
 	damage: number;
 	Count: number;
 	tag: {
-		display?: {
+		display: {
 			Lore: string[];
 			Name: string;
 		};
@@ -66,8 +66,8 @@ export type ProcessedItem = {
 			id?: string;
 			enchantments?: Record<string, number>;
 			uuid?: string;
-			donated_museum: boolean;
-			timestamp: number;
+			donated_museum?: boolean;
+			timestamp?: number;
 			petInfo: {
 				uuuid: string;
 				type: string;
@@ -113,6 +113,14 @@ export type ProcessedItem = {
 	hidden?: boolean;
 	isInactive?: boolean;
 	isUnique?: boolean;
+	name?: string;
+	tier?: string;
+	item_id?: number;
+	damage?: number;
+	glowing?: boolean;
+	position?: number;
+	itemId: string;
+	item_index: number;
 };
 
 export type getTextureParams = {
