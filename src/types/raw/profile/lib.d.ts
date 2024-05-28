@@ -39,6 +39,7 @@ export type Member = {
 	player_stats: PlayerStats;
 	trophy_fish: TrophyFish;
 	slayer: Slayer;
+	dungeons: Dungeons;
 };
 
 export type Medal = 'gold' | 'silver' | 'bronze';
@@ -218,4 +219,55 @@ export type SlayerBoss = {
 	boss_kills_tier_2: number;
 	boss_kills_tier_3: number;
 	boss_kills_tier_4: number;
+};
+
+export type Dungeons = {
+	dungeon_types: Record<string, Catacombs>;
+	player_classes: Record<string, PlayerClass>;
+	selected_dungeon_class: string;
+	secrets: number;
+};
+
+export type PlayerClass = {
+	experience: number;
+};
+
+export type Catacombs = {
+	[key: string]: number | Record<string, number>;
+
+	experience: number;
+
+	highest_tier_completed: number;
+	times_played: Record<string, number>;
+	tier_completions: Record<string, number>;
+	milestone_completions: Record<string, number>;
+	mobs_killed: Record<string, number>;
+	most_mobs_killed: Record<string, number>;
+	watcher_kills: Record<string, number>;
+	most_damage_berserk: Record<string, number>;
+	most_damage_mage: Record<string, number>;
+	most_damage_healer: Record<string, number>;
+	most_damage_archer: Record<string, number>;
+	most_damage_tank: Record<string, number>;
+	most_healing: Record<string, number>;
+	fastest_time: Record<string, number>;
+	fastest_time_s: Record<string, number>;
+	fastest_time_s_plus: Record<string, number>;
+	best_score: Record<string, number>;
+	best_runs: Record<string, BestRun[]>;
+};
+
+export type BestRun = {
+	timestamp: number;
+	score_exploration: number;
+	score_speed: number;
+	score_skill: number;
+	score_bonus: number;
+	dungeon_class: string;
+	elapsed_time: number;
+	damage_dealt: number;
+	deaths: number;
+	mobs_killed: number;
+	secrets_found: number;
+	damage_mitigated: number;
 };

@@ -9,6 +9,7 @@ export * from './processed/profile/mining';
 export * from './processed/profile/farming';
 export * from './processed/profile/fishing';
 export * from './processed/profile/slayer';
+export * from './processed/profile/dungeons';
 
 export type Stats = {
 	username: string;
@@ -29,4 +30,5 @@ export type Stats = {
 	farming: Farming;
 	fishing: Fishing;
 	slayer: Slayer;
+	dungeons: DungeonsStats;
 };

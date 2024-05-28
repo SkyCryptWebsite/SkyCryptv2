@@ -8,13 +8,11 @@ const mcData = minecraftData('1.8.9');
 import { fileURLToPath } from 'url';
 import path from 'path';
 
-import util from 'util';
-import nbt from 'prismarine-nbt';
+import nbt, { parse } from 'prismarine-nbt';
 import { v4 } from 'uuid';
 import type { GemTier, Gemstone, Item, ProcessedItem } from '$types/stats';
 import type { StatsData } from '$types/processed/profile/stats';
 import { getUsername } from '$lib/lib';
-const parseNbt = util.promisify(nbt.parse);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export function itemSorter(a: ProcessedItem, b: ProcessedItem) {
@@ -204,8 +202,8 @@ export function generateGemLore(type: string, tier: string, rarity: string): str
 async function getBackpackContents(arraybuf: string) {
 	const buf = Buffer.from(arraybuf);
 
-	let data = await parseNbt(buf);
-	data = nbt.simplify(data);
+	let data = await parse(buf);
+	data = nbt.simplify(data.parsed);
 
 	// eslint-disable-next-line
 	// @ts-ignore
@@ -230,8 +228,8 @@ export async function processItems(
 	// API stores data as base64 encoded gzipped Minecraft NBT data
 	const buf = Buffer.from(base64, 'base64');
 
-	let data = await parseNbt(buf);
-	data = nbt.simplify(data);
+	let data = await parse(buf);
+	data = nbt.simplify(data.parsed);
 
 	// eslint-disable-next-line
 	// @ts-ignore
