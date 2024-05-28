@@ -1,4 +1,5 @@
 import type { AccessoriesOutput, Items, MainStats, MiningStats, Rank, Skills } from './global';
+import type { BestiaryStats } from './processed/profile/bestiary';
 import type { Minions } from './processed/profile/minions';
 export * from './processed/profile/main_stats';
 export * from './processed/profile/skills';
@@ -33,4 +34,5 @@ export type Stats = {
 	slayer: Slayer;
 	dungeons: DungeonsStats;
 	minions: Minions;
+	bestiary: BestiaryStats;
 };

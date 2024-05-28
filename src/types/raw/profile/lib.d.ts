@@ -55,6 +55,7 @@ export type Member = {
 	trophy_fish: TrophyFish;
 	slayer: Slayer;
 	dungeons: Dungeons;
+	bestiary: Bestiary;
 };
 
 export type Medal = 'gold' | 'silver' | 'bronze';
@@ -286,4 +287,8 @@ export type BestRun = {
 	mobs_killed: number;
 	secrets_found: number;
 	damage_mitigated: number;
+};
+
+export type Bestiary = {
+	kills: Record<string, number>;
 };

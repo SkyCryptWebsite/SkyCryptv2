@@ -35,6 +35,7 @@ export async function getStats(profile: Profile, player: Player): Promise<Stats>
 		fishing: stats.getFishing(userProfile),
 		slayer: stats.getSlayer(userProfile),
 		dungeons: stats.getDungeons(userProfile),
-		minions: stats.getMinions(profile)
+		minions: stats.getMinions(profile),
+		bestiary: stats.getBestiary(userProfile)
 	};
 }

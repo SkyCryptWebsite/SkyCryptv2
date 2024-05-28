@@ -11,3 +11,4 @@ export * from '$lib/stats/fishing';
 export * from '$lib/stats/slayer';
 export * from '$lib/stats/dungeons';
 export * from '$lib/stats/minions';
+export * from '$lib/stats/bestiary';
