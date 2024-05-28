@@ -1,4 +1,5 @@
 import type { AccessoriesOutput, Items, MainStats, MiningStats, Rank, Skills } from './global';
+import type { Minions } from './processed/profile/minions';
 export * from './processed/profile/main_stats';
 export * from './processed/profile/skills';
 export * from './processed/profile/rank';
@@ -31,4 +32,5 @@ export type Stats = {
 	fishing: Fishing;
 	slayer: Slayer;
 	dungeons: DungeonsStats;
+	minions: Minions;
 };

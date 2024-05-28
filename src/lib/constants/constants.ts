@@ -16,3 +16,4 @@ export * from '$constants/mobs';
 export * from '$constants/trophy_fish';
 export * from '$constants/slayer';
 export * from '$constants/dungeons';
+export * from '$constants/minions';

@@ -18,6 +18,21 @@ export type Profile = {
 	uuid: string;
 	members: Record<string, Member>;
 	banking: Banking;
+	community_upgrades: CommunityUpgrades;
+};
+
+export type CommunityUpgrades = {
+	currently_upgrading: string | null;
+	upgrade_states: CommunityUpgrade[];
+};
+
+export type CommunityUpgrade = {
+	upgrade: string;
+	tier: number;
+	started_ms: number;
+	started_by: string;
+	claimed_by: string;
+	fasttracked: boolean;
 };
 
 export type Member = {
@@ -109,6 +124,7 @@ export type DecodedInventory = {
 
 export type PlayerData = {
 	experience?: Experience;
+	crafted_generators?: string[];
 };
 
 export type Experience = {

@@ -10,3 +10,4 @@ export * from '$lib/stats/farming';
 export * from '$lib/stats/fishing';
 export * from '$lib/stats/slayer';
 export * from '$lib/stats/dungeons';
+export * from '$lib/stats/minions';
