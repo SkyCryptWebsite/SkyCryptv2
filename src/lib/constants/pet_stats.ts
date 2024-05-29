@@ -1,7 +1,8 @@
 import { SYMBOLS, RARITIES } from '$constants/constants';
 import { round, floor, romanize } from '$lib/helper';
+import { getCollection } from '$lib/stats/collections';
 import { getLevelByXp } from '$lib/stats/leveling/leveling';
-import type { Member, PetStatsExtra } from '$types/global';
+import type { Member, PetStatsExtra, Profile } from '$types/global';
 
 const COMMON = RARITIES.indexOf('common');
 const UNCOMMON = RARITIES.indexOf('uncommon');
@@ -65,11 +66,13 @@ class Pet {
 		this._stats = value;
 	}
 	extra?: PetStatsExtra;
-	profile: Member;
-	constructor(rarity: number, level: number, extra: PetStatsExtra, profile: Member) {
+	userProfile: Member;
+	profile: Profile;
+	constructor(rarity: number, level: number, extra: PetStatsExtra, userProfile: Member, profile: Profile) {
 		this.rarity = rarity;
 		this.level = level;
 		this.extra = extra;
+		this.userProfile = userProfile;
 		this.profile = profile;
 	}
 
@@ -327,7 +330,7 @@ class Eerie extends Pet {
 	get third() {
 		const mult = getValue(this.rarity, { legendary: 0.01 });
 
-		const primalFearKills = this.profile.kills ? this.profile.kills['primal_fear'] ?? 0 : 0;
+		const primalFearKills = this.userProfile.kills ? this.userProfile.kills['primal_fear'] ?? 0 : 0;
 		const kills = Math.max(primalFearKills, 150);
 
 		const killsFormatted = kills >= 150 ? `§a${kills}` : `§c${kills}`;
@@ -1207,16 +1210,13 @@ class GoldenDragon extends Pet {
 	get stats() {
 		const stats = {} as Record<string, number>;
 		if (this.level >= 100) {
-			// TODO: Add gold collection digits
-			/*
-            const goldCollectionDigits = this.profile.collections?.mining?.collections
-				?.find((collection) => collection.id === 'GOLD_INGOT')
-				?.amount.toString().length;
+			const goldCollectionDigits = (
+				getCollection(this.userProfile, this.profile, 'GOLD_INGOT')?.total_amount ?? 0
+			).toString().length;
 
 			stats.strength = Math.floor(25 + Math.max(0, this.level - 100) * 0.25) + 10 * goldCollectionDigits;
 			stats.bonus_attack_speed = Math.floor(25 + Math.max(0, this.level - 100) * 0.25);
 			stats.magic_find = Math.floor(5 + Math.max(0, (this.level - 100) / 10) * 0.5) + 2 * goldCollectionDigits;
-            */
 		}
 
 		return stats;
@@ -2562,7 +2562,7 @@ class Monkey extends Pet {
 
 class Montezuma extends Pet {
 	get stats() {
-		const riftSouls = (this.profile?.rift?.dead_cats?.found_cats ?? []).length;
+		const riftSouls = (this.userProfile?.rift?.dead_cats?.found_cats ?? []).length;
 
 		return {
 			rift_time: 10 + riftSouls * 15,
@@ -2775,7 +2775,7 @@ class BlueWhale extends Pet {
 
 class Ammonite extends Pet {
 	get stats() {
-		const HOTM = getLevelByXp(this.profile.mining_core.experience || 0, { type: 'hotm' });
+		const HOTM = getLevelByXp(this.userProfile.mining_core.experience || 0, { type: 'hotm' });
 
 		return {
 			sea_creature_chance: this.level * (0.05 + 0.01 * HOTM.level)

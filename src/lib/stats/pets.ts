@@ -70,7 +70,7 @@ function getPetName(pet: Pet, petData: petData) {
 	}
 }
 
-function getProfilePets(pets: Pet[], userProfile: Member) {
+function getProfilePets(pets: Pet[], userProfile: Member, profile: Profile) {
 	let output = [] as Pet[];
 	if (pets === undefined) {
 		return output;
@@ -150,7 +150,7 @@ function getProfilePets(pets: Pet[], userProfile: Member) {
 
 		const searchName = (pet.type in constants.PET_STATS ? pet.type : '???') as string;
 
-		const petInstance = new constants.PET_STATS[searchName](rarity, pet.level.level, pet.extra, userProfile);
+		const petInstance = new constants.PET_STATS[searchName](rarity, pet.level.level, pet.extra, userProfile, profile);
 
 		pet.stats = Object.assign({}, petInstance.stats);
 		// pet.ref = petInstance;
@@ -326,7 +326,7 @@ function getProfilePets(pets: Pet[], userProfile: Member) {
 	return output;
 }
 
-function getMissingPets(pets: Pet[], gameMode: string, userProfile: Member) {
+function getMissingPets(pets: Pet[], gameMode: string, userProfile: Member, profile: Profile) {
 	const profilePets = [] as Pet[];
 
 	const missingPets = {} as Record<string, MissingPet[]>;
@@ -364,7 +364,7 @@ function getMissingPets(pets: Pet[], gameMode: string, userProfile: Member) {
 		profilePets.push(pets[0] as Pet);
 	}
 
-	return getProfilePets(profilePets, userProfile);
+	return getProfilePets(profilePets, userProfile, profile);
 }
 
 function getPetScore(pets: Pet[]) {
@@ -437,8 +437,8 @@ export async function getPets(userProfile: Member, items: ProcessedItem[], profi
 		await getItemNetworth(pet, { cache: true, returnItemData: false });
 	}
 
-	output.pets = getProfilePets(pets, userProfile);
-	output.missing = getMissingPets(output.pets, profile.game_mode, userProfile);
+	output.pets = getProfilePets(pets, userProfile, profile);
+	output.missing = getMissingPets(output.pets, profile.game_mode, userProfile, profile);
 
 	output.amount = _.uniqBy(output.pets, 'type').length;
 	const totalPets =
