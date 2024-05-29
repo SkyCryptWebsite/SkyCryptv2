@@ -46,7 +46,7 @@ export type Member = {
 	rift?: Rift;
 	nether_island_player_data?: CrimsonIsle;
 	kills: Record<string, number>;
-	collections: Collections;
+	collection: Collection;
 	pets_data: ProfilePets;
 	mining_core: Mining;
 	objectives: Objectives;
@@ -291,4 +291,8 @@ export type BestRun = {
 
 export type Bestiary = {
 	kills: Record<string, number>;
+};
+
+export type Collection = {
+	[key: string]: number;
 };

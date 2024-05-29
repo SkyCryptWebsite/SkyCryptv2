@@ -1,4 +1,5 @@
 import { MONGO_DATABASE, MONGO_HOST, MONGO_PORT } from '$env/static/private';
+import { updateCollections } from './mongo/update-collections';
 import { updateItems } from './mongo/update-items';
 import { MongoClient } from 'mongodb';
 
@@ -8,6 +9,7 @@ export function startMongo() {
 	console.log('Starting mongo...');
 
 	updateItems();
+	updateCollections();
 
 	return client.connect();
 }

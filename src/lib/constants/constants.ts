@@ -18,3 +18,4 @@ export * from '$constants/slayer';
 export * from '$constants/dungeons';
 export * from '$constants/minions';
 export * from '$constants/bestiary';
+export * from '$constants/collections';

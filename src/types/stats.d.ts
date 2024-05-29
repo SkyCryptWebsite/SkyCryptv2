@@ -1,5 +1,6 @@
 import type { AccessoriesOutput, Items, MainStats, MiningStats, Rank, Skills } from './global';
 import type { BestiaryStats } from './processed/profile/bestiary';
+import type { Collections } from './processed/profile/collections';
 import type { Minions } from './processed/profile/minions';
 export * from './processed/profile/main_stats';
 export * from './processed/profile/skills';
@@ -12,6 +13,7 @@ export * from './processed/profile/farming';
 export * from './processed/profile/fishing';
 export * from './processed/profile/slayer';
 export * from './processed/profile/dungeons';
+export * from './processed/profile/collections';
 
 export type Stats = {
 	username: string;
@@ -35,4 +37,5 @@ export type Stats = {
 	dungeons: DungeonsStats;
 	minions: Minions;
 	bestiary: BestiaryStats;
+	collections: Collections;
 };
