@@ -44,7 +44,7 @@ export type Member = {
 	fairy_soul?: FairySouls;
 	inventory?: Inventory;
 	rift?: Rift;
-	nether_island_player_data?: CrimsonIsle;
+	nether_island_player_data?: NetherIslandPlayerData;
 	kills: Record<string, number>;
 	collection: Collection;
 	pets_data: ProfilePets;
@@ -153,10 +153,15 @@ export type Rift = {
 	};
 };
 
-export type CrimsonIsle = {
+export type NetherIslandPlayerData = {
 	abiphone?: {
 		active_contacts: string[];
 	};
+	kuudra_completed_tiers: Record<string, number>;
+	dojo: Record<string, number>;
+	selected_faction: string;
+	mages_reputation: number;
+	barbarians_reputation: number;
 };
 
 export type ProfilePets = {

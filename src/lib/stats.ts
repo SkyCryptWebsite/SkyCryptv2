@@ -37,6 +37,7 @@ export async function getStats(profile: Profile, player: Player): Promise<Stats>
 		dungeons: stats.getDungeons(userProfile),
 		minions: stats.getMinions(profile),
 		bestiary: stats.getBestiary(userProfile),
-		collections: stats.getCollections(userProfile, profile)
+		collections: stats.getCollections(userProfile, profile),
+		crimson_isle: stats.getCrimsonIsle(userProfile)
 	};
 }
