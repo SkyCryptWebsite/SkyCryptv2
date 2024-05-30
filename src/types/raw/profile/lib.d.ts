@@ -151,6 +151,21 @@ export type Rift = {
 		found_cats?: string[];
 		montezuma?: Pet;
 	};
+	enigma: {
+		found_souls: string[];
+	};
+	castle: {
+		grubber_stacks: number;
+	};
+	gallery: {
+		secured_trophies: {
+			type: string;
+			timestamp: number;
+		}[];
+	};
+	wither_cage: {
+		killed_eyes: string[];
+	};
 };
 
 export type NetherIslandPlayerData = {
@@ -221,6 +236,7 @@ export type PlayerStats = {
 		fished: number;
 		bait: number;
 	};
+	rift: PlayerStatsRift;
 };
 
 export type TrophyFish = {
@@ -300,4 +316,9 @@ export type Bestiary = {
 
 export type Collection = {
 	[key: string]: number;
+};
+
+export type PlayerStatsRift = {
+	lifetime_motes_earned: number;
+	motes_orb_pickup: number;
 };

@@ -20,3 +20,4 @@ export * from '$constants/minions';
 export * from '$constants/bestiary';
 export * from '$constants/collections';
 export * from '$constants/crimson_isle';
+export * from '$constants/rift';

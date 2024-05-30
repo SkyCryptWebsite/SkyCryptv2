@@ -16,6 +16,7 @@ export * from './processed/profile/slayer';
 export * from './processed/profile/dungeons';
 export * from './processed/profile/collections';
 export * from './processed/profile/crimson_isle';
+export * from './processed/profile/rift';
 
 export type Stats = {
 	username: string;
@@ -41,4 +42,5 @@ export type Stats = {
 	bestiary: BestiaryStats;
 	collections: Collections;
 	crimson_isle: CrimsonIsle;
+	rift: Rift;
 };
