@@ -2,10 +2,29 @@ import type { Stats, Profile } from '$types/global';
 import * as stats from '$lib/stats/stats';
 import type { Player } from '$types/raw/player/lib';
 
+const getAccessories = stats.getAccessories;
+const getPets = stats.getPets;
+const getMainStats = stats.getMainStats;
+
 export async function getStats(profile: Profile, player: Player): Promise<Stats> {
 	const userProfile = profile.members[profile.uuid];
 
 	const items = await stats.getItems(userProfile);
+	const [mainStats, accessories, pets] = await Promise.all([
+		getMainStats(userProfile, profile, items),
+		getAccessories(
+			userProfile,
+			items.armor.armor,
+			items.talisman_bag,
+			items.inventory,
+			items.enderchest,
+			Object.values(items.backpack)
+				.map((i) => i.containsItems ?? [])
+				.flat()
+		),
+		getPets(userProfile, items.pets, profile)
+	]);
+
 	return {
 		username: player.displayname,
 		uuid: profile.uuid,
@@ -17,19 +36,10 @@ export async function getStats(profile: Profile, player: Player): Promise<Stats>
 		rank: stats.getRank(player),
 		skills: stats.getSkills(userProfile, profile, player),
 		skyblock_level: stats.getSkyblockLevel(userProfile),
-		stats: await stats.getMainStats(userProfile, profile, items),
+		stats: mainStats,
 		items: items,
-		accessories: await stats.getAccessories(
-			userProfile,
-			items.armor.armor,
-			items.talisman_bag,
-			items.inventory,
-			items.enderchest,
-			Object.values(items.backpack)
-				.map((i) => i.containsItems ?? [])
-				.flat()
-		),
-		pets: await stats.getPets(userProfile, items.pets, profile),
+		accessories: accessories,
+		pets: pets,
 		mining: stats.getMining(userProfile, player),
 		farming: stats.getFarming(userProfile),
 		fishing: stats.getFishing(userProfile),
