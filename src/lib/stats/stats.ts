@@ -15,3 +15,4 @@ export * from '$lib/stats/bestiary';
 export * from '$lib/stats/collections';
 export * from '$lib/stats/crimson_isle';
 export * from '$lib/stats/rift';
+export * from '$lib/stats/misc';

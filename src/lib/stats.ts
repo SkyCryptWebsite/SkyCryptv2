@@ -39,6 +39,7 @@ export async function getStats(profile: Profile, player: Player): Promise<Stats>
 		bestiary: stats.getBestiary(userProfile),
 		collections: stats.getCollections(userProfile, profile),
 		crimson_isle: stats.getCrimsonIsle(userProfile),
-		rift: stats.getRift(userProfile)
+		rift: stats.getRift(userProfile),
+		misc: stats.getMisc(userProfile, profile, player)
 	};
 }

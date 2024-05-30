@@ -45,7 +45,6 @@ export type Member = {
 	inventory?: Inventory;
 	rift?: Rift;
 	nether_island_player_data?: NetherIslandPlayerData;
-	kills: Record<string, number>;
 	collection: Collection;
 	pets_data: ProfilePets;
 	mining_core: Mining;
@@ -56,6 +55,7 @@ export type Member = {
 	slayer: Slayer;
 	dungeons: Dungeons;
 	bestiary: Bestiary;
+	item_data: MemberItemData;
 };
 
 export type Medal = 'gold' | 'silver' | 'bronze';
@@ -88,6 +88,7 @@ export type Leveling = {
 export type MemberProfile = {
 	first_join?: number;
 	cookie_buff_active?: boolean;
+	personal_bank_upgrade?: number;
 };
 
 export type Banking = {
@@ -126,6 +127,10 @@ export type DecodedInventory = {
 export type PlayerData = {
 	experience?: Experience;
 	crafted_generators?: string[];
+	active_effects: string[];
+	paused_effects: string[];
+	disabled_potion_effects: string[];
+	reaper_peppers_eaten: number;
 };
 
 export type Experience = {
@@ -225,6 +230,7 @@ export type Crystal = {
 
 export type PlayerStats = {
 	kills: Record<string, number>;
+	deaths: Record<string, number>;
 	items_fished?: {
 		total: number;
 		normal: number;
@@ -237,6 +243,63 @@ export type PlayerStats = {
 		bait: number;
 	};
 	rift: PlayerStatsRift;
+	races: PlayerStarsRaces;
+	gifts: {
+		total_given: number;
+		total_received: number;
+	};
+	winter: {
+		most_snowballs_hit: number;
+		most_damage_dealt: number;
+		most_magma_damage_dealt: number;
+		most_cannonballs_hit: number;
+	};
+	end_island: {
+		dragon_fight: {
+			ender_crystals_destroyed: number;
+			most_damage: number;
+			fastest_kill: number;
+		};
+	};
+	highest_critical_damage: number;
+	pets: {
+		milestone: {
+			sea_creatures_killed: number;
+			ores_mined: number;
+		};
+	};
+	mythos: {
+		kills: number;
+		burrows_dug_next: {
+			total: number;
+			[burrow: string]: number;
+		};
+		burrows_dug_combat: {
+			total: number;
+			[burrow: string]: number;
+		};
+		burrows_dug_treasure: {
+			total: number;
+			[burrow: string]: number;
+		};
+		burrows_chains_complete: {
+			total: number;
+			[burrow: string]: number;
+		};
+	};
+	auctions: {
+		bids: number;
+		highest_bid: number;
+		won: number;
+		total_bought: Record<string, number>;
+		gold_spent: number;
+		created: number;
+		fees: number;
+		completed: number;
+		total_sold: Record<string, number>;
+		gold_earned: number;
+		no_bids: number;
+	};
 };
 
 export type TrophyFish = {
@@ -321,4 +384,24 @@ export type Collection = {
 export type PlayerStatsRift = {
 	lifetime_motes_earned: number;
 	motes_orb_pickup: number;
+};
+
+export type Currencies = {
+	coin_purse: number;
+	motes_purse: number;
+	essence: Record<string, { current: number }>;
+};
+
+export type PlayerStarsRaces = {
+	foraging_race_best_time: number;
+	end_race_best_time: number;
+	chicken_race_best_time_2: number;
+	dungeon_hub: {
+		[key: string]: number;
+	};
+};
+
+export type MemberItemData = {
+	soulflow: number;
+	teleporter_pill_consumed: boolean;
 };

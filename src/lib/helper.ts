@@ -116,6 +116,10 @@ export function getRawLore(text: string) {
  * @returns {string}
  */
 export function titleCase(s: string) {
+	if (s.length === 0) {
+		return '';
+	}
+
 	return s[0].toUpperCase() + s.slice(1);
 }
 

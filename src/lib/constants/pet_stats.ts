@@ -330,7 +330,9 @@ class Eerie extends Pet {
 	get third() {
 		const mult = getValue(this.rarity, { legendary: 0.01 });
 
-		const primalFearKills = this.userProfile.kills ? this.userProfile.kills['primal_fear'] ?? 0 : 0;
+		const primalFearKills = this.userProfile.player_stats.kills
+			? this.userProfile.player_stats.kills['primal_fear'] ?? 0
+			: 0;
 		const kills = Math.max(primalFearKills, 150);
 
 		const killsFormatted = kills >= 150 ? `§a${kills}` : `§c${kills}`;
