@@ -1,3 +1,5 @@
+import type { NetworthResult } from 'skyhelper-networth';
+
 export type MainStats = {
 	joined: number;
 	cookie_buff_active: boolean;
@@ -7,4 +9,5 @@ export type MainStats = {
 		found: number;
 		total: number;
 	};
+	networth: NetworthResult;
 };

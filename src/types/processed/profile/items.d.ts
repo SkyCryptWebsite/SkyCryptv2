@@ -148,6 +148,7 @@ export type Items = {
 		set_rarity?: string;
 	};
 	talisman_bag: ProcessedItem[];
+	personal_vault: ProcessedItem[];
 	inventory: ProcessedItem[];
 	enderchest: ProcessedItem[];
 	backpack: Record<string, ProcessedItem>;
@@ -161,6 +162,9 @@ export type Items = {
 	mining_tools: ProcessedItem[];
 	fishing_tools: ProcessedItem[];
 	pets: ProcessedItem[];
+	fishing_bag: ProcessedItem[];
+	potion_bag: ProcessedItem[];
+	// candy_inventory: ProcessedItem[];
 };
 
 export type SpecialAccessory = {

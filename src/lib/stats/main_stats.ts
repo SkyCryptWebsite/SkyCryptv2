@@ -1,7 +1,41 @@
 import { FAIRY_SOULS } from '../constants/constants';
-import type { Profile, Member } from '$types/global';
+import type { Profile, Member, Items } from '$types/global';
+import { getPreDecodedNetworth } from 'skyhelper-networth';
 
-export function getMainStats(userProfile: Member, profile: Profile) {
+export async function getMainStats(userProfile: Member, profile: Profile, items: Items) {
+	const bank = profile.banking?.balance ?? 0;
+	const networthOptions = {
+		onlyNetworth: true,
+		returnItemData: false,
+		cache: true,
+		v2Endpoint: true
+	};
+
+	const networthItems = {
+		armor: items.armor?.armor ?? [],
+		equipment: items.equipment?.equipment ?? [],
+		wardrobe: items.wardrobe.flat() ?? [],
+		inventory: items.inventory ?? [],
+		enderchest: items.enderchest ?? [],
+		accessories: items.talisman_bag ?? [],
+		personal_vault: items.personal_vault ?? [],
+		storage: items.backpack
+			? Object.values(items.backpack)
+					.flat()
+					.concat(
+						Object.values(items.backpack)
+							.flat()
+							.map((item) => item.containsItems ?? [])
+							.flat()
+					)
+					.flat()
+			: [],
+		fishing_bag: items.fishing_bag ?? [],
+		potion_bag: items.potion_bag ?? []
+	};
+
+	const predecodedNetworth = await getPreDecodedNetworth(userProfile, networthItems, bank, networthOptions);
+
 	return {
 		joined: userProfile.profile?.first_join ?? 0,
 		cookie_buff_active: userProfile.profile?.cookie_buff_active ?? false,
@@ -10,6 +44,7 @@ export function getMainStats(userProfile: Member, profile: Profile) {
 		fairy_souls: {
 			found: userProfile.fairy_soul?.total_collected ?? 0,
 			total: FAIRY_SOULS[profile.game_mode ?? 'normal'] ?? 0
-		}
+		},
+		networth: predecodedNetworth
 	};
 }

@@ -2,12 +2,17 @@ import type { RequestHandler } from './$types';
 import { json } from '@sveltejs/kit';
 import { fetchPlayer, getProfile } from '$lib/lib';
 import { getStats } from '$lib/stats';
+import { getPrices } from 'skyhelper-networth';
 
 export const GET: RequestHandler = async ({ params }) => {
 	const timeNow = Date.now();
 	const { paramPlayer, paramProfile } = params;
 
-	const [profile, player] = await Promise.all([getProfile(paramPlayer, paramProfile), fetchPlayer(paramPlayer)]);
+	const [profile, player] = await Promise.all([
+		getProfile(paramPlayer, paramProfile),
+		fetchPlayer(paramPlayer),
+		getPrices(true)
+	]);
 
 	const stats = await getStats(profile, player);
 
