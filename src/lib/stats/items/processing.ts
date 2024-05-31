@@ -457,8 +457,7 @@ export async function processItems(
 				item.animated = customTexture.animated;
 				item.texture_path = customTexture.path;
 				item.texture_pack = customTexture.pack.config;
-				item.texture_pack.base_path =
-					'/' + path.relative(path.resolve(__dirname, '..', 'public'), customTexture.pack.base_path);
+				item.texture_pack.base_path = customTexture.pack.base_path;
 			}
 		}
 
