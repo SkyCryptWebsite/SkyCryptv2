@@ -64,6 +64,8 @@ function resize(src: Canvas | Image, scale: number) {
 	// Get 2D context of the new canvas
 	const ctx = dst.getContext('2d');
 
+	ctx.imageSmoothingEnabled = false;
+
 	// Set the pattern quality to "fast" to avoid blurring on resize
 	ctx.patternQuality = 'fast';
 
