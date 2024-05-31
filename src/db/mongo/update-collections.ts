@@ -37,7 +37,7 @@ export async function updateCollections() {
 					return {
 						id,
 						name: collection.items[id].name,
-						texture: `/item/${id}`,
+						texture: `/api/item/${id}`,
 						maxTier: collection.items[id].maxTiers,
 						tiers: collection.items[id].tiers
 					};

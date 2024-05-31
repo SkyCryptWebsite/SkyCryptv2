@@ -414,7 +414,7 @@ export async function processItems(
 
 			const type = ['helmet', 'chestplate', 'leggings', 'boots'][item.id - 298];
 
-			item.texture_path = `/leather/${type}/${color}`;
+			item.texture_path = `/api/leather/${type}/${color}`;
 		}
 
 		// Set custom texture for colored potions
@@ -423,7 +423,7 @@ export async function processItems(
 
 			const type = item.Damage & 16384 ? 'splash' : 'normal';
 
-			item.texture_path = `/potion/${type}/${color}`;
+			item.texture_path = `/api/potion/${type}/${color}`;
 		}
 
 		// Set raw display name without color and formatting codes
@@ -441,7 +441,7 @@ export async function processItems(
 				const url = json.textures.SKIN.url;
 				const uuid = url.split('/').pop();
 
-				item.texture_path = `/head/${uuid}?v6`;
+				item.texture_path = `/api/head/${uuid}?v6`;
 			} catch (e) {
 				console.error(e);
 			}
@@ -455,7 +455,7 @@ export async function processItems(
 
 			if (customTexture && customTexture.pack) {
 				item.animated = customTexture.animated;
-				item.texture_path = '/' + customTexture.path;
+				item.texture_path = customTexture.path;
 				item.texture_pack = customTexture.pack.config;
 				item.texture_pack.base_path =
 					'/' + path.relative(path.resolve(__dirname, '..', 'public'), customTexture.pack.base_path);

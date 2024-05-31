@@ -485,14 +485,13 @@ export async function renderItem(skyblockId: string | undefined, query: SkyBlock
 
 	if (customTexture) {
 		if (customTexture.animated) {
-			customTexture.path = customTexture.path.replace('.png', '.gif');
 			outputTexture.mime = 'image/gif';
 		}
 
 		outputTexture.path = customTexture.path;
 		outputTexture.debug = customTexture.debug;
 
-		outputTexture.image = fs.readFileSync(customTexture.path);
+		outputTexture.image = await fs.readFile(`static/${customTexture.path}`);
 	}
 
 	if (!('image' in outputTexture)) {

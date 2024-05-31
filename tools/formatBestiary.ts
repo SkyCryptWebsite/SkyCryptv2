@@ -22,7 +22,7 @@ function formatMobs(mobs: Data['mobs']) {
 		output.push({
 			name: mob.name.replace(/§[0-9a-fk-or]/g, ''),
 			cap: mob.cap,
-			texture: mob.texture ? getTexture(mob.texture) : `/item/${mob.item?.toUpperCase()}`,
+			texture: mob.texture ? getTexture(mob.texture) : `/api/item/${mob.item?.toUpperCase()}`,
 			mobs: mob.mobs,
 			bracket: mob.bracket
 		});
@@ -34,7 +34,7 @@ function formatMobs(mobs: Data['mobs']) {
 function formatCategory(data: Data, mobs: Data['mobs']) {
 	return {
 		name: data.name,
-		texture: data.icon.item ? `/item/${data.icon.item}` : getTexture(data.icon.texture),
+		texture: data.icon.item ? `/api/item/${data.icon.item}` : getTexture(data.icon.texture),
 		mobs: formatMobs(mobs)
 	};
 }

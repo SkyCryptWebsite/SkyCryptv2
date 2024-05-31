@@ -51,7 +51,7 @@ export function getCollections(userProfile: Member, profile: Profile) {
 
 		output.categories[category] = {
 			name: categoryData.name,
-			texture: '/item/' + constants.COLLECTION_ICONS[category],
+			texture: '/api/item/' + constants.COLLECTION_ICONS[category],
 			items: [],
 			total_tiers: 0,
 			max_tiers: 0

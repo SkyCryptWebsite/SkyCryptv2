@@ -207,7 +207,8 @@ export function getAllAccessories() {
 		accessory.push({
 			...item,
 			id: item.id,
-			texture_path: item.texture !== undefined ? `/head/${item.texture}` : `/item/${item.material}:${item.damage}`,
+			texture_path:
+				item.texture !== undefined ? `/api/head/${item.texture}` : `/api/item/${item.material}:${item.damage}`,
 			item_id: item.item_id,
 			damage: item.damage
 		});
@@ -219,7 +220,8 @@ export function getAllAccessories() {
 					...item,
 					...specialAccessory,
 					rarity: rarity,
-					texture_path: item.texture !== undefined ? `/head/${item.texture}` : `/item/${item.material}:${item.damage}`
+					texture_path:
+						item.texture !== undefined ? `/api/head/${item.texture}` : `/api/item/${item.material}:${item.damage}`
 				});
 			}
 		}

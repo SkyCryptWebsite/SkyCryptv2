@@ -1763,7 +1763,7 @@ class HotmStats extends HotmItem {
 			id: 397,
 			Damage: 3,
 			glowing: false,
-			texture_path: '/head/86f06eaa3004aeed09b3d5b45d976de584e691c0e9cade133635de93d23b9edb'
+			texture_path: '/api/head/86f06eaa3004aeed09b3d5b45d976de584e691c0e9cade133635de93d23b9edb'
 		};
 		this.resources = {
 			token_of_the_mountain: data.resources.token_of_the_mountain || 0,
@@ -1799,7 +1799,7 @@ class CrystalHollowsCrystals extends HotmItem {
 			id: 397,
 			Damage: 3,
 			glowing: false,
-			texture_path: '/head/ef7835fc9e6daf632160e9b7ff378788a408064cc75ebf9f5158e615bdd59603',
+			texture_path: '/api/head/ef7835fc9e6daf632160e9b7ff378788a408064cc75ebf9f5158e615bdd59603',
 			skyblock_id: 'hotm_crystal'
 		};
 		this.crystals = data.crystals;
@@ -1872,7 +1872,7 @@ class HotmReset extends HotmItem {
 			id: 397,
 			Damage: 3,
 			glowing: false,
-			texture_path: '/head/6448e275313532f54c4ba21894809a23dce52af01ddd1e89fc7689481fab737e',
+			texture_path: '/api/head/6448e275313532f54c4ba21894809a23dce52af01ddd1e89fc7689481fab737e',
 			skyblock_id: 'hotm_reset'
 		};
 		this.last_reset = data.last_reset;

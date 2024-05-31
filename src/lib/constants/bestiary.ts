@@ -389,7 +389,7 @@ export const BESTIARY = {
 			{
 				name: 'Dragon',
 				cap: 1000,
-				texture: '/item/DRAGON_EGG',
+				texture: '/api/itemDRAGON_EGG',
 				mobs: [
 					'protector_dragon_100',
 					'old_dragon_100',
@@ -425,7 +425,7 @@ export const BESTIARY = {
 			{
 				name: 'Obsidian Defender',
 				cap: 10000,
-				texture: '/item/OBSIDIAN',
+				texture: '/api/itemOBSIDIAN',
 				mobs: ['obsidian_wither_55'],
 				bracket: 5
 			},
@@ -453,7 +453,7 @@ export const BESTIARY = {
 			{
 				name: 'Zealot',
 				cap: 25000,
-				texture: '/item/ENDER_CHEST',
+				texture: '/api/itemENDER_CHEST',
 				mobs: ['zealot_bruiser_100', 'zealot_enderman_55'],
 				bracket: 4
 			}
@@ -714,7 +714,7 @@ export const BESTIARY = {
 			{
 				name: 'Glacite Walker',
 				cap: 10000,
-				texture: '/item/PACKED_ICE',
+				texture: '/api/itemPACKED_ICE',
 				mobs: ['ice_walker_45'],
 				bracket: 2
 			},
@@ -838,7 +838,7 @@ export const BESTIARY = {
 			{
 				name: 'Key Guardian',
 				cap: 250,
-				texture: '/item/TRIPWIRE_HOOK',
+				texture: '/api/itemTRIPWIRE_HOOK',
 				mobs: ['key_guardian_100'],
 				bracket: 6
 			}
@@ -873,7 +873,7 @@ export const BESTIARY = {
 	},
 	spooky_festival: {
 		name: 'Spooky Festival',
-		texture: '/item/pumpkin',
+		texture: '/api/itempumpkin',
 		mobs: [
 			{
 				name: 'Grim Reaper',
@@ -899,7 +899,7 @@ export const BESTIARY = {
 			{
 				name: 'Scarecrow',
 				cap: 4000,
-				texture: '/item/PUMPKIN',
+				texture: '/api/itemPUMPKIN',
 				mobs: ['scarecrow_9'],
 				bracket: 3
 			},
@@ -1423,7 +1423,7 @@ export const BESTIARY = {
 			{
 				name: 'Frosty',
 				cap: 4000,
-				texture: '/item/PUMPKIN',
+				texture: '/api/itemPUMPKIN',
 				mobs: ['frosty_the_snowman_13'],
 				bracket: 3
 			},
@@ -1451,7 +1451,7 @@ export const BESTIARY = {
 			{
 				name: 'Reindrake',
 				cap: 100,
-				texture: '/item/DRAGON_EGG',
+				texture: '/api/itemDRAGON_EGG',
 				mobs: ['reindrake_100'],
 				bracket: 7
 			},

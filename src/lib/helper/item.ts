@@ -74,7 +74,7 @@ export async function getItemData(query: ItemQuery) {
 		if (dbItem.color !== undefined) {
 			const color = helper.rgbToHex(dbItem.color) ?? '955e3b';
 
-			item.texture_path = `/leather/${type}/${color}`;
+			item.texture_path = `/api/leather/${type}/${color}`;
 		}
 	}
 

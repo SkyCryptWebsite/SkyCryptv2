@@ -29,37 +29,37 @@ export const RIFT_TIMECHARMS = [
 	{
 		name: 'Supreme Timecharm',
 		id: 'wyldly_supreme',
-		texture: '/item/SPRUCE_LEAVES'
+		texture: '/api/itemSPRUCE_LEAVES'
 	},
 	{
 		name: 'mrahcemiT esrevrorriM',
 		id: 'mirrored',
-		texture: '/item/GLASS'
+		texture: '/api/itemGLASS'
 	},
 	{
 		name: 'Chicken N Egg Timecharm',
 		id: 'chicken_n_egg',
-		texture: '/item/SOUL_SAND'
+		texture: '/api/itemSOUL_SAND'
 	},
 	{
 		name: 'SkyBlock Citizen Timecharm',
 		id: 'citizen',
-		texture: '/item/JUKEBOX'
+		texture: '/api/itemJUKEBOX'
 	},
 	{
 		name: 'Living Timecharm',
 		id: 'lazy_living',
-		texture: '/item/LAPIS_ORE'
+		texture: '/api/itemLAPIS_ORE'
 	},
 	{
 		name: 'Globulate Timecharm',
 		id: 'slime',
-		texture: '/item/SLIME_BLOCK'
+		texture: '/api/itemSLIME_BLOCK'
 	},
 	{
 		name: 'Vampiric Timecharm',
 		id: 'vampiric',
-		texture: '/item/REDSTONE_BLOCK'
+		texture: '/api/itemREDSTONE_BLOCK'
 	}
 ] as { name: string; id: string; texture: string }[];
 

@@ -771,13 +771,12 @@ export function getTexture(item: ProcessedItem, { pack_ids = [], hotm = false }:
 	}
 
 	if (os.platform() === 'win32') {
-		outputTexture.path = path
-			.relative(path.resolve(FOLDER_PATH, '..', '..', 'static'), outputTexture.path as string)
-			.replace(/\\/g, '/');
+		// TODO: get windows femboys to test this
+		// outputTexture.path = path
+		//	.relative(path.resolve(FOLDER_PATH, '..', '..', 'static'), outputTexture.path as string)
+		// 	.replace(/\\/g, '/');
 	} else {
-		// console.log('befrore', outputTexture.path);
-		// outputTexture.path = path.posix.relative(path.resolve(FOLDER_PATH, 'static'), outputTexture.path as string);
-		// console.log('after', outputTexture.path);
+		outputTexture.path = '/' + path.relative(path.resolve(FOLDER_PATH, 'static'), outputTexture.path as string);
 	}
 
 	// debugStats.time_spent_ms = Date.now() - timeStarted;
