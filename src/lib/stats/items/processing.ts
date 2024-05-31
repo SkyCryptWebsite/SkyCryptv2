@@ -5,15 +5,12 @@ import * as constants from '../../constants/constants';
 import minecraftData from 'minecraft-data';
 import * as helper from '$lib/helper';
 const mcData = minecraftData('1.8.9');
-import { fileURLToPath } from 'url';
-import path from 'path';
 
 import nbt, { parse } from 'prismarine-nbt';
 import { v4 } from 'uuid';
 import type { GemTier, Gemstone, Item, ProcessedItem } from '$types/stats';
 import type { StatsData } from '$types/processed/profile/stats';
 import { getUsername } from '$lib/lib';
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export function itemSorter(a: ProcessedItem, b: ProcessedItem) {
 	if (a.rarity !== b.rarity) {
