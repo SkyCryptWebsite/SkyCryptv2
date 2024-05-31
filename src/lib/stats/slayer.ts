@@ -3,6 +3,10 @@ import * as constants from '$constants/constants';
 import type { Slayer } from '$types/processed/profile/slayer';
 
 function getKills(slayer: SlayerBoss) {
+	if (slayer === undefined) {
+		return {};
+	}
+
 	const killKeys = Object.keys(slayer).filter((key) => key.startsWith('boss_kills_tier_'));
 
 	const output = {} as Record<string, number>;
@@ -18,7 +22,7 @@ function getKills(slayer: SlayerBoss) {
 }
 
 function getLevel(slayer: string, data: SlayerBoss) {
-	if (constants.SLAYER_XP[slayer] === undefined) {
+	if (constants.SLAYER_XP[slayer] === undefined || data?.xp === undefined) {
 		return {
 			xp: 0,
 			level: 0,
@@ -81,7 +85,7 @@ export function getSlayer(userProfile: Member) {
 		}
 	}
 
-	output.total_slayer_xp = Object.values(slayerData).reduce((acc, boss) => acc + boss.xp, 0);
+	output.total_slayer_xp = Object.values(slayerData).reduce((acc, boss) => acc + (boss?.xp ?? 0), 0);
 	output.stats = Object.fromEntries(Object.entries(stats).sort(([, a], [, b]) => b - a));
 
 	return output;

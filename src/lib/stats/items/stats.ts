@@ -7,7 +7,7 @@ export function getStatsFromItem(item: ProcessedItem) {
 	const regex = /^([A-Za-z ]+): ([+-]([0-9]+(?:,[0-9]{3})*(?:\.[0-9]{0,2})?))/;
 	const stats = {} as ItemStats;
 
-	if (item.tag.display?.Lore === undefined) {
+	if (item.tag?.display?.Lore === undefined) {
 		return stats;
 	}
 

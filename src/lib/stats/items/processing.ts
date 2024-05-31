@@ -222,6 +222,10 @@ export async function processItems(
 	customTextures = false,
 	packs: string[]
 ): Promise<ProcessedItem[]> {
+	if (!base64) {
+		return [];
+	}
+
 	// API stores data as base64 encoded gzipped Minecraft NBT data
 	const buf = Buffer.from(base64, 'base64');
 

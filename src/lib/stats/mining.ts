@@ -41,11 +41,11 @@ function getCommissionMilestone(userProfile: Member) {
 function getCrystalNucleusRunData(userProfile: Member) {
 	const output = { crystals: {}, parts: {} } as { crystals: Record<string, string>; parts: Record<string, string> };
 	for (const crystal of constants.GEMSTONE_CRYSTALS) {
-		output.crystals[crystal] = userProfile.mining_core.crystals?.[`${crystal}_crystal`]?.state ?? 'NOT_FOUND';
+		output.crystals[crystal] = userProfile.mining_core?.crystals?.[`${crystal}_crystal`]?.state ?? 'NOT_FOUND';
 	}
 
 	for (const part in constants.PRECURSOR_PARTS) {
-		output.parts[part] = userProfile.mining_core.biomes.precursor.parts_delivered?.includes(part)
+		output.parts[part] = userProfile.mining_core?.biomes?.precursor?.parts_delivered?.includes(part)
 			? 'DELIVERED'
 			: 'NOT_DELIVERED';
 	}
@@ -54,29 +54,29 @@ function getCrystalNucleusRunData(userProfile: Member) {
 }
 
 export function getMining(userProfile: Member, player: Player) {
-	const HOTM = getLevelByXp(userProfile.mining_core.experience, { type: 'hotm' });
-	const totalTokens = calcHotmTokens(HOTM.level, userProfile.mining_core.nodes?.special_0 ?? 0);
+	const HOTM = getLevelByXp(userProfile.mining_core?.experience, { type: 'hotm' });
+	const totalTokens = calcHotmTokens(HOTM.level, userProfile.mining_core?.nodes?.special_0 ?? 0);
 	const crystalNucleusRuns = Math.min(
-		...Object.values(userProfile.mining_core.crystals ?? {})
+		...Object.values(userProfile.mining_core?.crystals ?? {})
 			.filter((x) => x.total_placed)
 			.map((x) => x.total_placed ?? 0)
 	);
 
 	return {
 		level: HOTM,
-		perks: userProfile.mining_core.nodes,
-		selected_pickaxe_ability: constants.HOTM.names[userProfile.mining_core.selected_pickaxe_ability] ?? 'None',
+		perks: userProfile.mining_core?.nodes ?? {},
+		selected_pickaxe_ability: constants.HOTM.names[userProfile.mining_core?.selected_pickaxe_ability] ?? 'None',
 		tokens: {
 			total: totalTokens,
-			spent: userProfile.mining_core.tokens_spent ?? 0,
-			available: totalTokens - (userProfile.mining_core.tokens_spent ?? 0)
+			spent: userProfile.mining_core?.tokens_spent ?? 0,
+			available: totalTokens - (userProfile.mining_core?.tokens_spent ?? 0)
 		},
 		commissions: {
 			milestone: getCommissionMilestone(userProfile),
 			completions: player.achievements.skyblock_hard_working_miner || 0
 		},
 		crystal_hollows: {
-			crystal_hollows_last_access: userProfile.mining_core.greater_mines_last_access,
+			crystal_hollows_last_access: userProfile.mining_core?.greater_mines_last_access,
 			nucleus_runs: crystalNucleusRuns,
 			progress: getCrystalNucleusRunData(userProfile)
 		},

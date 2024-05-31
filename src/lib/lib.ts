@@ -119,8 +119,9 @@ export async function getProfile(uuid: string, profileId: string) {
 	const profiles = await fetchProfiles(uuid);
 
 	const profile =
-		profiles.find((p) => p.selected) ??
-		profiles.find((p) => p.cute_name.toUpperCase() === profileId.toUpperCase() || p.profile_id === profileId);
+		(profileId &&
+			profiles.find((p) => p.cute_name.toUpperCase() === profileId.toUpperCase() || p.profile_id === profileId)) ??
+		profiles.find((p) => p.selected);
 
 	if (!profile) {
 		throw new SkyCryptError('Profile not found');

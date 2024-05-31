@@ -4,6 +4,13 @@ import * as helper from '$lib/helper';
 import { getStatsFromItems } from './stats';
 
 export function getArmor(armor: ProcessedItem[]) {
+	if (armor.some((a) => helper.getId(a) === '') === true) {
+		return {
+			armor: armor.filter((a) => helper.getId(a) !== ''),
+			stats: {}
+		};
+	}
+
 	if (armor.length === 1) {
 		const armorPiece = armor.find((x) => x.rarity);
 		if (armorPiece === undefined) {

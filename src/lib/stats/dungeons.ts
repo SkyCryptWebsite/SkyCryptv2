@@ -4,6 +4,10 @@ import * as constants from '$constants/constants';
 import * as helper from '$lib/helper';
 
 function getDungeonClasses(userProfile: Member) {
+	if (userProfile.dungeons.player_classes === undefined) {
+		return {};
+	}
+
 	return Object.keys(userProfile.dungeons.player_classes).reduce(
 		(acc: Record<string, Skill>, key) => {
 			acc[key] = getLevelByXp(userProfile.dungeons.player_classes[key].experience, { type: 'dungeoneering' });
@@ -52,7 +56,7 @@ export function getScoreGrade(data: BestRun) {
 }
 
 function getBestRun(catacombs: Catacombs, floorId: number) {
-	const bestRunData = catacombs.best_runs[floorId];
+	const bestRunData = catacombs.best_runs?.[floorId];
 	if (!bestRunData) {
 		return null;
 	}
@@ -91,20 +95,20 @@ function formatCatacombsData(catacombs: Catacombs) {
 			name: floor.name,
 			texture: floor.texture,
 
-			times_played: catacombs.times_played[floor.id] ?? 0,
-			tier_completions: catacombs.tier_completions[floor.id] ?? 0,
-			milestone_completions: catacombs.milestone_completions[floor.id] ?? 0,
-			best_score: catacombs.best_score[floor.id] ?? 0,
+			times_played: catacombs.times_played?.[floor.id] ?? 0,
+			tier_completions: catacombs.tier_completions?.[floor.id] ?? 0,
+			milestone_completions: catacombs.milestone_completions?.[floor.id] ?? 0,
+			best_score: catacombs.best_score?.[floor.id] ?? 0,
 
-			mobs_killed: catacombs.mobs_killed[floor.id] ?? 0,
-			watcher_kills: catacombs.watcher_kills[floor.id] ?? 0,
-			most_mobs_killed: catacombs.most_mobs_killed[floor.id] ?? 0,
+			mobs_killed: catacombs.mobs_killed?.[floor.id] ?? 0,
+			watcher_kills: catacombs.watcher_kills?.[floor.id] ?? 0,
+			most_mobs_killed: catacombs.most_mobs_killed?.[floor.id] ?? 0,
 
-			fastest_time: catacombs.fastest_time[floor.id] ?? 0,
-			fastest_time_s: catacombs.fastest_time[floor.id] ?? 0,
-			fastest_time_s_plus: catacombs.fastest_time_s_plus[floor.id] ?? 0,
+			fastest_time: catacombs.fastest_time?.[floor.id] ?? 0,
+			fastest_time_s: catacombs.fastest_time?.[floor.id] ?? 0,
+			fastest_time_s_plus: catacombs.fastest_time_s_plus?.[floor.id] ?? 0,
 
-			most_healing: catacombs.most_healing[floor.id] ?? 0,
+			most_healing: catacombs.most_healing?.[floor.id] ?? 0,
 			most_damage: getMostDamage(catacombs, floor.id),
 			best_run: getBestRun(catacombs, floor.id)
 		});
@@ -114,6 +118,10 @@ function formatCatacombsData(catacombs: Catacombs) {
 }
 
 export function getDungeons(userProfile: Member) {
+	if (userProfile.dungeons.dungeon_types === undefined) {
+		return null;
+	}
+
 	const dungeonClasses = getDungeonClasses(userProfile);
 
 	return {

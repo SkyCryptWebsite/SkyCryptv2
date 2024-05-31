@@ -11,7 +11,7 @@ export function getCollection(userProfile: Member, profile: Profile, collection:
 		collectionData = value.items.find((a) => a.id === collection);
 	}
 
-	if (collectionData === undefined) {
+	if (collectionData === undefined || userProfile.collection === undefined) {
 		return null;
 	}
 
@@ -60,7 +60,7 @@ export function getCollections(userProfile: Member, profile: Profile) {
 		for (const collection of categoryData.items) {
 			const { id, name, maxTier, texture } = collection;
 
-			const amount = userProfile.collection[id] ?? 0;
+			const amount = (userProfile.collection && userProfile.collection[id]) ?? 0;
 
 			const amounts = Object.keys(profile.members).map((uuid) => {
 				return {

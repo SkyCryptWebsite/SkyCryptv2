@@ -46,13 +46,13 @@ function getKuudra(userProfile: Member) {
 			name: data.name,
 			id: id,
 			head: data.head,
-			kills: userProfile.nether_island_player_data?.kuudra_completed_tiers[id] ?? 0
+			kills: userProfile.nether_island_player_data?.kuudra_completed_tiers?.[id] ?? 0
 		});
 	}
 
 	return {
 		total_kils: Object.keys(constants.KUUDRA_TIERS).reduce(
-			(acc, id) => acc + (userProfile.nether_island_player_data?.kuudra_completed_tiers[id] ?? 0),
+			(acc, id) => acc + (userProfile.nether_island_player_data?.kuudra_completed_tiers?.[id] ?? 0),
 			0
 		),
 		tiers: output
