@@ -3,6 +3,7 @@ import MONGO from '$db/mongo';
 
 const headers = { Accept: 'application/json', 'User-Agent': 'SkyCrypt' };
 const updateInterval = 1000 * 60 * 60 * 12; // 12 hours
+const cacheInternal = 10 * 60 * 1000; // 10 minutes
 
 type CollectionResponse = {
 	[string: string]: {
@@ -24,6 +25,13 @@ type CollectionItem = {
 export async function updateCollections() {
 	try {
 		const timeNow = Date.now();
+		const cache = await MONGO.collection('collections').findOne({});
+
+		if (cache && cache.lastUpdated > Date.now() - cacheInternal) {
+			console.log(`[COLLECTIONS] Updated collections in ${(Date.now() - timeNow).toLocaleString()}ms (cached)`);
+			return;
+		}
+
 		const response = await fetch('https://api.hypixel.net/v2/resources/skyblock/collections', {
 			headers: headers
 		});
@@ -45,9 +53,9 @@ export async function updateCollections() {
 			};
 		}
 
-		// await MONGO.collection('collections').deleteMany({});
+		const output = { lastUpdated: Date.now(), collections };
 
-		await MONGO.collection('collections').updateOne({}, { $set: collections }, { upsert: true });
+		await MONGO.collection('collections').updateOne({}, { $set: output }, { upsert: true });
 
 		console.log(`[COLLECTIONS] Updated collections in ${(Date.now() - timeNow).toLocaleString()}ms`);
 	} catch (e) {

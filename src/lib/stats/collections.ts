@@ -45,10 +45,6 @@ export function getCollection(userProfile: Member, profile: Profile, collection:
 export function getCollections(userProfile: Member, profile: Profile) {
 	const output = { categories: {} } as Collections;
 	for (const [category, categoryData] of constants.COLLECTIONS) {
-		if (category === '_id') {
-			continue;
-		}
-
 		output.categories[category] = {
 			name: categoryData.name,
 			texture: '/api/item/' + constants.COLLECTION_ICONS[category],

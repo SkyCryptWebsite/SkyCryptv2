@@ -1,12 +1,18 @@
 import MONGO from '$db/mongo';
-import _ from 'lodash';
 
 const headers = { Accept: 'application/json', 'User-Agent': 'SkyCrypt' };
 const updateInterval = 1000 * 60 * 60 * 12; // 12 hours
+const cacheInternal = 10 * 60 * 1000; // 10 minutes
 
 export async function updateItems() {
 	try {
 		const timeNow = Date.now();
+		const cache = await MONGO.collection('items').findOne({});
+		if (cache && cache.lastUpdated > Date.now() - cacheInternal) {
+			console.log(`[ITEMS] Updated items in ${(Date.now() - timeNow).toLocaleString()}ms (cached)`);
+			return;
+		}
+
 		const response = await fetch('https://api.slothpixel.me/api/skyblock/items', {
 			headers: headers
 		});
@@ -25,20 +31,9 @@ export async function updateItems() {
 			return Object.assign(item, skyblockItem);
 		});
 
-		const chunks = _.chunk(items, 250);
-		const promises = chunks.map((chunk) => {
-			const bulkOps = chunk.map((item) => ({
-				updateOne: {
-					filter: { skyblock_id: item.skyblock_id },
-					update: { $set: item },
-					upsert: true
-				}
-			}));
+		const output = { lastUpdated: Date.now(), items };
 
-			return MONGO.collection('items').bulkWrite(bulkOps);
-		});
-
-		await Promise.all(promises);
+		await MONGO.collection('items').updateOne({}, { $set: output }, { upsert: true });
 
 		console.log(`[ITEMS] Updated items in ${(Date.now() - timeNow).toLocaleString()}ms`);
 	} catch (e) {
