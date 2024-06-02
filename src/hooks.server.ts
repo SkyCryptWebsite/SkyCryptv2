@@ -1,13 +1,19 @@
 import { startMongo } from '$db/mongo';
 import { startRedis } from '$db/redis';
 import { init } from '$lib/custom_resources';
+import { parseNEURepository } from '$lib/scripts/parseNEURepository';
+import { updateNotEnoughUpdatesRepository } from '$lib/scripts/updateNEURepository';
 
 init();
 
 startMongo().then(() => {
-	console.log('Mongo started!');
+	console.log('[MONGO] Mongo started!');
 });
 
 startRedis().then(() => {
-	console.log('Redis started!');
+	console.log('[REDIS] Redis started!');
+});
+
+updateNotEnoughUpdatesRepository().then(() => {
+	parseNEURepository();
 });

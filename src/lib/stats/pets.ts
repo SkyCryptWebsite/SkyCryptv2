@@ -3,6 +3,7 @@ import * as constants from '$constants/constants';
 import * as helper from '$lib/helper';
 import _ from 'lodash';
 import type { Member, MissingPet, Pet, PetDataAbility, Pets, ProcessedItem, Profile, petData } from '$types/global';
+import { NEU_ITEMS } from '$lib/scripts/parseNEURepository';
 
 function getPetLevel(petExp: number, offsetRarity: string, maxLevel: number) {
 	const rarityOffset = constants.PET_RARITY_OFFSET[offsetRarity];
@@ -83,6 +84,11 @@ function getProfilePets(pets: Pet[], userProfile: Member, profile: Profile) {
 		if ('tier' in pet === false) {
 			continue;
 		}
+
+		const NEUItemId = `${pet.type};${constants.RARITIES.indexOf(pet.tier.toLowerCase())}`;
+		const NEUPetData = NEU_ITEMS.get(NEUItemId);
+
+		console.log(NEUPetData);
 
 		const petData = constants.PET_DATA[pet.type] ?? {
 			head: '/head/bc8ea1f51f253ff5142ca11ae45193a4ad8c3ab5e9c6eec8ba7a4fcb7bac40',

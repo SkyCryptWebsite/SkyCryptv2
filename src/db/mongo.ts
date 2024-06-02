@@ -6,7 +6,7 @@ import { MongoClient } from 'mongodb';
 const client = new MongoClient(`mongodb://${MONGO_HOST}:${MONGO_PORT}/${MONGO_DATABASE}`);
 
 export function startMongo() {
-	console.log('Starting mongo...');
+	console.log('[MONGO] Starting mongo...');
 
 	updateItems();
 	updateCollections();
