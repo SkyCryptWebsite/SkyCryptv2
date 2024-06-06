@@ -82,8 +82,8 @@ export type PetSkin = {
 };
 
 export type Pets = {
-	pets: Pet[];
-	missing: MissingPet[];
+	pets: ProcessedPet[];
+	missing: ProcessedPet[];
 	amount: number;
 	total: number;
 	amount_skins: number;
@@ -92,8 +92,7 @@ export type Pets = {
 	total_candy_used: number;
 	pet_score: {
 		amount: number;
-		total: number;
-		bonus: Record<string, number>;
+		stats: Record<string, number>;
 	};
 };
 
@@ -102,4 +101,25 @@ export type PetDataAbility = {
 		name: string;
 		desc: string;
 	}[];
+};
+
+export type ProcessedPet = {
+	type: string;
+	display_name: string;
+	rarity: string;
+	active: boolean;
+	price: number;
+	level: {
+		xp: number;
+		level: number;
+		xpMaxLevel: number;
+		currentXp: number;
+		progress: number;
+		xpForNext: number;
+	};
+	texture_path: string;
+	lore: string[];
+	stats: Record<string, number>;
+	candyUsed: number;
+	skin: string | null;
 };

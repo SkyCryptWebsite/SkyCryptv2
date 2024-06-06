@@ -24,7 +24,11 @@ export async function parseNEURepository() {
 				fs.readFileSync(`src/lib/constants/NotEnoughUpdates-REPO/constants/${constant}`, 'utf8')
 			);
 
-			NEU_CONSTANTS.set('pets', petNums);
+			NEU_CONSTANTS.set('petnums', petNums);
+		} else if (constant === 'pets.json') {
+			const pets = JSON.parse(fs.readFileSync(`src/lib/constants/NotEnoughUpdates-REPO/constants/${constant}`, 'utf8'));
+
+			NEU_CONSTANTS.set('pets', pets);
 		}
 	}
 

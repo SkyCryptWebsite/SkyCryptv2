@@ -4,6 +4,20 @@ export type NEUItem = {
 	damage: number;
 	lore: string[];
 	internalname: string;
+	nbttag: {
+		SkullOwner: {
+			Id: string;
+			Properties: {
+				textures: {
+					Value: string;
+				}[];
+			};
+		};
+		display: {
+			Name: string;
+			Lore: string[];
+		};
+	};
 };
 
 export type NEUConstants = {

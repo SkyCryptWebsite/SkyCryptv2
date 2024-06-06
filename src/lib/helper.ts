@@ -349,3 +349,11 @@ export function generateItem(data: Partial<ProcessedItem>) {
 
 	return Object.assign(DEFAULT_DATA, data) as ProcessedItem;
 }
+
+export function getHeadTextureUUID(value: string) {
+	const json = JSON.parse(Buffer.from(value, 'base64').toString());
+	const url = json.textures.SKIN.url;
+	const uuid = url.split('/').pop();
+
+	return uuid;
+}
