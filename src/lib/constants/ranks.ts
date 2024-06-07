@@ -55,7 +55,7 @@ export const RANKS = {
 		color: '#c43c3c',
 		tag: 'MINISTER'
 	}
-};
+} as Record<string, { color: string; tag: string; plus?: string; plusColor?: string }>;
 
 export const RANK_PLUS_COLORS = {
 	BLACK: '#000000',
@@ -74,4 +74,4 @@ export const RANK_PLUS_COLORS = {
 	LIGHT_PURPLE: '#e668c6',
 	YELLOW: 'efc721',
 	WHITE: '#929292'
-};
+} as Record<string, string>;

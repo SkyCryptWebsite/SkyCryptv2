@@ -1,5 +1,5 @@
 // CREDITS: https://github.com/MattTheCuber (Modified)
-import type { SpecialAccessory, allAccessories } from '$types/stats';
+import type { SpecialAccessory, SpecialAccessoryConstant, allAccessories } from '$types/stats';
 import { ITEMS as ALL_ITEMS } from './items';
 
 let ITEMS = [] as allAccessories[];
@@ -7,7 +7,7 @@ function getAccessories() {
 	const output = [] as allAccessories[];
 	ALL_ITEMS.forEach((item) => {
 		if (item.category === 'accessory') {
-			output.push(item);
+			output.push(item as allAccessories);
 		}
 	});
 
@@ -154,7 +154,7 @@ export const ACCESSORY_ALIASES = {
 	],
 	PARTY_HAT_CRAB: ['PARTY_HAT_CRAB_ANIMATED', 'PARTY_HAT_SLOTH'],
 	DANTE_TALISMAN: ['DANTE_RING']
-};
+} as Record<string, string[]>;
 
 const extraAccessories = [
 	/*
@@ -204,7 +204,7 @@ export const SPECIAL_ACCESSORIES = {
 	HOCUS_POCUS_CIPHER: {
 		allowsEnrichment: false
 	}
-};
+} as Record<string, SpecialAccessoryConstant>;
 
 export function getAllAccessories() {
 	const output = ITEMS.reduce<allAccessories[]>((accessory, item) => {
@@ -221,7 +221,7 @@ export function getAllAccessories() {
 			damage: item.damage
 		});
 
-		const specialAccessory = SPECIAL_ACCESSORIES[item.id as keyof typeof SPECIAL_ACCESSORIES] as SpecialAccessory;
+		const specialAccessory = SPECIAL_ACCESSORIES[item.id] as SpecialAccessory;
 		if (specialAccessory?.rarities) {
 			for (const rarity of specialAccessory.rarities) {
 				accessory.push({
@@ -259,13 +259,11 @@ export const MAGICAL_POWER = {
 	mythic: 22,
 	special: 3,
 	very_special: 5
-};
+} as Record<string, number>;
 
 export const RECOMBABLE_ACCESSORIES_COUNT = new Set(
 	getMaxAccessories()
-		.filter(
-			(a) => (SPECIAL_ACCESSORIES[a.id as keyof typeof SPECIAL_ACCESSORIES] as SpecialAccessory)?.allowsRecomb !== false
-		)
+		.filter((a) => SPECIAL_ACCESSORIES[a.id]?.allowsRecomb !== false)
 		.map((a) => a.id)
 ).size;
 

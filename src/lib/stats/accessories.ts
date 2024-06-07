@@ -94,16 +94,11 @@ export async function getAccessories(
 
 		// mark accessory aliases as inactive
 		const ACCESSORY_ALIASES = constants.ACCESSORY_ALIASES;
-		if (
-			id in ACCESSORY_ALIASES ||
-			Object.keys(ACCESSORY_ALIASES).find((a) => ACCESSORY_ALIASES[a as keyof typeof ACCESSORY_ALIASES].includes(id))
-		) {
-			let accessoryDuplicates = ACCESSORY_ALIASES[id as keyof typeof ACCESSORY_ALIASES];
+		if (id in ACCESSORY_ALIASES || Object.keys(ACCESSORY_ALIASES).find((a) => ACCESSORY_ALIASES[a].includes(id))) {
+			let accessoryDuplicates = ACCESSORY_ALIASES[id];
 			if (accessoryDuplicates === undefined) {
-				const aliases = Object.keys(ACCESSORY_ALIASES).filter((a) =>
-					ACCESSORY_ALIASES[a as keyof typeof ACCESSORY_ALIASES].includes(id)
-				);
-				accessoryDuplicates = aliases.concat(ACCESSORY_ALIASES[aliases as unknown as keyof typeof ACCESSORY_ALIASES]);
+				const aliases = Object.keys(ACCESSORY_ALIASES).filter((a) => ACCESSORY_ALIASES[a].includes(id));
+				accessoryDuplicates = aliases.concat(ACCESSORY_ALIASES[aliases as unknown as string]);
 			}
 
 			for (const duplicate of accessoryDuplicates) {

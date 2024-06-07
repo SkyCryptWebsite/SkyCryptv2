@@ -27,7 +27,7 @@ export async function getItemData(query: ItemQuery) {
 			query.damage = Number(split[1]);
 		}
 
-		dbItem = { ...item, ...constants.ITEMS.get(query.skyblockId) };
+		dbItem = { ...(item as unknown as DatabaseItem), ...constants.ITEMS.get(query.skyblockId) };
 	}
 
 	if (query && query.name !== undefined) {
@@ -68,8 +68,8 @@ export async function getItemData(query: ItemQuery) {
 		item.texture = dbItem.texture as string;
 	}
 
-	if (dbItem.id && dbItem.id >= 298 && dbItem.id <= 301) {
-		const type = ['helmet', 'chestplate', 'leggings', 'boots'][dbItem.id - 298];
+	if (dbItem.item_id && dbItem.item_id >= 298 && dbItem.item_id <= 301) {
+		const type = ['helmet', 'chestplate', 'leggings', 'boots'][dbItem.item_id - 298];
 
 		if (dbItem.color !== undefined) {
 			const color = helper.rgbToHex(dbItem.color) ?? '955e3b';

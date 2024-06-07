@@ -32,7 +32,7 @@ export type DatabaseItem = {
 	name?: string;
 	category?: string;
 	tier?: string;
-	id: string;
+	id?: string;
 	item_id?: number;
 	skyblock_id?: string;
 	color?: string;
@@ -46,8 +46,8 @@ export type ItemQuery = {
 	id?: number;
 	damage?: number;
 	pack?: string[];
-	texture: string;
-	texture_path: string;
+	texture?: string;
+	texture_path?: string;
 };
 
 export type ProcessedItem = {
@@ -236,4 +236,11 @@ export type AccessoriesOutput = {
 		rift_prism: number;
 		rarities: Record<string, { amount: number; magical_power: number }>;
 	};
+};
+
+export type SpecialAccessoryConstant = {
+	allowsRecomb?: boolean;
+	allowsEnrichment?: boolean;
+	rarities?: string[];
+	customPrice?: boolean;
 };

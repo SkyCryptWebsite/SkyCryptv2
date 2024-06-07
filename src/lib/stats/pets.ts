@@ -15,7 +15,7 @@ function getMaxPetIds() {
 	const petNumsIds = Object.keys(NEU_CONSTANTS.get('petnums'));
 	NEU_ITEMS.forEach((item, id) => {
 		if (id.includes(';') && petNumsIds.includes(id.split(';')[0])) {
-			petIds.push(constants.PET_PARENTS[id.split(';')[0] as keyof typeof constants.PET_PARENTS] ?? id);
+			petIds.push(constants.PET_PARENTS[id.split(';')[0]] ?? id);
 		}
 	});
 
@@ -307,7 +307,7 @@ function getMissingPets(pets: ProcessedPet[], gameMode: string) {
 					(a: number, b: number) => a + b,
 					0
 				) * 100,
-			tier: (constants.RARITIES[rarityIndex as keyof typeof constants.RARITIES] as string).toUpperCase(),
+			tier: constants.RARITIES[rarityIndex].toUpperCase(),
 			candyUsed: 0,
 			heldItem: null,
 			skin: null

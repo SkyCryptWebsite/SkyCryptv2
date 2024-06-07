@@ -146,13 +146,13 @@ export function formatNumber(n: number, digits = 2) {
 export async function getItemPrice(item: string | ProcessedItem) {
 	if (!item) return 0;
 
-	const prices = await getPrices(true);
+	const prices = (await getPrices(true)) as Record<string, number>;
 
 	if (typeof item === 'string') {
-		return prices[item.toLowerCase() as keyof typeof prices] ?? 0;
+		return prices[item.toLowerCase()] ?? 0;
 	}
 
-	return prices[getId(item).toLowerCase() as keyof typeof prices] ?? 0;
+	return prices[getId(item).toLowerCase()] ?? 0;
 }
 
 /**
@@ -214,7 +214,7 @@ export function getMagicalPower(rarity: string, id: string) {
 	if (id !== null && typeof id === 'string') {
 		// Hegemony artifact provides double MP
 		if (id === 'HEGEMONY_ARTIFACT') {
-			return 2 * (constants.MAGICAL_POWER[rarity as keyof typeof constants.MAGICAL_POWER] ?? 0);
+			return 2 * (constants.MAGICAL_POWER[rarity] ?? 0);
 		}
 
 		// Rift Prism grants 11 MP
@@ -223,7 +223,7 @@ export function getMagicalPower(rarity: string, id: string) {
 		}
 	}
 
-	return constants.MAGICAL_POWER[rarity as keyof typeof constants.MAGICAL_POWER] ?? 0;
+	return constants.MAGICAL_POWER[rarity] ?? 0;
 }
 
 /**

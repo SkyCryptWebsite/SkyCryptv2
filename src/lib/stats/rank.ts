@@ -6,7 +6,7 @@ export function getRank(player: Player): Rank | undefined {
 	const rank = getRankName(player);
 	if (!rank) return undefined;
 
-	const defaults = RANKS[rank as keyof typeof RANKS];
+	const defaults = RANKS[rank];
 
 	if (rank === 'SUPERSTAR' && player.monthlyRankColor === 'AQUA') {
 		return {

@@ -41,9 +41,7 @@ function getAccessory(accessories: Accessory[], accessory: string) {
 function getEnrichments(accessories: ProcessedItem[]) {
 	const output = {} as Record<string, number>;
 	for (const item of accessories) {
-		const specialAccessory = constants.SPECIAL_ACCESSORIES[
-			helper.getId(item) as keyof typeof constants.SPECIAL_ACCESSORIES
-		] as SpecialAccessory;
+		const specialAccessory = constants.SPECIAL_ACCESSORIES[helper.getId(item)];
 
 		if (
 			constants.RARITIES.indexOf(item.rarity) < constants.RARITIES.indexOf('legendary') ||
@@ -68,7 +66,7 @@ function getMissing(items: ProcessedItem[], accessories: Accessory[]) {
 	for (const { id } of unique) {
 		if (id in constants.ACCESSORY_ALIASES === false) continue;
 
-		for (const duplicate of constants.ACCESSORY_ALIASES[id as keyof typeof constants.ACCESSORY_ALIASES]) {
+		for (const duplicate of constants.ACCESSORY_ALIASES[id]) {
 			if (hasAccessory(accessories, duplicate as unknown as Accessory, { ignoreRarity: true }) === true) {
 				const accessory = getAccessory(accessories, duplicate);
 				if (accessory) {

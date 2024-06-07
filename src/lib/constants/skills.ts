@@ -11,14 +11,14 @@ export const DEFAULT_SKILL_CAPS = {
 	runecrafting: 25,
 	social: 25,
 	dungeoneering: 50
-};
+} as Record<string, number>;
 
 export const NON_RUNECRAFTING_LEVEL_CAP = 3;
 
 export const MAXED_SKILL_CAPS = {
 	farming: 60,
 	taming: 60
-};
+} as Record<string, number>;
 
 export const RUNECRAFTING_XP = {
 	1: 50,

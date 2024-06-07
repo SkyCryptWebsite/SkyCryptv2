@@ -12,8 +12,15 @@ export type Player = {
 	monthlyPackageRank?: string;
 	prefix: string;
 	rank: string;
+	socialMedia?: SocialMedia;
 };
 
 export type Achievements = {
 	[key?: string]: number;
+};
+
+export type SocialMedia = {
+	links?: {
+		[key: string]: string;
+	};
 };

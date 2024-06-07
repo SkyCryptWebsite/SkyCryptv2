@@ -29,6 +29,7 @@ export type Stats = {
 	members: string[];
 	skills: Skills;
 	rank: Rank | undefined;
+	social: Record<string, string>;
 	skyblock_level: Skill;
 	stats: MainStats;
 	items: Items;
