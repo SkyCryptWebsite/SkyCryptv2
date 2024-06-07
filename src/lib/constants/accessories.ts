@@ -1,13 +1,21 @@
 // CREDITS: https://github.com/MattTheCuber (Modified)
 import type { SpecialAccessory, allAccessories } from '$types/stats';
-import MONGO from '$db/mongo';
-let ITEMS = await MONGO.collection('items').find({ category: 'accessory' }).toArray();
-setTimeout(
-	async () => {
-		ITEMS = await MONGO.collection('items').find({ category: 'accessory' }).toArray();
-	},
-	60 * 60 * 1000
-); // 1 hour
+import { ITEMS as ALL_ITEMS } from './items';
+
+let ITEMS = [] as allAccessories[];
+function getAccessories() {
+	const output = [] as allAccessories[];
+	ALL_ITEMS.forEach((item) => {
+		if (item.category === 'accessory') {
+			output.push(item);
+		}
+	});
+
+	ITEMS = output;
+}
+
+setTimeout(getAccessories, 60 * 60 * 1000); // 1 hour
+getAccessories();
 
 const accessoryUpgrades = [
 	['WOLF_TALISMAN', 'WOLF_RING'],

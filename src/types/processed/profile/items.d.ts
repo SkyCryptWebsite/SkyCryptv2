@@ -32,7 +32,8 @@ export type DatabaseItem = {
 	name?: string;
 	category?: string;
 	tier?: string;
-	id?: number;
+	id: string;
+	item_id?: number;
 	skyblock_id?: string;
 	color?: string;
 	damage?: number;
@@ -45,7 +46,8 @@ export type ItemQuery = {
 	id?: number;
 	damage?: number;
 	pack?: string[];
-	texture?: string;
+	texture: string;
+	texture_path: string;
 };
 
 export type ProcessedItem = {
@@ -213,6 +215,8 @@ export type allAccessories = {
 	rarity?: string;
 	item_id?: number;
 	damage?: number;
+	texture?: string;
+	material?: string;
 };
 
 export type AccessoriesOutput = {
