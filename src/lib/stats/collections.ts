@@ -35,9 +35,9 @@ export function getCollection(userProfile: Member, profile: Profile, collection:
 		id,
 		texture,
 		amount,
-		total_amount: totalAmount,
+		totalAmount: totalAmount,
 		tier,
-		max_tier: maxTier,
+		maxTier: maxTier,
 		amounts
 	};
 }
@@ -49,8 +49,8 @@ export function getCollections(userProfile: Member, profile: Profile) {
 			name: categoryData.name,
 			texture: '/api/item/' + constants.COLLECTION_ICONS[category],
 			items: [],
-			total_tiers: 0,
-			max_tiers: 0
+			totalTiers: 0,
+			maxTiers: 0
 		};
 
 		for (const collection of categoryData.items) {
@@ -74,26 +74,24 @@ export function getCollections(userProfile: Member, profile: Profile) {
 				id,
 				texture,
 				amount,
-				total_amount: totalAmount,
+				totalAmount,
 				tier,
-				max_tier: maxTier,
+				maxTier: maxTier,
 				amounts
 			});
 		}
 
-		output.categories[category].total_tiers = output.categories[category].items.length;
+		output.categories[category].totalTiers = output.categories[category].items.length;
 
-		output.categories[category].max_tiers = output.categories[category].items.filter(
-			(a) => a.tier === a.max_tier
-		).length;
+		output.categories[category].maxTiers = output.categories[category].items.filter((a) => a.tier === a.maxTier).length;
 	}
 
-	output.total_collections = Object.values(output.categories).reduce((a, b) => a + b.items.length, 0);
+	output.totalCollections = Object.values(output.categories).reduce((a, b) => a + b.items.length, 0);
 
-	output.maxed_collections = Object.values(output.categories)
+	output.maxedCollections = Object.values(output.categories)
 		.map((a) => a.items)
 		.flat()
-		.filter((a) => a && a.tier === a.max_tier).length;
+		.filter((a) => a && a.tier === a.maxTier).length;
 
 	return output;
 }

@@ -86,11 +86,11 @@ export type Pets = {
 	missing: ProcessedPet[];
 	amount: number;
 	total: number;
-	amount_skins: number;
-	total_skins: number;
-	total_pet_xp: number;
-	total_candy_used: number;
-	pet_score: {
+	amountSkins: number;
+	totalSkins: number;
+	totalPetExp: number;
+	totalCandyUsed: number;
+	petScore: {
 		amount: number;
 		stats: Record<string, number>;
 	};

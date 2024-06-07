@@ -228,13 +228,13 @@ export type AccessoriesOutput = {
 	unique: number;
 	total: number;
 	recombobulated: number;
-	total_recombobulated: number;
-	magical_power: {
+	totalRecombobulated: number;
+	magicalPower: {
 		total: number;
 		accessories: number;
 		abiphone: number;
-		rift_prism: number;
-		rarities: Record<string, { amount: number; magical_power: number }>;
+		riftPrism: number;
+		rarities: Record<string, { amount: number; magicalPower: number }>;
 	};
 };
 

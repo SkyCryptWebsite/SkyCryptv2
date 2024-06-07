@@ -45,8 +45,8 @@ function formatKillsAndDeaths(userProfile: Member) {
 	}
 
 	return {
-		total_kills: kills.reduce((acc, mob) => acc + mob.amount, 0),
-		total_deaths: deaths.reduce((acc, mob) => acc + mob.amount, 0),
+		totalKills: kills.reduce((acc, mob) => acc + mob.amount, 0),
+		totalDeaths: deaths.reduce((acc, mob) => acc + mob.amount, 0),
 		kills: kills,
 		deaths: deaths
 	};
@@ -135,9 +135,9 @@ function getDragons(userProfile: Member) {
 	Object.assign(dragonDeaths, { total: Object.values(dragonDeaths).reduce((a, b) => a + b, 0) });
 
 	return {
-		ender_crystals_destroyed: userProfile.player_stats?.end_island?.dragon_fight?.ender_crystals_destroyed ?? 0,
-		most_damage: userProfile.player_stats.end_island?.dragon_fight?.most_damage ?? 0,
-		fastest_kill: userProfile.player_stats.end_island?.dragon_fight?.fastest_kill ?? 0,
+		enderCrystalsDestroyed: userProfile.player_stats?.end_island?.dragon_fight?.ender_crystals_destroyed ?? 0,
+		mostDamage: userProfile.player_stats.end_island?.dragon_fight?.most_damage ?? 0,
+		fastestKill: userProfile.player_stats.end_island?.dragon_fight?.fastest_kill ?? 0,
 		kills: dragonKills,
 		deaths: dragonDeaths
 	};
@@ -191,36 +191,36 @@ export function getMisc(userProfile: Member, profile: Profile, player: Player) {
 			given: userProfile.player_stats.gifts?.total_given ?? 0,
 			received: userProfile.player_stats.gifts?.total_received ?? 0
 		},
-		season_of_jerry: {
-			most_snowballs_hit: userProfile.player_stats.winter?.most_snowballs_hit ?? 0,
-			most_damage_dealt: userProfile.player_stats.winter?.most_damage_dealt ?? 0,
-			most_magma_damage_dealt: userProfile.player_stats.winter?.most_magma_damage_dealt ?? 0,
-			most_cannonballs_hit: userProfile.player_stats.winter?.most_cannonballs_hit ?? 0
+		seasonOfJerry: {
+			mostSnowballsHit: userProfile.player_stats.winter?.most_snowballs_hit ?? 0,
+			mostDamageDealt: userProfile.player_stats.winter?.most_damage_dealt ?? 0,
+			mostMagma_damageDealt: userProfile.player_stats.winter?.most_magma_damage_dealt ?? 0,
+			mostCannonballsHit: userProfile.player_stats.winter?.most_cannonballs_hit ?? 0
 		},
 		dragons: getDragons(userProfile),
-		endstone_protector: {
+		endstoneProtector: {
 			kills: userProfile.player_stats.kills?.corrupted_protector ?? 0,
 			deaths: userProfile.player_stats.deaths?.corrupted_protector ?? 0
 		},
 		damage: {
-			highest_critical_damage: userProfile.player_stats.highest_critical_damage ?? 0
+			highestCriticalDamage: userProfile.player_stats.highest_critical_damage ?? 0
 		},
-		pet_milestones: {
-			sea_creatures_killed: getPetMilestone(
+		petMilestones: {
+			seaCreaturesKilled: getPetMilestone(
 				'sea_creatures_killed',
 				userProfile.player_stats.pets?.milestone?.sea_creatures_killed ?? 0
 			),
-			ores_mined: getPetMilestone('ores_mined', userProfile.player_stats?.pets?.milestone.ores_mined ?? 0)
+			oresMined: getPetMilestone('ores_mined', userProfile.player_stats?.pets?.milestone.ores_mined ?? 0)
 		},
-		mythological_event: userProfile.player_stats.mythos,
+		mythologicalEvent: userProfile.player_stats.mythos,
 		effects: {
 			active: userProfile.player_data?.active_effects || [],
 			paused: userProfile.player_data?.paused_effects || [],
 			disabled: userProfile.player_data?.disabled_potion_effects || []
 		},
-		profile_upgrades: getProfileUpgrades(profile),
+		profileUpgrades: getProfileUpgrades(profile),
 		auctions: userProfile.player_stats.auctions,
-		claimed_items: getClaimedItems(player),
+		claimedItems: getClaimedItems(player),
 		uncategorized: {
 			soulflow: userProfile.item_data?.soulflow ?? 0,
 			teleporter_pill_consumed: userProfile.item_data?.teleporter_pill_consumed ?? false,

@@ -31,7 +31,7 @@ function getDojo(userProfile: Member) {
 	}
 
 	return {
-		total_points: Object.keys(constants.DOJO).reduce(
+		totalPoints: Object.keys(constants.DOJO).reduce(
 			(acc, id) => acc + (userProfile.nether_island_player_data?.dojo?.[`dojo_points_${id}`] ?? 0),
 			0
 		),
@@ -51,7 +51,7 @@ function getKuudra(userProfile: Member) {
 	}
 
 	return {
-		total_kils: Object.keys(constants.KUUDRA_TIERS).reduce(
+		totalKills: Object.keys(constants.KUUDRA_TIERS).reduce(
 			(acc, id) => acc + (userProfile.nether_island_player_data?.kuudra_completed_tiers?.[id] ?? 0),
 			0
 		),
@@ -62,9 +62,9 @@ function getKuudra(userProfile: Member) {
 export function getCrimsonIsle(userProfile: Member) {
 	return {
 		factions: {
-			selected_faction: userProfile.nether_island_player_data?.selected_faction ?? 'none',
-			barbarians_reputation: userProfile.nether_island_player_data?.barbarians_reputation ?? 0,
-			mages_reputation: userProfile.nether_island_player_data?.mages_reputation ?? 0
+			selectedFaction: userProfile.nether_island_player_data?.selected_faction ?? 'none',
+			barbariansReputation: userProfile.nether_island_player_data?.barbarians_reputation ?? 0,
+			magesReputation: userProfile.nether_island_player_data?.mages_reputation ?? 0
 		},
 		kuudra: getKuudra(userProfile),
 		dojo: getDojo(userProfile)

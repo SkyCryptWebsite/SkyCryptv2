@@ -8,7 +8,7 @@ function getMinionSlots(profile: Profile, tiers: number) {
 	const highestSlots = minionSlots.findLastIndex((slots) => tiers >= slots);
 
 	return {
-		bonus_slots: profile.community_upgrades.upgrade_states.filter((u) => u.upgrade === 'minion_slots').length,
+		bonusSlots: profile.community_upgrades.upgrade_states.filter((u) => u.upgrade === 'minion_slots').length,
 		current: constants.MINION_SLOTS[minionSlots[highestSlots]],
 		next: minionSlots[highestSlots + 1] - tiers
 	};
@@ -25,10 +25,10 @@ export function getMinions(profile: Profile) {
 	for (const category in constants.MINIONS) {
 		output.minions[category as MinionCategoryType] = {
 			minions: [],
-			total_minions: 0,
-			maxed_minions: 0,
-			total_tiers: 0,
-			maxed_tiers: 0
+			totalMinions: 0,
+			maxedMinions: 0,
+			totalTiers: 0,
+			maxedTiers: 0
 		};
 
 		for (const minion in constants.MINIONS[category]) {
@@ -46,23 +46,23 @@ export function getMinions(profile: Profile) {
 		}
 
 		Object.assign(output.minions[category as MinionCategoryType], {
-			total_minions: Object.keys(constants.MINIONS[category]).length,
-			maxed_minions: output.minions[category as MinionCategoryType].minions.filter((m) => m.tiers.length === m.maxTier)
+			totalMinions: Object.keys(constants.MINIONS[category]).length,
+			maxedMinions: output.minions[category as MinionCategoryType].minions.filter((m) => m.tiers.length === m.maxTier)
 				.length,
-			total_tiers: Object.values(constants.MINIONS[category]).reduce((acc, m) => acc + (m.maxTier ?? 11), 0),
-			maxed_tiers: output.minions[category as MinionCategoryType].minions.reduce((acc, m) => acc + m.tiers.length, 0)
+			totalTiers: Object.values(constants.MINIONS[category]).reduce((acc, m) => acc + (m.maxTier ?? 11), 0),
+			maxedTiers: output.minions[category as MinionCategoryType].minions.reduce((acc, m) => acc + m.tiers.length, 0)
 		});
 	}
 
 	const allMinions = Object.values(output.minions).filter((c): c is MinionCategory => typeof c !== 'number');
 	Object.assign(output, {
-		total_minions: allMinions.reduce((acc, c) => acc + c.total_minions, 0),
-		maxed_minions: allMinions.reduce((acc, c) => acc + c.maxed_minions, 0),
-		total_tiers: allMinions.reduce((acc, c) => acc + c.total_tiers, 0),
-		maxed_tiers: allMinions.reduce((acc, c) => acc + c.maxed_tiers, 0),
-		minions_slots: getMinionSlots(
+		totalMinions: allMinions.reduce((acc, c) => acc + c.totalMinions, 0),
+		maxedMinions: allMinions.reduce((acc, c) => acc + c.maxedMinions, 0),
+		totalTiers: allMinions.reduce((acc, c) => acc + c.totalTiers, 0),
+		maxedTiers: allMinions.reduce((acc, c) => acc + c.maxedTiers, 0),
+		minionsSlots: getMinionSlots(
 			profile,
-			allMinions.reduce((acc, c) => acc + c.maxed_tiers, 0)
+			allMinions.reduce((acc, c) => acc + c.maxedTiers, 0)
 		)
 	});
 

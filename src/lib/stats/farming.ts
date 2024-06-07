@@ -1,6 +1,7 @@
 import type { Contest, Farming, Medal, Member } from '$types/global';
 import { getLevelByXp } from './leveling/leveling';
 import * as constants from '$constants/constants';
+import * as helper from '$lib/helper';
 
 function getMedalType(contest: Contest) {
 	const position = contest.claimed_position;
@@ -17,23 +18,25 @@ function getMedalType(contest: Contest) {
 		return 'gold';
 	} else if (position <= Math.floor(participants * 0.3)) {
 		return 'silver';
+	} else if (position <= Math.floor(participants * 0.6)) {
+		return 'bronze';
 	}
 
-	return 'bronze';
+	return null;
 }
 
 export function getFarming(userProfile: Member) {
 	const output = {
 		farming: getLevelByXp(userProfile.player_data?.experience?.SKILL_FARMING ?? 0),
-		unique_golds: (userProfile.jacobs_contest?.unique_brackets?.gold || []).length,
+		uniqueGolds: (userProfile.jacobs_contest?.unique_brackets?.gold || []).length,
 		pelts: userProfile.quests?.trapper_quest?.pelt_count || 0,
 		medals: {},
 		contests: {}
 	} as Farming;
 
 	for (const medal of constants.FARMING_MEDALS) {
-		output.medals[`${medal}_medals`] = userProfile.jacobs_contest?.medals_inv?.[medal as Medal] || 0;
-		output.medals[`total_${medal}_medals`] = 0;
+		output.medals[`${medal}Medals`] = userProfile.jacobs_contest?.medals_inv?.[medal as Medal] || 0;
+		output.medals[`total${helper.titleCase(medal)}Medals`] = 0;
 	}
 
 	if (userProfile.jacobs_contest?.contests !== undefined) {
@@ -52,7 +55,7 @@ export function getFarming(userProfile: Member) {
 
 			const medal = contestData.claimed_medal ?? getMedalType(contestData);
 			if (medal !== null) {
-				output.medals[`total_${medal}_medals`] += 1;
+				output.medals[`total${helper.titleCase(medal)}Medals`] += 1;
 			}
 		}
 	}

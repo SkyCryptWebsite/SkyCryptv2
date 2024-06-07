@@ -1,15 +1,15 @@
 export type Collections = {
 	categories: Record<string, CollectionCategory>;
-	total_collections: number;
-	maxed_collections: number;
+	totalCollections: number;
+	maxedCollections: number;
 };
 
 export type CollectionCategory = {
 	name: string;
 	texture: string;
 	items: CategoryItem[];
-	total_tiers: number;
-	max_tiers: number;
+	totalTiers: number;
+	maxTiers: number;
 };
 
 export type CategoryItem = {
@@ -17,8 +17,8 @@ export type CategoryItem = {
 	id: string;
 	texture: string;
 	amount: number;
-	total_amount: number;
+	totalAmount: number;
 	tier: number;
-	max_tier: number;
+	maxTier: number;
 	amounts: { username: string; amount: number }[];
 };

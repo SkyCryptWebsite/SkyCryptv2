@@ -2,10 +2,10 @@ import type { NetworthResult } from 'skyhelper-networth';
 
 export type MainStats = {
 	joined: number;
-	cookie_buff_active: boolean;
+	cookieBuffActive: boolean;
 	purse: number;
 	bank: number;
-	fairy_souls: {
+	fairySouls: {
 		found: number;
 		total: number;
 	};

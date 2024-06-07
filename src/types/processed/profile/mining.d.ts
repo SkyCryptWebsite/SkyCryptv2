@@ -37,8 +37,7 @@ export type HotmItemData = {
 
 export type MiningStats = {
 	level: Skill;
-	perks: Record<string, number>;
-	selected_pickaxe_ability: string;
+	selectedPickaxeAbility: string;
 	tokens: {
 		total: number;
 		spent: number;
@@ -48,9 +47,9 @@ export type MiningStats = {
 		milestone: number;
 		completions: number;
 	};
-	crystal_hollows: {
-		crystal_hollows_last_access: number;
-		nucleus_runs: number;
+	crystalHollows: {
+		crystalHollowsLastAccess: number;
+		nucleusRuns: number;
 		progress: {
 			crystals: Record<string, string>;
 			parts: Record<string, string>;

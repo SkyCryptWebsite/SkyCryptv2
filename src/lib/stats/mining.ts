@@ -64,8 +64,7 @@ export function getMining(userProfile: Member, player: Player) {
 
 	return {
 		level: HOTM,
-		perks: userProfile.mining_core?.nodes ?? {},
-		selected_pickaxe_ability: constants.HOTM.names[userProfile.mining_core?.selected_pickaxe_ability] ?? 'None',
+		selectedPickaxeAbility: constants.HOTM.names[userProfile.mining_core?.selected_pickaxe_ability] ?? 'None',
 		tokens: {
 			total: totalTokens,
 			spent: userProfile.mining_core?.tokens_spent ?? 0,
@@ -75,9 +74,9 @@ export function getMining(userProfile: Member, player: Player) {
 			milestone: getCommissionMilestone(userProfile),
 			completions: player.achievements.skyblock_hard_working_miner || 0
 		},
-		crystal_hollows: {
-			crystal_hollows_last_access: userProfile.mining_core?.greater_mines_last_access,
-			nucleus_runs: crystalNucleusRuns,
+		crystalHollows: {
+			crystalHollowsLastAccess: userProfile.mining_core?.greater_mines_last_access,
+			nucleusRuns: crystalNucleusRuns,
 			progress: getCrystalNucleusRunData(userProfile)
 		},
 		hotm: getHotmItems(userProfile)

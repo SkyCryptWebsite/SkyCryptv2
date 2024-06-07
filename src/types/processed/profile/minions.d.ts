@@ -2,12 +2,12 @@ export type MinionCategoryType = 'farming' | 'mining' | 'combat' | 'foraging' | 
 
 export type Minions = {
 	minions: Record<MinionCategoryType, MinionCategory>;
-	total_minions: number;
-	maxed_minions: number;
-	total_tiers: number;
-	maxed_tiers: number;
-	minions_slots: {
-		bonus_slots: number;
+	totalMinions: number;
+	maxedMinions: number;
+	totalTiers: number;
+	maxedTiers: number;
+	minionsSlots: {
+		bonusSlots: number;
 		current: number;
 		next: number;
 	};
@@ -15,10 +15,10 @@ export type Minions = {
 
 export type MinionCategory = {
 	minions: Minion[];
-	total_minions: number;
-	maxed_minions: number;
-	total_tiers: number;
-	maxed_tiers: number;
+	totalMinions: number;
+	maxedMinions: number;
+	totalTiers: number;
+	maxedTiers: number;
 };
 
 export type Minion = {

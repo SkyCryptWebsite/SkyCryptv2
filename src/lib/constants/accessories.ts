@@ -241,14 +241,14 @@ export function getAllAccessories() {
 }
 
 function getMaxAccessories() {
-	return Object.values(getAllAccessories()).filter((item) => {
+	return getAllAccessories().filter((item) => {
 		const list = accessoryUpgrades.find((list) => list.includes(item.id));
 
 		return list === undefined || list.at(-1) === item.id;
 	});
 }
 
-export const UNIQUE_ACCESSORIES_COUNT = new Set(Object.values(getMaxAccessories()).map((item) => item.id)).size;
+export const UNIQUE_ACCESSORIES_COUNT = new Set(getMaxAccessories().map((item) => item.id)).size;
 
 export const MAGICAL_POWER = {
 	common: 3,

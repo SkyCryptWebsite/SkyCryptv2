@@ -11,12 +11,12 @@ function getTimecharms(userProfile: Member) {
 			id: timecharm.id,
 			texture: timecharm.texture,
 			unlocked: charmData !== undefined,
-			unlocked_at: charmData?.timestamp ?? null
+			unlockedAt: charmData?.timestamp ?? null
 		});
 	}
 
 	return {
-		timecharms_found: output.filter((a) => a.unlocked).length,
+		timecharmsFound: output.filter((a) => a.unlocked).length,
 		timecharms: output
 	};
 }
@@ -35,7 +35,7 @@ function getPorhtals(userProfile: Member) {
 	}
 
 	return {
-		porhtals_found: output.filter((a) => a.unlocked).length,
+		porhtalsFound: output.filter((a) => a.unlocked).length,
 		porhtals: output
 	};
 }
@@ -49,11 +49,11 @@ export function getRift(userProfile: Member) {
 		},
 		enigma: {
 			souls: userProfile.rift?.enigma?.found_souls?.length ?? 0,
-			total_souls: constants.RIFT_ENIGMA_SOULS
+			totalSouls: constants.RIFT_ENIGMA_SOULS
 		},
 		castle: {
-			grubber_stacks: userProfile.rift?.castle?.grubber_stacks ?? 0,
-			max_burgers: constants.MAX_GRUBBER_STACKS
+			grubberStacks: userProfile.rift?.castle?.grubber_stacks ?? 0,
+			maxBurgers: constants.MAX_GRUBBER_STACKS
 		},
 		porhtal: getPorhtals(userProfile),
 		timecharms: getTimecharms(userProfile)

@@ -85,7 +85,7 @@ export function getSlayer(userProfile: Member) {
 		}
 	}
 
-	output.total_slayer_xp = Object.values(slayerData).reduce((acc, boss) => acc + (boss?.xp ?? 0), 0);
+	output.totalSlayerExp = Object.values(slayerData).reduce((acc, boss) => acc + (boss?.xp ?? 0), 0);
 	output.stats = Object.fromEntries(Object.entries(stats).sort(([, a], [, b]) => b - a));
 
 	return output;

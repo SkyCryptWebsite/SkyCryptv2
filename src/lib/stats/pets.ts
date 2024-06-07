@@ -389,12 +389,12 @@ export async function getPets(userProfile: Member, items: ProcessedItem[], profi
 		profile.game_mode === 'bingo' ? Object.keys(maxPetIds) : Object.keys(maxPetIds).filter((pet) => pet !== 'BINGO');
 	output.total = totalPets.length;
 
-	output.amount_skins = _.uniqBy(output.pets, 'skin').length;
-	output.total_skins = getPetSkins().length;
+	output.amountSkins = _.uniqBy(output.pets, 'skin').length;
+	output.totalSkins = getPetSkins().length;
 
-	output.pet_score = getPetScore(output.pets);
-	output.total_pet_xp = output.pets.reduce((a, b) => a + b.level.xp, 0);
-	output.total_candy_used = output.pets.reduce((a, b) => a + b.candyUsed, 0);
+	output.petScore = getPetScore(output.pets);
+	output.totalPetExp = output.pets.reduce((a, b) => a + b.level.xp, 0);
+	output.totalCandyUsed = output.pets.reduce((a, b) => a + b.candyUsed, 0);
 
 	return output;
 }

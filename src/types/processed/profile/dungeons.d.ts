@@ -1,11 +1,11 @@
 export type DungeonsStats = {
 	level: Skill;
 	classes: {
-		selected_class: string;
+		selectedClass: string;
 		classes: Record<string, Skill>;
-		class_average: number;
-		class_average_with_progress: number;
-		total_class_xp: number;
+		classAverage: number;
+		classAverageWithProgress: number;
+		totalClassExp: number;
 	};
 	secrets: {
 		found: number;

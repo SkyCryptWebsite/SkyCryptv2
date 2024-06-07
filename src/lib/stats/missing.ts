@@ -189,11 +189,11 @@ export async function getMissingAccessories(
 
 	output.stats = getStatsFromItems(items.accessories);
 	output.enrichments = getEnrichments(items.accessories);
-	output.unique = accessories.filter((a) => a.isUnique === true).length;
+	output.unique = activeAccessories.filter((a) => a.isUnique === true).length;
 	output.total = constants.UNIQUE_ACCESSORIES_COUNT;
 
-	output.recombobulated = activeAccessories.filter((a) => a?.extra?.recombobulated === true).length;
-	output.total_recombobulated = constants.RECOMBABLE_ACCESSORIES_COUNT;
+	output.recombobulated = activeAccessories.filter((a) => a.recombobulated === true).length;
+	output.totalRecombobulated = constants.RECOMBABLE_ACCESSORIES_COUNT;
 
 	const abiphoneContacts = (userProfile.nether_island_player_data?.abiphone?.active_contacts ?? []).length;
 	const riftPrism = accessoryIds.find((a) => a.id === 'RIFT_PRISM');
@@ -201,18 +201,18 @@ export async function getMissingAccessories(
 		output.unique += 1;
 	}
 
-	output.magical_power = {
+	output.magicalPower = {
 		total: 0,
 		accessories: activeAccessories.reduce((a, b) => a + helper.getMagicalPower(b.rarity, helper.getId(b)), 0),
 		abiphone: abiphoneContacts ? Math.floor(abiphoneContacts / 2) : 0,
-		rift_prism: riftPrism ? 11 : 0,
+		riftPrism: riftPrism ? 11 : 0,
 		rarities: {}
 	};
 
-	output.magical_power.total = Object.keys(output.magical_power)
+	output.magicalPower.total = Object.keys(output.magicalPower)
 		.filter((a) => a !== 'hegemony')
 		.reduce((a, b) => {
-			const value = output.magical_power[b as keyof typeof output.magical_power];
+			const value = output.magicalPower[b as keyof typeof output.magicalPower];
 
 			return typeof value === 'number' ? a + value : a;
 		}, 0);
@@ -220,10 +220,10 @@ export async function getMissingAccessories(
 	for (const rarity in constants.MAGICAL_POWER) {
 		const accessories = activeAccessories.filter((a) => a.rarity === rarity);
 
-		output.magical_power.rarities[rarity] = {
+		output.magicalPower.rarities[rarity] = {
 			// accessories: accessories.map((a) => helper.getId(a)),
 			amount: accessories.length,
-			magical_power: accessories.reduce((a, b) => a + helper.getMagicalPower(rarity, helper.getId(b)), 0)
+			magicalPower: accessories.reduce((a, b) => a + helper.getMagicalPower(rarity, helper.getId(b)), 0)
 		};
 	}
 

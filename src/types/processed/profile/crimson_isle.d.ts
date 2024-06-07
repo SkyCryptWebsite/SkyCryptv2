@@ -1,11 +1,11 @@
 export type CrimsonIsle = {
 	factions: {
-		selected_faction: string;
-		barbarians_reputation: number;
-		mages_reputation: number;
+		selectedFaction: string;
+		barbariansReputation: number;
+		magesReputation: number;
 	};
 	kuudra: {
-		total_kils: number;
+		totalKills: number;
 		tiers: {
 			name: string;
 			id: string;
@@ -14,7 +14,7 @@ export type CrimsonIsle = {
 		}[];
 	};
 	dojo: {
-		total_points: number;
+		totalPoints: number;
 		challenges: {
 			name: string;
 			id: string;

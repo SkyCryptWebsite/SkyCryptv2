@@ -1,11 +1,11 @@
 export type Fishing = {
 	treasure: number;
-	treasure_large: number;
-	shredder_fished: number;
-	shredder_bait: number;
-	trophy_fish_caught: number;
+	treasureLarge: number;
+	shredderFished: number;
+	shredderBait: number;
+	trophyFishCaught: number;
 	kills: { id: string; name: string; amount: number }[];
-	trophy_fish: TrophyFish[];
+	trophyFish: TrophyFish[];
 };
 
 export type TrophyFish = {

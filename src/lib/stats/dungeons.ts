@@ -127,13 +127,12 @@ export function getDungeons(userProfile: Member) {
 	return {
 		level: getLevelByXp(userProfile.dungeons.dungeon_types.catacombs.experience, { type: 'dungeoneering' }),
 		classes: {
-			selected_class: helper.titleCase(userProfile.dungeons.selected_dungeon_class),
+			selectedClass: helper.titleCase(userProfile.dungeons.selected_dungeon_class),
 			classes: dungeonClasses,
-			class_average:
-				Object.values(dungeonClasses).reduce((a, b) => a + b.level, 0) / Object.keys(dungeonClasses).length,
-			class_average_with_progress:
+			classAverage: Object.values(dungeonClasses).reduce((a, b) => a + b.level, 0) / Object.keys(dungeonClasses).length,
+			classAverageWithProgress:
 				Object.values(dungeonClasses).reduce((a, b) => a + b.levelWithProgress, 0) / Object.keys(dungeonClasses).length,
-			total_class_xp: Object.values(userProfile.dungeons.player_classes).reduce((a, b) => a + b.experience, 0)
+			totalClassExp: Object.values(userProfile.dungeons.player_classes).reduce((a, b) => a + b.experience, 0)
 		},
 		secrets: {
 			found: userProfile.dungeons.secrets

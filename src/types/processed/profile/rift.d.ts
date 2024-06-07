@@ -6,14 +6,14 @@ export type Rift = {
 	};
 	enigma: {
 		souls: number;
-		total_souls: number;
+		totalSouls: number;
 	};
 	castle: {
-		grubber_stacks: number;
-		max_burgers: number;
+		grubberStacks: number;
+		maxBurgers: number;
 	};
 	porhtal: {
-		porhtals_found: number;
+		porhtalsFound: number;
 		porhtals: {
 			name: string;
 			texture: string;
@@ -21,13 +21,13 @@ export type Rift = {
 		}[];
 	};
 	timecharms: {
-		timecharms_found: number;
+		timecharmsFound: number;
 		timecharms: {
 			name: string;
 			id: string;
 			texture: string;
 			unlocked: boolean;
-			unlocked_at: number | null;
+			unlockedAt: number | null;
 		}[];
 	};
 };
