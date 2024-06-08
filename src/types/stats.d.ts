@@ -30,6 +30,7 @@ export type Stats = {
 	skills: Skills;
 	rank: Rank | undefined;
 	social: Record<string, string>;
+	profiles: { profile_id: string; cute_name: string; game_mode: string; selected: boolean }[];
 	skyblock_level: Skill;
 	stats: MainStats;
 	items: Items;

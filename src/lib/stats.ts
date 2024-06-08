@@ -1,6 +1,7 @@
 import type { Stats, Profile } from '$types/global';
 import * as stats from '$lib/stats/stats';
 import type { Player } from '$types/raw/player/lib';
+import { getProfiles } from './lib';
 
 const getAccessories = stats.getAccessories;
 const getPets = stats.getPets;
@@ -10,7 +11,8 @@ export async function getStats(profile: Profile, player: Player): Promise<Stats>
 	const userProfile = profile.members[profile.uuid];
 
 	const items = await stats.getItems(userProfile);
-	const [mainStats, accessories, pets] = await Promise.all([
+	const [profiles, mainStats, accessories, pets] = await Promise.all([
+		getProfiles(profile.uuid),
 		getMainStats(userProfile, profile, items),
 		getAccessories(
 			userProfile,
@@ -35,6 +37,7 @@ export async function getStats(profile: Profile, player: Player): Promise<Stats>
 		members: Object.keys(profile.members).filter((uuid) => uuid !== profile.uuid),
 		rank: stats.getRank(player),
 		social: player.socialMedia?.links ?? {},
+		profiles: profiles.filter((p) => p.profile_id !== profile.profile_id),
 		skills: stats.getSkills(userProfile, profile, player),
 		skyblock_level: stats.getSkyblockLevel(userProfile),
 		stats: mainStats,
