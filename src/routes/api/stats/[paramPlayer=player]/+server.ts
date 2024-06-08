@@ -5,9 +5,9 @@ import { getStats } from '$lib/stats';
 
 export const GET: RequestHandler = async ({ params }) => {
 	const timeNow = Date.now();
-	const { paramPlayer, paramProfile } = params;
+	const { paramPlayer } = params;
 
-	const [profile, player] = await Promise.all([getProfile(paramPlayer, paramProfile), fetchPlayer(paramPlayer)]);
+	const [profile, player] = await Promise.all([getProfile(paramPlayer, null), fetchPlayer(paramPlayer)]);
 
 	const stats = await getStats(profile, player);
 

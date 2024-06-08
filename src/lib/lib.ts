@@ -115,7 +115,7 @@ async function resolveUsernameOrUUID(paramPlayer: string) {
 	return data;
 }
 
-export async function getProfile(uuid: string, profileId: string) {
+export async function getProfile(uuid: string, profileId: string | null) {
 	const profiles = await fetchProfiles(uuid);
 
 	const profile =
