@@ -1,4 +1,4 @@
-import MONGO from "$db/mongo";
+import MONGO from "../server/db/mongo";
 
 export type Collection = {
   name: string;

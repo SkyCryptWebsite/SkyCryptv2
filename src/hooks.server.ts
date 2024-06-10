@@ -1,5 +1,5 @@
-import { startMongo } from "$db/mongo";
-import { startRedis } from "$db/redis";
+import { startMongo } from "./lib/server/db/mongo";
+import { startRedis } from "./lib/server/db/redis";
 import { init } from "$lib/custom_resources";
 import { parseNEURepository } from "$lib/scripts/parseNEURepository";
 import { updateNotEnoughUpdatesRepository } from "$lib/scripts/updateNEURepository";

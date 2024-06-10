@@ -1,5 +1,5 @@
 import type { DatabaseItem } from "$types/global";
-import MONGO from "$db/mongo";
+import MONGO from "../server/db/mongo";
 
 export const ITEMS = new Map<string, DatabaseItem>();
 
