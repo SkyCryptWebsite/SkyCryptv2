@@ -1,11 +1,11 @@
-import type { Item, ProcessedItem } from '$types/stats';
-import { getPrices } from 'skyhelper-networth';
-import * as constants from './constants/constants';
-import { getTexture } from './custom_resources';
-import { v4 } from 'uuid';
+import type { Item, ProcessedItem } from "$types/stats";
+import { getPrices } from "skyhelper-networth";
+import * as constants from "./constants/constants";
+import { getTexture } from "./custom_resources";
+import { v4 } from "uuid";
 
-export * from '$lib/helper/cache';
-export * from '$lib/helper/item';
+export * from "$lib/helper/cache";
+export * from "$lib/helper/item";
 
 /**
  * Converts an RGB color value to its corresponding hexadecimal representation.
@@ -13,9 +13,9 @@ export * from '$lib/helper/item';
  * @returns The hexadecimal representation of the RGB color value.
  */
 export function rgbToHex(rgb: string) {
-	const [r, g, b] = rgb.split(',').map((c) => parseInt(c.trim()));
+  const [r, g, b] = rgb.split(",").map((c) => parseInt(c.trim()));
 
-	return [r, g, b].map((c) => c.toString(16).padStart(2, '0')).join('');
+  return [r, g, b].map((c) => c.toString(16).padStart(2, "0")).join("");
 }
 
 /**
@@ -24,13 +24,13 @@ export function rgbToHex(rgb: string) {
  * @returns {string | number}
  */
 function getKey(key: string): string | number {
-	const intKey = Number(key);
+  const intKey = Number(key);
 
-	if (!isNaN(intKey)) {
-		return intKey;
-	}
+  if (!isNaN(intKey)) {
+    return intKey;
+  }
 
-	return key;
+  return key;
 }
 
 /**
@@ -40,25 +40,25 @@ function getKey(key: string): string | number {
  * @returns {boolean} - If the path exists on the object.
  */
 export function hasPath<T extends object>(obj: T, ...keys: (string | number)[]): boolean {
-	if (obj == null) {
-		return false;
-	}
+  if (obj == null) {
+    return false;
+  }
 
-	let loc: unknown = obj;
+  let loc: unknown = obj;
 
-	for (let i = 0; i < keys.length; i++) {
-		if (typeof loc === 'object' && loc !== null) {
-			loc = (loc as Record<string, unknown>)[getKey(keys[i] as string)];
-		} else {
-			return false;
-		}
+  for (let i = 0; i < keys.length; i++) {
+    if (typeof loc === "object" && loc !== null) {
+      loc = (loc as Record<string, unknown>)[getKey(keys[i] as string)];
+    } else {
+      return false;
+    }
 
-		if (loc === undefined) {
-			return false;
-		}
-	}
+    if (loc === undefined) {
+      return false;
+    }
+  }
 
-	return true;
+  return true;
 }
 
 /**
@@ -68,25 +68,25 @@ export function hasPath<T extends object>(obj: T, ...keys: (string | number)[]):
  * @returns {any} - The value at the path on the object.
  */
 export function getPath<T extends object, K = unknown>(obj: T, ...keys: (string | number)[]): K | undefined {
-	if (obj == null) {
-		return undefined;
-	}
+  if (obj == null) {
+    return undefined;
+  }
 
-	let loc: unknown = obj;
+  let loc: unknown = obj;
 
-	for (let i = 0; i < keys.length; i++) {
-		if (typeof loc === 'object' && loc !== null) {
-			loc = (loc as Record<string, unknown>)[getKey(keys[i] as string)];
-		} else {
-			return undefined;
-		}
+  for (let i = 0; i < keys.length; i++) {
+    if (typeof loc === "object" && loc !== null) {
+      loc = (loc as Record<string, unknown>)[getKey(keys[i] as string)];
+    } else {
+      return undefined;
+    }
 
-		if (loc === undefined) {
-			return undefined;
-		}
-	}
+    if (loc === undefined) {
+      return undefined;
+    }
+  }
 
-	return loc as K;
+  return loc as K;
 }
 
 /**
@@ -95,11 +95,11 @@ export function getPath<T extends object, K = unknown>(obj: T, ...keys: (string 
  * @returns The ID of the item, or an empty string if the ID is not found.
  */
 export function getId(item: ProcessedItem | Item) {
-	return item?.tag?.ExtraAttributes?.id ?? '';
+  return item?.tag?.ExtraAttributes?.id ?? "";
 }
 
 export function getTextureValue(item: Item) {
-	return item?.tag?.SkullOwner?.Properties?.textures?.at(0)?.Value ?? '';
+  return item?.tag?.SkullOwner?.Properties?.textures?.at(0)?.Value ?? "";
 }
 
 /**
@@ -108,7 +108,7 @@ export function getTextureValue(item: Item) {
  * @returns {string} lore without color codes
  */
 export function getRawLore(text: string) {
-	return text.replaceAll(/§[0-9a-fk-or]/g, '');
+  return text.replaceAll(/§[0-9a-fk-or]/g, "");
 }
 
 /**
@@ -116,25 +116,25 @@ export function getRawLore(text: string) {
  * @returns {string}
  */
 export function titleCase(s: string) {
-	if (s.length === 0) {
-		return '';
-	}
+  if (s.length === 0) {
+    return "";
+  }
 
-	return s[0].toUpperCase() + s.slice(1);
+  return s[0].toUpperCase() + s.slice(1);
 }
 
 export function rarityNameToInt(string: string) {
-	return constants.RARITIES.indexOf(string.toLowerCase());
+  return constants.RARITIES.indexOf(string.toLowerCase());
 }
 
 export function formatNumber(n: number, digits = 2) {
-	return Intl.NumberFormat('en-US', {
-		notation: 'compact',
-		minimumFractionDigits: digits,
-		maximumFractionDigits: digits
-	})
-		.format(n)
-		.replace(/\.0+([A-Za-z])?$/, '$1');
+  return Intl.NumberFormat("en-US", {
+    notation: "compact",
+    minimumFractionDigits: digits,
+    maximumFractionDigits: digits
+  })
+    .format(n)
+    .replace(/\.0+([A-Za-z])?$/, "$1");
 }
 
 /**
@@ -144,15 +144,15 @@ export function formatNumber(n: number, digits = 2) {
  * @returns {Promise<number>}
  */
 export async function getItemPrice(item: string | ProcessedItem) {
-	if (!item) return 0;
+  if (!item) return 0;
 
-	const prices = (await getPrices(true)) as Record<string, number>;
+  const prices = (await getPrices(true)) as Record<string, number>;
 
-	if (typeof item === 'string') {
-		return prices[item.toLowerCase()] ?? 0;
-	}
+  if (typeof item === "string") {
+    return prices[item.toLowerCase()] ?? 0;
+  }
 
-	return prices[getId(item).toLowerCase()] ?? 0;
+  return prices[getId(item).toLowerCase()] ?? 0;
 }
 
 /**
@@ -163,24 +163,24 @@ export async function getItemPrice(item: string | ProcessedItem) {
  * @returns {Item} The modified item.
  */
 export function addToItemLore(item: Partial<ProcessedItem>, lore: string | string[]) {
-	if (typeof lore === 'string') {
-		lore = [lore];
-	}
+  if (typeof lore === "string") {
+    lore = [lore];
+  }
 
-	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-	// @ts-ignore
-	item.tag ??= {};
-	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-	// @ts-ignore
-	item.tag.display ??= {};
-	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-	// @ts-ignore
-	item.tag.display.Lore ??= [];
-	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-	// @ts-ignore
-	item.tag.display.Lore = item.tag.display.Lore.concat(lore);
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  item.tag ??= {};
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  item.tag.display ??= {};
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  item.tag.display.Lore ??= [];
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  item.tag.display.Lore = item.tag.display.Lore.concat(lore);
 
-	return item;
+  return item;
 }
 
 /**
@@ -191,15 +191,15 @@ export function addToItemLore(item: Partial<ProcessedItem>, lore: string | strin
  * @returns {Promise<Item>} A Promise that resolves with the modified item.
  */
 export async function applyResourcePack(item: ProcessedItem, packs: string[]) {
-	const customTexture = getTexture(item, {
-		pack_ids: packs
-	});
+  const customTexture = getTexture(item, {
+    pack_ids: packs
+  });
 
-	if (customTexture) {
-		item.texture_path = (customTexture.path ?? '').toString();
-	}
+  if (customTexture) {
+    item.texture_path = (customTexture.path ?? "").toString();
+  }
 
-	return item;
+  return item;
 }
 
 /**
@@ -209,21 +209,21 @@ export async function applyResourcePack(item: ProcessedItem, packs: string[]) {
  * @returns {number} Returns 0 if `rarity` is undefined or if `rarity` is not a valid rarity value.
  */
 export function getMagicalPower(rarity: string, id: string) {
-	if (rarity === undefined) return 0;
+  if (rarity === undefined) return 0;
 
-	if (id !== null && typeof id === 'string') {
-		// Hegemony artifact provides double MP
-		if (id === 'HEGEMONY_ARTIFACT') {
-			return 2 * (constants.MAGICAL_POWER[rarity] ?? 0);
-		}
+  if (id !== null && typeof id === "string") {
+    // Hegemony artifact provides double MP
+    if (id === "HEGEMONY_ARTIFACT") {
+      return 2 * (constants.MAGICAL_POWER[rarity] ?? 0);
+    }
 
-		// Rift Prism grants 11 MP
-		if (id === 'RIFT_PRISM') {
-			return 11;
-		}
-	}
+    // Rift Prism grants 11 MP
+    if (id === "RIFT_PRISM") {
+      return 11;
+    }
+  }
 
-	return constants.MAGICAL_POWER[rarity] ?? 0;
+  return constants.MAGICAL_POWER[rarity] ?? 0;
 }
 
 /**
@@ -233,7 +233,7 @@ export function getMagicalPower(rarity: string, id: string) {
  * @returns {number} the floored number
  */
 export function floor(num: number, decimals = 0) {
-	return Math.floor(Math.pow(10, decimals) * num) / Math.pow(10, decimals);
+  return Math.floor(Math.pow(10, decimals) * num) / Math.pow(10, decimals);
 }
 
 /**
@@ -243,7 +243,7 @@ export function floor(num: number, decimals = 0) {
  * @returns {number} the rounded number
  */
 export function round(num: number, decimals = 0) {
-	return Math.round(Math.pow(10, decimals) * num) / Math.pow(10, decimals);
+  return Math.round(Math.pow(10, decimals) * num) / Math.pow(10, decimals);
 }
 
 /**
@@ -253,107 +253,107 @@ export function round(num: number, decimals = 0) {
  * @returns {number} the ceiled number
  */
 export function ceil(num: number, decimals = 0) {
-	return Math.ceil(Math.pow(10, decimals) * num) / Math.pow(10, decimals);
+  return Math.ceil(Math.pow(10, decimals) * num) / Math.pow(10, decimals);
 }
 
 export function romanize(num: number) {
-	const lookup = {
-		M: 1000,
-		CM: 900,
-		D: 500,
-		CD: 400,
-		C: 100,
-		XC: 90,
-		L: 50,
-		XL: 40,
-		X: 10,
-		IX: 9,
-		V: 5,
-		IV: 4,
-		I: 1
-	} as Record<string, number>;
-	let roman = '';
+  const lookup = {
+    M: 1000,
+    CM: 900,
+    D: 500,
+    CD: 400,
+    C: 100,
+    XC: 90,
+    L: 50,
+    XL: 40,
+    X: 10,
+    IX: 9,
+    V: 5,
+    IV: 4,
+    I: 1
+  } as Record<string, number>;
+  let roman = "";
 
-	for (const i in lookup) {
-		while (num >= lookup[i]) {
-			roman += i;
-			num -= lookup[i];
-		}
-	}
-	return roman;
+  for (const i in lookup) {
+    while (num >= lookup[i]) {
+      roman += i;
+      num -= lookup[i];
+    }
+  }
+  return roman;
 }
 
 export function generateUUID() {
-	let u = '',
-		i = 0;
-	while (i++ < 36) {
-		const c = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'[i - 1],
-			r = (Math.random() * 16) | 0,
-			v = c == 'x' ? r : (r & 0x3) | 0x8;
-		u += c == '-' || c == '4' ? c : v.toString(16);
-	}
-	return u;
+  let u = "",
+    i = 0;
+  while (i++ < 36) {
+    const c = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx"[i - 1],
+      r = (Math.random() * 16) | 0,
+      v = c == "x" ? r : (r & 0x3) | 0x8;
+    u += c == "-" || c == "4" ? c : v.toString(16);
+  }
+  return u;
 }
 
 export function generateItem(data: Partial<ProcessedItem>) {
-	if (!data) {
-		return {
-			itemId: v4(),
-			item_index: Date.now()
-		} as ProcessedItem;
-	}
+  if (!data) {
+    return {
+      itemId: v4(),
+      item_index: Date.now()
+    } as ProcessedItem;
+  }
 
-	const DEFAULT_DATA = {
-		id: 389,
-		Damage: 0,
-		Count: 1,
-		display_name: '',
-		rarity: null,
-		categories: [],
-		type: 'misc',
-		tag: {
-			display: {
-				Name: '',
-				Lore: ['']
-			}
-		},
-		itemId: v4(),
-		item_index: Date.now()
-	};
+  const DEFAULT_DATA = {
+    id: 389,
+    Damage: 0,
+    Count: 1,
+    display_name: "",
+    rarity: null,
+    categories: [],
+    type: "misc",
+    tag: {
+      display: {
+        Name: "",
+        Lore: [""]
+      }
+    },
+    itemId: v4(),
+    item_index: Date.now()
+  };
 
-	// Making sure rarity is lowercase
-	if (data.rarity) {
-		data.rarity = data.rarity.toLowerCase();
-	}
+  // Making sure rarity is lowercase
+  if (data.rarity) {
+    data.rarity = data.rarity.toLowerCase();
+  }
 
-	if (data.name && (data.display_name === undefined || data.display_name?.length === 0)) {
-		data.display_name = data.name;
-	}
+  if (data.name && (data.display_name === undefined || data.display_name?.length === 0)) {
+    data.display_name = data.name;
+  }
 
-	if (!data.rarity && data.tier) {
-		data.rarity = data.tier.toLowerCase();
-	}
+  if (!data.rarity && data.tier) {
+    data.rarity = data.tier.toLowerCase();
+  }
 
-	if (data.item_id) {
-		data.id = data.item_id;
-	}
+  if (data.item_id) {
+    data.id = data.item_id;
+  }
 
-	// Setting tag.display.Name using display_name if not specified
-	if (data.display_name && !data.tag?.display?.Name) {
-		data.tag ??= {} as ProcessedItem['tag'];
-		data.tag.display ??= {} as ProcessedItem['tag']['display'];
+  // Setting tag.display.Name using display_name if not specified
+  if (data.display_name && !data.tag?.display?.Name) {
+    data.tag ??= {} as ProcessedItem["tag"];
+    data.tag.display ??= {} as ProcessedItem["tag"]["display"];
 
-		const rarityColor = data.rarity ? `§${constants.RARITY_COLORS[data.rarity ?? 'common']}` : '';
-		data.tag.display.Name = `${rarityColor}${data.display_name}`;
-	}
+    const rarityColor = data.rarity ? `§${constants.RARITY_COLORS[data.rarity ?? "common"]}` : "";
+    data.tag.display.Name = `${rarityColor}${data.display_name}`;
+  }
 
-	return Object.assign(DEFAULT_DATA, data) as ProcessedItem;
+  return Object.assign(DEFAULT_DATA, data) as ProcessedItem;
 }
 
 export function getHeadTextureUUID(value: string) {
-	const json = JSON.parse(Buffer.from(value, 'base64').toString());
-	const url = json.textures.SKIN.url;
-	const uuid = url.split('/').pop();
+  const json = JSON.parse(Buffer.from(value, "base64").toString());
+  const url = json.textures.SKIN.url;
+  const uuid = url.split("/").pop();
 
-	return uuid;
+  return uuid;
 }

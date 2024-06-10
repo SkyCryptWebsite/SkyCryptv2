@@ -1,26 +1,26 @@
 export type PlayerResponse = {
-	success: boolean;
-	cause?: string;
-	player: Player;
+  success: boolean;
+  cause?: string;
+  player: Player;
 };
 
 export type Player = {
-	displayname: string;
-	achievements: Achievements;
-	newPackageRank?: string;
-	monthlyRankColor?: string;
-	monthlyPackageRank?: string;
-	prefix: string;
-	rank: string;
-	socialMedia?: SocialMedia;
+  displayname: string;
+  achievements: Achievements;
+  newPackageRank?: string;
+  monthlyRankColor?: string;
+  monthlyPackageRank?: string;
+  prefix: string;
+  rank: string;
+  socialMedia?: SocialMedia;
 };
 
 export type Achievements = {
-	[key?: string]: number;
+  [key?: string]: number;
 };
 
 export type SocialMedia = {
-	links?: {
-		[key: string]: string;
-	};
+  links?: {
+    [key: string]: string;
+  };
 };

@@ -1,400 +1,369 @@
-import { getItemNetworth } from 'skyhelper-networth';
-import * as constants from '$constants/constants';
-import * as helper from '$lib/helper';
-import _ from 'lodash';
-import type { Member, Pet, Pets, ProcessedItem, ProcessedPet, Profile } from '$types/global';
-import { NEU_CONSTANTS, NEU_ITEMS } from '$lib/scripts/parseNEURepository';
+import { getItemNetworth } from "skyhelper-networth";
+import * as constants from "$constants/constants";
+import * as helper from "$lib/helper";
+import _ from "lodash";
+import type { Member, Pet, Pets, ProcessedItem, ProcessedPet, Profile } from "$types/global";
+import { NEU_CONSTANTS, NEU_ITEMS } from "$lib/scripts/parseNEURepository";
 
 let getMaxPetIdsCache = {} as { lastUpdated: number; data: Record<string, number> };
 function getMaxPetIds() {
-	if (Date.now() - getMaxPetIdsCache.lastUpdated < 12 * 60 * 60 * 1000) {
-		return getMaxPetIdsCache.data;
-	}
+  if (Date.now() - getMaxPetIdsCache.lastUpdated < 12 * 60 * 60 * 1000) {
+    return getMaxPetIdsCache.data;
+  }
 
-	const petIds = [] as string[];
-	const petNumsIds = Object.keys(NEU_CONSTANTS.get('petnums'));
-	NEU_ITEMS.forEach((item, id) => {
-		if (id.includes(';') && petNumsIds.includes(id.split(';')[0])) {
-			petIds.push(constants.PET_PARENTS[id.split(';')[0]] ?? id);
-		}
-	});
+  const petIds = [] as string[];
+  const petNumsIds = Object.keys(NEU_CONSTANTS.get("petnums"));
+  NEU_ITEMS.forEach((item, id) => {
+    if (id.includes(";") && petNumsIds.includes(id.split(";")[0])) {
+      petIds.push(constants.PET_PARENTS[id.split(";")[0]] ?? id);
+    }
+  });
 
-	const maxPetIds = petIds
-		.filter((id, index) => petIds.indexOf(id) === index)
-		.reduce(
-			(acc, id) => {
-				const [type, rarity] = id.split(';');
+  const maxPetIds = petIds
+    .filter((id, index) => petIds.indexOf(id) === index)
+    .reduce(
+      (acc, id) => {
+        const [type, rarity] = id.split(";");
 
-				acc[type] = Math.max(parseInt(rarity), acc[type] ?? 0);
-				return acc;
-			},
-			{} as Record<string, number>
-		);
+        acc[type] = Math.max(parseInt(rarity), acc[type] ?? 0);
+        return acc;
+      },
+      {} as Record<string, number>
+    );
 
-	getMaxPetIdsCache = { lastUpdated: Date.now(), data: maxPetIds };
+  getMaxPetIdsCache = { lastUpdated: Date.now(), data: maxPetIds };
 
-	return maxPetIds;
+  return maxPetIds;
 }
 
 const getPetSkinCache = {} as { lastUpdated: number; data: string[] };
 function getPetSkins() {
-	if (Date.now() - getPetSkinCache.lastUpdated < 12 * 60 * 60 * 1000) {
-		return getPetSkinCache.data;
-	}
+  if (Date.now() - getPetSkinCache.lastUpdated < 12 * 60 * 60 * 1000) {
+    return getPetSkinCache.data;
+  }
 
-	getPetSkinCache.data = [];
-	getPetSkinCache.lastUpdated = Date.now();
-	for (const skin of NEU_ITEMS.keys()) {
-		if (skin.startsWith('PET_SKIN') === false) {
-			continue;
-		}
+  getPetSkinCache.data = [];
+  getPetSkinCache.lastUpdated = Date.now();
+  for (const skin of NEU_ITEMS.keys()) {
+    if (skin.startsWith("PET_SKIN") === false) {
+      continue;
+    }
 
-		getPetSkinCache.data.push(skin);
-	}
+    getPetSkinCache.data.push(skin);
+  }
 
-	return getPetSkinCache.data;
+  return getPetSkinCache.data;
 }
 
 function replaceVariables(template: string, variables: Record<string, string>) {
-	return template.replace(/\{(\w+)\}/g, (match, name) => variables[name] ?? match);
+  return template.replace(/\{(\w+)\}/g, (match, name) => variables[name] ?? match);
 }
 
 function getPetLevel(petExp: number, type: string, rarity: string) {
-	const petData = NEU_CONSTANTS.get('pets');
+  const petData = NEU_CONSTANTS.get("pets");
 
-	const rarityOffset = petData.custom_pet_leveling[type]?.rarity_offset?.[rarity] ?? petData.pet_rarity_offset[rarity];
+  const rarityOffset = petData.custom_pet_leveling[type]?.rarity_offset?.[rarity] ?? petData.pet_rarity_offset[rarity];
 
-	const maxLevel = petData.custom_pet_leveling[type]?.max_level ?? 100;
+  const maxLevel = petData.custom_pet_leveling[type]?.max_level ?? 100;
 
-	const levels =
-		petData.custom_pet_leveling[type]?.pet_levels === undefined
-			? petData.pet_levels.slice(rarityOffset, rarityOffset + maxLevel - 1)
-			: petData.custom_pet_leveling[type]?.pet_levels.concat(petData.custom_pet_leveling[type]?.pet_levels);
+  const levels = petData.custom_pet_leveling[type]?.pet_levels === undefined ? petData.pet_levels.slice(rarityOffset, rarityOffset + maxLevel - 1) : petData.custom_pet_leveling[type]?.pet_levels.concat(petData.custom_pet_leveling[type]?.pet_levels);
 
-	let level = 1;
-	let xpMaxLevel = 0;
-	let currentXp = 0;
-	for (let i = 0; i < maxLevel - 1; i++) {
-		xpMaxLevel += levels[i];
-		if (xpMaxLevel <= petExp) {
-			level++;
-			currentXp = petExp - xpMaxLevel;
-		}
-	}
+  let level = 1;
+  let xpMaxLevel = 0;
+  let currentXp = 0;
+  for (let i = 0; i < maxLevel - 1; i++) {
+    xpMaxLevel += levels[i];
+    if (xpMaxLevel <= petExp) {
+      level++;
+      currentXp = petExp - xpMaxLevel;
+    }
+  }
 
-	const xpForNext = levels[level - 1] ?? null;
-	const progress = isNaN(currentXp / xpForNext) ? 0 : currentXp / xpForNext;
+  const xpForNext = levels[level - 1] ?? null;
+  const progress = isNaN(currentXp / xpForNext) ? 0 : currentXp / xpForNext;
 
-	return {
-		xp: petExp,
-		level,
-		currentXp,
-		xpForNext,
-		progress,
-		xpMaxLevel
-	};
+  return {
+    xp: petExp,
+    level,
+    currentXp,
+    xpForNext,
+    progress,
+    xpMaxLevel
+  };
 }
 
 function getPetData(level: number, type: string, rarity: string) {
-	const petNums = NEU_CONSTANTS.get('petnums');
-	if (petNums[type] === undefined || petNums[type][rarity] === undefined) {
-		return {};
-	}
+  const petNums = NEU_CONSTANTS.get("petnums");
+  if (petNums[type] === undefined || petNums[type][rarity] === undefined) {
+    return {};
+  }
 
-	const lvlMin = petNums[type][rarity]['1'];
-	const lvlMax = petNums[type][rarity]['100'];
-	if (lvlMin === undefined || lvlMax === undefined) {
-		return {};
-	}
+  const lvlMin = petNums[type][rarity]["1"];
+  const lvlMax = petNums[type][rarity]["100"];
+  if (lvlMin === undefined || lvlMax === undefined) {
+    return {};
+  }
 
-	const statPerLevel = (Math.min(level, 100) - 1) / (100 - 1);
-	const output = { ...lvlMin.statNums, ...lvlMax.otherNums };
+  const statPerLevel = (Math.min(level, 100) - 1) / (100 - 1);
+  const output = { ...lvlMin.statNums, ...lvlMax.otherNums };
 
-	for (const key in output) {
-		const lowStat = lvlMin.statNums[key] ?? lvlMin.otherNums[key];
-		const highStat = lvlMax.statNums[key] ?? lvlMax.otherNums[key];
+  for (const key in output) {
+    const lowStat = lvlMin.statNums[key] ?? lvlMin.otherNums[key];
+    const highStat = lvlMax.statNums[key] ?? lvlMax.otherNums[key];
 
-		output[key] = helper.round(lowStat + (highStat - lowStat) * statPerLevel, 2);
-	}
+    output[key] = helper.round(lowStat + (highStat - lowStat) * statPerLevel, 2);
+  }
 
-	return output;
+  return output;
 }
 
 function getProfilePets(pets: Pet[]) {
-	let output = [] as ProcessedPet[];
-	if (pets === undefined) {
-		return output;
-	}
+  let output = [] as ProcessedPet[];
+  if (pets === undefined) {
+    return output;
+  }
 
-	for (const pet of pets) {
-		if ('tier' in pet === false) {
-			continue;
-		}
+  for (const pet of pets) {
+    if ("tier" in pet === false) {
+      continue;
+    }
 
-		const outputPet = {
-			type: pet.type,
-			display_name: helper.titleCase(pet.type.replaceAll('_', ' ')),
-			rarity: pet.tier,
-			active: pet.active,
-			price: pet.price,
-			level: getPetLevel(pet.exp, pet.type, pet.tier.toUpperCase()),
-			texture_path: '/api/head/bc8ea1f51f253ff5142ca11ae45193a4ad8c3ab5e9c6eec8ba7a4fcb7bac40',
-			lore: [
-				'§cThis pet is not saved in the repository',
-				'',
-				'§cIf you expected it to be there please send a message in',
-				'§c§l#neu-support §r§con §ldiscord.gg/moulberry'
-			],
-			stats: {},
-			candyUsed: pet.candyUsed,
-			skin: pet.skin
-		} as ProcessedPet;
+    const outputPet = {
+      type: pet.type,
+      display_name: helper.titleCase(pet.type.replaceAll("_", " ")),
+      rarity: pet.tier,
+      active: pet.active,
+      price: pet.price,
+      level: getPetLevel(pet.exp, pet.type, pet.tier.toUpperCase()),
+      texture_path: "/api/head/bc8ea1f51f253ff5142ca11ae45193a4ad8c3ab5e9c6eec8ba7a4fcb7bac40",
+      lore: ["§cThis pet is not saved in the repository", "", "§cIf you expected it to be there please send a message in", "§c§l#neu-support §r§con §ldiscord.gg/moulberry"],
+      stats: {},
+      candyUsed: pet.candyUsed,
+      skin: pet.skin
+    } as ProcessedPet;
 
-		const NEUItemId = `${pet.type};${constants.RARITIES.indexOf(pet.tier.toLowerCase())}`;
-		const petData = NEU_ITEMS.get(NEUItemId);
-		if (petData === undefined) {
-			output.push(outputPet);
-			continue;
-		}
+    const NEUItemId = `${pet.type};${constants.RARITIES.indexOf(pet.tier.toLowerCase())}`;
+    const petData = NEU_ITEMS.get(NEUItemId);
+    if (petData === undefined) {
+      output.push(outputPet);
+      continue;
+    }
 
-		const skinData = pet.skin ? NEU_ITEMS.get(`PET_SKIN_${pet.skin}`) : null;
-		const texture = skinData
-			? helper.getHeadTextureUUID(skinData.nbttag.SkullOwner.Properties.textures[0].Value)
-			: helper.getHeadTextureUUID(petData.nbttag.SkullOwner.Properties.textures[0].Value);
+    const skinData = pet.skin ? NEU_ITEMS.get(`PET_SKIN_${pet.skin}`) : null;
+    const texture = skinData ? helper.getHeadTextureUUID(skinData.nbttag.SkullOwner.Properties.textures[0].Value) : helper.getHeadTextureUUID(petData.nbttag.SkullOwner.Properties.textures[0].Value);
 
-		outputPet.texture_path = `/api/head/${texture}?v6`;
+    outputPet.texture_path = `/api/head/${texture}?v6`;
 
-		const data = getPetData(outputPet.level.level, pet.type, pet.tier.toUpperCase());
-		Object.assign(data, { LVL: outputPet.level.level });
+    const data = getPetData(outputPet.level.level, pet.type, pet.tier.toUpperCase());
+    Object.assign(data, { LVL: outputPet.level.level });
 
-		outputPet.stats = Object.keys(data)
-			.filter((a) => a.length > 1 && a !== 'LVL')
-			.reduce(
-				(acc, key) => {
-					acc[key.toLowerCase()] = data[key];
-					return acc;
-				},
-				{} as Record<string, number>
-			);
+    outputPet.stats = Object.keys(data)
+      .filter((a) => a.length > 1 && a !== "LVL")
+      .reduce(
+        (acc, key) => {
+          acc[key.toLowerCase()] = data[key];
+          return acc;
+        },
+        {} as Record<string, number>
+      );
 
-		outputPet.display_name = replaceVariables(petData.displayname, data);
-		outputPet.lore = [];
-		for (const line of petData.lore) {
-			if (line === '§7§eRight-click to add this pet to') {
-				break;
-			}
+    outputPet.display_name = replaceVariables(petData.displayname, data);
+    outputPet.lore = [];
+    for (const line of petData.lore) {
+      if (line === "§7§eRight-click to add this pet to") {
+        break;
+      }
 
-			outputPet.lore.push(replaceVariables(line, data));
-		}
+      outputPet.lore.push(replaceVariables(line, data));
+    }
 
-		if (pet.heldItem) {
-			const petItem = NEU_ITEMS.get(pet.heldItem);
-			if (petItem !== undefined) {
-				let spaces = 0;
-				outputPet.lore.push(`§6Held item: ${petItem.displayname}`);
-				for (const description of petItem.lore) {
-					if (description.trim() === '') {
-						spaces++;
-					} else if (spaces === 2) {
-						outputPet.lore.push(description);
-					} else if (spaces > 2) {
-						break;
-					}
-				}
-			} else {
-				if ((outputPet.lore.at(-1) ?? '').trim() !== '') {
-					outputPet.lore.push('');
-				}
+    if (pet.heldItem) {
+      const petItem = NEU_ITEMS.get(pet.heldItem);
+      if (petItem !== undefined) {
+        let spaces = 0;
+        outputPet.lore.push(`§6Held item: ${petItem.displayname}`);
+        for (const description of petItem.lore) {
+          if (description.trim() === "") {
+            spaces++;
+          } else if (spaces === 2) {
+            outputPet.lore.push(description);
+          } else if (spaces > 2) {
+            break;
+          }
+        }
+      } else {
+        if ((outputPet.lore.at(-1) ?? "").trim() !== "") {
+          outputPet.lore.push("");
+        }
 
-				outputPet.lore.push(
-					`§6Held item: ${pet.heldItem
-						.toLowerCase()
-						.split('_')
-						.map((a) => helper.titleCase(a))
-						.join(' ')}`
-				);
-				outputPet.lore.push(`§cCould not find held item in Not Enough Updates repository.`);
-			}
-		}
+        outputPet.lore.push(
+          `§6Held item: ${pet.heldItem
+            .toLowerCase()
+            .split("_")
+            .map((a) => helper.titleCase(a))
+            .join(" ")}`
+        );
+        outputPet.lore.push(`§cCould not find held item in Not Enough Updates repository.`);
+      }
+    }
 
-		if (outputPet.level.xp >= outputPet.level.xpMaxLevel) {
-			outputPet.lore.push(``, `§bMAX LEVEL`);
-		} else {
-			outputPet.lore.push(
-				`§7Progress to Level ${outputPet.level.level + 1}: §e${(outputPet.level.progress * 100).toFixed(1)}%`
-			);
+    if (outputPet.level.xp >= outputPet.level.xpMaxLevel) {
+      outputPet.lore.push(``, `§bMAX LEVEL`);
+    } else {
+      outputPet.lore.push(`§7Progress to Level ${outputPet.level.level + 1}: §e${(outputPet.level.progress * 100).toFixed(1)}%`);
 
-			const progress = Math.ceil(outputPet.level.progress * 20);
-			const numerator = Math.floor(outputPet.level.currentXp).toLocaleString();
-			const denominator = helper.formatNumber(outputPet.level.xpForNext);
+      const progress = Math.ceil(outputPet.level.progress * 20);
+      const numerator = Math.floor(outputPet.level.currentXp).toLocaleString();
+      const denominator = helper.formatNumber(outputPet.level.xpForNext);
 
-			outputPet.lore.push(
-				`§2${'-'.repeat(progress)}§f${'-'.repeat(20 - progress)} §e${numerator} §6/ §e${denominator}`
-			);
-		}
+      outputPet.lore.push(`§2${"-".repeat(progress)}§f${"-".repeat(20 - progress)} §e${numerator} §6/ §e${denominator}`);
+    }
 
-		outputPet.lore.push(
-			``,
-			`§7Total XP: §e${helper.formatNumber(outputPet.level.xp, 1)} §6/ §e${helper.formatNumber(outputPet.level.xpMaxLevel)} §6(100%)`,
-			`§7Candy Used: §e${pet.candyUsed ?? 0} §6/ §e10`
-		);
+    outputPet.lore.push(``, `§7Total XP: §e${helper.formatNumber(outputPet.level.xp, 1)} §6/ §e${helper.formatNumber(outputPet.level.xpMaxLevel)} §6(100%)`, `§7Candy Used: §e${pet.candyUsed ?? 0} §6/ §e10`);
 
-		if (outputPet.price && outputPet.price > 0) {
-			outputPet.lore.push(
-				``,
-				`§7Item Value: §6${Math.floor(outputPet.price).toLocaleString()} Coins §7(§6${helper.formatNumber(outputPet.price)}§7)`
-			);
-		}
+    if (outputPet.price && outputPet.price > 0) {
+      outputPet.lore.push(``, `§7Item Value: §6${Math.floor(outputPet.price).toLocaleString()} Coins §7(§6${helper.formatNumber(outputPet.price)}§7)`);
+    }
 
-		output.push(outputPet);
-	}
+    output.push(outputPet);
+  }
 
-	output = output.sort((a, b) => {
-		if (a.active === b.active) {
-			if (a.rarity == b.rarity) {
-				if (a.type == b.type) {
-					return a.level.level > b.level.level ? -1 : 1;
-				} else {
-					const maxPetA = output
-						.filter((x) => x.type == a.type && x.rarity == a.rarity)
-						.sort((x, y) => y.level.level - x.level.level) as ProcessedPet[];
+  output = output.sort((a, b) => {
+    if (a.active === b.active) {
+      if (a.rarity == b.rarity) {
+        if (a.type == b.type) {
+          return a.level.level > b.level.level ? -1 : 1;
+        } else {
+          const maxPetA = output.filter((x) => x.type == a.type && x.rarity == a.rarity).sort((x, y) => y.level.level - x.level.level) as ProcessedPet[];
 
-					const maxPetALevel = maxPetA.length > 0 ? maxPetA[0].level.level : 0;
+          const maxPetALevel = maxPetA.length > 0 ? maxPetA[0].level.level : 0;
 
-					const maxPetB = output
-						.filter((x) => x.type == b.type && x.rarity == b.rarity)
-						.sort((x, y) => y.level.level - x.level.level);
+          const maxPetB = output.filter((x) => x.type == b.type && x.rarity == b.rarity).sort((x, y) => y.level.level - x.level.level);
 
-					const maxPetBLevel = maxPetB.length > 0 ? maxPetB[0].level.level : 0;
+          const maxPetBLevel = maxPetB.length > 0 ? maxPetB[0].level.level : 0;
 
-					if (maxPetALevel && maxPetBLevel && maxPetALevel == maxPetBLevel) {
-						return a.type < b.type ? -1 : 1;
-					} else {
-						return maxPetALevel > maxPetBLevel ? -1 : 1;
-					}
-				}
-			} else {
-				return constants.RARITIES.indexOf(a.rarity) < constants.RARITIES.indexOf(b.rarity) ? 1 : -1;
-			}
-		}
+          if (maxPetALevel && maxPetBLevel && maxPetALevel == maxPetBLevel) {
+            return a.type < b.type ? -1 : 1;
+          } else {
+            return maxPetALevel > maxPetBLevel ? -1 : 1;
+          }
+        }
+      } else {
+        return constants.RARITIES.indexOf(a.rarity) < constants.RARITIES.indexOf(b.rarity) ? 1 : -1;
+      }
+    }
 
-		return a.active ? -1 : 1;
-	});
+    return a.active ? -1 : 1;
+  });
 
-	return output;
+  return output;
 }
 
 function getMissingPets(pets: ProcessedPet[], gameMode: string) {
-	const ownedPetTypes = pets.map((pet) => pet.type);
+  const ownedPetTypes = pets.map((pet) => pet.type);
 
-	const missingPets = [];
-	const maxPetIds = getMaxPetIds();
-	for (const pet of Object.keys(NEU_CONSTANTS.get('petnums'))) {
-		if (ownedPetTypes.includes(pet) || (pet === 'BINGO' && gameMode !== 'bingo')) {
-			continue;
-		}
+  const missingPets = [];
+  const maxPetIds = getMaxPetIds();
+  for (const pet of Object.keys(NEU_CONSTANTS.get("petnums"))) {
+    if (ownedPetTypes.includes(pet) || (pet === "BINGO" && gameMode !== "bingo")) {
+      continue;
+    }
 
-		const rarityIndex = maxPetIds[pet];
-		if (rarityIndex === undefined) {
-			continue;
-		}
+    const rarityIndex = maxPetIds[pet];
+    if (rarityIndex === undefined) {
+      continue;
+    }
 
-		missingPets.push({
-			type: pet,
-			active: false,
-			exp:
-				(NEU_CONSTANTS.get('pets').custom_pet_leveling[pet]?.pet_levels ?? NEU_CONSTANTS.get('pets').pet_levels).reduce(
-					(a: number, b: number) => a + b,
-					0
-				) * 100,
-			tier: constants.RARITIES[rarityIndex].toUpperCase(),
-			candyUsed: 0,
-			heldItem: null,
-			skin: null
-		});
-	}
+    missingPets.push({
+      type: pet,
+      active: false,
+      exp: (NEU_CONSTANTS.get("pets").custom_pet_leveling[pet]?.pet_levels ?? NEU_CONSTANTS.get("pets").pet_levels).reduce((a: number, b: number) => a + b, 0) * 100,
+      tier: constants.RARITIES[rarityIndex].toUpperCase(),
+      candyUsed: 0,
+      heldItem: null,
+      skin: null
+    });
+  }
 
-	return getProfilePets(missingPets as unknown as Pet[]);
+  return getProfilePets(missingPets as unknown as Pet[]);
 }
 
 function getPetScore(pets: ProcessedPet[]) {
-	const highestRarity = {} as Record<string, number>;
-	const highestLevel = {} as Record<string, number>;
+  const highestRarity = {} as Record<string, number>;
+  const highestLevel = {} as Record<string, number>;
 
-	const petData = NEU_CONSTANTS.get('pets');
-	for (const pet of pets) {
-		const rarityIndex = constants.RARITIES.indexOf(pet.rarity.toLowerCase()) + 1;
-		if (rarityIndex > (highestRarity[pet.type] ?? 0)) {
-			highestRarity[pet.type] = rarityIndex;
-		}
+  const petData = NEU_CONSTANTS.get("pets");
+  for (const pet of pets) {
+    const rarityIndex = constants.RARITIES.indexOf(pet.rarity.toLowerCase()) + 1;
+    if (rarityIndex > (highestRarity[pet.type] ?? 0)) {
+      highestRarity[pet.type] = rarityIndex;
+    }
 
-		if (pet.level.level > (highestLevel[pet.type] ?? 0)) {
-			const maxLevel = petData.custom_pet_leveling[pet.type]?.max_level ?? 100;
-			if (pet.level.level < maxLevel) {
-				continue;
-			}
+    if (pet.level.level > (highestLevel[pet.type] ?? 0)) {
+      const maxLevel = petData.custom_pet_leveling[pet.type]?.max_level ?? 100;
+      if (pet.level.level < maxLevel) {
+        continue;
+      }
 
-			highestLevel[pet.type] = 1;
-		}
-	}
+      highestLevel[pet.type] = 1;
+    }
+  }
 
-	const total =
-		Object.values(highestRarity).reduce((a, b) => a + b, 0) + Object.values(highestLevel).reduce((a, b) => a + b, 0);
+  const total = Object.values(highestRarity).reduce((a, b) => a + b, 0) + Object.values(highestLevel).reduce((a, b) => a + b, 0);
 
-	let bonus = {} as Record<string, number>;
-	for (const score of Object.keys(constants.PET_REWARDS).reverse()) {
-		if (parseInt(score) > total) {
-			continue;
-		}
+  let bonus = {} as Record<string, number>;
+  for (const score of Object.keys(constants.PET_REWARDS).reverse()) {
+    if (parseInt(score) > total) {
+      continue;
+    }
 
-		bonus = Object.assign({}, constants.PET_REWARDS[score as unknown as number]);
-		break;
-	}
+    bonus = Object.assign({}, constants.PET_REWARDS[score as unknown as number]);
+    break;
+  }
 
-	return {
-		amount: total,
-		stats: bonus
-	};
+  return {
+    amount: total,
+    stats: bonus
+  };
 }
 
 export async function getPets(userProfile: Member, items: ProcessedItem[], profile: Profile) {
-	const output = {} as Pets;
+  const output = {} as Pets;
 
-	const pets = _.clone(userProfile.pets_data?.pets ?? []);
-	if (items !== undefined) {
-		pets.push(...(items as unknown as Pet[]));
-	}
+  const pets = _.clone(userProfile.pets_data?.pets ?? []);
+  if (items !== undefined) {
+    pets.push(...(items as unknown as Pet[]));
+  }
 
-	if (userProfile.rift?.dead_cats?.montezuma !== undefined) {
-		const montezumaPet = userProfile.rift.dead_cats.montezuma;
-		montezumaPet.active = false;
+  if (userProfile.rift?.dead_cats?.montezuma !== undefined) {
+    const montezumaPet = userProfile.rift.dead_cats.montezuma;
+    montezumaPet.active = false;
 
-		pets.push(montezumaPet);
-	}
+    pets.push(montezumaPet);
+  }
 
-	if (pets.length === 0) {
-		return output;
-	}
+  if (pets.length === 0) {
+    return output;
+  }
 
-	for (const pet of pets) {
-		await getItemNetworth(pet, { cache: true, returnItemData: false });
-	}
+  for (const pet of pets) {
+    await getItemNetworth(pet, { cache: true, returnItemData: false });
+  }
 
-	output.pets = getProfilePets(pets);
-	output.missing = getMissingPets(output.pets, profile.game_mode);
+  output.pets = getProfilePets(pets);
+  output.missing = getMissingPets(output.pets, profile.game_mode);
 
-	const maxPetIds = getMaxPetIds();
-	output.amount = _.uniqBy(output.pets, 'type').length;
-	const totalPets =
-		profile.game_mode === 'bingo' ? Object.keys(maxPetIds) : Object.keys(maxPetIds).filter((pet) => pet !== 'BINGO');
-	output.total = totalPets.length;
+  const maxPetIds = getMaxPetIds();
+  output.amount = _.uniqBy(output.pets, "type").length;
+  const totalPets = profile.game_mode === "bingo" ? Object.keys(maxPetIds) : Object.keys(maxPetIds).filter((pet) => pet !== "BINGO");
+  output.total = totalPets.length;
 
-	output.amountSkins = _.uniqBy(output.pets, 'skin').length;
-	output.totalSkins = getPetSkins().length;
+  output.amountSkins = _.uniqBy(output.pets, "skin").length;
+  output.totalSkins = getPetSkins().length;
 
-	output.petScore = getPetScore(output.pets);
-	output.totalPetExp = output.pets.reduce((a, b) => a + b.level.xp, 0);
-	output.totalCandyUsed = output.pets.reduce((a, b) => a + b.candyUsed, 0);
+  output.petScore = getPetScore(output.pets);
+  output.totalPetExp = output.pets.reduce((a, b) => a + b.level.xp, 0);
+  output.totalCandyUsed = output.pets.reduce((a, b) => a + b.candyUsed, 0);
 
-	return output;
+  return output;
 }

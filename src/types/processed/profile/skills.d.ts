@@ -1,39 +1,39 @@
 export type Extra = {
-	type: string;
-	cap?: number;
+  type: string;
+  cap?: number;
 };
 
 export type Skill = {
-	xp: number;
-	level: number;
-	maxLevel: number;
-	xpCurrent: number;
-	xpForNext: number;
-	progress: number;
-	levelCap: number;
-	uncappedLevel: number;
-	levelWithProgress: number;
-	unlockableLevelWithProgress: number;
+  xp: number;
+  level: number;
+  maxLevel: number;
+  xpCurrent: number;
+  xpForNext: number;
+  progress: number;
+  levelCap: number;
+  uncappedLevel: number;
+  levelWithProgress: number;
+  unlockableLevelWithProgress: number;
 };
 
 export type Skills = {
-	skills: SkillsData;
-	disabled?: boolean;
-	totalSkillXp: number;
-	averageSkillLevel: number;
-	averageSkillLevelWithProgress: number;
+  skills: SkillsData;
+  disabled?: boolean;
+  totalSkillXp: number;
+  averageSkillLevel: number;
+  averageSkillLevelWithProgress: number;
 };
 
 export type SkillsData = {
-	fishing: Skill;
-	alchemy: Skill;
-	runecrafting: Skill;
-	mining: Skill;
-	farming: Skill;
-	enchanting: Skill;
-	taming: Skill;
-	foraging: Skill;
-	social: Skill;
-	carpentry: Skill;
-	combat: Skill;
+  fishing: Skill;
+  alchemy: Skill;
+  runecrafting: Skill;
+  mining: Skill;
+  farming: Skill;
+  enchanting: Skill;
+  taming: Skill;
+  foraging: Skill;
+  social: Skill;
+  carpentry: Skill;
+  combat: Skill;
 };
