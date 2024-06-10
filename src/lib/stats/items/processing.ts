@@ -10,7 +10,7 @@ import nbt, { parse } from "prismarine-nbt";
 import { v4 } from "uuid";
 import type { GemTier, Gemstone, Item, ProcessedItem } from "$types/stats";
 import type { StatsData } from "$types/processed/profile/stats";
-import { getUsername } from "$lib/lib";
+import { getUsername } from "$lib/server/lib";
 
 export function itemSorter(a: ProcessedItem, b: ProcessedItem) {
   if (a.rarity !== b.rarity) {

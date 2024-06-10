@@ -1,6 +1,6 @@
 import type { RequestHandler } from "./$types";
 import { json } from "@sveltejs/kit";
-import { fetchPlayer, getProfile } from "$lib/lib";
+import { fetchPlayer, getProfile } from "$lib/server/lib";
 import { getStats } from "$lib/stats";
 
 export const GET: RequestHandler = async ({ params }) => {
