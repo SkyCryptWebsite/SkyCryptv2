@@ -17,6 +17,9 @@ const config = {
 			$types: './src/types',
 			$db: './src/db',
 			$constants: './src/lib/constants'
+		},
+		csrf: {
+			checkOrigin: true
 		}
 	}
 };
