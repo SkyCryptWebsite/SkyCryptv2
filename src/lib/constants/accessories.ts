@@ -1,6 +1,6 @@
 // CREDITS: https://github.com/MattTheCuber (Modified)
 import type { SpecialAccessory, SpecialAccessoryConstant, allAccessories } from "$types/stats";
-import { ITEMS as ALL_ITEMS } from "./items";
+import { ITEMS as ALL_ITEMS } from "./update-items";
 
 let ITEMS = [] as allAccessories[];
 function getAccessories() {
