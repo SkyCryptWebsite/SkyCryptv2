@@ -1,3 +1,7 @@
+import type { DatabaseItem } from "$types/global";
+
+export const ITEMS = new Map<string, DatabaseItem>();
+
 export const RARITIES = ["common", "uncommon", "rare", "epic", "legendary", "mythic", "divine", "supreme", "special", "very_special", "admin"];
 
 export const RARITY_COLORS = {

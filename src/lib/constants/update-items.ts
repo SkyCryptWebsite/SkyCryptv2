@@ -1,7 +1,6 @@
 import type { DatabaseItem } from "$types/global";
+import { ITEMS } from "./items";
 import MONGO from "../server/db/mongo";
-
-export const ITEMS = new Map<string, DatabaseItem>();
 
 async function updateItems() {
   const items = await MONGO.collection("items").findOne({});
