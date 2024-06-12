@@ -1,5 +1,5 @@
 import type { Collection } from "$constants/collections";
-import MONGO from "../db/mongo";
+import MONGO from "$lib/server/db/mongo";
 
 export const COLLECTIONS = new Map<string, Collection>();
 
