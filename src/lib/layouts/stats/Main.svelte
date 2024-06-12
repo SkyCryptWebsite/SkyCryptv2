@@ -7,6 +7,7 @@
   import Weapons from "$lib/sections/stats/Weapons.svelte";
   import type { FullProfile } from "$lib/types/globals";
   import { setContext } from "svelte";
+  import Pets from "$lib/sections/stats/Pets.svelte";
 
   export let profile;
   export let profiles;
@@ -22,6 +23,7 @@
   <AdditionalStats />
   <Armor />
   <Weapons />
+  <Pets />
 </main>
 
 <svg xmlns="http://www.w3.org/2000/svg" height="0" width="0" style="position: fixed;">

@@ -7,7 +7,7 @@
 
   export let piece: Item;
 
-  const itemNameHtml = renderLore(piece.tag.display.Name ?? piece.display_name ?? "???");
+  const itemNameHtml = renderLore((piece.tag.display && piece.tag.display.Name) ?? piece.display_name ?? "???");
   const isMulticolor = (itemNameHtml.match(/<\/span>/g) || []).length > 1;
   const bgColor = getRarityClass(piece.rarity as string, "bg");
   const enchanted = isEnchanted(piece);
@@ -37,9 +37,12 @@
         </p>
       </div>
       <div class="p-6 font-semibold leading-snug">
-        {#each piece.tag.display.Lore as lore}
-          {@html renderLore(lore)}
-        {/each}
+        {#if piece.tag.display && piece.tag.display.Lore}
+          {#each piece.tag.display.Lore as lore}
+            {@html renderLore(lore)}
+          {/each}
+        {/if}
+        <!-- add else later -->
       </div>
     </Tooltip.Content>
   </Tooltip.Root>
