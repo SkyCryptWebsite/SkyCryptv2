@@ -5,15 +5,13 @@
   import Stats from "$lib/layouts/stats/Stats.svelte";
   import Armor from "$lib/sections/stats/Armor.svelte";
   import Weapons from "$lib/sections/stats/Weapons.svelte";
-  import type { FullProfile } from "$lib/types/globals";
   import { setContext } from "svelte";
   import Pets from "$lib/sections/stats/Pets.svelte";
+  import type { Stats as StatsType } from "$types/stats";
 
   export let profile;
-  export let profiles;
 
-  setContext<FullProfile>("profile", profile);
-  setContext<FullProfile[]>("profiles", profiles);
+  setContext<StatsType>("profile", profile);
 </script>
 
 <main class="mx-auto space-y-5 p-8">

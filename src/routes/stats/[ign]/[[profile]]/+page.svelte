@@ -5,12 +5,12 @@
   export let data: PageData;
 
   (async () => {
-    console.log((await data.user)?.profile);
+    console.log(await data.user);
   })();
 </script>
 
 {#await data.user then user}
-  {#if user && user.profile}
-    <Main profile={user.profile} profiles={user.profiles} />
+  {#if user && user.profiles}
+    <Main profile={user} />
   {/if}
 {/await}

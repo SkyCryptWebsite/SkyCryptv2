@@ -158,8 +158,11 @@ export type Items = {
     equipment: ProcessedItem[];
     stats: ItemStats;
   };
-  wardrobe: ProcessedItem[];
-  weapons: ProcessedItem[];
+  wardrobe: ProcessedItem[][];
+  weapons: {
+    weapons: ProcessedItem[];
+    highest_priority_weapon: ProcessedItem;
+  };
   farming_tools: ProcessedItem[];
   mining_tools: ProcessedItem[];
   fishing_tools: ProcessedItem[];
