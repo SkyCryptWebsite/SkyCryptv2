@@ -1,4 +1,3 @@
-import type { Profiles } from "$lib/types/globals";
 import type { PageServerLoad } from "./$types";
 
 const baseAPI = "http://localhost:5173/api/stats";
