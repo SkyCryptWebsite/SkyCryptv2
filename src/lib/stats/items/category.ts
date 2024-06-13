@@ -1,4 +1,4 @@
-import { itemSorter } from "$lib/stats/items/processing";
+import { itemSorter } from "$lib/server/stats/items/processing";
 import * as constants from "$constants/constants";
 import * as helper from "$lib/helper";
 import type { ProcessedItem } from "$types/stats";

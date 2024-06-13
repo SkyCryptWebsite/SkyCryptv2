@@ -1,6 +1,6 @@
 import * as constants from "$constants/constants";
 import * as helper from "$lib/helper";
-import { itemSorter } from "$lib/server/stats/processing";
+import { itemSorter } from "$lib/server/stats/items/processing";
 import type { Accessories, Accessory, AccessoryRarities, Member, ProcessedItem } from "$types/global";
 import { getMissingAccessories } from "$lib/stats/missing";
 

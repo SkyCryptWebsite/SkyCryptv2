@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
 import type { Items, Member, ProcessedItem } from "$types/global";
-import { processItems } from "$lib/stats/items/processing";
+import { processItems } from "$lib/server/stats/items/processing";
 import { getWardrobe } from "$lib/stats/items/wardrobe";
 import { getArmor } from "$lib/stats/items/armor";
 import { getEquipment } from "$lib/stats/items/equipment";

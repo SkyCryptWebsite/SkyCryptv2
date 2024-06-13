@@ -1,9 +1,10 @@
 import type { Collections, Member, Profile } from "$types/global";
 import * as constants from "$constants/constants";
+import { COLLECTIONS } from "$lib/server/constants/update-collections";
 
 export function getCollection(userProfile: Member, profile: Profile, collection: string) {
   let collectionData;
-  for (const value of constants.COLLECTIONS.values()) {
+  for (const value of COLLECTIONS.values()) {
     if (value.items === undefined || value.items.find((a) => a.id === collection) === undefined) {
       continue;
     }
@@ -44,7 +45,7 @@ export function getCollection(userProfile: Member, profile: Profile, collection:
 
 export function getCollections(userProfile: Member, profile: Profile) {
   const output = { categories: {} } as Collections;
-  for (const [category, categoryData] of constants.COLLECTIONS) {
+  for (const [category, categoryData] of COLLECTIONS) {
     output.categories[category] = {
       name: categoryData.name,
       texture: "/api/item/" + constants.COLLECTION_ICONS[category],
