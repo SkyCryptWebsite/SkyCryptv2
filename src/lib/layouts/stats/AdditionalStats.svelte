@@ -53,7 +53,7 @@
     </div>
   </AdditionStat>
   <AdditionStat text="Fairy Souls" data={`${profile.stats.fairySouls.found} / ${profile.stats.fairySouls.total}`} asterisk={true}>
-    {(profile.stats.fairySouls.found / profile.stats.fairySouls.total).toFixed(2)}% of fairy souls found.
+    {((profile.stats.fairySouls.found / profile.stats.fairySouls.total) * 100).toFixed(2)}% of fairy souls found.
   </AdditionStat>
   <!--
   <AdditionStat text="Senither Weight" data={numberFormat(profile.data.weight.senither.overall, defaultPattern)} asterisk={true}>
