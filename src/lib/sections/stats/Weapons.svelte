@@ -2,13 +2,12 @@
   import AdditionStat from "$lib/components/AdditionStat.svelte";
   import Item from "$lib/components/Item.svelte";
   import Items from "$lib/layouts/stats/Items.svelte";
-  import type { FullProfile, Item as ItemType } from "$lib/types/globals";
+  import type { Stats as StatsType } from "$types/stats";
   import { getContext } from "svelte";
 
-  const profile = getContext<FullProfile>("profile");
+  const profile = getContext<StatsType>("profile");
 
-  // @ts-ignore We're gonna need to fix these type errors later by redoing the types
-  const weapons = profile.data.items.weapons;
+  const weapons = profile.items.weapons;
 </script>
 
 <Items title="Weapons">

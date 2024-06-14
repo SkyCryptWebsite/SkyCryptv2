@@ -1,12 +1,12 @@
 <script lang="ts">
   import Item from "$lib/components/Item.svelte";
-  import type { Item as ItemType } from "$lib/types/globals";
+  import type { ProcessedItem } from "$types/global";
   import { Collapsible } from "bits-ui";
   import { writable } from "svelte/store";
   import { slide } from "svelte/transition";
 
-  export let firstWardrobeItem: ItemType | undefined;
-  export let wardrobeItems: ItemType[];
+  export let firstWardrobeItem: ProcessedItem | undefined;
+  export let wardrobeItems: ProcessedItem[];
 
   const expanded = writable<boolean>(false);
 </script>

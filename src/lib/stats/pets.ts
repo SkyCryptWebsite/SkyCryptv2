@@ -249,7 +249,7 @@ function getProfilePets(pets: Pet[]) {
           }
         }
       } else {
-        return constants.RARITIES.indexOf(a.rarity) < constants.RARITIES.indexOf(b.rarity) ? 1 : -1;
+        return constants.RARITIES.indexOf(a.rarity.toLowerCase()) < constants.RARITIES.indexOf(b.rarity.toLowerCase()) ? 1 : -1;
       }
     }
 

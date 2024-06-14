@@ -1,28 +1,27 @@
 <script lang="ts">
-    import AdditionStat from "$lib/components/AdditionStat.svelte";
-    import Item from "$lib/components/Item.svelte";
-    import Items from "$lib/layouts/stats/Items.svelte";
-    import type { FullProfile, Item as ItemType } from "$lib/types/globals";
-    import _ from "lodash";
-    import { getContext } from "svelte";
-    import { Collapsible } from "bits-ui";
-    import { RARITY_COLORS } from "$constants/items";
-    import { getRarityClass } from "$lib/tools";
-    import { cn } from "$lib/utils";
-    import { PET_REWARDS } from "$lib/constants/pets";
-    //import { formatNumber } from "$lib/helper";
-  
-    const profile = getContext<FullProfile>("profile");
-  
-    // @ts-ignore We're gonna need to fix these type errors later by redoing the types
-    const pets = profile.data.pets;
+  import AdditionStat from "$lib/components/AdditionStat.svelte";
+  import Item from "$lib/components/Item.svelte";
+  import Items from "$lib/layouts/stats/Items.svelte";
+  import type { Stats as StatsType } from "$types/stats";
+  import _ from "lodash";
+  import { getContext } from "svelte";
+  import { Collapsible } from "bits-ui";
+  import { RARITY_COLORS } from "$constants/items";
+  import { getRarityClass } from "$lib/tools";
+  import { cn } from "$lib/utils";
+  import { PET_REWARDS } from "$lib/constants/pets";
+  //import { formatNumber } from "$lib/helper";
+
+  const profile = getContext<StatsType>("profile");
+
+  const pets = profile.pets;
 </script>
 
 <Items title="Pets">
   <div slot="text">
-    <AdditionStat text="Unique Pets" data={`${pets.amount_pets} / ${pets.total_pets}`} />
-    <AdditionStat text="Unique Pet Skins" data={`${pets.amount_pet_skins} / ${pets.total_pet_skins}`} />
-    <AdditionStat text="Pet Score" data={`${pets.pet_score.total} (+${pets.pet_score.bonus.magic_find} MF) `} asterisk={true}>
+    <AdditionStat text="Unique Pets" data={`${pets.amount} / ${pets.total}`} />
+    <AdditionStat text="Unique Pet Skins" data={`${pets.amountSkins} / ${pets.totalSkins}`} />
+    <AdditionStat text="Pet Score" data={`${pets.petScore.amount} (+${pets.petScore.stats.magic_find} MF) `} asterisk={true}>
       <div class="max-w-xs space-y-2 font-bold">
         <h3 class="text-text/85">Pet score is calculated based on how many unique pets you have and the rarity of these pets.</h3>
         <br />
@@ -30,25 +29,25 @@
         <br />
         <table>
           {#each Object.entries(PET_REWARDS) as [score, data]}
-            <tr>
-              <tr><td>{score} Score: </td><td><span style="color: var(--§b)">+{data.magic_find} Magic Find</span>
-                
-                {#if data.magic_find === pets.pet_score.amount}
-                  <span style='color: var(--§5);'> «</span>
+            <tr> </tr><tr
+              ><td>{score} Score: </td><td
+                ><span style="color: var(--§b)">+{data.magic_find} Magic Find</span>
+
+                {#if data.magic_find === pets.petScore.amount}
+                  <span style="color: var(--§5);"> «</span>
                 {/if}
-  
-                </td>
+              </td>
             </tr>
           {/each}
         </table>
       </div>
     </AdditionStat>
-    <AdditionStat text="Total Candies Used" data={`${pets.total_candy_used}`} />
+    <AdditionStat text="Total Candies Used" data={`${pets.totalCandyUsed}`} />
     <!-- will format later on after we fix canvas errors -->
-    <AdditionStat text="Total Pet XP" data={`${pets.total_pet_xp}`} />
+    <AdditionStat text="Total Pet XP" data={`${pets.totalPetExp}`} />
   </div>
   <Items subtitle="Active Pet">
-    {@const activePet = pets.pets.find(pet => pet.active === true)}
+    {@const activePet = pets.pets.find((pet) => pet.active === true)}
     {#if activePet !== undefined}
       <div>
         <div class="flex items-center">
@@ -66,8 +65,9 @@
       </div>
     {/if}
   </Items>
-  {@const uniquePets = _.uniqBy(pets.pets, 'type')}
-  {@const otherPets = pets.pets.filter(pet => !uniquePets.includes(pet))}
+  {@const uniquePets = _.uniqBy(pets.pets, "type")}
+  {@const otherPets = pets.pets.filter((pet) => !uniquePets.includes(pet))}
+
   <Items subtitle="Other Pets">
     {#each uniquePets as pet}
       {#if !pet.active}

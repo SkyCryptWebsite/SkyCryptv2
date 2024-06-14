@@ -1,4 +1,4 @@
-import type { AccessoriesOutput, Items, MainStats, MiningStats, Rank, Skills } from "./global";
+import type { AccessoriesOutput, Items, MainStats, MiningStats, Pets, Rank, Skills } from "./global";
 import type { BestiaryStats } from "./processed/profile/bestiary";
 import type { Collections } from "./processed/profile/collections";
 import type { CrimsonIsle } from "./processed/profile/crimson_isle";
