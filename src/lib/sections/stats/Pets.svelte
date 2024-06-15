@@ -79,41 +79,43 @@
     {/each}
   </Items>
 
-  <div>
-    {#if otherPets.length > 0}
-      <Collapsible.Root>
-        <Collapsible.Trigger>
-          <h4 class="text-xl capitalize text-text">Show More Pets</h4>
-          <br />
-        </Collapsible.Trigger>
-        <Collapsible.Content>
-          <Items>
-            {#each otherPets as pet}
-              <div>
-                <Item piece={pet} />
-                <p class="mt-2 text-center">LVL {pet.level.level}</p>
-              </div>
-            {/each}
-          </Items>
-        </Collapsible.Content>
-      </Collapsible.Root>
-    {/if}
-    {#if pets.missing.length > 0}
-      <Collapsible.Root>
-        <Collapsible.Trigger>
-          <h4 class="text-xl capitalize text-text">Missing Pets</h4>
-          <br />
-        </Collapsible.Trigger>
-        <Collapsible.Content>
-          <Items>
-            {#each pets.missing as pet}
-              <div>
-                <Item piece={pet} />
-              </div>
-            {/each}
-          </Items>
-        </Collapsible.Content>
-      </Collapsible.Root>
-    {/if}
-  </div>
+  {#if otherPets.length > 0 || pets.missing.length > 0}
+    <div>
+      {#if otherPets.length > 0}
+        <Collapsible.Root>
+          <Collapsible.Trigger>
+            <h4 class="text-xl capitalize text-text">Show More Pets</h4>
+            <br />
+          </Collapsible.Trigger>
+          <Collapsible.Content>
+            <Items>
+              {#each otherPets as pet}
+                <div>
+                  <Item piece={pet} />
+                  <p class="mt-2 text-center">LVL {pet.level.level}</p>
+                </div>
+              {/each}
+            </Items>
+          </Collapsible.Content>
+        </Collapsible.Root>
+      {/if}
+      {#if pets.missing.length > 0}
+        <Collapsible.Root>
+          <Collapsible.Trigger>
+            <h4 class="text-xl capitalize text-text">Missing Pets</h4>
+            <br />
+          </Collapsible.Trigger>
+          <Collapsible.Content>
+            <Items>
+              {#each pets.missing as pet}
+                <div>
+                  <Item piece={pet} />
+                </div>
+              {/each}
+            </Items>
+          </Collapsible.Content>
+        </Collapsible.Root>
+      {/if}
+    </div>
+  {/if}
 </Items>
