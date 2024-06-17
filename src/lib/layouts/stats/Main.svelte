@@ -8,6 +8,7 @@
   import { setContext } from "svelte";
   import Pets from "$lib/sections/stats/Pets.svelte";
   import type { Stats as StatsType } from "$types/stats";
+  import Accessories from "$lib/sections/stats/Accessories.svelte";
 
   export let profile;
 
@@ -21,6 +22,7 @@
   <AdditionalStats />
   <Armor />
   <Weapons />
+  <Accessories />
   <Pets />
 </main>
 
