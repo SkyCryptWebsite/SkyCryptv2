@@ -3,7 +3,7 @@ import MONGO from "$lib/server/db/mongo";
 
 export const COLLECTIONS = new Map<string, Collection>();
 
-async function updateCollections() {
+export async function updateCollections() {
   const collections = await MONGO.collection("collections").findOne({});
   if (collections?.collections == null) {
     return;

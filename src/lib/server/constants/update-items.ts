@@ -2,7 +2,7 @@ import type { DatabaseItem } from "$types/global";
 import { ITEMS } from "$lib/constants/items";
 import MONGO from "$lib/server/db/mongo";
 
-async function updateItems() {
+export async function updateItems() {
   const items = await MONGO.collection("items").findOne({});
   if (items?.items === undefined) {
     return;
