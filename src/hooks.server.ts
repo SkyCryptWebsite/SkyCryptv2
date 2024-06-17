@@ -4,6 +4,8 @@ import { init } from "$lib/custom_resources";
 import { parseNEURepository } from "$lib/scripts/parseNEURepository";
 import { updateNotEnoughUpdatesRepository } from "$lib/scripts/updateNEURepository";
 import { getPrices } from "skyhelper-networth";
+import { updateItems } from "$lib/server/constants/update-items";
+import { updateCollections } from "$lib/server/constants/update-collections";
 
 init();
 
@@ -22,3 +24,6 @@ updateNotEnoughUpdatesRepository().then(() => {
 getPrices().then(() => {
   console.log("[NETWORTH] Prices sucessfully fetched!");
 });
+
+updateItems();
+updateCollections();
