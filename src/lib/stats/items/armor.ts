@@ -6,7 +6,7 @@ import { getStatsFromItems } from "./stats";
 export function getArmor(armor: ProcessedItem[]) {
   if (armor.some((a) => helper.getId(a) === "") === true) {
     return {
-      armor: armor.filter((a) => helper.getId(a) !== ""),
+      armor: armor.filter((a) => helper.getId(a) !== "").reverse(),
       stats: {}
     };
   }
@@ -22,7 +22,7 @@ export function getArmor(armor: ProcessedItem[]) {
     }
 
     return {
-      armor,
+      armor: armor.reverse(),
       stats: getStatsFromItems(armor),
       set_name: armorPiece.display_name,
       set_rarity: armorPiece.rarity
@@ -83,7 +83,7 @@ export function getArmor(armor: ProcessedItem[]) {
     }
 
     return {
-      armor,
+      armor: armor.reverse(),
       stats: getStatsFromItems(armor),
       set_name: outputName,
       set_rarity: constants.RARITIES[Math.max(...armor.map((a) => helper.rarityNameToInt(a.rarity)))]
@@ -91,7 +91,7 @@ export function getArmor(armor: ProcessedItem[]) {
   }
 
   return {
-    armor,
+    armor: armor.reverse(),
     stats: getStatsFromItems(armor)
   };
 }
