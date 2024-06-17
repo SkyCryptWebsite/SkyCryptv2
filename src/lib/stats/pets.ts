@@ -170,7 +170,7 @@ function getProfilePets(pets: Pet[]) {
     outputPet.display_name = replaceVariables(petData.displayname, data);
     outputPet.lore = [];
     for (const line of petData.lore) {
-      if (line === "§7§eRight-click to add this pet to") {
+      if (line.startsWith("§7§eRight-click to add this pet to")) {
         break;
       }
 
@@ -181,7 +181,7 @@ function getProfilePets(pets: Pet[]) {
       const petItem = NEU_ITEMS.get(pet.heldItem);
       if (petItem !== undefined) {
         let spaces = 0;
-        outputPet.lore.push(`§6Held item: ${petItem.displayname}`);
+        outputPet.lore.push(``, `§6Held item: ${petItem.displayname}`);
         for (const description of petItem.lore) {
           if (description.trim() === "") {
             spaces++;
@@ -224,6 +224,12 @@ function getProfilePets(pets: Pet[]) {
     if (outputPet.price && outputPet.price > 0) {
       outputPet.lore.push(``, `§7Item Value: §6${Math.floor(outputPet.price).toLocaleString()} Coins §7(§6${helper.formatNumber(outputPet.price)}§7)`);
     }
+
+    outputPet.lore = outputPet.lore.filter((line, index, self) => {
+      const prevLine = self[index - 1] || "";
+
+      return !(line.trim() === "" && prevLine.trim() === "");
+    });
 
     output.push(outputPet);
   }
