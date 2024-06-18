@@ -1,6 +1,6 @@
 import { RARITY_COLORS } from "$constants/items";
 import { STATS_DATA } from "$constants/stats";
-import { type Item, type ProcessedItem, type ProcessedPet } from "$types/global";
+import type { Item, ProcessedItem } from "$types/global";
 import type { ItemStats } from "$types/processed/profile/stats";
 
 /**
