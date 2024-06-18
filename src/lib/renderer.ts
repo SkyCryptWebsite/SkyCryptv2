@@ -19,7 +19,7 @@ import fs from "fs-extra";
 import * as helper from "./helper";
 import { getItemData } from "./helper/item";
 import minecraftData from "minecraft-data";
-const mcData = minecraftData("1.20.5");
+const mcData = minecraftData("1.8.9");
 
 const skewA = 26 / 45;
 const skewB = skewA * 2;

@@ -1,5 +1,5 @@
 import minecraftData from "minecraft-data";
-const mcData = minecraftData("1.20.5");
+const mcData = minecraftData("1.8.9");
 import fs from "node:fs";
 
 const files = fs.readdirSync("static/resourcepacks/Vanilla/assets/minecraft/mcpatcher/cit/textures/");

@@ -7,7 +7,7 @@ import util from "util";
 import _ from "lodash";
 import { createCanvas, loadImage, type Canvas } from "@napi-rs/canvas";
 import minecraftData from "minecraft-data";
-const mcData = minecraftData("1.20.5");
+const mcData = minecraftData("1.8.9");
 import UPNG from "upng-js";
 import RJSON from "relaxed-json";
 
@@ -347,8 +347,8 @@ async function loadResourcePacks() {
         }
 
         if (property == "items" || property == "matchItems") {
-          const itemName = properties[property].trim().replace("minecraft:", "");
-          const item = mcData.itemsByName[itemName] ?? mcData.blocksByName[itemName];
+          const itemName = properties[property].trim().replace("minecraft:", "").split(":")[0];
+          const item = mcData.itemsByName[itemName];
           if (item) {
             texture.id = item.id;
             texture.damage ??= 0;
@@ -684,7 +684,7 @@ function processTextures(outputTexture: Partial<OutputTexture>, textures: ItemTe
  * @returns {object} Item's texture
  */
 export function getTexture(item: ProcessedItem, { pack_ids = [], hotm = false }: getTextureParams = {}) {
-  const ifExists = skyblockIDListMap.has(getId(item)) === true || textureValueListMap.has(getTextureValue(item as Item)) === true || itemIdListMap.has(`${item.id}:${item.damage ?? 0}`) === true;
+  const ifExists = skyblockIDListMap.has(getId(item)) === true || textureValueListMap.has(getTextureValue(item as Item)) === true || itemIdListMap.has(`${item.id}:${item.Damage ?? 0}`) === true;
 
   if (ifExists === false && hotm === false) {
     return null;
@@ -727,7 +727,7 @@ export function getTexture(item: ProcessedItem, { pack_ids = [], hotm = false }:
     // 	outputTexture = processTextures(outputTexture, cachedHeadTexture, pack, item);
     // }
 
-    const cachedItemIdTextureMap = itemIdTextureMap.get(`${pack.config.id}:${item.id}:${item.damage ?? 0}`);
+    const cachedItemIdTextureMap = itemIdTextureMap.get(`${pack.config.id}:${item.id}:${item.Damage ?? 0}`);
     if (cachedItemIdTextureMap) {
       outputTexture = processTextures(outputTexture, cachedItemIdTextureMap, pack, item as Item);
     }

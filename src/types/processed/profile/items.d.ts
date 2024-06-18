@@ -52,7 +52,7 @@ export type ItemQuery = {
 
 export type ProcessedItem = {
   id: number;
-  damage: number;
+  Damage: number;
   Count: number;
   tag: {
     display: {
