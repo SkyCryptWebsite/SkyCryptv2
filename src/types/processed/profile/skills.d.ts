@@ -14,6 +14,7 @@ export type Skill = {
   uncappedLevel: number;
   levelWithProgress: number;
   unlockableLevelWithProgress: number;
+  rank?: number;
 };
 
 export type Skills = {

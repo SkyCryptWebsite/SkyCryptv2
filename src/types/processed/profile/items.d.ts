@@ -2,7 +2,7 @@ import type { ItemStats } from "./stats";
 
 export type Item = {
   id: number;
-  damage: number;
+  Damage: number;
   Count: number;
   tag: {
     ExtraAttributes: {
@@ -11,6 +11,7 @@ export type Item = {
     };
     display?: {
       Name: string;
+      Lore?: string[];
     };
     SkullOwner?: {
       Properties: {
@@ -19,11 +20,13 @@ export type Item = {
         }[];
       };
     };
+    ench?: string[];
   };
   texture?: string;
   texture_path?: string;
   material?: string;
   itemId?: string;
+  glowing?: boolean;
 };
 
 export type DatabaseItem = {
@@ -89,6 +92,7 @@ export type ProcessedItem = {
         }[];
       };
     };
+    ench?: string[];
   };
   extra: {
     hpbs?: number;

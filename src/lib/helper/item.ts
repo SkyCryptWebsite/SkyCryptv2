@@ -14,7 +14,7 @@ import type { DatabaseItem, Item, ItemQuery } from "$types/stats";
  */
 export async function getItemData(query: ItemQuery) {
   query = Object.assign({ skyblockId: undefined, id: undefined, name: undefined, damage: undefined }, query);
-  const item: Item = { id: -1, damage: 0, Count: 1, tag: { ExtraAttributes: {} } };
+  const item: Item = { id: -1, Damage: 0, Count: 1, tag: { ExtraAttributes: {} } };
   let dbItem: DatabaseItem = {};
 
   if (query.skyblockId) {
@@ -53,7 +53,7 @@ export async function getItemData(query: ItemQuery) {
   }
 
   if ("damage" in dbItem) {
-    item.damage = query.damage ?? (dbItem.damage as number);
+    item.Damage = query.damage ?? (dbItem.damage as number);
   }
 
   if ("name" in dbItem) {

@@ -10,6 +10,6 @@ export type StatsData = {
   };
 };
 
-type ItemStats = {
+export type ItemStats = {
   [key in StatName]?: number;
 };

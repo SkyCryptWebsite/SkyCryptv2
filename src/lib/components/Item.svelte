@@ -12,7 +12,7 @@
   const itemNameHtml = renderLore(itemName);
   const isMulticolor = (itemNameHtml.match(/<\/span>/g) || []).length > 1;
   const bgColor = getRarityClass(piece.rarity.toLowerCase() as string, "bg");
-  const enchanted = isEnchanted(piece);
+  const enchanted = isEnchanted(piece as ProcessedItem);
 
   const processedItem = piece as ProcessedItem;
   const processedPet = piece as ProcessedPet;

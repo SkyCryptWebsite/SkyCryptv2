@@ -1,6 +1,7 @@
 import { RARITY_COLORS } from "$constants/items";
 import { STATS_DATA } from "$constants/stats";
-import type { Item, ItemStats } from "$lib/types/globals";
+import { type Item, type ProcessedItem, type ProcessedPet } from "$types/global";
+import type { ItemStats } from "$types/processed/profile/stats";
 
 /**
  * Removes Minecraft formatting codes from a string
@@ -18,13 +19,13 @@ export function removeFormatting(string: string): string {
  */
 export function getStatsFromItem(piece: Item): ItemStats {
   const regex = /^([A-Za-z ]+): ([+-]([0-9]+(?:,[0-9]{3})*(?:\.[0-9]{0,2})?))/;
-  const stats = {};
+  const stats = {} as ItemStats;
 
   if (!piece) {
     return stats;
   }
 
-  const lore = (piece.tag.display.Lore || []).map((line) => removeFormatting(line));
+  const lore = (piece.tag.display?.Lore || []).map((line) => removeFormatting(line));
 
   for (const line of lore) {
     const match = regex.exec(line);
@@ -37,8 +38,7 @@ export function getStatsFromItem(piece: Item): ItemStats {
     const statValue = parseFloat(match[2].replace(/,/g, ""));
 
     if (statName) {
-      stats[statName] ??= 0;
-      stats[statName] += statValue;
+      stats[statName] = (stats[statName] || 0) + statValue;
     }
   }
 
@@ -99,7 +99,7 @@ export function getRarityClass(rarity: string, type: "bg" | "text"): string {
  * @param {Item} item The item to check
  * @returns  {boolean} Whether the item is enchanted
  */
-export function isEnchanted(item: Item): boolean {
+export function isEnchanted(item: ProcessedItem): boolean {
   // heads
   if ([397].includes(item.id)) {
     return false;

@@ -1,14 +1,14 @@
 <script lang="ts">
   import { formatNumber } from "$lib/tools";
-  import type { Level } from "$lib/types/globals";
   import { cn, flyAndScale } from "$lib/utils";
+  import type { Skill } from "$types/global";
   import { Avatar, Progress, Tooltip } from "bits-ui";
   import BarChartHorizontal from "lucide-svelte/icons/bar-chart-horizontal";
   import { format } from "numerable";
   import { createHover } from "svelte-interactions";
 
   export let skill: string;
-  export let skillData: Level;
+  export let skillData: Skill;
 
   let className: string | null | undefined = undefined;
   export { className as class };
@@ -33,7 +33,7 @@
       <Tooltip.Arrow />
       <div class="text-lg font-semibold text-text">
         <span class="text-text/80">Rank:</span>
-        {`#${skillData.rank}`}
+        {`#${skillData.rank ?? "N/A"}`}
       </div>
     </Tooltip.Content>
   </Tooltip.Root>

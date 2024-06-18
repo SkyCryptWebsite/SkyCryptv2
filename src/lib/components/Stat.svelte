@@ -1,5 +1,4 @@
 <script lang="ts">
-  import type { StatName } from "$lib/types/globals";
   import { cn, flyAndScale } from "$lib/utils";
   import { Tooltip } from "bits-ui";
   import { format } from "numerable";
@@ -10,7 +9,7 @@
   let className: string | null | undefined = undefined;
   export { className as class };
 
-  const statIcons: Record<StatName, { icon: string; percent: boolean; color: string }> = {
+  const statIcons: Record<string, { icon: string; percent: boolean; color: string }> = {
     health: {
       icon: "❤",
       percent: false,

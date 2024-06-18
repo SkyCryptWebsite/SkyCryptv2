@@ -148,14 +148,12 @@ export async function getMissingAccessories(items: Accessories, userProfile: Mem
       item.tag.ExtraAttributes ??= {};
       item.tag.ExtraAttributes.id ??= item.id;
       item.Damage ??= item.damage;
-      item.id = item.item_id;
+      // item.id ??= item.item_id;
 
       helper.applyResourcePack(item, packs);
     }
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    output[key].sort((a: ProcessedItem, b: ProcessedItem) => {
+    (output[key as keyof typeof output] as ProcessedItem[]).sort((a: ProcessedItem, b: ProcessedItem) => {
       const aPrice = a.extra?.price || 0;
       const bPrice = b.extra?.price || 0;
 

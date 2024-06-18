@@ -1,6 +1,9 @@
 import { MAX_ENCHANTS } from "$constants/enchantments";
-import type { ColorCode, FormatCode } from "$lib/types/globals";
 import { format as timeFormat } from "numerable";
+
+type ColorCode = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "a" | "b" | "c" | "d" | "e" | "f";
+type FormatCode = "k" | "l" | "m" | "n" | "o";
+
 /**
  * @param {number|string} number the number to be formatted
  *
