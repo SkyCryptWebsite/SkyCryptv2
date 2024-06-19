@@ -77,20 +77,21 @@ export async function getUUID(paramPlayer: string) {
   return null;
 }
 
-export async function getUsername(paramPlaer: string) {
-  if (isPlayer(paramPlaer)) {
-    return paramPlaer;
+export async function getUsername(paramPlayer: string, options = { cache: false }) {
+  if (isPlayer(paramPlayer) && isUUID(paramPlayer) === false) {
+    return paramPlayer;
   }
 
-  const username = await REDIS.get(`USERNAME:${paramPlaer}`);
-  if (username) {
-    return username;
+  const username = await REDIS.get(`USERNAME:${paramPlayer}`);
+  if (username || options.cache) {
+    return username ?? paramPlayer;
   }
 
-  const data = await resolveUsernameOrUUID(paramPlaer);
+  const data = await resolveUsernameOrUUID(paramPlayer);
   if (data.name) {
     // 24 hours
-    REDIS.SETEX(`USERNAME:${paramPlaer}`, 60 * 60 * 24, data.name);
+    REDIS.SETEX(`UUID:${data.name}`, 60 * 60 * 24, paramPlayer);
+    REDIS.SETEX(`USERNAME:${paramPlayer}`, 60 * 60 * 24, data.name);
     return data.name;
   }
 

@@ -15,6 +15,7 @@ export type Minions = {
 
 export type MinionCategory = {
   minions: Minion[];
+  texture: string;
   totalMinions: number;
   maxedMinions: number;
   totalTiers: number;

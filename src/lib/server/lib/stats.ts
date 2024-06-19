@@ -6,12 +6,13 @@ import { getProfiles } from "$lib/server/lib";
 const getAccessories = stats.getAccessories;
 const getPets = stats.getPets;
 const getMainStats = stats.getMainStats;
+const getCollections = stats.getCollections;
 
 export async function getStats(profile: Profile, player: Player): Promise<Stats> {
   const userProfile = profile.members[profile.uuid];
 
   const items = await stats.getItems(userProfile);
-  const [profiles, mainStats, accessories, pets] = await Promise.all([
+  const [profiles, mainStats, accessories, pets, collections] = await Promise.all([
     getProfiles(profile.uuid),
     getMainStats(userProfile, profile, items),
     getAccessories(
@@ -24,7 +25,8 @@ export async function getStats(profile: Profile, player: Player): Promise<Stats>
         .map((i) => i.containsItems ?? [])
         .flat()
     ),
-    getPets(userProfile, items.pets, profile)
+    getPets(userProfile, items.pets, profile),
+    getCollections(userProfile, profile)
   ]);
 
   return {
@@ -51,7 +53,7 @@ export async function getStats(profile: Profile, player: Player): Promise<Stats>
     dungeons: stats.getDungeons(userProfile),
     minions: stats.getMinions(profile),
     bestiary: stats.getBestiary(userProfile),
-    collections: stats.getCollections(userProfile, profile),
+    collections: collections,
     crimson_isle: stats.getCrimsonIsle(userProfile),
     rift: stats.getRift(userProfile),
     misc: stats.getMisc(userProfile, profile, player)

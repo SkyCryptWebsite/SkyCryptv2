@@ -25,6 +25,7 @@ export function getMinions(profile: Profile) {
   for (const category in constants.MINIONS) {
     output.minions[category as MinionCategoryType] = {
       minions: [],
+      texture: constants.CATEGORY_ICONS[category as MinionCategoryType],
       totalMinions: 0,
       maxedMinions: 0,
       totalTiers: 0,
