@@ -1,15 +1,14 @@
 <script lang="ts">
+  import { RARITY_COLORS } from "$constants/items";
   import AdditionStat from "$lib/components/AdditionStat.svelte";
+  import Bonus from "$lib/components/Bonus.svelte";
   import Item from "$lib/components/Item.svelte";
+  import { PET_REWARDS } from "$lib/constants/pets";
   import Items from "$lib/layouts/stats/Items.svelte";
   import type { Stats as StatsType } from "$types/stats";
+  import { Collapsible } from "bits-ui";
   import _ from "lodash";
   import { getContext } from "svelte";
-  import { Collapsible } from "bits-ui";
-  import { RARITY_COLORS } from "$constants/items";
-  import { getRarityClass } from "$lib/tools";
-  import { cn } from "$lib/utils";
-  import { PET_REWARDS } from "$lib/constants/pets";
   //import { formatNumber } from "$lib/helper";
 
   const profile = getContext<StatsType>("profile");
@@ -57,11 +56,7 @@
             <h4 class="text-xl capitalize text-text">Level {activePet.level.level}</h4>
           </div>
         </div>
-        <p class="mt-3 space-x-0.5 capitalize text-text/60">
-          <span>Bonus:</span>
-          <!-- TODO: Add bonus -->
-          <span class={cn(getRarityClass(activePet.rarity ?? "common", "text"))}>TODO: Add bonus</span>
-        </p>
+        <Bonus stats={activePet.stats} class="mt-3" />
       </div>
     {/if}
   </Items>
