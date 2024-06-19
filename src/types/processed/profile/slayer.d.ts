@@ -1,10 +1,10 @@
-export type Slayer = {
-  data: Record<string, SlayerData>;
+export type SlayerData = {
+  data: Record<string, SlayerInfo>;
   stats: Record<string, number>;
   totalSlayerExp: number;
 };
 
-export type SlayerData = {
+export type SlayerInfo = {
   name: string;
   texture: string;
   kills: Record<string, number>;

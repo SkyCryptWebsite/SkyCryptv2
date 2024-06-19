@@ -1,3 +1,5 @@
+import type { Skill } from "./skills";
+
 export type DungeonsStats = {
   level: Skill;
   classes: {
