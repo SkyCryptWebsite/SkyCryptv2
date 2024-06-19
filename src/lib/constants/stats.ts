@@ -8,7 +8,7 @@ export const STATS_DATA: StatsData = {
     nameTiny: "HP",
     symbol: "❤",
     suffix: "",
-    color: "c"
+    color: "text-minecraft-c"
   },
   defense: {
     name: "Defense",
@@ -17,7 +17,7 @@ export const STATS_DATA: StatsData = {
     nameTiny: "Def",
     symbol: "❈",
     suffix: "",
-    color: "a"
+    color: "text-minecraft-a"
   },
   strength: {
     name: "Strength",
@@ -26,7 +26,7 @@ export const STATS_DATA: StatsData = {
     nameTiny: "Str",
     symbol: "❁",
     suffix: "",
-    color: "c"
+    color: "text-minecraft-c"
   },
   speed: {
     name: "Speed",
@@ -35,7 +35,7 @@ export const STATS_DATA: StatsData = {
     nameTiny: "Spd",
     symbol: "✦",
     suffix: "",
-    color: "f"
+    color: "text-minecraft-f"
   },
   crit_chance: {
     name: "Crit Chance",
@@ -44,7 +44,7 @@ export const STATS_DATA: StatsData = {
     nameTiny: "CC",
     symbol: "☣",
     suffix: "%",
-    color: "9"
+    color: "text-minecraft-9"
   },
   crit_damage: {
     name: "Crit Damage",
@@ -53,7 +53,7 @@ export const STATS_DATA: StatsData = {
     nameTiny: "CD",
     symbol: "☠",
     suffix: "%",
-    color: "9"
+    color: "text-minecraft-9"
   },
   intelligence: {
     name: "Intelligence",
@@ -62,7 +62,7 @@ export const STATS_DATA: StatsData = {
     nameTiny: "Int",
     symbol: "✎",
     suffix: "",
-    color: "b"
+    color: "text-minecraft-b"
   },
   bonus_attack_speed: {
     name: "Bonus Attack Speed",
@@ -71,7 +71,7 @@ export const STATS_DATA: StatsData = {
     nameTiny: "Atk",
     symbol: "⚔",
     suffix: "%",
-    color: "e"
+    color: "text-minecraft-e"
   },
   sea_creature_chance: {
     name: "Sea Creature Chance",
@@ -80,7 +80,7 @@ export const STATS_DATA: StatsData = {
     nameTiny: "SCC",
     symbol: "α",
     suffix: "%",
-    color: "3"
+    color: "text-minecraft-3"
   },
   magic_find: {
     name: "Magic Find",
@@ -89,7 +89,7 @@ export const STATS_DATA: StatsData = {
     nameTiny: "MF",
     symbol: "✯",
     suffix: "",
-    color: "b"
+    color: "text-minecraft-b"
   },
   pet_luck: {
     name: "Pet Luck",
@@ -98,7 +98,7 @@ export const STATS_DATA: StatsData = {
     nameTiny: "PL",
     symbol: "♣",
     suffix: "",
-    color: "d"
+    color: "text-minecraft-d"
   },
   true_defense: {
     name: "True Defense",
@@ -107,7 +107,7 @@ export const STATS_DATA: StatsData = {
     nameTiny: "TD",
     symbol: "❂",
     suffix: "",
-    color: "f"
+    color: "text-minecraft-f"
   },
   ferocity: {
     name: "Ferocity",
@@ -116,7 +116,7 @@ export const STATS_DATA: StatsData = {
     nameTiny: "Frc",
     symbol: "⫽",
     suffix: "",
-    color: "c"
+    color: "text-minecraft-c"
   },
   ability_damage: {
     name: "Ability Damage",
@@ -125,7 +125,7 @@ export const STATS_DATA: StatsData = {
     nameTiny: "AD",
     symbol: "๑",
     suffix: "%",
-    color: "c"
+    color: "text-minecraft-c"
   },
   mining_speed: {
     name: "Mining Speed",
@@ -134,7 +134,7 @@ export const STATS_DATA: StatsData = {
     nameTiny: "MngSpd",
     symbol: "⸕",
     suffix: "",
-    color: "6"
+    color: "text-minecraft-6"
   },
   mining_fortune: {
     name: "Mining Fortune",
@@ -143,7 +143,7 @@ export const STATS_DATA: StatsData = {
     nameTiny: "MngFrt",
     symbol: "☘",
     suffix: "",
-    color: "6"
+    color: "text-minecraft-6"
   },
   farming_fortune: {
     name: "Farming Fortune",
@@ -152,7 +152,7 @@ export const STATS_DATA: StatsData = {
     nameTiny: "FrmFrt",
     symbol: "☘",
     suffix: "",
-    color: "6"
+    color: "text-minecraft-6"
   },
   foraging_fortune: {
     name: "Foraging Fortune",
@@ -161,7 +161,7 @@ export const STATS_DATA: StatsData = {
     nameTiny: "FrgFrt",
     symbol: "☘",
     suffix: "",
-    color: "6"
+    color: "text-minecraft-6"
   },
   pristine: {
     name: "Pristine",
@@ -170,7 +170,7 @@ export const STATS_DATA: StatsData = {
     nameTiny: "Prs",
     symbol: "✧",
     suffix: "",
-    color: "5"
+    color: "text-minecraft-5"
   },
   fishing_speed: {
     name: "Fishing Speed",
@@ -179,7 +179,7 @@ export const STATS_DATA: StatsData = {
     nameTiny: "FS",
     symbol: "☂",
     suffix: "",
-    color: "b"
+    color: "text-minecraft-b"
   },
   breaking_power: {
     name: "Breaking Power",
@@ -188,7 +188,7 @@ export const STATS_DATA: StatsData = {
     nameTiny: "BP",
     symbol: "Ⓟ",
     suffix: "",
-    color: "2"
+    color: "text-minecraft-2"
   },
   health_regen: {
     name: "Health Regen",
@@ -197,7 +197,7 @@ export const STATS_DATA: StatsData = {
     nameTiny: "HPR",
     symbol: "❣",
     suffix: "",
-    color: "c"
+    color: "text-minecraft-c"
   },
   vitality: {
     name: "Vitality",
@@ -206,7 +206,7 @@ export const STATS_DATA: StatsData = {
     nameTiny: "Vit",
     symbol: "♨",
     suffix: "",
-    color: "5"
+    color: "text-minecraft-5"
   },
   mending: {
     name: "Mending",
@@ -215,7 +215,7 @@ export const STATS_DATA: StatsData = {
     nameTiny: "Mend",
     symbol: "☄",
     suffix: "",
-    color: "a"
+    color: "text-minecraft-a"
   },
   mana_regen: {
     name: "Mana Regen",
@@ -224,7 +224,7 @@ export const STATS_DATA: StatsData = {
     nameTiny: "MPR",
     symbol: "🗲",
     suffix: "",
-    color: "b"
+    color: "text-minecraft-b"
   },
   rift_time: {
     name: "Rift Time",
@@ -233,7 +233,7 @@ export const STATS_DATA: StatsData = {
     nameTiny: "RT",
     symbol: "ф",
     suffix: "",
-    color: "a"
+    color: "text-minecraft-a"
   },
   alchemy_wisdom: {
     name: "Alchemy Wisdom",
@@ -242,7 +242,7 @@ export const STATS_DATA: StatsData = {
     nameTiny: "AW",
     symbol: "☯",
     suffix: "",
-    color: "3"
+    color: "text-minecraft-3"
   },
   carpentry_wisdom: {
     name: "Carpentry Wisdom",
@@ -251,7 +251,7 @@ export const STATS_DATA: StatsData = {
     nameTiny: "CW",
     symbol: "☯",
     suffix: "",
-    color: "3"
+    color: "text-minecraft-3"
   },
   combat_wisdom: {
     name: "Combat Wisdom",
@@ -260,7 +260,7 @@ export const STATS_DATA: StatsData = {
     nameTiny: "CW",
     symbol: "☯",
     suffix: "",
-    color: "3"
+    color: "text-minecraft-3"
   },
   enchanting_wisdom: {
     name: "Enchanting Wisdom",
@@ -269,7 +269,7 @@ export const STATS_DATA: StatsData = {
     nameTiny: "EW",
     symbol: "☯",
     suffix: "",
-    color: "3"
+    color: "text-minecraft-3"
   },
   farming_wisdom: {
     name: "Farming Wisdom",
@@ -278,7 +278,7 @@ export const STATS_DATA: StatsData = {
     nameTiny: "FW",
     symbol: "☯",
     suffix: "",
-    color: "3"
+    color: "text-minecraft-3"
   },
   fishing_wisdom: {
     name: "Fishing Wisdom",
@@ -287,7 +287,7 @@ export const STATS_DATA: StatsData = {
     nameTiny: "FW",
     symbol: "☯",
     suffix: "",
-    color: "3"
+    color: "text-minecraft-3"
   },
   foraging_wisdom: {
     name: "Foraging Wisdom",
@@ -296,7 +296,7 @@ export const STATS_DATA: StatsData = {
     nameTiny: "FW",
     symbol: "☯",
     suffix: "",
-    color: "3"
+    color: "text-minecraft-3"
   },
   mining_wisdom: {
     name: "Mining Wisdom",
@@ -305,7 +305,7 @@ export const STATS_DATA: StatsData = {
     nameTiny: "MW",
     symbol: "☯",
     suffix: "",
-    color: "3"
+    color: "text-minecraft-3"
   },
   runecrafting_wisdom: {
     name: "Runecrafting Wisdom",
@@ -314,7 +314,7 @@ export const STATS_DATA: StatsData = {
     nameTiny: "RW",
     symbol: "☯",
     suffix: "",
-    color: "3"
+    color: "text-minecraft-3"
   },
   social_wisdom: {
     name: "Social Wisdom",
@@ -323,7 +323,7 @@ export const STATS_DATA: StatsData = {
     nameTiny: "SW",
     symbol: "☯",
     suffix: "",
-    color: "3"
+    color: "text-minecraft-3"
   },
   taming_wisdom: {
     name: "Taming Wisdom",
@@ -332,7 +332,7 @@ export const STATS_DATA: StatsData = {
     nameTiny: "TW",
     symbol: "☯",
     suffix: "",
-    color: "3"
+    color: "text-minecraft-3"
   },
   bonus_pest_chance: {
     name: "Bonus Pest Chance",
@@ -341,7 +341,7 @@ export const STATS_DATA: StatsData = {
     nameTiny: "BPC",
     symbol: "ൠ",
     suffix: "",
-    color: "2"
+    color: "text-minecraft-2"
   },
   swing_range: {
     name: "Swing Range",
@@ -350,7 +350,7 @@ export const STATS_DATA: StatsData = {
     nameTiny: "SR",
     symbol: "Ⓢ",
     suffix: "",
-    color: "e"
+    color: "text-minecraft-e"
   },
   cold_resistence: {
     name: "Cold Resistence",
@@ -359,7 +359,7 @@ export const STATS_DATA: StatsData = {
     nameTiny: "CR",
     symbol: "❄",
     suffix: "",
-    color: "b"
+    color: "text-minecraft-b"
   }
 };
 
