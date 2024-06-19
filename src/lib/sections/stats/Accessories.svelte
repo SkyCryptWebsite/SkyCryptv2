@@ -1,11 +1,12 @@
 <script lang="ts">
+  import { RARITY_COLORS } from "$constants/items";
   import AdditionStat from "$lib/components/AdditionStat.svelte";
+  import Bonus from "$lib/components/Bonus.svelte";
   import Item from "$lib/components/Item.svelte";
   import Items from "$lib/layouts/stats/Items.svelte";
   import type { Stats as StatsType } from "$types/stats";
-  import { getContext } from "svelte";
-  import { RARITY_COLORS } from "$constants/items";
   import { Collapsible } from "bits-ui";
+  import { getContext } from "svelte";
 
   const profile = getContext<StatsType>("profile");
 
@@ -127,8 +128,11 @@
           {/if}
         {/each}
       </Items>
-      <p class="space-x-0.5 font-bold capitalize leading-6 text-text/60">Bonus: TODO: Add Enrichment</p>
-      <p class="space-x-0.5 font-bold capitalize leading-6 text-text/60">Bonus: TODO: Add bonus</p>
+      <p class="space-x-0.5 font-bold capitalize leading-6">
+        <span class="text-text/60">Enrichments: </span>
+        <span class="text-text">{accessories.enrichments.missing}× Missing Enrichment! </span>
+      </p>
+      <Bonus stats={accessories.stats} />
       <br />
       <Items subtitle="Inactive Accessories">
         {#each accessories.accessories as accessory}

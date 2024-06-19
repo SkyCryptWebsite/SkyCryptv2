@@ -1,10 +1,11 @@
 <script lang="ts">
+  import Bonus from "$lib/components/Bonus.svelte";
   import Item from "$lib/components/Item.svelte";
   import Wardrobe from "$lib/components/Wardrobe.svelte";
   import Items from "$lib/layouts/stats/Items.svelte";
   import { getRarityClass } from "$lib/tools";
-  import type { Stats as StatsType } from "$types/stats";
   import { cn } from "$lib/utils";
+  import type { Stats as StatsType } from "$types/stats";
   import { getContext } from "svelte";
 
   const profile = getContext<StatsType>("profile");
@@ -21,28 +22,17 @@
     <span>Set:</span>
     <span class={cn(getRarityClass(armor.set_rarity ?? "", "text"))}>{armor.set_name}</span>
   </p>
-
   {#each armor.armor as piece}
     <Item {piece} />
   {/each}
-
-  <p slot="info" class="space-x-0.5 font-bold capitalize leading-6 text-text/60">
-    <span>Bonus:</span>
-    <!-- TODO: Add bonus -->
-    <span class={cn(getRarityClass(armor.set_rarity ?? "", "text"))}>TODO: Add bonus</span>
-  </p>
+  <Bonus slot="info" stats={armor.stats} />
 </Items>
 
 <Items subtitle="Equipment">
   {#each equipment.equipment as piece}
     <Item {piece} />
   {/each}
-
-  <p slot="info" class="space-x-0.5 capitalize text-text/60">
-    <span>Bonus:</span>
-    <!-- TODO: Add bonus -->
-    <span class={cn(getRarityClass(armor.set_rarity ?? "", "text"))}>TODO: Add bonus</span>
-  </p>
+  <Bonus slot="info" stats={equipment.stats} />
 </Items>
 
 <Items subtitle="Wardrobe">
