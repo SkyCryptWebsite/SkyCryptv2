@@ -65,20 +65,16 @@ export async function getAccessories(userProfile: Member, armor: ProcessedItem[]
     // mark accessory inactive if player has two exactly same accessories
     accessories.map((a) => {
       if (helper.getId(a) === helper.getId(insertAccessory)) {
-        insertAccessory.isInactive = true;
+        insertAccessory.isInactive = false;
+        insertAccessory.isUnique = true;
         a.isInactive = true;
+        a.isUnique = false;
 
-        // give accessories with higher rarity priority, mark lower rarity as inactive
         if (constants.RARITIES.indexOf(a.rarity) > constants.RARITIES.indexOf(insertAccessory.rarity)) {
           a.isInactive = false;
           a.isUnique = true;
           insertAccessory.isUnique = false;
           insertAccessory.isInactive = true;
-        } else {
-          insertAccessory.isInactive = true;
-          insertAccessory.isUnique = false;
-          a.isInactive = true;
-          a.isUnique = false;
         }
       }
     });
