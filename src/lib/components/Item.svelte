@@ -41,7 +41,7 @@
           {@html isMulticolor ? itemNameHtml : removeFormatting(itemNameHtml)}
         </p>
       </div>
-      <div class="p-6 font-semibold leading-snug">
+      <div class="nice-colors-auto p-6 font-semibold leading-snug">
         {#if processedItem.tag?.display?.Lore}
           {#each processedItem.tag.display.Lore as lore}
             {@html renderLore(lore)}
