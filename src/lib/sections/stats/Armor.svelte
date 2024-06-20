@@ -36,7 +36,7 @@
 </Items>
 
 <Items subtitle="Wardrobe">
-  {#each firstWardrobeItems as firstWardrobeItem, i}
-    <Wardrobe {firstWardrobeItem} wardrobeItems={wardrobe[i]} />
+  {#each firstWardrobeItems as _, i}
+    <Wardrobe wardrobeItems={wardrobe[i]} />
   {/each}
 </Items>
