@@ -1,4 +1,4 @@
-import type { AccessoriesOutput, Items, MainStats, MiningStats, Pets, Rank, Skills } from "./global";
+import type { AccessoriesOutput, DungeonsStats, Farming, Items, MainStats, MiningStats, Misc, Pets, Rank, Skill, Skills, SlayerData } from "./global";
 import type { BestiaryStats } from "./processed/profile/bestiary";
 import type { Collections } from "./processed/profile/collections";
 import type { CrimsonIsle } from "./processed/profile/crimson_isle";
@@ -39,7 +39,7 @@ export type Stats = {
   mining: MiningStats;
   farming: Farming;
   fishing: Fishing;
-  slayer: Slayer;
+  slayer: SlayerData;
   dungeons: DungeonsStats;
   minions: Minions;
   bestiary: BestiaryStats;

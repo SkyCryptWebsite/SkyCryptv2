@@ -362,8 +362,52 @@ export const STATS_DATA: StatsData = {
     color: "text-minecraft-b"
   }
 };
-
 export const STATS_BONUS = {
+  // Skills
+  skill_farming: {
+    1: { health: 2, farming_fortune: 4 },
+    15: { health: 3, farming_fortune: 4 },
+    20: { health: 4, farming_fortune: 4 },
+    26: { health: 5, farming_fortune: 4 }
+  },
+  skill_mining: {
+    1: { defense: 1, mining_fortune: 4 },
+    15: { defense: 2, mining_fortune: 4 }
+  },
+  skill_combat: {
+    1: { crit_chance: 0.5 }
+  },
+  skill_foraging: {
+    1: { strength: 1, foraging_fortune: 4 },
+    15: { strength: 2, foraging_fortune: 4 }
+  },
+  skill_fishing: {
+    1: { health: 2 },
+    15: { health: 3 },
+    20: { health: 4 },
+    26: { health: 5 }
+  },
+  skill_enchanting: {
+    1: { intelligence: 1, ability_damage: 0.5 },
+    15: { intelligence: 2, ability_damage: 0.5 }
+  },
+  skill_alchemy: {
+    1: { intelligence: 1 },
+    15: { intelligence: 2 }
+  },
+  skill_taming: {
+    1: { pet_luck: 1 }
+  },
+  skill_dungeoneering: {
+    1: { health: 2 },
+    51: { health: 0 }
+  },
+  skill_social: {},
+  skill_carpentry: {
+    1: { health: 1 }
+  },
+  skill_runecrafting: {},
+  // Slayers
   slayer_zombie: {
     1: { health: 2 },
     3: { health: 3 },
@@ -441,6 +485,42 @@ export function getBonusStats(level: number, statsBonus: Record<string, { [key: 
   }
 
   return Object.fromEntries(Object.entries(bonus).sort(([, a], [, b]) => (b ?? 0) - (a ?? 0)));
+}
+
+export function getBonusStat(level: number, key: string, max: number) {
+  const bonus = {} as Record<string, number>;
+  const objOfLevelBonuses = STATS_BONUS[key];
+
+  if (!objOfLevelBonuses) {
+    return bonus;
+  }
+
+  const steps = Object.keys(objOfLevelBonuses)
+    .sort((a, b) => Number(a) - Number(b))
+    .map((a) => Number(a));
+
+  for (let x = steps[0]; x <= max; x += 1) {
+    if (level < x) {
+      break;
+    }
+
+    const step = steps
+      .slice()
+      .reverse()
+      .find((a) => a <= x);
+
+    if (step) {
+      const stepBonuses = objOfLevelBonuses[step];
+
+      for (const statNameString in stepBonuses) {
+        const statName = statNameString;
+        bonus[statName] ??= 0;
+        bonus[statName] = (bonus[statName] || 0) + (stepBonuses?.[statName] ?? 0);
+      }
+    }
+  }
+
+  return bonus;
 }
 
 export const SYMBOLS = Object.fromEntries(Object.entries(STATS_DATA).map(([key, value]) => [key, value.symbol]));
