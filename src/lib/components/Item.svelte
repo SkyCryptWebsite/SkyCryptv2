@@ -6,7 +6,7 @@
   import { Avatar, Tooltip } from "bits-ui";
   import Image from "lucide-svelte/icons/image";
 
-  export let piece: ProcessedItem | ProcessedPet;
+  export let piece: ProcessedItem;
   export let isInventory = false;
   export let showCount = true;
 
@@ -19,7 +19,7 @@
   const showNumbers = showCount && piece.Count > 1;
 
   const processedItem = piece as ProcessedItem;
-  const processedPet = piece as ProcessedPet;
+  const processedPet = piece as unknown as ProcessedPet;
 </script>
 
 <div class="nice-colors-dark contents">
