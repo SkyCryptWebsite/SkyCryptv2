@@ -22,7 +22,7 @@
   const processedPet = piece as ProcessedPet;
 </script>
 
-<div class="contents">
+<div class="nice-colors-dark contents">
   <Tooltip.Root group="armor" openDelay={0} closeDelay={0}>
     <Tooltip.Trigger class={cn(`relative flex items-center justify-center rounded-lg`, isInventory ? "p-0" : `p-4 ${bgColor}`)}>
       <Avatar.Root>
