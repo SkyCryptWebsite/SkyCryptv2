@@ -173,6 +173,7 @@ export type Items = {
   pets: ProcessedItem[];
   fishing_bag: ProcessedItem[];
   potion_bag: ProcessedItem[];
+  quiver: ProcessedItem[];
   // candy_inventory: ProcessedItem[];
 };
 
