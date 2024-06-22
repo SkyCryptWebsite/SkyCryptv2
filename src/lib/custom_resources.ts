@@ -1,15 +1,15 @@
-import fs from "fs-extra";
-import path from "path";
-import os from "os";
-import { getFolderPath, getCacheFolderPath, getCacheFilePath, hasPath, getPath, getId, getTextureValue } from "./helper";
-import mm from "micromatch";
-import util from "util";
-import _ from "lodash";
 import { createCanvas, loadImage, type Canvas } from "@napi-rs/canvas";
+import fs from "fs-extra";
+import _ from "lodash";
+import mm from "micromatch";
 import minecraftData from "minecraft-data";
-const mcData = minecraftData("1.8.9");
-import UPNG from "upng-js";
+import os from "os";
+import path from "path";
 import RJSON from "relaxed-json";
+import UPNG from "upng-js";
+import util from "util";
+import { getCacheFilePath, getCacheFolderPath, getFolderPath, getId, getPath, getTextureValue, hasPath } from "./helper";
+const mcData = minecraftData("1.8.9");
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -18,13 +18,14 @@ import apng2gif from "apng2gif-bin";
 // @ts-ignore
 import sharp from "sharp";
 
-import child_process from "child_process";
 import { getFileHash } from "$lib/hashes";
 import type { ItemTexture, OutputResourcePack, OutputTexture, ResourcePack, TextureAnimation, TextureModel } from "$types/custom-resources";
 import type { Item, ProcessedItem, getTextureParams } from "$types/processed/profile/items";
+import child_process from "child_process";
 const execFile = util.promisify(child_process.execFile);
 
 const NORMALIZED_SIZE = 128;
+const RESOURCE_CACHING = process.env.NODE_ENV == "development" ? true : false;
 
 const FOLDER_PATH = getFolderPath();
 const RESOURCE_PACK_FOLDER = path.resolve(getFolderPath(), "static", "resourcepacks");
