@@ -7,12 +7,16 @@
   import Image from "lucide-svelte/icons/image";
 
   export let piece: ProcessedItem | ProcessedPet;
+  export let isInventory = false;
+  export let showCount = true;
 
   const itemName = (piece as ProcessedItem).tag?.display?.Name ?? piece.display_name ?? "???";
   const itemNameHtml = renderLore(itemName);
   const isMulticolor = (itemNameHtml.match(/<\/span>/g) || []).length > 1;
-  const bgColor = getRarityClass(piece.rarity.toLowerCase() as string, "bg");
+  const bgColor = piece.rarity ? getRarityClass(piece.rarity.toLowerCase() as string, "bg") : "bg-background";
   const enchanted = isEnchanted(piece as ProcessedItem);
+
+  const showNumbers = showCount && piece.Count > 1;
 
   const processedItem = piece as ProcessedItem;
   const processedPet = piece as ProcessedPet;
@@ -20,13 +24,18 @@
 
 <div class="contents">
   <Tooltip.Root group="armor" openDelay={0} closeDelay={0}>
-    <Tooltip.Trigger class={cn(`flex items-center justify-center rounded-lg p-4`, bgColor)}>
+    <Tooltip.Trigger class={cn(`relative flex items-center justify-center rounded-lg`, isInventory ? "p-0" : `p-4 ${bgColor}`)}>
       <Avatar.Root>
         <Avatar.Image src={$page.url.origin + piece.texture_path} alt={piece.display_name} class="data-[enchanted=true]:enchanted h-auto w-16 select-none" data-enchanted={enchanted} />
         <Avatar.Fallback>
           <Image class="size-16" />
         </Avatar.Fallback>
       </Avatar.Root>
+      {#if showNumbers}
+        <div class="absolute bottom-0.5 right-0.5 text-2xl font-semibold text-white text-shadow-[.1em_.1em_.1em_#000]">
+          {piece.Count}
+        </div>
+      {/if}
     </Tooltip.Trigger>
     <Tooltip.Content class="pointer-events-none z-50 w-max min-w-96 max-w-[calc(100vw-2.5rem)] select-text overflow-hidden rounded-lg bg-background-lore font-icomoon" transition={flyAndScale} transitionConfig={{ x: -8, duration: 150 }} sideOffset={8} side="right" align="center">
       <div class={cn(`flex flex-nowrap items-center justify-center gap-4 p-5`, bgColor)}>
