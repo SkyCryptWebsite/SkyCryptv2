@@ -23,8 +23,5 @@
   },
   "javascript.updateImportsOnFileMove.enabled": "prompt",
   "typescript.updateImportsOnFileMove.enabled": "prompt",
-  "[svelte]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
   "eslint.validate": ["javascript", "typescript", "svelte"]
 }
