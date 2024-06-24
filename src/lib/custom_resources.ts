@@ -98,7 +98,7 @@ export async function init() {
     });
 
     resourcesUpToDate = true;
-  } catch (e) {
+  } catch {
     packConfigHashes = {};
     resourcePacks.forEach((pack) => {
       packConfigHashes[pack.config.id] = pack.config.hash;
@@ -117,7 +117,7 @@ export async function init() {
     } else {
       throw new Error("Resources need to be loaded!");
     }
-  } catch (e) {
+  } catch {
     await loadResourcePacks();
 
     fs.writeFileSync(RESOURCES_CACHE_FILE, JSON.stringify(resourcePacks));
@@ -161,7 +161,7 @@ async function loadPackConfigs() {
         config,
         textures: []
       });
-    } catch (e) {
+    } catch {
       console.log("Couldn't find config for resource pack", pack);
     }
   }
@@ -237,8 +237,8 @@ async function loadResourcePacks() {
               textureFile = layerPath;
             }
           }
-        } catch (e) {
-          //
+        } catch {
+          // ...
         }
       }
 
@@ -283,8 +283,8 @@ async function loadResourcePacks() {
           }
 
           texture.leather = leather;
-        } catch (e) {
-          //
+        } catch {
+          // ...
         }
       } else if (Object.keys(properties).filter((a) => a.includes("texture.leather_") && a.includes("_overlay")).length == 1) {
         const leatherProperties = Object.keys(properties).find((a) => a.includes("texture.leather_") && a.includes("_overlay"));
@@ -298,7 +298,7 @@ async function loadResourcePacks() {
 
       try {
         await fs.access(textureFile, fs.constants.F_OK);
-      } catch (e) {
+      } catch {
         continue;
       }
 
@@ -335,7 +335,7 @@ async function loadResourcePacks() {
         if (decode.frames.length > 0) {
           texture.animated = true;
         }
-      } catch (e) {
+      } catch {
         console.log("Error reading file", textureFile);
         texture.animated = false;
       }
@@ -397,7 +397,7 @@ async function loadResourcePacks() {
 
       try {
         mcMeta = await fs.readFile(textureFile + ".mcmeta", "utf8");
-      } catch (e) {
+      } catch {
         // ...
       }
 
@@ -405,7 +405,7 @@ async function loadResourcePacks() {
       if (mcMeta) {
         try {
           metaProperties = RJSON.parse(mcMeta);
-        } catch (e) {
+        } catch {
           // ...
         }
       }

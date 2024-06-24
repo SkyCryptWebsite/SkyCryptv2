@@ -1,9 +1,9 @@
-import { getItemNetworth } from "skyhelper-networth";
 import * as constants from "$constants/constants";
 import * as helper from "$lib/helper";
-import _ from "lodash";
-import type { Member, Pet, Pets, ProcessedItem, ProcessedPet, Profile } from "$types/global";
 import { NEU_CONSTANTS, NEU_ITEMS } from "$lib/scripts/parseNEURepository";
+import type { Member, Pet, Pets, ProcessedItem, ProcessedPet, Profile } from "$types/global";
+import _ from "lodash";
+import { getItemNetworth } from "skyhelper-networth";
 
 let getMaxPetIdsCache = {} as { lastUpdated: number; data: Record<string, number> };
 function getMaxPetIds() {
@@ -13,7 +13,7 @@ function getMaxPetIds() {
 
   const petIds = [] as string[];
   const petNumsIds = Object.keys(NEU_CONSTANTS.get("petnums"));
-  NEU_ITEMS.forEach((item, id) => {
+  NEU_ITEMS.forEach((_item, id) => {
     if (id.includes(";") && petNumsIds.includes(id.split(";")[0])) {
       petIds.push(constants.PET_PARENTS[id.split(";")[0]] ?? id);
     }

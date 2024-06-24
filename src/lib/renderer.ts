@@ -9,16 +9,16 @@ Modified and Improved by @DuckySoLucky
 
 export const CACHE_PATH = helper.getCacheFolderPath();
 
-import { createCanvas, loadImage } from "@napi-rs/canvas";
-import path from "path";
 import { base } from "$app/paths";
 import * as customResources from "$lib/custom_resources";
-import sanitize from "mongo-sanitize";
+import { createCanvas, loadImage } from "@napi-rs/canvas";
 import fs from "fs-extra";
+import sanitize from "mongo-sanitize";
+import path from "path";
 
+import minecraftData from "minecraft-data";
 import * as helper from "./helper";
 import { getItemData } from "./helper/item";
-import minecraftData from "minecraft-data";
 const mcData = minecraftData("1.8.9");
 
 const skewA = 26 / 45;
@@ -189,7 +189,7 @@ export async function getHead(textureId: string, scale = 6.4) {
 
   try {
     file = await fs.readFile(filePath);
-  } catch (e) {
+  } catch {
     file = await renderHead(textureId, scale);
 
     fs.writeFile(filePath, file, (err) => {
@@ -366,7 +366,7 @@ export async function getArmor(type: string, color: string) {
 
   try {
     file = await fs.readFile(filePath);
-  } catch (e) {
+  } catch {
     file = await renderArmor(type, color);
 
     fs.writeFile(filePath, file, (err) => {
@@ -407,7 +407,7 @@ export async function getPotion(type: string, color: string) {
 
   try {
     file = await fs.readFile(filePath);
-  } catch (e) {
+  } catch {
     file = await renderPotion(type, color);
 
     fs.writeFile(filePath, file, (err) => {
