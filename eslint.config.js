@@ -25,7 +25,7 @@ export default [
           ignoreRestSiblings: true
         }
       ],
-      "svelte/no-at-html-tags": "off",
+      "svelte/no-at-html-tags": "off"
     }
   },
   {
@@ -36,14 +36,14 @@ export default [
         ...globals.browser,
         ...globals.es2017,
         ...globals.node
-      },
+      }
     }
   },
   {
     files: ["**/*.svelte"],
     languageOptions: {
       parserOptions: {
-        parser: ts.parser,
+        parser: ts.parser
       }
     }
   },
