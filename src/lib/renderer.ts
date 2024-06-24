@@ -151,7 +151,7 @@ function darken(src: Canvas | Image, factor: number) {
   return dst;
 }
 
-const textureDir = path.resolve(base, "resources", "img", "textures", "item");
+const textureDir = path.resolve(base, "static", "img", "textures", "item");
 
 async function renderColoredItem(color: string, baseImage: Canvas, overlayImage: Canvas) {
   const canvas = createCanvas(16, 16);
