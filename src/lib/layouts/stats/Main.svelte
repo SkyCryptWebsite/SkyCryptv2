@@ -3,12 +3,13 @@
   import PlayerProfile from "$lib/layouts/stats/PlayerProfile.svelte";
   import Skills from "$lib/layouts/stats/Skills.svelte";
   import Stats from "$lib/layouts/stats/Stats.svelte";
-  import Armor from "$lib/sections/stats/Armor.svelte";
-  import Weapons from "$lib/sections/stats/Weapons.svelte";
-  import { setContext } from "svelte";
-  import Pets from "$lib/sections/stats/Pets.svelte";
-  import type { Stats as StatsType } from "$types/stats";
   import Accessories from "$lib/sections/stats/Accessories.svelte";
+  import Armor from "$lib/sections/stats/Armor.svelte";
+  import Inventory from "$lib/sections/stats/Inventory.svelte";
+  import Pets from "$lib/sections/stats/Pets.svelte";
+  import Weapons from "$lib/sections/stats/Weapons.svelte";
+  import type { Stats as StatsType } from "$types/stats";
+  import { setContext } from "svelte";
 
   export let profile;
 
@@ -24,6 +25,7 @@
   <Weapons />
   <Accessories />
   <Pets />
+  <Inventory />
 </main>
 
 <svg xmlns="http://www.w3.org/2000/svg" height="0" width="0" style="position: fixed;">
