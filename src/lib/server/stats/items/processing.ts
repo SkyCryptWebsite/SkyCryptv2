@@ -388,15 +388,6 @@ export async function processItems(base64: string, source: string, customTexture
       item.extra.skin = `PET_SKIN_${item.tag.ExtraAttributes.petInfo.skin}`;
     }
 
-    // Set custom texture for colored leather armor
-    if (typeof item.id === "number" && item.id >= 298 && item.id <= 301) {
-      const color = item.tag?.display?.color?.toString(16).padStart(6, "0") ?? "955e3b";
-
-      const type = ["helmet", "chestplate", "leggings", "boots"][item.id - 298];
-
-      item.texture_path = `/api/leather/${type}/${color}`;
-    }
-
     // Set custom texture for colored potions
     if (item.id == 373) {
       const color = constants.POTION_COLORS[(item.Damage % 16) as keyof typeof constants.POTION_COLORS];
@@ -435,6 +426,12 @@ export async function processItems(base64: string, source: string, customTexture
         item.texture_path = customTexture.path;
         item.texture_pack = customTexture.pack.config;
         item.texture_pack.base_path = customTexture.pack.base_path;
+      } else if (typeof item.id === "number" && item.id >= 298 && item.id <= 301) {
+        const color = item.tag?.display?.color?.toString(16).padStart(6, "0") ?? "955e3b";
+
+        const type = ["helmet", "chestplate", "leggings", "boots"][item.id - 298];
+
+        item.texture_path = `/api/leather/${type}/${color}`;
       }
     }
 
