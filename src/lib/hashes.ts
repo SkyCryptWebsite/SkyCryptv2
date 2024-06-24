@@ -9,7 +9,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 export const HASHED_DIRECTORIES = ["css"];
 
 export function getFileHash(filename: string) {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     const md5sum = createHash("md5");
 
     const s = fs.createReadStream(filename);

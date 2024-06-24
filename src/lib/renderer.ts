@@ -189,7 +189,7 @@ export async function getHead(textureId: string, scale = 6.4) {
 
   try {
     file = await fs.readFile(filePath);
-  } catch (e) {
+  } catch {
     file = await renderHead(textureId, scale);
 
     fs.writeFile(filePath, file, (err) => {
@@ -366,7 +366,7 @@ export async function getArmor(type: string, color: string) {
 
   try {
     file = await fs.readFile(filePath);
-  } catch (e) {
+  } catch {
     file = await renderArmor(type, color);
 
     fs.writeFile(filePath, file, (err) => {
@@ -407,7 +407,7 @@ export async function getPotion(type: string, color: string) {
 
   try {
     file = await fs.readFile(filePath);
-  } catch (e) {
+  } catch {
     file = await renderPotion(type, color);
 
     fs.writeFile(filePath, file, (err) => {
