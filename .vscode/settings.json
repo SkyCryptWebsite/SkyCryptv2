@@ -1,0 +1,30 @@
+{
+  "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "always",
+    "source.organizeImports": "explicit"
+  },
+  "files.associations": {
+    "*.css": "tailwindcss",
+    ".env*": "properties"
+  },
+  "git.autofetch": true,
+  "svelte.enable-ts-plugin": true,
+  "svelte.plugin.svelte.defaultScriptLanguage": "ts",
+  "tailwindCSS.classAttributes": ["class", "class:*", "class:name"],
+  "tailwindCSS.emmetCompletions": true,
+  "tailwindCSS.includeLanguages": {
+    "html": "html",
+    "plaintext": "html",
+    "javascript": "javascript",
+    "typescript": "typescript",
+    "svelte": "html"
+  },
+  "javascript.updateImportsOnFileMove.enabled": "prompt",
+  "typescript.updateImportsOnFileMove.enabled": "prompt",
+  "[svelte]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "eslint.validate": ["javascript", "typescript", "svelte"]
+}

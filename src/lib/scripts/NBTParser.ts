@@ -170,7 +170,7 @@ class NBTTagParser {
     this.skipWhitespace();
     this.racer.expect('"', "Expected '\"' at string start");
     let result = "";
-    // eslint-disable-next-line no-constant-condition
+
     while (true) {
       const char = this.racer.consumeCountReq(1);
       if (char === '"') {
