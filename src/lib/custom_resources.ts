@@ -25,7 +25,7 @@ import child_process from "child_process";
 const execFile = util.promisify(child_process.execFile);
 
 const NORMALIZED_SIZE = 128;
-const RESOURCE_CACHING = process.env.NODE_ENV == "development" ? false : false;
+const RESOURCE_CACHING = process.env.NODE_ENV === "development";
 
 const FOLDER_PATH = getFolderPath();
 const RESOURCE_PACK_FOLDER = path.resolve(getFolderPath(), "static", "resourcepacks");
