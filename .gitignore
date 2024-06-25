@@ -103,7 +103,7 @@ $RECYCLE.BIN/
 build/
 package/
 cache/head/*
-cache/json/*
+cache/json/*.json
 cache/leather/*
 cache/potion/*
 node_modules/
