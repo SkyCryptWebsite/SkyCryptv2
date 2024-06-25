@@ -1,0 +1,78 @@
+name: Website
+
+on:
+  push:
+    paths: ["src/**", ".github/workflows/website.yml"]
+
+  pull_request:
+    paths: ["src/**", ".github/workflows/website.yml"]
+
+env:
+  NODE_VERSION: "19"
+  CONTAINER_REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  es-lint:
+    name: Check linting (es-lint)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v3
+
+      - name: PNPM Install
+        uses: ./.github/actions/pnpm-install
+
+      - name: Check ESlint
+        run: pnpm lint
+
+  prettier:
+    name: Check formatting (prettier)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v3
+
+      - name: PNPM Install
+        uses: ./.github/actions/pnpm-install
+
+      - name: Check Prettier
+        run: pnpm prettier --check .
+
+  sveltecheck:
+    name: Svelte Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v3
+
+      - name: PNPM Install
+        uses: ./.github/actions/pnpm-install
+
+      - name: Make dummy env for types
+        run: |
+          echo "ls -a ."
+          ls -a .
+          mv .env.example .env
+
+      - name: Check Svelte
+        run: pnpm run check
+
+  build:
+    name: Svelte Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v3
+
+      - name: PNPM Install
+        uses: ./.github/actions/pnpm-install
+
+      - name: Make dummy env for types
+        run: |
+          echo "ls -a ."
+          ls -a .
+          mv .env.example .env
+
+      - name: Svelte Build
+        run: pnpm run build
