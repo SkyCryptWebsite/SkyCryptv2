@@ -8,7 +8,7 @@ on:
     paths: ["src/**", ".github/workflows/website.yml"]
 
 env:
-  NODE_VERSION: "19"
+  NODE_VERSION: "21"
   CONTAINER_REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
 

@@ -6,7 +6,7 @@
   import { Avatar, Tooltip } from "bits-ui";
   import Image from "lucide-svelte/icons/image";
 
-  export let piece: ProcessedItem;
+  export let piece: ProcessedItem | ProcessedPet;
   export let isInventory = false;
   export let showCount = true;
 
@@ -16,7 +16,7 @@
   const bgColor = piece.rarity ? getRarityClass(piece.rarity.toLowerCase() as string, "bg") : "bg-background";
   const enchanted = isEnchanted(piece as ProcessedItem);
 
-  const showNumbers = showCount && piece.Count > 1;
+  const showNumbers = showCount && (piece as ProcessedItem).Count > 1;
 
   const processedItem = piece as ProcessedItem;
   const processedPet = piece as unknown as ProcessedPet;
@@ -33,7 +33,7 @@
       </Avatar.Root>
       {#if showNumbers}
         <div class="absolute bottom-0.5 right-0.5 text-2xl font-semibold text-white text-shadow-[.1em_.1em_.1em_#000]">
-          {piece.Count}
+          {processedItem.Count}
         </div>
       {/if}
     </Tooltip.Trigger>

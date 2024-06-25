@@ -186,6 +186,10 @@ export async function getMissingAccessories(items: Accessories, userProfile: Mem
     accessories: activeAccessories.reduce((a, b) => a + helper.getMagicalPower(b.rarity, helper.getId(b)), 0),
     abiphone: abiphoneContacts ? Math.floor(abiphoneContacts / 2) : 0,
     riftPrism: riftPrism ? 11 : 0,
+    hegemony: {
+      rarity: activeAccessories.find((a) => helper.getId(a) === "HEGEMONY")?.rarity ?? null,
+      amount: helper.getMagicalPower(activeAccessories.find((a) => helper.getId(a) === "HEGEMONY")?.rarity ?? "", "HEGEMONY_ARTIFACT")
+    },
     rarities: {}
   };
 

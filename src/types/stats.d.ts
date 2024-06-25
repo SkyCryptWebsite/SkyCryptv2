@@ -39,7 +39,7 @@ export type Stats = {
   mining: MiningStats;
   farming: Farming;
   fishing: Fishing;
-  slayer: SlayerData;
+  slayer: SlayerData | null;
   dungeons: DungeonsStats | null;
   minions: Minions;
   bestiary: BestiaryStats;
