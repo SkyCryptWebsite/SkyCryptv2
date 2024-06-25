@@ -102,7 +102,7 @@ $RECYCLE.BIN/
 
 build/
 package/
-cache/
+cache/*
 node_modules/
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
