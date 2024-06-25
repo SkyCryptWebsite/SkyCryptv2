@@ -257,8 +257,8 @@ export type PlayerStats = {
   end_island: {
     dragon_fight: {
       ender_crystals_destroyed: number;
-      most_damage: number;
-      fastest_kill: number;
+      most_damage: Record<string, number>;
+      fastest_kill: Record<string, number>;
     };
   };
   highest_critical_damage: number;

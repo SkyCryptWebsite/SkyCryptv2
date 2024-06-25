@@ -6,67 +6,63 @@ export type Misc = {
     amount: number;
   }[];
   kills: {
-    totalKills: number;
-    totalDeaths: number;
+    total_kills: number;
+    total_deaths: number;
     kills: { id: string; name: string; amount: number }[];
-    death: { id: string; name: string; amount: number }[];
-    races: {
-      other: {
-        name: string;
-        races: Record<string, { name: string; time: number }>;
-      };
-      [string: string]: {
-        name: string;
-        races: {
-          with_return: {
-            [string: string]: { name: string; time: number };
-          };
-          no_return: {
-            [string: string]: { name: string; time: number };
-          };
-        };
-      };
+    deaths: { id: string; name: string; amount: number }[];
+  };
+  races: {
+    [string: string]: {
+      name: string;
+      races: Record<
+        string,
+        | { name: string; time: number }
+        | {
+            with_return: Record<string, { name: string; time: number }>;
+            no_return: Record<string, { name: string; time: number }>;
+          }
+      >;
     };
   };
   gifts: {
     given: number;
     received: number;
   };
-  seasonOfJerry: {
-    mostSnowballsHit: number;
-    mostDamageDealt: number;
-    mostMagma_damageDealt: number;
-    mostCannonballsHit: number;
+  season_of_jerry: {
+    most_snowballs_hit: number;
+    most_damage_dealt: number;
+    most_magma_damage_dealt: number;
+    most_cannonballs_hit: number;
   };
   dragons: {
-    enderCrystalsYestroyed: number;
-    mostDamage: Record<string, number>;
-    fastestKill: Record<string, number>;
+    ender_crystals_destroyed: number;
+    most_damage: Record<string, number>;
+    fastest_kill: Record<string, number>;
     kills: Record<string, number>;
     deaths: Record<string, number>;
   };
-  endstoneProtector: {
+  endstone_protector: {
     kills: number;
     deaths: number;
   };
   damage: {
-    highestCriticalDamage: number;
+    highest_critical_damage: number;
   };
-  petMilestones: {
-    seaCreaturesKilled: {
+  pet_milestones: {
+    sea_creatures_killed: {
       amount: number;
       rarity: string;
       total: number;
       progress: string;
     };
-    oresMined: {
+    ores_mined: {
       amount: number;
       rarity: string;
       total: number;
       progress: string;
     };
   };
-  mythologicalEvent: {
+  mythological_event: {
     kills: number;
     burrows_dug_next: {
       total: number;
@@ -90,13 +86,7 @@ export type Misc = {
     paused: string[];
     disabled: string[];
   };
-  profileUpgrades: {
-    island_size: number;
-    minion_slots: number;
-    guests_count: number;
-    coop_slots: number;
-    coins_allowance: number;
-  };
+  profile_upgrades: Record<string, number>;
   auctions: {
     bids: number;
     highest_bid: number;
@@ -110,10 +100,10 @@ export type Misc = {
     gold_earned: number;
     no_bids: number;
   };
-  claimedItems: {
+  claimed_items: {
     [key: string]: number;
   };
   uncategorized: {
-    [key: string]: number | string;
+    [key: string]: number | string | boolean;
   };
 };

@@ -1,6 +1,6 @@
-import type { Member, Profile } from "$types/global";
 import * as constants from "$constants/constants";
 import * as helper from "$lib/helper";
+import type { Member, Profile } from "$types/global";
 import type { Player } from "$types/raw/player/lib";
 
 function getEssence(userProfile: Member) {
@@ -10,7 +10,7 @@ function getEssence(userProfile: Member) {
       name: essence.name,
       id: id,
       texture: essence.texture,
-      amount: (userProfile.currencies?.essence && userProfile.currencies.essence[id.toUpperCase()]?.current) ?? 0
+      amount: (userProfile.currencies?.essence && userProfile.currencies.essence[id.toUpperCase()].current) ?? 0
     });
   }
 
@@ -45,19 +45,14 @@ function formatKillsAndDeaths(userProfile: Member) {
   }
 
   return {
-    totalKills: kills.reduce((acc, mob) => acc + mob.amount, 0),
-    totalDeaths: deaths.reduce((acc, mob) => acc + mob.amount, 0),
+    total_kills: kills.reduce((acc, mob) => acc + mob.amount, 0),
+    total_deaths: deaths.reduce((acc, mob) => acc + mob.amount, 0),
     kills: kills,
     deaths: deaths
   };
 }
 
 function getRaces(userProfile: Member) {
-  const races = userProfile.player_stats.races;
-  if (races == undefined) {
-    return {};
-  }
-
   const output: {
     [id: string]: {
       name: string;
@@ -71,6 +66,8 @@ function getRaces(userProfile: Member) {
       >;
     };
   } = {};
+
+  const races = userProfile.player_stats.races;
   for (let [id, data] of Object.entries(races)) {
     if (typeof data === "number") {
       output.other = output.other ?? {
@@ -105,7 +102,7 @@ function getRaces(userProfile: Member) {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-expect-error
         output[shortId].races[isReturn ? "with_return" : "no_return"][dungeonRaceId] = {
-          name: constants.RACE_NAMES[dungeonRaceId] ?? helper.titleCase(dungeonRaceId.replace("_", " ")),
+          name: constants.RACE_NAMES[dungeonRaceId] ?? dungeonRaceId.split("_").map(helper.titleCase).join(" "),
           time: data
         };
       }
@@ -129,9 +126,9 @@ function getDragons(userProfile: Member) {
   Object.assign(dragonDeaths, { total: Object.values(dragonDeaths).reduce((a, b) => a + b, 0) });
 
   return {
-    enderCrystalsDestroyed: userProfile.player_stats?.end_island?.dragon_fight?.ender_crystals_destroyed ?? 0,
-    mostDamage: userProfile.player_stats.end_island?.dragon_fight?.most_damage ?? 0,
-    fastestKill: userProfile.player_stats.end_island?.dragon_fight?.fastest_kill ?? 0,
+    ender_crystals_destroyed: userProfile.player_stats.end_island.dragon_fight.ender_crystals_destroyed,
+    most_damage: userProfile.player_stats.end_island.dragon_fight.most_damage,
+    fastest_kill: userProfile.player_stats.end_island.dragon_fight.fastest_kill,
     kills: dragonKills,
     deaths: dragonDeaths
   };
@@ -141,8 +138,8 @@ function getPetMilestone(type: string, amount: number) {
   return {
     amount: amount ?? 0,
     rarity: constants.MILESTONE_RARITIES[constants.PET_MILESTONES[type].findLastIndex((x) => amount >= x)] ?? "common",
-    total: constants.PET_MILESTONES[type].at(-1),
-    progress: amount ? Math.min((amount / (constants.PET_MILESTONES[type].at(-1) ?? 1)) * 100, 100).toFixed(2) : 0
+    total: constants.PET_MILESTONES[type].at(-1) ?? 0,
+    progress: amount ? Math.min((amount / (constants.PET_MILESTONES[type].at(-1) ?? 1)) * 100, 100).toFixed(2) : "0"
   };
 }
 
@@ -185,33 +182,33 @@ export function getMisc(userProfile: Member, profile: Profile, player: Player) {
       given: userProfile.player_stats.gifts?.total_given ?? 0,
       received: userProfile.player_stats.gifts?.total_received ?? 0
     },
-    seasonOfJerry: {
-      mostSnowballsHit: userProfile.player_stats.winter?.most_snowballs_hit ?? 0,
-      mostDamageDealt: userProfile.player_stats.winter?.most_damage_dealt ?? 0,
-      mostMagma_damageDealt: userProfile.player_stats.winter?.most_magma_damage_dealt ?? 0,
-      mostCannonballsHit: userProfile.player_stats.winter?.most_cannonballs_hit ?? 0
+    season_of_jerry: {
+      most_snowballs_hit: userProfile.player_stats.winter?.most_snowballs_hit ?? 0,
+      most_damage_dealt: userProfile.player_stats.winter?.most_damage_dealt ?? 0,
+      most_magma_damage_dealt: userProfile.player_stats.winter?.most_magma_damage_dealt ?? 0,
+      most_cannonballs_hit: userProfile.player_stats.winter?.most_cannonballs_hit ?? 0
     },
     dragons: getDragons(userProfile),
-    endstoneProtector: {
+    endstone_protector: {
       kills: userProfile.player_stats.kills?.corrupted_protector ?? 0,
       deaths: userProfile.player_stats.deaths?.corrupted_protector ?? 0
     },
     damage: {
-      highestCriticalDamage: userProfile.player_stats.highest_critical_damage ?? 0
+      highest_critical_damage: userProfile.player_stats.highest_critical_damage ?? 0
     },
-    petMilestones: {
-      seaCreaturesKilled: getPetMilestone("sea_creatures_killed", userProfile.player_stats.pets?.milestone?.sea_creatures_killed ?? 0),
-      oresMined: getPetMilestone("ores_mined", userProfile.player_stats?.pets?.milestone.ores_mined ?? 0)
+    pet_milestones: {
+      sea_creatures_killed: getPetMilestone("sea_creatures_killed", userProfile.player_stats.pets?.milestone?.sea_creatures_killed ?? 0),
+      ores_mined: getPetMilestone("ores_mined", userProfile.player_stats?.pets?.milestone.ores_mined ?? 0)
     },
-    mythologicalEvent: userProfile.player_stats.mythos,
+    mythological_event: userProfile.player_stats.mythos,
     effects: {
       active: userProfile.player_data?.active_effects || [],
       paused: userProfile.player_data?.paused_effects || [],
       disabled: userProfile.player_data?.disabled_potion_effects || []
     },
-    profileUpgrades: getProfileUpgrades(profile),
+    profile_upgrades: getProfileUpgrades(profile),
     auctions: userProfile.player_stats.auctions,
-    claimedItems: getClaimedItems(player),
+    claimed_items: getClaimedItems(player),
     uncategorized: {
       soulflow: userProfile.item_data?.soulflow ?? 0,
       teleporter_pill_consumed: userProfile.item_data?.teleporter_pill_consumed ?? false,
