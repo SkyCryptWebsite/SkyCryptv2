@@ -1,7 +1,7 @@
-import type { Player } from "$types/raw/player/lib";
+import * as constants from "$constants/constants";
 import { getLevelByXp } from "$lib/stats/leveling/leveling";
 import type { Member } from "$types/global";
-import * as constants from "$constants/constants";
+import type { Player } from "$types/raw/player/lib";
 import { getHotmItems } from "./hotm";
 
 /**
@@ -62,6 +62,10 @@ export function getMining(userProfile: Member, player: Player) {
 
   return {
     level: HOTM,
+    peak_of_the_mountain: {
+      level: userProfile.mining_core?.nodes?.special_0 ?? 0,
+      maxLevel: constants.MAX_PEAK_OF_THE_MOUNTAIN_LEVEL
+    },
     selectedPickaxeAbility: constants.HOTM.names[userProfile.mining_core?.selected_pickaxe_ability] ?? "None",
     tokens: {
       total: totalTokens,
@@ -76,6 +80,23 @@ export function getMining(userProfile: Member, player: Player) {
       crystalHollowsLastAccess: userProfile.mining_core?.greater_mines_last_access,
       nucleusRuns: crystalNucleusRuns,
       progress: getCrystalNucleusRunData(userProfile)
+    },
+    powder: {
+      mithril: {
+        spent: userProfile.mining_core?.powder_spent_mithril ?? 0,
+        total: userProfile.mining_core?.powder_mithril_total ?? 0,
+        available: userProfile.mining_core?.powder_mithril ?? 0
+      },
+      gemstone: {
+        spent: userProfile.mining_core?.powder_spent_gemstone ?? 0,
+        total: userProfile.mining_core?.powder_gemstone_total ?? 0,
+        available: userProfile.mining_core?.powder_gemstone ?? 0
+      },
+      glacite: {
+        spent: userProfile.mining_core?.powder_spent_glacite ?? 0,
+        total: userProfile.mining_core?.powder_glacite_total ?? 0,
+        available: userProfile.mining_core?.powder_glacite ?? 0
+      }
     },
     hotm: getHotmItems(userProfile)
   };

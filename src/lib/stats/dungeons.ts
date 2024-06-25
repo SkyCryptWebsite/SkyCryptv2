@@ -1,7 +1,7 @@
-import type { BestRun, Catacombs, Member, Skill } from "$types/global";
-import { getLevelByXp } from "./leveling/leveling";
 import * as constants from "$constants/constants";
 import * as helper from "$lib/helper";
+import type { BestRun, Catacombs, Member, Skill } from "$types/global";
+import { getLevelByXp } from "./leveling/leveling";
 
 function getDungeonClasses(userProfile: Member) {
   if (userProfile.dungeons.player_classes === undefined) {

@@ -1,7 +1,7 @@
-import type { Stats, Profile } from "$types/global";
-import * as stats from "$lib/server/stats/stats";
-import type { Player } from "$types/raw/player/lib";
 import { getProfiles } from "$lib/server/lib";
+import * as stats from "$lib/server/stats/stats";
+import type { Profile, Stats } from "$types/global";
+import type { Player } from "$types/raw/player/lib";
 
 const getAccessories = stats.getAccessories;
 const getPets = stats.getPets;

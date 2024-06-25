@@ -1,4 +1,4 @@
-import type { Crystal, ProcessedItem } from "$types/global";
+import type { Crystal } from "$types/global";
 import type { Skill } from "./skills";
 
 export type NodeData = {
@@ -37,6 +37,10 @@ export type HotmItemData = {
 
 export type MiningStats = {
   level: Skill;
+  peak_of_the_mountain: {
+    level: number;
+    maxLevel: number;
+  };
   selectedPickaxeAbility: string;
   tokens: {
     total: number;
@@ -53,6 +57,23 @@ export type MiningStats = {
     progress: {
       crystals: Record<string, string>;
       parts: Record<string, string>;
+    };
+  };
+  powder: {
+    mithril: {
+      spent: number;
+      total: number;
+      available: number;
+    };
+    gemstone: {
+      spent: number;
+      total: number;
+      available: number;
+    };
+    glacite: {
+      spent: number;
+      total: number;
+      available: number;
     };
   };
   hotm: ProcessedItem[];

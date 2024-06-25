@@ -48,5 +48,5 @@ export type CatacombsData = {
     mobs_killed: number;
     secrets_found: number;
     damage_mitigated: number;
-  };
+  } | null;
 };
