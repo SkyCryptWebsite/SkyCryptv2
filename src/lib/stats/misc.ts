@@ -10,7 +10,7 @@ function getEssence(userProfile: Member) {
       name: essence.name,
       id: id,
       texture: essence.texture,
-      amount: (userProfile.currencies?.essence && userProfile.currencies.essence[id.toUpperCase()].current) ?? 0
+      amount: (userProfile.currencies?.essence && userProfile.currencies.essence[id.toUpperCase()]?.current) ?? 0
     });
   }
 
