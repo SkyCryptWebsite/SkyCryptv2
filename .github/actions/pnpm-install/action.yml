@@ -35,52 +35,19 @@ runs:
   using: "composite"
 
   steps:
-    - name: ⚙️ Enable Corepack
-      if: ${{ inputs.enable-corepack == 'true' }}
-      shell: bash
-      working-directory: ${{ inputs.cwd }}
-      run: |
-        corepack enable
-        echo "corepack enabled"
-
-    - uses: pnpm/action-setup@v2.2.4
-      if: ${{ inputs.enable-corepack == 'false' }}
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
       with:
-        run_install: false
-        # If you're not setting the packageManager field in package.json, add the version here
-        version: 8.6.11
+        node-version: '20' # Specify the required Node.js version
 
-    - name: Expose pnpm config(s) through "$GITHUB_OUTPUT"
-      id: pnpm-config
-      shell: bash
-      run: |
-        echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
-
-    - name: Cache rotation keys
-      id: cache-rotation
-      shell: bash
-      run: |
-        echo "YEAR_MONTH=$(/bin/date -u "+%Y%m")" >> $GITHUB_OUTPUT
-
-    - uses: actions/cache@v3
-      name: Setup pnpm cache
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v2.2.4
       with:
-        path: ${{ steps.pnpm-config.outputs.STORE_PATH }}
-        key: ${{ runner.os }}-pnpm-store-cache-${{ steps.cache-rotation.outputs.YEAR_MONTH }}-${{ hashFiles('**/pnpm-lock.yaml') }}
-        restore-keys: |
-          ${{ runner.os }}-pnpm-store-cache-${{ steps.cache-rotation.outputs.YEAR_MONTH }}-
-
-    # Prevent store to grow over time (not needed with yarn)
-    # Note: not perfect as it prune too much in monorepos so the idea
-    #       is to use cache-rotation as above. In the future this might work better.
-    #- name: Prune pnpm store
-    #  shell: bash
-    #  run: pnpm prune store
+        version: '9.4' # Specify the required pnpm version
 
     - name: Install dependencies
+      run: pnpm install
       shell: bash
       working-directory: ${{ inputs.cwd }}
-      run: pnpm install
       env:
-        # Other environment variables
-        HUSKY: "0" # By default do not run HUSKY install
+        HUSKY: "0"
