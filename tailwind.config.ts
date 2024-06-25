@@ -83,6 +83,6 @@ export default {
         { values: theme("textShadow") }
       );
     }),
-    require('@tailwindcss/container-queries'),
+    require("@tailwindcss/container-queries")
   ]
 } satisfies Config;
