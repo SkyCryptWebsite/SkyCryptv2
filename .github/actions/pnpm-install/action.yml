@@ -38,12 +38,12 @@ runs:
     - name: Setup Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: "20" # Specify the required Node.js version
+        node-version: "20"
 
     - name: Setup pnpm
       uses: pnpm/action-setup@v2.2.4
       with:
-        version: "9.4" # Specify the required pnpm version
+        version: "9.4"
 
     - name: Install dependencies
       run: pnpm install
