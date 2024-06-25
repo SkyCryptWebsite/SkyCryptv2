@@ -168,7 +168,10 @@ export type Items = {
     highest_priority_weapon: ProcessedItem;
   };
   farming_tools: ProcessedItem[];
-  mining_tools: ProcessedItem[];
+  mining_tools: {
+    highest_priority_tool: ProcessedItem;
+    tools: ProcessedItem[];
+  }
   fishing_tools: ProcessedItem[];
   pets: ProcessedItem[];
   fishing_bag: ProcessedItem[];
