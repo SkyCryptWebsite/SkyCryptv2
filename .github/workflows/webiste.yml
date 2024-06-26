@@ -13,6 +13,34 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
+  conflicts:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check for PR conflicts
+        uses: eps1lon/actions-label-merge-conflict@releases/2.x
+        with:
+          dirtyLabel: "has conflicts"
+          repoToken: "${{ secrets.GITHUB_TOKEN }}"
+
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+
+    permissions:
+      security-events: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: javascript
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
+
   es-lint:
     name: Check linting (es-lint)
     runs-on: ubuntu-latest
