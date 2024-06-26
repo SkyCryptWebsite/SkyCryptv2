@@ -16,10 +16,10 @@
   const bgColor = piece.rarity ? getRarityClass(piece.rarity.toLowerCase() as string, "bg") : "bg-background";
   const enchanted = isEnchanted(piece as ProcessedItem);
 
-  const showNumbers = showCount && (piece as ProcessedItem).Count > 1;
-
   const processedItem = piece as ProcessedItem;
   const processedPet = piece as unknown as ProcessedPet;
+
+  const showNumbers = showCount && processedItem.Count > 1;
 </script>
 
 <div class="nice-colors-dark contents">

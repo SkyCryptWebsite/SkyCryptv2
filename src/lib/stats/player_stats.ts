@@ -106,7 +106,7 @@ export function getPlayerStats(profile: Stats) {
     }
   }
 
-  if (profile.dungeons?.level?.level !== undefined) {
+  if (profile.dungeons?.level?.level) {
     const bonusStats = getBonusStat(profile.dungeons.level.level, "skill_dungeoneering", 50);
 
     for (const [name, value] of Object.entries(bonusStats)) {
