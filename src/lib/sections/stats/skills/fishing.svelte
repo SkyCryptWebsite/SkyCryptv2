@@ -4,9 +4,9 @@
   import Item from "$lib/components/Item.svelte";
   import Items from "$lib/layouts/stats/Items.svelte";
   import { getRarityClass, renderLore } from "$lib/tools";
-  import { cn, flyAndScale } from "$lib/utils";
+  import { cn } from "$lib/utils";
   import type { Stats as StatsType } from "$types/stats";
-  import { Avatar, Collapsible, Tooltip } from "bits-ui";
+  import { Avatar, Collapsible } from "bits-ui";
   import ChevronDown from "lucide-svelte/icons/chevron-down";
   import Image from "lucide-svelte/icons/image";
   import { format } from "numerable";
@@ -88,39 +88,34 @@
       {@const trophyFishes = Object.entries(profile.fishing.trophyFish.trophyFish)}
       <div class="flex flex-wrap gap-4">
         {#each trophyFishes as [_, trophyFish], index}
-          <Tooltip.Root group="trophyFish" openDelay={0} closeDelay={0}>
-            <Tooltip.Trigger>
-              <Chip class="max-w-none px-4" animationOptions={{ animate: true, amountOfItems: trophyFishes.length, index: index }} image={{ src: trophyFish.texture }}>
-                <div class="flex flex-col">
-                  <div class="flex flex-col gap-0.5">
-                    <h4 class="font-bold text-text/60">{trophyFish.name} <span class="font-medium text-text/70">x{format(trophyFish.bronze + trophyFish.silver + trophyFish.gold + trophyFish.diamond)}</span></h4>
-                  </div>
-                  <div class="grid grid-cols-2 grid-rows-2">
-                    <div class="flex items-center gap-1">
-                      <div class="size-4 rounded-full bg-[#a85c03]"></div>
-                      {format(trophyFish.bronze)}
-                    </div>
-                    <div class="flex items-center gap-1">
-                      <div class="size-4 rounded-full bg-[#b4b4b5]"></div>
-                      {format(trophyFish.silver)}
-                    </div>
-                    <div class="flex items-center gap-1">
-                      <div class="size-4 rounded-full bg-[#b4b4b5]"></div>
-                      {format(trophyFish.gold)}
-                    </div>
-                    <div class="flex items-center gap-1">
-                      <div class="size-4 rounded-full bg-[#68ecff]"></div>
-                      {format(trophyFish.diamond)}
-                    </div>
-                  </div>
+          <Chip class="px-4" animationOptions={{ animate: true, amountOfItems: trophyFishes.length, index: index }} image={{ src: trophyFish.texture }} variant="tooltip">
+            <div class="flex flex-col">
+              <div class="flex flex-col gap-0.5">
+                <h4 class="font-bold text-text/60">{trophyFish.name} <span class="font-medium text-text/70">x{format(trophyFish.bronze + trophyFish.silver + trophyFish.gold + trophyFish.diamond)}</span></h4>
+              </div>
+              <div class="grid grid-cols-2 grid-rows-2">
+                <div class="flex items-center gap-1">
+                  <div class="size-4 rounded-full bg-[#a85c03]"></div>
+                  {format(trophyFish.bronze)}
                 </div>
-              </Chip>
-            </Tooltip.Trigger>
-            <Tooltip.Content class="z-50 rounded-lg bg-background-grey p-4" transition={flyAndScale} transitionConfig={{ y: 8, duration: 150 }} sideOffset={8}>
+                <div class="flex items-center gap-1">
+                  <div class="size-4 rounded-full bg-[#b4b4b5]"></div>
+                  {format(trophyFish.silver)}
+                </div>
+                <div class="flex items-center gap-1">
+                  <div class="size-4 rounded-full bg-[#b4b4b5]"></div>
+                  {format(trophyFish.gold)}
+                </div>
+                <div class="flex items-center gap-1">
+                  <div class="size-4 rounded-full bg-[#68ecff]"></div>
+                  {format(trophyFish.diamond)}
+                </div>
+              </div>
+            </div>
+            <svelte:fragment slot="tooltip">
               {@html renderLore(trophyFish.description)}
-              <Tooltip.Arrow />
-            </Tooltip.Content>
-          </Tooltip.Root>
+            </svelte:fragment>
+          </Chip>
         {/each}
       </div>
     {/if}
