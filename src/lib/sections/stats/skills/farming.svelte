@@ -57,7 +57,7 @@
   <Collapsible.Content class="mt-4 flex flex-wrap gap-4">
     {@const crops = Object.entries(profile.farming.contests)}
     {#each crops as [_, cropData], index}
-      <Chip {index} animate={true} amountOfItems={crops.length}>
+      <Chip image={{ src: cropData.texture }} animationOptions={{ animate: true, amountOfItems: crops.length, index: index }}>
         <div class="flex flex-col gap-0.5">
           <h4 class="text-lg font-semibold">{cropData.name}</h4>
           <AdditionStat text="Personal Best" data={formatNumber(cropData.collected)} />
