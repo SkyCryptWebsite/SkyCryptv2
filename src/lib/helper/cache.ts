@@ -7,6 +7,10 @@ export function getFolderPath() {
 }
 
 export function getCacheFolderPath() {
+  if (!fs.pathExistsSync(path.resolve(base, "cache"))) {
+    fs.mkdirSync(path.resolve(base, "cache"))
+  }
+
   return path.resolve(base, "cache");
 }
 
