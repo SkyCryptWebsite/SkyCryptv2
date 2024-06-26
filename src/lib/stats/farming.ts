@@ -1,7 +1,6 @@
+import * as constants from "$constants/constants";
 import type { Contest, Farming, Medal, Member } from "$types/global";
 import { getLevelByXp } from "./leveling/leveling";
-import * as constants from "$constants/constants";
-import * as helper from "$lib/helper";
 
 function getMedalType(contest: Contest) {
   const position = contest.claimed_position;
@@ -35,8 +34,10 @@ export function getFarming(userProfile: Member) {
   } as Farming;
 
   for (const medal of constants.FARMING_MEDALS) {
-    output.medals[`${medal}Medals`] = userProfile.jacobs_contest?.medals_inv?.[medal as Medal] || 0;
-    output.medals[`total${helper.titleCase(medal)}Medals`] = 0;
+    output.medals[`${medal}`] = {
+      amount: userProfile.jacobs_contest?.medals_inv?.[medal as Medal] || 0,
+      total: 0
+    };
   }
 
   if (userProfile.jacobs_contest?.contests !== undefined) {
@@ -55,10 +56,12 @@ export function getFarming(userProfile: Member) {
 
       const medal = contestData.claimed_medal ?? getMedalType(contestData);
       if (medal !== null) {
-        output.medals[`total${helper.titleCase(medal)}Medals`] += 1;
+        output.medals[medal].total += 1;
       }
     }
   }
+
+  output.contestsAttended = Object.values(userProfile.jacobs_contest?.contests ?? {}).filter((contest) => contest.collected > 100).length;
 
   return output;
 }
