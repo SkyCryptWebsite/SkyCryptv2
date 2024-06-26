@@ -35,6 +35,15 @@ export type HotmItemData = {
   crystals: Record<string, Crystal>;
 };
 
+export type ForgeItem = {
+  id: string;
+  name: string;
+  slot: number;
+  startingTime: number;
+  endingTime: number;
+  duration: number;
+};
+
 export type MiningStats = {
   level: Skill;
   peak_of_the_mountain: {
@@ -76,5 +85,6 @@ export type MiningStats = {
       available: number;
     };
   };
+  forge: ForgeItem[];
   hotm: ProcessedItem[];
 };

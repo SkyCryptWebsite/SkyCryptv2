@@ -56,6 +56,7 @@ export type Member = {
   dungeons: Dungeons;
   bestiary: Bestiary;
   item_data: MemberItemData;
+  forge?: Forge;
 };
 
 export type Medal = "gold" | "silver" | "bronze";
@@ -404,4 +405,16 @@ export type PlayerStarsRaces = {
 export type MemberItemData = {
   soulflow: number;
   teleporter_pill_consumed: boolean;
+};
+
+export type Forge = {
+  forge_processes: {
+    forge_1: Record<string, ForgeProcess>;
+  };
+};
+
+export type ForgeProcess = {
+  id: string;
+  startTime: number;
+  slot: number;
 };

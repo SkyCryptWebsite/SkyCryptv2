@@ -51,6 +51,23 @@ function getCrystalNucleusRunData(userProfile: Member) {
   return output;
 }
 
+function getForge(userProfile: Member) {
+  const output = [];
+
+  for (const item of Object.values(userProfile.forge?.forge_processes?.forge_1 ?? {})) {
+    output.push({
+      id: item.id,
+      name: constants.FORGE[item.id].name,
+      slot: item.slot,
+      startingTime: item.startTime,
+      endingTime: item.startTime + constants.FORGE[item.id].duration,
+      duration: constants.FORGE[item.id].duration
+    });
+  }
+
+  return output;
+}
+
 export function getMining(userProfile: Member, player: Player) {
   const HOTM = getLevelByXp(userProfile.mining_core?.experience, { type: "hotm" });
   const totalTokens = calcHotmTokens(HOTM.level, userProfile.mining_core?.nodes?.special_0 ?? 0);
@@ -98,6 +115,7 @@ export function getMining(userProfile: Member, player: Player) {
         available: userProfile.mining_core?.powder_glacite ?? 0
       }
     },
+    forge: getForge(userProfile),
     hotm: getHotmItems(userProfile)
   };
 }

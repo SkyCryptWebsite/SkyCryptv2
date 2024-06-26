@@ -76,5 +76,12 @@
     "upng-js": "^2.1.0",
     "util": "^0.12.5",
     "uuid": "^10.0.0"
+  },
+  "engines": {
+    "node": ">=20",
+    "pnpm": ">=9.4",
+    "npm": "forbidden, use pnpm instead",
+    "yarn": "forbidden, use pnpm instead",
+    "bun": "forbidden, use pnpm instead"
   }
 }
