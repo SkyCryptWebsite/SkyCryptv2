@@ -5,7 +5,6 @@ export type Fishing = {
   seaCreaturesFished: number;
   shredderFished: number;
   shredderBait: number;
-  trophyFishCaught: number;
   kills: { id: string; name: string; texture: string; amount: number }[];
   trophyFish: {
     totalCaught: number;

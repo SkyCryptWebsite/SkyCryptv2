@@ -57,7 +57,6 @@ export function getFishing(userProfile: Member) {
     seaCreaturesFished: userProfile.player_stats.pets?.milestone?.sea_creatures_killed ?? 0,
     shredderFished: userProfile.player_stats.shredder_rod?.fished ?? 0,
     shredderBait: userProfile.player_stats.shredder_rod?.bait ?? 0,
-    trophyFishCaught: userProfile.player_stats.items_fished?.trophy_fish ?? 0,
     kills: kills,
     trophyFish: getTrophyFish(userProfile)
   };
