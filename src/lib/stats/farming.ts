@@ -50,13 +50,23 @@ export function getFarming(userProfile: Member) {
       const cropId = contestId.split(":").slice(2).join(":");
       output.contests[cropId] = {
         name: constants.CROPS[cropId],
+        texture: `/api/item/${cropId}`,
         collected: Math.max(contestData.collected, output.contests[cropId]?.collected || 0),
-        amount: (output.contests[cropId]?.amount || 0) + 1
+        amount: (output.contests[cropId]?.amount || 0) + 1,
+        medals: output.contests[cropId]?.medals ?? {
+          bronze: 0,
+          silver: 0,
+          gold: 0,
+          platinum: 0,
+          diamond: 0
+        }
       };
 
       const medal = contestData.claimed_medal ?? getMedalType(contestData);
       if (medal !== null) {
         output.medals[medal].total += 1;
+
+        output.contests[cropId].medals[medal] += 1;
       }
     }
   }

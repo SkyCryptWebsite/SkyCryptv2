@@ -15,6 +15,14 @@ export type Farming = {
 
 export type Contest = {
   name: string;
+  texture: string;
   collected: number;
   amount: number;
+  medals: {
+    bronze: number;
+    silver: number;
+    gold: number;
+    platinum: number;
+    diamond: number;
+  };
 };

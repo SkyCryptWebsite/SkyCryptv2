@@ -1,11 +1,12 @@
-import type { Member } from "$types/global";
 import * as constants from "$constants/constants";
 import * as helper from "$lib/helper";
+import type { Member } from "$types/global";
+import type { TrophyFish } from "$types/stats";
 import _ from "lodash";
 
-function getTrophyFish(userProfile: Member) {
+function getTrophyFish(userProfile: Member): TrophyFish[] | null {
   if (userProfile.trophy_fish === undefined) {
-    return {};
+    return null;
   }
 
   // NOTE: needed here cuz of the reverse() method, we love JavaScript..
@@ -20,7 +21,7 @@ function getTrophyFish(userProfile: Member) {
     } as Record<string, string | number | boolean>;
 
     for (const tier of constants.TROPHY_FISH_TIERS) {
-      trophyFish[tier] = userProfile.trophy_fish[`${id.toLowerCase()}_diamond`] ?? 0;
+      trophyFish[tier] = userProfile.trophy_fish[`${id.toLowerCase()}_${tier}`] ?? 0;
     }
 
     const highestTier = constants.TROPHY_FISH_TIERS.find((tier) => userProfile.trophy_fish[`${id.toLowerCase()}_${tier}`] > 0) ?? "bronze";
@@ -31,7 +32,7 @@ function getTrophyFish(userProfile: Member) {
     output.push(trophyFish);
   }
 
-  return output;
+  return output as TrophyFish[];
 }
 
 export function getFishing(userProfile: Member) {
@@ -45,8 +46,10 @@ export function getFishing(userProfile: Member) {
   }
 
   return {
+    itemsFished: userProfile.player_stats.items_fished?.total ?? 0,
     treasure: userProfile.player_stats.items_fished?.treasure ?? 0,
     treasureLarge: userProfile.player_stats.items_fished?.large_treasure ?? 0,
+    seaCreaturesFished: userProfile.player_stats.pets?.milestone?.sea_creatures_killed ?? 0,
     shredderFished: userProfile.player_stats.shredder_rod?.fished ?? 0,
     shredderBait: userProfile.player_stats.shredder_rod?.bait ?? 0,
     trophyFishCaught: userProfile.player_stats.items_fished?.trophy_fish ?? 0,
