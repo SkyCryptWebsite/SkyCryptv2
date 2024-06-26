@@ -4,17 +4,33 @@
   import Image from "lucide-svelte/icons/image";
   import { fade } from "svelte/transition";
 
-  export let animate: boolean = false;
-  export let index: number = 0;
-  export let amountOfItems: number = 0;
+  type AnimationOptions =
+    | {
+        animate: true;
+        index: number;
+        amountOfItems: number;
+      }
+    | {
+        animate: false;
+        index?: number;
+        amountOfItems?: number;
+      };
+
+  type ImageProps = {
+    src: string;
+    class?: string;
+  };
+
+  export let animationOptions: AnimationOptions = { animate: false };
+  export let image: ImageProps;
 
   let classNames = "";
   export { classNames as class };
 </script>
 
-<div class={cn("flex w-full max-w-60 items-center gap-2 rounded-lg bg-background/30 p-2", classNames)} in:fade|global={{ duration: animate ? 300 : 0, delay: animate ? 25 * (index + 1) : 0 }} out:fade|global={{ duration: animate ? 300 : 0, delay: animate ? 25 * (amountOfItems - index) : 0 }}>
+<div class={cn("flex w-full max-w-60 items-center gap-2 rounded-lg bg-background/30 p-2", classNames)} in:fade|global={{ duration: animationOptions.animate ? 300 : 0, delay: animationOptions.animate ? 25 * (animationOptions.index + 1) : 0 }} out:fade|global={{ duration: animationOptions.animate ? 300 : 0, delay: animationOptions.animate ? 25 * (animationOptions.amountOfItems - animationOptions.index) : 0 }}>
   <Avatar.Root>
-    <Avatar.Image />
+    <Avatar.Image src={image.src} class={cn("aspect-square size-12 object-contain", image.class)} />
     <Avatar.Fallback>
       <Image class="size-10" />
     </Avatar.Fallback>
