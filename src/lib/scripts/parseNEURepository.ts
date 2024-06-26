@@ -7,6 +7,9 @@ export const NEU_CONSTANTS = new Map();
 
 export async function parseNEURepository() {
   const timeNow = performance.now();
+  if (fs.statSync("src/lib/constants/NotEnoughUpdates-REPO/items").isDirectory()) {
+    return;
+  }
 
   const items = fs.readdirSync("src/lib/constants/NotEnoughUpdates-REPO/items");
   for (const item of items) {
