@@ -4,7 +4,7 @@ import type { Member } from "$types/global";
 import type { TrophyFish } from "$types/stats";
 import _ from "lodash";
 
-function getTrophyFish(userProfile: Member): TrophyFish[] | null {
+function getTrophyFish(userProfile: Member) {
   if (userProfile.trophy_fish === undefined) {
     return null;
   }
@@ -24,7 +24,7 @@ function getTrophyFish(userProfile: Member): TrophyFish[] | null {
       trophyFish[tier] = userProfile.trophy_fish[`${id.toLowerCase()}_${tier}`] ?? 0;
     }
 
-    const highestTier = constants.TROPHY_FISH_TIERS.find((tier) => userProfile.trophy_fish[`${id.toLowerCase()}_${tier}`] > 0) ?? "bronze";
+    const highestTier = constants.TROPHY_FISH_TIERS.find((tier) => userProfile.trophy_fish && userProfile.trophy_fish[`${id.toLowerCase()}_${tier}`] > 0) ?? "bronze";
 
     trophyFish.texture = data.textures[highestTier];
     trophyFish.maxed = highestTier === reverstedTiers.at(-1);
@@ -32,15 +32,20 @@ function getTrophyFish(userProfile: Member): TrophyFish[] | null {
     output.push(trophyFish);
   }
 
-  return output as TrophyFish[];
+  return {
+    totalCaught: userProfile.trophy_fish.total_caught ?? 0,
+    stage: constants.TROPHY_FISH_STAGES[userProfile.trophy_fish.rewards.length - 1] ?? "Bronze Hunter",
+    trophyFish: output as TrophyFish[]
+  };
 }
 
 export function getFishing(userProfile: Member) {
-  const kills = [] as { id: string; name: string; amount: number }[];
+  const kills = [] as { id: string; name: string; texture: string; amount: number }[];
   for (const mob of constants.SEA_CREATURES) {
     kills.push({
       id: mob,
       name: constants.MOB_NAMES[mob] ?? mob.split("_").map(helper.titleCase).join(" "),
+      texture: `/img/sea_creatures/${mob}.png`,
       amount: userProfile.player_stats.kills[mob] ?? 0
     });
   }

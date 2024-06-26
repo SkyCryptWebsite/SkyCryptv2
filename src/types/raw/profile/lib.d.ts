@@ -51,7 +51,7 @@ export type Member = {
   objectives: Objectives;
   quests: Quests;
   player_stats: PlayerStats;
-  trophy_fish: TrophyFish;
+  trophy_fish?: TrophyFish;
   slayer: Slayer;
   dungeons: Dungeons;
   bestiary: Bestiary;
