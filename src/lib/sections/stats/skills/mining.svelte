@@ -103,17 +103,17 @@
   <AdditionStat text="Tier" data={profile.mining.level.level.toString()} />
   <AdditionStat text="Token Of The Mountain" data={`${profile.mining.tokens.spent}/${profile.mining.tokens.total}`} />
   <AdditionStat text="Peak Of The Mountain" data={`${profile.mining.peak_of_the_mountain.level}/${profile.mining.peak_of_the_mountain.maxLevel}`} />
-  <AdditionStat text="Mithril Powder" data={format(profile.mining.powder.mithril.available + profile.mining.powder.mithril.spent)} asterisk={true}>
-    <ul>
-      {#each Object.entries(profile.mining.powder.mithril) as [type, amount]}
-        <li>
-          {type}: {amount}
-        </li>
-      {/each}
-    </ul>
-  </AdditionStat>
-  <AdditionStat text="Gemstone Powder" data="TODO" asterisk={true} />
-  <AdditionStat text="Glacite Powder" data="TODO" asterisk={true} />
+  {#each Object.entries(profile.mining.powder) as [key, value]}
+    <AdditionStat text={`${key} Powder`} data={format(value.available + value.spent)} asterisk={true}>
+      <ul>
+        {#each Object.entries(value) as [type, amount]}
+          <li>
+            <AdditionStat text={type} data={format(amount)} class="capitalize" />
+          </li>
+        {/each}
+      </ul>
+    </AdditionStat>
+  {/each}
   <AdditionStat text="Pickaxe Ability" data={profile.mining.selectedPickaxeAbility} />
 </div>
 
