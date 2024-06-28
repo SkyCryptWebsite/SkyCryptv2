@@ -242,6 +242,10 @@ export type AccessoriesOutput = {
     accessories: number;
     abiphone: number;
     riftPrism: number;
+    hegemony: {
+      rarity: string | null;
+      amount: number;
+    };
     rarities: Record<string, { amount: number; magicalPower: number }>;
   };
 };

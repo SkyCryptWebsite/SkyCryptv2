@@ -1,12 +1,16 @@
-import path from "path";
-import fs from "fs-extra";
 import { base } from "$app/paths";
+import fs from "fs-extra";
+import path from "path";
 
 export function getFolderPath() {
   return path.resolve(base);
 }
 
 export function getCacheFolderPath() {
+  if (!fs.pathExistsSync(path.resolve(base, "cache"))) {
+    fs.mkdirSync(path.resolve(base, "cache"));
+  }
+
   return path.resolve(base, "cache");
 }
 

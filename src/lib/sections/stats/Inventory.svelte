@@ -77,7 +77,7 @@
   });
 </script>
 
-<Tabs.Root bind:value={$openTab} class="@container relative mb-0 rounded-lg bg-background/30 p-5">
+<Tabs.Root bind:value={$openTab} class="relative mb-0 rounded-lg bg-background/30 p-5 @container">
   <Tabs.List class="flex items-center gap-3 border-b border-icon px-4">
     {#each tabs as tab}
       {@const isActive = $openTab === tab.id}
@@ -101,7 +101,7 @@
   {#each tabs as tab}
     <Tabs.Content value={tab.id} asChild let:builder>
       {#if $openTab === tab.id}
-        <div use:builder.action {...builder} class="@md:gap-1.5 @xl:gap-2 grid grid-cols-[repeat(9,minmax(1.875rem,4.875rem))] place-content-center gap-1 pt-5">
+        <div use:builder.action {...builder} class="grid grid-cols-[repeat(9,minmax(1.875rem,4.875rem))] place-content-center gap-1 pt-5 @md:gap-1.5 @xl:gap-2">
           {#each tab.items as item, index}
             {#if tab.hr === index}
               <hr class="col-start-1 col-end-10 h-4 border-0" />
