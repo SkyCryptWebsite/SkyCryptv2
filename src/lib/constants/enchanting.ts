@@ -13,27 +13,27 @@ export const EXPERIMENTS = {
   tiers: [
     {
       name: "Beginner",
-      icon: "/api/item/INK_SACK:12"
+      texture: "/api/item/INK_SACK:12"
     },
     {
       name: "High",
-      icon: "/api/item/INK_SACK:10"
+      texture: "/api/item/INK_SACK:10"
     },
     {
       name: "Grand",
-      icon: "/api/item/INK_SACK:11"
+      texture: "/api/item/INK_SACK:11"
     },
     {
       name: "Supreme",
-      icon: "/api/item/INK_SACK:14"
+      texture: "/api/item/INK_SACK:14"
     },
     {
       name: "Transcendent",
-      icon: "/api/item/INK_SACK:1"
+      texture: "/api/item/INK_SACK:1"
     },
     {
       name: "Metaphysical",
-      icon: "/api/item/INK_SACK:13"
+      texture: "/api/item/INK_SACK:13"
     }
   ]
-} as Record<string, Record<string, { name: string }> | { name: string; icon: string }[]>;
+} as Record<string, Record<string, { name: string }> | { name: string; texture: string }[]>;

@@ -27,7 +27,7 @@
         </div>
         <div class="w-full px-5">
           {#if enchating.stats.bonusClicks}
-            <AdditionStat text="Bonus Clicks" data={enchating.stats.bonusClicks} />
+            <AdditionStat text="Bonus Clicks" data={`${enchating.stats.bonusClicks}`} />
           {/if}
           {#if enchating.stats.lastAttempt}
             <AdditionStat text="Last Attempt" data={formatDistanceStrict(enchating.stats.lastAttempt, Date.now(), { addSuffix: true })} />
@@ -38,20 +38,20 @@
         </div>
         <div class="w-full space-y-5 px-5 pb-5">
           {#each enchating.stats.games as game}
-            <Chip image={{ src: game.icon }} class="w-full max-w-none">
+            <Chip image={{ src: game.texture }} class="w-full max-w-none">
               <div class="flex flex-col">
                 <div class="flex flex-col gap-0.5">
-                  <h4 class="font-bold text-text/60">{game.name}</h4>
+                  <h4 class="font-bold text-text/60">{`${game.name}`}</h4>
                 </div>
                 <div class="flex w-full flex-col gap-0.5">
                   {#if game.attempts}
-                    <AdditionStat text="Attempts" data={game.attempts} />
+                    <AdditionStat text="Attempts" data={`${game.attempts}`} />
                   {/if}
                   {#if game.claims}
-                    <AdditionStat text="Claims" data={game.claims} />
+                    <AdditionStat text="Claims" data={`${game.claims}`} />
                   {/if}
                   {#if game.bestScore}
-                    <AdditionStat text="Best Score" data={game.bestScore} />
+                    <AdditionStat text="Best Score" data={`${game.bestScore}`} />
                   {/if}
                 </div>
               </div>
