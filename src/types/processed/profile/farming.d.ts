@@ -1,5 +1,4 @@
 export type Farming = {
-  farming: Skill;
   uniqueGolds: number;
   pelts: number;
   medals: Record<

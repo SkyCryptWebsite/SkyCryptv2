@@ -1,6 +1,5 @@
 import * as constants from "$constants/constants";
 import type { Contest, Farming, Medal, Member } from "$types/global";
-import { getLevelByXp } from "./leveling/leveling";
 
 function getMedalType(contest: Contest) {
   const position = contest.claimed_position;
@@ -26,7 +25,6 @@ function getMedalType(contest: Contest) {
 
 export function getFarming(userProfile: Member) {
   const output = {
-    farming: getLevelByXp(userProfile.player_data?.experience?.SKILL_FARMING ?? 0),
     uniqueGolds: (userProfile.jacobs_contest?.unique_brackets?.gold || []).length,
     pelts: userProfile.quests?.trapper_quest?.pelt_count || 0,
     medals: {},
