@@ -10,6 +10,14 @@ export type Farming = {
   >;
   contestsAttended: number;
   contests: Record<string, Contest>;
+  weight: {
+    totalWeight: number;
+    bonusWeight: number;
+    cropWeight: number;
+    bonusSources: Record<string, number>;
+    uncountedCrops: Record<string, number>;
+    crops: Record<string, number>;
+  };
 };
 
 export type Contest = {

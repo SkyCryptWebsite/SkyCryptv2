@@ -1,5 +1,6 @@
 import * as constants from "$constants/constants";
-import type { Contest, Farming, Medal, Member } from "$types/global";
+import type { Contest, Farming, Medal, Member, Profile } from "$types/global";
+import { createFarmingWeightCalculator } from "farming-weight";
 
 function getMedalType(contest: Contest) {
   const position = contest.claimed_position;
@@ -23,7 +24,22 @@ function getMedalType(contest: Contest) {
   return null;
 }
 
-export function getFarming(userProfile: Member) {
+function getFarmingWeight(profile: Profile, userProfile: Member, formattedMedals: Record<string, number>) {
+  const calculator = createFarmingWeightCalculator({
+    collection: userProfile.collection,
+    farmingXp: userProfile.player_data?.experience?.SKILL_FARMING,
+    levelCapUpgrade: userProfile.jacobs_contest?.perks?.farming_level_cap,
+    anitaBonusFarmingFortuneLevel: userProfile.jacobs_contest?.perks?.double_drops,
+    minions: Object.values(profile.members)
+      .map((member) => member.player_data?.crafted_generators ?? [])
+      .flat(),
+    pests: userProfile.bestiary.kills
+  }).setEarnedMedals(formattedMedals);
+
+  return { ...calculator.getWeightInfo(), crops: calculator.getCropWeights() };
+}
+
+export function getFarming(profile: Profile, userProfile: Member) {
   const output = {
     uniqueGolds: (userProfile.jacobs_contest?.unique_brackets?.gold || []).length,
     pelts: userProfile.quests?.trapper_quest?.pelt_count || 0,
@@ -70,6 +86,9 @@ export function getFarming(userProfile: Member) {
   }
 
   output.contestsAttended = Object.values(userProfile.jacobs_contest?.contests ?? {}).filter((contest) => contest.collected > 100).length;
+
+  const formattedMedals = Object.keys(output.medals).reduce((acc, key) => ({ ...acc, [key]: output.medals[key].total }), {} as Record<string, number>);
+  output.weight = getFarmingWeight(profile, userProfile, formattedMedals);
 
   return output;
 }
