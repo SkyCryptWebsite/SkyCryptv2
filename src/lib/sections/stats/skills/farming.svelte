@@ -19,7 +19,24 @@
 <h3 class="text-xl font-semibold">Farming</h3>
 <div class="space-y-5">
   <div class="space-y-0.5">
-    <AdditionStat text="Farming Weight" data="TODO" />
+    <AdditionStat text="Farming Weight" data={formatNumber(profile.farming.weight.totalWeight)} asterisk={true}>
+      <div class="space-y-5">
+        <div>
+          <h4 class="font-semibold text-white">Farming Weight</h4>
+          <p class="text-sm italic text-text/50">Weight calculations by <a href="https://elitebot.dev/" target="_blank" class="text-icon underline">Elite</a></p>
+        </div>
+        <div>
+          {#each Object.entries(profile.farming.weight.bonusSources) as [key, value]}
+            <AdditionStat text={key} data={formatNumber(value)} class="capitalize" />
+          {/each}
+        </div>
+        <div>
+          {#each Object.entries(profile.farming.weight.crops) as [key, value]}
+            <AdditionStat text={key.toLowerCase().replace("_", " ")} data={formatNumber(value)} class="capitalize" />
+          {/each}
+        </div>
+      </div>
+    </AdditionStat>
     <AdditionStat text="Pelts" data={profile.farming.pelts.toString()} />
     <AdditionStat text="Contests Attended" data={profile.farming.contestsAttended.toString()} />
     <AdditionStat text="Unique Golds" data={profile.farming.uniqueGolds.toString()} />
