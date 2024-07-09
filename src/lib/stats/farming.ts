@@ -36,7 +36,16 @@ function getFarmingWeight(profile: Profile, userProfile: Member, formattedMedals
     pests: userProfile.bestiary.kills
   }).setEarnedMedals(formattedMedals);
 
-  return { ...calculator.getWeightInfo(), crops: calculator.getCropWeights() };
+  const weight = calculator.getWeightInfo();
+  const crops = calculator.getCropWeights();
+
+  return {
+    totalWeight: weight.totalWeight,
+    bonusWeight: weight.bonusWeight,
+    cropsWeight: Object.values(crops).reduce((acc, amount) => acc + amount, 0),
+    bonusSources: weight.bonusSources,
+    crops: Object.entries(crops).map(([crop, amount]) => ({ name: constants.CROPS[crop], id: crop, amount }))
+  };
 }
 
 export function getFarming(profile: Profile, userProfile: Member) {

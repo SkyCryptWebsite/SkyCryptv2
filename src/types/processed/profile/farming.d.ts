@@ -13,10 +13,9 @@ export type Farming = {
   weight: {
     totalWeight: number;
     bonusWeight: number;
-    cropWeight: number;
+    cropsWeight: number;
     bonusSources: Record<string, number>;
-    uncountedCrops: Record<string, number>;
-    crops: Record<string, number>;
+    crops: { name: string; id: string; amount: number }[];
   };
 };
 
