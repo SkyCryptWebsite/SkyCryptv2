@@ -9,7 +9,7 @@ export const EXPERIMENTS = {
     pairings: {
       name: "Superpairs"
     }
-  },
+  } as Record<string, { name: string }>,
   tiers: [
     {
       name: "Beginner",
@@ -35,5 +35,5 @@ export const EXPERIMENTS = {
       name: "Metaphysical",
       texture: "/api/item/INK_SACK:13"
     }
-  ]
-} as Record<string, Record<string, { name: string }> | { name: string; texture: string }[]>;
+  ] as Record<number, { name: string; texture: string }>
+};

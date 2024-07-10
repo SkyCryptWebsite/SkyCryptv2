@@ -1,16 +1,21 @@
 import * as constants from "$constants/constants";
 import type { Member } from "$types/global";
+import type { Enchanting } from "$types/processed/profile/enchanting";
 
-function formatGameData(gameData: Member["experimentation"]["simon"]) {
+function getTier(tierValue: number, game: string) {
+  return game === "numbers" ? tierValue + 2 : game === "simon" ? Math.min(tierValue + 1, 5) : tierValue;
+}
+
+function formatGameData(gameData: Member["experimentation"]["simon"], key: string) {
   const output = [];
-
-  for (const [index, value] of Object.entries(constants.EXPERIMENTS.tiers)) {
+  for (const index in constants.EXPERIMENTS.tiers) {
     if (!gameData[`attempts_${index}`] && !gameData[`claims_${index}`] && !gameData[`best_score_${index}`]) {
       continue;
     }
 
+    const tier = getTier(parseInt(index), key);
     output.push({
-      ...value,
+      ...constants.EXPERIMENTS.tiers[tier],
       attempts: gameData[`attempts_${index}`],
       claims: gameData[`claims_${index}`],
       bestScore: gameData[`best_score_${index}`]
@@ -25,17 +30,17 @@ export function getEnchanting(userProfile: Member) {
     return null;
   }
 
-  const output = {} as Record<string, { name: string; stats: { lastAttempt: number; lastClaimed: number; bonusClicks: number; games: ReturnType<typeof formatGameData> } }>;
+  const output = {} as Enchanting;
   for (const key in constants.EXPERIMENTS.games) {
     const gameData = userProfile.experimentation[key];
 
     output[key] = {
-      name: (constants.EXPERIMENTS.games[key as keyof typeof constants.EXPERIMENTS.games] as { name: string }).name,
+      name: constants.EXPERIMENTS.games[key].name,
       stats: {
         lastAttempt: gameData.last_attempt,
         lastClaimed: gameData.last_claimed,
         bonusClicks: gameData.bonus_clicks,
-        games: formatGameData(gameData)
+        games: formatGameData(gameData, key)
       }
     };
   }
