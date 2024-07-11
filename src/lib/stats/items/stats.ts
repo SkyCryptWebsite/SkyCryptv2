@@ -1,7 +1,7 @@
-import { getRawLore } from "$lib/helper";
-import type { ProcessedItem } from "$types/stats";
 import * as constants from "$constants/constants";
+import { getRawLore } from "$lib/helper";
 import type { ItemStats } from "$types/processed/profile/stats";
+import type { ProcessedItem } from "$types/stats";
 
 export function getStatsFromItem(item: ProcessedItem) {
   const regex = /^([A-Za-z ]+): ([+-]([0-9]+(?:,[0-9]{3})*(?:\.[0-9]{0,2})?))/;
@@ -25,7 +25,6 @@ export function getStatsFromItem(item: ProcessedItem) {
     if (statName) {
       stats[statName] = 0;
 
-      // @ts-expect-error: Object is possibly 'null'.
       stats[statName] += statValue;
     }
   }

@@ -1,6 +1,5 @@
-import type { Member, SlayerBoss } from "$types/global";
 import * as constants from "$constants/constants";
-import type { Slayer } from "$types/processed/profile/slayer";
+import type { Member, SlayerBoss, SlayerData } from "$types/global";
 
 function getKills(slayer: SlayerBoss) {
   if (slayer === undefined) {
@@ -64,7 +63,7 @@ export function getSlayer(userProfile: Member) {
     return null;
   }
 
-  const output = { data: {} } as Slayer;
+  const output = { data: {} } as SlayerData;
   for (const id of constants.SLAYERS) {
     const data = slayerData[id];
     output.data[id] = {

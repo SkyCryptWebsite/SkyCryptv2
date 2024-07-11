@@ -102,9 +102,9 @@
                   <span style="color: var(--§6)"> +{accessories.magicalPower.riftPrism} MP</span>
                 </li>
               {/if}
-              {#if accessories.magicalPower.hegemony > 0}
+              {#if accessories.magicalPower.hegemony.amount > 0 && accessories.magicalPower.hegemony.rarity}
                 <li>
-                  <span style="color: var(--§{RARITY_COLORS[accessories.magicalPower.rarities.hegemony.rarity]}">Hegemony Artifact: </span>
+                  <span style="color: var(--§{RARITY_COLORS[accessories.magicalPower.hegemony.rarity]}">Hegemony Artifact: </span>
                   =
                   <span style="color: var(--§6)"> +{accessories.magicalPower.hegemony} MP</span>
                 </li>

@@ -1,0 +1,53 @@
+########################################################################################
+# "pnpm install" composite action for pnpm 7/8+                                        #
+#--------------------------------------------------------------------------------------#
+# Requirement: @setup/node should be run before                                        #
+#                                                                                      #
+# Usage in workflows steps:                                                            #
+#                                                                                      #
+#      - name: 📥 Monorepo install                                                     #
+#        uses: ./.github/actions/pnpm-install                                          #
+#        with:                                                                         #
+#          enable-corepack: false # (default)                                          #
+#          cwd: ${{ github.workspace }}/apps/my-app # (default = '.')                  #
+#                                                                                      #
+# Reference:                                                                           #
+#   - latest: https://gist.github.com/belgattitude/838b2eba30c324f1f0033a797bab2e31    #
+#                                                                                      #
+# Versions:                                                                            #
+#   - 1.1.0 - 15-07-2023 - Add project custom directory support.                       #
+########################################################################################
+
+name: "PNPM install"
+description: "Run pnpm install with cache enabled"
+
+inputs:
+  enable-corepack:
+    description: "Enable corepack"
+    required: false
+    default: "false"
+  cwd:
+    description: "Changes node's process.cwd() if the project is not located on the root. Default to process.cwd()"
+    required: false
+    default: "."
+
+runs:
+  using: "composite"
+
+  steps:
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: "20"
+
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v2.2.4
+      with:
+        version: "9.4"
+
+    - name: Install dependencies
+      run: pnpm install
+      shell: bash
+      working-directory: ${{ inputs.cwd }}
+      env:
+        HUSKY: "0"

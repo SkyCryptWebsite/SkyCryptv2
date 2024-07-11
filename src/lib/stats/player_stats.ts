@@ -91,7 +91,7 @@ export function getPlayerStats(profile: Stats) {
     }
   }
 
-  if (profile.slayer.data) {
+  if (profile.slayer?.data) {
     for (const [slayer, data] of Object.entries(profile.slayer.data)) {
       const bonusStats = getBonusStat(data.level.level, `slayer_${slayer}`, data.level.maxLevel);
 
@@ -106,7 +106,7 @@ export function getPlayerStats(profile: Stats) {
     }
   }
 
-  if (profile.dungeons.level.level > 0) {
+  if (profile.dungeons?.level?.level) {
     const bonusStats = getBonusStat(profile.dungeons.level.level, "skill_dungeoneering", 50);
 
     for (const [name, value] of Object.entries(bonusStats)) {
