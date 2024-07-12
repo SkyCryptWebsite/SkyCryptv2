@@ -31,8 +31,8 @@
           {/each}
         </div>
         <div>
-          {#each Object.entries(profile.farming.weight.crops) as [key, value]}
-            <AdditionStat text={key.toLowerCase().replace("_", " ")} data={formatNumber(value)} class="capitalize" />
+          {#each profile.farming.weight.crops as crop}
+            <AdditionStat text={crop.name.toLowerCase().replace("_", " ")} data={formatNumber(crop.amount)} class="capitalize" />
           {/each}
         </div>
       </div>
