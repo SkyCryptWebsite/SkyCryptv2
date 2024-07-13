@@ -54,14 +54,17 @@ function getCrystalNucleusRunData(userProfile: Member) {
 function getForge(userProfile: Member) {
   const output = [];
 
+  const quickForgeLevel = userProfile.mining_core?.nodes?.forge_time ?? 0;
+  const quickForge = userProfile.mining_core?.nodes?.toggle_forge_time ? (quickForgeLevel <= 19 ? 0.1 + quickForgeLevel * 0.005 : 0.3) : 0;
+
   for (const item of Object.values(userProfile.forge?.forge_processes?.forge_1 ?? {})) {
     output.push({
       id: item.id,
       name: constants.FORGE[item.id].name,
       slot: item.slot,
       startingTime: item.startTime,
-      endingTime: item.startTime + constants.FORGE[item.id].duration,
-      duration: constants.FORGE[item.id].duration
+      endingTime: item.startTime + constants.FORGE[item.id].duration - constants.FORGE[item.id].duration * quickForge,
+      duration: constants.FORGE[item.id].duration - constants.FORGE[item.id].duration * quickForge
     });
   }
 

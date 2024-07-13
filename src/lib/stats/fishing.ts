@@ -1,11 +1,12 @@
-import type { Member } from "$types/global";
 import * as constants from "$constants/constants";
 import * as helper from "$lib/helper";
+import type { Member } from "$types/global";
+import type { TrophyFish } from "$types/stats";
 import _ from "lodash";
 
 function getTrophyFish(userProfile: Member) {
   if (userProfile.trophy_fish === undefined) {
-    return {};
+    return null;
   }
 
   // NOTE: needed here cuz of the reverse() method, we love JavaScript..
@@ -20,10 +21,10 @@ function getTrophyFish(userProfile: Member) {
     } as Record<string, string | number | boolean>;
 
     for (const tier of constants.TROPHY_FISH_TIERS) {
-      trophyFish[tier] = userProfile.trophy_fish[`${id.toLowerCase()}_diamond`] ?? 0;
+      trophyFish[tier] = userProfile.trophy_fish[`${id.toLowerCase()}_${tier}`] ?? 0;
     }
 
-    const highestTier = constants.TROPHY_FISH_TIERS.find((tier) => userProfile.trophy_fish[`${id.toLowerCase()}_${tier}`] > 0) ?? "bronze";
+    const highestTier = constants.TROPHY_FISH_TIERS.find((tier) => userProfile.trophy_fish && userProfile.trophy_fish[`${id.toLowerCase()}_${tier}`] > 0) ?? "bronze";
 
     trophyFish.texture = data.textures[highestTier];
     trophyFish.maxed = highestTier === reverstedTiers.at(-1);
@@ -31,25 +32,31 @@ function getTrophyFish(userProfile: Member) {
     output.push(trophyFish);
   }
 
-  return output;
+  return {
+    totalCaught: userProfile.trophy_fish.total_caught ?? 0,
+    stage: constants.TROPHY_FISH_STAGES[userProfile.trophy_fish.rewards.length - 1] ?? "Bronze Hunter",
+    trophyFish: output as TrophyFish[]
+  };
 }
 
 export function getFishing(userProfile: Member) {
-  const kills = [] as { id: string; name: string; amount: number }[];
+  const kills = [] as { id: string; name: string; texture: string; amount: number }[];
   for (const mob of constants.SEA_CREATURES) {
     kills.push({
       id: mob,
       name: constants.MOB_NAMES[mob] ?? mob.split("_").map(helper.titleCase).join(" "),
+      texture: `/img/sea_creatures/${mob}.png`,
       amount: userProfile.player_stats.kills[mob] ?? 0
     });
   }
 
   return {
+    itemsFished: userProfile.player_stats.items_fished?.total ?? 0,
     treasure: userProfile.player_stats.items_fished?.treasure ?? 0,
     treasureLarge: userProfile.player_stats.items_fished?.large_treasure ?? 0,
+    seaCreaturesFished: userProfile.player_stats.pets?.milestone?.sea_creatures_killed ?? 0,
     shredderFished: userProfile.player_stats.shredder_rod?.fished ?? 0,
     shredderBait: userProfile.player_stats.shredder_rod?.bait ?? 0,
-    trophyFishCaught: userProfile.player_stats.items_fished?.trophy_fish ?? 0,
     kills: kills,
     trophyFish: getTrophyFish(userProfile)
   };

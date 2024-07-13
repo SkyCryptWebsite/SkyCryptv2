@@ -1,7 +1,6 @@
-import type { Contest, Farming, Medal, Member } from "$types/global";
-import { getLevelByXp } from "./leveling/leveling";
 import * as constants from "$constants/constants";
-import * as helper from "$lib/helper";
+import type { Contest, Farming, Medal, Member, Profile } from "$types/global";
+import { createFarmingWeightCalculator } from "farming-weight";
 
 function getMedalType(contest: Contest) {
   const position = contest.claimed_position;
@@ -25,9 +24,32 @@ function getMedalType(contest: Contest) {
   return null;
 }
 
-export function getFarming(userProfile: Member) {
+function getFarmingWeight(profile: Profile, userProfile: Member, formattedMedals: Record<string, number>) {
+  const calculator = createFarmingWeightCalculator({
+    collection: userProfile.collection,
+    farmingXp: userProfile.player_data?.experience?.SKILL_FARMING,
+    levelCapUpgrade: userProfile.jacobs_contest?.perks?.farming_level_cap,
+    anitaBonusFarmingFortuneLevel: userProfile.jacobs_contest?.perks?.double_drops,
+    minions: Object.values(profile.members)
+      .map((member) => member.player_data?.crafted_generators ?? [])
+      .flat(),
+    pests: userProfile.bestiary.kills
+  }).setEarnedMedals(formattedMedals);
+
+  const weight = calculator.getWeightInfo();
+  const crops = calculator.getCropWeights();
+
+  return {
+    totalWeight: weight.totalWeight,
+    bonusWeight: weight.bonusWeight,
+    cropsWeight: Object.values(crops).reduce((acc, amount) => acc + amount, 0),
+    bonusSources: weight.bonusSources,
+    crops: Object.entries(crops).map(([crop, amount]) => ({ name: constants.CROPS[crop], id: crop, amount }))
+  };
+}
+
+export function getFarming(profile: Profile, userProfile: Member) {
   const output = {
-    farming: getLevelByXp(userProfile.player_data?.experience?.SKILL_FARMING ?? 0),
     uniqueGolds: (userProfile.jacobs_contest?.unique_brackets?.gold || []).length,
     pelts: userProfile.quests?.trapper_quest?.pelt_count || 0,
     medals: {},
@@ -35,8 +57,10 @@ export function getFarming(userProfile: Member) {
   } as Farming;
 
   for (const medal of constants.FARMING_MEDALS) {
-    output.medals[`${medal}Medals`] = userProfile.jacobs_contest?.medals_inv?.[medal as Medal] || 0;
-    output.medals[`total${helper.titleCase(medal)}Medals`] = 0;
+    output.medals[`${medal}`] = {
+      amount: userProfile.jacobs_contest?.medals_inv?.[medal as Medal] || 0,
+      total: 0
+    };
   }
 
   if (userProfile.jacobs_contest?.contests !== undefined) {
@@ -49,16 +73,31 @@ export function getFarming(userProfile: Member) {
       const cropId = contestId.split(":").slice(2).join(":");
       output.contests[cropId] = {
         name: constants.CROPS[cropId],
+        texture: `/api/item/${cropId}`,
         collected: Math.max(contestData.collected, output.contests[cropId]?.collected || 0),
-        amount: (output.contests[cropId]?.amount || 0) + 1
+        amount: (output.contests[cropId]?.amount || 0) + 1,
+        medals: output.contests[cropId]?.medals ?? {
+          bronze: 0,
+          silver: 0,
+          gold: 0,
+          platinum: 0,
+          diamond: 0
+        }
       };
 
       const medal = contestData.claimed_medal ?? getMedalType(contestData);
       if (medal !== null) {
-        output.medals[`total${helper.titleCase(medal)}Medals`] += 1;
+        output.medals[medal].total += 1;
+
+        output.contests[cropId].medals[medal] += 1;
       }
     }
   }
+
+  output.contestsAttended = Object.values(userProfile.jacobs_contest?.contests ?? {}).filter((contest) => contest.collected > 100).length;
+
+  const formattedMedals = Object.keys(output.medals).reduce((acc, key) => ({ ...acc, [key]: output.medals[key].total }), {} as Record<string, number>);
+  output.weight = getFarmingWeight(profile, userProfile, formattedMedals);
 
   return output;
 }
