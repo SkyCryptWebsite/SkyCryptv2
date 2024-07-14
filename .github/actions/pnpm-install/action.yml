@@ -24,7 +24,7 @@ description: "Run pnpm install with cache enabled"
 inputs:
   enable-corepack:
     description: "Enable corepack"
-    required: false 
+    required: false
     default: "false"
   cwd:
     description: "Changes node's process.cwd() if the project is not located on the root. Default to process.cwd()"
