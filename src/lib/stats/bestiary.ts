@@ -1,5 +1,5 @@
-import type { Member } from "$types/global";
 import * as constants from "$constants/constants";
+import type { Member } from "$types/global";
 import type { BestiaryStats } from "$types/processed/profile/bestiary";
 
 function getBestiaryMobs(
@@ -33,6 +33,24 @@ function getBestiaryMobs(
   }
 
   return output;
+}
+
+export function getBestiaryFamily(userProfile: Member, mobName: string) {
+  const bestiary = userProfile.bestiary.kills || {};
+  const family = Object.values(constants.BESTIARY)
+    .flatMap((category) => category.mobs)
+    .find((mob) => mob.name === mobName);
+
+  if (family === undefined) {
+    return null;
+  }
+
+  const output = getBestiaryMobs(bestiary, [family]);
+  if (!output.length) {
+    return null;
+  }
+
+  return output[0];
 }
 
 export function getBestiary(userProfile: Member) {
