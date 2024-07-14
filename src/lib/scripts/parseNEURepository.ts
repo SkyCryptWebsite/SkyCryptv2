@@ -6,9 +6,8 @@ export const NEU_ITEMS = new Map<string, NEUItem>();
 export const NEU_CONSTANTS = new Map();
 
 export async function parseNEURepository() {
-  const timeNow = performance.now();
-  if (!fs.statSync("src/lib/constants/NotEnoughUpdates-REPO/items").isDirectory()) {
-    return;
+  if (!fs.existsSync("src/lib/constants/NotEnoughUpdates-REPO/items")) {
+    throw new Error("Couldn't find the NEU items directory (src/lib/constants/NotEnoughUpdates-REPO/items). Make sure you have the NEU repository cloned in the correct location.");
   }
 
   const items = fs.readdirSync("src/lib/constants/NotEnoughUpdates-REPO/items");
