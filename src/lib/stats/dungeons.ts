@@ -123,7 +123,7 @@ function formatCatacombsData(catacombs: Catacombs) {
         fastest_time_s: catacombs.fastest_time?.[floor.id] ?? 0,
         fastest_time_s_plus: catacombs.fastest_time_s_plus?.[floor.id] ?? 0,
         most_healing: catacombs.most_healing?.[floor.id] ?? 0,
-        most_damage: getMostDamage(catacombs, floor.id),
+        most_damage: getMostDamage(catacombs, floor.id)
       },
       best_run: getBestRun(catacombs, floor.id)
     });
