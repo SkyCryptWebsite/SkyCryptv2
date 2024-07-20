@@ -9,6 +9,7 @@
   import Inventory from "$lib/sections/stats/Inventory.svelte";
   import Pets from "$lib/sections/stats/Pets.svelte";
   import SkillsSection from "$lib/sections/stats/SkillsSection.svelte";
+  import Slayer from "$lib/sections/stats/Slayer.svelte";
   import Weapons from "$lib/sections/stats/Weapons.svelte";
   import type { Stats as StatsType } from "$types/stats";
   import { setContext } from "svelte";
@@ -30,6 +31,7 @@
   <Inventory />
   <SkillsSection />
   <Dungeons />
+  <Slayer />
 </main>
 
 <svg xmlns="http://www.w3.org/2000/svg" height="0" width="0" style="position: fixed;">

@@ -27,7 +27,7 @@ function getLevel(slayer: string, data: SlayerBoss) {
       level: 0,
       maxLevel: 0,
       xpCurrent: 0,
-      xpForNext: 0,
+      xpForNext: constants.SLAYER_XP[slayer] ? constants.SLAYER_XP[slayer]["1"] : 0,
       maxed: false
     };
   }
@@ -37,7 +37,7 @@ function getLevel(slayer: string, data: SlayerBoss) {
   const maxLevel = Object.keys(constants.SLAYER_XP[slayer]).length;
   for (const [level, xp] of reversed) {
     if (data.xp > xp) {
-      const xpForNext = xp;
+      const xpForNext = constants.SLAYER_XP[slayer][parseInt(level) + 1];
       return {
         xp: data.xp,
         xpForNext,
