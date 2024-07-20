@@ -9,8 +9,14 @@ export type DungeonsStats = {
     classAverageWithProgress: number;
     totalClassExp: number;
   };
-  secrets: {
-    found: number;
+  stats: {
+    secrets: {
+      found: number;
+      secretsPerRun: number;
+    };
+    highestFloorBeatenNormal: number;
+    highestFloorBeatenMaster: number;
+    bloodMobKills: number;
   };
   catacombs: CatacombsData[];
   master_catacombs: CatacombsData[];
@@ -19,20 +25,22 @@ export type DungeonsStats = {
 export type CatacombsData = {
   name: string;
   texture: string;
-  times_played: number;
-  tier_completions: number;
-  milestone_completions: number;
-  best_score: number;
-  mobs_killed: number;
-  watcher_kills: number;
-  most_mobs_killed: number;
-  fastest_time: number;
-  fastest_time_s: number;
-  fastest_time_s_plus: number;
-  most_healing: number;
-  most_damage: {
-    damage: number;
-    type: string;
+  stats: {
+    times_played: number;
+    tier_completions: number;
+    milestone_completions: number;
+    best_score: number;
+    mobs_killed: number;
+    watcher_kills: number;
+    most_mobs_killed: number;
+    fastest_time: number;
+    fastest_time_s: number;
+    fastest_time_s_plus: number;
+    most_healing: number;
+    most_damage: {
+      damage: number;
+      type: string;
+    };
   };
   best_run: {
     grade: string;

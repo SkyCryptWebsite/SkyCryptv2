@@ -1,6 +1,7 @@
 import * as constants from "$constants/constants";
 import * as helper from "$lib/helper";
 import type { BestRun, Catacombs, Member, Skill } from "$types/global";
+import { getBestiaryFamily } from "./bestiary";
 import { getLevelByXp } from "./leveling/leveling";
 
 function getDungeonClasses(userProfile: Member) {
@@ -85,6 +86,22 @@ function getBestRun(catacombs: Catacombs, floorId: number) {
   };
 }
 
+function getSecrets(catacombs: Member["dungeons"]) {
+  const secretsFound = catacombs.secrets ?? 0;
+  const totalRuns =
+    Object.keys(catacombs?.dungeon_types?.catacombs?.tier_completions || {})
+      .filter((key) => key !== "total")
+      .reduce((a, b) => a + (catacombs?.dungeon_types?.catacombs?.tier_completions[b] || 0), 0) +
+    Object.keys(catacombs?.dungeon_types?.master_catacombs?.tier_completions || {})
+      .filter((key) => key !== "total")
+      .reduce((a, b) => a + (catacombs?.dungeon_types?.master_catacombs?.tier_completions[b] || 0), 0);
+
+  return {
+    found: secretsFound,
+    secretsPerRun: secretsFound / totalRuns
+  };
+}
+
 function formatCatacombsData(catacombs: Catacombs) {
   const type = catacombs.experience ? "catacombs" : "master_catacombs";
 
@@ -94,22 +111,20 @@ function formatCatacombsData(catacombs: Catacombs) {
     output.push({
       name: floor.name,
       texture: floor.texture,
-
-      times_played: catacombs.times_played?.[floor.id] ?? 0,
-      tier_completions: catacombs.tier_completions?.[floor.id] ?? 0,
-      milestone_completions: catacombs.milestone_completions?.[floor.id] ?? 0,
-      best_score: catacombs.best_score?.[floor.id] ?? 0,
-
-      mobs_killed: catacombs.mobs_killed?.[floor.id] ?? 0,
-      watcher_kills: catacombs.watcher_kills?.[floor.id] ?? 0,
-      most_mobs_killed: catacombs.most_mobs_killed?.[floor.id] ?? 0,
-
-      fastest_time: catacombs.fastest_time?.[floor.id] ?? 0,
-      fastest_time_s: catacombs.fastest_time?.[floor.id] ?? 0,
-      fastest_time_s_plus: catacombs.fastest_time_s_plus?.[floor.id] ?? 0,
-
-      most_healing: catacombs.most_healing?.[floor.id] ?? 0,
-      most_damage: getMostDamage(catacombs, floor.id),
+      stats: {
+        times_played: catacombs.times_played?.[floor.id] ?? 0,
+        tier_completions: catacombs.tier_completions?.[floor.id] ?? 0,
+        milestone_completions: catacombs.milestone_completions?.[floor.id] ?? 0,
+        best_score: catacombs.best_score?.[floor.id] ?? 0,
+        mobs_killed: catacombs.mobs_killed?.[floor.id] ?? 0,
+        watcher_kills: catacombs.watcher_kills?.[floor.id] ?? 0,
+        most_mobs_killed: catacombs.most_mobs_killed?.[floor.id] ?? 0,
+        fastest_time: catacombs.fastest_time?.[floor.id] ?? 0,
+        fastest_time_s: catacombs.fastest_time?.[floor.id] ?? 0,
+        fastest_time_s_plus: catacombs.fastest_time_s_plus?.[floor.id] ?? 0,
+        most_healing: catacombs.most_healing?.[floor.id] ?? 0,
+        most_damage: getMostDamage(catacombs, floor.id)
+      },
       best_run: getBestRun(catacombs, floor.id)
     });
   }
@@ -133,8 +148,11 @@ export function getDungeons(userProfile: Member) {
       classAverageWithProgress: Object.values(dungeonClasses).reduce((a, b) => a + b.levelWithProgress, 0) / Object.keys(dungeonClasses).length,
       totalClassExp: Object.values(userProfile.dungeons.player_classes).reduce((a, b) => a + b.experience, 0)
     },
-    secrets: {
-      found: userProfile.dungeons.secrets
+    stats: {
+      secrets: getSecrets(userProfile.dungeons),
+      highestFloorBeatenNormal: userProfile.dungeons.dungeon_types.catacombs.highest_tier_completed ?? 0,
+      highestFloorBeatenMaster: userProfile.dungeons.dungeon_types.master_catacombs.highest_tier_completed ?? 0,
+      bloodMobKills: getBestiaryFamily(userProfile, "Undead")?.kills ?? 0
     },
     catacombs: formatCatacombsData(userProfile.dungeons.dungeon_types.catacombs),
     master_catacombs: formatCatacombsData(userProfile.dungeons.dungeon_types.master_catacombs)
