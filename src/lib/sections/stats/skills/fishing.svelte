@@ -33,10 +33,12 @@
 <Items>
   <div slot="text" class="space-y-2">
     <h3 class="text-xl font-semibold">Fishing Rods</h3>
-    <p class="space-x-0.5 font-bold capitalize leading-6 text-text/60">
-      <span>Active Rod:</span>
-      <span class={cn(getRarityClass(highestPriorityFishingTool.rarity ?? "", "text"))}>{highestPriorityFishingTool.display_name}</span>
-    </p>
+    {#if highestPriorityFishingTool}
+      <p class="space-x-0.5 font-bold capitalize leading-6 text-text/60">
+        <span>Active Rod:</span>
+        <span class={cn(getRarityClass(highestPriorityFishingTool.rarity ?? "", "text"))}>{highestPriorityFishingTool.display_name}</span>
+      </p>
+    {/if}
   </div>
   {#each fishingTools as tool}
     <Item piece={tool} />

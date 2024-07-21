@@ -56,10 +56,12 @@
 <Items>
   <div slot="text" class="space-y-2">
     <h3 class="text-xl font-semibold">Farming Tools</h3>
-    <p class="space-x-0.5 font-bold capitalize leading-6 text-text/60">
-      <span>Active Tool:</span>
-      <span class={cn(getRarityClass(highestPriorityFarmingTool.rarity ?? "", "text"))}>{highestPriorityFarmingTool.display_name}</span>
-    </p>
+    {#if highestPriorityFarmingTool}
+      <p class="space-x-0.5 font-bold capitalize leading-6 text-text/60">
+        <span>Active Tool:</span>
+        <span class={cn(getRarityClass(highestPriorityFarmingTool.rarity ?? "", "text"))}>{highestPriorityFarmingTool.display_name}</span>
+      </p>
+    {/if}
   </div>
   {#each farmingTools as tool}
     <Item piece={tool} />

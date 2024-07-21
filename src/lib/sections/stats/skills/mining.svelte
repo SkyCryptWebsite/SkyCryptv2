@@ -19,10 +19,12 @@
 <Items title="Skills">
   <div slot="text" class="space-y-2">
     <h3 class="text-xl font-semibold">Mining Tools</h3>
-    <p class="space-x-0.5 font-bold capitalize leading-6 text-text/60">
-      <span>Active Tool:</span>
-      <span class={cn(getRarityClass(highestPriorityMiningTool.rarity ?? "", "text"))}>{highestPriorityMiningTool.display_name}</span>
-    </p>
+    {#if highestPriorityMiningTool}
+      <p class="space-x-0.5 font-bold capitalize leading-6 text-text/60">
+        <span>Active Tool:</span>
+        <span class={cn(getRarityClass(highestPriorityMiningTool.rarity ?? "", "text"))}>{highestPriorityMiningTool.display_name}</span>
+      </p>
+    {/if}
   </div>
   {#each miningTools as tool}
     <Item piece={tool} />

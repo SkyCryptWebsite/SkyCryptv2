@@ -18,8 +18,8 @@ export type DungeonsStats = {
     highestFloorBeatenMaster: number;
     bloodMobKills: number;
   };
-  catacombs: CatacombsData[];
-  master_catacombs: CatacombsData[];
+  catacombs: CatacombsData[] | null;
+  master_catacombs: CatacombsData[] | null;
 };
 
 export type CatacombsData = {

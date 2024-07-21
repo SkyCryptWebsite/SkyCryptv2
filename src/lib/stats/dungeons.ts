@@ -129,6 +129,10 @@ function formatCatacombsData(catacombs: Catacombs) {
     });
   }
 
+  if (output.reduce((a, b) => a + b.stats.times_played, 0) === 0) {
+    return null;
+  }
+
   return output;
 }
 
