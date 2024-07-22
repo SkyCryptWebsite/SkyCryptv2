@@ -51,7 +51,7 @@ export async function getStats(profile: Profile, player: Player): Promise<Stats>
     enchanting: stats.getEnchanting(userProfile),
     fishing: stats.getFishing(userProfile),
     slayer: stats.getSlayer(userProfile),
-    dungeons: stats.getDungeons(userProfile)
+    dungeons: stats.getDungeons(userProfile),
     minions: stats.getMinions(profile),
     bestiary: stats.getBestiary(userProfile),
     collections: collections,
