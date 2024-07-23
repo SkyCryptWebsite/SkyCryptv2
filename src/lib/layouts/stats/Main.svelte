@@ -22,6 +22,18 @@
 <main class="mx-auto space-y-5 p-8">
   <PlayerProfile />
   <Skills />
+  <div class="text-1xl inline-flex w-full items-center justify-center bg-[#00000069] py-4 align-middle font-semibold">
+    <a class="border-b-2 border-lime-400 px-4 hover:border-b-4" href="#Stats"><p>Stats</p></a>
+    <a class="border-b-2 border-lime-400 px-4 hover:border-b-4" href="#AdditionalStats"><p>AdditionalStats</p></a>
+    <a class="border-b-2 border-lime-400 px-4 hover:border-b-4" href="#Armor"><p>Armor</p></a>
+    <a class="border-b-2 border-lime-400 px-4 hover:border-b-4" href="#Weapons"><p>Weapons</p></a>
+    <a class="border-b-2 border-lime-400 px-4 hover:border-b-4" href="#Accessories"><p>Accessories</p></a>
+    <a class="border-b-2 border-lime-400 px-4 hover:border-b-4" href="#Pets"><p>Pets</p></a>
+    <a class="border-b-2 border-lime-400 px-4 hover:border-b-4" href="#Inventory"><p>Inventory</p></a>
+    <a class="border-b-2 border-lime-400 px-4 hover:border-b-4" href="#SkillsSection"><p>SkillsSection</p></a>
+    <a class="border-b-2 border-lime-400 px-4 hover:border-b-4" href="#Dungeons"><p>Dungeons</p></a>
+    <a class="border-b-2 border-lime-400 px-4 hover:border-b-4" href="#Slayer"><p>Slayer</p></a>
+  </div>
   <Stats />
   <AdditionalStats />
   <Armor />
