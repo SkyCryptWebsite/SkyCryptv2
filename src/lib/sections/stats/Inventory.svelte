@@ -77,7 +77,7 @@
   });
 </script>
 
-<Tabs.Root bind:value={$openTab} class="relative mb-0 rounded-lg bg-background/30 p-5 @container">
+<Tabs.Root bind:value={$openTab} class="relative mb-0 rounded-lg bg-background/30 p-5 @container" id="Inventory">
   <Tabs.List class="flex items-center gap-3 border-b border-icon px-4">
     {#each tabs as tab}
       {@const isActive = $openTab === tab.id}

@@ -15,7 +15,7 @@
 
 <Items title="Accessories">
   {#if accessories.accessories.length > 0}
-    <div>
+    <div id="Accessories">
       <AdditionStat text="Unique Accessories" data={`${accessories.unique} / ${accessories.total}`} />
       <AdditionStat text="Completion" data={`${Math.round((accessories.unique / accessories.total) * 100)}%`} />
       <AdditionStat text="Recombobulated" data={`${accessories.recombobulated} / ${accessories.totalRecombobulated}`} />

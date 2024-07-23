@@ -17,7 +17,7 @@
 </script>
 
 <Items title="Pets">
-  <div slot="text">
+  <div id="Pets" slot="text">
     <AdditionStat text="Unique Pets" data={`${pets.amount} / ${pets.total}`} />
     <AdditionStat text="Unique Pet Skins" data={`${pets.amountSkins} / ${pets.totalSkins}`} />
     <AdditionStat text="Pet Score" data={`${pets.petScore.amount} (+${pets.petScore.stats.magic_find} MF) `} asterisk={true}>

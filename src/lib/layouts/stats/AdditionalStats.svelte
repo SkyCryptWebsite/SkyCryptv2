@@ -12,7 +12,7 @@
   const defaultPattern: string = "0,0";
 </script>
 
-<div class="additional-stats flex flex-col gap-2 sm:flex-row sm:flex-wrap">
+<div class="additional-stats flex flex-col gap-2 sm:flex-row sm:flex-wrap" id="AdditionalStats">
   <!--
     <AdditionStat text="Last Area" data={profile.data.user_data.current_area.current_area} />
   -->

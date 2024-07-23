@@ -10,12 +10,14 @@
   const weapons = profile.items.weapons;
 </script>
 
-<Items title="Weapons">
-  <div slot="text">
-    <!-- add colors later -->
-    <AdditionStat text="Active Weapon" data={weapons.highest_priority_weapon.tag.display.Name} />
-  </div>
-  {#each weapons.weapons as weapon}
-    <Item piece={weapon} />
-  {/each}
-</Items>
+<div id="Weapons">
+  <Items title="Weapons">
+    <div slot="text">
+      <!-- add colors later -->
+      <AdditionStat text="Active Weapon" data={weapons.highest_priority_weapon.tag.display.Name} />
+    </div>
+    {#each weapons.weapons as weapon}
+      <Item piece={weapon} />
+    {/each}
+  </Items>
+</div>

@@ -17,26 +17,28 @@
   const firstWardrobeItems = wardrobe.map((wardrobeItems) => wardrobeItems.find((piece) => piece));
 </script>
 
-<Items title="Armor">
-  <p slot="text" class="space-x-0.5 font-bold capitalize leading-6 text-text/60">
-    <span>Set:</span>
-    <span class={cn(getRarityClass(armor.set_rarity ?? "", "text"))}>{armor.set_name}</span>
-  </p>
-  {#each armor.armor as piece}
-    <Item {piece} />
-  {/each}
-  <Bonus slot="info" stats={armor.stats} />
-</Items>
+<div id="Weapons">
+  <Items title="Armor">
+    <p slot="text" class="space-x-0.5 font-bold capitalize leading-6 text-text/60">
+      <span>Set:</span>
+      <span class={cn(getRarityClass(armor.set_rarity ?? "", "text"))}>{armor.set_name}</span>
+    </p>
+    {#each armor.armor as piece}
+      <Item {piece} />
+    {/each}
+    <Bonus slot="info" stats={armor.stats} />
+  </Items>
 
-<Items subtitle="Equipment">
-  {#each equipment.equipment as piece}
-    <Item {piece} />
-  {/each}
-  <Bonus slot="info" stats={equipment.stats} />
-</Items>
+  <Items subtitle="Equipment">
+    {#each equipment.equipment as piece}
+      <Item {piece} />
+    {/each}
+    <Bonus slot="info" stats={equipment.stats} />
+  </Items>
 
-<Items subtitle="Wardrobe">
-  {#each firstWardrobeItems as firstWardrobeItem, i}
-    <Wardrobe {firstWardrobeItem} wardrobeItems={wardrobe[i]} />
-  {/each}
-</Items>
+  <Items subtitle="Wardrobe">
+    {#each firstWardrobeItems as firstWardrobeItem, i}
+      <Wardrobe {firstWardrobeItem} wardrobeItems={wardrobe[i]} />
+    {/each}
+  </Items>
+</div>

@@ -14,7 +14,7 @@
   const dungeons = profile.dungeons;
 </script>
 
-<div class="space-y-4">
+<div id="Dungeons" class="space-y-4">
   <h3 class="text-2xl uppercase">Dungeons</h3>
   {#if dungeons}
     <div class="flex flex-col flex-wrap justify-start gap-x-4 gap-y-2 sm:flex-row">

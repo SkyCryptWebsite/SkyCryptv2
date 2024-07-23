@@ -11,7 +11,7 @@
   const slayer = profile.slayer;
 </script>
 
-<div class="space-y-4">
+<div id="Slayer" class="space-y-4">
   <h3 class="text-2xl uppercase">Slayer</h3>
   {#if slayer}
     <AdditionStat text="Total Slayer XP" data={format(slayer.totalSlayerExp)} />
