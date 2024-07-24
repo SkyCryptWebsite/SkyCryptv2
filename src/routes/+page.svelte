@@ -5,11 +5,12 @@
   import { Button } from "bits-ui";
 
   var ign: string = "";
+  const ignRegex: RegExp = /^[a-zA-Z0-9_]{3,16}$/;
 
   function goToProfile(event: ButtonEvents["click"]) {
     event.preventDefault();
 
-    if (ign !== "") {
+    if (ign !== "" && ign.match(ignRegex)) {
       goto("/stats/" + ign);
     }
   }
