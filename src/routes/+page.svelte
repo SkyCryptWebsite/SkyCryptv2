@@ -1,5 +1,6 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
+  import Header from "$lib/components/Header.svelte";
   import type { ButtonEvents } from "bits-ui";
   import { Button } from "bits-ui";
 
@@ -13,6 +14,8 @@
     }
   }
 </script>
+
+<Header />
 
 <main class="mx-auto flex h-full max-w-[68rem] flex-col justify-center gap-6 pb-[max(1.25rem+env(safe-area-inset-bottom))] pl-[max(1.25rem+env(safe-area-inset-left))] pr-[max(1.25rem+env(safe-area-inset-right))] pt-5">
   <form class="flex w-full flex-col justify-center gap-6 rounded-lg py-6 text-3xl backdrop-blur-lg backdrop-brightness-50">
