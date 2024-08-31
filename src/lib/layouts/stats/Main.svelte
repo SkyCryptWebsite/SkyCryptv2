@@ -7,6 +7,7 @@
   import Armor from "$lib/sections/stats/Armor.svelte";
   import Dungeons from "$lib/sections/stats/Dungeons.svelte";
   import Inventory from "$lib/sections/stats/Inventory.svelte";
+  import Minions from "$lib/sections/stats/Minions.svelte";
   import Pets from "$lib/sections/stats/Pets.svelte";
   import SkillsSection from "$lib/sections/stats/SkillsSection.svelte";
   import Slayer from "$lib/sections/stats/Slayer.svelte";
@@ -32,6 +33,7 @@
   <SkillsSection />
   <Dungeons />
   <Slayer />
+  <Minions />
 </main>
 
 <svg xmlns="http://www.w3.org/2000/svg" height="0" width="0" style="position: fixed;">

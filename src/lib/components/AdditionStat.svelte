@@ -3,7 +3,7 @@
   import { Tooltip } from "bits-ui";
 
   export let text: string;
-  export let data: string;
+  export let data: string | number;
   export let subData: string | undefined = undefined;
   export let asterisk: boolean = false;
 
