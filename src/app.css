@@ -181,61 +181,61 @@
     font-style: normal;
     font-display: block;
     unicode-range:
-      // ✪ dungeon-star
+      /* ✪ dungeon-star */
       U+272A,
-      // ⍟ dungeon-master-star (no longer used)
+      /* ⍟ dungeon-master-star (no longer used) */
       U+235F,
-      // ⚔ attack-speed
+      /* ⚔ attack-speed */
       U+2694,
-      // ☣ critical-chance
+      /* ☣ critical-chance */
       U+2623,
-      // ☠ critical-damage
+      /* ☠ critical-damage */
       U+2620,
-      // ❈ defense
+      /* ❈ defense */
       U+2748,
-      // ☘ fortune
+      /* ☘ fortune */
       U+2618,
-      // ⫽ ferocity
+      /* ⫽ ferocity */
       U+2AFD,
-      // ❤ health
+      /* ❤ health */
       U+2764,
-      // ✎ intelligence
+      /* ✎ intelligence */
       U+270E,
-      // ✯ magic-find
+      /* ✯ magic-find */
       U+272F,
-      // ⸕ mining-speed
+      /* ⸕ mining-speed */
       U+2E15,
-      // ♣ pet-luck
+      /* ♣ pet-luck */
       U+2663,
-      // ✧ pristine
+      /* ✧ pristine */
       U+2727,
-      // α sea-creature-chance
+      /* α sea-creature-chance */
       U+03B1,
-      // ✦ speed
+      /* ✦ speed */
       U+2726,
-      // ❁ strength
+      /* ❁ strength */
       U+2741,
-      // ๑ ability-damage
+      /* ๑ ability-damage */
       U+0E51,
-      // ➊ 1-dungeon-star
+      /* ➊ 1-dungeon-star */
       U+278A,
-      // ➋ 2-dungeon-star
+      /* ➋ 2-dungeon-star */
       U+278B,
-      // ➌ 3-dungeon-star
+      /* ➌ 3-dungeon-star */
       U+278C,
-      // ➍ 4-dungeon-star
+      /* ➍ 4-dungeon-star */
       U+278D,
-      // ➎ 5-dungeon-star
+      /* ➎ 5-dungeon-star */
       U+278E,
-      // ❂ true-defense,
+      /* ❂ true-defense, */
       U+2742,
-      // ⸎ soulflow
+      /* ⸎ soulflow */
       U+2E0E,
-      // ᠅ powder,
+      /* ᠅ powder, */
       U+1805,
-      // ✿ dye,
+      /* ✿ dye, */
       U+273F,
-      // ⚚ dungeon-upgrade,
+      /* ⚚ dungeon-upgrade, */
       U+269A;
   }
 }
