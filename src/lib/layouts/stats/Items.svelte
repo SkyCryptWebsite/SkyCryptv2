@@ -1,6 +1,11 @@
 <script lang="ts">
+  import { cn } from "$lib/utils";
+
   export let title: string | undefined = undefined;
   export let subtitle: string | undefined = undefined;
+
+  let className: string | undefined = undefined;
+  export { className as class };
 </script>
 
 <div class="space-y-4">
@@ -12,7 +17,7 @@
   {/if}
   <slot name="text" />
 
-  <div class="flex flex-wrap gap-4">
+  <div class={cn("flex flex-wrap gap-4", className)}>
     <slot />
   </div>
 
