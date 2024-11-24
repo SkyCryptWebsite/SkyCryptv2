@@ -1,10 +1,12 @@
 export type BestiaryStats = {
-  categories: Record<string, BestiaryCategory>;
-  milestone: number;
-  maxMilestone: number;
+  level: number;
+  maxLevel: number;
   familiesUnlocked: number;
+  familiesCompleted: number;
   totalFamilies: number;
-  familiesMaxed: number;
+  familyTiers: number;
+  maxFamilyTiers: number;
+  categories: Record<string, BestiaryCategory>;
 };
 
 export type BestiaryCategory = {

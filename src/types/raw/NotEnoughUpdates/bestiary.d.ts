@@ -7,12 +7,11 @@ type Island = "dynamic" | "hub" | "farming_1" | "combat_1" | "combat_3" | "crims
 
 type IslandData = {
   name: string;
-  icon:
-    | {
-        skullOwner: string;
-        texture: string;
-      }
-    | { item: string };
+  icon: {
+    skullOwner: string;
+    texture: string;
+    item: string;
+  };
   mobs: Mob[];
   hasSubcategories: boolean;
   [key: string]: Mob[];

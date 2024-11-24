@@ -1,7 +1,7 @@
-import type { NEUItem } from "$types/processed/other/NotEnoughUpdates";
+import type { NEUItem } from "$types/processed/NotEnoughUpdates/NotEnoughUpdates";
 import fs from "node:fs";
 import { NBTParser } from "./NBTParser";
-import { formatBestiaryConstants } from "./NEU/bestiary";
+import { formatBestiaryConstants } from "./NotEnoughUpdates/bestiary";
 
 export const NEU_ITEMS = new Map<string, NEUItem>();
 export const NEU_CONSTANTS = new Map();

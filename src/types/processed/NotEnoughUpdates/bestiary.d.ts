@@ -5,11 +5,13 @@ export type NotEnoughUpdatesBestiaryConstants = {
 
 type Island = {
   name: string;
+  texture: string;
   mobs: Mob[];
 };
 
 type Mob = {
   name: string;
+  texture: string;
   cap: number;
   mobs: string[];
   bracket: number;

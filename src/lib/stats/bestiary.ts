@@ -1,5 +1,6 @@
 import { NEU_CONSTANTS } from "$lib/scripts/parseNEURepository";
 import type { Member } from "$types/global";
+import type { NotEnoughUpdatesBestiaryConstants } from "$types/processed/NotEnoughUpdates/bestiary";
 import type { BestiaryStats } from "$types/processed/profile/bestiary";
 
 function getBestiaryMobs(
@@ -37,7 +38,7 @@ function getBestiaryMobs(
 
 export function getBestiaryFamily(userProfile: Member, mobName: string) {
   const bestiary = userProfile.bestiary.kills || {};
-  const family = Object.values(NEU_CONSTANTS.get("bestiary").islands)
+  const family = Object.values(NEU_CONSTANTS.get("bestiary").islands as NotEnoughUpdatesBestiaryConstants["islands"])
     .flatMap((category) => category.mobs)
     .find((mob) => mob.name === mobName);
 
@@ -57,7 +58,7 @@ export function getBestiary(userProfile: Member) {
   const bestiary = userProfile.bestiary.kills || {};
 
   const categories = {} as BestiaryStats["categories"];
-  for (const [category, categoryData] of Object.entries(NEU_CONSTANTS.get("bestiary").islands)) {
+  for (const [category, categoryData] of Object.entries(NEU_CONSTANTS.get("bestiary").islands as NotEnoughUpdatesBestiaryConstants["islands"])) {
     categories[category] = {
       name: categoryData.name,
       texture: categoryData.texture,
@@ -78,11 +79,13 @@ export function getBestiary(userProfile: Member) {
   const totalFamilies = mobs.length;
 
   return {
-    categories,
-    milestone,
-    maxMilestone,
-    familiesUnlocked,
-    totalFamilies,
-    familiesMaxed
+    level: milestone / 10,
+    maxLevel: maxMilestone / 10,
+    familiesUnlocked: familiesUnlocked,
+    familiesCompleted: familiesMaxed,
+    totalFamilies: totalFamilies,
+    familyTiers: milestone,
+    maxFamilyTiers: maxMilestone,
+    categories: categories
   };
 }

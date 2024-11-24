@@ -1,4 +1,5 @@
-import type { NotEnoughUpdatesBestiaryConstants } from "$types/processed/NEU/bestiary";
+import { getHeadTextureUUID } from "$lib/helper";
+import type { NotEnoughUpdatesBestiaryConstants } from "$types/processed/NotEnoughUpdates/bestiary";
 import type { IslandData, Mob, NotEnoughUpdatesBestiary } from "$types/raw/NotEnoughUpdates/bestiary";
 
 function formatBestiaryMobs(mobs: Mob[]) {
@@ -6,6 +7,7 @@ function formatBestiaryMobs(mobs: Mob[]) {
   for (const mob of mobs) {
     output.push({
       name: mob.name.replace(/§./g, ""),
+      texture: mob.texture ? `/api/head/${getHeadTextureUUID(mob.texture)}` : `/api/item/${mob.item}`,
       cap: mob.cap,
       mobs: mob.mobs,
       bracket: mob.bracket
@@ -34,6 +36,7 @@ export function formatBestiaryConstants(bestiary: NotEnoughUpdatesBestiary) {
         const name = categoryData.name.includes(islandData.name) ? categoryData.name : `${categoryData.name} ${islandData.name}`;
         bestiaryConstants.islands[id] = {
           name: name,
+          texture: categoryData.texture ? `/api/head/${getHeadTextureUUID(categoryData.icon.texture)}` : `/api/item/${categoryData.icon.item}`,
           mobs: formatBestiaryMobs(categoryData.mobs)
         };
       }
@@ -43,6 +46,7 @@ export function formatBestiaryConstants(bestiary: NotEnoughUpdatesBestiary) {
 
     bestiaryConstants.islands[islandId] = {
       name: islandData.name,
+      texture: islandData.texture ? `/api/head/${getHeadTextureUUID(islandData.icon.texture)}` : `/api/item/${islandData.icon.item}`,
       mobs: formatBestiaryMobs(islandData.mobs)
     };
   }
