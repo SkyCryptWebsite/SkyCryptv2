@@ -1,16 +1,28 @@
 <script lang="ts">
+  import { goto } from "$app/navigation";
   import Header from "$lib/components/Header.svelte";
   import { Button } from "bits-ui";
+
+  var ign: string = "";
+  const ignRegex: RegExp = /^[a-zA-Z0-9_]{3,16}$/;
+
+  function goToProfile(event: MouseEvent) {
+    event.preventDefault();
+
+    if (ign !== "" && ign.match(ignRegex)) {
+      goto("/stats/" + ign);
+    }
+  }
 </script>
 
 <Header />
 
 <main class="mx-auto flex h-full max-w-[68rem] flex-col justify-center gap-6 pb-[max(1.25rem+env(safe-area-inset-bottom))] pl-[max(1.25rem+env(safe-area-inset-left))] pr-[max(1.25rem+env(safe-area-inset-right))] pt-5">
-  <form class="flex w-full flex-col justify-center gap-6 rounded-lg py-6 text-3xl backdrop-blur-lg backdrop-brightness-50">
+  <div class="flex w-full flex-col justify-center gap-6 rounded-lg py-6 text-3xl backdrop-blur-lg backdrop-brightness-50">
     <h2 class="m-1 w-full text-center font-semibold">Show SkyBlock stats for</h2>
-    <input type="search" name="ign" enterkeyhint="go" required placeholder="Enter username" class="relative h-16 flex-grow bg-text/10 text-center font-normal text-text focus-visible:outline-none" />
-    <Button.Root type="submit" class="mx-auto flex w-full max-w-fit items-center justify-center rounded-3xl bg-icon px-6 py-3 text-base font-bold uppercase transition-all duration-150 [text-shadow:0_0_3px_rgba(0,0,0,.5)] hover:scale-[1.015]">Show me</Button.Root>
-  </form>
+    <input type="search" bind:value={ign} name="ign" enterkeyhint="go" required placeholder="Enter username" class="relative h-16 flex-grow bg-text/10 text-center font-normal text-text focus-visible:outline-none" />
+    <a href={"/stats/" + ign} on:click={goToProfile} class="mx-auto flex w-full max-w-fit items-center justify-center rounded-3xl bg-icon px-6 py-3 text-base font-bold uppercase transition-all duration-150 [text-shadow:0_0_3px_rgba(0,0,0,.5)] hover:scale-[1.015]">Show me</a>
+  </div>
   <Button.Root href="https://discord.gg/cNgADv2kEQ" target="_blank" rel="noreferrer" class="block rounded-lg p-4 backdrop-blur-lg backdrop-brightness-50 transition-all duration-150 hover:scale-[1.015]">
     <div class="font-semibold">
       <span class="text-text/70">SkyCrypt's</span>
