@@ -68,7 +68,7 @@
                 </div>
                 <div class="text-sm">
                   <span class="opacity-60">Time:</span>
-                  <span class="text-text">{challenge.formattedTime} Seconds</span>
+                  <span class="text-text">{challenge.formattedTime}</span>
                 </div>
               </div>
             </div>
