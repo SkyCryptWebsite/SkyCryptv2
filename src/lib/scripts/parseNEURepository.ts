@@ -1,6 +1,7 @@
 import type { NEUItem } from "$types/processed/other/NotEnoughUpdates";
 import fs from "node:fs";
 import { NBTParser } from "./NBTParser";
+import { formatBestiaryConstants } from "./NEU/bestiary";
 
 export const NEU_ITEMS = new Map<string, NEUItem>();
 export const NEU_CONSTANTS = new Map();
@@ -30,6 +31,12 @@ export async function parseNEURepository() {
       const pets = JSON.parse(fs.readFileSync(`src/lib/constants/NotEnoughUpdates-REPO/constants/${constant}`, "utf8"));
 
       NEU_CONSTANTS.set("pets", pets);
+    } else if (constant === "bestiary.json") {
+      const bestiary = JSON.parse(fs.readFileSync(`src/lib/constants/NotEnoughUpdates-REPO/constants/${constant}`, "utf8"));
+
+      const bestiaryData = formatBestiaryConstants(bestiary);
+
+      NEU_CONSTANTS.set("bestiary", bestiaryData);
     }
   }
 

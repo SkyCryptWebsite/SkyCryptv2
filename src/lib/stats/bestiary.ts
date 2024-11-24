@@ -1,4 +1,4 @@
-import * as constants from "$constants/constants";
+import { NEU_CONSTANTS } from "$lib/scripts/parseNEURepository";
 import type { Member } from "$types/global";
 import type { BestiaryStats } from "$types/processed/profile/bestiary";
 
@@ -14,7 +14,7 @@ function getBestiaryMobs(
 ) {
   const output = [];
   for (const mob of mobList) {
-    const mobBracket = constants.BESTIARY_BRACKETS[mob.bracket];
+    const mobBracket = NEU_CONSTANTS.get("bestiary").brackets[mob.bracket];
 
     const totalKills = mob.mobs.reduce((acc, mob) => acc + (bestiary[mob] || 0), 0);
     const maxKills = mob.cap;
@@ -37,7 +37,7 @@ function getBestiaryMobs(
 
 export function getBestiaryFamily(userProfile: Member, mobName: string) {
   const bestiary = userProfile.bestiary.kills || {};
-  const family = Object.values(constants.BESTIARY)
+  const family = Object.values(NEU_CONSTANTS.get("bestiary").islands)
     .flatMap((category) => category.mobs)
     .find((mob) => mob.name === mobName);
 
@@ -57,7 +57,7 @@ export function getBestiary(userProfile: Member) {
   const bestiary = userProfile.bestiary.kills || {};
 
   const categories = {} as BestiaryStats["categories"];
-  for (const [category, categoryData] of Object.entries(constants.BESTIARY)) {
+  for (const [category, categoryData] of Object.entries(NEU_CONSTANTS.get("bestiary").islands)) {
     categories[category] = {
       name: categoryData.name,
       texture: categoryData.texture,
