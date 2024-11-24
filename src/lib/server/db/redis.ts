@@ -1,5 +1,5 @@
+import { REDIS_HOST, REDIS_PASSWORD, REDIS_PORT } from "$env/static/private";
 import { createClient } from "redis";
-import { REDIS_PASSWORD, REDIS_HOST, REDIS_PORT } from "$env/static/private";
 
 export const REDIS = createClient({
   url: `redis://default:${REDIS_PASSWORD}@${REDIS_HOST}:${REDIS_PORT}`

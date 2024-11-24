@@ -1,14 +1,19 @@
+import { REDIS } from "$lib/server/db/redis";
 import { getProfiles } from "$lib/server/lib";
 import * as stats from "$lib/server/stats/stats";
 import type { Profile, Stats } from "$types/global";
 import type { Player } from "$types/raw/player/lib";
 
-const getAccessories = stats.getAccessories;
-const getPets = stats.getPets;
-const getMainStats = stats.getMainStats;
-const getCollections = stats.getCollections;
+const { getAccessories, getPets, getMainStats, getCollections } = stats;
 
 export async function getStats(profile: Profile, player: Player): Promise<Stats> {
+  const timeNow = Date.now();
+  const cache = await REDIS.get(`STATS:${profile.uuid}`);
+  if (cache) {
+    console.log(`[CACHE] Found cache for ${profile.uuid} in ${Date.now() - timeNow}ms`);
+    return JSON.parse(cache);
+  }
+
   const userProfile = profile.members[profile.uuid];
 
   const items = await stats.getItems(userProfile);
@@ -29,7 +34,7 @@ export async function getStats(profile: Profile, player: Player): Promise<Stats>
     getCollections(userProfile, profile)
   ]);
 
-  return {
+  const output = {
     username: player.displayname,
     uuid: profile.uuid,
     profile_id: profile.profile_id,
@@ -59,4 +64,8 @@ export async function getStats(profile: Profile, player: Player): Promise<Stats>
     rift: stats.getRift(userProfile),
     misc: stats.getMisc(userProfile, profile, player)
   };
+
+  await REDIS.SETEX(`STATS:${profile.uuid}`, 60 * 5, JSON.stringify(output));
+
+  return output;
 }
