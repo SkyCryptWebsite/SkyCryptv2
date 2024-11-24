@@ -14,9 +14,10 @@
 
 <Items title="Bestiary" class="flex-col">
   <div slot="text">
-    <AdditionStat text="Bestiary Level" data="{bestiary.milestone / 10} / {bestiary.maxMilestone / 10}" />
+    <AdditionStat text="Bestiary Level" data="{bestiary.level} / {bestiary.maxLevel}" />
     <AdditionStat text="Families Unlocked" data="{bestiary.familiesUnlocked} / {bestiary.totalFamilies}" />
-    <AdditionStat text="Families Completed" data="{bestiary.familiesMaxed} / {bestiary.totalFamilies}" />
+    <AdditionStat text="Families Completed" data="{bestiary.familiesCompleted} / {bestiary.totalFamilies}" />
+    <AdditionStat text="Families Tiers" data="{bestiary.familyTiers} / {bestiary.maxFamilyTiers}" />
   </div>
   {#each Object.entries(bestiary.categories) as [_, data]}
     <div class="flex items-center gap-1 text-base font-semibold uppercase">
