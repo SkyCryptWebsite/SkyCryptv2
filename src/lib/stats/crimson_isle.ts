@@ -1,5 +1,6 @@
-import type { Member } from "$types/global";
 import * as constants from "$constants/constants";
+import type { Member } from "$types/global";
+import prettyMilliseconds from "pretty-ms";
 
 function getDojoRank(points: number) {
   if (points >= 1000) {
@@ -26,6 +27,7 @@ function getDojo(userProfile: Member) {
       texture: data.texture,
       points: userProfile.nether_island_player_data?.dojo?.[`dojo_points_${id}`] ?? 0,
       time: userProfile.nether_island_player_data?.dojo?.[`dojo_time_${id}`] ?? 0,
+      formattedTime: prettyMilliseconds(userProfile.nether_island_player_data?.dojo?.[`dojo_time_${id}`] ?? 0, { colonNotation: true }),
       rank: getDojoRank(userProfile.nether_island_player_data?.dojo?.[`dojo_points_${id}`] ?? 0)
     });
   }
@@ -42,7 +44,7 @@ function getKuudra(userProfile: Member) {
     output.push({
       name: data.name,
       id: id,
-      head: data.head,
+      texture: data.head,
       kills: userProfile.nether_island_player_data?.kuudra_completed_tiers?.[id] ?? 0
     });
   }
