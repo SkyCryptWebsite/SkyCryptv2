@@ -7,6 +7,7 @@
   import Armor from "$lib/sections/stats/Armor.svelte";
   import Bestiary from "$lib/sections/stats/Bestiary.svelte";
   import Collections from "$lib/sections/stats/Collections.svelte";
+  import CrimsonIsle from "$lib/sections/stats/CrimsonIsle.svelte";
   import Dungeons from "$lib/sections/stats/Dungeons.svelte";
   import Inventory from "$lib/sections/stats/Inventory.svelte";
   import Minions from "$lib/sections/stats/Minions.svelte";
@@ -38,6 +39,7 @@
   <Minions />
   <Bestiary />
   <Collections />
+  <CrimsonIsle />
 </main>
 
 <svg xmlns="http://www.w3.org/2000/svg" height="0" width="0" style="position: fixed;">
