@@ -5,7 +5,9 @@
   import Mining from "./skills/mining.svelte";
 </script>
 
-<Mining />
-<Farming />
-<Fishing />
-<Enchanting />
+<div id="SkillsSection">
+  <Mining />
+  <Farming />
+  <Fishing />
+  <Enchanting />
+</div>
