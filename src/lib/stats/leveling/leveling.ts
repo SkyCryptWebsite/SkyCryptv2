@@ -76,7 +76,7 @@ export function getLevelByXp(
   }
 
   /** the maximum level that any player can achieve (used for gold progress bars) */
-  const maxLevel = isInfiniteLevelable ? Math.max(uncappedLevel, levelCap) : constants.MAXED_SKILL_CAPS[extra.type] ?? levelCap;
+  const maxLevel = isInfiniteLevelable ? Math.max(uncappedLevel, levelCap) : (constants.MAXED_SKILL_CAPS[extra.type] ?? levelCap);
 
   /** the level as displayed by in game UI */
   const level = isInfiniteLevelable ? uncappedLevel : Math.min(levelCap, uncappedLevel);
@@ -185,7 +185,7 @@ export function getXpByLevel(
   }
 
   /** the maximum level that any player can achieve (used for gold progress bars) */
-  const maxLevel = isInfiniteLevelable ? Math.max(uncappedLevel, levelCap) : constants.MAXED_SKILL_CAPS[extra.type] ?? levelCap;
+  const maxLevel = isInfiniteLevelable ? Math.max(uncappedLevel, levelCap) : (constants.MAXED_SKILL_CAPS[extra.type] ?? levelCap);
 
   /** the amount amount of xp needed to reach the next level (used for calculation progress to next level) */
   const xpForNext = (level < maxLevel ? Math.ceil(xpTable[level + 1] ?? Object.values(xpTable).at(-1)) : isInfiniteLevelable ? Object.values(xpTable).at(-1) : Infinity) as number;
