@@ -39,7 +39,7 @@ export type Misc = {
     ender_crystals_destroyed: number;
     most_damage: Record<string, number>;
     fastest_kill: Record<string, number>;
-    kills: Record<string, number>;
+    last_hits: Record<string, number>;
     deaths: Record<string, number>;
   };
   endstone_protector: {

@@ -91,12 +91,13 @@ function getRaces(userProfile: Member) {
         const isReturn = id.endsWith("_with_return_best_time");
         const dungeonRaceId = raceId.replace(isReturn ? "_with_return" : "_no_return", "");
 
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-expect-error
-        output[shortId].races[isReturn ? "with_return" : "no_return"][dungeonRaceId] = {
-          name: constants.RACE_NAMES[dungeonRaceId] ?? dungeonRaceId.split("_").map(helper.titleCase).join(" "),
-          time: data
-        };
+        const raceType = isReturn ? "with_return" : "no_return";
+        if (output[shortId].races[raceType] !== null) {
+          (output[shortId].races[raceType] as Misc["races"]["string"]["races"])[dungeonRaceId] = {
+            name: constants.RACE_NAMES[dungeonRaceId] ?? dungeonRaceId.split("_").map(helper.titleCase).join(" "),
+            time: data
+          };
+        }
 
         if (output[shortId].races.with_return && Object.keys(output[shortId].races.with_return).length === 0) {
           output[shortId].races.with_return = null;
@@ -113,11 +114,11 @@ function getRaces(userProfile: Member) {
 }
 
 function getDragons(userProfile: Member) {
-  const dragonKills = Object.keys(userProfile.player_stats.kills)
+  const lastDragonHits = Object.keys(userProfile.player_stats.kills)
     .filter((key) => key.endsWith("_dragon") && !key.startsWith("master_wither_king"))
     .reduce((obj, key) => ({ ...obj, [key.replace("_dragon", "")]: userProfile.player_stats.kills[key] }), {}) as Record<string, number>;
 
-  Object.assign(dragonKills, { total: Object.values(dragonKills).reduce((a, b) => a + b, 0) });
+  Object.assign(lastDragonHits, { total: Object.values(lastDragonHits).reduce((a, b) => a + b, 0) });
 
   const dragonDeaths = Object.keys(userProfile.player_stats.deaths)
     .filter((key) => key.endsWith("_dragon") && !key.startsWith("master_wither_king"))
@@ -129,7 +130,7 @@ function getDragons(userProfile: Member) {
     ender_crystals_destroyed: userProfile.player_stats.end_island.dragon_fight.ender_crystals_destroyed,
     most_damage: userProfile.player_stats.end_island.dragon_fight.most_damage,
     fastest_kill: userProfile.player_stats.end_island.dragon_fight.fastest_kill,
-    kills: dragonKills,
+    last_hits: lastDragonHits,
     deaths: dragonDeaths
   };
 }
