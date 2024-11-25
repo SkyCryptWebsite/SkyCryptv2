@@ -6,7 +6,7 @@
   const profile = getContext<StatsType>("profile");
 </script>
 
-<div class="skills space-y-2">
+<div id="Skills" class="skills space-y-2">
   <Skillbar class="sm:w-full" skill="Level" skillData={profile.skyblock_level} />
 
   <div class="flex flex-col flex-wrap gap-x-4 gap-y-2 sm:flex-row">

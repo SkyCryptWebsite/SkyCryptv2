@@ -10,7 +10,7 @@
   const profile = getContext<StatsType>("profile");
 </script>
 
-<div class="mt-12 flex flex-wrap items-center gap-x-2 gap-y-3 text-4xl">
+<div id="Profile" class="mt-12 flex flex-wrap items-center gap-x-2 gap-y-3 text-4xl">
   Stats for
   <div class="inline-flex items-center gap-2 rounded-full bg-[#7f7f7f33] px-4 py-2 align-middle text-3xl font-semibold">
     <div class="nice-colors-dark light dark relative flex items-center justify-center overflow-hidden rounded-full bg-minecraft-b px-2 py-1 text-xl">

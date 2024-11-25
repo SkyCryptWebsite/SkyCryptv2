@@ -10,7 +10,7 @@
   const stats = getPlayerStats(profile);
 </script>
 
-<div class="stats flex max-h-44 flex-col sm:flex-wrap">
+<div class="stats flex max-h-44 flex-col sm:flex-wrap" id="Stats">
   {#each Object.entries(stats) as [statName, statData]}
     <Stat stat={statName} statData={statData.total} />
   {/each}
