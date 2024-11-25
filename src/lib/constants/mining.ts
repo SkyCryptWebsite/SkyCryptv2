@@ -1812,7 +1812,6 @@ const nodeClasses = {
   // HOTM 1
   mining_speed: MiningSpeed
 };
-``;
 
 export const HOTM = {
   tiers: Object.keys(rewards.hotm).length,

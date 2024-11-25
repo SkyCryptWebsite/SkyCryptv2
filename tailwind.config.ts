@@ -1,3 +1,4 @@
+import containerQueries from "@tailwindcss/container-queries";
 import type { Config } from "tailwindcss";
 import { fontFamily } from "tailwindcss/defaultTheme";
 import plugin from "tailwindcss/plugin";
@@ -83,6 +84,6 @@ export default {
         { values: theme("textShadow") }
       );
     }),
-    require("@tailwindcss/container-queries")
+    containerQueries
   ]
 } satisfies Config;

@@ -29,24 +29,19 @@
     <AdditionStat text="Unique Pets" data={`${pets.amount} / ${pets.total}`} />
     <AdditionStat text="Unique Pet Skins" data={`${pets.amountSkins} / ${pets.totalSkins}`} />
     <AdditionStat text="Pet Score" data={`${pets.petScore.amount} (+${pets.petScore.stats.magic_find} MF) `} asterisk={true}>
-      <div class="max-w-xs space-y-2 font-bold">
+      <div class="max-w-xs space-y-6 font-bold">
         <h3 class="text-text/85">Pet score is calculated based on how many unique pets you have and the rarity of these pets.</h3>
-        <br />
         <h3 class="text-text/85">You gain an additional score for each max level pet you have!</h3>
-        <br />
-        <table>
+        <div class="flex flex-col">
           {#each Object.entries(PET_REWARDS) as [score, data]}
-            <tr> </tr><tr
-              ><td>{score} Score: </td><td
-                ><span style="color: var(--§b)">+{data.magic_find} Magic Find</span>
-
-                {#if data.magic_find === pets.petScore.amount}
-                  <span style="color: var(--§5);"> «</span>
-                {/if}
-              </td>
-            </tr>
+            <div>
+              {score} Score: <span style="color: var(--§b)">+{data.magic_find} Magic Find</span>
+              {#if data.magic_find === pets.petScore.amount}
+                <span style="color: var(--§5);"> «</span>
+              {/if}
+            </div>
           {/each}
-        </table>
+        </div>
       </div>
     </AdditionStat>
     <AdditionStat text="Total Candies Used" data={`${pets.totalCandyUsed}`} />
