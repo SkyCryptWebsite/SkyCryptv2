@@ -118,8 +118,8 @@ export function getPlayerStats(profile: Stats) {
     }
   }
 
-  if (profile.bestiary.milestone > 0) {
-    stats.health.bestiary = Math.floor(profile.bestiary.milestone / 10);
+  if (profile.bestiary.level > 0) {
+    stats.health.bestiary = Math.floor(profile.bestiary.level);
   }
 
   if (profile.pets.petScore.stats.magic_find > 0) {

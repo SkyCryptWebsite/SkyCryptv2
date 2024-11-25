@@ -1,8 +1,8 @@
 import type { Item, ProcessedItem } from "$types/stats";
 import { getPrices } from "skyhelper-networth";
+import { v4 } from "uuid";
 import * as constants from "./constants/constants";
 import { getTexture } from "./custom_resources";
-import { v4 } from "uuid";
 
 export * from "$lib/helper/cache";
 export * from "$lib/helper/item";
@@ -356,4 +356,12 @@ export function getHeadTextureUUID(value: string) {
   const uuid = url.split("/").pop();
 
   return uuid;
+}
+
+export function uniqBy<T>(arr: T[], key: string) {
+  const seen = new Set();
+  return arr.filter((item) => {
+    const k = (item as Record<string, unknown>)[key];
+    return seen.has(k) ? false : seen.add(k);
+  });
 }

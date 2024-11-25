@@ -29,7 +29,7 @@ export const RIFT_TIMECHARMS = [
   {
     name: "Supreme Timecharm",
     id: "wyldly_supreme",
-    texture: "/api/item/SPRUCE_LEAVES"
+    texture: "/api/item/LEAVES:1"
   },
   {
     name: "mrahcemiT esrevrorriM",

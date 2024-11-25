@@ -1,6 +1,5 @@
 export * from "$constants/accessories";
 export * from "$constants/armor";
-export * from "$constants/bestiary";
 export * from "$constants/collections";
 export * from "$constants/crimson_isle";
 export * from "$constants/dungeons";

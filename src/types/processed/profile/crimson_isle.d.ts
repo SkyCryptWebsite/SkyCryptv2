@@ -9,7 +9,7 @@ export type CrimsonIsle = {
     tiers: {
       name: string;
       id: string;
-      head: string;
+      texture: string;
       kills: number;
     }[];
   };
@@ -21,6 +21,7 @@ export type CrimsonIsle = {
       texture: string;
       points: number;
       time: number;
+      formattedTime: string;
       rank: string;
     }[];
   };

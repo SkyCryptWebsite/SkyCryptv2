@@ -12,15 +12,16 @@ export type Misc = {
     deaths: { id: string; name: string; amount: number }[];
   };
   races: {
-    [string: string]: {
+    [id: string]: {
       name: string;
       races: Record<
         string,
         | { name: string; time: number }
         | {
-            with_return: Record<string, { name: string; time: number }>;
-            no_return: Record<string, { name: string; time: number }>;
+            with_return: Record<string, { name: string; time: number }> | null;
+            no_return: Record<string, { name: string; time: number }> | null;
           }
+        | null
       >;
     };
   };
@@ -38,7 +39,7 @@ export type Misc = {
     ender_crystals_destroyed: number;
     most_damage: Record<string, number>;
     fastest_kill: Record<string, number>;
-    kills: Record<string, number>;
+    last_hits: Record<string, number>;
     deaths: Record<string, number>;
   };
   endstone_protector: {

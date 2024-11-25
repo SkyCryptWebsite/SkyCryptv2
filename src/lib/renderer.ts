@@ -16,6 +16,7 @@ import fs from "fs-extra";
 import sanitize from "mongo-sanitize";
 import path from "path";
 
+import type { ItemQuery } from "$types/global";
 import minecraftData from "minecraft-data";
 import * as helper from "./helper";
 import { getItemData } from "./helper/item";
@@ -442,7 +443,7 @@ async function renderPotion(type: string, color: string) {
  * @param {object} query
  * @returns Image of an item
  */
-export async function renderItem(skyblockId: string | undefined, query: SkyBlockItemQuery): Promise<RenderItemOutput> {
+export async function renderItem(skyblockId: string | undefined, query: ItemQuery): Promise<RenderItemOutput> {
   query = sanitize(query);
   let itemQuery = query ?? {};
 

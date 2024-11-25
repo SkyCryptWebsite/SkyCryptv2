@@ -7,11 +7,19 @@
   import Items from "$lib/layouts/stats/Items.svelte";
   import type { Stats as StatsType } from "$types/stats";
   import { Collapsible } from "bits-ui";
-  import _ from "lodash";
   import { getContext } from "svelte";
   //import { formatNumber } from "$lib/helper";
 
   const profile = getContext<StatsType>("profile");
+
+  // TODO: Once helper functions get moved to a global location, we can remove this function
+  function uniqBy<T>(arr: T[], key: string) {
+    const seen = new Set();
+    return arr.filter((item) => {
+      const k = (item as Record<string, unknown>)[key];
+      return seen.has(k) ? false : seen.add(k);
+    });
+  }
 
   const pets = profile.pets;
 </script>
@@ -60,7 +68,7 @@
       </div>
     {/if}
   </Items>
-  {@const uniquePets = _.uniqBy(pets.pets, "type")}
+  {@const uniquePets = uniqBy(pets.pets, "type")}
   {@const otherPets = pets.pets.filter((pet) => !uniquePets.includes(pet))}
 
   <Items subtitle="Other Pets">

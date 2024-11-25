@@ -2,15 +2,13 @@ import * as constants from "$constants/constants";
 import * as helper from "$lib/helper";
 import type { Member } from "$types/global";
 import type { TrophyFish } from "$types/stats";
-import _ from "lodash";
 
 function getTrophyFish(userProfile: Member) {
   if (userProfile.trophy_fish === undefined) {
     return null;
   }
 
-  // NOTE: needed here cuz of the reverse() method, we love JavaScript..
-  const reverstedTiers = _.clone(constants.TROPHY_FISH_TIERS).reverse();
+  const reverstedTiers = JSON.parse(JSON.stringify(constants.TROPHY_FISH_TIERS)).reverse();
 
   const output = [];
   for (const [id, data] of Object.entries(constants.TROPHY_FISH)) {
