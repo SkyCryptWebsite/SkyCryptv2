@@ -2,7 +2,6 @@ import * as constants from "$constants/constants";
 import * as helper from "$lib/helper";
 import { NEU_CONSTANTS, NEU_ITEMS } from "$lib/scripts/parseNEURepository";
 import type { Member, Pet, Pets, ProcessedItem, ProcessedPet, Profile } from "$types/global";
-import _ from "lodash";
 import { getItemNetworth } from "skyhelper-networth";
 
 let getMaxPetIdsCache = {} as { lastUpdated: number; data: Record<string, number> };
@@ -336,7 +335,7 @@ function getPetScore(pets: ProcessedPet[]) {
 export async function getPets(userProfile: Member, items: ProcessedItem[], profile: Profile) {
   const output = {} as Pets;
 
-  const pets = _.clone(userProfile.pets_data?.pets ?? []);
+  const pets = JSON.parse(JSON.stringify(userProfile.pets_data?.pets ?? [])) as Pet[];
   if (items !== undefined) {
     pets.push(...(items as unknown as Pet[]));
   }
@@ -360,11 +359,11 @@ export async function getPets(userProfile: Member, items: ProcessedItem[], profi
   output.missing = getMissingPets(output.pets, profile.game_mode);
 
   const maxPetIds = getMaxPetIds();
-  output.amount = _.uniqBy(output.pets, "type").length;
+  output.amount = helper.uniqBy(output.pets, "type").length;
   const totalPets = profile.game_mode === "bingo" ? Object.keys(maxPetIds) : Object.keys(maxPetIds).filter((pet) => pet !== "BINGO");
   output.total = totalPets.length;
 
-  output.amountSkins = _.uniqBy(output.pets, "skin").length;
+  output.amountSkins = helper.uniqBy(output.pets, "skin").length;
   output.totalSkins = getPetSkins().length;
 
   output.petScore = getPetScore(output.pets);
