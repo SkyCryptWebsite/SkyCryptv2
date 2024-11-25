@@ -12,15 +12,16 @@ export type Misc = {
     deaths: { id: string; name: string; amount: number }[];
   };
   races: {
-    [string: string]: {
+    [id: string]: {
       name: string;
       races: Record<
         string,
         | { name: string; time: number }
         | {
-            with_return: Record<string, { name: string; time: number }>;
-            no_return: Record<string, { name: string; time: number }>;
+            with_return: Record<string, { name: string; time: number }> | null;
+            no_return: Record<string, { name: string; time: number }> | null;
           }
+        | null
       >;
     };
   };

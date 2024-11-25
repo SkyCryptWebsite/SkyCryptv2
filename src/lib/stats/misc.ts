@@ -1,6 +1,6 @@
 import * as constants from "$constants/constants";
 import * as helper from "$lib/helper";
-import type { Member, Profile } from "$types/global";
+import type { Member, Misc, Profile } from "$types/global";
 import type { Player } from "$types/raw/player/lib";
 
 function getEssence(userProfile: Member) {
@@ -53,19 +53,7 @@ function formatKillsAndDeaths(userProfile: Member) {
 }
 
 function getRaces(userProfile: Member) {
-  const output: {
-    [id: string]: {
-      name: string;
-      races: Record<
-        string,
-        | { name: string; time: number }
-        | {
-            with_return: Record<string, { name: string; time: number }>;
-            no_return: Record<string, { name: string; time: number }>;
-          }
-      >;
-    };
-  } = {};
+  const output: Misc["races"] = {};
 
   const races = userProfile.player_stats.races;
   for (let [id, data] of Object.entries(races)) {
@@ -82,13 +70,17 @@ function getRaces(userProfile: Member) {
         name: raceName,
         time: data
       };
+
+      if (Object.keys(output.other.races).length === 0) {
+        output.other.races[raceId] = null;
+      }
     } else {
       for ([id, data] of Object.entries(data)) {
         const shortId = id.split("_").slice(0, 2).join("_");
         const raceId = id.replace(`${shortId}_`, "").replace("_best_time", "");
         const raceName = constants.RACE_NAMES[shortId] ?? helper.titleCase(shortId.replace("_", " "));
 
-        output[shortId] = output[shortId] || {
+        output[shortId] = output[shortId] ?? {
           name: raceName,
           races: {
             with_return: {},
@@ -105,6 +97,14 @@ function getRaces(userProfile: Member) {
           name: constants.RACE_NAMES[dungeonRaceId] ?? dungeonRaceId.split("_").map(helper.titleCase).join(" "),
           time: data
         };
+
+        if (output[shortId].races.with_return && Object.keys(output[shortId].races.with_return).length === 0) {
+          output[shortId].races.with_return = null;
+        }
+
+        if (output[shortId].races.no_return && Object.keys(output[shortId].races.no_return).length === 0) {
+          output[shortId].races.no_return = null;
+        }
       }
     }
   }

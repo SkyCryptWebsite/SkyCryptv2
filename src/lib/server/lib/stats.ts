@@ -9,7 +9,7 @@ const { getAccessories, getPets, getMainStats, getCollections } = stats;
 export async function getStats(profile: Profile, player: Player): Promise<Stats> {
   const timeNow = Date.now();
   const cache = await REDIS.get(`STATS:${profile.uuid}`);
-  if (cache) {
+  if (cache && process.env.NODE_ENV !== "development") {
     console.log(`[CACHE] Found cache for ${profile.uuid} in ${Date.now() - timeNow}ms`);
     return JSON.parse(cache);
   }
