@@ -163,6 +163,9 @@ importers:
       svelte-interactions:
         specifier: ^0.2.0
         version: 0.2.0(svelte@4.2.18)
+      svelte-tiny-virtual-list:
+        specifier: ^2.1.2
+        version: 2.1.2
       tailwind-merge:
         specifier: ^2.3.0
         version: 2.3.0
@@ -2338,6 +2341,9 @@ packages:
         optional: true
       typescript:
         optional: true
+
+  svelte-tiny-virtual-list@2.1.2:
+    resolution: {integrity: sha512-jeP/WMvgFUR4mYXHGPiCexjX5DuzSO+3xzHNhxfcsFyy+uYPtnqI5UGb383swpzQAyXB0OBqYfzpYihD/5gxnA==}
 
   svelte@4.2.18:
     resolution: {integrity: sha512-d0FdzYIiAePqRJEb90WlJDkjUEx42xhivxN8muUBmfZnP+tzUgz12DJ2hRJi8sIHCME7jeK1PTMgKPSfTd8JrA==}
@@ -4566,6 +4572,8 @@ snapshots:
       postcss: 8.4.38
       postcss-load-config: 4.0.2(postcss@8.4.38)
       typescript: 5.5.2
+
+  svelte-tiny-virtual-list@2.1.2: {}
 
   svelte@4.2.18:
     dependencies:
