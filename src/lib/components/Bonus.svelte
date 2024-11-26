@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { STATS_DATA } from "$constants/stats";
-  import { cn } from "$lib/utils";
+  import { STATS_DATA } from "$lib/shared/constants/stats";
+  import { cn } from "$lib/shared/utils";
 
   export let stats;
   export let title = "Bonus:";

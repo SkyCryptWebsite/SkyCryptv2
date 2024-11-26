@@ -97,7 +97,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           repository: NotEnoughUpdates/NotEnoughUpdates-REPO
-          path: src/lib/constants/NotEnoughUpdates-REPO/items
+          path: src/lib/server/constants/NotEnoughUpdates-REPO/items
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: PNPM Install

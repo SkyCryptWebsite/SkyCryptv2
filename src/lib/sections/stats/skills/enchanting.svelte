@@ -1,7 +1,7 @@
 <script lang="ts">
   import AdditionStat from "$lib/components/AdditionStat.svelte";
   import Chip from "$lib/components/Chip.svelte";
-  import type { Stats as StatsType } from "$types/stats";
+  import type { Stats as StatsType } from "$lib/types/stats";
   import { Collapsible } from "bits-ui";
   import { formatDistanceStrict } from "date-fns";
   import ChevronDown from "lucide-svelte/icons/chevron-down";

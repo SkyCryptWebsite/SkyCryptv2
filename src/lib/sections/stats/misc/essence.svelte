@@ -1,7 +1,7 @@
 <script lang="ts">
   import Chip from "$lib/components/Chip.svelte";
-  import { cn } from "$lib/utils";
-  import type { Stats as StatsType } from "$types/stats";
+  import { cn } from "$lib/shared/utils";
+  import type { Stats as StatsType } from "$lib/types/stats";
   import { format } from "numerable";
   import { getContext } from "svelte";
 

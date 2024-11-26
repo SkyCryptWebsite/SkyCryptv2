@@ -18,8 +18,8 @@ import path from "path";
 
 import type { ItemQuery } from "$types/global";
 import minecraftData from "minecraft-data";
-import * as helper from "./helper";
-import { getItemData } from "./helper/item";
+import * as helper from "./server/helper";
+import { getItemData } from "./server/helper/item";
 const mcData = minecraftData("1.8.9");
 
 const skewA = 26 / 45;

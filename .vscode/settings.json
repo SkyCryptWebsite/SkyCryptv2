@@ -2,8 +2,7 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
-    "source.fixAll": "always",
-    "source.organizeImports": "explicit"
+    "source.fixAll": "always"
   },
   "files.associations": {
     "*.css": "tailwindcss",
@@ -21,7 +20,7 @@
     "typescript": "typescript",
     "svelte": "html"
   },
-  "javascript.updateImportsOnFileMove.enabled": "prompt",
-  "typescript.updateImportsOnFileMove.enabled": "prompt",
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "typescript.updateImportsOnFileMove.enabled": "always",
   "eslint.validate": ["javascript", "typescript", "svelte"]
 }

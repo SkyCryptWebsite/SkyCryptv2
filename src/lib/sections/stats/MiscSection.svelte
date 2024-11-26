@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Stats as StatsType } from "$types/stats";
+  import type { Stats as StatsType } from "$lib/types/stats";
   import { getContext, setContext } from "svelte";
   import Auctions from "./misc/auctions.svelte";
   import Claimed from "./misc/claimed.svelte";
@@ -20,7 +20,6 @@
   const profile = getContext<StatsType>("profile");
 
   setContext("misc", profile.misc);
-  console.log(profile.misc);
 </script>
 
 <h3 class="text-2xl capitalize">Miscellaneous</h3>

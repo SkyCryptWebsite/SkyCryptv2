@@ -1,11 +1,11 @@
+import { init } from "$lib/custom_resources";
+import { updateCollections } from "$lib/server/constants/update-collections";
+import { updateItems } from "$lib/server/constants/update-items";
+import { parseNEURepository } from "$lib/server/helper/NotEnoughUpdates/parseNEURepository";
+import { updateNotEnoughUpdatesRepository } from "$lib/server/helper/NotEnoughUpdates/updateNEURepository";
+import { getPrices } from "skyhelper-networth";
 import { startMongo } from "./lib/server/db/mongo";
 import { startRedis } from "./lib/server/db/redis";
-import { init } from "$lib/custom_resources";
-import { parseNEURepository } from "$lib/scripts/parseNEURepository";
-import { updateNotEnoughUpdatesRepository } from "$lib/scripts/updateNEURepository";
-import { getPrices } from "skyhelper-networth";
-import { updateItems } from "$lib/server/constants/update-items";
-import { updateCollections } from "$lib/server/constants/update-collections";
 
 init();
 

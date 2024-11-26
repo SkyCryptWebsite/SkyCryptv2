@@ -1,17 +1,19 @@
 import { getTexture } from "$lib/custom_resources";
 import { getItemNetworth } from "skyhelper-networth";
 
-import * as constants from "$constants/constants";
+import * as constants from "$lib/server/constants/constants";
+import * as helper from "$lib/server/helper";
 import minecraftData from "minecraft-data";
-import * as helper from "$lib/helper";
 const mcData = minecraftData("1.8.9");
 
+import { getUsername } from "$lib/server/lib";
+import type { StatsData } from "$types/processed/profile/stats";
+import type { GemTier, Gemstone, Item, ProcessedItem } from "$types/stats";
 import nbt, { parse } from "prismarine-nbt";
 import { v4 } from "uuid";
-import type { GemTier, Gemstone, Item, ProcessedItem } from "$types/stats";
-import type { StatsData } from "$types/processed/profile/stats";
-import { getUsername } from "$lib/server/lib";
+import { formatNumber } from "$lib/shared/helper";
 
+import { STATS_DATA } from "$lib/shared/constants/stats";
 export function itemSorter(a: ProcessedItem, b: ProcessedItem) {
   if (a.rarity !== b.rarity) {
     return constants.RARITIES.indexOf(b.rarity) - constants.RARITIES.indexOf(a.rarity);
@@ -166,7 +168,7 @@ export function generateGemLore(type: string, tier: string, rarity: string): str
         }
 
         if (statValue) {
-          const statsData = constants.STATS_DATA[stat as keyof typeof constants.STATS_DATA] as unknown as StatsData;
+          const statsData = STATS_DATA[stat as keyof typeof STATS_DATA] as unknown as StatsData;
 
           stats.push(["§", statsData.color, "+", statValue, " ", statsData.symbol].join(""));
         } else {
@@ -631,7 +633,7 @@ export async function processItems(base64: string, source: string, customTexture
       try {
         const ITEM_PRICE = await getItemNetworth(item, { cache: true });
         if (ITEM_PRICE?.price > 0) {
-          itemLore.push("", `§7Item Value: §6${Math.round(ITEM_PRICE.price).toLocaleString()} Coins §7(§6${helper.formatNumber(ITEM_PRICE.price)}§7)`);
+          itemLore.push("", `§7Item Value: §6${Math.round(ITEM_PRICE.price).toLocaleString()} Coins §7(§6${formatNumber(ITEM_PRICE.price)}§7)`);
         }
       } catch (error) {
         console.log(error);

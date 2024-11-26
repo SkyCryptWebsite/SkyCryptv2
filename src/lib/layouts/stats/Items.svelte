@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { cn } from "$lib/utils";
+  import { cn } from "$lib/shared/utils";
 
   export let title: string | undefined = undefined;
   export let subtitle: string | undefined = undefined;
