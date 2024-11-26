@@ -172,7 +172,7 @@ export function removeFormatting(string: string): string {
 
 /**
  * Returns a new array with unique elements based on the specified key.
- * 
+ *
  * @template T - The type of elements in the array.
  * @param {T[]} arr - The array to filter for unique elements.
  * @param {string} key - The key to determine uniqueness.
