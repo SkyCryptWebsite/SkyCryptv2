@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { cn, flyAndScale } from "$lib/utils";
+  import { cn, flyAndScale } from "$lib/shared/utils";
   import { Avatar, Tooltip } from "bits-ui";
   import Image from "lucide-svelte/icons/image";
   import { fade } from "svelte/transition";

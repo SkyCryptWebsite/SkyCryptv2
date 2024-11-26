@@ -1,6 +1,6 @@
 <script lang="ts">
   import Item from "$lib/components/Item.svelte";
-  import type { Stats as StatsType } from "$types/stats";
+  import type { Stats as StatsType } from "$lib/types/stats";
   import { Avatar, Tabs } from "bits-ui";
   import Image from "lucide-svelte/icons/image";
   import { getContext } from "svelte";

@@ -2,8 +2,9 @@
   import AdditionStat from "$lib/components/AdditionStat.svelte";
   import Chip from "$lib/components/Chip.svelte";
   import Items from "$lib/layouts/stats/Items.svelte";
-  import { cn } from "$lib/utils";
-  import type { Stats as StatsType } from "$types/stats";
+  import { format } from "numerable";
+  import { cn } from "$lib/shared/utils";
+  import type { Stats as StatsType } from "$lib/types/stats";
   import { formatDate, formatDistanceToNowStrict } from "date-fns";
   import { getContext } from "svelte";
 
@@ -14,12 +15,12 @@
 
 <Items title="Rift" class="flex-col">
   <div slot="text">
-    <AdditionStat text="Motes" data={rift.motes.purse} asterisk={true}>
+    <AdditionStat text="Motes" data={format(rift.motes.purse)} asterisk={true}>
       <div class="flex flex-col gap-4">
         <div class="text-sm font-bold">
           <span class="text-text/85">Lifetime Motes:</span>
           <span class="text-text">
-            {rift.motes.lifetime}
+            {format(rift.motes.lifetime)}
           </span>
           <span class="block font-normal">Total Motes earned in Rift.</span>
         </div>

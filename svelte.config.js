@@ -14,9 +14,9 @@ const config = {
     adapter: adapter(),
     alias: {
       $params: "./src/params",
-      $types: "./src/types",
+      $types: "./src/lib/types",
       $db: "./src/db",
-      $constants: "./src/lib/constants"
+      $constants: "./src/lib/server/constants"
     },
     csrf: {
       checkOrigin: true

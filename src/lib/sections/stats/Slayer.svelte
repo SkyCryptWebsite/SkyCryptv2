@@ -1,7 +1,7 @@
 <script lang="ts">
   import AdditionStat from "$lib/components/AdditionStat.svelte";
   import Bonus from "$lib/components/Bonus.svelte";
-  import type { Stats as StatsType } from "$types/stats";
+  import type { Stats as StatsType } from "$lib/types/stats";
   import { Avatar, Progress } from "bits-ui";
   import Image from "lucide-svelte/icons/image";
   import { format } from "numerable";

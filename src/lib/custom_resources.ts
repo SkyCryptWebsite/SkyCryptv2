@@ -8,7 +8,7 @@ import path from "path";
 import RJSON from "relaxed-json";
 import UPNG from "upng-js";
 import util from "util";
-import { getCacheFilePath, getCacheFolderPath, getFolderPath, getId, getPath, getTextureValue, hasPath } from "./helper";
+import { getCacheFilePath, getCacheFolderPath, getFolderPath, getId, getPath, getTextureValue, hasPath } from "./server/helper";
 const mcData = minecraftData("1.8.9");
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -18,7 +18,7 @@ import apng2gif from "apng2gif-bin";
 // @ts-ignore
 import sharp from "sharp";
 
-import { getFileHash } from "$lib/hashes";
+import { getFileHash } from "$lib/server/helper/hashes";
 import type { ItemTexture, OutputResourcePack, OutputTexture, ResourcePack, TextureAnimation, TextureModel } from "$types/custom-resources";
 import type { Item, ProcessedItem, getTextureParams } from "$types/processed/profile/items";
 import child_process from "child_process";
@@ -327,6 +327,8 @@ async function loadResourcePacks() {
           continue;
         }
 
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error
         const decode = UPNG.decode(imageData);
         if (decode == null) {
           continue;
@@ -511,6 +513,8 @@ async function loadResourcePacks() {
         }
 
         if (pngFrames.length > 0) {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-expect-error
           const apng = UPNG.encode(pngFrames, NORMALIZED_SIZE, NORMALIZED_SIZE, 0, pngDelays);
 
           await fs.writeFile(textureFile, Buffer.from(apng));

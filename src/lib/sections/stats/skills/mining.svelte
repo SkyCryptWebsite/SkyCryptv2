@@ -2,9 +2,9 @@
   import AdditionStat from "$lib/components/AdditionStat.svelte";
   import Item from "$lib/components/Item.svelte";
   import Items from "$lib/layouts/stats/Items.svelte";
-  import { getRarityClass } from "$lib/tools";
-  import { cn } from "$lib/utils";
-  import type { Stats as StatsType } from "$types/stats";
+  import { getRarityClass } from "$lib/shared/helper";
+  import { cn } from "$lib/shared/utils";
+  import type { Stats as StatsType } from "$lib/types/stats";
   import { formatDate, formatDistanceStrict } from "date-fns";
   import { format } from "numerable";
   import { getContext } from "svelte";

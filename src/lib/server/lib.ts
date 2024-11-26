@@ -2,7 +2,7 @@ import { HYPIXEL_API_KEY } from "$env/static/private";
 import { isPlayer } from "$params/player";
 import { isUUID } from "$params/uuid";
 import type { Profile, ProfilesResponse } from "$types/global";
-import { SkyCryptError } from "../constants/error";
+import { SkyCryptError } from "./constants/error";
 import { REDIS } from "./db/redis";
 
 const headers = { Accept: "application/json", "User-Agent": "SkyCrypt", "API-KEY": HYPIXEL_API_KEY };

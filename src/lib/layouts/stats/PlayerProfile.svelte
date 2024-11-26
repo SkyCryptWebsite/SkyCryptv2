@@ -1,6 +1,6 @@
 <script lang="ts">
-  import type { Stats as StatsType } from "$types/stats";
-  import { flyAndScale } from "$lib/utils";
+  import { flyAndScale } from "$lib/shared/utils";
+  import type { Stats as StatsType } from "$lib/types/stats";
   import { Button, DropdownMenu } from "bits-ui";
   import ChevronRight from "lucide-svelte/icons/chevron-right";
   import ExternalLink from "lucide-svelte/icons/external-link";

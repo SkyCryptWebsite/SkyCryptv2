@@ -1,6 +1,6 @@
 <script lang="ts">
   import Item from "$lib/components/Item.svelte";
-  import type { ProcessedItem } from "$types/global";
+  import type { ProcessedItem } from "$lib/types/global";
   import { Collapsible } from "bits-ui";
   import { writable } from "svelte/store";
   import { slide } from "svelte/transition";

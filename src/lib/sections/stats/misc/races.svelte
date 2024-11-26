@@ -1,6 +1,6 @@
 <script lang="ts">
   import AdditionStat from "$lib/components/AdditionStat.svelte";
-  import type { Stats as StatsType } from "$types/stats";
+  import type { Stats as StatsType } from "$lib/types/stats";
   import { format } from "numerable";
   import { getContext } from "svelte";
 
@@ -39,7 +39,7 @@
           {#if race.name === "Other"}
             <div class="flex h-full w-full flex-col flex-wrap gap-1">
               {#each Object.entries(race.races) as [_, value]}
-                {#if "name" in value}
+                {#if value && "name" in value}
                   <AdditionStat class="text-base" text={value.name} data={format(value.time)} />
                 {/if}
               {/each}

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { cn, flyAndScale } from "$lib/utils";
+  import { cn, flyAndScale } from "$lib/shared/utils";
   import { Tooltip } from "bits-ui";
   import { format } from "numerable";
 

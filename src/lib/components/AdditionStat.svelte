@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { RARITY_COLORS } from "$constants/items";
-  import { cn, flyAndScale } from "$lib/utils";
+  import { RARITY_COLORS } from "$lib/shared/constants/items";
+  import { cn, flyAndScale } from "$lib/shared/utils";
   import { Tooltip } from "bits-ui";
 
   export let text: string;

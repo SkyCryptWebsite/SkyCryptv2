@@ -1,8 +1,8 @@
 <script lang="ts">
   import AdditionStat from "$lib/components/AdditionStat.svelte";
   import Skillbar from "$lib/components/Skillbar.svelte";
-  import { formatNumber } from "$lib/tools";
-  import type { Stats as StatsType } from "$types/stats";
+  import { formatNumber } from "$lib/shared/helper";
+  import type { Stats as StatsType } from "$lib/types/stats";
   import { Avatar, Collapsible } from "bits-ui";
   import { formatDate, formatDistanceToNowStrict } from "date-fns";
   import ChevronDown from "lucide-svelte/icons/chevron-down";

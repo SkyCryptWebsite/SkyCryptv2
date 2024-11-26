@@ -1,4 +1,4 @@
-import type { Collection } from "$constants/collections";
+import type { Collection } from "$lib/server/constants/collections";
 import MONGO from "../mongo";
 
 const headers = { Accept: "application/json", "User-Agent": "SkyCrypt" };
