@@ -2,8 +2,9 @@
   import AdditionStat from "$lib/components/AdditionStat.svelte";
   import Chip from "$lib/components/Chip.svelte";
   import Items from "$lib/layouts/stats/Items.svelte";
-  import { cn } from "$lib/utils";
-  import type { Stats as StatsType } from "$types/stats";
+  import { formatTime } from "$lib/shared/helper";
+  import { cn } from "$lib/shared/utils";
+  import type { Stats as StatsType } from "$lib/types/stats";
   import { format } from "numerable";
   import { getContext } from "svelte";
 
@@ -68,7 +69,7 @@
                 </div>
                 <div class="text-sm">
                   <span class="opacity-60">Time:</span>
-                  <span class="text-text">{challenge.formattedTime}</span>
+                  <span class="text-text">{formatTime(challenge.time)}</span>
                 </div>
               </div>
             </div>

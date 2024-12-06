@@ -1,7 +1,7 @@
 <script lang="ts">
   import Stat from "$lib/components/Stat.svelte";
-  import { getPlayerStats } from "$lib/stats/player_stats";
-  import type { Stats as StatsType } from "$types/stats";
+  import { getPlayerStats } from "$lib/shared/player_stats";
+  import type { Stats as StatsType } from "$lib/types/stats";
 
   import { getContext } from "svelte";
 

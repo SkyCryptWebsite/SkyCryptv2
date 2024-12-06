@@ -1,8 +1,8 @@
 <script lang="ts">
   import { page } from "$app/stores";
-  import { getRarityClass, isEnchanted, removeFormatting, renderLore } from "$lib/tools";
-  import { cn, flyAndScale } from "$lib/utils";
-  import type { ProcessedItem, ProcessedPet } from "$types/global";
+  import { getRarityClass, isEnchanted, removeFormatting, renderLore } from "$lib/shared/helper";
+  import { cn, flyAndScale } from "$lib/shared/utils";
+  import type { ProcessedItem, ProcessedPet } from "$lib/types/global";
   import { Avatar, Tooltip } from "bits-ui";
   import Image from "lucide-svelte/icons/image";
 

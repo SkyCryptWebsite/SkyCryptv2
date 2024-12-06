@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { RARITY_COLORS } from "$constants/items";
+  import { RARITY_COLORS } from "$lib/shared/constants/items";
   import AdditionStat from "$lib/components/AdditionStat.svelte";
   import Bonus from "$lib/components/Bonus.svelte";
   import Item from "$lib/components/Item.svelte";
   import Items from "$lib/layouts/stats/Items.svelte";
-  import type { Stats as StatsType } from "$types/stats";
+  import type { Stats as StatsType } from "$lib/types/stats";
   import { Collapsible } from "bits-ui";
   import { getContext } from "svelte";
 

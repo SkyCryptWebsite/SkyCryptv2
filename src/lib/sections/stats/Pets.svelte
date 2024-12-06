@@ -1,25 +1,31 @@
 <script lang="ts">
-  import { RARITY_COLORS } from "$constants/items";
+  import { RARITY_COLORS } from "$lib/shared/constants/items";
   import AdditionStat from "$lib/components/AdditionStat.svelte";
   import Bonus from "$lib/components/Bonus.svelte";
   import Item from "$lib/components/Item.svelte";
-  import { PET_REWARDS } from "$lib/constants/pets";
   import Items from "$lib/layouts/stats/Items.svelte";
-  import type { Stats as StatsType } from "$types/stats";
+  // import { PET_REWARDS } from "$lib/server/constants/pets";
+  /*
+  <!-- TODO: Format this on the back end -->
+  {#each Object.entries(PET_REWARDS) as [score, data]}
+    <div>
+      {score} Score: <span style="color: var(--§b)">+{data.magic_find} Magic Find</span>
+      {#if data.magic_find === pets.petScore.amount}
+        <span style="color: var(--§5);"> «</span>
+      {/if}
+    </div>
+  {/each}
+  */
+
+  import type { Stats as StatsType } from "$lib/types/stats";
   import { Collapsible } from "bits-ui";
   import { getContext } from "svelte";
+  import { uniqBy } from "$lib/shared/helper";
   //import { formatNumber } from "$lib/helper";
 
   const profile = getContext<StatsType>("profile");
 
   // TODO: Once helper functions get moved to a global location, we can remove this function
-  function uniqBy<T>(arr: T[], key: string) {
-    const seen = new Set();
-    return arr.filter((item) => {
-      const k = (item as Record<string, unknown>)[key];
-      return seen.has(k) ? false : seen.add(k);
-    });
-  }
 
   const pets = profile.pets;
 </script>
@@ -32,16 +38,7 @@
       <div class="max-w-xs space-y-6 font-bold">
         <h3 class="text-text/85">Pet score is calculated based on how many unique pets you have and the rarity of these pets.</h3>
         <h3 class="text-text/85">You gain an additional score for each max level pet you have!</h3>
-        <div class="flex flex-col">
-          {#each Object.entries(PET_REWARDS) as [score, data]}
-            <div>
-              {score} Score: <span style="color: var(--§b)">+{data.magic_find} Magic Find</span>
-              {#if data.magic_find === pets.petScore.amount}
-                <span style="color: var(--§5);"> «</span>
-              {/if}
-            </div>
-          {/each}
-        </div>
+        <div class="flex flex-col"></div>
       </div>
     </AdditionStat>
     <AdditionStat text="Total Candies Used" data={`${pets.totalCandyUsed}`} />

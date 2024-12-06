@@ -1,6 +1,6 @@
-import type { DatabaseItem } from "$types/global";
-import { ITEMS } from "$lib/constants/items";
+import { ITEMS } from "$lib/shared/constants/items";
 import MONGO from "$lib/server/db/mongo";
+import type { DatabaseItem } from "$types/global";
 
 export async function updateItems() {
   const items = await MONGO.collection("items").findOne({});

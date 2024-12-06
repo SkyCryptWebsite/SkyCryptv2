@@ -1,8 +1,8 @@
-import * as constants from "$constants/constants";
-import * as helper from "$lib/helper";
+import * as constants from "$lib/server/constants/constants";
+import * as helper from "$lib/server/helper";
 import { itemSorter } from "$lib/server/stats/items/processing";
+import { getMissingAccessories } from "$lib/server/stats/missing";
 import type { Accessories, Accessory, AccessoryRarities, Member, ProcessedItem } from "$types/global";
-import { getMissingAccessories } from "$lib/stats/missing";
 
 export async function getAccessories(userProfile: Member, armor: ProcessedItem[], accessoryBag: ProcessedItem[], inventory: ProcessedItem[], enderchest: ProcessedItem[], storage: ProcessedItem[]) {
   const output = {

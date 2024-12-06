@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { formatNumber } from "$lib/tools";
-  import { cn, flyAndScale } from "$lib/utils";
-  import type { Skill } from "$types/global";
+  import { formatNumber } from "$lib/shared/helper";
+  import { cn, flyAndScale } from "$lib/shared/utils";
+  import type { Skill } from "$lib/types/global";
   import { Avatar, Progress, Tooltip } from "bits-ui";
   import BarChartHorizontal from "lucide-svelte/icons/bar-chart-horizontal";
   import { format } from "numerable";

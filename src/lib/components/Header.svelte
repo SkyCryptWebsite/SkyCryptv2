@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { flyAndScale } from "$lib/utils";
+  import { flyAndScale } from "$lib/shared/utils";
   import { Button, Popover } from "bits-ui";
   import PackageOpen from "lucide-svelte/icons/package-open";
   import PaintBucket from "lucide-svelte/icons/paint-bucket";

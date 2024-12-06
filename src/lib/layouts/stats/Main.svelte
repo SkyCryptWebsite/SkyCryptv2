@@ -17,7 +17,7 @@
   import SkillsSection from "$lib/sections/stats/SkillsSection.svelte";
   import Slayer from "$lib/sections/stats/Slayer.svelte";
   import Weapons from "$lib/sections/stats/Weapons.svelte";
-  import type { Stats as StatsType } from "$types/stats";
+  import type { Stats as StatsType } from "$lib/types/stats";
   import { setContext } from "svelte";
 
   export let profile;
