@@ -1,3 +1,3 @@
-[submodule "src/lib/constants/server/NotEnoughUpdates-REPO"]
-	path = src/lib/constants/server/NotEnoughUpdates-REPO
+[submodule "src/lib/server/constants/NotEnoughUpdates-REPO"]
+	path = src/lib/server/constants/NotEnoughUpdates-REPO
 	url = https://github.com/NotEnoughUpdates/NotEnoughUpdates-REPO
