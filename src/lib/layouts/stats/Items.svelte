@@ -10,7 +10,7 @@
 
 <div class="space-y-4">
   {#if title}
-    <h3 class="text-2xl font-semibold capitalize">{title}</h3>
+    <h3 class="text-2xl font-semibold capitalize underline decoration-icon decoration-4 [text-underline-position:under]">{title}</h3>
   {/if}
   {#if subtitle}
     <h4 class="text-xl capitalize text-text">{subtitle}</h4>
