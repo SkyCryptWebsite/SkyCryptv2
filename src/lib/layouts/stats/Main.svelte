@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Skin3D from "$lib/components/Skin3D.svelte";
   import AdditionalStats from "$lib/layouts/stats/AdditionalStats.svelte";
   import PlayerProfile from "$lib/layouts/stats/PlayerProfile.svelte";
   import Skills from "$lib/layouts/stats/Skills.svelte";
@@ -25,26 +26,30 @@
   setContext<StatsType>("profile", profile);
 </script>
 
-<main class="mx-auto space-y-5 p-8">
-  <PlayerProfile />
-  <Skills />
-  <Stats />
-  <AdditionalStats />
-  <Armor />
-  <Weapons />
-  <Accessories />
-  <Pets />
-  <Inventory />
-  <SkillsSection />
-  <Dungeons />
-  <Slayer />
-  <Minions />
-  <Bestiary />
-  <Collections />
-  <CrimsonIsle />
-  <Rift />
-  <MiscSection />
-</main>
+<div class="relative">
+  <Skin3D class="fixed left-0 top-1/2 z-10 h-dvh w-[30vw] -translate-y-1/2" />
+  <div class="fixed right-0 top-0 h-dvh w-[calc(100%-30vw)] backdrop-blur-lg backdrop-brightness-50"></div>
+  <main class="relative mx-auto ml-[30vw] space-y-5 p-8">
+    <PlayerProfile />
+    <Skills />
+    <Stats />
+    <AdditionalStats />
+    <Armor />
+    <Weapons />
+    <Accessories />
+    <Pets />
+    <Inventory />
+    <SkillsSection />
+    <Dungeons />
+    <Slayer />
+    <Minions />
+    <Bestiary />
+    <Collections />
+    <CrimsonIsle />
+    <Rift />
+    <MiscSection />
+  </main>
+</div>
 
 <svg xmlns="http://www.w3.org/2000/svg" height="0" width="0" style="position: fixed;">
   <filter id="enchanted-glint">
