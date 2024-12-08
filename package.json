@@ -36,6 +36,7 @@
     "prettier": "^3.4.2",
     "prettier-plugin-svelte": "^3.3.2",
     "prettier-plugin-tailwindcss": "^0.6.9",
+    "skinview3d": "^3.1.0",
     "svelte": "5.8.0",
     "svelte-check": "^4.1.1",
     "svelte-interactions": "^0.2.0",

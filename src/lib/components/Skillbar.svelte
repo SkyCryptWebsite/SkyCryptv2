@@ -48,13 +48,13 @@
     <div class="absolute z-10 flex h-full w-full justify-center">
       <div class="text-xs font-semibold shadow-background/50 text-shadow">
         {#if $isHovered && !isMaxed}
-          {format(skillData.xpCurrent)} / {format(skillData.xpForNext)}
+          {format(skillData.xpCurrent, "0,0")} / {format(skillData.xpForNext)}
         {:else if !isMaxed}
           {formatNumber(skillData.xpCurrent)} / {formatNumber(skillData.xpForNext)}
         {/if}
 
         {#if $isHovered && isMaxed}
-          {format(skillData.xpCurrent)}
+          {format(skillData.xpCurrent, "0,0")}
         {:else if isMaxed}
           {formatNumber(skillData.xpCurrent)}
         {/if}

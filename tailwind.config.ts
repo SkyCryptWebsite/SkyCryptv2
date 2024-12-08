@@ -60,7 +60,7 @@ export default {
         }
       },
       fontFamily: {
-        icomoon: ["Montserrat", "icomoon", ...fontFamily.sans],
+        icomoon: ["icomoon", "Montserrat"],
         sans: ["Montserrat", ...fontFamily.sans]
       }
     }
