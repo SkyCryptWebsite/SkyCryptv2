@@ -17,6 +17,7 @@
   const pots = profile.items.potion_bag;
   const fish = profile.items.fishing_bag;
   const quiver = profile.items.quiver;
+  const museum = profile.items.museum;
 
   const openTab = writable<string>("inv");
 
@@ -66,8 +67,8 @@
     {
       id: "museum",
       icon: "/api/head/438cf3f8e54afc3b3f91d20a49f324dca1486007fe545399055524c17941f4dc",
-      items: [],
-      hr: 45
+      items: museum,
+      hr: 54
     }
   ];
 
@@ -106,7 +107,7 @@
             {#if tab.hr === index}
               <hr class="col-start-1 col-end-10 h-4 border-0" />
             {/if}
-            {#if item.id}
+            {#if item.texture_path}
               <div class="flex aspect-square items-center justify-center rounded bg-text/[0.04]" in:fade|global={{ duration: 300, delay: 5 * (index + 1) }}>
                 {#if tab.id === "inv"}
                   <Item piece={{ ...item, rarity: item.rarity ?? "uncommon" }} isInventory={true} />

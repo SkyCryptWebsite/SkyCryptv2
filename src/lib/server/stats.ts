@@ -1,12 +1,12 @@
 import { REDIS } from "$lib/server/db/redis";
 import { getProfiles } from "$lib/server/lib";
 import * as stats from "$lib/server/stats/stats";
-import type { Profile, Stats } from "$types/global";
+import type { MuseumRawResponse, Profile, Stats } from "$types/global";
 import type { Player } from "$types/raw/player/lib";
 
 const { getAccessories, getPets, getMainStats, getCollections } = stats;
 
-export async function getStats(profile: Profile, player: Player): Promise<Stats> {
+export async function getStats(profile: Profile, player: Player, extra: { museum?: MuseumRawResponse } = {}): Promise<Stats> {
   const timeNow = Date.now();
   const cache = await REDIS.get(`STATS:${profile.uuid}`);
   if (cache && process.env.NODE_ENV !== "development") {
@@ -15,8 +15,9 @@ export async function getStats(profile: Profile, player: Player): Promise<Stats>
   }
 
   const userProfile = profile.members[profile.uuid];
+  const userMuseum = extra.museum ? extra.museum[profile.uuid] : null;
 
-  const items = await stats.getItems(userProfile);
+  const items = await stats.getItems(userProfile, userMuseum);
   const [profiles, mainStats, accessories, pets, collections] = await Promise.all([
     getProfiles(profile.uuid),
     getMainStats(userProfile, profile, items),

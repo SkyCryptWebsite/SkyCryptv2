@@ -4,10 +4,12 @@ import { getArmor } from "$lib/server/stats/items/armor";
 import { getEquipment } from "$lib/server/stats/items/equipment";
 import { processItems } from "$lib/server/stats/items/processing";
 import { getWardrobe } from "$lib/server/stats/items/wardrobe";
-import type { Items, Member, ProcessedItem } from "$types/global";
+import type { Items, Member, MuseumRaw, ProcessedItem } from "$types/global";
 import { getPets, getSkilllTools, getWeapons } from "./items/category";
+import { decodeMusemItems } from "./items/museum";
+import { getMuseumItems } from "./museum";
 
-export async function getItems(userProfile: Member): Items {
+export async function getItems(userProfile: Member, userMuseum: MuseumRaw | null): Items {
   const INVENTORY = userProfile.inventory;
 
   const outputPromises = {
@@ -27,7 +29,10 @@ export async function getItems(userProfile: Member): Items {
     quiver: processItems(INVENTORY?.bag_contents?.quiver?.data ?? "", "quiver", true, []),
 
     // BACKPACKS
-    backpack: {} as Record<string, ProcessedItem[]>
+    backpack: {} as Record<string, ProcessedItem[]>,
+
+    // MUSEUM
+    museumItems: userMuseum ? decodeMusemItems(userMuseum, false, []) : null
   };
 
   const output = await Promise.all(Object.values(outputPromises)).then((values) => {
@@ -87,6 +92,14 @@ export async function getItems(userProfile: Member): Items {
   output.mining_tools = getSkilllTools("mining", allItems);
   output.fishing_tools = getSkilllTools("fishing", allItems);
   output.pets = getPets(allItems);
+
+  const museum = output.museumItems ? await getMuseumItems(output.museumItems) : null;
+  output.museumItems = [...Object.values(museum?.museumItems.items), ...museum.museumItems.specialItems]
+    .filter((item) => item.borrowing === false)
+    .map((item) => item.items)
+    .flat()
+    .filter((item) => item !== undefined);
+  output.museum = museum?.inventory;
 
   return output;
 }

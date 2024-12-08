@@ -7,11 +7,11 @@ import minecraftData from "minecraft-data";
 const mcData = minecraftData("1.8.9");
 
 import { getUsername } from "$lib/server/lib";
+import { formatNumber } from "$lib/shared/helper";
 import type { StatsData } from "$types/processed/profile/stats";
 import type { GemTier, Gemstone, Item, ProcessedItem } from "$types/stats";
 import nbt, { parse } from "prismarine-nbt";
 import { v4 } from "uuid";
-import { formatNumber } from "$lib/shared/helper";
 
 import { STATS_DATA } from "$lib/shared/constants/stats";
 export function itemSorter(a: ProcessedItem, b: ProcessedItem) {
@@ -90,7 +90,7 @@ function getCategories(type: string, item: Item) {
 export function parseItemGems(gems: { [key: string]: string }, rarity: string) {
   const slots = {
     normal: Object.keys(constants.GEMSTONES),
-    special: ["UNIVERSAL", "COMBAT", "OFFENSIVE", "DEFENSIVE", "MINING"],
+    special: ["UNIVERSAL", "COMBAT", "OFFENSIVE", "DEFENSIVE", "MINING", "CHISEL"],
     ignore: ["unlocked_slots"]
   };
 

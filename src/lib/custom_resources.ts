@@ -78,8 +78,8 @@ let packConfigHashes: { [key: string]: string } = {};
 const outputPacks: OutputResourcePack[] = [];
 
 export async function init() {
-  console.log(`Custom Resources loading started.`);
-  console.time(`custom_resources`);
+  console.log(`[CUSTOM-RESOURCES] Custom Resources loading started.`);
+  const timeNow = performance.now();
 
   await loadPackConfigs();
   let resourcesUpToDate = false;
@@ -137,8 +137,8 @@ export async function init() {
 
   resourcesReady = true;
 
-  console.log(`Custom Resources loading done.`);
-  console.timeEnd(`custom_resources`);
+  const packs = new Set(resourcePacks.map((pack) => pack.config.id));
+  console.log(`[CUSTOM-RESOURCES] Successfully loaded ${packs.size} resource packs in ${(performance.now() - timeNow).toFixed(2)}ms`);
 }
 
 async function loadPackConfigs() {
