@@ -1,34 +1,36 @@
 <script lang="ts">
   import Item from "$lib/components/Item.svelte";
   import type { ProcessedItem } from "$lib/types/global";
-  import { Collapsible } from "bits-ui";
+  import { Avatar, Collapsible } from "bits-ui";
   import { writable } from "svelte/store";
   import { slide } from "svelte/transition";
 
-  export let firstWardrobeItem: ProcessedItem | undefined;
   export let wardrobeItems: ProcessedItem[];
+
+  const highestItem = wardrobeItems.find((piece) => piece);
+  const pieces = ["helmet", "chestplate", "leggings", "boots"];
 
   const expanded = writable<boolean>(false);
 </script>
 
 <Collapsible.Root bind:open={$expanded}>
-  <Collapsible.Trigger>
-    {#if firstWardrobeItem}
-      <Item piece={firstWardrobeItem} />
+  <Collapsible.Trigger class="mt-2 flex flex-col gap-2">
+    {#if !$expanded}
+      {#if highestItem}
+        <Item piece={highestItem} />
+      {/if}
+    {:else}
+      <Collapsible.Content transition={slide} class="flex flex-col gap-2">
+        {#each wardrobeItems as piece, index}
+          {#if piece}
+            <Item {piece} />
+          {:else}
+            <Avatar.Root class="rounded-lg bg-background-lore p-2">
+              <Avatar.Image class="size-14" loading="eager" src={`/img/textures/item/empty_armor_slot_${pieces[index]}.png`} />
+            </Avatar.Root>
+          {/if}
+        {/each}
+      </Collapsible.Content>
     {/if}
   </Collapsible.Trigger>
-  <Collapsible.Content transition={slide} class="mt-2 flex flex-col gap-2">
-    {#each wardrobeItems as piece}
-      {#if piece}
-        {#if piece !== firstWardrobeItem}
-          <Item {piece} />
-        {/if}
-      {:else}
-        <!-- TODO: Add placeholders -->
-        <div class="flex size-24 items-center justify-center rounded-lg bg-background-lore">
-          <p class="text-text/60">TODO: <br /> Add placeholders</p>
-        </div>
-      {/if}
-    {/each}
-  </Collapsible.Content>
 </Collapsible.Root>
