@@ -23,7 +23,7 @@
     <Tooltip.Trigger class="group-data-[maxed=true]:shine absolute bottom-0 left-0 z-20 flex size-9 items-center justify-center rounded-full p-1 drop-shadow group-data-[maxed=false]:bg-icon group-data-[maxed=true]:bg-maxed">
       <Avatar.Root class="select-none">
         <!-- TODO: Add minecraft icons -->
-        <Avatar.Image class="pointer-events-none" />
+        <Avatar.Image class="pointer-events-none" src={skillData.texture} />
         <Avatar.Fallback>
           <BarChartHorizontal class="pointer-events-none size-6" />
         </Avatar.Fallback>

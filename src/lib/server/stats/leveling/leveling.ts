@@ -30,6 +30,7 @@ function getXpTable(type: string): { [key: number]: number } {
  * @param {number} xp The experience points to calculate level information from.
  * @param {Object} [extra={}] Additional options for level calculation.
  * @param {string} [extra.type] The ID of the skill (used to determine xp table and default cap).
+ * @param {string} [extra.texture] The ID of the texture to use for the skill.
  * @param {number} [extra.cap] Override for the highest level the player can reach.
  */
 export function getLevelByXp(
@@ -110,7 +111,8 @@ export function getLevelByXp(
     uncappedLevel,
     levelWithProgress,
     unlockableLevelWithProgress,
-    maxed
+    maxed,
+    texture: constants.SKILL_ICONS[extra.texture ?? extra.type]
     // maxExperience
   };
 }
