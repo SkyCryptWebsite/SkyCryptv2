@@ -10,11 +10,11 @@ import { startRedis } from "./lib/server/db/redis";
 init();
 
 startMongo().then(() => {
-  console.log("[MONGO] Mongo started!");
+  console.log("[MONGO] MongoDB succeesfully connected");
 });
 
 startRedis().then(() => {
-  console.log("[REDIS] Redis started!");
+  console.log("[REDIS] Redis succeesfully connected");
 });
 
 updateNotEnoughUpdatesRepository().then(() => {

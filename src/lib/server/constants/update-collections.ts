@@ -17,7 +17,8 @@ export async function updateCollections() {
 
     COLLECTIONS.set(category, collections.collections[category] as Collection);
   }
+
+  console.log("[COLLECTIONS] Updated collections");
 }
 
-updateCollections();
 setTimeout(updateCollections, 1000 * 60 * 60 * 12); // 12 hours

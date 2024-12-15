@@ -49,7 +49,7 @@ export async function parseNEURepository() {
     }
   }
 
-  console.log(`Parsed ${items.length.toLocaleString()} items in ${(performance.now() - timeNow).toLocaleString()}ms`);
+  console.log(`[NOT-ENOUGH-UPDATES] Parsed ${items.length.toLocaleString()} items in ${(performance.now() - timeNow).toLocaleString()}ms`);
 }
 
 parseNEURepository();

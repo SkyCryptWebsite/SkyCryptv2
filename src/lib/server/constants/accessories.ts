@@ -1,17 +1,17 @@
 // CREDITS: https://github.com/MattTheCuber (Modified)
+import { ITEMS } from "$lib/shared/constants/items";
 import type { SpecialAccessory, SpecialAccessoryConstant, allAccessories } from "$types/stats";
-import { ITEMS as ALL_ITEMS } from "$lib/shared/constants/items";
 
-let ITEMS = [] as allAccessories[];
+let ACCESSORIES = [] as allAccessories[];
 function getAccessories() {
   const output = [] as allAccessories[];
-  ALL_ITEMS.forEach((item) => {
+  ITEMS.forEach((item) => {
     if (item.category === "accessory") {
       output.push(item as allAccessories);
     }
   });
 
-  ITEMS = output;
+  ACCESSORIES = output;
 }
 
 setTimeout(getAccessories, 60 * 60 * 1000); // 1 hour
@@ -138,7 +138,7 @@ export const SPECIAL_ACCESSORIES = {
 } as Record<string, SpecialAccessoryConstant>;
 
 export function getAllAccessories() {
-  const output = ITEMS.reduce<allAccessories[]>((accessory, item) => {
+  const output = ACCESSORIES.reduce<allAccessories[]>((accessory, item) => {
     if (ignoredAccessories.includes(item.id)) return accessory;
 
     if (Object.values(ACCESSORY_ALIASES).find((list) => list.includes(item.id))) return accessory;

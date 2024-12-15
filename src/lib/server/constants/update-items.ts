@@ -1,5 +1,5 @@
-import { ITEMS } from "$lib/shared/constants/items";
 import MONGO from "$lib/server/db/mongo";
+import { ITEMS } from "$lib/shared/constants/items";
 import type { DatabaseItem } from "$types/global";
 
 export async function updateItems() {
@@ -16,7 +16,8 @@ export async function updateItems() {
 
     ITEMS.set(skyBlockItem.skyblock_id, skyBlockItem);
   }
+
+  console.log("[ITEMS] Updated items");
 }
 
-updateItems();
 setTimeout(updateItems, 1000 * 60 * 60 * 12); // 12 hours

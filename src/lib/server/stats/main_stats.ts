@@ -31,10 +31,12 @@ export async function getMainStats(userProfile: Member, profile: Profile, items:
           .flat()
       : [],
     fishing_bag: items.fishing_bag ?? [],
-    potion_bag: items.potion_bag ?? []
+    potion_bag: items.potion_bag ?? [],
+    museum: items.museumItems ?? []
   };
 
   const predecodedNetworth = await getPreDecodedNetworth(userProfile, networthItems, bank, networthOptions);
+  items.museumItems = [];
 
   return {
     joined: userProfile.profile?.first_join ?? 0,

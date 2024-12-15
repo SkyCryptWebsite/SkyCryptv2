@@ -154,3 +154,29 @@ export async function fetchPlayer(uuid: string) {
 
   return data.player;
 }
+
+export async function fetchMuseum(profileId: string) {
+  const cache = await REDIS.get(`MUSEUM:${profileId}`);
+  if (cache) {
+    return JSON.parse(cache);
+  }
+
+  const response = await fetch(`https://api.hypixel.net/v2/skyblock/museum?profile=${profileId}`, {
+    headers
+  });
+
+  const data = await response.json();
+  if (data.success === false) {
+    throw new SkyCryptError(data?.cause ?? "Request to Hypixel API failed. Please try again!");
+  }
+
+  const { members } = data;
+  if (!members || Object.keys(members).length === 0) {
+    return null;
+  }
+
+  // 30 minutes
+  REDIS.SETEX(`MUSEUM:${profileId}`, 60 * 30, JSON.stringify(members));
+
+  return members;
+}

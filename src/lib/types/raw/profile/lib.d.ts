@@ -428,3 +428,16 @@ export type ExperimentationGame = {
   bonus_clicks: number;
   [string: string]: number;
 };
+
+export type DecodedMuseumItems = {
+  value: number;
+  items: Record<string, { donated_time: number; borrowing: boolean; items: ProcessedItem[] }>;
+  special: { donated_time: number; items: ProcessedItem[] }[];
+};
+
+export type MuseumItems = {
+  [key: string]: ProcessedItem & {
+    donated_as_child: boolean;
+    id: string;
+  };
+};

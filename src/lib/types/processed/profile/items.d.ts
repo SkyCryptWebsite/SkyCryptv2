@@ -40,6 +40,13 @@ export type DatabaseItem = {
   skyblock_id?: string;
   color?: string;
   damage?: number;
+  museum_data?: {
+    armor_set_donation_xp: number;
+    donation_xp: number;
+    type: string;
+    parent: Record<string, string>;
+    game_stage: string;
+  };
 };
 
 export type ItemQuery = {
@@ -125,7 +132,6 @@ export type ProcessedItem = {
   damage?: number;
   glowing?: boolean;
   position?: number;
-  itemId: string;
   item_index: number;
 };
 
@@ -184,6 +190,8 @@ export type Items = {
   potion_bag: ProcessedItem[];
   quiver: ProcessedItem[];
   // candy_inventory: ProcessedItem[];
+  museumItems: ProcessedItem[];
+  museum: ProcessedItem[];
 };
 
 export type SpecialAccessory = {

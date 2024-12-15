@@ -1,6 +1,5 @@
 import type { Item, ProcessedItem } from "$types/stats";
 import { getPrices } from "skyhelper-networth";
-import { v4 } from "uuid";
 import { getTexture } from "../custom_resources";
 import * as constants from "./constants/constants";
 
@@ -288,10 +287,7 @@ export function generateUUID() {
 
 export function generateItem(data: Partial<ProcessedItem>) {
   if (!data) {
-    return {
-      itemId: v4(),
-      item_index: Date.now()
-    } as ProcessedItem;
+    return {} as ProcessedItem;
   }
 
   const DEFAULT_DATA = {
@@ -307,9 +303,7 @@ export function generateItem(data: Partial<ProcessedItem>) {
         Name: "",
         Lore: [""]
       }
-    },
-    itemId: v4(),
-    item_index: Date.now()
+    }
   };
 
   // Making sure rarity is lowercase
@@ -349,9 +343,9 @@ export function getHeadTextureUUID(value: string) {
   return uuid;
 }
 
+import { STATS_DATA } from "$lib/shared/constants/stats";
 import { removeFormatting } from "$lib/shared/helper";
 import type { ItemStats } from "$types/processed/profile/stats";
-import { STATS_DATA } from "$lib/shared/constants/stats";
 
 /**
  * Gets the stats from an item
@@ -395,4 +389,21 @@ export function getStatsFromItem(piece: Item): ItemStats {
  */
 export function capitalizeFirstLetter(string: string): string {
   return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+/**
+ * Returns a formatted progress bar string based on the given amount and total.
+ *
+ * @param {number} amount - The current amount.
+ * @param {number} total - The total amount.
+ * @param {string} [color="a"] - The color of the progress bar.
+ * @returns {string} The formatted progress bar string.
+ */
+export function formatProgressBar(amount: number, total: number, completedColor = "a", missingColor = "f") {
+  const barLength = 25;
+  const progress = Math.min(1, amount / total);
+  const progressBars = Math.floor(progress * barLength);
+  const emptyBars = barLength - progressBars;
+
+  return `${`§${completedColor}§l§m-`.repeat(progressBars)}${`§${missingColor}§l§m-`.repeat(emptyBars)}§r`;
 }
