@@ -15,6 +15,7 @@
     "format": "prettier --write ."
   },
   "devDependencies": {
+    "@eslint/compat": "^1.2.4",
     "@eslint/js": "^9.17.0",
     "@sveltejs/kit": "^2.11.1",
     "@sveltejs/vite-plugin-svelte": "^5.0.2",
