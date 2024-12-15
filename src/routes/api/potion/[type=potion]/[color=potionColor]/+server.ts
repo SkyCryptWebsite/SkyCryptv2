@@ -1,5 +1,5 @@
 import { POTION_COLORS } from "$constants/constants";
-import { getPotion } from "$lib/renderer";
+import { getPotion } from "$lib/server/helper/renderer";
 import { error } from "@sveltejs/kit";
 import type { RequestHandler } from "./$types";
 

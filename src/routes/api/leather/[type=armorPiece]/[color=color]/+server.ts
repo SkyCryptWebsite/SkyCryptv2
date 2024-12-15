@@ -1,6 +1,6 @@
-import { getArmor } from "$lib/renderer";
-import type { RequestHandler } from "./$types";
+import { getArmor } from "$lib/server/helper/renderer";
 import { error } from "@sveltejs/kit";
+import type { RequestHandler } from "./$types";
 
 export const GET: RequestHandler = async ({ params }) => {
   const { type, color } = params;
