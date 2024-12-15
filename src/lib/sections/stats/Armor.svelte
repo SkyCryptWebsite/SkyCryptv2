@@ -18,10 +18,14 @@
 </script>
 
 <Items title="Armor">
-  <p slot="text" class="space-x-0.5 font-bold capitalize leading-6 text-text/60">
-    <span>Set:</span>
-    <span class={cn(getRarityClass(armor.set_rarity ?? "", "text"))}>{armor.set_name}</span>
-  </p>
+  <div slot="text">
+    {#if armor.set_name}
+      <p class="space-x-0.5 font-bold capitalize leading-6 text-text/60">
+        <span>Set:</span>
+        <span class={cn(getRarityClass(armor.set_rarity ?? "", "text"))}>{armor.set_name}</span>
+      </p>
+    {/if}
+  </div>
   {#each armor.armor as piece}
     <Item {piece} />
   {/each}
