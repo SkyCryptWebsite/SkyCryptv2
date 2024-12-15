@@ -2,6 +2,7 @@
   import { flyAndScale } from "$lib/shared/utils";
   import type { Stats as StatsType } from "$lib/types/stats";
   import { Avatar, Button, DropdownMenu } from "bits-ui";
+  import ChevronLeft from "lucide-svelte/icons/chevron-left";
   import ChevronRight from "lucide-svelte/icons/chevron-right";
   import ExternalLink from "lucide-svelte/icons/external-link";
   import Share from "lucide-svelte/icons/share";
@@ -9,16 +10,17 @@
   import { getContext } from "svelte";
 
   const profile = getContext<StatsType>("profile");
-
   const iconMapper: Record<string, string> = {
-    twitter: "x-twitter.svg",
-    youtube: "youtube.svg",
-    instagram: "instagram.svg",
-    tiktok: "tiktok.svg",
-    twitch: "twitch.svg",
-    discord: "discord.svg",
-    hypixel: "hypixel.png"
+    TWITTER: "x-twitter.svg",
+    YOUTUBE: "youtube.svg",
+    INSTAGRAM: "instagram.svg",
+    TIKTOK: "tiktok.svg",
+    TWITCH: "twitch.svg",
+    DISCORD: "discord.svg",
+    HYPIXEL: "hypixel.png"
   };
+
+  let showMore = $state(false);
 </script>
 
 <div class="mt-12 flex flex-wrap items-center gap-x-2 gap-y-3 text-4xl">
@@ -55,19 +57,19 @@
 </div>
 
 <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
-  <Button.Root class="rounded-full bg-icon/90 p-1 transition-opacity duration-150 hover:bg-icon">
-    <Star class="size-5" />
+  <Button.Root class="aspect-square rounded-full bg-icon/90 p-2 transition-opacity duration-150 hover:bg-icon">
+    <Star class="size-4" />
   </Button.Root>
 
   <Button.Root
-    class="rounded-full bg-icon/90 p-1 transition-opacity duration-150 hover:bg-icon"
+    class="aspect-square rounded-full bg-icon/90 p-2 transition-opacity duration-150 hover:bg-icon"
     on:click={async () => {
       await navigator.share({
         url: location.href,
         title: `Stats for ${profile.username} on Hypixel`
       });
     }}>
-    <Share class="size-5" />
+    <Share class="size-4" />
   </Button.Root>
 
   <Button.Root href={`https://plancke.io/hypixel/player/stats/${profile.username}`} target="_blank" class="flex items-center justify-center gap-1.5 rounded-full bg-icon/90 px-2 py-1 font-semibold transition-opacity duration-150 hover:bg-icon">
@@ -78,26 +80,22 @@
     Elite <ExternalLink class="size-4" />
   </Button.Root>
 
-  <Button.Root class="flex items-center justify-center gap-1.5 rounded-full bg-icon/90 px-2 py-1 font-semibold transition-opacity duration-150 hover:bg-icon" on:click={() => navigator.clipboard.writeText(profile.uuid)}>Copy UUID</Button.Root>
+  <Button.Root class="hidden items-center justify-center gap-1.5 rounded-full bg-icon/90 px-2 py-1 font-semibold transition-opacity duration-150 hover:bg-icon data-[visible=true]:flex" data-visible={showMore} on:click={() => navigator.clipboard.writeText(profile.uuid)}>Copy UUID</Button.Root>
+
   {#each Object.entries(profile.social) as [key, value]}
-    {key}
-    {value}
-  {/each}
-  {#each Object.entries(profile.social) as [key, value]}
-    {#if key === "discord"}
-      <Button.Root class="flex items-center justify-center gap-1.5 rounded-full bg-icon/90 px-2 py-1 font-semibold transition-opacity duration-150 hover:bg-icon" on:click={() => navigator.clipboard.writeText(value)}>
+    {#if key === "DISCORD"}
+      <Button.Root class="hidden aspect-square items-center justify-center gap-1.5 rounded-full bg-icon/90 px-2 py-1 font-semibold transition-opacity duration-150 hover:bg-icon data-[visible=true]:flex" data-visible={showMore} on:click={() => navigator.clipboard.writeText(value)}>
         <Avatar.Root>
-          <Avatar.Image src="/img/icons/{iconMapper[key.toLowerCase()]}" alt="{profile.username}'s Discord" class="size-4 text-white" />
+          <Avatar.Image src="/img/icons/{iconMapper[key]}" alt="{profile.username}'s {key.toLocaleLowerCase()}" class="size-4 text-white" />
           <Avatar.Fallback>
             {profile.username.slice(0, 2)}
           </Avatar.Fallback>
         </Avatar.Root>
-        {key}
       </Button.Root>
     {:else}
-      <Button.Root href={value} target="_blank" class="flex items-center justify-center gap-1.5 rounded-full bg-icon/90 px-2 py-1 font-semibold transition-opacity duration-150 hover:bg-icon">
+      <Button.Root href={value} target="_blank" class="hidden aspect-square items-center justify-center gap-1.5 rounded-full bg-icon/90 px-2 py-1 font-semibold transition-opacity duration-150 hover:bg-icon data-[visible=true]:flex" data-visible={showMore}>
         <Avatar.Root>
-          <Avatar.Image src="/img/icons/{iconMapper[key.toLowerCase()]}" alt="{profile.username}'s Discord" class="size-4 text-white" />
+          <Avatar.Image src="/img/icons/{iconMapper[key]}" alt="{profile.username}'s {key.toLocaleLowerCase()}" class="size-4 text-white" />
           <Avatar.Fallback>
             {profile.username.slice(0, 2)}
           </Avatar.Fallback>
@@ -106,7 +104,11 @@
     {/if}
   {/each}
 
-  <Button.Root class="rounded-full bg-icon/90 p-1 transition-opacity duration-150 hover:bg-icon">
-    <ChevronRight class="size-5" />
+  <Button.Root class="rounded-full bg-icon/90 p-2 transition-opacity duration-150 hover:bg-icon" on:click={() => (showMore = !showMore)}>
+    {#if showMore}
+      <ChevronLeft class="size-4" />
+    {:else}
+      <ChevronRight class="size-4" />
+    {/if}
   </Button.Root>
 </div>
