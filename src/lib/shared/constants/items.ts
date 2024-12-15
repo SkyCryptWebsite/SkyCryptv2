@@ -35,7 +35,7 @@ export const POTION_COLORS = {
   13: "2f549c", // Water Breathing
   14: "818595", // Invisibility
   15: "f500f5" // Uncraftable
-};
+} as Record<string, string>;
 
 export const TYPE_TO_CATEGORIES = {
   helmet: ["armor", "helmet"],

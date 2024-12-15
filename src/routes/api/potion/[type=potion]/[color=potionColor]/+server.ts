@@ -1,12 +1,15 @@
+import { POTION_COLORS } from "$constants/constants";
 import { getPotion } from "$lib/renderer";
-import type { RequestHandler } from "./$types";
 import { error } from "@sveltejs/kit";
+import type { RequestHandler } from "./$types";
 
 export const GET: RequestHandler = async ({ params }) => {
   const { type, color } = params;
 
+  const potionColor = POTION_COLORS[color];
+
   try {
-    const attachment = await getPotion(type, color);
+    const attachment = await getPotion(type, potionColor);
 
     return new Response(attachment, { headers: { "Content-Type": "image/png" } });
   } catch (errorMsg) {
