@@ -18,7 +18,7 @@
 </script>
 
 <Items title="Armor">
-  <div slot="text">
+  <div slot="text" class="contents">
     {#if armor.set_name}
       <p class="space-x-0.5 font-bold capitalize leading-6 text-text/60">
         <span>Set:</span>
@@ -40,7 +40,7 @@
 </Items>
 
 <Items subtitle="Wardrobe">
-  {#each firstWardrobeItems as firstWardrobeItem, i}
-    <Wardrobe {firstWardrobeItem} wardrobeItems={wardrobe[i]} />
+  {#each firstWardrobeItems as _, i}
+    <Wardrobe wardrobeItems={wardrobe[i]} />
   {/each}
 </Items>
