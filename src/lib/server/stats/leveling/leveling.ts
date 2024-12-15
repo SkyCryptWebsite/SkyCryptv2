@@ -218,7 +218,8 @@ export function getXpByLevel(
     uncappedLevel,
     levelWithProgress,
     unlockableLevelWithProgress,
-    maxed
+    maxed,
+    texture: constants.SKILL_ICONS[extra.texture ?? extra.type]
     // maxExperience
   };
 }
