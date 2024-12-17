@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Navbar from "$lib/components/Navbar.svelte";
   import Skin3D from "$lib/components/Skin3D.svelte";
   import AdditionalStats from "$lib/layouts/stats/AdditionalStats.svelte";
   import PlayerProfile from "$lib/layouts/stats/PlayerProfile.svelte";
@@ -29,25 +30,58 @@
 <div class="relative">
   <Skin3D class="fixed left-0 top-1/2 z-10 h-dvh w-[30vw] -translate-y-1/2" />
   <div class="fixed right-0 top-0 h-dvh w-[calc(100%-30vw)] backdrop-blur-lg backdrop-brightness-50"></div>
-  <main class="relative mx-auto ml-[30vw] space-y-5 p-8">
-    <PlayerProfile />
-    <Skills />
-    <Stats />
-    <AdditionalStats />
-    <Armor />
-    <Weapons />
-    <Accessories />
-    <Pets />
-    <Inventory />
-    <SkillsSection />
-    <Dungeons />
-    <Slayer />
-    <Minions />
-    <Bestiary />
-    <Collections />
-    <CrimsonIsle />
-    <Rift />
-    <MiscSection />
+  <main class="relative mx-auto ml-[30vw]">
+    <div class="space-y-5 p-8">
+      <PlayerProfile />
+      <Skills />
+      <Stats />
+      <AdditionalStats />
+    </div>
+    <Navbar />
+    <div class="space-y-5 p-8">
+      <section id="Armor" class="scroll-m-32">
+        <Armor />
+      </section>
+      <section id="Weapons" class="scroll-m-32">
+        <Weapons />
+      </section>
+      <section id="Accessories" class="scroll-m-32">
+        <Accessories />
+      </section>
+      <section id="Pets" class="scroll-m-32">
+        <Pets />
+      </section>
+      <section id="Inventory" class="scroll-m-32">
+        <Inventory />
+      </section>
+      <section id="Skills" class="scroll-m-32">
+        <SkillsSection />
+      </section>
+      <section id="Dungeons" class="scroll-m-32">
+        <Dungeons />
+      </section>
+      <section id="Slayer" class="scroll-m-32">
+        <Slayer />
+      </section>
+      <section id="Minions" class="scroll-m-32">
+        <Minions />
+      </section>
+      <section id="Bestiary" class="scroll-m-32">
+        <Bestiary />
+      </section>
+      <section id="Collections" class="scroll-m-32">
+        <Collections />
+      </section>
+      <section id="Crimson_Isle" class="scroll-m-32">
+        <CrimsonIsle />
+      </section>
+      <section id="Rift" class="scroll-m-32">
+        <Rift />
+      </section>
+      <section id="Misc" class="scroll-m-32">
+        <MiscSection />
+      </section>
+    </div>
   </main>
 </div>
 
