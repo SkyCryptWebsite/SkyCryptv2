@@ -10,14 +10,14 @@
 
 <div class="space-y-4">
   {#if title}
-    <h3 class="text-2xl font-semibold capitalize">{title}</h3>
+    <h3 class="text-2xl font-semibold capitalize underline decoration-icon decoration-4 [text-underline-position:under]">{title}</h3>
   {/if}
   {#if subtitle}
-    <h4 class="text-xl capitalize text-text">{subtitle}</h4>
+    <h4 class="text-xl font-semibold capitalize text-text/90">{subtitle}</h4>
   {/if}
   <slot name="text" />
 
-  <div class={cn("flex flex-wrap gap-4", className)}>
+  <div class={cn("flex flex-wrap gap-3", className)}>
     <slot />
   </div>
 

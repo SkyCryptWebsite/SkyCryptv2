@@ -9,13 +9,19 @@
   export { classNames as class };
 
   const statsData = Object.entries(stats);
+
+  function formatValue(value: string) {
+    return parseFloat(value)
+      .toFixed(2)
+      .replace(/\.?0+$/, "");
+  }
 </script>
 
 <p class={cn("space-x-0.5 font-bold capitalize leading-6 text-text/60", classNames)}>
   <span>{title}</span>
   {#each statsData as [key, value], index}
     <span class={STATS_DATA[key].color}>
-      {value}{STATS_DATA[key].suffix}
+      {formatValue(value as string)}{STATS_DATA[key].suffix}
       {STATS_DATA[key].nameTiny}
     </span>
     {#if statsData.length - 1 !== index}

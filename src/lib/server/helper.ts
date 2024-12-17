@@ -1,7 +1,7 @@
 import type { Item, ProcessedItem } from "$types/stats";
 import { getPrices } from "skyhelper-networth";
-import { getTexture } from "../custom_resources";
 import * as constants from "./constants/constants";
+import { getTexture } from "./custom_resources";
 
 export * from "$lib/server/helper/cache";
 export * from "$lib/server/helper/item";

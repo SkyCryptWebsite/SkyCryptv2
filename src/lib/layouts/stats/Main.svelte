@@ -1,4 +1,6 @@
 <script lang="ts">
+  import Navbar from "$lib/components/Navbar.svelte";
+  import Skin3D from "$lib/components/Skin3D.svelte";
   import AdditionalStats from "$lib/layouts/stats/AdditionalStats.svelte";
   import PlayerProfile from "$lib/layouts/stats/PlayerProfile.svelte";
   import Skills from "$lib/layouts/stats/Skills.svelte";
@@ -25,26 +27,107 @@
   setContext<StatsType>("profile", profile);
 </script>
 
-<main class="mx-auto space-y-5 p-8">
-  <PlayerProfile />
-  <Skills />
-  <Stats />
-  <AdditionalStats />
-  <Armor />
-  <Weapons />
-  <Accessories />
-  <Pets />
-  <Inventory />
-  <SkillsSection />
-  <Dungeons />
-  <Slayer />
-  <Minions />
-  <Bestiary />
-  <Collections />
-  <CrimsonIsle />
-  <Rift />
-  <MiscSection />
-</main>
+<div class="relative">
+  {#await profile}
+    Loading
+  {:then}
+    <Skin3D class="fixed left-0 top-1/2 z-10 h-dvh w-[30vw] -translate-y-1/2" />
+  {/await}
+  <div class="fixed right-0 top-0 h-dvh w-[calc(100%-30vw)] backdrop-blur-lg backdrop-brightness-50"></div>
+  <main class="relative mx-auto ml-[30vw]">
+    <div class="space-y-5 p-8">
+      <PlayerProfile />
+      <Skills />
+      <Stats />
+      <AdditionalStats />
+    </div>
+    <Navbar />
+    <div class="space-y-5 p-8">
+      <section id="Armor" class="scroll-m-32">
+        <Armor />
+      </section>
+      <section id="Weapons" class="scroll-m-32">
+        <Weapons />
+      </section>
+      <section id="Accessories" class="scroll-m-32">
+        <Accessories />
+      </section>
+      <section id="Pets" class="scroll-m-32">
+        <Pets />
+      </section>
+      <section id="Inventory" class="scroll-m-32">
+        {#await profile}
+          Loading
+        {:then}
+          <Inventory />
+        {/await}
+      </section>
+      <section id="Skills" class="scroll-m-32">
+        {#await profile}
+          Loading
+        {:then}
+          <SkillsSection />
+        {/await}
+      </section>
+      <section id="Dungeons" class="scroll-m-32">
+        {#await profile}
+          Loading
+        {:then}
+          <Dungeons />
+        {/await}
+      </section>
+      <section id="Slayer" class="scroll-m-32">
+        {#await profile}
+          Loading
+        {:then}
+          <Slayer />
+        {/await}
+      </section>
+      <section id="Minions" class="scroll-m-32">
+        {#await profile}
+          Loading
+        {:then}
+          <Minions />
+        {/await}
+      </section>
+      <section id="Bestiary" class="scroll-m-32">
+        {#await profile}
+          Loading
+        {:then}
+          <Bestiary />
+        {/await}
+      </section>
+      <section id="Collections" class="scroll-m-32">
+        {#await profile}
+          Loading
+        {:then}
+          <Collections />
+        {/await}
+      </section>
+      <section id="Crimson_Isle" class="scroll-m-32">
+        {#await profile}
+          Loading
+        {:then}
+          <CrimsonIsle />
+        {/await}
+      </section>
+      <section id="Rift" class="scroll-m-32">
+        {#await profile}
+          Loading
+        {:then}
+          <Rift />
+        {/await}
+      </section>
+      <section id="Misc" class="scroll-m-32">
+        {#await profile}
+          Loading
+        {:then}
+          <MiscSection />
+        {/await}
+      </section>
+    </div>
+  </main>
+</div>
 
 <svg xmlns="http://www.w3.org/2000/svg" height="0" width="0" style="position: fixed;">
   <filter id="enchanted-glint">

@@ -11,7 +11,7 @@ function getDungeonClasses(userProfile: Member) {
 
   return Object.keys(userProfile.dungeons.player_classes).reduce(
     (acc: Record<string, Skill>, key) => {
-      acc[key] = getLevelByXp(userProfile.dungeons.player_classes[key].experience, { type: "dungeoneering" });
+      acc[key] = getLevelByXp(userProfile.dungeons.player_classes[key].experience, { type: "dungeoneering", texture: key });
 
       return acc;
     },

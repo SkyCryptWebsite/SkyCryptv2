@@ -3,15 +3,19 @@
   import type { Stats as StatsType } from "$lib/types/stats";
   import { getContext } from "svelte";
 
-  const profile = getContext<StatsType>("profile");
+  const profile = getContext<Promise<StatsType>>("profile");
 </script>
 
 <div class="skills space-y-2">
-  <Skillbar class="sm:w-full" skill="Level" skillData={profile.skyblock_level} />
+  {#await profile}
+    Loading
+  {:then profile}
+    <Skillbar class="sm:w-full" skill="Level" skillData={profile.skyblock_level} />
 
-  <div class="flex flex-col flex-wrap gap-x-4 gap-y-2 sm:flex-row">
-    {#each Object.entries(profile.skills.skills) as [skillName, skillData]}
-      <Skillbar skill={skillName} {skillData} />
-    {/each}
-  </div>
+    <div class="flex flex-col flex-wrap gap-x-4 gap-y-2 sm:flex-row">
+      {#each Object.entries(profile.skills.skills) as [skillName, skillData]}
+        <Skillbar skill={skillName} {skillData} />
+      {/each}
+    </div>
+  {/await}
 </div>

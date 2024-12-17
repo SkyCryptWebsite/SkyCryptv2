@@ -1,4 +1,4 @@
-import { getTexture } from "$lib/custom_resources";
+import { getTexture } from "$lib/server/custom_resources";
 import { getItemNetworth } from "skyhelper-networth";
 
 import * as constants from "$lib/server/constants/constants";

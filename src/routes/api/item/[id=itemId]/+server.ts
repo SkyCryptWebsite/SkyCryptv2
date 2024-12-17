@@ -1,4 +1,4 @@
-import { renderItem } from "$lib/renderer";
+import { renderItem } from "$lib/server/helper/renderer";
 import { error } from "@sveltejs/kit";
 import type { RequestHandler } from "./$types";
 

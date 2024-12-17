@@ -150,7 +150,7 @@ export function isEnchanted(item: ProcessedItem): boolean {
     return true;
   }
 
-  if ("tag" in item && Array.isArray(item.tag.ench)) {
+  if ("tag" in item && (Array.isArray(item.tag.ench) || item.tag.ExtraAttributes?.enchantments)) {
     return true;
   }
 

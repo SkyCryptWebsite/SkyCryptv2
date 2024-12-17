@@ -10,7 +10,7 @@ Modified and Improved by @DuckySoLucky
 export const CACHE_PATH = helper.getCacheFolderPath();
 
 import { base } from "$app/paths";
-import * as customResources from "$lib/custom_resources";
+import * as customResources from "$lib/server/custom_resources";
 import { createCanvas, loadImage } from "@napi-rs/canvas";
 import fs from "fs-extra";
 import sanitize from "mongo-sanitize";
@@ -18,8 +18,8 @@ import path from "path";
 
 import type { ItemQuery } from "$types/global";
 import minecraftData from "minecraft-data";
-import * as helper from "./server/helper";
-import { getItemData } from "./server/helper/item";
+import * as helper from "../helper";
+import { getItemData } from "./item";
 const mcData = minecraftData("1.8.9");
 
 const skewA = 26 / 45;

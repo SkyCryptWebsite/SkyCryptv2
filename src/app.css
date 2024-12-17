@@ -211,6 +211,10 @@
       /* ✿ dye, */ U+273F,
       /* ⚚ dungeon-upgrade, */ U+269A;
   }
+
+  [data-tooltip-content] {
+    @apply max-w-[min(20rem,100vw-2.5rem)] text-pretty text-sm;
+  }
 }
 
 @layer utilities {
