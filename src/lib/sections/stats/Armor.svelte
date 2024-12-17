@@ -8,39 +8,41 @@
   import type { Stats as StatsType } from "$lib/types/stats";
   import { getContext } from "svelte";
 
-  const profile = getContext<StatsType>("profile");
-
-  const armor = profile.items.armor;
-  const equipment = profile.items.equipment;
-  const wardrobe = profile.items.wardrobe;
-
-  const firstWardrobeItems = wardrobe.map((wardrobeItems) => wardrobeItems.find((piece) => piece));
+  const profile = getContext<Promise<StatsType>>("profile");
 </script>
 
-<Items title="Armor">
-  <div slot="text" class="contents">
-    {#if armor.set_name}
-      <p class="space-x-0.5 font-bold capitalize leading-6 text-text/60">
-        <span>Set:</span>
-        <span class={cn(getRarityClass(armor.set_rarity ?? "", "text"))}>{armor.set_name}</span>
-      </p>
-    {/if}
-  </div>
-  {#each armor.armor as piece}
-    <Item {piece} />
-  {/each}
-  <Bonus slot="info" stats={armor.stats} />
-</Items>
+{#await profile}
+  Loading
+{:then profile}
+  {@const armor = profile.items.armor}
+  {@const equipment = profile.items.equipment}
+  {@const wardrobe = profile.items.wardrobe}
+  {@const firstWardrobeItems = wardrobe.map((wardrobeItems) => wardrobeItems.find((piece) => piece))}
+  <Items title="Armor">
+    <div slot="text" class="contents">
+      {#if armor.set_name}
+        <p class="space-x-0.5 font-bold capitalize leading-6 text-text/60">
+          <span>Set:</span>
+          <span class={cn(getRarityClass(armor.set_rarity ?? "", "text"))}>{armor.set_name}</span>
+        </p>
+      {/if}
+    </div>
+    {#each armor.armor as piece}
+      <Item {piece} />
+    {/each}
+    <Bonus slot="info" stats={armor.stats} />
+  </Items>
 
-<Items subtitle="Equipment">
-  {#each equipment.equipment as piece}
-    <Item {piece} />
-  {/each}
-  <Bonus slot="info" stats={equipment.stats} />
-</Items>
+  <Items subtitle="Equipment">
+    {#each equipment.equipment as piece}
+      <Item {piece} />
+    {/each}
+    <Bonus slot="info" stats={equipment.stats} />
+  </Items>
 
-<Items subtitle="Wardrobe">
-  {#each firstWardrobeItems as _, i}
-    <Wardrobe wardrobeItems={wardrobe[i]} />
-  {/each}
-</Items>
+  <Items subtitle="Wardrobe">
+    {#each firstWardrobeItems as _, i}
+      <Wardrobe wardrobeItems={wardrobe[i]} />
+    {/each}
+  </Items>
+{/await}

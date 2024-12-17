@@ -13,7 +13,7 @@
   import { getContext } from "svelte";
   import { fade } from "svelte/transition";
 
-  const profile = getContext<StatsType>("profile");
+  const profile = getContext<Promise<StatsType>>("profile");
 
   const highestPriorityFishingTool = profile.items.fishing_tools.highest_priority_tool;
   const fishingTools = profile.items.fishing_tools.tools;

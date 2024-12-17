@@ -28,7 +28,11 @@
 </script>
 
 <div class="relative">
-  <Skin3D class="fixed left-0 top-1/2 z-10 h-dvh w-[30vw] -translate-y-1/2" />
+  {#await profile}
+    Loading
+  {:then}
+    <Skin3D class="fixed left-0 top-1/2 z-10 h-dvh w-[30vw] -translate-y-1/2" />
+  {/await}
   <div class="fixed right-0 top-0 h-dvh w-[calc(100%-30vw)] backdrop-blur-lg backdrop-brightness-50"></div>
   <main class="relative mx-auto ml-[30vw]">
     <div class="space-y-5 p-8">
@@ -52,34 +56,74 @@
         <Pets />
       </section>
       <section id="Inventory" class="scroll-m-32">
-        <Inventory />
+        {#await profile}
+          Loading
+        {:then}
+          <Inventory />
+        {/await}
       </section>
       <section id="Skills" class="scroll-m-32">
-        <SkillsSection />
+        {#await profile}
+          Loading
+        {:then}
+          <SkillsSection />
+        {/await}
       </section>
       <section id="Dungeons" class="scroll-m-32">
-        <Dungeons />
+        {#await profile}
+          Loading
+        {:then}
+          <Dungeons />
+        {/await}
       </section>
       <section id="Slayer" class="scroll-m-32">
-        <Slayer />
+        {#await profile}
+          Loading
+        {:then}
+          <Slayer />
+        {/await}
       </section>
       <section id="Minions" class="scroll-m-32">
-        <Minions />
+        {#await profile}
+          Loading
+        {:then}
+          <Minions />
+        {/await}
       </section>
       <section id="Bestiary" class="scroll-m-32">
-        <Bestiary />
+        {#await profile}
+          Loading
+        {:then}
+          <Bestiary />
+        {/await}
       </section>
       <section id="Collections" class="scroll-m-32">
-        <Collections />
+        {#await profile}
+          Loading
+        {:then}
+          <Collections />
+        {/await}
       </section>
       <section id="Crimson_Isle" class="scroll-m-32">
-        <CrimsonIsle />
+        {#await profile}
+          Loading
+        {:then}
+          <CrimsonIsle />
+        {/await}
       </section>
       <section id="Rift" class="scroll-m-32">
-        <Rift />
+        {#await profile}
+          Loading
+        {:then}
+          <Rift />
+        {/await}
       </section>
       <section id="Misc" class="scroll-m-32">
-        <MiscSection />
+        {#await profile}
+          Loading
+        {:then}
+          <MiscSection />
+        {/await}
       </section>
     </div>
   </main>

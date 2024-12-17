@@ -4,13 +4,9 @@
 
   export let data: PageData;
 
-  (async () => {
-    console.log(await data.user);
-  })();
+  // (async () => {
+  //   console.log(await data.user);
+  // })();
 </script>
 
-{#await data.user then user}
-  {#if user && user.profiles}
-    <Main profile={user} />
-  {/if}
-{/await}
+<Main profile={data.user} />

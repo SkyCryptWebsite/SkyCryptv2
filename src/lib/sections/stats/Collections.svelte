@@ -8,7 +8,7 @@
   import { format } from "numerable";
   import { getContext } from "svelte";
 
-  const profile = getContext<StatsType>("profile");
+  const profile = getContext<Promise<StatsType>>("profile");
 
   const collections = profile.collections;
 </script>

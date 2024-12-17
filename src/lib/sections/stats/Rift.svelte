@@ -2,13 +2,13 @@
   import AdditionStat from "$lib/components/AdditionStat.svelte";
   import Chip from "$lib/components/Chip.svelte";
   import Items from "$lib/layouts/stats/Items.svelte";
-  import { format } from "numerable";
   import { cn } from "$lib/shared/utils";
   import type { Stats as StatsType } from "$lib/types/stats";
   import { formatDate, formatDistanceToNowStrict } from "date-fns";
+  import { format } from "numerable";
   import { getContext } from "svelte";
 
-  const profile = getContext<StatsType>("profile");
+  const profile = getContext<Promise<StatsType>>("profile");
 
   const rift = profile.rift;
 </script>
