@@ -86,7 +86,7 @@
     {#if key === "DISCORD"}
       <Button.Root class="hidden aspect-square items-center justify-center gap-1.5 rounded-full bg-icon/90 px-2 py-1 font-semibold transition-opacity duration-150 hover:bg-icon data-[visible=true]:flex" data-visible={showMore} on:click={() => navigator.clipboard.writeText(value)}>
         <Avatar.Root>
-          <Avatar.Image src="/img/icons/{iconMapper[key]}" alt="{profile.username}'s {key.toLocaleLowerCase()}" class="size-4 text-white" />
+          <Avatar.Image loading="lazy" src="/img/icons/{iconMapper[key]}" alt="{profile.username}'s {key.toLocaleLowerCase()}" class="size-4 text-white" />
           <Avatar.Fallback>
             {profile.username.slice(0, 2)}
           </Avatar.Fallback>
@@ -95,7 +95,7 @@
     {:else}
       <Button.Root href={value} target="_blank" class="hidden aspect-square items-center justify-center gap-1.5 rounded-full bg-icon/90 px-2 py-1 font-semibold transition-opacity duration-150 hover:bg-icon data-[visible=true]:flex" data-visible={showMore}>
         <Avatar.Root>
-          <Avatar.Image src="/img/icons/{iconMapper[key]}" alt="{profile.username}'s {key.toLocaleLowerCase()}" class="size-4 text-white" />
+          <Avatar.Image loading="lazy" src="/img/icons/{iconMapper[key]}" alt="{profile.username}'s {key.toLocaleLowerCase()}" class="size-4 text-white" />
           <Avatar.Fallback>
             {profile.username.slice(0, 2)}
           </Avatar.Fallback>

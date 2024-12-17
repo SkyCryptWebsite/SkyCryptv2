@@ -22,7 +22,7 @@
   <Tooltip.Root group="skills" openDelay={0} closeDelay={0}>
     <Tooltip.Trigger class="group-data-[maxed=true]:shine absolute bottom-0 left-0 z-20 flex size-9 items-center justify-center rounded-full p-1 drop-shadow group-data-[maxed=false]:bg-icon group-data-[maxed=true]:bg-maxed">
       <Avatar.Root class="select-none">
-        <Avatar.Image class="pointer-events-none size-[1.625rem]" src={skillData.texture} alt={skill} />
+        <Avatar.Image loading="lazy" class="pointer-events-none size-[1.625rem]" src={skillData.texture} alt={skill} />
         <Avatar.Fallback>
           <BarChartHorizontal class="pointer-events-none size-6" />
         </Avatar.Fallback>

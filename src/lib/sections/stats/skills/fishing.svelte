@@ -59,7 +59,7 @@
         </div>
         <div class="mt-2 flex h-full flex-col items-center justify-center gap-4">
           <Avatar.Root class="flex items-center justify-center">
-            <Avatar.Image src={seaCreature.texture} class="aspect-square size-24 object-contain" />
+            <Avatar.Image loading="lazy" src={seaCreature.texture} class="aspect-square size-24 object-contain" />
             <Avatar.Fallback>
               <Image class="size-24" />
             </Avatar.Fallback>

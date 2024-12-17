@@ -53,7 +53,7 @@
             <div class="flex min-w-80 basis-[calc((100%/3)-1.25rem)] flex-col gap-1 rounded-lg bg-background/30">
               <div class="flex w-full items-center justify-center gap-1.5 border-b-2 border-icon py-2 text-center font-semibold uppercase">
                 <Avatar.Root>
-                  <Avatar.Image src={catacomb.texture} class="size-8 object-contain" />
+                  <Avatar.Image loading="lazy" src={catacomb.texture} class="size-8 object-contain" />
                   <Avatar.Fallback>
                     <Image class="size-8" />
                   </Avatar.Fallback>
@@ -118,7 +118,7 @@
             <div class="flex min-w-80 basis-[calc((100%/3)-1.25rem)] flex-col gap-1 rounded-lg bg-background/30">
               <div class="flex w-full items-center justify-center gap-1.5 border-b-2 border-icon py-2 text-center font-semibold uppercase">
                 <Avatar.Root>
-                  <Avatar.Image src={catacomb.texture} class="size-8 object-contain" />
+                  <Avatar.Image loading="lazy" src={catacomb.texture} class="size-8 object-contain" />
                   <Avatar.Fallback>
                     <Image class="size-8" />
                   </Avatar.Fallback>
