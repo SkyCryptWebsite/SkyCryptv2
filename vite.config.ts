@@ -12,9 +12,6 @@ export default defineConfig({
       allow: [".."]
     }
   },
-  optimizeDeps: {
-    exclude: ["fs", "@napi-rs/canvas"]
-  },
   build: {
     sourcemap: true
   }

@@ -1,3 +1,4 @@
+import { building } from "$app/environment";
 import type { NEUItem } from "$types/processed/NotEnoughUpdates/NotEnoughUpdates";
 import fs from "node:fs";
 import { NBTParser } from "./NBTParser";
@@ -7,6 +8,8 @@ export const NEU_ITEMS = new Map<string, NEUItem>();
 export const NEU_CONSTANTS = new Map();
 
 export async function parseNEURepository() {
+  if (building) return;
+
   const timeNow = performance.now();
   const itemsPath = "src/lib/server/constants/NotEnoughUpdates-REPO/items";
 
