@@ -1,8 +1,12 @@
+import { building } from "$app/environment";
+import path from "path";
 import { simpleGit } from "simple-git";
 
-const gitSubmodule = simpleGit("src/lib/server/constants/NotEnoughUpdates-REPO");
+// const gitSubmodule = simpleGit("src/lib/server/constants/NotEnoughUpdates-REPO");
+const gitSubmodule = simpleGit(path.resolve("src/lib/server/constants/NotEnoughUpdates-REPO"));
 
 export async function updateNotEnoughUpdatesRepository() {
+  if (building) return;
   try {
     console.log(`[NOT-ENOUGH-UPDATES] Checking for updates...`);
 

@@ -9,7 +9,7 @@ import { startRedis } from "./lib/server/db/redis";
 
 init();
 
-startMongo().then(() => {
+startMongo()?.then(() => {
   console.log("[MONGO] MongoDB succeesfully connected");
 });
 

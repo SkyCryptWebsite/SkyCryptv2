@@ -1,11 +1,18 @@
 import adapter from "@sveltejs/adapter-node";
-import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
+import { sveltePreprocess } from "svelte-preprocess";
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
   // Consult https://kit.svelte.dev/docs/integrations#preprocessors
   // for more information about preprocessors
-  preprocess: vitePreprocess(),
+  preprocess: sveltePreprocess(),
+
+  ssr: {
+    noExternal: process.env.NODE_ENV === "production" ? ["@napi-rs/canvas"] : []
+  },
+  optimizeDeps: {
+    include: ["fs"]
+  },
 
   kit: {
     // adapter-auto only supports some environments, see https://kit.svelte.dev/docs/adapter-auto for a list.
@@ -21,6 +28,11 @@ const config = {
     csrf: {
       checkOrigin: true
     }
+  },
+  // Hide build warnings from node_modules
+  onwarn: (warning, handler) => {
+    if (warning.filename.includes("node_modules")) return;
+    handler(warning);
   }
 };
 

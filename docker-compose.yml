@@ -1,0 +1,57 @@
+services:
+  website:
+    build: .
+    profiles: [prod]
+    ports:
+      - 3000:3000
+    restart: always
+    depends_on:
+      - mongo
+      - redis
+    volumes:
+      - "./static:/app/static"
+      - "./cache:/app/cache"
+    networks:
+      - skycrypt-network
+  mongo:
+    image: mongo:latest
+    restart: unless-stopped
+    networks:
+      - skycrypt-network
+    environment:
+      MONGO_INITDB_DATABASE: ${MONGO_DATABASE:?Set MONGO_DATABASE environment variable}
+    command: mongod --quiet --logpath /dev/null
+    ports:
+      - ${MONGO_PORT-27017}:27017
+    volumes:
+      - mongo-data:/data/db
+  redis:
+    image: redis:7-alpine
+    command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PASSWORD:?REDIS_PASSWORD env variable is required}
+    ports:
+      - "${REDIS_PORT-6379}:6379"
+    expose:
+      - "${REDIS_PORT-6379}"
+    networks:
+      - skycrypt-network
+  nginx:
+    image: nginx:latest
+    restart: unless-stopped
+    profiles: [prod]
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - website
+    networks:
+      - skycrypt-network
+
+networks:
+  skycrypt-network:
+    name: skycrypt-network
+    driver: bridge
+
+volumes:
+  mongo-data:
+    name: mongo-data
