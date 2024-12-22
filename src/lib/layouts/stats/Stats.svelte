@@ -5,17 +5,13 @@
 
   import { getContext } from "svelte";
 
-  const profile = getContext<Promise<StatsType>>("profile");
+  const profile = getContext<StatsType>("profile");
 
-  const stats = async () => getPlayerStats(await profile);
+  const stats = getPlayerStats(profile);
 </script>
 
 <div class="stats flex max-h-44 flex-col sm:flex-wrap">
-  {#await stats}
-    Loading
-  {:then stats}
-    {#each Object.entries(stats) as [statName, statData]}
-      <Stat stat={statName} {statData} />
-    {/each}
-  {/await}
+  {#each Object.entries(stats) as [statName, statData]}
+    <Stat stat={statName} {statData} />
+  {/each}
 </div>

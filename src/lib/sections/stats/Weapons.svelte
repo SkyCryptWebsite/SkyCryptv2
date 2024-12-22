@@ -5,23 +5,16 @@
   import type { Stats as StatsType } from "$lib/types/stats";
   import { getContext } from "svelte";
 
-  const profile = getContext<Promise<StatsType>>("profile");
+  const profile = getContext<StatsType>("profile");
 </script>
 
 <Items title="Weapons">
   <div slot="text">
-    <!-- add colors later -->
-    {#await profile}
-      Loading
-    {:then profile}
-      <AdditionStat text="Active Weapon" data={profile.items.weapons.highest_priority_weapon.tag.display.Name} />
-    {/await}
+    <!-- TODO: add colors later -->
+    <AdditionStat text="Active Weapon" data={profile.items.weapons.highest_priority_weapon.tag.display.Name} />
   </div>
-  {#await profile}
-    Loading
-  {:then profile}
-    {#each profile.items.weapons.weapons as weapon}
-      <Item piece={weapon} />
-    {/each}
-  {/await}
+
+  {#each profile.items.weapons.weapons as weapon}
+    <Item piece={weapon} />
+  {/each}
 </Items>

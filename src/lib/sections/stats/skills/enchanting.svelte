@@ -8,7 +8,7 @@
   import { getContext } from "svelte";
   import { fade } from "svelte/transition";
 
-  const profile = getContext<Promise<StatsType>>("profile");
+  const profile = getContext<StatsType>("profile");
 </script>
 
 <h3 class="text-xl font-semibold">Enchanting</h3>

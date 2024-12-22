@@ -10,7 +10,7 @@
   import { getContext } from "svelte";
   import { fade } from "svelte/transition";
 
-  const profile = getContext<Promise<StatsType>>("profile");
+  const profile = getContext<StatsType>("profile");
 
   const highestPriorityMiningTool = profile.items.mining_tools.highest_priority_tool;
   const miningTools = profile.items.mining_tools.tools;

@@ -10,7 +10,7 @@
   import ChevronDown from "lucide-svelte/icons/chevron-down";
   import { getContext } from "svelte";
 
-  const profile = getContext<Promise<StatsType>>("profile");
+  const profile = getContext<StatsType>("profile");
 
   const highestPriorityFarmingTool = profile.items.farming_tools.highest_priority_tool;
   const farmingTools = profile.items.farming_tools.tools;

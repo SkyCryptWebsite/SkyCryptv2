@@ -17,7 +17,7 @@
   import Uncategorized from "./misc/uncategorized.svelte";
   import Upgrades from "./misc/upgrades.svelte";
 
-  const profile = getContext<Promise<StatsType>>("profile");
+  const profile = getContext<StatsType>("profile");
 
   setContext("misc", profile.misc);
 </script>

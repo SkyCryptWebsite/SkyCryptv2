@@ -6,7 +6,7 @@
   import type { Stats as StatsType } from "$lib/types/stats";
   import { getContext } from "svelte";
 
-  const profile = getContext<Promise<StatsType>>("profile");
+  const profile = getContext<StatsType>("profile");
 
   const minions = profile.minions;
 
