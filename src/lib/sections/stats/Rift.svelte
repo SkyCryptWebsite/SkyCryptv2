@@ -44,7 +44,6 @@
     </AdditionStat>
     <AdditionStat text="McGrubber's Burgers" data="{rift.castle.grubberStacks} / {rift.castle.maxBurgers}" maxed={rift.castle.grubberStacks === rift.castle.maxBurgers} />
   </div>
-  {console.log(rift)}
   <div class="space-y-4">
     <h3 class="text-xl font-semibold">Porthals</h3>
     <AdditionStat text="Porthals Unlocked" data={rift.porhtal.porhtalsFound} maxed={rift.porhtal.porhtalsFound === 7} />
