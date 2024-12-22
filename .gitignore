@@ -109,3 +109,4 @@ vite.config.ts.timestamp-*
 .env
 .env.*
 !.env.example
+NotEnoughUpdates-REPO/

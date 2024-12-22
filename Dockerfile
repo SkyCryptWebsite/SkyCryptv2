@@ -1,4 +1,4 @@
-FROM node:22 AS builder
+FROM node:22-alpine3.21 AS builder
 RUN npm install -g pnpm
 WORKDIR /app
 
@@ -12,7 +12,9 @@ RUN pnpm run build
 RUN pnpm prune --production
 
 
-FROM node:22
+FROM node:22-alpine3.21
+# git is used for managing submodules
+RUN apk add git
 RUN npm install -g pnpm
 WORKDIR /app
 

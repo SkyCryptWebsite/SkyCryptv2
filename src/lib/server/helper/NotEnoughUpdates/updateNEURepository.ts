@@ -1,15 +1,20 @@
 import { building } from "$app/environment";
-import path from "path";
+import fs from "node:fs";
 import { simpleGit } from "simple-git";
 
-// const gitSubmodule = simpleGit("src/lib/server/constants/NotEnoughUpdates-REPO");
-const gitSubmodule = simpleGit(path.resolve("src/lib/server/constants/NotEnoughUpdates-REPO"));
+let gitSubmodule: ReturnType<typeof simpleGit>;
+if (!building) {
+  fs.mkdirSync("NotEnoughUpdates-REPO", { recursive: true });
+  gitSubmodule = simpleGit("NotEnoughUpdates-REPO");
+}
 
 export async function updateNotEnoughUpdatesRepository() {
   if (building) return;
+
   try {
     console.log(`[NOT-ENOUGH-UPDATES] Checking for updates...`);
 
+    await gitSubmodule.submoduleUpdate(["--init", "--recursive"]);
     await gitSubmodule.fetch();
     const diffSummary = await gitSubmodule.diffSummary(["origin/master"]);
 
