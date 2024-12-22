@@ -92,7 +92,8 @@
     "supportedArchitectures": {
       "os": [
         "linux",
-        "windows"
+        "win32",
+        "darwin"
       ],
       "cpu": [
         "x64",
@@ -100,7 +101,8 @@
       ],
       "libc": [
         "musl",
-        "gnu"
+        "gnu",
+        "msvc"
       ]
     }
   },
