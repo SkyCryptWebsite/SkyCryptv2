@@ -44,13 +44,30 @@
     </AdditionStat>
     <AdditionStat text="McGrubber's Burgers" data="{rift.castle.grubberStacks} / {rift.castle.maxBurgers}" maxed={rift.castle.grubberStacks === rift.castle.maxBurgers} />
   </div>
+  {console.log(rift)}
+  <div class="space-y-4">
+    <h3 class="text-xl font-semibold">Porthals</h3>
+    <AdditionStat text="Porthals Unlocked" data={rift.porhtal.porhtalsFound} maxed={rift.porhtal.porhtalsFound === 7} />
+    <div class="flex flex-wrap gap-4">
+      {#each rift.porhtal.porhtals as porhtal}
+        {@const hasUnlocked = porhtal.unlocked}
+        <Chip image={{ src: porhtal.texture }} class={cn("h-fit w-fit", { "opacity-50": !hasUnlocked })}>
+          <div class={cn("flex flex-col")}>
+            <div class="font-bold">
+              <span class="opacity-60">{porhtal.name}</span>
+            </div>
+          </div>
+        </Chip>
+      {/each}
+    </div>
+  </div>
   <div class="space-y-4">
     <h3 class="text-xl font-semibold">Timecharms</h3>
-    <AdditionStat text="Timecharms Obtained" data={rift.timecharms.timecharmsFound} maxed={rift.timecharms.timecharmsFound === 7} />
+    <AdditionStat text="Timecharms Obtained" data={rift.timecharms.timecharmsFound} maxed={rift.timecharms.timecharmsFound === 8} />
     <div class="flex flex-wrap gap-4">
       {#each rift.timecharms.timecharms as timecharm}
         {@const hasUnlocked = timecharm.unlocked}
-        <Chip image={{ src: timecharm.texture }} class={cn("h-fit w-fit", { "opacity-50": !hasUnlocked })} variant="tooltip">
+        <Chip image={{ src: timecharm.texture }} class={cn("h-fit w-fit", { "opacity-50": !hasUnlocked }, "whitespace-nowrap")} variant="tooltip">
           <div class={cn("flex flex-col")}>
             <div class="font-bold">
               <span class="opacity-60">{timecharm.name}</span>
