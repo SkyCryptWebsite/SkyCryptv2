@@ -83,7 +83,7 @@ export async function getUsername(paramPlayer: string, options = { cache: false 
   }
 
   const username = await REDIS.get(`USERNAME:${paramPlayer}`);
-  if (username || options.cache) {
+  if (username && options.cache) {
     return username ?? paramPlayer;
   }
 
@@ -99,11 +99,7 @@ export async function getUsername(paramPlayer: string, options = { cache: false 
 }
 
 async function resolveUsernameOrUUID(paramPlayer: string) {
-  if (isUUID(paramPlayer)) {
-    return { uuid: paramPlayer };
-  }
-
-  const response = await fetch(`https://mowojang.matdoes.dev/users/profiles/minecraft/${paramPlayer}`);
+  const response = await fetch(`https://mowojang.matdoes.dev/${paramPlayer}`);
   if (response.status === 204) {
     throw new SkyCryptError("Player not found");
   }
