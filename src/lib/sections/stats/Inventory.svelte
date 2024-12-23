@@ -126,9 +126,9 @@
             {#if item.texture_path}
               <div class="flex aspect-square items-center justify-center rounded bg-text/[0.04]" in:fade|global={{ duration: 300, delay: 5 * (index + 1) }}>
                 {#if tab.id === "inv"}
-                  <Item piece={{ ...item, rarity: item.rarity ?? "uncommon" }} isInventory={true} />
+                  <Item piece={{ ...item, rarity: item.rarity ?? "uncommon" }} isInventory={true} showRecombobulated={false} />
                 {:else}
-                  <Item piece={item} isInventory={true} />
+                  <Item piece={item} isInventory={true} showRecombobulated={false} />
                 {/if}
               </div>
             {:else}
