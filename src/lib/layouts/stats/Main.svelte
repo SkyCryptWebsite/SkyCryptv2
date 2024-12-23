@@ -13,14 +13,16 @@
   setContext<StatsType>("profile", profile);
 </script>
 
-<div class="relative">
-  {#await import('$lib/components/Skin3D.svelte') then { default: Skin3D }}
-    <Skin3D class="fixed left-0 top-1/2 z-10 h-dvh w-[30vw] -translate-y-1/2" />
-  {/await}
+<div class="relative @container/parent">
+  <div class="fixed left-0 top-1/2 z-10 hidden h-dvh w-[30vw] -translate-y-1/2 @container min-[1200px]:block">
+    {#await import('$lib/components/Skin3D.svelte') then { default: Skin3D }}
+      <Skin3D class="h-full" />
+    {/await}
+  </div>
 
-  <div class="fixed right-0 top-0 h-dvh w-[calc(100%-30vw)] backdrop-blur-lg backdrop-brightness-50"></div>
-  <main class="relative mx-auto ml-[30vw]">
-    <div class="space-y-5 p-8">
+  <div class="fixed right-0 top-0 h-dvh w-full backdrop-blur-lg backdrop-brightness-50 @[75rem]/parent:w-[calc(100%-30vw)]"></div>
+  <main class="relative mx-auto @container @[75rem]/parent:ml-[30vw]">
+    <div class="space-y-5 p-4 @[75rem]/parent:p-8">
       <PlayerProfile />
       <Skills />
       <Stats />
@@ -29,7 +31,7 @@
 
     <Navbar />
 
-    <div class="space-y-5 p-8">
+    <div class="space-y-5 p-4 @[75rem]/parent:p-8">
       <section id="Armor" class="scroll-m-32">
         <Armor />
       </section>

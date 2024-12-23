@@ -1,9 +1,13 @@
-import type { PageLoad } from "./$types";
+import { fail, redirect } from "@sveltejs/kit";
+import { superValidate } from "sveltekit-superforms";
+import { zod } from "sveltekit-superforms/adapters";
+import type { Actions, PageServerLoad } from "./$types";
 import { Role } from "./+page.svelte";
+import { schema } from "./schema";
 
 export const load = (async ({ fetch }) => {
-  const getUsername = async (id: string) => {
-    const res = await fetch(`/api/uuid/${id}`);
+  const getUsername = async (uuid: string): Promise<string> => {
+    const res = await fetch(`/api/uuid/${uuid}`);
     const { username } = await res.json();
     return username;
   };
@@ -30,5 +34,23 @@ export const load = (async ({ fetch }) => {
     }));
   };
 
-  return { contributors: contributors() };
-}) satisfies PageLoad;
+  return {
+    form: await superValidate(zod(schema)),
+    contributors: contributors()
+  };
+}) satisfies PageServerLoad;
+
+export const actions: Actions = {
+  default: async ({ request }) => {
+    const form = await superValidate(request, zod(schema));
+
+    if (!form.valid) {
+      console.error(form.errors);
+      return fail(400, {
+        form
+      });
+    }
+
+    redirect(303, `/stats/${form.data.query}`);
+  }
+};

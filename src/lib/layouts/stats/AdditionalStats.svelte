@@ -12,7 +12,7 @@
   const defaultPattern: string = "0,0";
 </script>
 
-<div class="additional-stats flex flex-col gap-2 sm:flex-row sm:flex-wrap">
+<div class="additional-stats flex flex-col gap-2 @md:flex-row @md:flex-wrap">
   <AdditionStat text="Joined" data={formatDistanceToNowStrict(profile.stats.joined, { addSuffix: true })} asterisk={true}>
     Joined on {dateFormat(profile.stats.joined, "dd MMMM yyyy 'at' HH:mm")}
   </AdditionStat>

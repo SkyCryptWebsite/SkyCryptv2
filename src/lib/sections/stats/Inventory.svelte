@@ -1,7 +1,7 @@
 <script lang="ts">
   import Item from "$lib/components/Item.svelte";
   import type { Stats as StatsType } from "$lib/types/stats";
-  import { Avatar, Tabs } from "bits-ui";
+  import { Avatar, ScrollArea, Tabs } from "bits-ui";
   import Image from "lucide-svelte/icons/image";
   import { getContext } from "svelte";
   import { cubicInOut } from "svelte/easing";
@@ -11,6 +11,7 @@
   const profile = getContext<StatsType>("profile");
 
   const inventory = profile.items.inventory.slice(9).concat(profile.items.inventory.slice(0, 9));
+  const backpack = profile.items.backpack;
   const enderchest = profile.items.enderchest;
   const vault = profile.items.personal_vault;
   const accs = profile.items.talisman_bag;
@@ -27,6 +28,12 @@
       icon: `https://crafatar.com/renders/head/${profile.uuid}?overlay`,
       items: inventory,
       hr: 27
+    },
+    {
+      id: "storage",
+      icon: "/api/item/chest",
+      items: backpack,
+      hr: 45
     },
     {
       id: "ender",
@@ -79,24 +86,33 @@
 </script>
 
 <Tabs.Root bind:value={$openTab} class="relative mb-0 rounded-lg bg-background/30 p-5 @container">
-  <Tabs.List class="flex items-center gap-3 border-b border-icon px-4">
-    {#each tabs as tab}
-      {@const isActive = $openTab === tab.id}
-      <Tabs.Trigger value={tab.id} class="group relative flex items-center justify-center gap-0.5 pb-2 text-xs uppercase">
-        <Avatar.Root>
-          <Avatar.Image loading="lazy" src={tab.icon} class="size-8 object-contain" />
-          <Avatar.Fallback>
-            <Image class="size-8" />
-          </Avatar.Fallback>
-        </Avatar.Root>
-        {tab.id}
-        {#if isActive}
-          <div class="absolute -bottom-1 h-2 w-full rounded-full bg-icon" in:send={{ key: "active-tab" }} out:receive={{ key: "active-tab" }}></div>
-        {:else}
-          <div class="absolute -bottom-1 h-2 w-full rounded-full bg-icon opacity-0 transition-opacity duration-300 group-hover:opacity-100" out:fade={{ duration: 300 }}></div>
-        {/if}
-      </Tabs.Trigger>
-    {/each}
+  <Tabs.List>
+    <ScrollArea.Root>
+      <ScrollArea.Viewport class="border-b border-icon">
+        <ScrollArea.Content class="!flex h-full shrink-0 flex-nowrap items-center gap-3 whitespace-nowrap px-4">
+          {#each tabs as tab}
+            {@const isActive = $openTab === tab.id}
+            <Tabs.Trigger value={tab.id} class="group relative flex items-center justify-center gap-0.5 pb-2 text-xs uppercase">
+              <Avatar.Root class="size-8">
+                <Avatar.Image loading="lazy" src={tab.icon} class="size-8 object-contain" />
+                <Avatar.Fallback>
+                  <Image class="size-8" />
+                </Avatar.Fallback>
+              </Avatar.Root>
+              {tab.id}
+              {#if isActive}
+                <div class="absolute -bottom-1 h-2 w-full rounded-full bg-icon" in:send={{ key: "active-tab" }} out:receive={{ key: "active-tab" }}></div>
+              {:else}
+                <div class="absolute -bottom-1 h-2 w-full rounded-full bg-icon opacity-0 transition-opacity duration-300 group-hover:opacity-100" out:fade={{ duration: 300 }}></div>
+              {/if}
+            </Tabs.Trigger>
+          {/each}
+        </ScrollArea.Content>
+      </ScrollArea.Viewport>
+      <ScrollArea.Scrollbar orientation="horizontal">
+        <ScrollArea.Thumb />
+      </ScrollArea.Scrollbar>
+    </ScrollArea.Root>
   </Tabs.List>
 
   {#each tabs as tab}
