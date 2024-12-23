@@ -40,11 +40,11 @@ export async function getItems(userProfile: Member, userMuseum: MuseumRaw | null
     quiver: INVENTORY?.bag_contents?.quiver?.data ?? "",
 
     // BACKPACKS
-    ...Object.entries(INVENTORY.backpack_contents ?? {}).reduce((acc, [key, value]) => {
+    ...Object.entries(INVENTORY?.backpack_contents ?? {}).reduce((acc, [key, value]) => {
       acc[`backpack_${key}`] = value.data ?? "";
       return acc;
     }, {}),
-    ...Object.entries(INVENTORY.backpack_icons ?? {}).reduce((acc, [key, value]) => {
+    ...Object.entries(INVENTORY?.backpack_icons ?? {}).reduce((acc, [key, value]) => {
       acc[`backpack_icon_${key}`] = value.data ?? "";
       return acc;
     }, {})
