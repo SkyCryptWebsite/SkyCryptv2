@@ -348,7 +348,7 @@ export async function getPets(userProfile: Member, items: ProcessedItem[], profi
     allPets.push(montezumaPet);
   }
 
-  const pets = allPets.filter((pet) => pet.active);
+  const pets = allPets.filter((pet) => pet.exp);
   if (pets.length === 0) {
     return output;
   }
