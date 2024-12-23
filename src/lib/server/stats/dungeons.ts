@@ -137,7 +137,7 @@ function formatCatacombsData(catacombs: Catacombs) {
 }
 
 export function getDungeons(userProfile: Member) {
-  if (userProfile.dungeons.dungeon_types === undefined) {
+  if (userProfile.dungeons?.dungeon_types === undefined) {
     return null;
   }
 

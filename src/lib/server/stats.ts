@@ -18,8 +18,7 @@ export async function getStats(profile: Profile, player: Player, extra: { museum
   const userMuseum = extra.museum ? extra.museum[profile.uuid] : null;
 
   const items = await stats.getItems(userProfile, userMuseum);
-  const [displayName, profiles, mainStats, accessories, pets, collections] = await Promise.all([
-    getDisplayName(player.displayname, profile.uuid),
+  const [profiles, mainStats, accessories, pets, collections] = await Promise.all([
     getProfiles(profile.uuid),
     getMainStats(userProfile, profile, items),
     getAccessories(
@@ -37,7 +36,8 @@ export async function getStats(profile: Profile, player: Player, extra: { museum
   ]);
 
   const output = {
-    username: displayName,
+    displayName: getDisplayName(player.displayname, profile.uuid),
+    username: player.displayname,
     uuid: profile.uuid,
     profile_id: profile.profile_id,
     profile_cute_name: profile.cute_name,

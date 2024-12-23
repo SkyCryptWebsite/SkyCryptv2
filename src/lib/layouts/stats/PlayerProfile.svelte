@@ -36,7 +36,7 @@
       </div>
       <div class="absolute -right-3 bottom-0 top-0 z-10 h-14 w-1/2 skew-x-[-20deg] bg-[var(--plusColor)]" style={`--plusColor:${profile.rank?.plusColor ?? profile.rank?.color}`}></div>
     </div>
-    <span>{profile.username}</span>
+    <span>{profile.displayName}</span>
   </div>
   on
   <DropdownMenu.Root>

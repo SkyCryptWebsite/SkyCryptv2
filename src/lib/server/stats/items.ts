@@ -10,19 +10,6 @@ import { decodeItems } from "./items/decoding";
 import { decodeMusemItems } from "./items/museum";
 import { getMuseumItems } from "./museum";
 
-/*
-async function decodeItems(base64) {
-  if (base64.length === 0 || Object.keys(base64).length === 0) {
-    return [];
-  }
-
-  const buf = Buffer.from(base64, "base64");
-  const { parsed } = await parse(buf);
-  const result = nbt.simplify(parsed).i || [];
-
-  return result;
-}*/
-
 export async function getItems(userProfile: Member, userMuseum: MuseumRaw | null): Items {
   const INVENTORY = userProfile.inventory;
   const outputPromises = {
@@ -67,21 +54,17 @@ export async function getItems(userProfile: Member, userMuseum: MuseumRaw | null
   const values = entries.map(([_, value]) => value);
   const decodedItems = await decodeItems(values);
 
-  // Process items in parallel batches
-  const BATCH_SIZE = 5000;
-  const newItems = [];
-  for (let i = 0; i < entries.length; i += BATCH_SIZE) {
-    const batch = entries.slice(i, i + BATCH_SIZE);
-    const processed = await Promise.all(
-      batch.map(async ([key], idx) => {
-        const processed = await processItems(decodedItems[i + idx], key, true, []);
-        return [key, processed];
-      })
-    );
-    newItems.push(...processed);
-  }
+  const newItems = await Promise.all(
+    entries.map(async ([key, value], idx) => {
+      if (!decodedItems[idx]) {
+        return [key, []];
+      }
 
-  // Use Map for O(1) lookups
+      const processed = await processItems(decodedItems[idx], key, true, []);
+      return [key, processed];
+    })
+  );
+
   const backpackIconMap = new Map(newItems.filter(([key]) => key.startsWith("backpack_icon_")));
 
   const output = { backpack: [] };
@@ -124,7 +107,7 @@ export async function getItems(userProfile: Member, userMuseum: MuseumRaw | null
   output.pets = getPets(allItems);
 
   const museum = output.museumItems ? await getMuseumItems(output.museumItems) : null;
-  output.museumItems = [...Object.values(museum?.museumItems.items), ...museum.museumItems.specialItems]
+  output.museumItems = [...Object.values(museum?.museumItems?.items ?? {}), ...(museum?.museumItems?.specialItems ?? [])]
     .filter((item) => item.borrowing === false)
     .map((item) => item.items)
     .flat()
