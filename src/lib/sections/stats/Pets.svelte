@@ -20,6 +20,7 @@
   import { cn } from "$lib/shared/utils";
   import type { Stats as StatsType } from "$lib/types/stats";
   import { Collapsible } from "bits-ui";
+  import ChevronDown from "lucide-svelte/icons/chevron-down";
   import { getContext } from "svelte";
 
   const profile = getContext<StatsType>("profile");
@@ -88,11 +89,11 @@
 
     {#if otherPets.length > 0}
       <Collapsible.Root>
-        <Collapsible.Trigger>
+        <Collapsible.Trigger class="group flex items-center gap-0.5">
+          <ChevronDown class="size-6 transition-all duration-300 group-data-[state=open]:-rotate-180" />
           <h4 class="text-xl font-semibold capitalize text-text">Show More Pets</h4>
-          <br />
         </Collapsible.Trigger>
-        <Collapsible.Content>
+        <Collapsible.Content class="mt-4 flex flex-wrap gap-4">
           <Items>
             {#each otherPets as pet}
               <div>
@@ -107,11 +108,11 @@
 
     {#if pets.missing.length > 0}
       <Collapsible.Root>
-        <Collapsible.Trigger>
+        <Collapsible.Trigger class="group flex items-center gap-0.5">
+          <ChevronDown class="size-4 transition-all duration-300 group-data-[state=open]:-rotate-180" />
           <h4 class="text-xl font-semibold capitalize text-text">Missing Pets</h4>
-          <br />
         </Collapsible.Trigger>
-        <Collapsible.Content>
+        <Collapsible.Content class="mt-4 flex flex-wrap gap-4">
           <Items>
             {#each pets.missing as pet}
               <div class="grayscale-[80%] hover:grayscale-0">
