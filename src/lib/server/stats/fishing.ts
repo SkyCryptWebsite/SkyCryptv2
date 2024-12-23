@@ -44,17 +44,17 @@ export function getFishing(userProfile: Member) {
       id: mob,
       name: constants.MOB_NAMES[mob] ?? mob.split("_").map(helper.titleCase).join(" "),
       texture: `/img/sea_creatures/${mob}.png`,
-      amount: userProfile.player_stats.kills[mob] ?? 0
+      amount: userProfile.player_stats?.kills?.[mob] ?? 0
     });
   }
 
   return {
-    itemsFished: userProfile.player_stats.items_fished?.total ?? 0,
-    treasure: userProfile.player_stats.items_fished?.treasure ?? 0,
-    treasureLarge: userProfile.player_stats.items_fished?.large_treasure ?? 0,
-    seaCreaturesFished: userProfile.player_stats.pets?.milestone?.sea_creatures_killed ?? 0,
-    shredderFished: userProfile.player_stats.shredder_rod?.fished ?? 0,
-    shredderBait: userProfile.player_stats.shredder_rod?.bait ?? 0,
+    itemsFished: userProfile.player_stats?.items_fished?.total ?? 0,
+    treasure: userProfile.player_stats?.items_fished?.treasure ?? 0,
+    treasureLarge: userProfile.player_stats?.items_fished?.large_treasure ?? 0,
+    seaCreaturesFished: userProfile.player_stats?.pets?.milestone?.sea_creatures_killed ?? 0,
+    shredderFished: userProfile.player_stats?.shredder_rod?.fished ?? 0,
+    shredderBait: userProfile.player_stats?.shredder_rod?.bait ?? 0,
     kills: kills,
     trophyFish: getTrophyFish(userProfile)
   };

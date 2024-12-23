@@ -146,7 +146,7 @@ export function getDungeons(userProfile: Member) {
   return {
     level: getLevelByXp(userProfile.dungeons.dungeon_types.catacombs.experience, { type: "dungeoneering" }),
     classes: {
-      selectedClass: helper.titleCase(userProfile.dungeons.selected_dungeon_class),
+      selectedClass: helper.titleCase(userProfile.dungeons.selected_dungeon_class ?? "Unknown"),
       classes: dungeonClasses,
       classAverage: Object.values(dungeonClasses).reduce((a, b) => a + b.level, 0) / Object.keys(dungeonClasses).length,
       classAverageWithProgress: Object.values(dungeonClasses).reduce((a, b) => a + b.levelWithProgress, 0) / Object.keys(dungeonClasses).length,
