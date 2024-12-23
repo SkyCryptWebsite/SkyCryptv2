@@ -42,9 +42,9 @@
         <div class="flex flex-col"></div>
       </div>
     </AdditionStat>
-    <AdditionStat text="Total Candies Used" data={`${pets.totalCandyUsed}`} />
+    <AdditionStat text="Total Candies Used" data={pets.totalCandyUsed} />
     <!-- will format later on after we fix canvas errors -->
-    <AdditionStat text="Total Pet XP" data={`${formatNumber(pets.totalPetExp)}`} />
+    <AdditionStat text="Total Pet XP" data={formatNumber(pets.totalPetExp)} />
   </div>
   <div>
     {#if activePet != null}
