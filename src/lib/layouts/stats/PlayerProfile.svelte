@@ -1,7 +1,8 @@
 <script lang="ts">
   import { flyAndScale } from "$lib/shared/utils";
+  import { favorites } from "$lib/stores/favorites";
   import type { Stats as StatsType } from "$lib/types/stats";
-  import { Avatar, Button, DropdownMenu } from "bits-ui";
+  import { Avatar, Button, DropdownMenu, Tooltip } from "bits-ui";
   import ChevronLeft from "lucide-svelte/icons/chevron-left";
   import ChevronRight from "lucide-svelte/icons/chevron-right";
   import ExternalLink from "lucide-svelte/icons/external-link";
@@ -57,9 +58,35 @@
 </div>
 
 <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
-  <Button.Root class="aspect-square rounded-full bg-icon/90 p-2 transition-opacity duration-150 hover:bg-icon">
-    <Star class="size-4" />
-  </Button.Root>
+  <Tooltip.Root openDelay={0} closeDelay={0} closeOnPointerDown={false}>
+    <Tooltip.Trigger asChild let:builder>
+      <button
+        use:builder.action
+        {...builder}
+        class="aspect-square rounded-full bg-icon/90 p-2 transition-opacity duration-150 hover:bg-icon"
+        onclick={() => {
+          if (!$favorites.includes(profile.uuid)) {
+            favorites.set([...$favorites, profile.uuid]);
+          } else {
+            favorites.set($favorites.filter((uuid) => uuid !== profile.uuid));
+          }
+        }}>
+        {#if $favorites.includes(profile.uuid)}
+          <Star class="size-4 fill-white" />
+        {:else}
+          <Star class="size-4" />
+        {/if}
+      </button>
+    </Tooltip.Trigger>
+    <Tooltip.Content class="z-50 rounded-lg bg-background-grey p-4 font-semibold text-text/80" transition={flyAndScale} transitionConfig={{ y: 8, duration: 150 }} sideOffset={6} side="top" align="center">
+      <Tooltip.Arrow />
+      {#if $favorites.includes(profile.uuid)}
+        <p>Remove from favorites</p>
+      {:else}
+        <p>Add to favorites</p>
+      {/if}
+    </Tooltip.Content>
+  </Tooltip.Root>
 
   <Button.Root
     class="aspect-square rounded-full bg-icon/90 p-2 transition-opacity duration-150 hover:bg-icon"
