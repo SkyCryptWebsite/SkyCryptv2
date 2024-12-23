@@ -89,7 +89,7 @@
 
     {#if otherPets.length > 0}
       <Collapsible.Root>
-        <Collapsible.Trigger class="group flex items-center gap-0.5">
+        <Collapsible.Trigger class="group flex items-center gap-0.5 pt-4">
           <ChevronDown class="size-6 transition-all duration-300 group-data-[state=open]:-rotate-180" />
           <h4 class="text-xl font-semibold capitalize text-text">Show More Pets</h4>
         </Collapsible.Trigger>
@@ -108,8 +108,8 @@
 
     {#if pets.missing.length > 0}
       <Collapsible.Root>
-        <Collapsible.Trigger class="group flex items-center gap-0.5">
-          <ChevronDown class="size-4 transition-all duration-300 group-data-[state=open]:-rotate-180" />
+        <Collapsible.Trigger class="group flex items-center gap-0.5 pt-4">
+          <ChevronDown class="size-6 transition-all duration-300 group-data-[state=open]:-rotate-180" />
           <h4 class="text-xl font-semibold capitalize text-text">Missing Pets</h4>
         </Collapsible.Trigger>
         <Collapsible.Content class="mt-4 flex flex-wrap gap-4">
