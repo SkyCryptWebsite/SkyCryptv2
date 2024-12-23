@@ -1,5 +1,5 @@
 import type { Item, ProcessedItem } from "$types/stats";
-import moment from "moment";
+import { format } from "date-fns";
 import { getPrices } from "skyhelper-networth";
 import * as constants from "./constants/constants";
 import { getTexture } from "./custom_resources";
@@ -409,6 +409,10 @@ export function formatProgressBar(amount: number, total: number, completedColor 
   return `${`§${completedColor}§l§m-`.repeat(progressBars)}${`§${missingColor}§l§m-`.repeat(emptyBars)}§r`;
 }
 
-export function formatTimestamp(timestamp: number, format: string = "MMMM Do YYYY, h:mm a") {
-  return moment(Number(timestamp)).format(format);
+export function formatTimestamp(timestamp: number, formatType: string = "MMM d, yyyy, h:mm a") {
+  if (new Date(Number(timestamp)).toString() == "Invalid Date") {
+    return "Invalid Date";
+  }
+
+  return format(new Date(Number(timestamp)), formatType);
 }
