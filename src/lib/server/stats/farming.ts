@@ -33,7 +33,7 @@ function getFarmingWeight(profile: Profile, userProfile: Member, formattedMedals
     minions: Object.values(profile.members)
       .map((member) => member.player_data?.crafted_generators ?? [])
       .flat(),
-    pests: userProfile.bestiary.kills
+    pests: userProfile.bestiary?.kills ?? {}
   }).setEarnedMedals(formattedMedals);
 
   const weight = calculator.getWeightInfo();
