@@ -165,7 +165,7 @@ export type Items = {
   personal_vault: ProcessedItem[];
   inventory: ProcessedItem[];
   enderchest: ProcessedItem[];
-  backpack: Record<string, ProcessedItem>;
+  backpack: ProcessedItem[];
   equipment: {
     equipment: ProcessedItem[];
     stats: ItemStats;

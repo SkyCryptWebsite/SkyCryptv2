@@ -19,17 +19,7 @@ export async function getMainStats(userProfile: Member, profile: Profile, items:
     enderchest: items.enderchest ?? [],
     accessories: items.talisman_bag ?? [],
     personal_vault: items.personal_vault ?? [],
-    storage: items.backpack
-      ? Object.values(items.backpack)
-          .flat()
-          .concat(
-            Object.values(items.backpack)
-              .flat()
-              .map((item) => item.containsItems ?? [])
-              .flat()
-          )
-          .flat()
-      : [],
+    storage: items.backpack ? items.backpack.concat(items.backpack.map((item) => item.containsItems ?? []).flat()).flat() : [],
     fishing_bag: items.fishing_bag ?? [],
     potion_bag: items.potion_bag ?? [],
     museum: items.museumItems ?? []

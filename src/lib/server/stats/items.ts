@@ -61,16 +61,8 @@ export async function getItems(userProfile: Member, userMuseum: MuseumRaw | null
       acc[`backpack_icon_${key}`] = value.data ?? "";
       return acc;
     }, {})
-
-    // MUSEUM
-    // museumItems: userMuseum ? decodeMusemItems(userMuseum, false, []) : null
-    /*museumItems: Object.entries(userMuseum?.items ?? {}).reduce((acc, [key, value]) => {
-      acc[key] = value.items.data ?? "";
-      return acc;
-    })*/
   };
 
-  const startTime = Date.now();
   const entries = Object.entries(outputPromises);
   const values = entries.map(([_, value]) => value);
   const decodedItems = await decodeItems(values);
@@ -92,7 +84,7 @@ export async function getItems(userProfile: Member, userMuseum: MuseumRaw | null
   // Use Map for O(1) lookups
   const backpackIconMap = new Map(newItems.filter(([key]) => key.startsWith("backpack_icon_")));
 
-  const output = { backpack: {} };
+  const output = { backpack: [] };
   for (const [key, value] of newItems) {
     if (!key.includes("backpack")) {
       output[key] = value;
@@ -105,15 +97,13 @@ export async function getItems(userProfile: Member, userMuseum: MuseumRaw | null
       const backpackIcon = backpackIconMap.get(iconKey)[0];
 
       if (backpackIcon) {
-        output.backpack[`slot_${backpackIndex}`] = {
+        output.backpack.push({
           ...backpackIcon,
           containsItems: value
-        };
+        });
       }
     }
   }
-
-  console.log(`Decoding and processing items took ${Date.now() - startTime}ms`);
 
   output.museumItems = userMuseum ? await decodeMusemItems(userMuseum, false, []) : null;
 
