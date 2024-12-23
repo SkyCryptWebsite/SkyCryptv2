@@ -169,6 +169,9 @@ importers:
       svelte-interactions:
         specifier: ^0.2.0
         version: 0.2.0(svelte@5.15.0)
+      svelte-persisted-store:
+        specifier: ^0.12.0
+        version: 0.12.0(svelte@5.15.0)
       svelte-tiny-virtual-list:
         specifier: ^2.1.2
         version: 2.1.2
@@ -2403,6 +2406,12 @@ packages:
     resolution: {integrity: sha512-jGgZgdfSFnBzIs5j058T/XqHCEXHVpob31dkTwMu4KZyUSt2prozXoK/vKmN1eOyTaEIqALX20aLkYlbbapLPA==}
     peerDependencies:
       svelte: ^4.0.0
+
+  svelte-persisted-store@0.12.0:
+    resolution: {integrity: sha512-BdBQr2SGSJ+rDWH8/aEV5GthBJDapVP0GP3fuUCA7TjYG5ctcB+O9Mj9ZC0+Jo1oJMfZUd1y9H68NFRR5MyIJA==}
+    engines: {node: '>=0.14'}
+    peerDependencies:
+      svelte: ^3.48.0 || ^4 || ^5
 
   svelte-tiny-virtual-list@2.1.2:
     resolution: {integrity: sha512-jeP/WMvgFUR4mYXHGPiCexjX5DuzSO+3xzHNhxfcsFyy+uYPtnqI5UGb383swpzQAyXB0OBqYfzpYihD/5gxnA==}
@@ -4659,6 +4668,10 @@ snapshots:
       svelte: 5.15.0
 
   svelte-interactions@0.2.0(svelte@5.15.0):
+    dependencies:
+      svelte: 5.15.0
+
+  svelte-persisted-store@0.12.0(svelte@5.15.0):
     dependencies:
       svelte: 5.15.0
 
