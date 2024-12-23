@@ -37,7 +37,7 @@
     <div slot="text">
       <AdditionStat text="Unique Pets" data={`${pets.amount} / ${pets.total}`} />
       <AdditionStat text="Unique Pet Skins" data={`${pets.amountSkins} / ${pets.totalSkins}`} />
-      <AdditionStat text="Pet Score" data={`${pets.petScore.amount} (+${pets.petScore.stats.magic_find} MF) `} asterisk={true}>
+      <AdditionStat text="Pet Score" data={`${pets.petScore?.amount} (+${pets.petScore?.stats.magic_find} MF) `} asterisk={true}>
         <div class="max-w-xs space-y-6 font-bold">
           <h3 class="text-text/85">Pet score is calculated based on how many unique pets you have and the rarity of these pets.</h3>
           <h3 class="text-text/85">You gain an additional score for each max level pet you have!</h3>
