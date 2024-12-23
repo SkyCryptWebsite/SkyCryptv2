@@ -111,7 +111,7 @@ export async function getItems(userProfile: Member, userMuseum: MuseumRaw | null
   output.equipment = getEquipment(output.equipment);
   output.wardrobe = getWardrobe(output.wardrobe);
   output.getAllItems = () => {
-    const allItems = Object.values(output).flat(1).concat(Object.values(output.backpack).flat(1));
+    const allItems = Object.values(output).flat(1);
 
     return allItems;
   };
