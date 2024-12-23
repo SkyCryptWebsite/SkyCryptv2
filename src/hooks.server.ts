@@ -29,12 +29,10 @@ export const init: ServerInit = async () => {
   intializeNEURepository().then(() => {
     updateNotEnoughUpdatesRepository().then(() => {
       parseNEURepository();
-
-
     });
   });
 
   getPrices().then(() => {
     console.log("[NETWORTH] Prices sucessfully fetched!");
-  })
+  });
 };
