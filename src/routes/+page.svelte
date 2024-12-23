@@ -27,7 +27,7 @@
   };
 
   const getUsername = async (uuid: string) => {
-    const res = await fetch(`/api/user/${uuid}`);
+    const res = await fetch(`/api/uuid/${uuid}`);
     const { username } = await res.json();
     return username;
   };

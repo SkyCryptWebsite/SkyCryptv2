@@ -1,3 +1,4 @@
+import { CACHED_EMOJIS } from "$constants/emojis";
 import { HYPIXEL_API_KEY } from "$env/static/private";
 import { isPlayer } from "$params/player";
 import { isUUID } from "$params/uuid";
@@ -57,13 +58,13 @@ export async function fetchProfiles(uuid: string): Promise<Profile[]> {
   return profiles;
 }
 
-export async function getUUID(paramPlayer: string) {
+export async function getUUID(paramPlayer: string, options = { cache: false }) {
   if (isUUID(paramPlayer)) {
     return paramPlayer;
   }
 
   const uuid = await REDIS.get(`UUID:${paramPlayer}`);
-  if (uuid) {
+  if (uuid && options.cache) {
     return uuid;
   }
 
@@ -175,4 +176,13 @@ export async function fetchMuseum(profileId: string) {
   REDIS.SETEX(`MUSEUM:${profileId}`, 60 * 30, JSON.stringify(members));
 
   return members;
+}
+
+export function getDisplayName(username: string, paramPlayer: string): string {
+  const emoji = CACHED_EMOJIS.get(paramPlayer);
+  if (emoji) {
+    return `${username} ${emoji}`;
+  }
+
+  return username;
 }

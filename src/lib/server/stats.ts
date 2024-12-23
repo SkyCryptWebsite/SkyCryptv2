@@ -1,5 +1,5 @@
 import { REDIS } from "$lib/server/db/redis";
-import { getProfiles } from "$lib/server/lib";
+import { getDisplayName, getProfiles } from "$lib/server/lib";
 import * as stats from "$lib/server/stats/stats";
 import type { MuseumRawResponse, Profile, Stats } from "$types/global";
 import type { Player } from "$types/raw/player/lib";
@@ -18,7 +18,8 @@ export async function getStats(profile: Profile, player: Player, extra: { museum
   const userMuseum = extra.museum ? extra.museum[profile.uuid] : null;
 
   const items = await stats.getItems(userProfile, userMuseum);
-  const [profiles, mainStats, accessories, pets, collections] = await Promise.all([
+  const [displayName, profiles, mainStats, accessories, pets, collections] = await Promise.all([
+    getDisplayName(player.displayname, profile.uuid),
     getProfiles(profile.uuid),
     getMainStats(userProfile, profile, items),
     getAccessories(
@@ -36,7 +37,7 @@ export async function getStats(profile: Profile, player: Player, extra: { museum
   ]);
 
   const output = {
-    username: player.displayname,
+    username: displayName,
     uuid: profile.uuid,
     profile_id: profile.profile_id,
     profile_cute_name: profile.cute_name,

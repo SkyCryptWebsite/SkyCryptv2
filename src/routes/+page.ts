@@ -3,7 +3,7 @@ import { Role } from "./+page.svelte";
 
 export const load = (async ({ fetch }) => {
   const getUsername = async (id: string) => {
-    const res = await fetch(`/api/user/${id}`);
+    const res = await fetch(`/api/uuid/${id}`);
     const { username } = await res.json();
     return username;
   };

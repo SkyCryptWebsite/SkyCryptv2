@@ -1,6 +1,7 @@
 import { updateCollections } from "$lib/server/constants/update-collections";
 import { updateItems } from "$lib/server/constants/update-items";
 import { init } from "$lib/server/custom_resources";
+import { indexCollectons } from "$lib/server/db/mongo/index-collections";
 import { parseNEURepository } from "$lib/server/helper/NotEnoughUpdates/parseNEURepository";
 import { updateNotEnoughUpdatesRepository } from "$lib/server/helper/NotEnoughUpdates/updateNEURepository";
 import { getPrices } from "skyhelper-networth";
@@ -11,6 +12,7 @@ init();
 
 startMongo().then(() => {
   console.log("[MONGO] MongoDB succeesfully connected");
+  indexCollectons();
 });
 
 startRedis().then(() => {

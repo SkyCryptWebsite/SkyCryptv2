@@ -5,6 +5,14 @@ import type { Collections, Member, Profile } from "$types/global";
 
 export async function getCollections(userProfile: Member, profile: Profile) {
   const output = { categories: {} } as Collections;
+
+  const cachedUsernames = {} as Record<string, string>;
+  for (const member in profile.members) {
+    if (!cachedUsernames[member]) {
+      cachedUsernames[member] = await getUsername(member, { cache: true });
+    }
+  }
+
   for (const [category, categoryData] of COLLECTIONS) {
     output.categories[category] = {
       name: categoryData.name,
@@ -19,35 +27,30 @@ export async function getCollections(userProfile: Member, profile: Profile) {
 
       const amount = (userProfile.collection && userProfile.collection[id]) ?? 0;
 
-      const amountsPromise = Promise.all(
-        Object.keys(profile.members).map(async (uuid) => {
-          return {
-            username: await getUsername(uuid, { cache: true }),
-            amount: (profile.members[uuid].collection && profile.members[uuid].collection[id]) ?? 0
-          };
-        })
-      );
-
-      amountsPromise.then((amounts) => {
-        const totalAmount = amounts.reduce((a, b) => a + b.amount, 0);
-
-        const tier = collection.tiers.findLast((a) => a.amountRequired <= totalAmount)?.tier ?? 0;
-
-        output.categories[category].items.push({
-          name,
-          id,
-          texture,
-          amount,
-          totalAmount,
-          tier,
-          maxTier: maxTier,
-          amounts
+      const amounts = [] as { username: string; amount: number }[];
+      for (const member in profile.members) {
+        amounts.push({
+          username: cachedUsernames[member],
+          amount: (profile.members[member].collection && profile.members[member].collection[id]) ?? 0
         });
+      }
 
-        output.categories[category].totalTiers = output.categories[category].items.length;
-
-        output.categories[category].maxTiers = output.categories[category].items.filter((a) => a.tier === a.maxTier).length;
+      const totalAmount = amounts.reduce((a, b) => a + b.amount, 0);
+      const tier = collection.tiers.findLast((a) => a.amountRequired <= totalAmount)?.tier ?? 0;
+      output.categories[category].items.push({
+        name,
+        id,
+        texture,
+        amount,
+        totalAmount,
+        tier,
+        maxTier: maxTier,
+        amounts
       });
+
+      output.categories[category].totalTiers = output.categories[category].items.length;
+
+      output.categories[category].maxTiers = output.categories[category].items.filter((a) => a.tier === a.maxTier).length;
     }
 
     output.categories[category].totalTiers = output.categories[category].items.length;

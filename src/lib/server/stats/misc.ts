@@ -56,7 +56,7 @@ function getRaces(userProfile: Member) {
   const output: Misc["races"] = {};
 
   const races = userProfile.player_stats.races;
-  for (let [id, data] of Object.entries(races)) {
+  for (let [id, data] of Object.entries(races ?? {})) {
     if (typeof data === "number") {
       output.other = output.other ?? {
         name: "Other",
@@ -127,9 +127,9 @@ function getDragons(userProfile: Member) {
   Object.assign(dragonDeaths, { total: Object.values(dragonDeaths).reduce((a, b) => a + b, 0) });
 
   return {
-    ender_crystals_destroyed: userProfile.player_stats.end_island.dragon_fight.ender_crystals_destroyed,
-    most_damage: userProfile.player_stats.end_island.dragon_fight.most_damage,
-    fastest_kill: userProfile.player_stats.end_island.dragon_fight.fastest_kill,
+    ender_crystals_destroyed: userProfile.player_stats.end_island?.dragon_fight?.ender_crystals_destroyed ?? {},
+    most_damage: userProfile.player_stats.end_island?.dragon_fight?.most_damage ?? {},
+    fastest_kill: userProfile.player_stats.end_island?.dragon_fight?.fastest_kill ?? {},
     last_hits: lastDragonHits,
     deaths: dragonDeaths
   };
