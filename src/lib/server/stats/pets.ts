@@ -336,18 +336,19 @@ function getPetScore(pets: ProcessedPet[]) {
 export async function getPets(userProfile: Member, items: ProcessedItem[], profile: Profile) {
   const output = {} as Pets;
 
-  const pets = JSON.parse(JSON.stringify(userProfile.pets_data?.pets ?? [])) as Pet[];
+  const allPets = JSON.parse(JSON.stringify(userProfile.pets_data?.pets ?? [])) as Pet[];
   if (items !== undefined) {
-    pets.push(...(items as unknown as Pet[]));
+    allPets.push(...(items as unknown as Pet[]));
   }
 
   if (userProfile.rift?.dead_cats?.montezuma !== undefined) {
     const montezumaPet = userProfile.rift.dead_cats.montezuma;
     montezumaPet.active = false;
 
-    pets.push(montezumaPet);
+    allPets.push(montezumaPet);
   }
 
+  const pets = allPets.filter((pet) => pet.active);
   if (pets.length === 0) {
     return output;
   }

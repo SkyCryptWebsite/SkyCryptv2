@@ -79,20 +79,28 @@ export const ENCHANTMENTS_TO_CATEGORIES = {
 
 export const ENCHANTMENT_LADDERS = {
   // Number of S runs required for each level of hecatomb
-  hecatomb_s_runs: [2, 5, 10, 20, 30, 40, 60, 80, 100],
-
+  hecatomb_s_runs: {
+    name: "Hecatomb Runs",
+    ladder: [2, 5, 10, 20, 30, 40, 60, 80, 100]
+  },
   // Number of xp required for each level of champion
-  champion_xp: [50000, 100000, 250000, 500000, 1000000, 1500000, 2000000, 2500000, 3000000],
-
+  champion_combat_xp: {
+    name: "Champion XP",
+    ladder: [50000, 100000, 250000, 500000, 1000000, 1500000, 2000000, 2500000, 3000000]
+  },
   // Number of crops harvested for each level of cultivating crops
-  cultivating_crops: [1000, 5000, 25000, 100000, 300000, 1500000, 5000000, 20000000, 100000000],
-
+  farmed_cultivating: {
+    name: "Cultivating Crops",
+    ladder: [1000, 5000, 25000, 100000, 300000, 1500000, 5000000, 20000000, 100000000]
+  },
   // Number of kills required for each level of expertise
-  expertise_kills: [50, 100, 250, 500, 1000, 2500, 5500, 10000, 15000],
-
+  expertise_kills: {
+    name: "Expertise Kills",
+    ladder: [50, 100, 250, 500, 1000, 2500, 5500, 10000, 15000]
+  },
   // Number of ores mined required for each level of compact ores
-  compact_ores: [100, 500, 1500, 5000, 15000, 50000, 150000, 500000, 1000000],
-
-  // Number of blocks walked required to level up the prehistoric egg
-  prehistoric_egg_blocks_walked: [4000, 10000, 20000, 40000, 100000]
+  compact_blocks: {
+    name: "Ores Mined",
+    ladder: [100, 500, 1500, 5000, 15000, 50000, 150000, 500000, 1000000]
+  }
 };

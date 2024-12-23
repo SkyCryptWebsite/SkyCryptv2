@@ -1,4 +1,5 @@
 import type { Item, ProcessedItem } from "$types/stats";
+import moment from "moment";
 import { getPrices } from "skyhelper-networth";
 import * as constants from "./constants/constants";
 import { getTexture } from "./custom_resources";
@@ -406,4 +407,8 @@ export function formatProgressBar(amount: number, total: number, completedColor 
   const emptyBars = barLength - progressBars;
 
   return `${`§${completedColor}§l§m-`.repeat(progressBars)}${`§${missingColor}§l§m-`.repeat(emptyBars)}§r`;
+}
+
+export function formatTimestamp(timestamp: number, format: string = "MMMM Do YYYY, h:mm a") {
+  return moment(Number(timestamp)).format(format);
 }

@@ -451,7 +451,7 @@ export async function renderItem(skyblockId: string | undefined, query: ItemQuer
     itemQuery = Object.assign(query, { skyblockId });
   }
 
-  const item = await getItemData({ skyblockId, ...itemQuery });
+  const item = getItemData({ skyblockId, ...itemQuery });
   const outputTexture: Partial<RenderItemOutput> = { mime: "image/png" };
 
   const sbId = skyblockId?.toLowerCase();

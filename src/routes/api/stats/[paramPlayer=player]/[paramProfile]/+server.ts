@@ -12,6 +12,6 @@ export const GET: RequestHandler = async ({ params }) => {
 
   const stats = await getStats(profile, player, { museum });
 
-  console.log(`/api/stats/${paramPlayer} took ${Date.now() - timeNow}ms`);
+  console.log(`/api/stats/${paramPlayer}/${paramProfile} took ${Date.now() - timeNow}ms`);
   return json(stats);
 };

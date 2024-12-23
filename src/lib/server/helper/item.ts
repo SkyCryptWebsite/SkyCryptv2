@@ -12,7 +12,7 @@ import * as helper from "../helper";
  * @param {number} [query.damage] Item damage value
  * @returns {*} Item Data
  */
-export async function getItemData(query: ItemQuery) {
+export function getItemData(query: ItemQuery) {
   query = Object.assign({ skyblockId: undefined, id: undefined, name: undefined, damage: undefined }, query);
   const item: Item = { id: -1, Damage: 0, Count: 1, tag: { ExtraAttributes: {} } };
   let dbItem: DatabaseItem = {};

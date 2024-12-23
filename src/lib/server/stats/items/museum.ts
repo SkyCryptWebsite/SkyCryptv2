@@ -1,6 +1,7 @@
 import * as helper from "$lib/server/helper";
 import type { DecodedMuseumItems } from "$types/global";
 import type { MuseumRaw } from "$types/raw/museum/lib";
+import { decodeItem } from "./decoding";
 import { processItems } from "./processing";
 
 export async function decodeMusemItems(museum: MuseumRaw, customTextures: boolean, packs: string[]): Promise<DecodedMuseumItems> {
@@ -10,9 +11,10 @@ export async function decodeMusemItems(museum: MuseumRaw, customTextures: boolea
     const {
       donated_time: donatedTime,
       borrowing: isBorrowing,
-      items: { data: decodedData }
+      items: { data: rawData }
     } = data;
 
+    const decodedData = await decodeItem(rawData);
     const encodedData = await processItems(decodedData, "museum", customTextures, packs);
 
     if (donatedTime) {
@@ -35,7 +37,8 @@ export async function decodeMusemItems(museum: MuseumRaw, customTextures: boolea
 
   const specialPromises = (museum.special ?? []).map(async (special) => {
     const { donated_time: donatedTime, items } = special;
-    const decodedData = await processItems(items.data, "museum", customTextures, packs);
+    const data = await decodeItem(items.data);
+    const decodedData = await processItems(data, "museum", customTextures, packs);
 
     if (donatedTime) {
       // decodedData.map((i) => helper.addToItemLore(i, ["", `§7Donated: §c<local-time timestamp="${donatedTime}"></local-time>`]));

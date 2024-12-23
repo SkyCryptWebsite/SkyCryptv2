@@ -26,7 +26,7 @@ export function getWeapons(allItems: ProcessedItem[]) {
 
     countsOfId[id] = (countsOfId[id] || 0) + 1;
 
-    if (countsOfId[id] > 2 && constants.RARITIES.indexOf(weapon.rarity) < constants.RARITIES.indexOf("legendary")) {
+    if (weapon.rarity && countsOfId[id] > 2 && constants.RARITIES.indexOf(weapon.rarity) < constants.RARITIES.indexOf("legendary")) {
       weapon.hidden = true;
     }
   }
