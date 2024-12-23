@@ -8,10 +8,12 @@
   const misc = getContext<StatsType["misc"]>("misc");
 </script>
 
-<Items title="Damage">
-  <div slot="text">
-    {#each Object.entries(misc.damage) as [text, data]}
-      <AdditionStat text={text.replaceAll("_", " ")} data={format(data.toFixed(3))} />
-    {/each}
-  </div>
-</Items>
+{#if misc.damage != null}
+  <Items title="Damage">
+    <div slot="text">
+      {#each Object.entries(misc.damage) as [text, data]}
+        <AdditionStat text={text.replaceAll("_", " ")} data={format(data.toFixed(3))} />
+      {/each}
+    </div>
+  </Items>
+{/if}

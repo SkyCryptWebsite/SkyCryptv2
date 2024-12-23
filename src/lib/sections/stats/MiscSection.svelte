@@ -23,6 +23,7 @@
 </script>
 
 <h3 class="text-2xl capitalize">Miscellaneous</h3>
+{console.log(profile.misc)}
 
 <Essence />
 <!-- TODO: Essence Shop -->
