@@ -10,25 +10,32 @@
     "preview:dev": "dotenv -e .env.development -- vite preview",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+    "runbuild": "node ./build/index.js",
     "test": "vitest",
     "lint": "prettier --check . && eslint .",
     "format": "prettier --write ."
   },
   "devDependencies": {
-    "@eslint/js": "^9.16.0",
-    "@sveltejs/kit": "^2.9.0",
-    "@sveltejs/vite-plugin-svelte": "^5.0.1",
+    "@eslint/js": "^9.17.0",
+    "@sveltejs/kit": "^2.12.1",
+    "@sveltejs/vite-plugin-svelte": "^5.0.2",
     "@types/eslint": "^9.6.1",
+    "@types/fs-extra": "^11.0.4",
+    "@types/lodash": "^4.17.13",
+    "@types/micromatch": "^4.0.9",
     "@types/mongo-sanitize": "^1.0.3",
-    "@types/node": "^22.10.1",
+    "@types/node": "^22.10.2",
+    "@types/relaxed-json": "^1.0.4",
+    "@types/upng-js": "^2.1.5",
     "@types/uuid": "^10.0.0",
     "autoprefixer": "^10.4.20",
     "bits-ui": "^0.21.16",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
-    "eslint": "^9.16.0",
+    "eslint": "^9.17.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-svelte": "^2.46.1",
+    "farming-weight": "^0.7.2",
     "globals": "^15.13.0",
     "lucide-svelte": "^0.468.0",
     "numerable": "^0.3.15",
@@ -39,37 +46,32 @@
     "svelte": "5.8.0",
     "svelte-check": "^4.1.1",
     "svelte-interactions": "^0.2.0",
+    "svelte-preprocess": "^6.0.3",
     "svelte-tiny-virtual-list": "^2.1.2",
     "tailwind-merge": "^2.5.5",
-    "tailwindcss": "^3.4.16",
+    "tailwindcss": "^3.4.17",
     "tslib": "^2.8.1",
     "typescript": "^5.7.2",
-    "typescript-eslint": "^8.17.0",
+    "typescript-eslint": "^8.18.1",
     "vite": "^6.0.3",
     "vitest": "^2.1.8"
   },
   "type": "module",
   "dependencies": {
     "@napi-rs/canvas": "^0.1.65",
-    "@sveltejs/adapter-node": "^5.2.9",
+    "@sveltejs/adapter-node": "^5.2.10",
     "@tailwindcss/container-queries": "^0.1.1",
-    "@types/fs-extra": "^11.0.4",
-    "@types/lodash": "^4.17.13",
-    "@types/micromatch": "^4.0.9",
-    "@types/relaxed-json": "^1.0.4",
-    "@types/upng-js": "^2.1.5",
     "apng2gif-bin": "^1.7.1",
-    "farming-weight": "^0.7.1",
     "fs-extra": "^11.2.0",
     "lodash": "^4.17.21",
     "micromatch": "^4.0.8",
     "minecraft-data": "^3.80.0",
     "mongo-sanitize": "^1.1.0",
-    "mongodb": "^6.11.0",
+    "mongodb": "^6.12.0",
     "os": "^0.1.2",
     "path": "^0.12.7",
     "pretty-ms": "^9.2.0",
-    "prismarine-nbt": "^2.6.0",
+    "prismarine-nbt": "^2.7.0",
     "redis": "^4.7.0",
     "relaxed-json": "^1.0.3",
     "sharp": "^0.33.5",
@@ -85,5 +87,26 @@
     "npm": "forbidden, use pnpm instead",
     "yarn": "forbidden, use pnpm instead",
     "bun": "forbidden, use pnpm instead"
+  },
+  "pnpm": {
+    "supportedArchitectures": {
+      "os": [
+        "linux",
+        "win32",
+        "darwin"
+      ],
+      "cpu": [
+        "x64",
+        "arm64"
+      ],
+      "libc": [
+        "musl",
+        "gnu",
+        "msvc"
+      ]
+    }
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "^4.28.1"
   }
 }
