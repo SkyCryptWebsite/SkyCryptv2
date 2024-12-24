@@ -67,7 +67,7 @@ export async function getStats(profile: Profile, player: Player, extra: { museum
     misc: stats.getMisc(userProfile, profile, player)
   };
 
-  await REDIS.SETEX(`STATS:${profile.uuid}`, 60 * 5, JSON.stringify(output));
+  REDIS.SETEX(`STATS:${profile.uuid}`, 60 * 5, JSON.stringify(output));
 
   return output;
 }

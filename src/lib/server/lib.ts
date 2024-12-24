@@ -28,9 +28,9 @@ export async function getProfiles(paramPlayer: string) {
   return output;
 }
 
-export async function fetchProfiles(uuid: string): Promise<Profile[]> {
+export async function fetchProfiles(uuid: string, options = { cache: false }): Promise<Profile[]> {
   if (!isUUID(uuid)) {
-    uuid = await getUUID(uuid);
+    uuid = await getUUID(uuid, options);
   }
 
   const cache = await REDIS.get(`PROFILES:${uuid}`);
@@ -113,23 +113,22 @@ async function resolveUsernameOrUUID(paramPlayer: string) {
   return data;
 }
 
-export async function getProfile(uuid: string, profileId: string | null) {
-  const profiles = await fetchProfiles(uuid);
+export async function getProfile(uuid: string, profileId: string | null, options = { cache: false }) {
+  const profiles = await fetchProfiles(uuid, options);
 
   const profile = (profileId && profiles.find((p) => p.cute_name.toUpperCase() === profileId.toUpperCase() || p.profile_id === profileId)) ?? profiles.find((p) => p.selected);
-
   if (!profile) {
     throw new SkyCryptError("Profile not found");
   }
 
-  profile.uuid = await getUUID(uuid);
+  profile.uuid = await getUUID(uuid, options);
 
   return profile;
 }
 
-export async function fetchPlayer(uuid: string) {
+export async function fetchPlayer(uuid: string, options = { cache: false }) {
   if (!isUUID(uuid)) {
-    uuid = await getUUID(uuid);
+    uuid = await getUUID(uuid, options);
   }
 
   const cache = await REDIS.get(`PLAYER:${uuid}`);
