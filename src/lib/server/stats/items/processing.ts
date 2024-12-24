@@ -214,7 +214,7 @@ export async function processItems(items: ProcessedItem[], source: string, custo
         }
       } else if (typeof item.id === "number" && item.id >= 298 && item.id <= 301) {
         // COLORED LEATHER ARMOR
-        const color = item.tag?.display?.color?.toString(16).padStart(6, "0") ?? "955e3b";
+        const color = (item.tag?.display?.color as unknown as number)?.toString(16).padStart(6, "0") ?? "955e3b";
 
         const type = ["helmet", "chestplate", "leggings", "boots"][item.id - 298];
 

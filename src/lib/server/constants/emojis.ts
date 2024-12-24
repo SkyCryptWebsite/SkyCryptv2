@@ -1,7 +1,10 @@
+import { building } from "$app/environment";
 import MONGO from "$lib/server/db/mongo";
 
 export const CACHED_EMOJIS = new Map<string, string>();
 export async function updateCachedEmojis() {
+  if (building) return;
+
   const timeNow = Date.now();
   const emojis = await MONGO.collection("emojis").find().toArray();
   for (const emoji of emojis) {

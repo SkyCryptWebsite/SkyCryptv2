@@ -1,3 +1,4 @@
+import { building } from "$app/environment";
 import MONGO from "../mongo";
 
 const headers = { Accept: "application/json", "User-Agent": "SkyCrypt" };
@@ -5,6 +6,8 @@ const updateInterval = 1000 * 60 * 60 * 12; // 12 hours
 const cacheInternal = 10 * 60 * 1000; // 10 minutes
 
 export async function updateItems() {
+  if (building) return;
+
   try {
     const timeNow = Date.now();
     const cache = await MONGO.collection("items").findOne({});

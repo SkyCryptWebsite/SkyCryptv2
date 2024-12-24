@@ -4,7 +4,7 @@
   import Item from "$lib/components/Item.svelte";
   import Items from "$lib/layouts/stats/Items.svelte";
   import { RARITY_COLORS } from "$lib/shared/constants/items";
-  import type { Stats as StatsType } from "$lib/types/stats";
+  import type { ValidStats as StatsType } from "$lib/types/stats";
   import { Collapsible } from "bits-ui";
   import { getContext } from "svelte";
 

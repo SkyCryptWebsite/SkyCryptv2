@@ -1,11 +1,8 @@
 import { sveltekit } from "@sveltejs/kit/vite";
+import { defineConfig } from "vite";
 
-/** @type {import('vite').UserConfig} */
-const config = {
+export default defineConfig({
   plugins: [sveltekit()],
-  test: {
-    include: ["src/**/*.{test,spec}.{js,ts}"]
-  },
   server: {
     fs: {
       // Allow serving files from static/resourcepacks
@@ -15,6 +12,4 @@ const config = {
   build: {
     sourcemap: true
   }
-};
-
-export default config;
+});

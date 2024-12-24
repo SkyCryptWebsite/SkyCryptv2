@@ -1,3 +1,4 @@
+import { building } from "$app/environment";
 import type { Collection } from "$lib/server/constants/collections";
 import MONGO from "../mongo";
 
@@ -23,6 +24,8 @@ type CollectionItem = {
 };
 
 export async function updateCollections() {
+  if (building) return;
+
   try {
     const timeNow = Date.now();
     const cache = await MONGO.collection("collections").findOne({});
