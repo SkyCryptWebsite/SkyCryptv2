@@ -1,6 +1,6 @@
 <script lang="ts">
   import AdditionStat from "$lib/components/AdditionStat.svelte";
-  import type { Stats as StatsType } from "$lib/types/stats";
+  import type { ValidStats as StatsType } from "$lib/types/stats";
   import { format } from "numerable";
   import { getContext } from "svelte";
 

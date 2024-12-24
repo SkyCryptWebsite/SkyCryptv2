@@ -1,7 +1,7 @@
 import { getBonusStat } from "$lib/shared/constants/stats";
-import type { Stats } from "$types/global";
+import type { ValidStats } from "$types/global";
 
-export function getPlayerStats(profile: Stats) {
+export function getPlayerStats(profile: ValidStats) {
   const stats = {
     health: { base: 100 },
     defense: { base: 0 },

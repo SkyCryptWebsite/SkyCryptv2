@@ -1,7 +1,7 @@
 <script lang="ts">
   import { flyAndScale } from "$lib/shared/utils";
   import { favorites } from "$lib/stores/favorites";
-  import type { Stats as StatsType } from "$lib/types/stats";
+  import type { ValidStats as StatsType } from "$lib/types/stats";
   import { Avatar, Button, DropdownMenu, Tooltip } from "bits-ui";
   import ChevronLeft from "lucide-svelte/icons/chevron-left";
   import ChevronRight from "lucide-svelte/icons/chevron-right";
