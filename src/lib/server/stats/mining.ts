@@ -71,7 +71,7 @@ function getForge(userProfile: Member) {
   return output;
 }
 
-export function getMining(userProfile: Member, player: Player) {
+export function getMining(userProfile: Member, player: Player, packs: string[]) {
   const HOTM = getLevelByXp(userProfile.mining_core?.experience, { type: "hotm" });
   const totalTokens = calcHotmTokens(HOTM.level, userProfile.mining_core?.nodes?.special_0 ?? 0);
   const crystalNucleusRuns = Math.min(
@@ -119,6 +119,6 @@ export function getMining(userProfile: Member, player: Player) {
       }
     },
     forge: getForge(userProfile),
-    hotm: getHotmItems(userProfile)
+    hotm: getHotmItems(userProfile, packs)
   };
 }

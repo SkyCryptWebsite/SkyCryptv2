@@ -244,6 +244,7 @@ export type allAccessories = {
   damage?: number;
   texture?: string;
   material?: string;
+  tier?: string;
 };
 
 export type AccessoriesOutput = {

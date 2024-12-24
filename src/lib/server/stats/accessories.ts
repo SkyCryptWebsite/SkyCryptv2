@@ -4,7 +4,7 @@ import { itemSorter } from "$lib/server/stats/items/processing";
 import { getMissingAccessories } from "$lib/server/stats/missing";
 import type { Accessories, Accessory, AccessoryRarities, Items, Member, ProcessedItem } from "$types/global";
 
-export async function getAccessories(userProfile: Member, items: Items) {
+export async function getAccessories(userProfile: Member, items: Items, packs: string[]) {
   const { talisman_bag: accessoryBag, inventory, enderchest } = items;
   const storage = items.backpack.map((i) => i.containsItems ?? []).flat();
   const armor = items.armor.armor;
@@ -154,5 +154,5 @@ export async function getAccessories(userProfile: Member, items: Items) {
   output.accessory_ids = accessoryIds as Accessory[];
   output.accessory_rarities = accessoryRarities;
 
-  return await getMissingAccessories(output, userProfile, []);
+  return await getMissingAccessories(output, userProfile, packs);
 }
