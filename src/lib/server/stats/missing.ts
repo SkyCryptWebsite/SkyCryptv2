@@ -95,8 +95,7 @@ function getMissing(items: ProcessedItem[], accessories: Accessory[]) {
 
     const object = {
       ...ACCESSORY,
-      display_name: ACCESSORY.name ?? null,
-      rarity: rarity
+      display_name: ACCESSORY.name ?? null
     };
 
     if ((constants.getUpgradeList(id) && constants.getUpgradeList(id)[0] !== id) || (ACCESSORY as SpecialAccessory).rarities) {

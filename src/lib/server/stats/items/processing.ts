@@ -195,7 +195,10 @@ export async function processItems(items: ProcessedItem[], source: string, custo
     // ? NOTE: 'ENCHANTED_BOOK' is blacklisted here because it just slows down the process
     if (customTextures && item.tag.ExtraAttributes.id !== "ENCHANTED_BOOK") {
       const customTexture = getTexture(item, { pack_ids: packs, hotm: source === "storage_icons" });
-      if (customTexture && customTexture.path) {
+
+      // ? NOTE: we're ignoring Vanilla leather armor because it's render using /leather/ endpoint (Coloring support)
+      const ignoreCustomTexture = customTexture && customTexture.path && customTexture.path.includes("/Vanilla/") && customTexture.path.includes("leather_");
+      if (customTexture?.path && ignoreCustomTexture === false) {
         // CUSTOM TEXTURES
         item.texture_path = customTexture.path;
       } else if (item.tag?.SkullOwner?.Properties?.textures?.length > 0) {
@@ -211,7 +214,7 @@ export async function processItems(items: ProcessedItem[], source: string, custo
         }
       } else if (typeof item.id === "number" && item.id >= 298 && item.id <= 301) {
         // COLORED LEATHER ARMOR
-        const color = item.tag?.display?.color?.toString().padStart(6, "0") ?? "955e3b";
+        const color = item.tag?.display?.color?.toString(16).padStart(6, "0") ?? "955e3b";
 
         const type = ["helmet", "chestplate", "leggings", "boots"][item.id - 298];
 

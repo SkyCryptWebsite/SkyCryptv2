@@ -4,7 +4,7 @@ import { getLevelByXp } from "$lib/server/stats/leveling/leveling";
 import type { Member, NodeData, ProcessedItem } from "$types/global";
 import { calcHotmTokens } from "./mining";
 
-export function getHotmItems(userProfile: Member) {
+export function getHotmItems(userProfile: Member, packs: string[]) {
   const data = userProfile.mining_core;
   if (!data) {
     return [];
@@ -101,7 +101,7 @@ export function getHotmItems(userProfile: Member) {
   }
 
   output.forEach((item: ProcessedItem) => {
-    helper.applyResourcePack(item, []);
+    helper.applyResourcePack(item, packs);
   });
 
   return output;

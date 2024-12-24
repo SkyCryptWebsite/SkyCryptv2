@@ -584,12 +584,17 @@ const timeoutId = setTimeout(async () => {
 
       const itemId = texture.id;
       const damage = texture.damage ?? 0;
-      if (itemId !== undefined && itemId !== 397) {
-        const key = `${pack.config.id}:${itemId}:${damage}`;
-        const data = itemIdTextureMap.get(key) ?? [];
+      if (itemId !== undefined) {
+        if (itemId === 397 && damage === 3 && texture.skyblock_id) {
+          console.log(texture.skyblock_id);
+        }
+        if (itemId !== 397 || (texture.skyblock_id && ["ZOMBIE_TALISMAN", "SKELETON_TALISMAN"].includes(texture.skyblock_id))) {
+          const key = `${pack.config.id}:${itemId}:${damage}`;
+          const data = itemIdTextureMap.get(key) ?? [];
 
-        itemIdListMap.set(`${itemId}:${damage}`, true);
-        itemIdTextureMap.set(key, [...data, texture]);
+          itemIdListMap.set(`${itemId}:${damage}`, true);
+          itemIdTextureMap.set(key, [...data, texture]);
+        }
       }
       // else if (itemId !== undefined && itemId === 397) {
       //	const key = `${pack.config.id}:${itemId}:${damage}`;
@@ -714,11 +719,12 @@ export function getTexture(item: ProcessedItem, { pack_ids = [], hotm = false }:
 
   if (packIdsArray.length > 0) {
     tempPacks = tempPacks
-      .filter((a: ResourcePack) => packIdsSet.has(a.config.id))
-      .sort((a, b) => packIdsArray.indexOf(a.config.id) - packIdsArray.indexOf(b.config.id))
+      .filter((pack) => packIdsSet.has(pack.config.id) === false)
+      .sort((a, b) => b.config.priority - a.config.priority)
       .reverse();
   }
 
+  tempPacks = tempPacks.filter((pack, index, self) => self.findIndex((t) => t.config.id === pack.config.id) === index);
   for (const pack of tempPacks) {
     const cachedItemIdTexture = skyblockIDTextureMap.get(`${pack.config.id}:${getId(item)}`);
     if (cachedItemIdTexture) {

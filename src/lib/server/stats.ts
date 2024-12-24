@@ -6,7 +6,9 @@ import type { Player } from "$types/raw/player/lib";
 
 const { getAccessories, getPets, getMainStats, getCollections } = stats;
 
-export async function getStats(profile: Profile, player: Player, extra: { museum?: MuseumRawResponse } = {}): Promise<Stats> {
+export async function getStats(profile: Profile, player: Player, extra: { museum?: MuseumRawResponse; packs?: string[] } = {}): Promise<Stats> {
+  const ignoredPacks = extra.packs ?? [];
+
   const timeNow = Date.now();
   const cache = await REDIS.get(`STATS:${profile.uuid}`);
   if (cache && process.env.NODE_ENV !== "development") {
@@ -17,12 +19,14 @@ export async function getStats(profile: Profile, player: Player, extra: { museum
   const userProfile = profile.members[profile.uuid];
   const userMuseum = extra.museum ? extra.museum[profile.uuid] : null;
 
-  const items = await stats.getItems(userProfile, userMuseum);
+  const timeNowv2 = Date.now();
+  const items = await stats.getItems(userProfile, userMuseum, ignoredPacks);
+  console.log(`[ITEMS] Took ${Date.now() - timeNowv2}ms`);
   // prettier-ignore
   const [profiles, mainStats, accessories, pets, collections] = await Promise.all([
   getProfiles(profile.uuid),
   getMainStats(userProfile, profile, items),
-  getAccessories(userProfile, items),
+  getAccessories(userProfile, items, ignoredPacks),
   getPets(userProfile, items.pets, profile),
   getCollections(userProfile, profile)
 ]);
@@ -45,7 +49,7 @@ export async function getStats(profile: Profile, player: Player, extra: { museum
     items: items,
     accessories: accessories,
     pets: pets,
-    mining: stats.getMining(userProfile, player),
+    mining: stats.getMining(userProfile, player, ignoredPacks),
     farming: stats.getFarming(profile, userProfile),
     enchanting: stats.getEnchanting(userProfile),
     fishing: stats.getFishing(userProfile),

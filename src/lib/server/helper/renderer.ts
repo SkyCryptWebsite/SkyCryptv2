@@ -466,10 +466,13 @@ export async function renderItem(skyblockId: string | undefined, query: ItemQuer
     outputTexture.image = await getHead(item.texture);
   }
 
+  console.log(item);
   const customTexture = customResources.getTexture(item, {
     ignore_id: "name" in query,
     pack_ids: query.pack
   });
+
+  console.log(customTexture);
 
   if (customTexture) {
     if (customTexture.animated) {

@@ -154,7 +154,8 @@ export function getAllAccessories() {
       id: item.id,
       texture_path: item.texture !== undefined ? `/api/head/${item.texture}` : `/api/item/${item.material}:${item.damage}`,
       item_id: item.item_id,
-      damage: item.damage
+      damage: item.damage,
+      rarity: item.tier
     });
 
     const specialAccessory = SPECIAL_ACCESSORIES[item.id] as SpecialAccessory;
