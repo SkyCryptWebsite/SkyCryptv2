@@ -637,56 +637,47 @@ const timeoutId = setTimeout(async () => {
 
 const regexCache = new Map<string, RegExp>();
 const memoizedResults = new Map<string, Partial<OutputTexture> | null>();
+const removeFormattingRegex = /§[0-9a-fk-or]/g;
 
-const processMatchValues = (values: unknown[], regex: RegExp): boolean => {
+function processMatchValues(values: unknown[], regex: RegExp): boolean {
   const len = values.length;
-  const view = new DataView(new ArrayBuffer(len * 4));
-
-  for (let i = 0; i < len; i += 4) {
-    const chunk = values.slice(i, Math.min(i + 4, len));
-    let found = false;
-
-    for (let j = 0; j < chunk.length; j++) {
-      const str = chunk[j]?.toString().replace(removeFormatting, "") ?? "";
-      if (regex.test(str)) {
-        found = true;
-        break;
-      }
-      view.setUint32(i * 4, found ? 1 : 0);
+  for (let i = 0; i < len; i++) {
+    const str = values[i]?.toString().replace(removeFormattingRegex, "") ?? "";
+    if (regex.test(str)) {
+      return true;
     }
-
-    if (found) return true;
   }
 
   return false;
-};
+}
 
 function processTexturesFast(outputTexture: Partial<OutputTexture>, textures: ItemTexture[], pack: ResourcePack, item: Item): Partial<OutputTexture> {
   const targetWeight = outputTexture.weight ?? -Infinity;
+
+  if (!textures?.length || textures[0]?.weight < targetWeight) {
+    return outputTexture;
+  }
+
   const targetFile = outputTexture.file ?? "";
-
-  if (textures[0]?.weight < targetWeight) return outputTexture;
-
   const itemTags = new Map<string, unknown>();
-  const matchBitMask = new Uint32Array(1);
-
   for (const texture of textures) {
-    if (texture.weight < targetWeight || (texture.weight === targetWeight && texture.file < targetFile)) break;
+    if (texture.weight < targetWeight || (texture.weight === targetWeight && texture.file < targetFile)) {
+      continue;
+    }
 
     let matches = 0;
     const requiredMatches = texture.match.length;
-    matchBitMask[0] = 0;
-
-    for (let i = 0; i < requiredMatches; i++) {
-      const match = texture.match[i];
+    for (const match of texture.match) {
       const value = match.value.endsWith(".*") ? match.value.slice(0, -2) : match.value;
-
       const valuePath = value.split(".");
       const tagKey = valuePath.join(".");
 
       let path = itemTags.get(tagKey);
       if (path === undefined) {
-        if (!hasPath(item, "tag", ...valuePath)) continue;
+        if (!hasPath(item, "tag", ...valuePath)) {
+          break;
+        }
+
         path = getPath(item, "tag", ...valuePath);
         itemTags.set(tagKey, path);
       }
@@ -701,12 +692,13 @@ function processTexturesFast(outputTexture: Partial<OutputTexture>, textures: It
       const matchValues = Array.isArray(path) ? path : [path];
       if (processMatchValues(matchValues, regex)) {
         matches++;
-        matchBitMask[0] |= 1 << i;
-      } else break;
+      } else {
+        break;
+      }
     }
 
     if (matches === requiredMatches) {
-      return Object.assign({ pack: { base_path: pack.base_path, config: pack.config } }, texture);
+      return { pack: { base_path: pack.base_path, config: pack.config }, ...texture };
     }
   }
 
@@ -715,13 +707,12 @@ function processTexturesFast(outputTexture: Partial<OutputTexture>, textures: It
 
 export function getTexture(item: ProcessedItem, { pack_ids = [], hotm = false }: getTextureParams = {}): Partial<OutputTexture> | null {
   const cacheKey = `${item.id}:${item.Damage ?? 0}:${getId(item)}:${getTextureValue(item as Item)}:${pack_ids.join(",")}`;
-
   const cached = memoizedResults.get(cacheKey);
-  if (cached !== undefined) return cached;
+  if (cached !== undefined) {
+    return cached;
+  }
 
-  const exists = new Set([skyblockIDListMap.has(getId(item)), textureValueListMap.has(getTextureValue(item as Item)), itemIdListMap.has(`${item.id}:${item.Damage ?? 0}`)]).has(true);
-
-  if (!exists && !hotm) {
+  if (!hotm && ![skyblockIDListMap.has(getId(item)), textureValueListMap.has(getTextureValue(item as Item)), itemIdListMap.has(`${item.id}:${item.Damage ?? 0}`)].some(Boolean)) {
     memoizedResults.set(cacheKey, null);
     return null;
   }
@@ -729,26 +720,21 @@ export function getTexture(item: ProcessedItem, { pack_ids = [], hotm = false }:
   let outputTexture: Partial<OutputTexture> = { weight: -9999 };
   const packIdsSet = new Set(pack_ids);
 
-  const filteredPacks = pack_ids.length > 0 ? resourcePacks.filter((p) => !packIdsSet.has(p.config.id)).sort((a, b) => b.config.priority - a.config.priority) : resourcePacks;
-
-  const uniquePacks = Array.from(new Map(filteredPacks.map((p) => [p.config.id, p])).values());
-
+  const uniquePacks = Array.from(new Map((pack_ids.length > 0 ? resourcePacks.filter((p) => !packIdsSet.has(p.config.id)) : resourcePacks).sort((a, b) => b.config.priority - a.config.priority).map((p) => [p.config.id, p])).values());
   for (const pack of uniquePacks) {
     const packId = pack.config.id;
-    const keys = {
-      itemId: `${packId}:${getId(item)}`,
-      textureValue: `${packId}:${getTextureValue(item as Item)}`,
-      itemIdMap: `${packId}:${item.id}:${item.Damage ?? 0}`
-    };
-
-    const textures = [skyblockIDTextureMap.get(keys.itemId), textureValueTextureMap.get(keys.textureValue), itemIdTextureMap.get(keys.itemIdMap)].filter(Boolean);
+    const textures = [skyblockIDTextureMap.get(`${packId}:${getId(item)}`), textureValueTextureMap.get(`${packId}:${getTextureValue(item as Item)}`), itemIdTextureMap.get(`${packId}:${item.id}:${item.Damage ?? 0}`)].filter(Boolean);
 
     for (const textureSet of textures) {
-      outputTexture = processTexturesFast(outputTexture, textureSet!, pack, item as Item);
-      if (outputTexture.path) break;
+      outputTexture = processTexturesFast(outputTexture, textureSet, pack, item as Item);
+      if (outputTexture.path) {
+        break;
+      }
     }
 
-    if (outputTexture.path) break;
+    if (outputTexture.path) {
+      break;
+    }
   }
 
   if (!outputTexture.path) {
@@ -757,11 +743,17 @@ export function getTexture(item: ProcessedItem, { pack_ids = [], hotm = false }:
   }
 
   outputTexture.path = "/" + path.relative(path.resolve(FOLDER_PATH, "static"), outputTexture.path as string);
-
   memoizedResults.set(cacheKey, outputTexture);
   return outputTexture;
 }
 
-// Clear cache every 5 minutes (Memory leak)
-const CACHE_CLEAR_INTERVAL = 300000;
-setInterval(() => memoizedResults.clear(), CACHE_CLEAR_INTERVAL);
+const MAX_CACHE_SIZE = 10000;
+setInterval(() => {
+  if (memoizedResults.size > MAX_CACHE_SIZE) {
+    const entries = Array.from(memoizedResults.entries());
+    const toDelete = entries.slice(0, entries.length - MAX_CACHE_SIZE);
+    for (const [key] of toDelete) {
+      memoizedResults.delete(key);
+    }
+  }
+}, 60000);
