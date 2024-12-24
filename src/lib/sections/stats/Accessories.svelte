@@ -152,14 +152,18 @@
             {#if accessories.missing.length > 0}
               <Items subtitle="Missing Accessories">
                 {#each accessories.missing as accessory}
-                  <Item piece={accessory} />
+                  <div class="grayscale-[80%] hover:grayscale-0">
+                    <Item piece={accessory} />
+                  </div>
                 {/each}
               </Items>
             {/if}
             {#if accessories.upgrades.length > 0}
               <Items subtitle="Missing Accessory Upgrades">
                 {#each accessories.upgrades as accessory}
-                  <Item piece={accessory} />
+                  <div class="grayscale-[80%] hover:grayscale-0">
+                    <Item piece={accessory} />
+                  </div>
                 {/each}
               </Items>
             {/if}
