@@ -16,7 +16,7 @@
   const miningTools = profile.items.mining_tools.tools;
 </script>
 
-<Items title="Skills">
+<Items>
   <div slot="text" class="space-y-2">
     <h3 class="text-xl font-semibold">Mining Tools</h3>
     {#if highestPriorityMiningTool}

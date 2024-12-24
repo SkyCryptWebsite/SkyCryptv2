@@ -12,6 +12,7 @@ async function processStats<T>(stats: Array<[string, () => Promise<T>]>, errors:
       result[key] = await fetchFn();
     } catch (error) {
       errors[key] = error instanceof Error ? error.message : "Unknown error";
+      console.log(error);
     }
   }
 

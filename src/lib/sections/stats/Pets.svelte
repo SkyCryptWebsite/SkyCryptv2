@@ -2,6 +2,7 @@
   import AdditionStat from "$lib/components/AdditionStat.svelte";
   import Bonus from "$lib/components/Bonus.svelte";
   import Item from "$lib/components/Item.svelte";
+  import SectionSubtitle from "$lib/components/SectionSubtitle.svelte";
   import Items from "$lib/layouts/stats/Items.svelte";
   // import { PET_REWARDS } from "$lib/server/constants/pets";
   /*
@@ -93,7 +94,7 @@
         <Collapsible.Root>
           <Collapsible.Trigger class="group flex items-center gap-0.5 pt-4">
             <ChevronDown class="size-6 transition-all duration-300 group-data-[state=open]:-rotate-180" />
-            <h4 class="text-xl font-semibold capitalize text-text">Show More Pets</h4>
+            <SectionSubtitle>Show More Pets</SectionSubtitle>
           </Collapsible.Trigger>
           <Collapsible.Content class="mt-4 flex flex-wrap gap-4">
             <Items>
@@ -112,7 +113,7 @@
         <Collapsible.Root>
           <Collapsible.Trigger class="group flex items-center gap-0.5 pt-4">
             <ChevronDown class="size-6 transition-all duration-300 group-data-[state=open]:-rotate-180" />
-            <h4 class="text-xl font-semibold capitalize text-text">Missing Pets</h4>
+            <SectionSubtitle>Missing Pets</SectionSubtitle>
           </Collapsible.Trigger>
           <Collapsible.Content class="mt-4 flex flex-wrap gap-4">
             <Items>

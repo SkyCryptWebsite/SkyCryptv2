@@ -2,6 +2,7 @@
   import AdditionStat from "$lib/components/AdditionStat.svelte";
   import Bonus from "$lib/components/Bonus.svelte";
   import Item from "$lib/components/Item.svelte";
+  import SectionSubtitle from "$lib/components/SectionSubtitle.svelte";
   import Items from "$lib/layouts/stats/Items.svelte";
   import { RARITY_COLORS } from "$lib/shared/constants/items";
   import type { ValidStats as StatsType } from "$lib/types/stats";
@@ -146,11 +147,11 @@
       {#if accessories.missing.length > 0 || accessories.upgrades.length > 0}
         <Collapsible.Root>
           <Collapsible.Trigger>
-            <h4 class="text-xl capitalize text-text">Missing Accessories</h4>
+            <SectionSubtitle class="mb-4">Missing Accessories</SectionSubtitle>
           </Collapsible.Trigger>
           <Collapsible.Content>
             {#if accessories.missing.length > 0}
-              <Items subtitle="Missing Accessories">
+              <Items>
                 {#each accessories.missing as accessory}
                   <div class="grayscale-[80%] hover:grayscale-0">
                     <Item piece={accessory} />

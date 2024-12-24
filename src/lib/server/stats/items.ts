@@ -98,7 +98,7 @@ export async function getItems(userProfile: Member, userMuseum: MuseumRaw | null
     .filter((item) => item && item.borrowing === false)
     .map((item) => item.items)
     .flat();
-  output.museum = museum?.inventory;
+  output.museum = museum?.inventory ?? [];
 
   return output;
 }
