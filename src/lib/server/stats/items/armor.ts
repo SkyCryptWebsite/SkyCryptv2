@@ -86,7 +86,7 @@ export function getArmor(armor: ProcessedItem[]) {
       armor: armor.reverse(),
       stats: getStatsFromItems(armor),
       set_name: outputName,
-      set_rarity: constants.RARITIES[Math.max(...armor.map((a) => helper.rarityNameToInt(a.rarity)))]
+      set_rarity: constants.RARITIES[Math.max(...armor.map((a) => helper.rarityNameToInt(a.rarity ?? "common")))]
     };
   }
 

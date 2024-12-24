@@ -70,7 +70,7 @@ export async function getAccessories(userProfile: Member, armor: ProcessedItem[]
         a.isInactive = true;
         a.isUnique = false;
 
-        if (constants.RARITIES.indexOf(a.rarity) > constants.RARITIES.indexOf(insertAccessory.rarity)) {
+        if (constants.RARITIES.indexOf(a.rarity ?? "common") > constants.RARITIES.indexOf(insertAccessory.rarity ?? "common")) {
           a.isInactive = false;
           a.isUnique = true;
           insertAccessory.isUnique = false;
