@@ -77,7 +77,7 @@
     {/if}
 
     {#await data.contributors}
-      {#each Array(3 * 4)}
+      {#each new Array(3 * 4) as _}
         {@render profileSkeleton()}
       {/each}
     {:then contributors}
@@ -116,7 +116,7 @@
             class="absolute bottom-3 right-3"
             role="button"
             tabindex="0"
-            onclick={(e) => {
+            onclick={() => {
               if (!options?.favorite) return;
               favorites.set($favorites.filter((uuid) => uuid !== user.id));
             }}>
