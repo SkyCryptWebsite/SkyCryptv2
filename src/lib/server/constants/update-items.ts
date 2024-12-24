@@ -1,8 +1,11 @@
+import { building } from "$app/environment";
 import MONGO from "$lib/server/db/mongo";
 import { ITEMS } from "$lib/shared/constants/items";
 import type { DatabaseItem } from "$types/global";
 
 export async function updateItems() {
+  if (building) return;
+
   const items = await MONGO.collection("items").findOne({});
   if (items?.items === undefined) {
     return;
