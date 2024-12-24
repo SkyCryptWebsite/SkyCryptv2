@@ -1,4 +1,5 @@
 <script lang="ts">
+  import SectionTitle from "$lib/components/SectionTitle.svelte";
   import type { Stats as StatsType } from "$lib/types/stats";
   import { getContext } from "svelte";
   import Enchanting from "./skills/enchanting.svelte";
@@ -9,6 +10,7 @@
   const profile = getContext<StatsType>("profile");
 </script>
 
+<SectionTitle class="mb-4">Skills</SectionTitle>
 {#if profile.items && profile.items.mining_tools && profile.mining}
   <Mining />
 {:else}
