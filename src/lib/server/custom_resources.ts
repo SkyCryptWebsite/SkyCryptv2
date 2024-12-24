@@ -585,10 +585,8 @@ const timeoutId = setTimeout(async () => {
       const itemId = texture.id;
       const damage = texture.damage ?? 0;
       if (itemId !== undefined) {
-        if (itemId === 397 && damage === 3 && texture.skyblock_id) {
-          console.log(texture.skyblock_id);
-        }
-        if (itemId !== 397 || (texture.skyblock_id && ["ZOMBIE_TALISMAN", "SKELETON_TALISMAN"].includes(texture.skyblock_id))) {
+        // Skip PLAYER_SKULL, but keep MOB SKULLS (Skeleton, Zombie, etc.)
+        if (itemId !== 397 || (itemId === 397 && [0, 1, 2].includes(damage))) {
           const key = `${pack.config.id}:${itemId}:${damage}`;
           const data = itemIdTextureMap.get(key) ?? [];
 
