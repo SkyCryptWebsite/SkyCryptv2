@@ -44,7 +44,8 @@ export const STATS_DATA: StatsData = {
     nameTiny: "CC",
     symbol: "☣",
     suffix: "%",
-    color: "text-minecraft-9"
+    color: "text-minecraft-9",
+    percent: true
   },
   crit_damage: {
     name: "Crit Damage",
@@ -53,7 +54,8 @@ export const STATS_DATA: StatsData = {
     nameTiny: "CD",
     symbol: "☠",
     suffix: "%",
-    color: "text-minecraft-9"
+    color: "text-minecraft-9",
+    percent: true
   },
   intelligence: {
     name: "Intelligence",
@@ -71,7 +73,8 @@ export const STATS_DATA: StatsData = {
     nameTiny: "Atk",
     symbol: "⚔",
     suffix: "%",
-    color: "text-minecraft-e"
+    color: "text-minecraft-e",
+    percent: true
   },
   sea_creature_chance: {
     name: "Sea Creature Chance",
@@ -80,7 +83,8 @@ export const STATS_DATA: StatsData = {
     nameTiny: "SCC",
     symbol: "α",
     suffix: "%",
-    color: "text-minecraft-3"
+    color: "text-minecraft-3",
+    percent: true
   },
   magic_find: {
     name: "Magic Find",
@@ -125,7 +129,8 @@ export const STATS_DATA: StatsData = {
     nameTiny: "AD",
     symbol: "๑",
     suffix: "%",
-    color: "text-minecraft-c"
+    color: "text-minecraft-c",
+    percent: true
   },
   mining_speed: {
     name: "Mining Speed",
