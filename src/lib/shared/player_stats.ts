@@ -122,7 +122,7 @@ export function getPlayerStats(profile: Stats) {
     stats.health.bestiary = Math.floor(profile.bestiary.level);
   }
 
-  if (profile.pets.petScore?.stats?.magic_find > 0) {
+  if (profile.pets.petScore && profile.pets.petScore.stats.magic_find > 0) {
     stats.magic_find.pet_score = profile.pets.petScore.stats.magic_find;
   }
 

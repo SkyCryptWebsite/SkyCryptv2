@@ -39,7 +39,7 @@
     </AdditionStat>
     <AdditionStat text="Pelts" data={profile.farming.pelts.toString()} />
     <AdditionStat text="Contests Attended" data={profile.farming.contestsAttended.toString()} />
-    <AdditionStat text="Unique Golds" data={profile.farming.uniqueGolds.toString()} />
+    <AdditionStat text="Unique Golds" data={profile.farming.uniqueGolds.toString()} maxed={profile.farming.uniqueGolds === 10} />
   </div>
 
   <div class="space-y-0.5">

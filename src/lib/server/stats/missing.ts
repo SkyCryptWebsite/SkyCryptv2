@@ -42,7 +42,7 @@ function getEnrichments(accessories: ProcessedItem[]) {
   for (const item of accessories) {
     const specialAccessory = constants.SPECIAL_ACCESSORIES[helper.getId(item)];
 
-    if (constants.RARITIES.indexOf(item.rarity) < constants.RARITIES.indexOf("legendary") || specialAccessory?.allowsEnrichment === false || item.isInactive === true) {
+    if (constants.RARITIES.indexOf(item.rarity ?? "common") < constants.RARITIES.indexOf("legendary") || specialAccessory?.allowsEnrichment === false || item.isInactive === true) {
       continue;
     }
 
@@ -184,7 +184,7 @@ export async function getMissingAccessories(items: Accessories, userProfile: Mem
 
   output.magicalPower = {
     total: 0,
-    accessories: activeAccessories.reduce((a, b) => a + helper.getMagicalPower(b.rarity, helper.getId(b)), 0),
+    accessories: activeAccessories.reduce((a, b) => a + helper.getMagicalPower(b.rarity ?? "common", helper.getId(b)), 0),
     abiphone: abiphoneContacts ? Math.floor(abiphoneContacts / 2) : 0,
     riftPrism: riftPrism ? 11 : 0,
     hegemony: {

@@ -2,9 +2,13 @@ import * as constants from "$lib/server/constants/constants";
 import * as helper from "$lib/server/helper";
 import { itemSorter } from "$lib/server/stats/items/processing";
 import { getMissingAccessories } from "$lib/server/stats/missing";
-import type { Accessories, Accessory, AccessoryRarities, Member, ProcessedItem } from "$types/global";
+import type { Accessories, Accessory, AccessoryRarities, Items, Member, ProcessedItem } from "$types/global";
 
-export async function getAccessories(userProfile: Member, armor: ProcessedItem[], accessoryBag: ProcessedItem[], inventory: ProcessedItem[], enderchest: ProcessedItem[], storage: ProcessedItem[]) {
+export async function getAccessories(userProfile: Member, items: Items) {
+  const { talisman_bag: accessoryBag, inventory, enderchest } = items;
+  const storage = items.backpack.map((i) => i.containsItems ?? []).flat();
+  const armor = items.armor.armor;
+
   const output = {
     accessories: [] as ProcessedItem[],
     accessory_ids: [] as Accessory[],
@@ -70,7 +74,7 @@ export async function getAccessories(userProfile: Member, armor: ProcessedItem[]
         a.isInactive = true;
         a.isUnique = false;
 
-        if (constants.RARITIES.indexOf(a.rarity) > constants.RARITIES.indexOf(insertAccessory.rarity)) {
+        if (constants.RARITIES.indexOf(a.rarity ?? "common") > constants.RARITIES.indexOf(insertAccessory.rarity ?? "common")) {
           a.isInactive = false;
           a.isUnique = true;
           insertAccessory.isUnique = false;

@@ -18,22 +18,14 @@ export async function getStats(profile: Profile, player: Player, extra: { museum
   const userMuseum = extra.museum ? extra.museum[profile.uuid] : null;
 
   const items = await stats.getItems(userProfile, userMuseum);
+  // prettier-ignore
   const [profiles, mainStats, accessories, pets, collections] = await Promise.all([
-    getProfiles(profile.uuid),
-    getMainStats(userProfile, profile, items),
-    getAccessories(
-      userProfile,
-      items.armor.armor,
-      items.talisman_bag,
-      items.inventory,
-      items.enderchest,
-      Object.values(items.backpack)
-        .map((i) => i.containsItems ?? [])
-        .flat()
-    ),
-    getPets(userProfile, items.pets, profile),
-    getCollections(userProfile, profile)
-  ]);
+  getProfiles(profile.uuid),
+  getMainStats(userProfile, profile, items),
+  getAccessories(userProfile, items),
+  getPets(userProfile, items.pets, profile),
+  getCollections(userProfile, profile)
+]);
 
   const output = {
     displayName: getDisplayName(player.displayname, profile.uuid),
