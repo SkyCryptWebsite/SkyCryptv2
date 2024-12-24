@@ -1,5 +1,7 @@
 <script lang="ts">
   import AdditionStat from "$lib/components/AdditionStat.svelte";
+  import SectionSubtitle from "$lib/components/SectionSubtitle.svelte";
+  import SectionTitle from "$lib/components/SectionTitle.svelte";
   import Skillbar from "$lib/components/Skillbar.svelte";
   import { formatNumber } from "$lib/shared/helper";
   import type { ValidStats as StatsType } from "$lib/types/stats";
@@ -15,7 +17,7 @@
 </script>
 
 <div class="space-y-4">
-  <h3 class="text-2xl uppercase">Dungeons</h3>
+  <SectionTitle>Dungeons</SectionTitle>
   {#if dungeons}
     <div class="flex flex-col flex-wrap justify-start gap-x-4 gap-y-2 sm:flex-row">
       <Skillbar class="" skill="Catacombs" skillData={dungeons.level} />
@@ -64,7 +66,7 @@
               <Collapsible.Root class="p-5">
                 <Collapsible.Trigger class="group flex items-center gap-0.5">
                   <ChevronDown class="size-4 transition-all duration-300 group-data-[state=open]:-rotate-180" />
-                  <h4 class="text-xl font-semibold capitalize text-text">Floor Stats</h4>
+                  <SectionSubtitle>Floor Stats</SectionSubtitle>
                 </Collapsible.Trigger>
                 <Collapsible.Content>
                   {#each Object.entries(catacomb.stats) as [key, value]}
@@ -81,7 +83,7 @@
                 <Collapsible.Root class="px-5 pb-[2.5rem]">
                   <Collapsible.Trigger class="group flex items-center gap-0.5">
                     <ChevronDown class="size-4 transition-all duration-300 group-data-[state=open]:-rotate-180" />
-                    <h4 class="text-xl font-semibold capitalize text-text">Best run</h4>
+                    <SectionSubtitle>Best run</SectionSubtitle>
                   </Collapsible.Trigger>
                   <Collapsible.Content>
                     {#each Object.entries(catacomb.best_run) as [key, value]}
@@ -129,7 +131,7 @@
               <Collapsible.Root class="p-5">
                 <Collapsible.Trigger class="group flex items-center gap-0.5">
                   <ChevronDown class="size-4 transition-all duration-300 group-data-[state=open]:-rotate-180" />
-                  <h4 class="text-xl font-semibold capitalize text-text">Floor Stats</h4>
+                  <SectionSubtitle>Floor Stats</SectionSubtitle>
                 </Collapsible.Trigger>
                 <Collapsible.Content>
                   {#each Object.entries(catacomb.stats) as [key, value]}
@@ -146,7 +148,7 @@
                 <Collapsible.Root class="px-5 pb-[2.5rem]">
                   <Collapsible.Trigger class="group flex items-center gap-0.5">
                     <ChevronDown class="size-4 transition-all duration-300 group-data-[state=open]:-rotate-180" />
-                    <h4 class="text-xl font-semibold capitalize text-text">Best run</h4>
+                    <SectionSubtitle>Best run</SectionSubtitle>
                   </Collapsible.Trigger>
                   <Collapsible.Content>
                     {#each Object.entries(catacomb.best_run) as [key, value]}

@@ -1,4 +1,6 @@
 <script lang="ts">
+  import SectionSubtitle from "$lib/components/SectionSubtitle.svelte";
+  import SectionTitle from "$lib/components/SectionTitle.svelte";
   import { cn } from "$lib/shared/utils";
 
   export let title: string | undefined = undefined;
@@ -10,10 +12,10 @@
 
 <div class="space-y-4">
   {#if title}
-    <h3 class="text-2xl font-semibold capitalize underline decoration-icon decoration-4 [text-underline-position:under]">{title}</h3>
+    <SectionTitle>{title}</SectionTitle>
   {/if}
   {#if subtitle}
-    <h4 class="text-xl font-semibold capitalize text-text/90">{subtitle}</h4>
+    <SectionSubtitle>{subtitle}</SectionSubtitle>
   {/if}
   <slot name="text" />
 
