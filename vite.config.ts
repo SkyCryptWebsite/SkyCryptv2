@@ -1,18 +1,24 @@
 import { sveltekit } from "@sveltejs/kit/vite";
-import { defineConfig } from "vitest/config";
+import path from "path";
 
-export default defineConfig({
+/** @type {import('vite').UserConfig} */
+const config = {
   plugins: [sveltekit()],
-  test: {
-    include: ["src/**/*.{test,spec}.{js,ts}"]
+  ssr: {
+    noExternal: process.env.NODE_ENV === "production" ? ["apexcharts"] : []
   },
-  server: {
-    fs: {
-      // Allow serving files from static/resourcepacks
-      allow: [".."]
+  optimizeDeps: {
+    include: ["lucide-svelte"]
+  },
+  resolve: {
+    alias: {
+      $comp: path.resolve("./src/components"),
+      $stores: path.resolve("./src/stores"),
+      $db: path.resolve("./src/database"),
+      $lib: path.resolve("./src/lib"),
+      $params: path.resolve("./src/params")
     }
-  },
-  build: {
-    sourcemap: true
   }
-});
+};
+
+export default config;
