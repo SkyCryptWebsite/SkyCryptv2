@@ -6,7 +6,7 @@ import type { Player } from "$types/raw/player/lib";
 
 const { getAccessories, getPets, getMainStats, getCollections } = stats;
 
-export async function getStats(profile: Profile, player: Player, extra: { museum?: MuseumRawResponse } = {}): Promise<Stats> {
+export async function getStats(profile: Profile, player: Player, extra: { museum?: MuseumRawResponse; packs?: string[] } = {}): Promise<Stats> {
   const timeNow = Date.now();
   const cache = await REDIS.get(`STATS:${profile.uuid}`);
   if (cache && process.env.NODE_ENV !== "development") {
@@ -18,19 +18,11 @@ export async function getStats(profile: Profile, player: Player, extra: { museum
   const userMuseum = extra.museum ? extra.museum[profile.uuid] : null;
 
   const items = await stats.getItems(userProfile, userMuseum);
+  // prettier-ignore
   const [profiles, mainStats, accessories, pets, collections] = await Promise.all([
     getProfiles(profile.uuid),
     getMainStats(userProfile, profile, items),
-    getAccessories(
-      userProfile,
-      items.armor.armor,
-      items.talisman_bag,
-      items.inventory,
-      items.enderchest,
-      Object.values(items.backpack)
-        .map((i) => i.containsItems ?? [])
-        .flat()
-    ),
+    getAccessories(userProfile, items),
     getPets(userProfile, items.pets, profile),
     getCollections(userProfile, profile)
   ]);
