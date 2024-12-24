@@ -4,6 +4,8 @@
   import Items from "$lib/layouts/stats/Items.svelte";
   import { cn } from "$lib/shared/utils";
   import type { ValidStats as StatsType } from "$lib/types/stats";
+  import { Avatar, Button } from "bits-ui";
+  import ExternalLink from "lucide-svelte/icons/external-link";
   import { getContext } from "svelte";
 
   const profile = getContext<StatsType>("profile");
@@ -21,6 +23,21 @@
     <AdditionStat text="Bonus Minion Slots" data="{minions.minionsSlots.bonusSlots} / 5" maxed={minions.minionsSlots.bonusSlots === 5} />
     <AdditionStat text="Maxed Minions" data="{minions.maxedMinions} / {minions.totalMinions}" maxed={minions.maxedMinions === minions.totalMinions} />
   </div>
+
+  <Button.Root href="https://minionah.com" target="_blank" class="flex h-fit w-fit max-w-fit items-center gap-2 rounded-lg bg-background/30 p-2 transition-all duration-300 hover:scale-105">
+    <Avatar.Root class="size-12 shrink-0">
+      <Avatar.Image src="/img/icons/minionah.png" alt="MinionAH" class="aspect-square size-12" />
+      <Avatar.Fallback class="flex size-12 items-center justify-center rounded-lg bg-background/10 font-semibold">MA</Avatar.Fallback>
+    </Avatar.Root>
+    <div>
+      <h6 class="text-pretty font-bold text-text">Looking for a place to trade minions?</h6>
+      <span class="relative block w-fit text-left font-semibold text-text/60">
+        Check out <h5 class="inline text-link underline">MinionAH</h5>
+        <ExternalLink class="absolute -right-3 top-0 size-3 text-link" />
+      </span>
+    </div>
+  </Button.Root>
+
   {#each Object.entries(minions.minions) as [category, data]}
     <div class="flex items-center gap-1 text-base font-semibold uppercase">
       <h3 class="text-xl">{category}</h3>
