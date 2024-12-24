@@ -635,113 +635,101 @@ const timeoutId = setTimeout(async () => {
   clearTimeout(timeoutId);
 }, 100);
 
-function processTextures(outputTexture: Partial<OutputTexture>, textures: ItemTexture[], pack: ResourcePack, item: Item) {
+const regexCache = new Map<string, RegExp>();
+const memoizedResults = new Map<string, Partial<OutputTexture> | null>();
+const removeFormattingRegex = /§[0-9a-fk-or]/g;
+
+function processMatchValues(values: unknown[], regex: RegExp): boolean {
+  const len = values.length;
+  for (let i = 0; i < len; i++) {
+    const str = values[i]?.toString().replace(removeFormattingRegex, "") ?? "";
+    if (regex.test(str)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+function processTexturesFast(outputTexture: Partial<OutputTexture>, textures: ItemTexture[], pack: ResourcePack, item: Item): Partial<OutputTexture> {
+  const targetWeight = outputTexture.weight ?? -Infinity;
+
+  if (!textures?.length || textures[0]?.weight < targetWeight) {
+    return outputTexture;
+  }
+
+  const targetFile = outputTexture.file ?? "";
+  const itemTags = new Map<string, unknown>();
   for (const texture of textures) {
-    if ((outputTexture.weight && texture.weight < outputTexture.weight) || (outputTexture.file && texture.weight === outputTexture.weight && texture.file < outputTexture.file)) {
-      break;
+    if (texture.weight < targetWeight || (texture.weight === targetWeight && texture.file < targetFile)) {
+      continue;
     }
 
     let matches = 0;
-
+    const requiredMatches = texture.match.length;
     for (const match of texture.match) {
-      const regex = match.regex;
-      let value = match.value;
+      const value = match.value.endsWith(".*") ? match.value.slice(0, -2) : match.value;
+      const valuePath = value.split(".");
+      const tagKey = valuePath.join(".");
 
-      if (value.endsWith(".*")) {
-        value = value.slice(0, -2);
-      }
-
-      const valueSplit = value.split(".");
-      if (!hasPath(item, "tag", ...valueSplit)) {
-        break;
-      }
-
-      const path = getPath(item, "tag", ...valueSplit);
-      const matchValues = Array.isArray(path) ? path : [path];
-
-      const slash = regex.lastIndexOf("/");
-      const regexPattern = new RegExp(regex.slice(1, slash), regex.slice(slash + 1));
-
-      let matchFound = false;
-      for (let i = 0; i < matchValues.length; i++) {
-        if (regexPattern.test(matchValues[i].toString().replace(removeFormatting, ""))) {
-          matchFound = true;
+      let path = itemTags.get(tagKey);
+      if (path === undefined) {
+        if (!hasPath(item, "tag", ...valuePath)) {
           break;
         }
+
+        path = getPath(item, "tag", ...valuePath);
+        itemTags.set(tagKey, path);
       }
 
-      if (!matchFound) {
+      let regex = regexCache.get(match.regex);
+      if (!regex) {
+        const slash = match.regex.lastIndexOf("/");
+        regex = new RegExp(match.regex.slice(1, slash), match.regex.slice(slash + 1));
+        regexCache.set(match.regex, regex);
+      }
+
+      const matchValues = Array.isArray(path) ? path : [path];
+      if (processMatchValues(matchValues, regex)) {
+        matches++;
+      } else {
         break;
       }
-
-      matches++;
     }
 
-    if (matches === texture.match.length) {
-      outputTexture = Object.assign({ pack: { base_path: pack.base_path, config: pack.config } }, texture);
+    if (matches === requiredMatches) {
+      return { pack: { base_path: pack.base_path, config: pack.config }, ...texture };
     }
   }
 
   return outputTexture;
 }
 
-/**
- * Processes all textures that could potentially be connected to an item, then throws the one with biggest priority
- * @param {object} item
- * @param {object} options
- * @param {boolean} [options.ignore_id]
- * @param {string[]} [options.pack_ids]
- * @param {boolean} [options.debug]
- * @returns {object} Item's texture
- */
-export function getTexture(item: ProcessedItem, { pack_ids = [], hotm = false }: getTextureParams = {}) {
-  const ifExists = skyblockIDListMap.has(getId(item)) === true || textureValueListMap.has(getTextureValue(item as Item)) === true || itemIdListMap.has(`${item.id}:${item.Damage ?? 0}`) === true;
+export function getTexture(item: ProcessedItem, { pack_ids = [], hotm = false }: getTextureParams = {}): Partial<OutputTexture> | null {
+  const cacheKey = `${item.id}:${item.Damage ?? 0}:${getId(item)}:${getTextureValue(item as Item)}:${pack_ids.join(",")}`;
+  const cached = memoizedResults.get(cacheKey);
+  if (cached !== undefined) {
+    return cached;
+  }
 
-  if (ifExists === false && hotm === false) {
+  if (!hotm && ![skyblockIDListMap.has(getId(item)), textureValueListMap.has(getTextureValue(item as Item)), itemIdListMap.has(`${item.id}:${item.Damage ?? 0}`)].some(Boolean)) {
+    memoizedResults.set(cacheKey, null);
     return null;
   }
 
-  // const timeStarted = Date.now();
-  // const debugStats = {
-  //   processed_packs: 0,
-  //   processed_textures: 0,
-  //   found_matches: 0,
-  // };
-
   let outputTexture: Partial<OutputTexture> = { weight: -9999 };
+  const packIdsSet = new Set(pack_ids);
 
-  let tempPacks = resourcePacks;
+  const uniquePacks = Array.from(new Map((pack_ids.length > 0 ? resourcePacks.filter((p) => !packIdsSet.has(p.config.id)) : resourcePacks).sort((a, b) => b.config.priority - a.config.priority).map((p) => [p.config.id, p])).values());
+  for (const pack of uniquePacks) {
+    const packId = pack.config.id;
+    const textures = [skyblockIDTextureMap.get(`${packId}:${getId(item)}`), textureValueTextureMap.get(`${packId}:${getTextureValue(item as Item)}`), itemIdTextureMap.get(`${packId}:${item.id}:${item.Damage ?? 0}`)].filter(Boolean);
 
-  const packIdsArray: string[] = Array.isArray(pack_ids) ? pack_ids : [];
-  const packIdsSet: Set<string> = new Set(packIdsArray);
-
-  if (packIdsArray.length > 0) {
-    tempPacks = tempPacks
-      .filter((pack) => packIdsSet.has(pack.config.id) === false)
-      .sort((a, b) => b.config.priority - a.config.priority)
-      .reverse();
-  }
-
-  tempPacks = tempPacks.filter((pack, index, self) => self.findIndex((t) => t.config.id === pack.config.id) === index);
-  for (const pack of tempPacks) {
-    const cachedItemIdTexture = skyblockIDTextureMap.get(`${pack.config.id}:${getId(item)}`);
-    if (cachedItemIdTexture) {
-      outputTexture = processTextures(outputTexture, cachedItemIdTexture, pack, item as Item);
-    }
-
-    const cachedTextureValueTexture = textureValueTextureMap.get(`${pack.config.id}:${getTextureValue(item as Item)}`);
-    if (cachedTextureValueTexture) {
-      outputTexture = processTextures(outputTexture, cachedTextureValueTexture, pack, item as Item);
-    }
-
-    // const cachedHeadTexture = headTextureMap.get(`${pack.config.id}:${item.id}:${item.damage ?? 0}`);
-    // if (cachedHeadTexture) {
-    // 	outputTexture = processTextures(outputTexture, cachedHeadTexture, pack, item);
-    // }
-
-    const cachedItemIdTextureMap = itemIdTextureMap.get(`${pack.config.id}:${item.id}:${item.Damage ?? 0}`);
-    if (cachedItemIdTextureMap) {
-      outputTexture = processTextures(outputTexture, cachedItemIdTextureMap, pack, item as Item);
+    for (const textureSet of textures) {
+      outputTexture = processTexturesFast(outputTexture, textureSet, pack, item as Item);
+      if (outputTexture.path) {
+        break;
+      }
     }
 
     if (outputTexture.path) {
@@ -749,21 +737,23 @@ export function getTexture(item: ProcessedItem, { pack_ids = [], hotm = false }:
     }
   }
 
-  if (!("path" in outputTexture)) {
+  if (!outputTexture.path) {
+    memoizedResults.set(cacheKey, null);
     return null;
   }
 
-  if (os.platform() === "win32") {
-    // TODO: get windows femboys to test this
-    // outputTexture.path = path
-    //	.relative(path.resolve(FOLDER_PATH, '..', '..', 'static'), outputTexture.path as string)
-    // 	.replace(/\\/g, '/');
-  } else {
-    outputTexture.path = "/" + path.relative(path.resolve(FOLDER_PATH, "static"), outputTexture.path as string);
-  }
-
-  // debugStats.time_spent_ms = Date.now() - timeStarted;
-  // outputTexture.debug = debugStats;
-
+  outputTexture.path = "/" + path.relative(path.resolve(FOLDER_PATH, "static"), outputTexture.path as string);
+  memoizedResults.set(cacheKey, outputTexture);
   return outputTexture;
 }
+
+const MAX_CACHE_SIZE = 10000;
+setInterval(() => {
+  if (memoizedResults.size > MAX_CACHE_SIZE) {
+    const entries = Array.from(memoizedResults.entries());
+    const toDelete = entries.slice(0, entries.length - MAX_CACHE_SIZE);
+    for (const [key] of toDelete) {
+      memoizedResults.delete(key);
+    }
+  }
+}, 60000);
