@@ -145,6 +145,15 @@ export const STATS_DATA: StatsData = {
     suffix: "",
     color: "text-minecraft-6"
   },
+  ore_fortune: {
+    name: "Ore Fortune",
+    nameLore: "Ore Fortune",
+    nameShort: "Ore Fortune",
+    nameTiny: "OreFrt",
+    symbol: "☘",
+    suffix: "",
+    color: "text-minecraft-6"
+  },
   farming_fortune: {
     name: "Farming Fortune",
     nameLore: "Farming Fortune",

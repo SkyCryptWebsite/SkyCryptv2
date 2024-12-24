@@ -3,7 +3,6 @@
   import Bonus from "$lib/components/Bonus.svelte";
   import Item from "$lib/components/Item.svelte";
   import Items from "$lib/layouts/stats/Items.svelte";
-  import { RARITY_COLORS } from "$lib/shared/constants/items";
   // import { PET_REWARDS } from "$lib/server/constants/pets";
   /*
   <!-- TODO: Format this on the back end -->
@@ -17,11 +16,12 @@
   {/each}
   */
 
-  import { uniqBy } from "$lib/shared/helper";
+  import { formatNumber, getRarityClass, uniqBy } from "$lib/shared/helper";
+  import { cn } from "$lib/shared/utils";
   import type { Stats as StatsType } from "$lib/types/stats";
   import { Collapsible } from "bits-ui";
+  import ChevronDown from "lucide-svelte/icons/chevron-down";
   import { getContext } from "svelte";
-  //import { formatNumber } from "$lib/helper";
 
   const profile = getContext<StatsType>("profile");
   const pets = profile.pets;
@@ -32,77 +32,92 @@
   // TODO: Once helper functions get moved to a global location, we can remove this function
 </script>
 
-<Items title="Pets">
-  <div slot="text">
-    <AdditionStat text="Unique Pets" data={`${pets.amount} / ${pets.total}`} />
-    <AdditionStat text="Unique Pet Skins" data={`${pets.amountSkins} / ${pets.totalSkins}`} />
-    <AdditionStat text="Pet Score" data={`${pets.petScore.amount} (+${pets.petScore.stats.magic_find} MF) `} asterisk={true}>
-      <div class="max-w-xs space-y-6 font-bold">
-        <h3 class="text-text/85">Pet score is calculated based on how many unique pets you have and the rarity of these pets.</h3>
-        <h3 class="text-text/85">You gain an additional score for each max level pet you have!</h3>
-        <div class="flex flex-col"></div>
-      </div>
-    </AdditionStat>
-    <AdditionStat text="Total Candies Used" data={`${pets.totalCandyUsed}`} />
-    <!-- will format later on after we fix canvas errors -->
-    <AdditionStat text="Total Pet XP" data={`${pets.totalPetExp}`} />
-  </div>
-  <Items subtitle="Active Pet">
-    {#if activePet !== undefined}
-      <div>
-        <div class="flex items-center">
-          <Item piece={activePet} />
-          <div class="ml-4 flex flex-col justify-center">
-            <h4 class="text-xl capitalize text-text" style="color: var(--§{RARITY_COLORS[activePet.rarity ?? 7]})">{activePet.rarity} {activePet.display_name}</h4>
-            <h4 class="text-xl capitalize text-text">Level {activePet.level.level}</h4>
+{#if pets != null}
+  <Items title="Pets">
+    <div slot="text">
+      <AdditionStat text="Unique Pets" data={`${pets.amount} / ${pets.total}`} />
+      <AdditionStat text="Unique Pet Skins" data={`${pets.amountSkins} / ${pets.totalSkins}`} />
+      {#if pets.petScore != null}
+        <AdditionStat text="Pet Score" data={`${pets.petScore.amount} (+${pets.petScore.stats.magic_find} MF) `} asterisk={true}>
+          <div class="max-w-xs space-y-6 font-bold">
+            <h3 class="text-text/85">Pet score is calculated based on how many unique pets you have and the rarity of these pets.</h3>
+            <h3 class="text-text/85">You gain an additional score for each max level pet you have!</h3>
+            <div class="flex flex-col"></div>
           </div>
-        </div>
-        <Bonus stats={activePet.stats} class="mt-3" />
-      </div>
-    {/if}
-  </Items>
-
-  <Items subtitle="Other Pets">
-    {#each uniquePets as pet}
-      {#if !pet.active}
-        <div>
-          <Item piece={pet} />
-          <p class="mt-2 text-center">LVL {pet.level.level}</p>
-        </div>
+        </AdditionStat>
       {/if}
-    {/each}
-  </Items>
-
-  {#if otherPets.length > 0 || pets.missing.length > 0}
+      <AdditionStat text="Total Candies Used" data={pets.totalCandyUsed} />
+      <AdditionStat text="Total Pet XP" data={formatNumber(pets.totalPetExp)} />
+    </div>
     <div>
+      {#if activePet != null}
+        <Items subtitle="Active Pet">
+          <div>
+            <div class="flex items-center">
+              <Item piece={activePet} />
+              <div class="ml-4 flex flex-col justify-center">
+                <h4 class={cn(getRarityClass(activePet.rarity ?? "", "text"), "text-xl font-bold capitalize")}>{activePet.rarity.toLowerCase()} {activePet.type.toLowerCase()}</h4>
+                <h4 class="text-xl font-medium capitalize text-text">Level {activePet.level.level}</h4>
+              </div>
+            </div>
+            <Bonus stats={activePet.stats} class="mt-3" />
+          </div>
+        </Items>
+
+        {#if uniquePets.length > 0 && uniquePets.find((pet) => !pet.active)}
+          <Items subtitle="Other Pets">
+            {#each uniquePets as pet}
+              {#if !pet.active}
+                <div>
+                  <Item piece={pet} />
+                  <p class="mt-2 text-center font-semibold">LVL {pet.level.level}</p>
+                </div>
+              {/if}
+            {/each}
+          </Items>
+        {/if}
+      {:else}
+        <Items>
+          {#each uniquePets as pet}
+            {#if !pet.active}
+              <div>
+                <Item piece={pet} />
+                <p class="mt-2 text-center font-semibold">LVL {pet.level.level}</p>
+              </div>
+            {/if}
+          {/each}
+        </Items>
+      {/if}
+
       {#if otherPets.length > 0}
         <Collapsible.Root>
-          <Collapsible.Trigger>
-            <h4 class="text-xl capitalize text-text">Show More Pets</h4>
-            <br />
+          <Collapsible.Trigger class="group flex items-center gap-0.5 pt-4">
+            <ChevronDown class="size-6 transition-all duration-300 group-data-[state=open]:-rotate-180" />
+            <h4 class="text-xl font-semibold capitalize text-text">Show More Pets</h4>
           </Collapsible.Trigger>
-          <Collapsible.Content>
+          <Collapsible.Content class="mt-4 flex flex-wrap gap-4">
             <Items>
               {#each otherPets as pet}
                 <div>
                   <Item piece={pet} />
-                  <p class="mt-2 text-center">LVL {pet.level.level}</p>
+                  <p class="mt-2 text-center font-semibold">LVL {pet.level.level}</p>
                 </div>
               {/each}
             </Items>
           </Collapsible.Content>
         </Collapsible.Root>
       {/if}
+
       {#if pets.missing.length > 0}
         <Collapsible.Root>
-          <Collapsible.Trigger>
-            <h4 class="text-xl capitalize text-text">Missing Pets</h4>
-            <br />
+          <Collapsible.Trigger class="group flex items-center gap-0.5 pt-4">
+            <ChevronDown class="size-6 transition-all duration-300 group-data-[state=open]:-rotate-180" />
+            <h4 class="text-xl font-semibold capitalize text-text">Missing Pets</h4>
           </Collapsible.Trigger>
-          <Collapsible.Content>
+          <Collapsible.Content class="mt-4 flex flex-wrap gap-4">
             <Items>
               {#each pets.missing as pet}
-                <div>
+                <div class="grayscale-[80%] hover:grayscale-0">
                   <Item piece={pet} />
                 </div>
               {/each}
@@ -111,5 +126,5 @@
         </Collapsible.Root>
       {/if}
     </div>
-  {/if}
-</Items>
+  </Items>
+{/if}
