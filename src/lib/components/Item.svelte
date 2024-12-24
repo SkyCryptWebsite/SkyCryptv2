@@ -34,7 +34,7 @@
           <Image class="size-14" />
         </Avatar.Fallback>
       </Avatar.Root>
-      {#if recombobulated}
+      {#if recombobulated && piece.rarity}
         <div class="absolute -right-3 -top-3 z-10 size-6 rotate-45 bg-[--color]" style="--color: var(--§{RARITY_COLORS[RARITIES[RARITIES.indexOf(piece.rarity) - 1]]})"></div>
       {/if}
       {#if showNumbers}
