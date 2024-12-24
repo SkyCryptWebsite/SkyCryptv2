@@ -1,6 +1,6 @@
 <script lang="ts">
   import Skillbar from "$lib/components/Skillbar.svelte";
-  import type { Stats as StatsType } from "$lib/types/stats";
+  import type { ValidStats as StatsType } from "$lib/types/stats";
   import { getContext } from "svelte";
 
   const profile = getContext<StatsType>("profile");
