@@ -743,6 +743,10 @@ export function getTexture(item: ProcessedItem, { pack_ids = [], hotm = false }:
     if (cachedItemIdTextureMap) {
       outputTexture = processTextures(outputTexture, cachedItemIdTextureMap, pack, item as Item);
     }
+
+    if (outputTexture.path) {
+      break;
+    }
   }
 
   if (!("path" in outputTexture)) {
@@ -756,9 +760,6 @@ export function getTexture(item: ProcessedItem, { pack_ids = [], hotm = false }:
     // 	.replace(/\\/g, '/');
   } else {
     outputTexture.path = "/" + path.relative(path.resolve(FOLDER_PATH, "static"), outputTexture.path as string);
-    if (outputTexture.pack !== undefined) {
-      outputTexture.pack.base_path = "/" + path.relative(path.resolve(FOLDER_PATH, "static"), outputTexture.pack?.base_path as string);
-    }
   }
 
   // debugStats.time_spent_ms = Date.now() - timeStarted;
