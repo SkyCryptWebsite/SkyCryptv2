@@ -4,15 +4,15 @@
 import nbt from "prismarine-nbt";
 import { gunzip } from "zlib";
 
-export async function decodeItems(encodedItems) {
+export async function decodeItems(base64Strings: string[]) {
   try {
     const decodedItems = await Promise.all(
-      encodedItems.flat().map(async (item) => {
+      base64Strings.flat().map(async (item) => {
         try {
-          const [, unzippedData] = await new Promise<[typeof item, Buffer]>((resolve, reject) =>
+          const unzippedData = await new Promise<Buffer>((resolve, reject) =>
             gunzip(Buffer.from(item, "base64"), (error, unzippedData) => {
               if (error) reject(error);
-              else resolve([item, unzippedData]);
+              else resolve(unzippedData);
             })
           );
 
@@ -33,7 +33,17 @@ export async function decodeItems(encodedItems) {
   }
 }
 
-export async function decodeItem(encodedItem) {
+export async function decodeItemsObject(base64Strings: Record<string, string>) {
+  try {
+    const decodedItemsArray = await decodeItems(Object.values(base64Strings));
+    return Object.fromEntries(Object.keys(base64Strings).map((key, idx) => [key, decodedItemsArray[idx]]));
+  } catch (error) {
+    console.error(`Failed to decode items object: ${error}`);
+    return {};
+  }
+}
+
+export async function decodeItem(encodedItem: string) {
   try {
     const [, unzippedData] = await new Promise<[typeof encodedItem, Buffer]>((resolve, reject) =>
       gunzip(Buffer.from(encodedItem, "base64"), (error, unzippedData) => {

@@ -14,12 +14,6 @@ export async function getItems(userProfile: Member, userMuseum: MuseumRaw | null
   const INVENTORY = userProfile.inventory;
   const outputPromises = {
     // INVENTORIES
-    /*inventory: processItems(INVENTORY?.inv_contents?.data ?? "", "inventory", true, []),
-    enderchest: processItems(INVENTORY?.ender_chest_contents?.data ?? "", "enderchest", true, []),
-    armor: processItems(INVENTORY?.inv_armor?.data ?? "", "armor", true, []),
-    equipment: processItems(INVENTORY?.equipment_contents?.data ?? "", "equipment", true, []),
-    personal_vault: processItems(INVENTORY?.personal_vault_contents?.data ?? "", "personal_vault", true, []),
-    wardrobe: processItems(INVENTORY?.wardrobe_contents?.data ?? "", "wardrobe", true, []),*/
     inventory: INVENTORY?.inv_contents?.data ?? "",
     enderchest: INVENTORY?.ender_chest_contents?.data ?? "",
     armor: INVENTORY?.inv_armor?.data ?? "",
@@ -28,11 +22,6 @@ export async function getItems(userProfile: Member, userMuseum: MuseumRaw | null
     wardrobe: INVENTORY?.wardrobe_contents?.data ?? "",
 
     // BAGS
-    /*potion_bag: processItems(INVENTORY?.bag_contents?.potion_bag?.data ?? "", "potion_bag", true, []),
-    talisman_bag: processItems(INVENTORY?.bag_contents?.talisman_bag?.data ?? "", "talisman_bag", true, []),
-    fishing_bag: processItems(INVENTORY?.bag_contents?.fishing_bag?.data ?? "", "fishing_bag", true, []),
-    sacks_bag: processItems(INVENTORY?.bag_contents?.sacks_bag?.data ?? "", "sacks_bag", true, []),
-    quiver: processItems(INVENTORY?.bag_contents?.quiver?.data ?? "", "quiver", true, []),*/
     potion_bag: INVENTORY?.bag_contents?.potion_bag?.data ?? "",
     talisman_bag: INVENTORY?.bag_contents?.talisman_bag?.data ?? "",
     fishing_bag: INVENTORY?.bag_contents?.fishing_bag?.data ?? "",
@@ -53,9 +42,8 @@ export async function getItems(userProfile: Member, userMuseum: MuseumRaw | null
   const entries = Object.entries(outputPromises);
   const values = entries.map(([_, value]) => value);
   const decodedItems = await decodeItems(values);
-
   const newItems = await Promise.all(
-    entries.map(async ([key, value], idx) => {
+    entries.map(async ([key, _], idx) => {
       if (!decodedItems[idx]) {
         return [key, []];
       }
@@ -65,9 +53,8 @@ export async function getItems(userProfile: Member, userMuseum: MuseumRaw | null
     })
   );
 
-  const backpackIconMap = new Map(newItems.filter(([key]) => key.startsWith("backpack_icon_")));
-
   const output = { backpack: [] };
+  const backpackIconMap = new Map(newItems.filter(([key]) => key.startsWith("backpack_icon_")));
   for (const [key, value] of newItems) {
     if (!key.includes("backpack")) {
       output[key] = value;
@@ -106,12 +93,11 @@ export async function getItems(userProfile: Member, userMuseum: MuseumRaw | null
   output.fishing_tools = getSkilllTools("fishing", allItems);
   output.pets = getPets(allItems);
 
-  const museum = output.museumItems ? await getMuseumItems(output.museumItems) : null;
+  const museum = output.museumItems ? getMuseumItems(output.museumItems) : null;
   output.museumItems = [...Object.values(museum?.museumItems?.items ?? {}), ...(museum?.museumItems?.specialItems ?? [])]
-    .filter((item) => item.borrowing === false)
+    .filter((item) => item && item.borrowing === false)
     .map((item) => item.items)
-    .flat()
-    .filter((item) => item !== undefined);
+    .flat();
   output.museum = museum?.inventory;
 
   return output;

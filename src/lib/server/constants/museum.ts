@@ -184,7 +184,7 @@ export const MUSEUM_INVENTORY = {
       progressType: "armor"
     },
     {
-      display: "Rarities",
+      display_name: "Rarities",
       rarity: "uncommon",
       texture_path: "/api/head/86addbd5dedad40999473be4a7f48f6236a79a0dce971b5dbd7372014ae394d",
       tag: {
