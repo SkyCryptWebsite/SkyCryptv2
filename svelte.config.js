@@ -1,12 +1,12 @@
 import adapter from "@sveltejs/adapter-node";
-import { sveltePreprocess } from "svelte-preprocess";
+import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
   // Consult https://kit.svelte.dev/docs/integrations#preprocessors
   // for more information about preprocessors
-  preprocess: sveltePreprocess(),
 
+  preprocess: vitePreprocess({ script: true }),
   ssr: {
     noExternal: process.env.NODE_ENV === "production" ? ["@napi-rs/canvas"] : []
   },

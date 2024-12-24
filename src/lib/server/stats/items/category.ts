@@ -4,9 +4,9 @@ import { itemSorter } from "$lib/server/stats/items/processing";
 import type { ProcessedItem } from "$types/stats";
 
 export function getCategory(allItems: ProcessedItem[], category: string) {
-  const output = allItems.filter((a) => a.categories?.includes(category));
+  const output = allItems.filter((a) => a && a.categories?.includes(category));
 
-  for (const item of allItems) {
+  for (const item of allItems.filter((a) => a)) {
     if (!Array.isArray(item.containsItems)) {
       continue;
     }
@@ -26,7 +26,7 @@ export function getWeapons(allItems: ProcessedItem[]) {
 
     countsOfId[id] = (countsOfId[id] || 0) + 1;
 
-    if (countsOfId[id] > 2 && constants.RARITIES.indexOf(weapon.rarity) < constants.RARITIES.indexOf("legendary")) {
+    if (weapon.rarity && countsOfId[id] > 2 && constants.RARITIES.indexOf(weapon.rarity) < constants.RARITIES.indexOf("legendary")) {
       weapon.hidden = true;
     }
   }
@@ -51,7 +51,7 @@ export function getSkilllTools(skill: string, allItems: ProcessedItem[]) {
 
 export function getPets(allItems: ProcessedItem[]) {
   const output = allItems
-    .filter((a: ProcessedItem) => a.tag?.ExtraAttributes?.petInfo)
+    .filter((a: ProcessedItem) => a && a.tag?.ExtraAttributes?.petInfo)
     .map((a: ProcessedItem) => ({
       uuid: a.tag.ExtraAttributes.uuid,
       type: a.tag.ExtraAttributes.petInfo.type,
@@ -63,7 +63,7 @@ export function getPets(allItems: ProcessedItem[]) {
       skin: a.tag.ExtraAttributes.petInfo.skin || null
     }));
 
-  for (const item of allItems) {
+  for (const item of allItems.filter((a) => a)) {
     if (!Array.isArray(item.containsItems)) {
       continue;
     }

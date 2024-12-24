@@ -6,16 +6,15 @@
   import { getContext } from "svelte";
 
   const profile = getContext<StatsType>("profile");
-
-  const weapons = profile.items.weapons;
 </script>
 
 <Items title="Weapons">
   <div slot="text">
-    <!-- add colors later -->
-    <AdditionStat text="Active Weapon" data={weapons.highest_priority_weapon.tag.display.Name} />
+    <!-- TODO: add colors later -->
+    <AdditionStat text="Active Weapon" data={profile.items.weapons.highest_priority_weapon.tag.display.Name} />
   </div>
-  {#each weapons.weapons as weapon}
+
+  {#each profile.items.weapons.weapons as weapon}
     <Item piece={weapon} />
   {/each}
 </Items>

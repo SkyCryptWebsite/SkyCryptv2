@@ -1,6 +1,7 @@
 export type Extra = {
   type: string;
   cap?: number;
+  texture?: string;
 };
 
 export type Skill = {
@@ -15,6 +16,7 @@ export type Skill = {
   levelWithProgress: number;
   unlockableLevelWithProgress: number;
   rank?: number;
+  texture: string;
 };
 
 export type Skills = {

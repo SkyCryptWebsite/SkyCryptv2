@@ -90,7 +90,7 @@ export type Pets = {
   totalSkins: number;
   totalPetExp: number;
   totalCandyUsed: number;
-  petScore: {
+  petScore?: {
     amount: number;
     stats: Record<string, number>;
   };

@@ -21,6 +21,7 @@ export * from "./processed/profile/skills";
 export * from "./processed/profile/slayer";
 
 export type Stats = {
+  displayName: string;
   username: string;
   uuid: string;
   profile_id: string;

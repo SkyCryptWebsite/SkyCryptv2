@@ -1,19 +1,18 @@
 <script lang="ts">
-  import { RARITY_COLORS } from "$lib/shared/constants/items";
   import AdditionStat from "$lib/components/AdditionStat.svelte";
   import Bonus from "$lib/components/Bonus.svelte";
   import Item from "$lib/components/Item.svelte";
   import Items from "$lib/layouts/stats/Items.svelte";
+  import { RARITY_COLORS } from "$lib/shared/constants/items";
   import type { Stats as StatsType } from "$lib/types/stats";
   import { Collapsible } from "bits-ui";
   import { getContext } from "svelte";
 
   const profile = getContext<StatsType>("profile");
-
-  const accessories = profile.accessories;
 </script>
 
 <Items title="Accessories">
+  {@const accessories = profile.accessories}
   {#if accessories.accessories.length > 0}
     <div>
       <AdditionStat text="Unique Accessories" data={`${accessories.unique} / ${accessories.total}`} />

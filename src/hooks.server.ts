@@ -1,35 +1,47 @@
-import { init as resourcesInit } from "$lib/custom_resources";
-import { updateCollections } from "$lib/server/constants/update-collections";
-import { updateItems } from "$lib/server/constants/update-items";
+import { updateCollections } from "$constants/update-collections";
+import { updateItems } from "$constants/update-items";
+import { init as resourcesInit } from "$lib/server/custom_resources";
+import { indexCollectons } from "$lib/server/db/mongo/index-collections";
 import { intializeNEURepository, parseNEURepository } from "$lib/server/helper/NotEnoughUpdates/parseNEURepository";
 import { updateNotEnoughUpdatesRepository } from "$lib/server/helper/NotEnoughUpdates/updateNEURepository";
 import type { ServerInit } from "@sveltejs/kit";
+import * as fs from "fs";
 import { getPrices } from "skyhelper-networth";
 import { startMongo } from "./lib/server/db/mongo";
 import { startRedis } from "./lib/server/db/redis";
 
 export const init: ServerInit = async () => {
-  console.log("Starting...");
+  console.log("[SkyCrypt] Starting...");
   resourcesInit();
 
-  startMongo()?.then(() => {
+  await startMongo()?.then(() => {
     console.log("[MONGO] MongoDB succeesfully connected");
+
+    updateItems();
+    updateCollections();
+
+    indexCollectons();
   });
 
-  startRedis().then(() => {
+  await startRedis().then(() => {
     console.log("[REDIS] Redis succeesfully connected");
   });
 
-  intializeNEURepository().then(() => {
-    updateNotEnoughUpdatesRepository().then(() => {
-      parseNEURepository();
-
-      updateItems();
-      updateCollections();
+  if (fs.existsSync("NotEnoughUpdates-REPO") === false) {
+    await intializeNEURepository().then(() => {
+      updateNotEnoughUpdatesRepository().then(() => {
+        parseNEURepository();
+      });
     });
-  });
+  } else {
+    await updateNotEnoughUpdatesRepository().then(() => {
+      parseNEURepository();
+    });
+  }
 
-  getPrices().then(() => {
+  await getPrices().then(() => {
     console.log("[NETWORTH] Prices sucessfully fetched!");
   });
+
+  console.log("[SkyCrypt] Started!");
 };

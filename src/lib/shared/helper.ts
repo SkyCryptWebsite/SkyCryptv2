@@ -42,7 +42,7 @@ export function titleCase(string: string): string {
  * @returns {string} the tailwind css color class
  */
 export function getRarityClass(rarity: string, type: "bg" | "text"): string {
-  const rarityColor = RARITY_COLORS[rarity as keyof typeof RARITY_COLORS];
+  const rarityColor = RARITY_COLORS[rarity.toLowerCase() as keyof typeof RARITY_COLORS];
   // minecraft colors are safelisted in the tailwind config, so they are always generated
   return rarityColor ? `${type}-minecraft-${rarityColor}` : "";
 }
@@ -150,7 +150,7 @@ export function isEnchanted(item: ProcessedItem): boolean {
     return true;
   }
 
-  if ("tag" in item && Array.isArray(item.tag.ench)) {
+  if ("tag" in item && (Array.isArray(item.tag.ench) || item.tag.ExtraAttributes?.enchantments)) {
     return true;
   }
 
@@ -184,4 +184,53 @@ export function uniqBy<T>(arr: T[], key: string) {
     const k = (item as Record<string, unknown>)[key];
     return seen.has(k) ? false : seen.add(k);
   });
+}
+
+/**
+ * Returns the username of a player with the specified UUID.
+ * @param {string} uuid - The UUID of the player.
+ * @returns {Promise<string>} The username of the player.
+ */
+export const getUsername = async (uuid: string): Promise<string> => {
+  const res = await fetch(`/api/uuid/${uuid}`);
+  const { username } = await res.json();
+  return username;
+};
+
+/**
+ * Validates a URL and returns the path to the stats page
+ * @param {string} url
+ * @returns {string} The path to the stats page
+ */
+export function validateURL(url: string): boolean {
+  const urlSegments = url.trim().split("/");
+  if (urlSegments.length < 1) {
+    console.error("Please enter a Minecraft username or UUID");
+    return false;
+  } else if (urlSegments.length > 2) {
+    console.error(`"${url}" has too many "/"`);
+    return false;
+  } else {
+    if (urlSegments.length === 2) {
+      if (urlSegments[1].match(/^[A-Za-z]+/)) {
+        urlSegments[1] = urlSegments[1].charAt(0).toUpperCase() + urlSegments[1].substring(1).toLowerCase();
+      } else if (!urlSegments[1].match(/^([0-9a-fA-F]{32})$/)) {
+        if (urlSegments[1] === "") {
+          console.error(`Please enter valid profile name or UUID after "/"`);
+          return false;
+        }
+        console.error(`"${urlSegments[1]}" is not a valid profile name or UUID`);
+        return false;
+      }
+    }
+    if (urlSegments[0].match(/^([0-9a-fA-F]{8})-?([0-9a-fA-F]{4})-?([0-9a-fA-F]{4})-?([0-9a-fA-F]{4})-?([0-9a-fA-F]{12})$/)) {
+      urlSegments[0] = urlSegments[0].replaceAll("-", "");
+    } else if (urlSegments[0].match(/^[\w ]{1,16}$/)) {
+      urlSegments[0] = urlSegments[0].replace(" ", "_");
+    } else {
+      console.error(`"${urlSegments[0]}" is not a valid username or UUID`);
+      return false;
+    }
+    return true;
+  }
 }

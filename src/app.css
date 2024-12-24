@@ -211,6 +211,10 @@
       /* ✿ dye, */ U+273F,
       /* ⚚ dungeon-upgrade, */ U+269A;
   }
+
+  [data-tooltip-content] {
+    @apply max-w-[min(20rem,100vw-2.5rem)] text-pretty text-sm;
+  }
 }
 
 @layer utilities {
@@ -236,4 +240,20 @@
 
 .virtual-list-inner {
   @apply overflow-hidden;
+}
+
+/* firefox support */
+/* scrollbar-color: hsl(var(--icon)) transparent; */
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: hsl(var(--icon));
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
 }

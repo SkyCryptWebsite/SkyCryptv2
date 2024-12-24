@@ -12,10 +12,7 @@
   const defaultPattern: string = "0,0";
 </script>
 
-<div class="additional-stats flex flex-col gap-2 sm:flex-row sm:flex-wrap">
-  <!--
-    <AdditionStat text="Last Area" data={profile.data.user_data.current_area.current_area} />
-  -->
+<div class="additional-stats flex flex-col gap-2 @md:flex-row @md:flex-wrap">
   <AdditionStat text="Joined" data={formatDistanceToNowStrict(profile.stats.joined, { addSuffix: true })} asterisk={true}>
     Joined on {dateFormat(profile.stats.joined, "dd MMMM yyyy 'at' HH:mm")}
   </AdditionStat>
@@ -55,80 +52,6 @@
   <AdditionStat text="Fairy Souls" data={`${profile.stats.fairySouls.found} / ${profile.stats.fairySouls.total}`} asterisk={true}>
     {((profile.stats.fairySouls.found / profile.stats.fairySouls.total) * 100).toFixed(2)}% of fairy souls found.
   </AdditionStat>
-  <!--
-  <AdditionStat text="Senither Weight" data={numberFormat(profile.data.weight.senither.overall, defaultPattern)} asterisk={true}>
-    <div class="max-w-xs space-y-2 font-bold">
-      <div>
-        <h3 class="text-text/85">Senither Weight</h3>
-        <p class="font-medium italic text-text/80">Weight calculations by Senither.</p>
-      </div>
-      <div>
-        <ul class="font-bold [&_li]:text-text/85 [&_li_span]:text-text">
-          <li>
-            Skill:
-            <span>
-              {numberFormat(profile.data.weight.senither.skill.total, defaultPattern)}
-            </span>
-          </li>
-          <li>
-            Slayer:
-            <span>
-              {numberFormat(profile.data.weight.senither.slayer.total, defaultPattern)}
-            </span>
-          </li>
-          <li>
-            Dungeon:
-            <span>
-              {numberFormat(profile.data.weight.senither.dungeon.total, defaultPattern)}
-            </span>
-          </li>
-        </ul>
-      </div>
-      <p class="text-text/85">
-        Total:
-        <span class="text-text">
-          {numberFormat(profile.data.weight.senither.overall, defaultPatternDecimal)}
-        </span>
-      </p>
-    </div>
-  </AdditionStat>
-  <AdditionStat text="Lily Weight" data={numberFormat(profile.data.weight.lily.total, defaultPattern)} asterisk={true}>
-    <div class="max-w-xs space-y-2 font-bold">
-      <div>
-        <h3 class="text-text/85">Lily Weight</h3>
-        <p class="font-medium italic text-text/80">Weight calculations by LappySheep.</p>
-      </div>
-      <div>
-        <ul class="font-bold [&_li]:text-text/85 [&_li_span]:text-text">
-          <li>
-            Skill:
-            <span>
-              {numberFormat(profile.data.weight.lily.skill.base, defaultPatternDecimal)}
-            </span>
-          </li>
-          <li>
-            Slayer:
-            <span>
-              {numberFormat(profile.data.weight.lily.slayer, defaultPatternDecimal)}
-            </span>
-          </li>
-          <li>
-            Dungeon:
-            <span>
-              {numberFormat(profile.data.weight.lily.catacombs.completion.base + profile.data.weight.lily.catacombs.experience, defaultPatternDecimal)}
-            </span>
-          </li>
-        </ul>
-      </div>
-      <p class="text-text/85">
-        Total:
-        <span class="text-text">
-          {numberFormat(profile.data.weight.lily.total, defaultPattern)}
-        </span>
-      </p>
-    </div>
-  </AdditionStat>
-  -->
   <AdditionStat text="Networth" data={formatNumber(profile.stats.networth.networth)} asterisk={true}>
     <div class="max-w-xs space-y-2 font-bold">
       <div>

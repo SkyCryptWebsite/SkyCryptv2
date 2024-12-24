@@ -7,11 +7,11 @@ export const GET: RequestHandler = async ({ params }) => {
   const timeNow = Date.now();
   const { paramPlayer, paramProfile } = params;
 
-  const [profile, player] = await Promise.all([getProfile(paramPlayer, paramProfile), fetchPlayer(paramPlayer)]);
+  const [profile, player] = await Promise.all([getProfile(paramPlayer, paramProfile, { cache: true }), fetchPlayer(paramPlayer, { cache: true })]);
   const museum = await fetchMuseum(profile.profile_id);
 
   const stats = await getStats(profile, player, { museum });
 
-  console.log(`/api/stats/${paramPlayer} took ${Date.now() - timeNow}ms`);
+  console.log(`/api/stats/${paramPlayer}/${paramProfile} took ${Date.now() - timeNow}ms`);
   return json(stats);
 };

@@ -4,84 +4,84 @@ import { getArmor } from "$lib/server/stats/items/armor";
 import { getEquipment } from "$lib/server/stats/items/equipment";
 import { processItems } from "$lib/server/stats/items/processing";
 import { getWardrobe } from "$lib/server/stats/items/wardrobe";
-import type { Items, Member, MuseumRaw, ProcessedItem } from "$types/global";
+import type { Items, Member, MuseumRaw } from "$types/global";
 import { getPets, getSkilllTools, getWeapons } from "./items/category";
+import { decodeItems } from "./items/decoding";
 import { decodeMusemItems } from "./items/museum";
 import { getMuseumItems } from "./museum";
 
 export async function getItems(userProfile: Member, userMuseum: MuseumRaw | null): Items {
   const INVENTORY = userProfile.inventory;
-
   const outputPromises = {
     // INVENTORIES
-    inventory: processItems(INVENTORY?.inv_contents?.data ?? "", "inventory", true, []),
-    enderchest: processItems(INVENTORY?.ender_chest_contents?.data ?? "", "enderchest", true, []),
-    armor: processItems(INVENTORY?.inv_armor?.data ?? "", "armor", true, []),
-    equipment: processItems(INVENTORY?.equipment_contents?.data ?? "", "equipment", true, []),
-    personal_vault: processItems(INVENTORY?.personal_vault_contents?.data ?? "", "personal_vault", true, []),
-    wardrobe: processItems(INVENTORY?.wardrobe_contents?.data ?? "", "wardrobe", true, []),
+    inventory: INVENTORY?.inv_contents?.data ?? "",
+    enderchest: INVENTORY?.ender_chest_contents?.data ?? "",
+    armor: INVENTORY?.inv_armor?.data ?? "",
+    equipment: INVENTORY?.equipment_contents?.data ?? "",
+    personal_vault: INVENTORY?.personal_vault_contents?.data ?? "",
+    wardrobe: INVENTORY?.wardrobe_contents?.data ?? "",
 
     // BAGS
-    potion_bag: processItems(INVENTORY?.bag_contents?.potion_bag?.data ?? "", "potion_bag", true, []),
-    talisman_bag: processItems(INVENTORY?.bag_contents?.talisman_bag?.data ?? "", "talisman_bag", true, []),
-    fishing_bag: processItems(INVENTORY?.bag_contents?.fishing_bag?.data ?? "", "fishing_bag", true, []),
-    sacks_bag: processItems(INVENTORY?.bag_contents?.sacks_bag?.data ?? "", "sacks_bag", true, []),
-    quiver: processItems(INVENTORY?.bag_contents?.quiver?.data ?? "", "quiver", true, []),
+    potion_bag: INVENTORY?.bag_contents?.potion_bag?.data ?? "",
+    talisman_bag: INVENTORY?.bag_contents?.talisman_bag?.data ?? "",
+    fishing_bag: INVENTORY?.bag_contents?.fishing_bag?.data ?? "",
+    sacks_bag: INVENTORY?.bag_contents?.sacks_bag?.data ?? "",
+    quiver: INVENTORY?.bag_contents?.quiver?.data ?? "",
 
     // BACKPACKS
-    backpack: {} as Record<string, ProcessedItem[]>,
-
-    // MUSEUM
-    museumItems: userMuseum ? decodeMusemItems(userMuseum, false, []) : null
+    ...Object.entries(INVENTORY?.backpack_contents ?? {}).reduce((acc, [key, value]) => {
+      acc[`backpack_${key}`] = value.data ?? "";
+      return acc;
+    }, {}),
+    ...Object.entries(INVENTORY?.backpack_icons ?? {}).reduce((acc, [key, value]) => {
+      acc[`backpack_icon_${key}`] = value.data ?? "";
+      return acc;
+    }, {})
   };
 
-  const output = await Promise.all(Object.values(outputPromises)).then((values) => {
-    const output: Record<string, ProcessedItem[]> = {};
-
-    Object.keys(outputPromises).forEach((key, index) => {
-      if (values[index]) {
-        output[key] = values[index] as ProcessedItem[];
-      } else {
-        output[key] = [];
+  const entries = Object.entries(outputPromises);
+  const values = entries.map(([_, value]) => value);
+  const decodedItems = await decodeItems(values);
+  const newItems = await Promise.all(
+    entries.map(async ([key, _], idx) => {
+      if (!decodedItems[idx]) {
+        return [key, []];
       }
-    });
 
-    return output;
-  });
+      const processed = await processItems(decodedItems[idx], key, true, []);
+      return [key, processed];
+    })
+  );
 
-  if (INVENTORY?.backpack_icons) {
-    const backpackPromises = Object.entries(INVENTORY.backpack_icons).map(([index, icon]) => {
-      const backpackIndex = `slot_${index}`;
+  const output = { backpack: [] };
+  const backpackIconMap = new Map(newItems.filter(([key]) => key.startsWith("backpack_icon_")));
+  for (const [key, value] of newItems) {
+    if (!key.includes("backpack")) {
+      output[key] = value;
+      continue;
+    }
 
-      const itemPromise = processItems(icon?.data ?? "", `backpack_icon_${index}`, true, []);
-      const contentsPromise = processItems(INVENTORY?.backpack_contents?.[index]?.data ?? "", `backpack_${index}`, true, []);
+    if (key.startsWith("backpack_") && !key.includes("icon")) {
+      const backpackIndex = key.split("_").pop();
+      const iconKey = `backpack_icon_${backpackIndex}`;
+      const backpackIcon = backpackIconMap.get(iconKey)[0];
 
-      return Promise.all([itemPromise, contentsPromise]).then(([backpackItem, containsItems]) => {
-        if (backpackItem) {
-          backpackItem[0].containsItems = containsItems;
-
-          output.backpack[backpackIndex] = backpackItem;
-        }
-      });
-    });
-
-    await Promise.all(backpackPromises);
-
-    output.backpack = Object.fromEntries(
-      Object.entries(output.backpack).sort((a, b) => {
-        const aSlot = parseInt(a[0].split("_")[1]);
-        const bSlot = parseInt(b[0].split("_")[1]);
-
-        return aSlot - bSlot;
-      })
-    );
+      if (backpackIcon) {
+        output.backpack.push({
+          ...backpackIcon,
+          containsItems: value
+        });
+      }
+    }
   }
+
+  output.museumItems = userMuseum ? await decodeMusemItems(userMuseum, false, []) : null;
 
   output.armor = getArmor(output.armor);
   output.equipment = getEquipment(output.equipment);
   output.wardrobe = getWardrobe(output.wardrobe);
   output.getAllItems = () => {
-    const allItems = Object.values(output).flat(1).concat(Object.values(output.backpack).flat(1));
+    const allItems = Object.values(output).flat(1);
 
     return allItems;
   };
@@ -93,12 +93,11 @@ export async function getItems(userProfile: Member, userMuseum: MuseumRaw | null
   output.fishing_tools = getSkilllTools("fishing", allItems);
   output.pets = getPets(allItems);
 
-  const museum = output.museumItems ? await getMuseumItems(output.museumItems) : null;
-  output.museumItems = [...Object.values(museum?.museumItems.items), ...museum.museumItems.specialItems]
-    .filter((item) => item.borrowing === false)
+  const museum = output.museumItems ? getMuseumItems(output.museumItems) : null;
+  output.museumItems = [...Object.values(museum?.museumItems?.items ?? {}), ...(museum?.museumItems?.specialItems ?? [])]
+    .filter((item) => item && item.borrowing === false)
     .map((item) => item.items)
-    .flat()
-    .filter((item) => item !== undefined);
+    .flat();
   output.museum = museum?.inventory;
 
   return output;

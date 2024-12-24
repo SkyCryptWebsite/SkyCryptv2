@@ -213,3 +213,24 @@ export const SKYBLOCK_XP = {
 export const COSMETIC_SKILLS = ["runecrafting", "social"];
 
 export const INFINITE = ["dungeoneering", "skyblock_level"];
+
+export const SKILL_ICONS = {
+  skyblock_level: "/api/head/2e2cc42015e6678f8fd49ccc01fbf787f1ba2c32bcf559a015332fc5db50",
+  farming: "/api/item/GOLDEN_HOE",
+  combat: "/api/item/STONE_SWORD",
+  fishing: "/api/item/FISHING_ROD",
+  alchemy: "/api/item/BREWING_STAND",
+  runecrafting: "/api/item/MAGMA_CREAM",
+  taming: "/api/item/SPAWN_EGG",
+  mining: "/api/item/STONE_PICKAXE",
+  foraging: "/api/item/SAPLING:3",
+  enchanting: "/api/item/ENCHANTING_TABLE",
+  carpentry: "/api/item/CRAFTING_TABLE",
+  social: "/api/item/EMERALD",
+  dungeoneering: "/api/head/964e1c3e315c8d8fffc37985b6681c5bd16a6f97ffd07199e8a05efbef103793",
+  healer: "/api/potion/normal/2",
+  mage: "/api/item/BLAZE_ROD",
+  archer: "/api/item/BOW",
+  berserk: "/api/item/IRON_SWORD",
+  tank: "/api/item/LEATHER_CHESTPLATE"
+} as Record<string, string>;

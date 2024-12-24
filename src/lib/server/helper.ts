@@ -1,7 +1,8 @@
 import type { Item, ProcessedItem } from "$types/stats";
+import { format } from "date-fns";
 import { getPrices } from "skyhelper-networth";
-import { getTexture } from "../custom_resources";
 import * as constants from "./constants/constants";
+import { getTexture } from "./custom_resources";
 
 export * from "$lib/server/helper/cache";
 export * from "$lib/server/helper/item";
@@ -406,4 +407,12 @@ export function formatProgressBar(amount: number, total: number, completedColor 
   const emptyBars = barLength - progressBars;
 
   return `${`§${completedColor}§l§m-`.repeat(progressBars)}${`§${missingColor}§l§m-`.repeat(emptyBars)}§r`;
+}
+
+export function formatTimestamp(timestamp: number, formatType: string = "MMM d, yyyy, h:mm a") {
+  if (new Date(Number(timestamp)).toString() == "Invalid Date") {
+    return "Invalid Date";
+  }
+
+  return format(new Date(Number(timestamp)), formatType);
 }

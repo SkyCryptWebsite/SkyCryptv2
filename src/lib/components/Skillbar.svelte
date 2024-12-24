@@ -22,8 +22,7 @@
   <Tooltip.Root group="skills" openDelay={0} closeDelay={0}>
     <Tooltip.Trigger class="group-data-[maxed=true]:shine absolute bottom-0 left-0 z-20 flex size-9 items-center justify-center rounded-full p-1 drop-shadow group-data-[maxed=false]:bg-icon group-data-[maxed=true]:bg-maxed">
       <Avatar.Root class="select-none">
-        <!-- TODO: Add minecraft icons -->
-        <Avatar.Image class="pointer-events-none" />
+        <Avatar.Image loading="lazy" class="pointer-events-none size-[1.625rem]" src={skillData.texture} alt={skill} />
         <Avatar.Fallback>
           <BarChartHorizontal class="pointer-events-none size-6" />
         </Avatar.Fallback>
@@ -48,13 +47,13 @@
     <div class="absolute z-10 flex h-full w-full justify-center">
       <div class="text-xs font-semibold shadow-background/50 text-shadow">
         {#if $isHovered && !isMaxed}
-          {format(skillData.xpCurrent)} / {format(skillData.xpForNext)}
+          {format(skillData.xpCurrent, "0,0")} / {format(skillData.xpForNext)}
         {:else if !isMaxed}
           {formatNumber(skillData.xpCurrent)} / {formatNumber(skillData.xpForNext)}
         {/if}
 
         {#if $isHovered && isMaxed}
-          {format(skillData.xpCurrent)}
+          {format(skillData.xpCurrent, "0,0")}
         {:else if isMaxed}
           {formatNumber(skillData.xpCurrent)}
         {/if}

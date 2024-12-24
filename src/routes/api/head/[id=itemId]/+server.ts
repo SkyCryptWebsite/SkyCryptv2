@@ -1,6 +1,6 @@
-import type { RequestHandler } from "./$types";
-import { getHead } from "$lib/renderer";
+import { getHead } from "$lib/server/helper/renderer";
 import { error } from "@sveltejs/kit";
+import type { RequestHandler } from "./$types";
 
 // GET /api/head/[id=itemId]
 export const GET: RequestHandler = async ({ params }) => {

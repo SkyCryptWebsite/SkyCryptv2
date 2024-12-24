@@ -55,7 +55,7 @@ export function getBestiaryFamily(userProfile: Member, mobName: string) {
 }
 
 export function getBestiary(userProfile: Member) {
-  const bestiary = userProfile.bestiary.kills || {};
+  const bestiary = userProfile.bestiary?.kills || {};
 
   const categories = {} as BestiaryStats["categories"];
   for (const [category, categoryData] of Object.entries(NEU_CONSTANTS.get("bestiary").islands as NotEnoughUpdatesBestiaryConstants["islands"])) {

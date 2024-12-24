@@ -17,10 +17,10 @@ function markChildrenAsDonated(children: string, output: MuseumItems, decodedMus
   }
 }
 
-async function processMuseumItems(decodedMuseum: DecodedMuseumItems) {
+function processMuseumItems(decodedMuseum: DecodedMuseumItems) {
   const output = {} as MuseumItems;
   for (const item of MUSEUM.getAllItems()) {
-    const itemData = decodedMuseum.items[item];
+    const itemData = decodedMuseum.items?.[item];
     if (itemData === undefined && output[item] === undefined) {
       output[item] = {
         missing: true,
@@ -70,10 +70,10 @@ async function processMuseumItems(decodedMuseum: DecodedMuseumItems) {
       total: rarities.length
     },
     special: {
-      amount: decodedMuseum.special.length
+      amount: decodedMuseum.special?.length ?? 0
     },
     items: output,
-    specialItems: decodedMuseum.special,
+    specialItems: decodedMuseum.special ?? [],
     missing: {
       main: ["weapons", "armor", "rarities"].map((c) => getMissingItems(c as keyof typeof MUSEUM)).flat(),
       max: ["weapons", "armor", "rarities"].map((c) => getMaxMissingItems(c as keyof typeof MUSEUM)).flat()
@@ -111,8 +111,8 @@ function formatMuseumItemProgress(
   return presetItem;
 }
 
-export async function getMuseumItems(decodedMuseumItems: DecodedMuseumItems) {
-  const museumData = await processMuseumItems(decodedMuseumItems);
+export function getMuseumItems(decodedMuseumItems: DecodedMuseumItems) {
+  const museumData = processMuseumItems(decodedMuseumItems);
 
   const output = [];
   for (let i = 0; i < 6 * 9; i++) {

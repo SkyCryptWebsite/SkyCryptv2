@@ -8,10 +8,12 @@
   const misc = getContext<StatsType["misc"]>("misc");
 </script>
 
-<Items title="Endstone Protector">
-  <div slot="text">
-    {#each Object.entries(misc.endstone_protector) as [text, data]}
-      <AdditionStat text={text.replaceAll("_", " ")} data={format(data)} />
-    {/each}
-  </div>
-</Items>
+{#if misc.endstone_protector != null}
+  <Items title="Endstone Protector">
+    <div slot="text">
+      {#each Object.entries(misc.endstone_protector) as [text, data]}
+        <AdditionStat text={text.replaceAll("_", " ")} data={format(data)} />
+      {/each}
+    </div>
+  </Items>
+{/if}

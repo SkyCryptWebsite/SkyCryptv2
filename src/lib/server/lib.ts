@@ -1,3 +1,4 @@
+import { CACHED_EMOJIS } from "$constants/emojis";
 import { HYPIXEL_API_KEY } from "$env/static/private";
 import { isPlayer } from "$params/player";
 import { isUUID } from "$params/uuid";
@@ -27,9 +28,9 @@ export async function getProfiles(paramPlayer: string) {
   return output;
 }
 
-export async function fetchProfiles(uuid: string): Promise<Profile[]> {
+export async function fetchProfiles(uuid: string, options = { cache: false }): Promise<Profile[]> {
   if (!isUUID(uuid)) {
-    uuid = await getUUID(uuid);
+    uuid = await getUUID(uuid, options);
   }
 
   const cache = await REDIS.get(`PROFILES:${uuid}`);
@@ -57,13 +58,13 @@ export async function fetchProfiles(uuid: string): Promise<Profile[]> {
   return profiles;
 }
 
-export async function getUUID(paramPlayer: string) {
+export async function getUUID(paramPlayer: string, options = { cache: false }) {
   if (isUUID(paramPlayer)) {
     return paramPlayer;
   }
 
   const uuid = await REDIS.get(`UUID:${paramPlayer}`);
-  if (uuid) {
+  if (uuid && options.cache) {
     return uuid;
   }
 
@@ -83,7 +84,7 @@ export async function getUsername(paramPlayer: string, options = { cache: false 
   }
 
   const username = await REDIS.get(`USERNAME:${paramPlayer}`);
-  if (username || options.cache) {
+  if (username && options.cache) {
     return username ?? paramPlayer;
   }
 
@@ -99,11 +100,7 @@ export async function getUsername(paramPlayer: string, options = { cache: false 
 }
 
 async function resolveUsernameOrUUID(paramPlayer: string) {
-  if (isUUID(paramPlayer)) {
-    return { uuid: paramPlayer };
-  }
-
-  const response = await fetch(`https://mowojang.matdoes.dev/users/profiles/minecraft/${paramPlayer}`);
+  const response = await fetch(`https://mowojang.matdoes.dev/${paramPlayer}`);
   if (response.status === 204) {
     throw new SkyCryptError("Player not found");
   }
@@ -116,23 +113,22 @@ async function resolveUsernameOrUUID(paramPlayer: string) {
   return data;
 }
 
-export async function getProfile(uuid: string, profileId: string | null) {
-  const profiles = await fetchProfiles(uuid);
+export async function getProfile(uuid: string, profileId: string | null, options = { cache: false }) {
+  const profiles = await fetchProfiles(uuid, options);
 
   const profile = (profileId && profiles.find((p) => p.cute_name.toUpperCase() === profileId.toUpperCase() || p.profile_id === profileId)) ?? profiles.find((p) => p.selected);
-
   if (!profile) {
     throw new SkyCryptError("Profile not found");
   }
 
-  profile.uuid = await getUUID(uuid);
+  profile.uuid = await getUUID(uuid, options);
 
   return profile;
 }
 
-export async function fetchPlayer(uuid: string) {
+export async function fetchPlayer(uuid: string, options = { cache: false }) {
   if (!isUUID(uuid)) {
-    uuid = await getUUID(uuid);
+    uuid = await getUUID(uuid, options);
   }
 
   const cache = await REDIS.get(`PLAYER:${uuid}`);
@@ -179,4 +175,13 @@ export async function fetchMuseum(profileId: string) {
   REDIS.SETEX(`MUSEUM:${profileId}`, 60 * 30, JSON.stringify(members));
 
   return members;
+}
+
+export function getDisplayName(username: string, paramPlayer: string): string {
+  const emoji = CACHED_EMOJIS.get(paramPlayer);
+  if (emoji) {
+    return `${username} ${emoji}`;
+  }
+
+  return username;
 }

@@ -68,6 +68,7 @@ export type ProcessedItem = {
     display: {
       Lore: string[];
       Name: string;
+      color: string;
     };
     ExtraAttributes: {
       rarity_upgrades?: number;
@@ -101,6 +102,7 @@ export type ProcessedItem = {
     };
     ench?: string[];
   };
+  exp?: number;
   extra: {
     hpbs?: number;
     recombobulated?: boolean;
@@ -113,7 +115,7 @@ export type ProcessedItem = {
   };
   texture_path: string;
   display_name: string;
-  rarity: string;
+  rarity: string | null;
   recombobulated?: boolean;
   dungeon?: boolean;
   shiny?: boolean;
@@ -163,7 +165,7 @@ export type Items = {
   personal_vault: ProcessedItem[];
   inventory: ProcessedItem[];
   enderchest: ProcessedItem[];
-  backpack: Record<string, ProcessedItem>;
+  backpack: ProcessedItem[];
   equipment: {
     equipment: ProcessedItem[];
     stats: ItemStats;

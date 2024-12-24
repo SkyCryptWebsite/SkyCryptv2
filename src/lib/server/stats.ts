@@ -1,5 +1,5 @@
 import { REDIS } from "$lib/server/db/redis";
-import { getProfiles } from "$lib/server/lib";
+import { getDisplayName, getProfiles } from "$lib/server/lib";
 import * as stats from "$lib/server/stats/stats";
 import type { MuseumRawResponse, Profile, Stats } from "$types/global";
 import type { Player } from "$types/raw/player/lib";
@@ -36,6 +36,7 @@ export async function getStats(profile: Profile, player: Player, extra: { museum
   ]);
 
   const output = {
+    displayName: getDisplayName(player.displayname, profile.uuid),
     username: player.displayname,
     uuid: profile.uuid,
     profile_id: profile.profile_id,
@@ -66,7 +67,7 @@ export async function getStats(profile: Profile, player: Player, extra: { museum
     misc: stats.getMisc(userProfile, profile, player)
   };
 
-  await REDIS.SETEX(`STATS:${profile.uuid}`, 60 * 5, JSON.stringify(output));
+  REDIS.SETEX(`STATS:${profile.uuid}`, 60 * 5, JSON.stringify(output));
 
   return output;
 }

@@ -8,7 +8,7 @@ import path from "path";
 import RJSON from "relaxed-json";
 import UPNG from "upng-js";
 import util from "util";
-import { getCacheFilePath, getCacheFolderPath, getFolderPath, getId, getPath, getTextureValue, hasPath } from "./server/helper";
+import { getCacheFilePath, getCacheFolderPath, getFolderPath, getId, getPath, getTextureValue, hasPath } from "./helper";
 const mcData = minecraftData("1.8.9");
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment

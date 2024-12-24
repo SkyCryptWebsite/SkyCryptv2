@@ -1660,7 +1660,7 @@ class CrystalHollowsCrystals extends HotmItem {
       texture_path: "/api/head/ef7835fc9e6daf632160e9b7ff378788a408064cc75ebf9f5158e615bdd59603",
       skyblock_id: "hotm_crystal"
     };
-    this.crystals = data.crystals;
+    this.crystals = data.crystals ?? {};
   }
 
   get lore() {
