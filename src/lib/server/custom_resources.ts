@@ -638,79 +638,71 @@ const timeoutId = setTimeout(async () => {
 const regexCache = new Map<string, RegExp>();
 const memoizedResults = new Map<string, Partial<OutputTexture> | null>();
 
+const processMatchValues = (values: unknown[], regex: RegExp): boolean => {
+  const len = values.length;
+  const view = new DataView(new ArrayBuffer(len * 4));
+
+  for (let i = 0; i < len; i += 4) {
+    const chunk = values.slice(i, Math.min(i + 4, len));
+    let found = false;
+
+    for (let j = 0; j < chunk.length; j++) {
+      const str = chunk[j]?.toString().replace(removeFormatting, "") ?? "";
+      if (regex.test(str)) {
+        found = true;
+        break;
+      }
+      view.setUint32(i * 4, found ? 1 : 0);
+    }
+
+    if (found) return true;
+  }
+
+  return false;
+};
+
 function processTexturesFast(outputTexture: Partial<OutputTexture>, textures: ItemTexture[], pack: ResourcePack, item: Item): Partial<OutputTexture> {
   const targetWeight = outputTexture.weight ?? -Infinity;
   const targetFile = outputTexture.file ?? "";
-  if (textures[0]?.weight < targetWeight) {
-    return outputTexture;
-  }
+
+  if (textures[0]?.weight < targetWeight) return outputTexture;
 
   const itemTags = new Map<string, unknown>();
+  const matchBitMask = new Uint32Array(1);
 
-  mainLoop: for (const texture of textures) {
-    if (texture.weight < targetWeight || (texture.weight === targetWeight && texture.file < targetFile)) {
-      break;
-    }
+  for (const texture of textures) {
+    if (texture.weight < targetWeight || (texture.weight === targetWeight && texture.file < targetFile)) break;
 
     let matches = 0;
     const requiredMatches = texture.match.length;
+    matchBitMask[0] = 0;
 
-    const matchResults = new Uint32Array(Math.ceil(requiredMatches / 32));
-    for (const match of texture.match) {
+    for (let i = 0; i < requiredMatches; i++) {
+      const match = texture.match[i];
       const value = match.value.endsWith(".*") ? match.value.slice(0, -2) : match.value;
-      const valuePath = value.split(".");
 
+      const valuePath = value.split(".");
       const tagKey = valuePath.join(".");
+
       let path = itemTags.get(tagKey);
       if (path === undefined) {
-        if (!hasPath(item, "tag", ...valuePath)) {
-          continue mainLoop;
-        }
-
+        if (!hasPath(item, "tag", ...valuePath)) continue;
         path = getPath(item, "tag", ...valuePath);
         itemTags.set(tagKey, path);
       }
 
-      let regexPattern = regexCache.get(match.regex);
-      if (!regexPattern) {
+      let regex = regexCache.get(match.regex);
+      if (!regex) {
         const slash = match.regex.lastIndexOf("/");
-        regexPattern = new RegExp(match.regex.slice(1, slash), match.regex.slice(slash + 1));
-        regexCache.set(match.regex, regexPattern);
+        regex = new RegExp(match.regex.slice(1, slash), match.regex.slice(slash + 1));
+        regexCache.set(match.regex, regex);
       }
 
       const matchValues = Array.isArray(path) ? path : [path];
-      let matchFound = false;
-
-      // Use loop unrolling for small arrays
-      const len = matchValues.length;
-      if (len <= 4) {
-        for (let i = 0; i < len; i++) {
-          if (regexPattern.test(matchValues[i].toString().replace(removeFormatting, ""))) {
-            matchFound = true;
-            break;
-          }
-        }
-      } else {
-        // Use SIMD-like chunking for larger arrays
-        for (let i = 0; i < len; i += 4) {
-          const chunk = matchValues.slice(i, i + 4);
-          for (const val of chunk) {
-            if (regexPattern.test(val.toString().replace(removeFormatting, ""))) {
-              matchFound = true;
-              break;
-            }
-          }
-
-          if (matchFound) {
-            break;
-          }
-        }
-      }
-
-      if (!matchFound) {
-        continue mainLoop;
-      }
-      matches++;
+      if (processMatchValues(matchValues, regex)) {
+        matches++;
+        matchBitMask[0] |= 1 << i;
+      } else break;
     }
 
     if (matches === requiredMatches) {
@@ -723,41 +715,40 @@ function processTexturesFast(outputTexture: Partial<OutputTexture>, textures: It
 
 export function getTexture(item: ProcessedItem, { pack_ids = [], hotm = false }: getTextureParams = {}): Partial<OutputTexture> | null {
   const cacheKey = `${item.id}:${item.Damage ?? 0}:${getId(item)}:${getTextureValue(item as Item)}:${pack_ids.join(",")}`;
-  const cached = memoizedResults.get(cacheKey);
-  if (cached) {
-    return cached;
-  }
 
-  const exists = skyblockIDListMap.has(getId(item)) || textureValueListMap.has(getTextureValue(item as Item)) || itemIdListMap.has(`${item.id}:${item.Damage ?? 0}`);
+  const cached = memoizedResults.get(cacheKey);
+  if (cached !== undefined) return cached;
+
+  const exists = new Set([skyblockIDListMap.has(getId(item)), textureValueListMap.has(getTextureValue(item as Item)), itemIdListMap.has(`${item.id}:${item.Damage ?? 0}`)]).has(true);
+
   if (!exists && !hotm) {
     memoizedResults.set(cacheKey, null);
     return null;
   }
 
   let outputTexture: Partial<OutputTexture> = { weight: -9999 };
-
   const packIdsSet = new Set(pack_ids);
+
   const filteredPacks = pack_ids.length > 0 ? resourcePacks.filter((p) => !packIdsSet.has(p.config.id)).sort((a, b) => b.config.priority - a.config.priority) : resourcePacks;
 
   const uniquePacks = Array.from(new Map(filteredPacks.map((p) => [p.config.id, p])).values());
+
   for (const pack of uniquePacks) {
     const packId = pack.config.id;
-    const itemId = `${packId}:${getId(item)}`;
-    const textureValue = `${packId}:${getTextureValue(item as Item)}`;
-    const itemIdMap = `${packId}:${item.id}:${item.Damage ?? 0}`;
+    const keys = {
+      itemId: `${packId}:${getId(item)}`,
+      textureValue: `${packId}:${getTextureValue(item as Item)}`,
+      itemIdMap: `${packId}:${item.id}:${item.Damage ?? 0}`
+    };
 
-    const textures = [skyblockIDTextureMap.get(itemId), textureValueTextureMap.get(textureValue), itemIdTextureMap.get(itemIdMap)].filter(Boolean);
+    const textures = [skyblockIDTextureMap.get(keys.itemId), textureValueTextureMap.get(keys.textureValue), itemIdTextureMap.get(keys.itemIdMap)].filter(Boolean);
 
     for (const textureSet of textures) {
       outputTexture = processTexturesFast(outputTexture, textureSet!, pack, item as Item);
-      if (outputTexture.path) {
-        break;
-      }
+      if (outputTexture.path) break;
     }
 
-    if (outputTexture.path) {
-      break;
-    }
+    if (outputTexture.path) break;
   }
 
   if (!outputTexture.path) {
@@ -771,5 +762,6 @@ export function getTexture(item: ProcessedItem, { pack_ids = [], hotm = false }:
   return outputTexture;
 }
 
-// Clear memoization cache periodically to prevent memory leaks
-setInterval(() => memoizedResults.clear(), 300000);
+// Clear cache every 5 minutes (Memory leak)
+const CACHE_CLEAR_INTERVAL = 300000;
+setInterval(() => memoizedResults.clear(), CACHE_CLEAR_INTERVAL);
