@@ -2,7 +2,7 @@ import { fail, redirect } from "@sveltejs/kit";
 import { superValidate } from "sveltekit-superforms";
 import { zod } from "sveltekit-superforms/adapters";
 import type { Actions, PageServerLoad } from "./$types";
-import { Role } from "./+page.svelte";
+import { Role } from "./enums";
 import { schema } from "./schema";
 
 export const load = (async ({ fetch }) => {

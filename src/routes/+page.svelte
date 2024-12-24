@@ -1,12 +1,3 @@
-<script module lang="ts">
-  export enum Role {
-    MAINTAINER = "MAINTAINER",
-    FACILITATOR = "FACILITATOR",
-    CONTRIBUTOR = "CONTRIBUTOR",
-    FAVORITE = "FAVORITE"
-  }
-</script>
-
 <script lang="ts">
   import { getUsername } from "$lib/shared/helper";
   import { cn, flyAndScale } from "$lib/shared/utils";
@@ -20,7 +11,8 @@
   import { superForm } from "sveltekit-superforms";
   import { zodClient } from "sveltekit-superforms/adapters";
   import type { PageServerData } from "./$types";
-  import { schema } from "./schema.js";
+  import { Role } from "./enums";
+  import { schema } from "./schema";
 
   let { data }: { data: PageServerData } = $props();
 
@@ -37,67 +29,6 @@
     [Role.FAVORITE]: Star
   };
 </script>
-
-{#snippet profile(user: { id: string; name: string; quote?: string; role?: Role }, options?: { tip?: boolean; favorite?: boolean })}
-  <div class={cn("relative rounded-lg", { "transition-all duration-300 hover:scale-105": !options?.tip })}>
-    <Button.Root href={options?.tip ? "#" : `/stats/${user.id}`} class="relative flex min-w-0 items-center gap-4 rounded-lg p-5 backdrop-blur-lg backdrop-brightness-50">
-      <Avatar.Root class="size-16 shrink-0 rounded-lg bg-text/10">
-        <Avatar.Image src={options?.tip ? "https://mc-heads.net/avatar/bc8ea1f51f253ff5142ca11ae45193a4ad8c3ab5e9c6eec8ba7a4fcb7bac40/64" : `https://crafatar.com/avatars/${user.id}?size=64&overlay`} alt={user.name} class="aspect-square size-16 rounded-lg " />
-        <Avatar.Fallback class="flex h-full items-center justify-center text-lg font-semibold uppercase text-text/60">
-          {user.name.slice(0, 2)}
-        </Avatar.Fallback>
-      </Avatar.Root>
-      <div class="flex flex-col justify-center gap-0">
-        <div class="text-lg font-semibold text-text">
-          {user.name}
-        </div>
-        {#if user.quote}
-          <div class="text-pretty pr-4 text-sm font-medium text-text/80">{@html user.quote}</div>
-        {/if}
-      </div>
-    </Button.Root>
-    {#if user.role}
-      {@const Icon = iconMapper[user.role]}
-      <Tooltip.Root group="role" openDelay={0} closeDelay={0}>
-        <Tooltip.Trigger let:builder asChild>
-          <div
-            use:builder.action
-            {...builder}
-            class="absolute bottom-3 right-3"
-            role="button"
-            tabindex="0"
-            onclick={(e) => {
-              if (!options?.favorite) return;
-              favorites.set($favorites.filter((uuid) => uuid !== user.id));
-            }}>
-            <Icon class={cn("size-5", options?.favorite ? "fill-[#B0AEAE] stroke-[#B0AEAE]" : "text-text/60")} />
-          </div>
-        </Tooltip.Trigger>
-        <Tooltip.Content class="rounded-lg bg-background-grey p-4" transition={flyAndScale} transitionConfig={{ y: 8, duration: 150 }} sideOffset={6} side="top" align="center">
-          <Tooltip.Arrow />
-          <p class="font-semibold capitalize text-text/80">
-            {#if options?.favorite}
-              Favorited
-            {:else}
-              SkyCrypt {Role[user.role].toLowerCase()}
-            {/if}
-          </p>
-        </Tooltip.Content>
-      </Tooltip.Root>
-    {/if}
-  </div>
-{/snippet}
-
-{#snippet profileSkeleton()}
-  <div class="relative flex min-w-0 items-center gap-2 rounded-lg p-5 backdrop-blur-lg backdrop-brightness-50">
-    <div class="size-16 animate-pulse rounded-lg bg-text/10"></div>
-    <div class="flex flex-col gap-1">
-      <div class="h-6 w-24 animate-pulse rounded-lg bg-text/10"></div>
-      <div class="h-3 w-44 animate-pulse rounded-lg bg-text/10"></div>
-    </div>
-    <div class="absolute bottom-3 right-3 size-5 animate-pulse rounded-lg bg-text/10"></div>
-  </div>
-{/snippet}
 
 <main class="mx-auto mt-[48px] flex min-h-screen max-w-[68rem] flex-col justify-center gap-6 pb-[max(1.25rem+env(safe-area-inset-bottom))] pl-[max(1.25rem+env(safe-area-inset-left))] pr-[max(1.25rem+env(safe-area-inset-right))] pt-5 @container">
   <form method="POST" use:enhance class="flex w-full flex-col justify-center gap-6 rounded-lg py-6 text-3xl backdrop-blur-lg backdrop-brightness-50">
@@ -146,7 +77,7 @@
     {/if}
 
     {#await data.contributors}
-      {#each Array(3 * 4)}
+      {#each new Array(3 * 4) as _}
         {@render profileSkeleton()}
       {/each}
     {:then contributors}
@@ -156,3 +87,64 @@
     {/await}
   </div>
 </main>
+
+{#snippet profile(user: { id: string; name: string; quote?: string; role?: Role }, options?: { tip?: boolean; favorite?: boolean })}
+  <div class={cn("relative rounded-lg", { "transition-all duration-300 hover:scale-105": !options?.tip })}>
+    <Button.Root href={options?.tip ? "#" : `/stats/${user.id}`} class="relative flex min-w-0 items-center gap-4 rounded-lg p-5 backdrop-blur-lg backdrop-brightness-50">
+      <Avatar.Root class="size-16 shrink-0 rounded-lg bg-text/10">
+        <Avatar.Image src={options?.tip ? "https://mc-heads.net/avatar/bc8ea1f51f253ff5142ca11ae45193a4ad8c3ab5e9c6eec8ba7a4fcb7bac40/64" : `https://crafatar.com/avatars/${user.id}?size=64&overlay`} alt={user.name} class="aspect-square size-16 rounded-lg " />
+        <Avatar.Fallback class="flex h-full items-center justify-center text-lg font-semibold uppercase text-text/60">
+          {user.name.slice(0, 2)}
+        </Avatar.Fallback>
+      </Avatar.Root>
+      <div class="flex flex-col justify-center gap-0">
+        <div class="text-lg font-semibold text-text">
+          {user.name}
+        </div>
+        {#if user.quote}
+          <div class="text-pretty pr-4 text-sm font-medium text-text/80">{@html user.quote}</div>
+        {/if}
+      </div>
+    </Button.Root>
+    {#if user.role}
+      {@const Icon = iconMapper[user.role]}
+      <Tooltip.Root group="role" openDelay={0} closeDelay={0}>
+        <Tooltip.Trigger let:builder asChild>
+          <div
+            use:builder.action
+            {...builder}
+            class="absolute bottom-3 right-3"
+            role="button"
+            tabindex="0"
+            onclick={() => {
+              if (!options?.favorite) return;
+              favorites.set($favorites.filter((uuid) => uuid !== user.id));
+            }}>
+            <Icon class={cn("size-5", options?.favorite ? "fill-[#B0AEAE] stroke-[#B0AEAE]" : "text-text/60")} />
+          </div>
+        </Tooltip.Trigger>
+        <Tooltip.Content class="rounded-lg bg-background-grey p-4" transition={flyAndScale} transitionConfig={{ y: 8, duration: 150 }} sideOffset={6} side="top" align="center">
+          <Tooltip.Arrow />
+          <p class="font-semibold capitalize text-text/80">
+            {#if options?.favorite}
+              Favorited
+            {:else}
+              SkyCrypt {Role[user.role].toLowerCase()}
+            {/if}
+          </p>
+        </Tooltip.Content>
+      </Tooltip.Root>
+    {/if}
+  </div>
+{/snippet}
+
+{#snippet profileSkeleton()}
+  <div class="relative flex min-w-0 items-center gap-2 rounded-lg p-5 backdrop-blur-lg backdrop-brightness-50">
+    <div class="size-16 animate-pulse rounded-lg bg-text/10"></div>
+    <div class="flex flex-col gap-1">
+      <div class="h-6 w-24 animate-pulse rounded-lg bg-text/10"></div>
+      <div class="h-3 w-44 animate-pulse rounded-lg bg-text/10"></div>
+    </div>
+    <div class="absolute bottom-3 right-3 size-5 animate-pulse rounded-lg bg-text/10"></div>
+  </div>
+{/snippet}
