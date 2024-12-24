@@ -19,15 +19,15 @@
       {profile.username} hasn't visited the Crimson Isle yet.
     {:else}
       <AdditionStat text="Selected Faction" class="capitalize" data={isle.factions.selectedFaction} />
-      <AdditionStat text="Mage Reputation" data={isle.factions.magesReputation} />
-      <AdditionStat text="Barbarian Reputation" data={isle.factions.barbariansReputation} />
+      <AdditionStat text="Mage Reputation" data={format(isle.factions.magesReputation)} maxed={isle.factions.magesReputation >= 12000} />
+      <AdditionStat text="Barbarian Reputation" data={format(isle.factions.barbariansReputation)} maxed={isle.factions.barbariansReputation >= 12000} />
     {/if}
   </div>
 
   {#if isle.kuudra.totalKills}
     <div class="flex flex-col gap-4">
       <h3 class="text-xl font-semibold">Kuudra Completions</h3>
-      <AdditionStat text="Total Completions" data={isle.kuudra.totalKills} />
+      <AdditionStat text="Total Completions" data={format(isle.kuudra.totalKills)} />
       <div class="flex flex-wrap gap-4">
         {#each isle.kuudra.tiers as tier}
           {@const hasUnlocked = tier.kills}

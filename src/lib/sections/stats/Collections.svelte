@@ -15,7 +15,7 @@
 
 <Items title="Collections" class="flex-col">
   <div slot="text">
-    <AdditionStat text="Maxed Collections" data="{collections.maxedCollections} / {collections.totalCollections}" />
+    <AdditionStat text="Maxed Collections" data="{collections.maxedCollections} / {collections.totalCollections}" maxed={collections.maxedCollections === collections.totalCollections} />
   </div>
   {#each Object.entries(collections.categories) as [_, data]}
     <div class="flex items-center gap-1 text-base font-semibold uppercase">
