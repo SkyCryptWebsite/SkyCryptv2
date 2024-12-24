@@ -249,17 +249,6 @@ export const MUSEUM_INVENTORY = {
       progressType: "appraisal"
     },
     {
-      display_name: "Edit NPC Tags",
-      texture_path: "/api/item/NAME_TAG",
-      rarity: "uncommon",
-      tag: {
-        display: {
-          Lore: ["§7Edit the tags that appear above", "§7your NPC. Show off your SkyBlock", "§7progress with tags showing your", "§7highest collection, best Skill,", "§7and more!", "", "§cCOMING SOON"]
-        }
-      },
-      position: 45
-    },
-    {
       display_name: "Museum Rewards",
       texture_path: "/api/item/GOLD_BLOCK",
       rarity: "legendary",
