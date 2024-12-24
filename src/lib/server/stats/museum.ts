@@ -17,7 +17,7 @@ function markChildrenAsDonated(children: string, output: MuseumItems, decodedMus
   }
 }
 
-async function processMuseumItems(decodedMuseum: DecodedMuseumItems) {
+function processMuseumItems(decodedMuseum: DecodedMuseumItems) {
   const output = {} as MuseumItems;
   for (const item of MUSEUM.getAllItems()) {
     const itemData = decodedMuseum.items?.[item];
@@ -111,8 +111,8 @@ function formatMuseumItemProgress(
   return presetItem;
 }
 
-export async function getMuseumItems(decodedMuseumItems: DecodedMuseumItems) {
-  const museumData = await processMuseumItems(decodedMuseumItems);
+export function getMuseumItems(decodedMuseumItems: DecodedMuseumItems) {
+  const museumData = processMuseumItems(decodedMuseumItems);
 
   const output = [];
   for (let i = 0; i < 6 * 9; i++) {

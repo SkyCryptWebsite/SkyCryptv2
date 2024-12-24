@@ -1,59 +1,68 @@
 import * as helper from "$lib/server/helper";
 import type { DecodedMuseumItems } from "$types/global";
 import type { MuseumRaw } from "$types/raw/museum/lib";
-import { decodeItem } from "./decoding";
+import { decodeItems, decodeItemsObject } from "./decoding";
 import { processItems } from "./processing";
 
 export async function decodeMusemItems(museum: MuseumRaw, customTextures: boolean, packs: string[]): Promise<DecodedMuseumItems> {
   const output = { value: 0, items: {}, special: [] } as DecodedMuseumItems;
 
-  const itemPromises = Object.entries(museum.items ?? {}).map(async ([id, data]) => {
-    const {
-      donated_time: donatedTime,
-      borrowing: isBorrowing,
-      items: { data: rawData }
-    } = data;
+  const specialItems = museum.special.map((special) => special.items.data);
+  const museumItems = Object.fromEntries(Object.entries(museum.items).map(([key, value]) => [key, value.items.data]));
 
-    const decodedData = await decodeItem(rawData);
-    const encodedData = await processItems(decodedData, "museum", customTextures, packs);
+  const [decodedmuseumItems, decodedSpecialItems] = await Promise.all([decodeItemsObject(museumItems), decodeItems(specialItems)]);
 
-    if (donatedTime) {
-      // encodedData.map((i) => helper.addToItemLore(i, ["", `§7Donated: §c<local-time timestamp="${donatedTime}"></local-time>`]));
-    }
+  const [itemResults, specialResults] = await Promise.all([
+    Promise.all(
+      Object.entries(decodedmuseumItems).map(async ([id, itemData]) => {
+        const encodedData = await processItems(itemData, "museum", customTextures, packs);
 
-    if (isBorrowing) {
-      encodedData.map((i) => helper.addToItemLore(i, ["", `§7Status: §cBorrowing`]));
-    }
+        const { donated_time: donatedTime, borrowing: isBorrowing } = museum.items[id];
+        const items = encodedData
+          .filter((i) => i.id)
+          .map((i) => {
+            const itemLore = i.tag.display.Lore;
+            if (donatedTime) {
+              itemLore.push("", `§7Donated: §c${helper.formatTimestamp(donatedTime)}`);
+            }
+            if (isBorrowing) {
+              itemLore.push("", `§7Status: §cBorrowing`);
+            }
 
-    return {
-      id,
-      value: {
-        donated_time: donatedTime,
-        borrowing: isBorrowing ?? false,
-        items: encodedData.filter((i) => i.id)
-      }
-    };
-  });
+            return i;
+          });
 
-  const specialPromises = (museum.special ?? []).map(async (special) => {
-    const { donated_time: donatedTime, items } = special;
-    const data = await decodeItem(items.data);
-    const decodedData = await processItems(data, "museum", customTextures, packs);
+        return {
+          id,
+          donated_time: donatedTime,
+          borrowing: isBorrowing ?? false,
+          items
+        };
+      })
+    ),
+    Promise.all(
+      decodedSpecialItems.map(async (itemData, index) => {
+        const specialItem = museum.special[index];
+        const decodedData = await processItems(itemData, "museum", customTextures, packs);
 
-    if (donatedTime) {
-      // decodedData.map((i) => helper.addToItemLore(i, ["", `§7Donated: §c<local-time timestamp="${donatedTime}"></local-time>`]));
-    }
+        const { donated_time: donatedTime } = specialItem;
+        const items = decodedData
+          .filter((i) => i.id)
+          .map((i) => {
+            const itemLore = i.tag.display.Lore;
+            if (donatedTime) {
+              itemLore.push("", `§7Donated: §c${helper.formatTimestamp(donatedTime)}`);
+            }
+            return i;
+          });
 
-    return { donated_time: donatedTime, items: decodedData.filter((i) => i.id) };
-  });
+        return { donated_time: donatedTime, items };
+      })
+    )
+  ]);
 
-  const itemResults = await Promise.all(itemPromises);
-  itemResults.forEach(({ id, value }) => {
-    output.items[id] = value;
-  });
-
-  output.special = await Promise.all(specialPromises);
-
+  output.items = Object.fromEntries(itemResults.map((data) => [data.id, data]));
+  output.special = specialResults;
   output.value = museum.value;
 
   return output;
