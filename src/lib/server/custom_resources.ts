@@ -3,7 +3,6 @@ import fs from "fs-extra";
 import _ from "lodash";
 import mm from "micromatch";
 import minecraftData from "minecraft-data";
-import os from "os";
 import path from "path";
 import RJSON from "relaxed-json";
 import UPNG from "upng-js";
@@ -42,8 +41,6 @@ const readyPromise = new Promise((resolve) => {
     }
   }, 1000);
 });
-
-const removeFormatting = new RegExp("§[0-9a-z]{1}", "g");
 
 async function getFiles(dir: string, fileList: string[]) {
   const files = await fs.readdir(dir);

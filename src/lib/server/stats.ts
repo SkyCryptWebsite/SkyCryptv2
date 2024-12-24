@@ -19,9 +19,7 @@ export async function getStats(profile: Profile, player: Player, extra: { museum
   const userProfile = profile.members[profile.uuid];
   const userMuseum = extra.museum ? extra.museum[profile.uuid] : null;
 
-  const timeNowv2 = Date.now();
   const items = await stats.getItems(userProfile, userMuseum, ignoredPacks);
-  console.log(`[ITEMS] Took ${Date.now() - timeNowv2}ms`);
   // prettier-ignore
   const [profiles, mainStats, accessories, pets, collections] = await Promise.all([
   getProfiles(profile.uuid),
