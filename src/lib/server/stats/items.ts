@@ -10,7 +10,7 @@ import { decodeItems } from "./items/decoding";
 import { decodeMusemItems } from "./items/museum";
 import { getMuseumItems } from "./museum";
 
-export async function getItems(userProfile: Member, userMuseum: MuseumRaw | null): Items {
+export async function getItems(userProfile: Member, userMuseum: MuseumRaw | null, packs: string[]): Items {
   const INVENTORY = userProfile.inventory;
   const outputPromises = {
     // INVENTORIES
@@ -48,7 +48,7 @@ export async function getItems(userProfile: Member, userMuseum: MuseumRaw | null
         return [key, []];
       }
 
-      const processed = await processItems(decodedItems[idx], key, true, []);
+      const processed = await processItems(decodedItems[idx], key, true, packs);
       return [key, processed];
     })
   );

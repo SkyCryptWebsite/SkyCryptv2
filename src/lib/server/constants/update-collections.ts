@@ -1,9 +1,12 @@
+import { building } from "$app/environment";
 import type { Collection } from "$lib/server/constants/collections";
 import MONGO from "$lib/server/db/mongo";
 
 export const COLLECTIONS = new Map<string, Collection>();
 
 export async function updateCollections() {
+  if (building) return;
+
   const collections = await MONGO.collection("collections").findOne({});
   if (collections?.collections == null) {
     return;

@@ -5,7 +5,7 @@
   import Items from "$lib/layouts/stats/Items.svelte";
   import { formatNumber, getRarityClass } from "$lib/shared/helper";
   import { cn } from "$lib/shared/utils";
-  import type { Stats as StatsType } from "$lib/types/stats";
+  import type { ValidStats as StatsType } from "$lib/types/stats";
   import { Collapsible } from "bits-ui";
   import ChevronDown from "lucide-svelte/icons/chevron-down";
   import { getContext } from "svelte";
@@ -39,7 +39,7 @@
     </AdditionStat>
     <AdditionStat text="Pelts" data={profile.farming.pelts.toString()} />
     <AdditionStat text="Contests Attended" data={profile.farming.contestsAttended.toString()} />
-    <AdditionStat text="Unique Golds" data={profile.farming.uniqueGolds.toString()} />
+    <AdditionStat text="Unique Golds" data={profile.farming.uniqueGolds.toString()} maxed={profile.farming.uniqueGolds === 10} />
   </div>
 
   <div class="space-y-0.5">

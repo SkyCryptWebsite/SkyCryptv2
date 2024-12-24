@@ -1,7 +1,7 @@
 import { getBonusStat } from "$lib/shared/constants/stats";
-import type { Stats } from "$types/global";
+import type { ValidStats } from "$types/global";
 
-export function getPlayerStats(profile: Stats) {
+export function getPlayerStats(profile: ValidStats) {
   const stats = {
     health: { base: 100 },
     defense: { base: 0 },
@@ -122,7 +122,7 @@ export function getPlayerStats(profile: Stats) {
     stats.health.bestiary = Math.floor(profile.bestiary.level);
   }
 
-  if (profile.pets.petScore?.stats?.magic_find > 0) {
+  if (profile.pets.petScore && profile.pets.petScore.stats.magic_find > 0) {
     stats.magic_find.pet_score = profile.pets.petScore.stats.magic_find;
   }
 

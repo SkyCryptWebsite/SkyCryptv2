@@ -5,7 +5,7 @@
   import Items from "$lib/layouts/stats/Items.svelte";
   import { getRarityClass } from "$lib/shared/helper";
   import { cn } from "$lib/shared/utils";
-  import type { Stats as StatsType } from "$lib/types/stats";
+  import type { ValidStats as StatsType } from "$lib/types/stats";
   import { getContext } from "svelte";
 
   const profile = getContext<StatsType>("profile");

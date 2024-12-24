@@ -42,7 +42,7 @@ function getEnrichments(accessories: ProcessedItem[]) {
   for (const item of accessories) {
     const specialAccessory = constants.SPECIAL_ACCESSORIES[helper.getId(item)];
 
-    if (constants.RARITIES.indexOf(item.rarity) < constants.RARITIES.indexOf("legendary") || specialAccessory?.allowsEnrichment === false || item.isInactive === true) {
+    if (constants.RARITIES.indexOf(item.rarity ?? "common") < constants.RARITIES.indexOf("legendary") || specialAccessory?.allowsEnrichment === false || item.isInactive === true) {
       continue;
     }
 
@@ -95,8 +95,7 @@ function getMissing(items: ProcessedItem[], accessories: Accessory[]) {
 
     const object = {
       ...ACCESSORY,
-      display_name: ACCESSORY.name ?? null,
-      rarity: rarity
+      display_name: ACCESSORY.name ?? null
     };
 
     if ((constants.getUpgradeList(id) && constants.getUpgradeList(id)[0] !== id) || (ACCESSORY as SpecialAccessory).rarities) {
@@ -184,7 +183,7 @@ export async function getMissingAccessories(items: Accessories, userProfile: Mem
 
   output.magicalPower = {
     total: 0,
-    accessories: activeAccessories.reduce((a, b) => a + helper.getMagicalPower(b.rarity, helper.getId(b)), 0),
+    accessories: activeAccessories.reduce((a, b) => a + helper.getMagicalPower(b.rarity ?? "common", helper.getId(b)), 0),
     abiphone: abiphoneContacts ? Math.floor(abiphoneContacts / 2) : 0,
     riftPrism: riftPrism ? 11 : 0,
     hegemony: {

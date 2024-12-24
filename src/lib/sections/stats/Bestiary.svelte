@@ -3,7 +3,7 @@
   import Chip from "$lib/components/Chip.svelte";
   import Items from "$lib/layouts/stats/Items.svelte";
   import { cn } from "$lib/shared/utils";
-  import type { Stats as StatsType } from "$lib/types/stats";
+  import type { ValidStats as StatsType } from "$lib/types/stats";
   import { format } from "numerable";
   import { getContext } from "svelte";
 
@@ -14,10 +14,10 @@
 
 <Items title="Bestiary" class="flex-col">
   <div slot="text">
-    <AdditionStat text="Bestiary Level" data="{bestiary.level} / {bestiary.maxLevel}" />
-    <AdditionStat text="Families Unlocked" data="{bestiary.familiesUnlocked} / {bestiary.totalFamilies}" />
-    <AdditionStat text="Families Completed" data="{bestiary.familiesCompleted} / {bestiary.totalFamilies}" />
-    <AdditionStat text="Families Tiers" data="{bestiary.familyTiers} / {bestiary.maxFamilyTiers}" />
+    <AdditionStat text="Bestiary Level" data="{bestiary.level} / {bestiary.maxLevel}" maxed={bestiary.level === bestiary.maxLevel} />
+    <AdditionStat text="Families Unlocked" data="{bestiary.familiesUnlocked} / {bestiary.totalFamilies}" maxed={bestiary.familiesUnlocked === bestiary.totalFamilies} />
+    <AdditionStat text="Families Completed" data="{bestiary.familiesCompleted} / {bestiary.totalFamilies}" maxed={bestiary.familiesCompleted === bestiary.totalFamilies} />
+    <AdditionStat text="Families Tiers" data="{bestiary.familyTiers} / {bestiary.maxFamilyTiers}" maxed={bestiary.familyTiers === bestiary.maxFamilyTiers} />
   </div>
   {#each Object.entries(bestiary.categories) as [_, data]}
     <div class="flex items-center gap-1 text-base font-semibold uppercase">

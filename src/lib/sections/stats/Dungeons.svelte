@@ -2,7 +2,7 @@
   import AdditionStat from "$lib/components/AdditionStat.svelte";
   import Skillbar from "$lib/components/Skillbar.svelte";
   import { formatNumber } from "$lib/shared/helper";
-  import type { Stats as StatsType } from "$lib/types/stats";
+  import type { ValidStats as StatsType } from "$lib/types/stats";
   import { Avatar, Collapsible } from "bits-ui";
   import { formatDate, formatDistanceToNowStrict } from "date-fns";
   import ChevronDown from "lucide-svelte/icons/chevron-down";
@@ -25,7 +25,7 @@
     </div>
     <div>
       <AdditionStat text="Selected Class" data={dungeons.classes.selectedClass} />
-      <AdditionStat text="Class Average" data={format(dungeons.classes.classAverage)} asterisk={true}>
+      <AdditionStat text="Class Average" data={format(dungeons.classes.classAverage)} asterisk={true} maxed={dungeons.classes.classAverage >= 50}>
         <div class="max-w-xs space-y-2 font-bold">
           <div>
             <h3 class="text-text/85">Total Class XP: {format(dungeons.classes.totalClassExp.toFixed(2))}</h3>
@@ -41,8 +41,8 @@
           </div>
         </div>
       </AdditionStat>
-      <AdditionStat text="Highest Floor Beaten (Normal)" data={format(dungeons.stats.highestFloorBeatenNormal)} />
-      <AdditionStat text="Highest Floor Beaten (Master)" data={format(dungeons.stats.highestFloorBeatenMaster)} />
+      <AdditionStat text="Highest Floor Beaten (Normal)" data={format(dungeons.stats.highestFloorBeatenNormal)} maxed={dungeons.stats.highestFloorBeatenNormal === 7} />
+      <AdditionStat text="Highest Floor Beaten (Master)" data={format(dungeons.stats.highestFloorBeatenMaster)} maxed={dungeons.stats.highestFloorBeatenMaster === 7} />
       <AdditionStat text="Secrets Found" data={format(dungeons.stats.secrets.found)} subData="({format(dungeons.stats.secrets.secretsPerRun.toFixed(2))} S/R)" />
     </div>
     <div>

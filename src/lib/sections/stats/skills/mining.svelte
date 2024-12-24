@@ -4,7 +4,7 @@
   import Items from "$lib/layouts/stats/Items.svelte";
   import { getRarityClass } from "$lib/shared/helper";
   import { cn } from "$lib/shared/utils";
-  import type { Stats as StatsType } from "$lib/types/stats";
+  import type { ValidStats as StatsType } from "$lib/types/stats";
   import { formatDate, formatDistanceStrict } from "date-fns";
   import { format } from "numerable";
   import { getContext } from "svelte";
@@ -33,7 +33,7 @@
 
 <h3 class="text-xl font-semibold">Dwarven Mines & Crystal Hollows</h3>
 <div class="space-y-0.5">
-  <AdditionStat text="Commissions Milestone" data={profile.mining.commissions.milestone.toString()} />
+  <AdditionStat text="Commissions Milestone" data={profile.mining.commissions.milestone.toString()} maxed={profile.mining.commissions.milestone === 6} />
   <AdditionStat text="Commissions" data={profile.mining.commissions.completions.toString()} asterisk={true}>Commissions from achievements across profiles</AdditionStat>
   <AdditionStat text="Crystal Hollows Pass" data={profile.mining.crystalHollows.crystalHollowsLastAccess > Date.now() - 5 * 60 * 60 * 1000 ? "Purchased" : "Expired"} asterisk={true}>
     {@const passActive = profile.mining.crystalHollows.crystalHollowsLastAccess > Date.now() - 5 * 60 * 60 * 1000}
@@ -102,9 +102,9 @@
 
 <h3 class="text-xl font-semibold">Heart of the Mountain</h3>
 <div class="space-y-0.5">
-  <AdditionStat text="Tier" data={profile.mining.level.level.toString()} />
+  <AdditionStat text="Tier" data={profile.mining.level.level.toString()} maxed={profile.mining.level.level === profile.mining.level.maxLevel} />
   <AdditionStat text="Token Of The Mountain" data={`${profile.mining.tokens.spent}/${profile.mining.tokens.total}`} />
-  <AdditionStat text="Peak Of The Mountain" data={`${profile.mining.peak_of_the_mountain.level}/${profile.mining.peak_of_the_mountain.maxLevel}`} />
+  <AdditionStat text="Peak Of The Mountain" data={`${profile.mining.peak_of_the_mountain.level}/${profile.mining.peak_of_the_mountain.maxLevel}`} maxed={profile.mining.peak_of_the_mountain.level === profile.mining.peak_of_the_mountain.maxLevel} />
   {#each Object.entries(profile.mining.powder) as [key, value]}
     <AdditionStat text={`${key} Powder`} data={format(value.available + value.spent)} asterisk={true}>
       <ul>

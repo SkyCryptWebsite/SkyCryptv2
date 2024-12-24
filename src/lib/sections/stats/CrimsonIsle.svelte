@@ -4,7 +4,7 @@
   import Items from "$lib/layouts/stats/Items.svelte";
   import { formatTime } from "$lib/shared/helper";
   import { cn } from "$lib/shared/utils";
-  import type { Stats as StatsType } from "$lib/types/stats";
+  import type { ValidStats as StatsType } from "$lib/types/stats";
   import { format } from "numerable";
   import { getContext } from "svelte";
 
@@ -19,8 +19,8 @@
       {profile.username} hasn't visited the Crimson Isle yet.
     {:else}
       <AdditionStat text="Selected Faction" class="capitalize" data={isle.factions.selectedFaction} />
-      <AdditionStat text="Mage Reputation" data={isle.factions.magesReputation} />
-      <AdditionStat text="Barbarian Reputation" data={isle.factions.barbariansReputation} />
+      <AdditionStat text="Mage Reputation" data={format(isle.factions.magesReputation)} maxed={isle.factions.magesReputation >= 12000} />
+      <AdditionStat text="Barbarian Reputation" data={format(isle.factions.barbariansReputation)} maxed={isle.factions.barbariansReputation >= 12000} />
     {/if}
   </div>
 

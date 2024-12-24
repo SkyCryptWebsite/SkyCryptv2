@@ -18,7 +18,7 @@
 
   import { formatNumber, getRarityClass, uniqBy } from "$lib/shared/helper";
   import { cn } from "$lib/shared/utils";
-  import type { Stats as StatsType } from "$lib/types/stats";
+  import type { ValidStats as StatsType } from "$lib/types/stats";
   import { Collapsible } from "bits-ui";
   import ChevronDown from "lucide-svelte/icons/chevron-down";
   import { getContext } from "svelte";
@@ -35,8 +35,8 @@
 {#if pets != null}
   <Items title="Pets">
     <div slot="text">
-      <AdditionStat text="Unique Pets" data={`${pets.amount} / ${pets.total}`} />
-      <AdditionStat text="Unique Pet Skins" data={`${pets.amountSkins} / ${pets.totalSkins}`} />
+      <AdditionStat text="Unique Pets" data={`${pets.amount} / ${pets.total}`} maxed={pets.amount === pets.total} />
+      <AdditionStat text="Unique Pet Skins" data={`${pets.amountSkins} / ${pets.totalSkins}`} maxed={pets.amountSkins === pets.totalSkins} />
       {#if pets.petScore != null}
         <AdditionStat text="Pet Score" data={`${pets.petScore.amount} (+${pets.petScore.stats.magic_find} MF) `} asterisk={true}>
           <div class="max-w-xs space-y-6 font-bold">
@@ -46,7 +46,7 @@
           </div>
         </AdditionStat>
       {/if}
-      <AdditionStat text="Total Candies Used" data={pets.totalCandyUsed} />
+      <AdditionStat text="Total Candies Used" data={pets.totalCandyUsed} maxed={pets.totalCandyUsed === 0} />
       <AdditionStat text="Total Pet XP" data={formatNumber(pets.totalPetExp)} />
     </div>
     <div>

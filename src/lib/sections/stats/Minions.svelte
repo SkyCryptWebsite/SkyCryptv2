@@ -3,7 +3,7 @@
   import Chip from "$lib/components/Chip.svelte";
   import Items from "$lib/layouts/stats/Items.svelte";
   import { cn } from "$lib/shared/utils";
-  import type { Stats as StatsType } from "$lib/types/stats";
+  import type { ValidStats as StatsType } from "$lib/types/stats";
   import { getContext } from "svelte";
 
   const profile = getContext<StatsType>("profile");
@@ -19,7 +19,7 @@
     <AdditionStat text="Unique Minions" data="{minions.maxedTiers} / {minions.totalTiers}" subData="({((100 * minions.maxedTiers) / minions.totalTiers).toFixed(0)}%)" maxed={minions.maxedTiers === minions.totalTiers} />
     <AdditionStat text="Minion Slots" data={minions.minionsSlots.current} subData="({minions.minionsSlots.next} to next slot)" />
     <AdditionStat text="Bonus Minion Slots" data="{minions.minionsSlots.bonusSlots} / 5" maxed={minions.minionsSlots.bonusSlots === 5} />
-    <AdditionStat text="Maxed Minions" data="{minions.maxedMinions} / {minions.totalMinions}" />
+    <AdditionStat text="Maxed Minions" data="{minions.maxedMinions} / {minions.totalMinions}" maxed={minions.maxedMinions === minions.totalMinions} />
   </div>
   {#each Object.entries(minions.minions) as [category, data]}
     <div class="flex items-center gap-1 text-base font-semibold uppercase">

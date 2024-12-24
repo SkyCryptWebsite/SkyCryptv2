@@ -4,7 +4,7 @@
   import Item from "$lib/components/Item.svelte";
   import Items from "$lib/layouts/stats/Items.svelte";
   import { RARITY_COLORS } from "$lib/shared/constants/items";
-  import type { Stats as StatsType } from "$lib/types/stats";
+  import type { ValidStats as StatsType } from "$lib/types/stats";
   import { Collapsible } from "bits-ui";
   import { getContext } from "svelte";
 
@@ -152,14 +152,18 @@
             {#if accessories.missing.length > 0}
               <Items subtitle="Missing Accessories">
                 {#each accessories.missing as accessory}
-                  <Item piece={accessory} />
+                  <div class="grayscale-[80%] hover:grayscale-0">
+                    <Item piece={accessory} />
+                  </div>
                 {/each}
               </Items>
             {/if}
             {#if accessories.upgrades.length > 0}
               <Items subtitle="Missing Accessory Upgrades">
                 {#each accessories.upgrades as accessory}
-                  <Item piece={accessory} />
+                  <div class="grayscale-[80%] hover:grayscale-0">
+                    <Item piece={accessory} />
+                  </div>
                 {/each}
               </Items>
             {/if}

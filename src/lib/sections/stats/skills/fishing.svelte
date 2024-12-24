@@ -5,7 +5,7 @@
   import Items from "$lib/layouts/stats/Items.svelte";
   import { getRarityClass, renderLore } from "$lib/shared/helper";
   import { cn } from "$lib/shared/utils";
-  import type { Stats as StatsType } from "$lib/types/stats";
+  import type { ValidStats as StatsType } from "$lib/types/stats";
   import { Avatar, Collapsible } from "bits-ui";
   import ChevronDown from "lucide-svelte/icons/chevron-down";
   import Image from "lucide-svelte/icons/image";

@@ -3,6 +3,8 @@ import { getPreDecodedNetworth } from "skyhelper-networth";
 import { FAIRY_SOULS } from "../constants/constants";
 
 export async function getMainStats(userProfile: Member, profile: Profile, items: Items) {
+  // consolllle.log(ts);
+
   const bank = profile.banking?.balance ?? 0;
   const networthOptions = {
     onlyNetworth: true,
