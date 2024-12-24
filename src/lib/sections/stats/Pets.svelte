@@ -45,7 +45,6 @@
         </div>
       </AdditionStat>
       <AdditionStat text="Total Candies Used" data={pets.totalCandyUsed} />
-      <!-- will format later on after we fix canvas errors -->
       <AdditionStat text="Total Pet XP" data={formatNumber(pets.totalPetExp)} />
     </div>
     <div>
