@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { getContext } from "svelte";
   import type { Stats as StatsType } from "$lib/types/stats";
+  import { getContext } from "svelte";
   import Enchanting from "./skills/enchanting.svelte";
   import Farming from "./skills/farming.svelte";
   import Fishing from "./skills/fishing.svelte";
@@ -9,13 +9,13 @@
   const profile = getContext<StatsType>("profile");
 </script>
 
-{#if profile.items && profile.items.farming_tools && profile.farming}
-  <Farming />
+{#if profile.items && profile.items.mining_tools && profile.mining}
+  <Mining />
 {:else}
   <p>Something went wrong</p>
 {/if}
-{#if profile.items && profile.items.mining_tools && profile.mining}
-  <Mining />
+{#if profile.items && profile.items.farming_tools && profile.farming}
+  <Farming />
 {:else}
   <p>Something went wrong</p>
 {/if}
