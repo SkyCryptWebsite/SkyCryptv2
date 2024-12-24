@@ -35,7 +35,27 @@ export function getPlayerStats(profile: ValidStats) {
     alchemy_wisdom: { base: 0 },
     carpentry_wisdom: { base: 0 },
     runecrafting_wisdom: { base: 0 },
-    social_wisdom: { base: 0 }
+    social_wisdom: { base: 0 },
+    mining_spread: { base: 0 },
+    gemstone_spread: { base: 0 },
+    ore_fortune: { base: 0 },
+    block_fortune: { base: 0 },
+    dwarven_metal_fortune: { base: 0 },
+    gemstone_fortune: { base: 0 },
+    wheat_fortune: { base: 0 },
+    carrot_fortune: { base: 0 },
+    potato_fortune: { base: 0 },
+    pumpkin_fortune: { base: 0 },
+    melon_fortune: { base: 0 },
+    mushroom_fortune: { base: 0 },
+    cactus_fortune: { base: 0 },
+    sugar_cane_fortune: { base: 0 },
+    nether_wart_fortune: { base: 0 },
+    cocoa_beans_fortune: { base: 0 },
+    double_hook_chance: { base: 0 },
+    trophy_fish_chance: { base: 0 },
+    heat_resistance: { base: 0 },
+    fear: { base: 0 }
   } as Record<string, { base: number; [string: string]: number }>;
 
   if (profile.skyblock_level.level > 0) {

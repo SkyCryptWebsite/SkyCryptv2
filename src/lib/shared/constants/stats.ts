@@ -44,7 +44,8 @@ export const STATS_DATA: StatsData = {
     nameTiny: "CC",
     symbol: "☣",
     suffix: "%",
-    color: "text-minecraft-9"
+    color: "text-minecraft-9",
+    percent: true
   },
   crit_damage: {
     name: "Crit Damage",
@@ -53,7 +54,8 @@ export const STATS_DATA: StatsData = {
     nameTiny: "CD",
     symbol: "☠",
     suffix: "%",
-    color: "text-minecraft-9"
+    color: "text-minecraft-9",
+    percent: true
   },
   intelligence: {
     name: "Intelligence",
@@ -71,7 +73,8 @@ export const STATS_DATA: StatsData = {
     nameTiny: "Atk",
     symbol: "⚔",
     suffix: "%",
-    color: "text-minecraft-e"
+    color: "text-minecraft-e",
+    percent: true
   },
   sea_creature_chance: {
     name: "Sea Creature Chance",
@@ -80,7 +83,8 @@ export const STATS_DATA: StatsData = {
     nameTiny: "SCC",
     symbol: "α",
     suffix: "%",
-    color: "text-minecraft-3"
+    color: "text-minecraft-3",
+    percent: true
   },
   magic_find: {
     name: "Magic Find",
@@ -125,7 +129,8 @@ export const STATS_DATA: StatsData = {
     nameTiny: "AD",
     symbol: "๑",
     suffix: "%",
-    color: "text-minecraft-c"
+    color: "text-minecraft-c",
+    percent: true
   },
   mining_speed: {
     name: "Mining Speed",
@@ -365,10 +370,143 @@ export const STATS_DATA: StatsData = {
     name: "Cold Resistence",
     nameLore: "Cold Resistence",
     nameShort: "Cold Resistence",
-    nameTiny: "CR",
+    nameTiny: "CRes",
     symbol: "❄",
     suffix: "",
     color: "text-minecraft-b"
+  },
+  mining_spread: {
+    name: "Mining Spread",
+    nameLore: "Mining Spread",
+    nameTiny: "MS",
+    symbol: "▚",
+    color: "text-minecraft-e"
+  },
+  gemstone_spread: {
+    name: "Gemstone Spread",
+    nameLore: "Gemstone Spread",
+    nameTiny: "GS",
+    symbol: "▚",
+    color: "text-minecraft-e"
+  },
+  block_fortune: {
+    name: "Block Fortune",
+    nameLore: "Block Fortune",
+    nameTiny: "BFrt",
+    symbol: "☘",
+    color: "text-minecraft-6"
+  },
+  dwarven_metal_fortune: {
+    name: "Dwarven Metal Fortune",
+    nameLore: "Dwarven Metal Fortune",
+    nameTiny: "DMFrt",
+    symbol: "☘",
+    color: "text-minecraft-6"
+  },
+  gemstone_fortune: {
+    name: "Gemstone Fortune",
+    nameLore: "Gemstone Fortune",
+    nameTiny: "GFrt",
+    symbol: "☘",
+    color: "text-minecraft-6"
+  },
+  wheat_fortune: {
+    name: "Wheat Fortune",
+    nameLore: "Wheat Fortune",
+    nameTiny: "WFrt",
+    symbol: "☘",
+    color: "text-minecraft-6"
+  },
+  carrot_fortune: {
+    name: "Carrot Fortune",
+    nameLore: "Carrot Fortune",
+    nameTiny: "CFrt",
+    symbol: "☘",
+    color: "text-minecraft-6"
+  },
+  potato_fortune: {
+    name: "Potato Fortune",
+    nameLore: "Potato Fortune",
+    nameTiny: "PFrt",
+    symbol: "☘",
+    color: "text-minecraft-6"
+  },
+  pumpkin_fortune: {
+    name: "Pumpkin Fortune",
+    nameLore: "Pumpkin Fortune",
+    nameTiny: "PkFrt",
+    symbol: "☘",
+    color: "text-minecraft-6"
+  },
+  melon_fortune: {
+    name: "Melon Fortune",
+    nameLore: "Melon Fortune",
+    nameTiny: "MFrt",
+    symbol: "☘",
+    color: "text-minecraft-6"
+  },
+  mushroom_fortune: {
+    name: "Mushroom Fortune",
+    nameLore: "Mushroom Fortune",
+    nameTiny: "MsFrt",
+    symbol: "☘",
+    color: "text-minecraft-6"
+  },
+  cactus_fortune: {
+    name: "Cactus Fortune",
+    nameLore: "Cactus Fortune",
+    nameTiny: "CFrt",
+    symbol: "☘",
+    color: "text-minecraft-6"
+  },
+  sugar_cane_fortune: {
+    name: "Sugar Cane Fortune",
+    nameLore: "Sugar Cane Fortune",
+    nameTiny: "SCFrt",
+    symbol: "☘",
+    color: "text-minecraft-6"
+  },
+  nether_wart_fortune: {
+    name: "Nether Wart Fortune",
+    nameLore: "Nether Wart Fortune",
+    nameTiny: "NWFrt",
+    symbol: "☘",
+    color: "text-minecraft-6"
+  },
+  cocoa_beans_fortune: {
+    name: "Cocoa Beans Fortune",
+    nameLore: "Cocoa Beans Fortune",
+    nameTiny: "CBFrt",
+    symbol: "☘",
+    color: "text-minecraft-6"
+  },
+  double_hook_chance: {
+    name: "Double Hook Chance",
+    nameLore: "Double Hook Chance",
+    nameTiny: "DHC",
+    symbol: "⚓",
+    color: "text-minecraft-9"
+  },
+  trophy_fish_chance: {
+    name: "Trophy Fish Chance",
+    nameLore: "Trophy Fish Chance",
+    nameTiny: "TFC",
+    symbol: "♔",
+    color: "text-minecraft-6"
+  },
+  heat_resistance: {
+    name: "Heat Resistance",
+    nameLore: "Heat Resistance",
+    nameTiny: "HRes",
+    symbol: "♨",
+    color: "text-minecraft-c"
+  },
+  fear: {
+    name: "Fear",
+    nameLore: "Fear",
+    nameTiny: "Fr",
+    symbol: "☠",
+    color: "text-minecraft-5"
   }
 };
 export const STATS_BONUS = {
