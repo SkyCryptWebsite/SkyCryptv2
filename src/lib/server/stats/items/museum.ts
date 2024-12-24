@@ -7,8 +7,8 @@ import { processItems } from "./processing";
 export async function decodeMusemItems(museum: MuseumRaw, customTextures: boolean, packs: string[]): Promise<DecodedMuseumItems> {
   const output = { value: 0, items: {}, special: [] } as DecodedMuseumItems;
 
-  const specialItems = museum.special.map((special) => special.items.data);
-  const museumItems = Object.fromEntries(Object.entries(museum.items).map(([key, value]) => [key, value.items.data]));
+  const specialItems = museum.special ? museum.special.map((special) => special.items.data) : [];
+  const museumItems = museum.items ? Object.fromEntries(Object.entries(museum.items).map(([key, value]) => [key, value.items.data])) : {};
 
   const [decodedmuseumItems, decodedSpecialItems] = await Promise.all([decodeItemsObject(museumItems), decodeItems(specialItems)]);
 
