@@ -38,7 +38,8 @@
           {#snippet children({ props })}
             <div class="flex flex-col gap-6">
               <Label class="m-1 w-full text-center font-semibold">Show SkyBlock stats for</Label>
-              <input {...props} type="search" required placeholder="Enter username" class="relative h-16 flex-grow bg-text/10 text-center font-normal text-text focus-visible:outline-none" bind:value={$formData.query} />
+              <!-- svelte-ignore a11y_autofocus -->
+              <input {...props} type="search" required autofocus placeholder="Enter username" class="relative h-16 flex-grow bg-text/10 text-center font-normal text-text focus-visible:outline-none" bind:value={$formData.query} />
             </div>
           {/snippet}
         </Control>
