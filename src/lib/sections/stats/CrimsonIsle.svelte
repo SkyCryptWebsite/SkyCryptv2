@@ -1,6 +1,7 @@
 <script lang="ts">
   import AdditionStat from "$lib/components/AdditionStat.svelte";
   import Chip from "$lib/components/Chip.svelte";
+  import SectionSubtitle from "$lib/components/SectionSubtitle.svelte";
   import Items from "$lib/layouts/stats/Items.svelte";
   import { formatTime } from "$lib/shared/helper";
   import { cn } from "$lib/shared/utils";
@@ -13,7 +14,7 @@
   const isle = profile.crimson_isle;
 </script>
 
-<Items title="Collections" class="flex-col">
+<Items title="Crimson Isle" class="flex-col">
   <div slot="text">
     {#if isle.factions.selectedFaction === "none"}
       {profile.username} hasn't visited the Crimson Isle yet.
@@ -26,7 +27,7 @@
 
   {#if isle.kuudra.totalKills}
     <div class="flex flex-col gap-4">
-      <h3 class="text-xl font-semibold">Kuudra Completions</h3>
+      <SectionSubtitle class="my-0">Kuudra Completions</SectionSubtitle>
       <AdditionStat text="Total Completions" data={isle.kuudra.totalKills} />
       <div class="flex flex-wrap gap-4">
         {#each isle.kuudra.tiers as tier}
@@ -49,7 +50,7 @@
 
   {#if isle.dojo.totalPoints}
     <div class="flex flex-col gap-4">
-      <h3 class="text-xl font-semibold">Dojo Completions</h3>
+      <SectionSubtitle class="my-0">Dojo Completions</SectionSubtitle>
       <AdditionStat text="Total Points" data={format(isle.dojo.totalPoints)} maxed={isle.dojo.totalPoints >= 7000} />
       <div class="flex flex-wrap gap-4">
         {#each isle.dojo.challenges as challenge}
