@@ -1,5 +1,6 @@
 <script lang="ts">
   import Chip from "$lib/components/Chip.svelte";
+  import SectionSubtitle from "$lib/components/SectionSubtitle.svelte";
   import { cn } from "$lib/shared/utils";
   import type { ValidStats as StatsType } from "$lib/types/stats";
   import { format } from "numerable";
@@ -10,7 +11,7 @@
 
 {#if misc.essence != null}
   <div class="space-y-4">
-    <h3 class="text-xl font-semibold">Essence</h3>
+    <SectionSubtitle class="!uppercase">Essence</SectionSubtitle>
     <div class="flex flex-wrap gap-4">
       {#each misc.essence as essence}
         {@const hasUnlocked = essence.amount}

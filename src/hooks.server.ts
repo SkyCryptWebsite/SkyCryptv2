@@ -5,7 +5,6 @@ import { indexCollectons } from "$lib/server/db/mongo/index-collections";
 import { intializeNEURepository, parseNEURepository } from "$lib/server/helper/NotEnoughUpdates/parseNEURepository";
 import { updateNotEnoughUpdatesRepository } from "$lib/server/helper/NotEnoughUpdates/updateNEURepository";
 import type { ServerInit } from "@sveltejs/kit";
-import * as fs from "fs";
 import { getPrices } from "skyhelper-networth";
 import { startMongo } from "./lib/server/db/mongo";
 import { startRedis } from "./lib/server/db/redis";
@@ -27,17 +26,11 @@ export const init: ServerInit = async () => {
     console.log("[REDIS] Redis succeesfully connected");
   });
 
-  if (fs.existsSync("NotEnoughUpdates-REPO") === false) {
-    await intializeNEURepository().then(() => {
-      updateNotEnoughUpdatesRepository().then(() => {
-        parseNEURepository();
-      });
-    });
-  } else {
-    await updateNotEnoughUpdatesRepository().then(() => {
+  await intializeNEURepository().then(() => {
+    updateNotEnoughUpdatesRepository().then(() => {
       parseNEURepository();
     });
-  }
+  });
 
   await getPrices().then(() => {
     console.log("[NETWORTH] Prices sucessfully fetched!");

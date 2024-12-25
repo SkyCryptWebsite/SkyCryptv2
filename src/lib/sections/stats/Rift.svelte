@@ -1,6 +1,7 @@
 <script lang="ts">
   import AdditionStat from "$lib/components/AdditionStat.svelte";
   import Chip from "$lib/components/Chip.svelte";
+  import SectionSubtitle from "$lib/components/SectionSubtitle.svelte";
   import Items from "$lib/layouts/stats/Items.svelte";
   import { cn } from "$lib/shared/utils";
   import type { ValidStats as StatsType } from "$lib/types/stats";
@@ -45,7 +46,7 @@
     <AdditionStat text="McGrubber's Burgers" data="{rift.castle.grubberStacks} / {rift.castle.maxBurgers}" maxed={rift.castle.grubberStacks === rift.castle.maxBurgers} />
   </div>
   <div class="space-y-4">
-    <h3 class="text-xl font-semibold">Porthals</h3>
+    <SectionSubtitle class="my-0">Porthals</SectionSubtitle>
     <AdditionStat text="Porthals Unlocked" data={rift.porhtal.porhtalsFound} maxed={rift.porhtal.porhtalsFound === 7} />
     <div class="flex flex-wrap gap-4">
       {#each rift.porhtal.porhtals as porhtal}
@@ -61,7 +62,7 @@
     </div>
   </div>
   <div class="space-y-4">
-    <h3 class="text-xl font-semibold">Timecharms</h3>
+    <SectionSubtitle class="my-0">Timecharms</SectionSubtitle>
     <AdditionStat text="Timecharms Obtained" data={rift.timecharms.timecharmsFound} maxed={rift.timecharms.timecharmsFound === 8} />
     <div class="flex flex-wrap gap-4">
       {#each rift.timecharms.timecharms as timecharm}

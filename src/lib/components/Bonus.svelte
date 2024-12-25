@@ -17,7 +17,7 @@
   }
 </script>
 
-<p class={cn("space-x-0.5 font-bold capitalize leading-6 text-text/60", classNames)}>
+<p class={cn("my-4 space-x-0.5 font-bold capitalize leading-6 text-text/60", classNames)}>
   <span>{title}</span>
   {#each statsData as [key, value], index}
     <span class={STATS_DATA[key].color}>

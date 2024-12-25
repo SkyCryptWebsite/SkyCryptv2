@@ -1,5 +1,6 @@
 <script lang="ts">
   import Item from "$lib/components/Item.svelte";
+  import SectionTitle from "$lib/components/SectionTitle.svelte";
   import type { ProcessedItem, ValidStats as StatsType } from "$lib/types/stats";
   import { Avatar, ScrollArea, Tabs } from "bits-ui";
   import Image from "lucide-svelte/icons/image";
@@ -86,6 +87,8 @@
     easing: cubicInOut
   });
 </script>
+
+<SectionTitle class="pb-4">Inventory</SectionTitle>
 
 <Tabs.Root bind:value={$openTab} class="relative mb-0 rounded-lg bg-background/30 p-5 @container">
   <Tabs.List>

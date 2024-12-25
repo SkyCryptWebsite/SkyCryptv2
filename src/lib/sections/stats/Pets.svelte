@@ -2,6 +2,7 @@
   import AdditionStat from "$lib/components/AdditionStat.svelte";
   import Bonus from "$lib/components/Bonus.svelte";
   import Item from "$lib/components/Item.svelte";
+  import SectionSubtitle from "$lib/components/SectionSubtitle.svelte";
   import Items from "$lib/layouts/stats/Items.svelte";
   // import { PET_REWARDS } from "$lib/server/constants/pets";
   /*
@@ -49,9 +50,10 @@
       <AdditionStat text="Total Candies Used" data={pets.totalCandyUsed} maxed={pets.totalCandyUsed === 0} />
       <AdditionStat text="Total Pet XP" data={formatNumber(pets.totalPetExp)} />
     </div>
-    <div>
+    <div class="mb-4">
       {#if activePet != null}
-        <Items subtitle="Active Pet">
+        <SectionSubtitle class="mt-2">Active Pet</SectionSubtitle>
+        <Items>
           <div>
             <div class="flex items-center">
               <Item piece={activePet} />
@@ -60,12 +62,13 @@
                 <h4 class="text-xl font-medium capitalize text-text">Level {activePet.level.level}</h4>
               </div>
             </div>
-            <Bonus stats={activePet.stats} class="mt-3" />
+            <Bonus stats={activePet.stats} class="my-2" />
           </div>
         </Items>
 
         {#if uniquePets.length > 0 && uniquePets.find((pet) => !pet.active)}
-          <Items subtitle="Other Pets">
+          <SectionSubtitle class="mt-0">Other Pets</SectionSubtitle>
+          <Items>
             {#each uniquePets as pet}
               {#if !pet.active}
                 <div>
@@ -91,9 +94,9 @@
 
       {#if otherPets.length > 0}
         <Collapsible.Root>
-          <Collapsible.Trigger class="group flex items-center gap-0.5 pt-4">
-            <ChevronDown class="size-6 transition-all duration-300 group-data-[state=open]:-rotate-180" />
-            <h4 class="text-xl font-semibold capitalize text-text">Show More Pets</h4>
+          <Collapsible.Trigger class="group flex items-center gap-0.5 pt-1.5">
+            <ChevronDown class="size-5 transition-all duration-300 group-data-[state=open]:-rotate-180" />
+            <SectionSubtitle class="my-0">Show More Pets</SectionSubtitle>
           </Collapsible.Trigger>
           <Collapsible.Content class="mt-4 flex flex-wrap gap-4">
             <Items>
@@ -110,9 +113,9 @@
 
       {#if pets.missing.length > 0}
         <Collapsible.Root>
-          <Collapsible.Trigger class="group flex items-center gap-0.5 pt-4">
-            <ChevronDown class="size-6 transition-all duration-300 group-data-[state=open]:-rotate-180" />
-            <h4 class="text-xl font-semibold capitalize text-text">Missing Pets</h4>
+          <Collapsible.Trigger class="group flex items-center gap-0.5 pt-5">
+            <ChevronDown class="size-5 transition-all duration-300 group-data-[state=open]:-rotate-180" />
+            <SectionSubtitle class="my-0">Missing Pets</SectionSubtitle>
           </Collapsible.Trigger>
           <Collapsible.Content class="mt-4 flex flex-wrap gap-4">
             <Items>

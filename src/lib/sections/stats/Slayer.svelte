@@ -1,6 +1,7 @@
 <script lang="ts">
   import AdditionStat from "$lib/components/AdditionStat.svelte";
   import Bonus from "$lib/components/Bonus.svelte";
+  import SectionTitle from "$lib/components/SectionTitle.svelte";
   import type { ValidStats as StatsType } from "$lib/types/stats";
   import { Avatar, Progress } from "bits-ui";
   import Image from "lucide-svelte/icons/image";
@@ -12,9 +13,11 @@
 </script>
 
 <div class="space-y-4">
-  <h3 class="text-2xl uppercase">Slayer</h3>
+  <SectionTitle>Slayer</SectionTitle>
   {#if slayer}
-    <AdditionStat text="Total Slayer XP" data={format(slayer.totalSlayerExp)} />
+    <div class="pb-1.5 pt-4">
+      <AdditionStat text="Total Slayer XP" data={format(slayer.totalSlayerExp)} />
+    </div>
     <div class="flex flex-wrap gap-5">
       {#each Object.entries(slayer.data) as [key, value]}
         {#if value.level.xp > 0}

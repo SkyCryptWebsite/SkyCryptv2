@@ -1,4 +1,5 @@
 <script lang="ts">
+  import SectionTitle from "$lib/components/SectionTitle.svelte";
   import type { Stats as StatsType } from "$lib/types/stats";
   import { getContext, setContext } from "svelte";
   import Auctions from "./misc/auctions.svelte";
@@ -22,7 +23,7 @@
   setContext("misc", profile.misc);
 </script>
 
-<h3 class="text-2xl capitalize">Miscellaneous</h3>
+<SectionTitle class="mb-4">Miscellaneous</SectionTitle>
 
 <Essence />
 <!-- TODO: Essence Shop -->
