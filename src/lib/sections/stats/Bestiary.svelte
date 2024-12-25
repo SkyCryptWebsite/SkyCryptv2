@@ -1,15 +1,14 @@
 <script lang="ts">
+  import { getProfileCtx } from "$ctx/profile.svelte";
   import AdditionStat from "$lib/components/AdditionStat.svelte";
   import Chip from "$lib/components/Chip.svelte";
   import Items from "$lib/layouts/stats/Items.svelte";
   import { cn } from "$lib/shared/utils";
-  import type { ValidStats as StatsType } from "$lib/types/stats";
   import { format } from "numerable";
-  import { getContext } from "svelte";
 
-  const profile = getContext<StatsType>("profile");
+  const { profile } = getProfileCtx();
 
-  const bestiary = profile.bestiary;
+  const bestiary = $derived(profile.bestiary);
 </script>
 
 <Items title="Bestiary" class="flex-col">

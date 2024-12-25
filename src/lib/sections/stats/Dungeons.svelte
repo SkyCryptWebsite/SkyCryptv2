@@ -1,19 +1,18 @@
 <script lang="ts">
+  import { getProfileCtx } from "$ctx/profile.svelte";
   import AdditionStat from "$lib/components/AdditionStat.svelte";
   import SectionSubtitle from "$lib/components/SectionSubtitle.svelte";
   import SectionTitle from "$lib/components/SectionTitle.svelte";
   import Skillbar from "$lib/components/Skillbar.svelte";
   import { formatNumber } from "$lib/shared/helper";
-  import type { ValidStats as StatsType } from "$lib/types/stats";
   import { Avatar, Collapsible } from "bits-ui";
   import { formatDate, formatDistanceToNowStrict } from "date-fns";
   import ChevronDown from "lucide-svelte/icons/chevron-down";
   import Image from "lucide-svelte/icons/image";
   import { format } from "numerable";
-  import { getContext } from "svelte";
 
-  const profile = getContext<StatsType>("profile");
-  const dungeons = profile.dungeons;
+  const { profile } = getProfileCtx();
+  const dungeons = $derived(profile.dungeons);
 </script>
 
 <div class="space-y-4">

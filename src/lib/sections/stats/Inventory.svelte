@@ -1,84 +1,86 @@
 <script lang="ts">
+  import { getProfileCtx } from "$ctx/profile.svelte";
   import Item from "$lib/components/Item.svelte";
   import SectionTitle from "$lib/components/SectionTitle.svelte";
-  import type { ProcessedSkyBlockItem, ValidStats as StatsType } from "$lib/types/stats";
+  import type { ProcessedSkyBlockItem } from "$lib/types/stats";
   import { Avatar, ScrollArea, Tabs } from "bits-ui";
   import Image from "lucide-svelte/icons/image";
-  import { getContext } from "svelte";
   import { cubicInOut } from "svelte/easing";
   import { writable } from "svelte/store";
   import { crossfade, fade } from "svelte/transition";
 
-  const profile = getContext<StatsType>("profile");
+  const { profile } = getProfileCtx();
 
-  const inventory = profile.items.inventory.slice(9).concat(profile.items.inventory.slice(0, 9));
-  const backpack = profile.items.backpack;
-  const enderchest = profile.items.enderchest;
-  const vault = profile.items.personal_vault;
-  const accs = profile.items.talisman_bag;
-  const pots = profile.items.potion_bag;
-  const fish = profile.items.fishing_bag;
-  const quiver = profile.items.quiver;
-  const museum = profile.items.museum;
+  const inventory = $derived(profile.items.inventory.slice(9).concat(profile.items.inventory.slice(0, 9)));
+  const backpack = $derived(profile.items.backpack);
+  const enderchest = $derived(profile.items.enderchest);
+  const vault = $derived(profile.items.personal_vault);
+  const accs = $derived(profile.items.talisman_bag);
+  const pots = $derived(profile.items.potion_bag);
+  const fish = $derived(profile.items.fishing_bag);
+  const quiver = $derived(profile.items.quiver);
+  const museum = $derived(profile.items.museum);
 
   const openTab = writable<string>("inv");
 
-  const tabs = [
-    {
-      id: "inv",
-      icon: `https://crafatar.com/renders/head/${profile.uuid}?overlay`,
-      items: inventory,
-      hr: 27
-    },
-    {
-      id: "storage",
-      icon: "/api/item/chest",
-      items: backpack,
-      hr: 45
-    },
-    {
-      id: "ender",
-      icon: "/api/item/ender_chest",
-      items: enderchest,
-      hr: 45
-    },
-    {
-      id: "vault",
-      icon: "/api/head/f7aadff9ddc546fdcec6ed5919cc39dfa8d0c07ff4bc613a19f2e6d7f2593",
-      items: vault,
-      hr: 45
-    },
-    {
-      id: "accs",
-      icon: "/api/head/961a918c0c49ba8d053e522cb91abc74689367b4d8aa06bfc1ba9154730985ff",
-      items: accs,
-      hr: 45
-    },
-    {
-      id: "pots",
-      icon: "/api/head/9f8b82427b260d0a61e6483fc3b2c35a585851e08a9a9df372548b4168cc817c",
-      items: pots,
-      hr: 45
-    },
-    {
-      id: "fish",
-      icon: "/api/head/eb8e297df6b8dffcf135dba84ec792d420ad8ecb458d144288572a84603b1631",
-      items: fish,
-      hr: 45
-    },
-    {
-      id: "quiver",
-      icon: "/api/head/4cb3acdc11ca747bf710e59f4c8e9b3d949fdd364c6869831ca878f0763d1787",
-      items: quiver,
-      hr: 45
-    },
-    {
-      id: "museum",
-      icon: "/api/head/438cf3f8e54afc3b3f91d20a49f324dca1486007fe545399055524c17941f4dc",
-      items: museum,
-      hr: 54
-    }
-  ].filter((tab) => tab.items.length > 0);
+  const tabs = $derived(
+    [
+      {
+        id: "inv",
+        icon: `https://crafatar.com/renders/head/${profile.uuid}?overlay`,
+        items: inventory,
+        hr: 27
+      },
+      {
+        id: "storage",
+        icon: "/api/item/chest",
+        items: backpack,
+        hr: 45
+      },
+      {
+        id: "ender",
+        icon: "/api/item/ender_chest",
+        items: enderchest,
+        hr: 45
+      },
+      {
+        id: "vault",
+        icon: "/api/head/f7aadff9ddc546fdcec6ed5919cc39dfa8d0c07ff4bc613a19f2e6d7f2593",
+        items: vault,
+        hr: 45
+      },
+      {
+        id: "accs",
+        icon: "/api/head/961a918c0c49ba8d053e522cb91abc74689367b4d8aa06bfc1ba9154730985ff",
+        items: accs,
+        hr: 45
+      },
+      {
+        id: "pots",
+        icon: "/api/head/9f8b82427b260d0a61e6483fc3b2c35a585851e08a9a9df372548b4168cc817c",
+        items: pots,
+        hr: 45
+      },
+      {
+        id: "fish",
+        icon: "/api/head/eb8e297df6b8dffcf135dba84ec792d420ad8ecb458d144288572a84603b1631",
+        items: fish,
+        hr: 45
+      },
+      {
+        id: "quiver",
+        icon: "/api/head/4cb3acdc11ca747bf710e59f4c8e9b3d949fdd364c6869831ca878f0763d1787",
+        items: quiver,
+        hr: 45
+      },
+      {
+        id: "museum",
+        icon: "/api/head/438cf3f8e54afc3b3f91d20a49f324dca1486007fe545399055524c17941f4dc",
+        items: museum,
+        hr: 54
+      }
+    ].filter((tab) => tab.items.length > 0)
+  );
 
   const openStorageTab = writable<string>("0");
 
