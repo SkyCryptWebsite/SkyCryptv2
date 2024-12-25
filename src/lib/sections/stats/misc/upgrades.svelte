@@ -1,5 +1,6 @@
 <script lang="ts">
   import AdditionStat from "$lib/components/AdditionStat.svelte";
+  import SectionSubtitle from "$lib/components/SectionSubtitle.svelte";
   import Items from "$lib/layouts/stats/Items.svelte";
   import type { ValidStats as StatsType } from "$lib/types/stats";
   import { format } from "numerable";
@@ -9,7 +10,8 @@
 </script>
 
 {#if misc.profile_upgrades != null}
-  <Items title="Upgrades">
+  <SectionSubtitle class="!uppercase">Upgrades</SectionSubtitle>
+  <Items>
     <div slot="text">
       <AdditionStat text="Island Size" data="{format(misc.profile_upgrades.island_size)} / 10" maxed={misc.profile_upgrades.island_size === 10} />
       <AdditionStat text="Minion Slots" data="{format(misc.profile_upgrades.minion_slots)} / 5" maxed={misc.profile_upgrades.minion_slots === 5} />

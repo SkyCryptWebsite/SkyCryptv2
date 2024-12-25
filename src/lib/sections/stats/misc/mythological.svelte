@@ -1,5 +1,6 @@
 <script lang="ts">
   import AdditionStat from "$lib/components/AdditionStat.svelte";
+  import SectionSubtitle from "$lib/components/SectionSubtitle.svelte";
   import Items from "$lib/layouts/stats/Items.svelte";
   import type { ValidStats as StatsType } from "$lib/types/stats";
   import { format } from "numerable";
@@ -9,7 +10,8 @@
 </script>
 
 {#if misc.mythological_event != null}
-  <Items title="Mythological Event">
+  <SectionSubtitle class="!uppercase">Mythological Event</SectionSubtitle>
+  <Items>
     <div slot="text">
       <AdditionStat text="Kills" data={format(misc.mythological_event.kills)} />
 
