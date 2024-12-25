@@ -1,5 +1,5 @@
 import { CACHED_EMOJIS } from "$constants/emojis";
-import { HYPIXEL_API_KEY } from "$env/static/private";
+import { DISCORD_WEBHOOK, HYPIXEL_API_KEY } from "$env/static/private";
 import { isPlayer } from "$params/player";
 import { isUUID } from "$params/uuid";
 import type { Profile, ProfilesResponse } from "$types/global";
@@ -184,4 +184,43 @@ export function getDisplayName(username: string, paramPlayer: string): string {
   }
 
   return username;
+}
+
+export async function sendWebhookMessage(
+  e: Error,
+  {
+    uuid,
+    username,
+    profileCuteName,
+    profileId
+  }: {
+    uuid: string;
+    username: string;
+    profileCuteName: string;
+    profileId: string;
+  }
+) {
+  try {
+    if (DISCORD_WEBHOOK === undefined || username === undefined) {
+      return;
+    }
+
+    const description = [`Username: \`${username}\` (\`${uuid}\`)`, `Profile: \`${profileCuteName}\` (\`${profileId}\`)`, `Link: https://sky.shiiyu.moe/stats/${username}${profileCuteName ? `/${profileCuteName}` : ""}`, `\`\`\`${e.stack}\`\`\``];
+
+    const embed = {
+      title: "Error",
+      description: description.join("\n"),
+      color: 16711680
+    };
+
+    await fetch(DISCORD_WEBHOOK, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ embeds: [embed] })
+    });
+  } catch (e) {
+    console.error(e);
+  }
 }
