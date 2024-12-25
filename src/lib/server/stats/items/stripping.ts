@@ -82,7 +82,7 @@ export function stripAllItems(items: GetItemsItems) {
     ...Object.entries(items as unknown as GetItemsItems).reduce(
       (acc, [key, value]) => {
         if (!value) {
-          acc[key] = null;
+          acc[key] = [];
           return acc;
         }
 
@@ -100,7 +100,7 @@ export function stripAllItems(items: GetItemsItems) {
           const newKey = (isEquipmentCategory(key) ? key : key) as keyof GetItemsItems;
           const newValue = value as Record<string, unknown>;
           if (!newValue[newKey]) {
-            acc[key] = null;
+            acc[key] = [];
             return acc;
           }
 
