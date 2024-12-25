@@ -4,7 +4,7 @@
   import Item from "$lib/components/Item.svelte";
   import SectionSubtitle from "$lib/components/SectionSubtitle.svelte";
   import Items from "$lib/layouts/stats/Items.svelte";
-// import { PET_REWARDS } from "$lib/server/constants/pets";
+  // import { PET_REWARDS } from "$lib/server/constants/pets";
   /*
   <!-- TODO: Format this on the back end -->
   {#each Object.entries(PET_REWARDS) as [score, data]}

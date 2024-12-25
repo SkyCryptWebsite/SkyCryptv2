@@ -1,9 +1,9 @@
 import { REDIS } from "$lib/server/db/redis";
 import { getDisplayName, getProfiles } from "$lib/server/lib";
 import * as stats from "$lib/server/stats/stats";
-import type { GetItemsItems, MuseumRawResponse, Profile } from "$types/global";
+import type { MuseumRawResponse, Profile } from "$types/global";
 import type { Player } from "$types/raw/player/lib";
-import { stripItems } from "./stats/items/stripping";
+import { StripAllItems } from "./stats/items/stripping";
 
 async function processStats<T>(stats: Array<[string, () => Promise<T>]>, errors: Record<string, string>): Promise<Record<string, T | string>> {
   const result: Record<string, T | string> = {};
@@ -70,47 +70,7 @@ export async function getStats(profile: Profile, player: Player, extra: { museum
     members: Object.keys(profile.members).filter((uuid) => uuid !== profile.uuid),
     rank: stats.getRank(player),
     social: player.socialMedia?.links ?? {},
-    items: {
-      ...Object.entries(items).reduce((acc, [key, value]) => {
-        if (!value) {
-          acc[key] = null;
-          return acc;
-        }
-
-        if (["farming_tools", "mining_tools", "fishing_tools"].includes(key)) {
-          acc[key] = value;
-          return acc;
-        }
-
-        const items = value as unknown as GetItemsItems;
-        if (key === "wardrobe") {
-          const newItems = [];
-          for (const wardrobeSet of items.wardrobe) {
-            newItems.push(stripItems(wardrobeSet.filter((a) => a)));
-          }
-
-          acc[key] = newItems;
-        } else if (value.length > 0) {
-          acc[key] = stripItems(value);
-        } else {
-          let newKey = key;
-          if (["armor", "equipment", "weapons"].includes(key)) newKey = key;
-          if (!value[newKey]) {
-            acc[key] = null;
-            return acc;
-          }
-
-          acc[key] = {
-            ...value,
-            [key]: stripItems(value[newKey])
-          };
-        }
-
-        return acc;
-      }, {} as GetItemsItems),
-      pets: null,
-      museumItems: null
-    },
+    items: StripAllItems(items),
     ...results,
     errors
   };

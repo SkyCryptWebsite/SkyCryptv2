@@ -1,6 +1,7 @@
 import { isEnchanted } from "$lib/shared/helper";
-import type { ProcessedItem, ProcessedPet, ProcessedSkyBlockItem, ProcessedSkyblockPet } from "$types/stats";
+import type { GetItemsItems, ProcessedItem, ProcessedPet, ProcessedSkyBlockItem, ProcessedSkyblockPet } from "$types/stats";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const getNestedValue = (obj: any, path: string) => {
   return path.split(".").reduce((acc, part) => acc?.[part], obj);
 };
@@ -71,4 +72,49 @@ export function stripItems(items: Array<ProcessedItem | ProcessedPet>, keys?: st
   }
 
   return items.map((item) => stripItem(item, keys ?? []));
+}
+
+const isToolCategory = (category: string) => ["farming_tools", "mining_tools", "fishing_tools"].includes(category);
+const isEquipmentCategory = (category: string) => ["armor", "equipment", "weapons"].includes(category);
+
+export function StripAllItems(items: GetItemsItems) {
+  return {
+    ...Object.entries(items as unknown as GetItemsItems).reduce(
+      (acc, [key, value]) => {
+        if (!value) {
+          acc[key] = null;
+          return acc;
+        }
+
+        if (isToolCategory(key)) {
+          acc[key] = value;
+          return acc;
+        }
+
+        if (key === "wardrobe") {
+          const wardrobeItems = value as GetItemsItems["wardrobe"];
+          acc[key] = wardrobeItems.map((set) => stripItems(set.filter(Boolean)));
+        } else if (Array.isArray(value) && value.length > 0) {
+          acc[key] = stripItems(value as ProcessedItem[]);
+        } else {
+          const newKey = (isEquipmentCategory(key) ? key : key) as keyof GetItemsItems;
+          const newValue = value as Record<string, unknown>;
+          if (!newValue[newKey]) {
+            acc[key] = null;
+            return acc;
+          }
+
+          acc[key] = {
+            ...value,
+            [key]: stripItems(newValue[newKey] as ProcessedItem[])
+          };
+        }
+
+        return acc;
+      },
+      {} as Record<string, unknown>
+    ),
+    pets: null,
+    museumItems: null
+  };
 }
