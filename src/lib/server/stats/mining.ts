@@ -3,6 +3,7 @@ import { getLevelByXp } from "$lib/server/stats/leveling/leveling";
 import type { Member } from "$types/global";
 import type { Player } from "$types/raw/player/lib";
 import { getHotmItems } from "./hotm";
+import { stripItems } from "./items/stripping";
 
 /**
  * @param {number} hotmTier
@@ -119,6 +120,6 @@ export function getMining(userProfile: Member, player: Player, packs: string[]) 
       }
     },
     forge: getForge(userProfile),
-    hotm: getHotmItems(userProfile, packs)
+    hotm: stripItems(getHotmItems(userProfile, packs))
   };
 }

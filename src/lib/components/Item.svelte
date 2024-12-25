@@ -1,33 +1,32 @@
 <script lang="ts">
   import { page } from "$app/stores";
   import { RARITIES, RARITY_COLORS } from "$lib/shared/constants/items";
-  import { getRarityClass, isEnchanted, removeFormatting, renderLore } from "$lib/shared/helper";
+  import { getRarityClass, removeFormatting, renderLore } from "$lib/shared/helper";
   import { cn, flyAndScale } from "$lib/shared/utils";
-  import type { ProcessedItem, ProcessedPet } from "$lib/types/global";
+  import type { ProcessedSkyBlockItem, ProcessedSkyblockPet } from "$lib/types/global";
   import { Avatar, Tooltip } from "bits-ui";
   import Image from "lucide-svelte/icons/image";
 
-  export let piece: ProcessedItem | ProcessedPet;
+  export let piece: ProcessedSkyBlockItem | ProcessedSkyblockPet;
   export let isInventory = false;
   export let showCount = true;
   export let showRecombobulated = true;
 
-  const item = piece as ProcessedItem;
-  const processedPet = piece as unknown as ProcessedPet;
-  const itemName = item.tag?.display?.Name ?? piece.display_name ?? "???";
+  const item = piece as ProcessedSkyBlockItem;
+  const processedPet = piece as unknown as ProcessedSkyblockPet;
+  const itemName = piece.display_name ?? "???";
   const itemNameHtml = renderLore(itemName);
   const isMulticolor = (itemNameHtml.match(/<\/span>/g) || []).length > 1;
-  const bgColor = piece.rarity ? getRarityClass(piece.rarity.toLowerCase() as string, "bg") : "bg-background";
-  const enchanted = isEnchanted(item);
-  const recombobulated = showRecombobulated && item.recombobulated;
-  const shine = enchanted || item.shiny;
+  const bgColor = getRarityClass(piece.rarity ?? ("common".toLowerCase() as string), "bg");
+  const recombobulated = showRecombobulated && (item.recombobulated ?? false);
+  const enchanted = item.shiny;
 
-  const showNumbers = showCount && item.Count > 1;
+  const showNumbers = showCount && (item.Count ?? 1) > 1;
 </script>
 
 <div class="nice-colors-dark contents">
   <Tooltip.Root group="armor" openDelay={0} closeDelay={0}>
-    <Tooltip.Trigger class={cn(`relative flex aspect-square items-center justify-center overflow-clip rounded-lg`, isInventory ? "p-0" : `p-2 ${bgColor}`, { shine: shine })}>
+    <Tooltip.Trigger class={cn(`relative flex aspect-square items-center justify-center overflow-clip rounded-lg`, isInventory ? "p-0" : `p-2 ${bgColor}`, { shine: enchanted })}>
       <Avatar.Root>
         <Avatar.Image loading="lazy" src={$page.url.origin + piece.texture_path} alt={piece.display_name} class="data-[enchanted=true]:enchanted h-auto w-14 select-none" data-enchanted={enchanted} />
         <Avatar.Fallback>
@@ -39,7 +38,7 @@
       {/if}
       {#if showNumbers}
         <div class="absolute bottom-0.5 right-0.5 text-2xl font-semibold text-white text-shadow-[.1em_.1em_.1em_#000]">
-          {item.Count}
+          {item.Count ?? 1}
         </div>
       {/if}
     </Tooltip.Trigger>
@@ -57,8 +56,8 @@
         </p>
       </div>
       <div class="nice-colors-auto p-6 font-semibold leading-snug">
-        {#if item.tag?.display?.Lore}
-          {#each item.tag.display.Lore as lore}
+        {#if item.lore}
+          {#each item.lore as lore}
             {@html renderLore(lore)}
           {/each}
         {:else if processedPet.lore}

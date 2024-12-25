@@ -16,10 +16,10 @@
 
 <Items title="Accessories">
   <div slot="text">
-    <AdditionStat text="Unique Accessories" data={`${accessories.unique} / ${accessories.total}`} />
-    <AdditionStat text="Completion" data={`${Math.round((accessories.unique / accessories.total) * 100)}%`} />
-    <AdditionStat text="Recombobulated" data={`${accessories.recombobulated} / ${accessories.totalRecombobulated}`} />
-    <AdditionStat text="Magical Power" data={accessories.magicalPower.total} asterisk={true}
+    <AdditionStat text="Unique Accessories" data={`${accessories.unique} / ${accessories.total}`} maxed={accessories.unique === accessories.total} />
+    <AdditionStat text="Completion" data={`${Math.round((accessories.unique / accessories.total) * 100)}%`} maxed={accessories.unique === accessories.total} />
+    <AdditionStat text="Recombobulated" data={`${accessories.recombobulated} / ${accessories.totalRecombobulated}`} maxed={accessories.recombobulated === accessories.totalRecombobulated} />
+    <AdditionStat text="Magical Power" data={accessories.magicalPower.total} asterisk={true} maxed={accessories.unique === accessories.total}
       ><div class="max-w-xs space-y-2 font-bold">
         <div>
           <h3 class="text-text/85">Accessories Breakdown</h3>

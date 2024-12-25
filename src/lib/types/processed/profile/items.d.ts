@@ -81,6 +81,7 @@ export type ProcessedItem = {
       uuid?: string;
       donated_museum?: boolean;
       timestamp?: number;
+      model?: string;
       petInfo: {
         uuuid: string;
         type: string;
@@ -137,6 +138,29 @@ export type ProcessedItem = {
   item_index: number;
 };
 
+export type ProcessedSkyBlockItem = {
+  display_name: string;
+  lore: string[];
+  rarity?: string;
+  recombobulated?: boolean;
+  Count?: number;
+  texture_path: string;
+  containsItems?: ProcessedSkyBlockItem[];
+  shiny?: boolean;
+  [key: string]: string | boolean;
+};
+
+export type ProcessedSkyblockPet = {
+  display_name: string;
+  lore: string[];
+  type: string;
+  rarity: string | null;
+  texture_path: string;
+  level: number;
+  active: boolean;
+  stats?: ItemStats;
+};
+
 export type getTextureParams = {
   pack_ids?: string[];
   hotm?: boolean;
@@ -154,7 +178,7 @@ export type Gemstone = {
   lore: string;
 };
 
-export type Items = {
+export type GetItemsItems = {
   armor: {
     armor: ProcessedItem[];
     stats: ItemStats;
@@ -196,6 +220,48 @@ export type Items = {
   museum: ProcessedItem[];
 };
 
+export type Items = {
+  armor: {
+    armor: ProcessedSkyBlockItem[];
+    stats: ItemStats;
+    set_name?: string;
+    set_rarity?: string;
+  };
+  talisman_bag: ProcessedSkyBlockItem[];
+  personal_vault: ProcessedSkyBlockItem[];
+  inventory: ProcessedSkyBlockItem[];
+  enderchest: ProcessedSkyBlockItem[];
+  backpack: ProcessedSkyBlockItem[];
+  equipment: {
+    equipment: ProcessedSkyBlockItem[];
+    stats: ItemStats;
+  };
+  wardrobe: ProcessedSkyBlockItem[][];
+  weapons: {
+    weapons: ProcessedSkyBlockItem[];
+    highest_priority_weapon: ProcessedSkyBlockItem;
+  };
+  farming_tools: {
+    highest_priority_tool: ProcessedSkyBlockItem | null;
+    tools: ProcessedSkyBlockItem[];
+  };
+  mining_tools: {
+    highest_priority_tool: ProcessedSkyBlockItem | null;
+    tools: ProcessedSkyBlockItem[];
+  };
+  fishing_tools: {
+    highest_priority_tool: ProcessedSkyBlockItem | null;
+    tools: ProcessedSkyBlockItem[];
+  };
+  pets: ProcessedSkyBlockItem[];
+  fishing_bag: ProcessedSkyBlockItem[];
+  potion_bag: ProcessedSkyBlockItem[];
+  quiver: ProcessedSkyBlockItem[];
+  // candy_inventory: ProcessedItem[];
+  museumItems: ProcessedSkyBlockItem[];
+  museum: ProcessedSkyBlockItem[];
+};
+
 export type SpecialAccessory = {
   id: string;
   rarity: string;
@@ -225,7 +291,7 @@ export type AccessoryRarities = {
   special: number;
   very_special: number;
   abicase: {
-    model: string;
+    model: string | null;
   };
   rift_prism: boolean;
 };
@@ -245,12 +311,14 @@ export type allAccessories = {
   texture?: string;
   material?: string;
   tier?: string;
+  display_name?: string;
+  name?: string;
 };
 
 export type AccessoriesOutput = {
-  accessories: ProcessedItem[];
-  missing: ProcessedItem[];
-  upgrades: ProcessedItem[];
+  accessories: ProcessedSkyBlockItem[];
+  missing: ProcessedSkyBlockItem[];
+  upgrades: ProcessedSkyBlockItem[];
   stats: ItemStats;
   enrichments: Record<string, number>;
   unique: number;

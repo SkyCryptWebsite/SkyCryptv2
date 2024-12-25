@@ -4,13 +4,13 @@ import { getArmor } from "$lib/server/stats/items/armor";
 import { getEquipment } from "$lib/server/stats/items/equipment";
 import { processItems } from "$lib/server/stats/items/processing";
 import { getWardrobe } from "$lib/server/stats/items/wardrobe";
-import type { Items, Member, MuseumRaw } from "$types/global";
+import type { GetItemsItems, Member, MuseumRaw } from "$types/global";
 import { getPets, getSkilllTools, getWeapons } from "./items/category";
 import { decodeItems } from "./items/decoding";
 import { decodeMusemItems } from "./items/museum";
 import { getMuseumItems } from "./museum";
 
-export async function getItems(userProfile: Member, userMuseum: MuseumRaw | null, packs: string[]): Items {
+export async function getItems(userProfile: Member, userMuseum: MuseumRaw | null, packs: string[]): GetItemsItems {
   const INVENTORY = userProfile.inventory;
   const outputPromises = {
     // INVENTORIES
@@ -25,7 +25,7 @@ export async function getItems(userProfile: Member, userMuseum: MuseumRaw | null
     potion_bag: INVENTORY?.bag_contents?.potion_bag?.data ?? "",
     talisman_bag: INVENTORY?.bag_contents?.talisman_bag?.data ?? "",
     fishing_bag: INVENTORY?.bag_contents?.fishing_bag?.data ?? "",
-    sacks_bag: INVENTORY?.bag_contents?.sacks_bag?.data ?? "",
+    // sacks_bag: INVENTORY?.bag_contents?.sacks_bag?.data ?? "",
     quiver: INVENTORY?.bag_contents?.quiver?.data ?? "",
 
     // BACKPACKS
@@ -80,13 +80,8 @@ export async function getItems(userProfile: Member, userMuseum: MuseumRaw | null
   output.armor = getArmor(output.armor);
   output.equipment = getEquipment(output.equipment);
   output.wardrobe = getWardrobe(output.wardrobe);
-  output.getAllItems = () => {
-    const allItems = Object.values(output).flat(1);
 
-    return allItems;
-  };
-
-  const allItems = output.getAllItems();
+  const allItems = Object.values(output).flat();
   output.weapons = getWeapons(allItems);
   output.farming_tools = getSkilllTools("farming", allItems);
   output.mining_tools = getSkilllTools("mining", allItems);

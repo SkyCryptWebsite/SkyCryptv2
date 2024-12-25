@@ -3,6 +3,7 @@ import { getDisplayName, getProfiles } from "$lib/server/lib";
 import * as stats from "$lib/server/stats/stats";
 import type { MuseumRawResponse, Profile } from "$types/global";
 import type { Player } from "$types/raw/player/lib";
+import { stripAllItems } from "./stats/items/stripping";
 
 async function processStats<T>(stats: Array<[string, () => Promise<T>]>, errors: Record<string, string>): Promise<Record<string, T | string>> {
   const result: Record<string, T | string> = {};
@@ -69,7 +70,7 @@ export async function getStats(profile: Profile, player: Player, extra: { museum
     members: Object.keys(profile.members).filter((uuid) => uuid !== profile.uuid),
     rank: stats.getRank(player),
     social: player.socialMedia?.links ?? {},
-    items,
+    items: stripAllItems(items),
     ...results,
     errors
   };

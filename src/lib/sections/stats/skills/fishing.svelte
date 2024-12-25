@@ -38,7 +38,7 @@
       {#if highestPriorityFishingTool}
         <p class="space-x-0.5 font-bold capitalize leading-6 text-text/60">
           <span>Active Rod:</span>
-          <span class={cn(getRarityClass(highestPriorityFishingTool.rarity ?? "", "text"))}>{highestPriorityFishingTool.display_name}</span>
+          <span class={cn(getRarityClass(highestPriorityFishingTool.rarity ?? "common", "text"))}>{highestPriorityFishingTool.display_name}</span>
         </p>
       {/if}
     </div>
