@@ -77,7 +77,7 @@ export function stripItems(items: Array<ProcessedItem | ProcessedPet>, keys?: st
 const isToolCategory = (category: string) => ["farming_tools", "mining_tools", "fishing_tools"].includes(category);
 const isEquipmentCategory = (category: string) => ["armor", "equipment", "weapons"].includes(category);
 
-export function StripAllItems(items: GetItemsItems) {
+export function stripAllItems(items: GetItemsItems) {
   return {
     ...Object.entries(items as unknown as GetItemsItems).reduce(
       (acc, [key, value]) => {
