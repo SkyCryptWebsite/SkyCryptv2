@@ -8,7 +8,7 @@
   import { format } from "numerable";
 
   const { profile } = getProfileCtx();
-  const slayer = profile.slayer;
+  const slayer = $derived(profile.slayer);
 </script>
 
 <div class="space-y-4">

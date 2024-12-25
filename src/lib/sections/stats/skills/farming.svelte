@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { getProfileCtx } from "$ctx/profile.svelte";
   import AdditionStat from "$lib/components/AdditionStat.svelte";
   import Chip from "$lib/components/Chip.svelte";
   import Item from "$lib/components/Item.svelte";
@@ -9,11 +10,10 @@
   import { Collapsible } from "bits-ui";
   import ChevronDown from "lucide-svelte/icons/chevron-down";
 
-  import { getProfileCtx } from "$ctx/profile.svelte";
   const { profile } = getProfileCtx();
 
-  const highestPriorityFarmingTool = profile.items.farming_tools.highest_priority_tool;
-  const farmingTools = profile.items.farming_tools.tools;
+  const highestPriorityFarmingTool = $derived(profile.items.farming_tools.highest_priority_tool);
+  const farmingTools = $derived(profile.items.farming_tools.tools);
 </script>
 
 <SectionSubtitle>Farming</SectionSubtitle>

@@ -24,10 +24,10 @@
   import ChevronDown from "lucide-svelte/icons/chevron-down";
 
   const { profile } = getProfileCtx();
-  const pets = profile.pets;
-  const activePet = pets.pets.find((pet) => pet.active === true);
-  const uniquePets = uniqBy(pets.pets, "type");
-  const otherPets = pets.pets.filter((pet) => !uniquePets.includes(pet));
+  const pets = $derived(profile.pets);
+  const activePet = $derived(pets.pets.find((pet) => pet.active === true));
+  const uniquePets = $derived(uniqBy(pets.pets, "type"));
+  const otherPets = $derived(pets.pets.filter((pet) => !uniquePets.includes(pet)));
 
   // TODO: Once helper functions get moved to a global location, we can remove this function
 </script>

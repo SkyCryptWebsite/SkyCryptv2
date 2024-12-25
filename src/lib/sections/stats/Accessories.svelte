@@ -10,7 +10,7 @@
   import ChevronDown from "lucide-svelte/icons/chevron-down";
 
   const { profile } = getProfileCtx();
-  const accessories = profile.accessories;
+  const accessories = $derived(profile.accessories);
 </script>
 
 <Items title="Accessories">

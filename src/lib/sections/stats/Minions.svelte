@@ -9,7 +9,7 @@
 
   const { profile } = getProfileCtx();
 
-  const minions = profile.minions;
+  const minions = $derived(profile.minions);
 
   const romanTiers = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"];
   const arabicTiers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];

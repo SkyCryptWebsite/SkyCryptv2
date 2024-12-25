@@ -8,7 +8,7 @@
 
   const { profile } = getProfileCtx();
 
-  const bestiary = profile.bestiary;
+  const bestiary = $derived(profile.bestiary);
 </script>
 
 <Items title="Bestiary" class="flex-col">

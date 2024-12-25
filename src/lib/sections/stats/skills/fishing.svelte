@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { getProfileCtx } from "$ctx/profile.svelte";
   import AdditionStat from "$lib/components/AdditionStat.svelte";
   import Chip from "$lib/components/Chip.svelte";
   import Item from "$lib/components/Item.svelte";
@@ -12,11 +13,10 @@
   import { format } from "numerable";
   import { fade } from "svelte/transition";
 
-  import { getProfileCtx } from "$ctx/profile.svelte";
   const { profile } = getProfileCtx();
 
-  const highestPriorityFishingTool = profile.items.fishing_tools.highest_priority_tool;
-  const fishingTools = profile.items.fishing_tools.tools;
+  const highestPriorityFishingTool = $derived(profile.items.fishing_tools.highest_priority_tool);
+  const fishingTools = $derived(profile.items.fishing_tools.tools);
 </script>
 
 <SectionSubtitle>Fishing</SectionSubtitle>

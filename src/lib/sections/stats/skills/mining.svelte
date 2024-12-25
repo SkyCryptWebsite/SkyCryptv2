@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { getProfileCtx } from "$ctx/profile.svelte";
   import AdditionStat from "$lib/components/AdditionStat.svelte";
   import Item from "$lib/components/Item.svelte";
   import SectionSubtitle from "$lib/components/SectionSubtitle.svelte";
@@ -9,11 +10,10 @@
   import { format } from "numerable";
   import { fade } from "svelte/transition";
 
-  import { getProfileCtx } from "$ctx/profile.svelte";
   const { profile } = getProfileCtx();
 
-  const highestPriorityMiningTool = profile.items.mining_tools.highest_priority_tool;
-  const miningTools = profile.items.mining_tools.tools;
+  const highestPriorityMiningTool = $derived(profile.items.mining_tools.highest_priority_tool);
+  const miningTools = $derived(profile.items.mining_tools.tools);
 </script>
 
 <Items>

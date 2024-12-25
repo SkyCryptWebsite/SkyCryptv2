@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { getProfileCtx } from "$ctx/profile.svelte";
   import AdditionStat from "$lib/components/AdditionStat.svelte";
   import Chip from "$lib/components/Chip.svelte";
   import SectionSubtitle from "$lib/components/SectionSubtitle.svelte";
@@ -7,7 +8,6 @@
   import ChevronDown from "lucide-svelte/icons/chevron-down";
   import { fade } from "svelte/transition";
 
-  import { getProfileCtx } from "$ctx/profile.svelte";
   const { profile } = getProfileCtx();
 </script>
 

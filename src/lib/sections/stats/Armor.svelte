@@ -9,10 +9,10 @@
 
   const { profile } = getProfileCtx();
 
-  const armor = profile.items.armor;
-  const equipment = profile.items.equipment;
-  const wardrobe = profile.items.wardrobe;
-  const firstWardrobeItems = wardrobe.map((wardrobeItems) => wardrobeItems.find((piece) => piece));
+  const armor = $derived(profile.items.armor);
+  const equipment = $derived(profile.items.equipment);
+  const wardrobe = $derived(profile.items.wardrobe);
+  const firstWardrobeItems = $derived(wardrobe.map((wardrobeItems) => wardrobeItems.find((piece) => piece)));
 </script>
 
 <Items title="Armor">

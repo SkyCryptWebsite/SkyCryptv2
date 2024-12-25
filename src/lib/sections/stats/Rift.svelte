@@ -10,7 +10,7 @@
 
   const { profile } = getProfileCtx();
 
-  const rift = profile.rift;
+  const rift = $derived(profile.rift);
 </script>
 
 <Items title="Rift" class="flex-col">

@@ -12,6 +12,10 @@ class ProfileContext {
     this.#data = value;
   }
 
+  get misc() {
+    return this.#data.misc;
+  }
+
   constructor(profile: ValidStats) {
     this.#data = profile;
   }

@@ -10,7 +10,7 @@
 
   let { profile }: { profile: StatsType } = $props();
 
-  $effect(() => {
+  $effect.pre(() => {
     setProfileCtx(profile as ValidStats);
   });
 </script>

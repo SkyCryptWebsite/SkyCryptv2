@@ -1,7 +1,5 @@
 <script lang="ts">
-  import { getProfileCtx } from "$ctx/profile.svelte";
   import SectionTitle from "$lib/components/SectionTitle.svelte";
-  import { setContext } from "svelte";
   import Auctions from "./misc/auctions.svelte";
   import Claimed from "./misc/claimed.svelte";
   import Damage from "./misc/damage.svelte";
@@ -17,10 +15,6 @@
   import Races from "./misc/races.svelte";
   import Uncategorized from "./misc/uncategorized.svelte";
   import Upgrades from "./misc/upgrades.svelte";
-
-  const { profile } = getProfileCtx();
-
-  setContext("misc", profile.misc);
 </script>
 
 <SectionTitle class="mb-4">Miscellaneous</SectionTitle>
