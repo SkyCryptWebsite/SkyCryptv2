@@ -17,7 +17,7 @@
     const wanted = `/stats/${username}/${profile_cute_name || ""}`;
 
     if (current !== wanted) {
-      let newUrl = page.url.toString().replace(current, wanted);
+      const newUrl = page.url.toString().replace(current, wanted);
       goto(newUrl, { replaceState: true });
     }
   });
