@@ -1,14 +1,13 @@
 <script lang="ts">
+  import { getProfileCtx } from "$ctx/profile.svelte";
   import AdditionStat from "$lib/components/AdditionStat.svelte";
   import Chip from "$lib/components/Chip.svelte";
   import Items from "$lib/layouts/stats/Items.svelte";
   import { cn } from "$lib/shared/utils";
-  import type { ValidStats as StatsType } from "$lib/types/stats";
   import { Avatar, Button } from "bits-ui";
   import ExternalLink from "lucide-svelte/icons/external-link";
-  import { getContext } from "svelte";
 
-  const profile = getContext<StatsType>("profile");
+  const { profile } = getProfileCtx();
 
   const minions = profile.minions;
 

@@ -1,16 +1,13 @@
 <script lang="ts">
+  import { getProfileCtx } from "$ctx/profile.svelte";
   import Stat from "$lib/components/Stat.svelte";
   import { getPlayerStats } from "$lib/shared/player_stats";
-  import type { ValidStats as StatsType } from "$lib/types/stats";
   import { Collapsible } from "bits-ui";
   import { quadInOut } from "svelte/easing";
-
-  import { getContext } from "svelte";
   import { slide } from "svelte/transition";
 
-  const profile = getContext<StatsType>("profile");
-
-  const stats = getPlayerStats(profile);
+  const { profile } = getProfileCtx();
+  const stats = $derived(getPlayerStats(profile));
 </script>
 
 <div class="stats flex flex-col">

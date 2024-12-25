@@ -1,7 +1,7 @@
 <script lang="ts">
+  import { getProfileCtx } from "$ctx/profile.svelte";
   import SectionTitle from "$lib/components/SectionTitle.svelte";
-  import type { Stats as StatsType } from "$lib/types/stats";
-  import { getContext, setContext } from "svelte";
+  import { setContext } from "svelte";
   import Auctions from "./misc/auctions.svelte";
   import Claimed from "./misc/claimed.svelte";
   import Damage from "./misc/damage.svelte";
@@ -18,7 +18,7 @@
   import Uncategorized from "./misc/uncategorized.svelte";
   import Upgrades from "./misc/upgrades.svelte";
 
-  const profile = getContext<StatsType>("profile");
+  const { profile } = getProfileCtx();
 
   setContext("misc", profile.misc);
 </script>

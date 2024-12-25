@@ -1,14 +1,13 @@
 <script lang="ts">
+  import { getProfileCtx } from "$ctx/profile.svelte";
   import AdditionStat from "$lib/components/AdditionStat.svelte";
   import Bonus from "$lib/components/Bonus.svelte";
   import SectionTitle from "$lib/components/SectionTitle.svelte";
-  import type { ValidStats as StatsType } from "$lib/types/stats";
   import { Avatar, Progress } from "bits-ui";
   import Image from "lucide-svelte/icons/image";
   import { format } from "numerable";
-  import { getContext } from "svelte";
 
-  const profile = getContext<StatsType>("profile");
+  const { profile } = getProfileCtx();
   const slayer = profile.slayer;
 </script>
 

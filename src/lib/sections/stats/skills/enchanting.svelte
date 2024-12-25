@@ -2,14 +2,13 @@
   import AdditionStat from "$lib/components/AdditionStat.svelte";
   import Chip from "$lib/components/Chip.svelte";
   import SectionSubtitle from "$lib/components/SectionSubtitle.svelte";
-  import type { ValidStats as StatsType } from "$lib/types/stats";
   import { Collapsible } from "bits-ui";
   import { formatDistanceStrict } from "date-fns";
   import ChevronDown from "lucide-svelte/icons/chevron-down";
-  import { getContext } from "svelte";
   import { fade } from "svelte/transition";
 
-  const profile = getContext<StatsType>("profile");
+  import { getProfileCtx } from "$ctx/profile.svelte";
+  const { profile } = getProfileCtx();
 </script>
 
 <SectionSubtitle>Enchanting</SectionSubtitle>

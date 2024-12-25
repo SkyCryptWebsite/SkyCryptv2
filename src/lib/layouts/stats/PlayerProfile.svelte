@@ -1,16 +1,16 @@
 <script lang="ts">
+  import { getProfileCtx } from "$ctx/profile.svelte";
   import { flyAndScale } from "$lib/shared/utils";
   import { favorites } from "$lib/stores/favorites";
-  import type { ValidStats as StatsType } from "$lib/types/stats";
   import { Avatar, Button, DropdownMenu, Tooltip } from "bits-ui";
   import ChevronLeft from "lucide-svelte/icons/chevron-left";
   import ChevronRight from "lucide-svelte/icons/chevron-right";
   import ExternalLink from "lucide-svelte/icons/external-link";
   import Share from "lucide-svelte/icons/share";
   import Star from "lucide-svelte/icons/star";
-  import { getContext } from "svelte";
 
-  const profile = getContext<StatsType>("profile");
+  const { profile } = getProfileCtx();
+
   const iconMapper: Record<string, string> = {
     TWITTER: "x-twitter.svg",
     YOUTUBE: "youtube.svg",
@@ -45,7 +45,7 @@
     </DropdownMenu.Trigger>
 
     <DropdownMenu.Content class="z-[99999]  min-w-64 overflow-hidden rounded-lg bg-background-grey/95 text-3xl font-semibold" align="start" side="bottom" transition={flyAndScale} transitionConfig={{ y: -8, duration: 150 }}>
-      {#each profile.profiles as otherProfile}
+      {#each profile.profiles ?? [] as otherProfile}
         <DropdownMenu.Item href={`/stats/${profile.username}/${otherProfile.cute_name}`} class="flex items-center p-4 hover:bg-text/20" data-sveltekit-preload-code="viewport">
           {otherProfile.cute_name}
           {#if otherProfile.game_mode === "bingo"}

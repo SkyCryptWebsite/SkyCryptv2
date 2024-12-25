@@ -1,14 +1,13 @@
 <script lang="ts">
+  import { getProfileCtx } from "$ctx/profile.svelte";
   import Bonus from "$lib/components/Bonus.svelte";
   import Item from "$lib/components/Item.svelte";
   import Wardrobe from "$lib/components/Wardrobe.svelte";
   import Items from "$lib/layouts/stats/Items.svelte";
   import { getRarityClass } from "$lib/shared/helper";
   import { cn } from "$lib/shared/utils";
-  import type { ValidStats as StatsType } from "$lib/types/stats";
-  import { getContext } from "svelte";
 
-  const profile = getContext<StatsType>("profile");
+  const { profile } = getProfileCtx();
 
   const armor = profile.items.armor;
   const equipment = profile.items.equipment;

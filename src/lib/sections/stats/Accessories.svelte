@@ -1,16 +1,15 @@
 <script lang="ts">
+  import { getProfileCtx } from "$ctx/profile.svelte";
   import AdditionStat from "$lib/components/AdditionStat.svelte";
   import Bonus from "$lib/components/Bonus.svelte";
   import Item from "$lib/components/Item.svelte";
   import SectionSubtitle from "$lib/components/SectionSubtitle.svelte";
   import Items from "$lib/layouts/stats/Items.svelte";
   import { RARITY_COLORS } from "$lib/shared/constants/items";
-  import type { ValidStats as StatsType } from "$lib/types/stats";
   import { Collapsible } from "bits-ui";
   import ChevronDown from "lucide-svelte/icons/chevron-down";
-  import { getContext } from "svelte";
 
-  const profile = getContext<StatsType>("profile");
+  const { profile } = getProfileCtx();
   const accessories = profile.accessories;
 </script>
 
