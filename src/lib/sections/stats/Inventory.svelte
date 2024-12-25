@@ -1,7 +1,7 @@
 <script lang="ts">
   import Item from "$lib/components/Item.svelte";
   import SectionTitle from "$lib/components/SectionTitle.svelte";
-  import type { ProcessedItem, ValidStats as StatsType } from "$lib/types/stats";
+  import type { ProcessedSkyBlockItem, ValidStats as StatsType } from "$lib/types/stats";
   import { Avatar, ScrollArea, Tabs } from "bits-ui";
   import Image from "lucide-svelte/icons/image";
   import { getContext } from "svelte";
@@ -145,7 +145,7 @@
                 {/each}
               </Tabs.List>
               {#if tab.items[Number($openStorageTab)].containsItems}
-                {@const containedItems = tab.items[Number($openStorageTab)].containsItems as ProcessedItem[]}
+                {@const containedItems = tab.items[Number($openStorageTab)].containsItems as ProcessedSkyBlockItem[]}
                 <div class="grid grid-cols-[repeat(9,minmax(1.875rem,4.875rem))] place-content-center gap-1 pt-5 @md:gap-1.5 @xl:gap-2">
                   {#each containedItems as containedItem, index}
                     <Tabs.Content value={$openStorageTab.toString()}>
@@ -173,7 +173,7 @@
               {#if item.texture_path}
                 <div class="flex aspect-square items-center justify-center rounded bg-text/[0.04]" in:fade|global={{ duration: 300, delay: 5 * (index + 1) }}>
                   {#if tab.id === "inv"}
-                    <Item piece={{ ...item, rarity: item.rarity ?? "uncommon" }} isInventory={true} showRecombobulated={false} />
+                    <Item piece={{ ...item, rarity: item.rarity ?? "uncommon" } as ProcessedSkyBlockItem} isInventory={true} showRecombobulated={false} />
                   {:else}
                     <Item piece={item} isInventory={true} showRecombobulated={false} />
                   {/if}

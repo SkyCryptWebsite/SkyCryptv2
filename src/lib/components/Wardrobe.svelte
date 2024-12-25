@@ -1,11 +1,11 @@
 <script lang="ts">
   import Item from "$lib/components/Item.svelte";
-  import type { ProcessedItem } from "$lib/types/global";
+  import type { ProcessedSkyBlockItem } from "$types/stats";
   import { Avatar, Collapsible } from "bits-ui";
   import { writable } from "svelte/store";
   import { slide } from "svelte/transition";
 
-  export let wardrobeItems: ProcessedItem[];
+  export let wardrobeItems: ProcessedSkyBlockItem[];
 
   const highestItem = wardrobeItems.find((piece) => piece);
   const pieces = ["helmet", "chestplate", "leggings", "boots"];

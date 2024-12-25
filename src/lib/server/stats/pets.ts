@@ -2,8 +2,9 @@ import * as constants from "$lib/server/constants/constants";
 import * as helper from "$lib/server/helper";
 import { NEU_CONSTANTS, NEU_ITEMS } from "$lib/server/helper/NotEnoughUpdates/parseNEURepository";
 import { formatNumber, uniqBy } from "$lib/shared/helper";
-import type { Member, Pet, Pets, ProcessedItem, ProcessedPet, Profile } from "$types/global";
+import type { Member, Pet, Pets, ProcessedItem, ProcessedPet, ProcessedSkyblockPet, Profile } from "$types/global";
 import { getItemNetworth } from "skyhelper-networth";
+import { stripItems } from "./items/stripping";
 
 let getMaxPetIdsCache = {} as { lastUpdated: number; data: Record<string, number> };
 function getMaxPetIds() {
@@ -357,8 +358,8 @@ export async function getPets(userProfile: Member, items: ProcessedItem[], profi
     await getItemNetworth(pet, { cache: true, returnItemData: false });
   }
 
-  output.pets = getProfilePets(pets);
-  output.missing = getMissingPets(output.pets, profile.game_mode);
+  output.pets = getProfilePets(pets) as unknown as ProcessedSkyblockPet[];
+  output.missing = getMissingPets(output.pets as unknown as ProcessedPet[], profile.game_mode) as unknown as ProcessedSkyblockPet[];
 
   const maxPetIds = getMaxPetIds();
   output.amount = uniqBy(output.pets, "type").length;
@@ -368,9 +369,12 @@ export async function getPets(userProfile: Member, items: ProcessedItem[], profi
   output.amountSkins = uniqBy(output.pets, "skin").length;
   output.totalSkins = getPetSkins().length;
 
-  output.petScore = getPetScore(output.pets);
-  output.totalPetExp = output.pets.reduce((a, b) => a + b.level.xp, 0);
-  output.totalCandyUsed = output.pets.reduce((a, b) => a + b.candyUsed, 0);
+  output.petScore = getPetScore(output.pets as unknown as ProcessedPet[]);
+  output.totalPetExp = (output.pets as unknown as ProcessedPet[]).reduce((a, b) => a + b.level.xp, 0);
+  output.totalCandyUsed = (output.pets as unknown as ProcessedPet[]).reduce((a, b) => a + b.candyUsed, 0);
+
+  output.pets = stripItems(output.pets as unknown as ProcessedPet[]) as unknown as ProcessedSkyblockPet[];
+  output.missing = stripItems(output.missing as unknown as ProcessedPet[]) as unknown as ProcessedSkyblockPet[];
 
   return output;
 }

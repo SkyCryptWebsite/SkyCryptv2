@@ -11,7 +11,7 @@
 <Items title="Weapons">
   <div slot="text">
     <!-- TODO: add colors later -->
-    <AdditionStat text="Active Weapon" data={profile.items.weapons.highest_priority_weapon.tag.display.Name} />
+    <AdditionStat text="Active Weapon" data={profile.items.weapons.highest_priority_weapon.display_name} />
   </div>
 
   {#each profile.items.weapons.weapons as weapon}

@@ -81,12 +81,12 @@ export function getPlayerStats(profile: ValidStats) {
   if (profile.pets.pets) {
     const activePet = profile.pets.pets.find((pet) => pet.active);
     if (activePet) {
-      for (const [stat, value] of Object.entries(activePet.stats)) {
-        if (stat in stats === false) {
+      for (const [stat, value] of Object.entries(activePet.stats ?? {})) {
+        if (stat in stats === false && value) {
           continue;
         }
 
-        stats[stat].active_pet = value;
+        stats[stat].active_pet = value ?? 0;
       }
     }
   }

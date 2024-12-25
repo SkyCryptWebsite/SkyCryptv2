@@ -4,7 +4,7 @@
   import Item from "$lib/components/Item.svelte";
   import SectionSubtitle from "$lib/components/SectionSubtitle.svelte";
   import Items from "$lib/layouts/stats/Items.svelte";
-  // import { PET_REWARDS } from "$lib/server/constants/pets";
+// import { PET_REWARDS } from "$lib/server/constants/pets";
   /*
   <!-- TODO: Format this on the back end -->
   {#each Object.entries(PET_REWARDS) as [score, data]}
@@ -58,8 +58,8 @@
             <div class="flex items-center">
               <Item piece={activePet} />
               <div class="ml-4 flex flex-col justify-center">
-                <h4 class={cn(getRarityClass(activePet.rarity ?? "", "text"), "text-xl font-bold capitalize")}>{activePet.rarity.toLowerCase()} {activePet.type.toLowerCase()}</h4>
-                <h4 class="text-xl font-medium capitalize text-text">Level {activePet.level.level}</h4>
+                <h4 class={cn(getRarityClass(activePet.rarity ?? "common", "text"), "text-xl font-bold capitalize")}>{(activePet.rarity ?? "common").toLowerCase()} {activePet.display_name.toLowerCase()}</h4>
+                <h4 class="text-xl font-medium capitalize text-text">Level {activePet.level}</h4>
               </div>
             </div>
             <Bonus stats={activePet.stats} class="my-2" />
@@ -73,7 +73,7 @@
               {#if !pet.active}
                 <div>
                   <Item piece={pet} />
-                  <p class="mt-2 text-center font-semibold">LVL {pet.level.level}</p>
+                  <p class="mt-2 text-center font-semibold">LVL {pet.level}</p>
                 </div>
               {/if}
             {/each}
@@ -85,7 +85,7 @@
             {#if !pet.active}
               <div>
                 <Item piece={pet} />
-                <p class="mt-2 text-center font-semibold">LVL {pet.level.level}</p>
+                <p class="mt-2 text-center font-semibold">LVL {pet.level}</p>
               </div>
             {/if}
           {/each}
@@ -103,7 +103,7 @@
               {#each otherPets as pet}
                 <div>
                   <Item piece={pet} />
-                  <p class="mt-2 text-center font-semibold">LVL {pet.level.level}</p>
+                  <p class="mt-2 text-center font-semibold">LVL {pet.level}</p>
                 </div>
               {/each}
             </Items>

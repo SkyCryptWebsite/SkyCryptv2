@@ -1,8 +1,8 @@
-import type { Items, Member, Profile } from "$types/global";
+import type { GetItemsItems, Member, Profile } from "$types/global";
 import { getPreDecodedNetworth } from "skyhelper-networth";
 import { FAIRY_SOULS } from "../constants/constants";
 
-export async function getMainStats(userProfile: Member, profile: Profile, items: Items) {
+export async function getMainStats(userProfile: Member, profile: Profile, items: GetItemsItems) {
   // consolllle.log(ts);
 
   const bank = profile.banking?.balance ?? 0;

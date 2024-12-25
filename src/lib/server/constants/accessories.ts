@@ -155,7 +155,8 @@ export function getAllAccessories() {
       texture_path: item.texture !== undefined ? `/api/head/${item.texture}` : `/api/item/${item.material}:${item.damage}`,
       item_id: item.item_id,
       damage: item.damage,
-      rarity: item.tier
+      rarity: item.tier,
+      display_name: item.name
     });
 
     const specialAccessory = SPECIAL_ACCESSORIES[item.id] as SpecialAccessory;
@@ -165,7 +166,8 @@ export function getAllAccessories() {
           ...item,
           ...specialAccessory,
           rarity: rarity,
-          texture_path: item.texture !== undefined ? `/api/head/${item.texture}` : `/api/item/${item.material}:${item.damage}`
+          texture_path: item.texture !== undefined ? `/api/head/${item.texture}` : `/api/item/${item.material}:${item.damage}`,
+          display_name: item.name
         });
       }
     }

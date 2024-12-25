@@ -60,7 +60,7 @@
     {#if highestPriorityFarmingTool}
       <p class="space-x-0.5 font-bold capitalize leading-6 text-text/60">
         <span>Active Tool:</span>
-        <span class={cn(getRarityClass(highestPriorityFarmingTool.rarity ?? "", "text"))}>{highestPriorityFarmingTool.display_name}</span>
+        <span class={cn(getRarityClass(highestPriorityFarmingTool.rarity ?? "common", "text"))}>{highestPriorityFarmingTool.display_name}</span>
       </p>
     {/if}
   </div>
