@@ -192,6 +192,8 @@ export async function processItems(items: ProcessedItem[], source: string, custo
       item.texture_path = `/api/potion/${type}/${color}`;
     }
 
+    item.extra = { source };
+
     // ? NOTE: 'ENCHANTED_BOOK' is blacklisted here because it just slows down the process
     if (customTextures && item.tag.ExtraAttributes.id !== "ENCHANTED_BOOK") {
       const customTexture = getTexture(item, { pack_ids: packs, hotm: source === "storage_icons" });

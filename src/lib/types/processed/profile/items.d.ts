@@ -81,6 +81,7 @@ export type ProcessedItem = {
       uuid?: string;
       donated_museum?: boolean;
       timestamp?: number;
+      model?: string;
       petInfo: {
         uuuid: string;
         type: string;
@@ -290,7 +291,7 @@ export type AccessoryRarities = {
   special: number;
   very_special: number;
   abicase: {
-    model: string;
+    model: string | null;
   };
   rift_prism: boolean;
 };

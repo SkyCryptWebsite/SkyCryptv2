@@ -117,11 +117,11 @@ export function getRawLore(text: string) {
  * @returns {string}
  */
 export function titleCase(s: string) {
-  if (s.length === 0) {
-    return "";
-  }
-
-  return s[0].toUpperCase() + s.slice(1);
+  return s
+    .replaceAll("_", " ")
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
 }
 
 export function rarityNameToInt(string: string) {

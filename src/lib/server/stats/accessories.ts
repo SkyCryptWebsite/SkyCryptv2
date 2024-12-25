@@ -1,19 +1,16 @@
-import * as constants from "$lib/server/constants/constants";
 import * as helper from "$lib/server/helper";
+import * as constants from "$lib/server/constants/constants";
+
 import { itemSorter } from "$lib/server/stats/items/processing";
 import { getMissingAccessories } from "$lib/server/stats/missing";
-import type { Accessories, Accessory, AccessoryRarities, GetItemsItems, Member, ProcessedItem } from "$types/global";
+import type { Accessories, Accessory, GetItemsItems, Member } from "$types/global";
 
 export async function getAccessories(userProfile: Member, items: GetItemsItems, packs: string[]) {
   const { talisman_bag: accessoryBag, inventory, enderchest } = items;
   const storage = items.backpack.map((i) => i.containsItems ?? []).flat();
   const armor = items.armor.armor;
 
-  const output = {
-    accessories: [] as ProcessedItem[],
-    accessory_ids: [] as Accessory[],
-    accessory_rarities: {} as Partial<AccessoryRarities>
-  } as Accessories;
+  const output = { accessories: [], accessory_ids: [], accessory_rarities: {} } as Accessories;
   const accessories = [];
   const accessoryIds = [];
   const accessoryRarities = {
@@ -25,112 +22,102 @@ export async function getAccessories(userProfile: Member, items: GetItemsItems, 
     mythic: 0,
     special: 0,
     very_special: 0,
-    abicase: { model: "" },
-    rift_prism: userProfile.rift?.access?.consumed_prism ? true : false
-  } as AccessoryRarities;
+    abicase: { model: "" }
+  };
 
-  // Add accessories from armor
-  for (const accessory of armor.filter((a) => a.categories && a.categories.includes("accessory"))) {
+  // Add accessories from accessory bag and armor (Active accessories)
+  for (const accessory of accessoryBag.concat(armor.filter((a) => a.categories && a.categories.includes("accessory")))) {
     const id = helper.getId(accessory);
     if (id === "") {
       continue;
     }
 
-    const insertAccessory = Object.assign({ isUnique: true, isInactive: false }, accessory);
+    const insertAccessory = Object.assign({ isInactive: false }, accessory);
+    if (id === "ABICASE") {
+      accessoryRarities.abicase = { model: accessory.tag.ExtraAttributes.model ?? "" };
+    }
 
     accessories.push(insertAccessory);
-    accessoryIds.push({
-      id: id,
-      rarity: insertAccessory.rarity
-    });
+    accessoryIds.push({ id: id, rarity: insertAccessory.rarity });
   }
 
-  // Add accessories from inventory and accessory bag
-  for (const accessory of accessoryBag.concat(inventory.filter((a) => a.categories && a.categories.includes("accessory")))) {
+  // Add accessories from inventory, enderchest, and storage (Inactive accessories)
+  const allAccessories = inventory
+    .concat(enderchest, storage)
+    .concat(storage.map((i) => i.containsItems ?? []).flat())
+    .filter((a) => a.categories && a.categories.includes("accessory"));
+  for (const accessory of allAccessories) {
+    const insertAccessory = Object.assign({ isInactive: true }, accessory);
+    helper.addToItemLore(insertAccessory, ["", "§7Inactive: §cNot in accessory bag "]);
+    accessories.push(insertAccessory);
+  }
+
+  const activeAccessories = accessories.filter((a) => a.isInactive === false);
+  for (const accessory of activeAccessories) {
     const id = helper.getId(accessory);
-    if (id === "") {
-      continue;
-    }
+    const rarity = accessory.rarity ?? "common";
 
-    const insertAccessory = Object.assign({ isUnique: true, isInactive: false }, accessory);
-
-    // mark lower tiers as inactive
-    if (constants.getUpgradeList(id) !== undefined) {
-      accessories.find((a) => {
-        if (constants.getUpgradeList(id).includes(helper.getId(a)) === false) {
-          return;
-        }
-
-        a.isInactive = true;
-        a.isUnique = false;
-      });
-    }
-
-    // mark accessory inactive if player has two exactly same accessories
-    accessories.map((a) => {
-      if (helper.getId(a) === helper.getId(insertAccessory)) {
-        insertAccessory.isInactive = false;
-        insertAccessory.isUnique = true;
-        a.isInactive = true;
-        a.isUnique = false;
-
-        if (constants.RARITIES.indexOf(a.rarity ?? "common") > constants.RARITIES.indexOf(insertAccessory.rarity ?? "common")) {
-          a.isInactive = false;
-          a.isUnique = true;
-          insertAccessory.isUnique = false;
-          insertAccessory.isInactive = true;
-        }
-      }
-    });
-
-    // mark accessory aliases as inactive
-    const ACCESSORY_ALIASES = constants.ACCESSORY_ALIASES;
-    if (id in ACCESSORY_ALIASES || Object.keys(ACCESSORY_ALIASES).find((a) => ACCESSORY_ALIASES[a].includes(id))) {
-      let accessoryDuplicates = ACCESSORY_ALIASES[id];
-      if (accessoryDuplicates === undefined) {
-        const aliases = Object.keys(ACCESSORY_ALIASES).filter((a) => ACCESSORY_ALIASES[a].includes(id));
-        accessoryDuplicates = aliases.concat(ACCESSORY_ALIASES[aliases as unknown as string]);
-      }
-
-      for (const duplicate of accessoryDuplicates) {
-        accessoryBag.concat(inventory.filter((a: ProcessedItem) => a.categories && a.categories.includes("accessory"))).map((a) => {
-          if (helper.getId(a) === duplicate) {
-            a.isInactive = true;
-            a.isUnique = false;
+    const duplicates = accessories.filter((a) => helper.getId(a) === id);
+    if (duplicates.length > 1) {
+      for (const duplicate of duplicates) {
+        if (constants.RARITIES.indexOf(duplicate.rarity ?? "common") < constants.RARITIES.indexOf(rarity)) {
+          if (duplicate.tag.display.Lore.at(-1)?.includes("§7Inactive: ") === false) {
+            helper.addToItemLore(duplicate, ["", `§7Inactive: §cFound a higher rarity accessory`]);
           }
-        });
+
+          duplicate.isInactive = true;
+          // console.log(`Marking ${helper.getId(duplicate)} ${duplicate.rarity} as inactive because ${id} ${rarity} is active`);
+        } else if (duplicate.rarity === rarity) {
+          if (duplicate.tag.display.Lore.at(-1)?.includes("§7Inactive:") === false) {
+            helper.addToItemLore(duplicate, ["", `§7Inactive: §cFound a duplicate accessory`]);
+          }
+
+          duplicate.isInactive = true;
+          // console.log(`Marking ${helper.getId(duplicate)} ${duplicate.rarity} and ${id} ${rarity} as inactive`);
+        }
+      }
+
+      if (duplicates.every((a) => a.isInactive === true)) {
+        accessory.isInactive = false;
       }
     }
 
-    accessories.push(insertAccessory);
-    accessoryIds.push({
-      id: id,
-      rarity: insertAccessory.rarity
-    });
-
-    if (insertAccessory.isInactive === false) {
-      accessoryRarities[insertAccessory.rarity as keyof typeof accessoryRarities]++;
-      if (id === "ABICASE") {
-        accessoryRarities.abicase = { model: insertAccessory.extra?.model ?? "" };
+    const ACCESSORY_ALIASES = constants.ACCESSORY_ALIASES;
+    if (id in ACCESSORY_ALIASES || Object.values(ACCESSORY_ALIASES).flat().includes(id)) {
+      const alias = Object.keys(ACCESSORY_ALIASES).find((key) => ACCESSORY_ALIASES[key].includes(id));
+      if (!alias) {
+        continue;
       }
+
+      const aliases = [alias, ACCESSORY_ALIASES[alias]].flat();
+      for (const a of accessories) {
+        if (aliases.includes(helper.getId(a)) && a !== accessory) {
+          if (a.tag.display.Lore.at(-1)?.includes("§7Inactive: §cAlias of") === false) {
+            helper.addToItemLore(a, ["", `§7Inactive: §cAlias of ${accessory.display_name}`]);
+          }
+
+          a.isInactive = true;
+        }
+      }
+
+      accessory.isInactive = false;
+      accessory.tag.display.Lore.pop();
+      accessory.tag.display.Lore.pop();
     }
   }
 
-  // Add accessories from enderchest and backpacks
-  for (const item of enderchest.concat(storage)) {
-    if ("categories" in item === false) {
-      continue;
-    }
-
-    let items = [item];
-    if (item.categories && !item.categories.includes("accessory") && "containsItems" in item && Array.isArray(item.containsItems)) {
-      items = item.containsItems.slice(0);
-    }
-
-    for (const accessory of items.filter((a) => a.categories && a.categories.includes("accessory"))) {
-      const insertAccessory = Object.assign({ isUnique: false, isInactive: true }, accessory);
-
-      accessories.push(insertAccessory);
+  for (const accessory of accessories) {
+    const id = helper.getId(accessory);
+    const ACCESSORY_UPGRADES = constants.getUpgradeList(id);
+    if (ACCESSORY_UPGRADES !== undefined) {
+      for (const upgrade of ACCESSORY_UPGRADES) {
+        if (ACCESSORY_UPGRADES.indexOf(upgrade) < ACCESSORY_UPGRADES.indexOf(id)) {
+          const upgradeAccessory = accessories.find((a) => helper.getId(a) === upgrade);
+          if (upgradeAccessory !== undefined) {
+            upgradeAccessory.isInactive = true;
+          }
+        }
+      }
     }
   }
 
@@ -138,16 +125,13 @@ export async function getAccessories(userProfile: Member, items: GetItemsItems, 
     if (accessory.isUnique === false || accessory.isInactive === true) {
       const source = accessory.extra?.source;
       if (source !== undefined && accessory.tag.display !== undefined) {
-        accessory.tag.display.Lore.push("", `§7Location: §c${source}`);
+        helper.addToItemLore(accessory, ["", `§7Location: §c${helper.titleCase(source)}`]);
       }
     }
   }
 
-  if (accessoryRarities.rift_prism === true) {
-    accessoryIds.push({
-      id: "RIFT_PRISM",
-      rarity: "rare"
-    });
+  if (userProfile.rift?.access?.consumed_prism === true) {
+    accessoryIds.push({ id: "RIFT_PRISM", rarity: "rare" });
   }
 
   output.accessories = accessories.sort(itemSorter);

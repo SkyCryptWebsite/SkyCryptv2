@@ -169,7 +169,7 @@ export async function getMissingAccessories(items: Accessories, userProfile: Mem
 
   output.stats = getStatsFromItems(items.accessories);
   output.enrichments = getEnrichments(items.accessories);
-  output.unique = activeAccessories.filter((a) => a.isUnique === true).length;
+  output.unique = activeAccessories.length;
   output.total = constants.UNIQUE_ACCESSORIES_COUNT;
 
   output.recombobulated = activeAccessories.filter((a) => a.recombobulated === true).length;
