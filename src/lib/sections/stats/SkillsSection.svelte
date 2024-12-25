@@ -10,7 +10,7 @@
   const profile = getContext<StatsType>("profile");
 </script>
 
-<SectionTitle class="mb-4">Skills</SectionTitle>
+<SectionTitle class="pt-4">Skills</SectionTitle>
 {#if profile.items && profile.items.mining_tools && profile.mining}
   <Mining />
 {:else}

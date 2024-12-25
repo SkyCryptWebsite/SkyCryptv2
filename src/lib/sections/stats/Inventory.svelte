@@ -88,7 +88,7 @@
   });
 </script>
 
-<SectionTitle class="mb-4">Inventory</SectionTitle>
+<SectionTitle class="pb-4">Inventory</SectionTitle>
 
 <Tabs.Root bind:value={$openTab} class="relative mb-0 rounded-lg bg-background/30 p-5 @container">
   <Tabs.List>

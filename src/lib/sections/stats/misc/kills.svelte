@@ -1,5 +1,6 @@
 <script lang="ts">
   import AdditionStat from "$lib/components/AdditionStat.svelte";
+  import SectionSubtitle from "$lib/components/SectionSubtitle.svelte";
   import type { ValidStats as StatsType } from "$lib/types/stats";
   import { format } from "numerable";
   import { getContext } from "svelte";
@@ -10,7 +11,7 @@
 
 {#if misc.kills != null}
   <div class="space-y-4">
-    <h3 class="text-xl font-semibold">Kills</h3>
+    <SectionSubtitle class="!uppercase">Kills</SectionSubtitle>
     <div>
       <AdditionStat text="Total Kills" data={format(misc.kills.total_kills)} />
       <AdditionStat text="Total Deaths" data={format(misc.kills.total_deaths)} />

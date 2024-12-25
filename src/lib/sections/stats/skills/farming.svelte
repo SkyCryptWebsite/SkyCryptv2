@@ -2,6 +2,7 @@
   import AdditionStat from "$lib/components/AdditionStat.svelte";
   import Chip from "$lib/components/Chip.svelte";
   import Item from "$lib/components/Item.svelte";
+  import SectionSubtitle from "$lib/components/SectionSubtitle.svelte";
   import Items from "$lib/layouts/stats/Items.svelte";
   import { formatNumber, getRarityClass } from "$lib/shared/helper";
   import { cn } from "$lib/shared/utils";
@@ -16,7 +17,7 @@
   const farmingTools = profile.items.farming_tools.tools;
 </script>
 
-<h3 class="text-xl font-semibold">Farming</h3>
+<SectionSubtitle>Farming</SectionSubtitle>
 <div class="space-y-5">
   <div class="space-y-0.5">
     <AdditionStat text="Farming Weight" data={formatNumber(profile.farming.weight.totalWeight)} asterisk={true}>
@@ -55,7 +56,7 @@
 
 <Items>
   <div slot="text" class="space-y-2">
-    <h3 class="text-xl font-semibold">Farming Tools</h3>
+    <SectionSubtitle>Farming Tools</SectionSubtitle>
     {#if highestPriorityFarmingTool}
       <p class="space-x-0.5 font-bold capitalize leading-6 text-text/60">
         <span>Active Tool:</span>
@@ -70,8 +71,8 @@
 
 <Collapsible.Root>
   <Collapsible.Trigger class="group flex items-center gap-0.5">
-    <ChevronDown class="size-4 transition-all duration-300 group-data-[state=open]:-rotate-180" />
-    Farming Crops
+    <ChevronDown class="size-5 transition-all duration-300 group-data-[state=open]:-rotate-180" />
+    <SectionSubtitle class="my-0">Farming Crops</SectionSubtitle>
   </Collapsible.Trigger>
   <Collapsible.Content class="mt-4 flex flex-wrap gap-4">
     {@const crops = Object.entries(profile.farming.contests)}

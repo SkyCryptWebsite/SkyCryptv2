@@ -1,5 +1,6 @@
 <script lang="ts">
   import AdditionStat from "$lib/components/AdditionStat.svelte";
+  import SectionSubtitle from "$lib/components/SectionSubtitle.svelte";
   import Items from "$lib/layouts/stats/Items.svelte";
   import type { ValidStats as StatsType } from "$lib/types/stats";
   import { format } from "numerable";
@@ -9,7 +10,8 @@
 </script>
 
 {#if misc.auctions != null}
-  <Items title="Auctions Sold">
+  <SectionSubtitle class="!uppercase">Auctions Sold</SectionSubtitle>
+  <Items>
     <div slot="text">
       <AdditionStat text="Fees" data={format(misc.auctions.fees)} />
       <AdditionStat text="Coins Earned" data={format(misc.auctions.gold_earned)} />
@@ -23,7 +25,8 @@
     </div>
   </Items>
 
-  <Items title="Auctions Bought">
+  <SectionSubtitle class="!uppercase">Auctions Bought</SectionSubtitle>
+  <Items>
     <div slot="text">
       <AdditionStat text="Bids" data={format(misc.auctions.bids)} />
       <AdditionStat text="Highest Bid" data={format(misc.auctions.highest_bid)} />

@@ -1,5 +1,6 @@
 <script lang="ts">
   import AdditionStat from "$lib/components/AdditionStat.svelte";
+  import SectionSubtitle from "$lib/components/SectionSubtitle.svelte";
   import Items from "$lib/layouts/stats/Items.svelte";
   import type { ValidStats as StatsType } from "$lib/types/stats";
   import { format } from "numerable";
@@ -9,7 +10,8 @@
 </script>
 
 {#if misc.dragons != null}
-  <Items title="Dragons">
+  <SectionSubtitle class="!uppercase">Dragons</SectionSubtitle>
+  <Items>
     <div slot="text">
       <AdditionStat text="Most Damage" data={format(misc.dragons.most_damage.best.toFixed(0))} asterisk={true}>
         {#each Object.entries(misc.dragons.most_damage) as [text, data]}

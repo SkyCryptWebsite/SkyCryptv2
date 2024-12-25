@@ -1,5 +1,6 @@
 <script lang="ts">
   import AdditionStat from "$lib/components/AdditionStat.svelte";
+  import SectionSubtitle from "$lib/components/SectionSubtitle.svelte";
   import Items from "$lib/layouts/stats/Items.svelte";
   import type { ValidStats as StatsType } from "$lib/types/stats";
   import { format } from "numerable";
@@ -9,7 +10,8 @@
 </script>
 
 {#if misc.gifts != null}
-  <Items title="Gifts">
+  <SectionSubtitle class="!uppercase">Gifts</SectionSubtitle>
+  <Items>
     <div slot="text">
       {#each Object.entries(misc.gifts) as [text, data]}
         <AdditionStat text={text.replaceAll("_", " ")} data={format(data)} />

@@ -1,6 +1,7 @@
 <script lang="ts">
   import AdditionStat from "$lib/components/AdditionStat.svelte";
   import Chip from "$lib/components/Chip.svelte";
+  import SectionSubtitle from "$lib/components/SectionSubtitle.svelte";
   import type { ValidStats as StatsType } from "$lib/types/stats";
   import { Collapsible } from "bits-ui";
   import { formatDistanceStrict } from "date-fns";
@@ -11,12 +12,11 @@
   const profile = getContext<StatsType>("profile");
 </script>
 
-<h3 class="text-xl font-semibold">Enchanting</h3>
-
+<SectionSubtitle>Enchanting</SectionSubtitle>
 <Collapsible.Root open={true}>
   <Collapsible.Trigger class="group flex items-center gap-0.5">
-    <ChevronDown class="size-4 transition-all duration-300 group-data-[state=open]:-rotate-180" />
-    Experiments
+    <ChevronDown class="size-5 transition-all duration-300 group-data-[state=open]:-rotate-180" />
+    <SectionSubtitle class="my-0">Experiments</SectionSubtitle>
   </Collapsible.Trigger>
   <Collapsible.Content class="mt-4 flex flex-wrap gap-5">
     {#if profile.enchanting}

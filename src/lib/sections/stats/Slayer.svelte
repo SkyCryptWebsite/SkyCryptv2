@@ -15,7 +15,9 @@
 <div class="space-y-4">
   <SectionTitle>Slayer</SectionTitle>
   {#if slayer}
-    <AdditionStat text="Total Slayer XP" data={format(slayer.totalSlayerExp)} />
+    <div class="pb-1.5 pt-4">
+      <AdditionStat text="Total Slayer XP" data={format(slayer.totalSlayerExp)} />
+    </div>
     <div class="flex flex-wrap gap-5">
       {#each Object.entries(slayer.data) as [key, value]}
         {#if value.level.xp > 0}
