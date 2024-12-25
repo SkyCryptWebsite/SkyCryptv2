@@ -34,7 +34,7 @@
           {/if}
         {/each}
       </AdditionStat>
-      <AdditionStat text="Deats" data={format(misc.dragons.deaths.total)} asterisk={true}>
+      <AdditionStat text="Deaths" data={format(misc.dragons.deaths.total)} asterisk={true}>
         {#each Object.entries(misc.dragons.deaths) as [text, data]}
           {#if text !== "total"}
             <AdditionStat {text} data={format(data)} />
