@@ -7,7 +7,7 @@ const getNestedValue = (obj: any, path: string) => {
 };
 
 export function stripItem(item: ProcessedItem | ProcessedPet, keys?: string[]): ProcessedSkyBlockItem {
-  if (!item.display_name && !(item as ProcessedItem).tag?.display?.Name) {
+  if (!item || (!item.display_name && !(item as ProcessedItem).tag?.display?.Name)) {
     return {} as ProcessedSkyBlockItem;
   }
 

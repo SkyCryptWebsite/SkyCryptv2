@@ -32,7 +32,7 @@ export function getWeapons(allItems: ProcessedItem[]) {
     }
   }
 
-  const highestPriorityWeapon = getCategory(allItems, "sword").filter((a) => a.backpackIndex === undefined)[0];
+  const highestPriorityWeapon = getCategory(allItems, "sword")[0];
 
   return {
     weapons: weapons,
@@ -42,7 +42,7 @@ export function getWeapons(allItems: ProcessedItem[]) {
 export function getSkilllTools(skill: string, allItems: ProcessedItem[]) {
   const tools = getCategory(allItems, `${skill}_tool`);
 
-  const highestPriorityTool = getCategory(allItems, `${skill}_tool`).filter((a) => a.backpackIndex === undefined)[0];
+  const highestPriorityTool = getCategory(allItems, `${skill}_tool`)[0];
 
   return {
     tools: stripItems(tools),
