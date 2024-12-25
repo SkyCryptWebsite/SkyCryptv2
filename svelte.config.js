@@ -23,7 +23,8 @@ const config = {
       $params: "./src/params",
       $types: "./src/lib/types",
       $db: "./src/db",
-      $constants: "./src/lib/server/constants"
+      $constants: "./src/lib/server/constants",
+      $ctx: "./src/context"
     },
     csrf: {
       checkOrigin: true
