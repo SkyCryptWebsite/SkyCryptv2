@@ -7,7 +7,7 @@ export async function getProfileMembers(members: Record<string, Member>) {
     output.push({
       uuid: member,
       username: await getUsername(member, { cache: true }),
-      removed: members[member].coop_invitation?.confirmed === false || members[member].deletion_notice?.timestamp !== undefined
+      removed: members[member].coop_invitation?.confirmed === false || members[member].profile?.deletion_notice?.timestamp !== undefined
     });
   }
 

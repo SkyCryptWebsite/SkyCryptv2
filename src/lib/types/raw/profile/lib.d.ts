@@ -61,9 +61,6 @@ export type Member = {
   coop_invitation?: {
     confirmed: boolean;
   };
-  deletion_notice?: {
-    timestamp: number;
-  };
 };
 
 export type Medal = "gold" | "silver" | "bronze";
@@ -97,6 +94,9 @@ export type MemberProfile = {
   first_join?: number;
   cookie_buff_active?: boolean;
   personal_bank_upgrade?: number;
+  deletion_notice?: {
+    timestamp: number;
+  };
 };
 
 export type Banking = {
