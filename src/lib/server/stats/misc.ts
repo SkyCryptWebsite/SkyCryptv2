@@ -47,8 +47,8 @@ function formatKillsAndDeaths(userProfile: Member) {
   return {
     total_kills: kills.reduce((acc, mob) => acc + mob.amount, 0),
     total_deaths: deaths.reduce((acc, mob) => acc + mob.amount, 0),
-    kills: kills,
-    deaths: deaths
+    kills: kills.sort((a, b) => b.amount - a.amount),
+    deaths: deaths.sort((a, b) => b.amount - a.amount)
   };
 }
 
