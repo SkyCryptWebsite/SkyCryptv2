@@ -13,6 +13,8 @@ export type Player = {
   prefix: string;
   rank: string;
   socialMedia?: SocialMedia;
+  rankPlusColor?: string;
+  packageRank?: string;
 };
 
 export type Achievements = {
