@@ -17,18 +17,17 @@
   {/each}
   */
 
+  import { getProfileCtx } from "$ctx/profile.svelte";
   import { formatNumber, getRarityClass, uniqBy } from "$lib/shared/helper";
   import { cn } from "$lib/shared/utils";
-  import type { ValidStats as StatsType } from "$lib/types/stats";
   import { Collapsible } from "bits-ui";
   import ChevronDown from "lucide-svelte/icons/chevron-down";
-  import { getContext } from "svelte";
 
-  const profile = getContext<StatsType>("profile");
-  const pets = profile.pets;
-  const activePet = pets.pets.find((pet) => pet.active === true);
-  const uniquePets = uniqBy(pets.pets, "type");
-  const otherPets = pets.pets.filter((pet) => !uniquePets.includes(pet));
+  const { profile } = getProfileCtx();
+  const pets = $derived(profile.pets);
+  const activePet = $derived(pets.pets.find((pet) => pet.active === true));
+  const uniquePets = $derived(uniqBy(pets.pets, "type"));
+  const otherPets = $derived(pets.pets.filter((pet) => !uniquePets.includes(pet)));
 
   // TODO: Once helper functions get moved to a global location, we can remove this function
 </script>

@@ -1,9 +1,8 @@
 <script lang="ts">
+  import { getProfileCtx } from "$ctx/profile.svelte";
   import Skillbar from "$lib/components/Skillbar.svelte";
-  import type { ValidStats as StatsType } from "$lib/types/stats";
-  import { getContext } from "svelte";
 
-  const profile = getContext<StatsType>("profile");
+  const { profile } = getProfileCtx();
 </script>
 
 <div class="skills space-y-2 pr-2 @md:pr-0">

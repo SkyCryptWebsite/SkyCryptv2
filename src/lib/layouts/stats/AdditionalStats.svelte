@@ -1,12 +1,11 @@
 <script lang="ts">
+  import { getProfileCtx } from "$ctx/profile.svelte";
   import AdditionStat from "$lib/components/AdditionStat.svelte";
   import { formatNumber } from "$lib/shared/helper";
-  import type { ValidStats as StatsType } from "$lib/types/stats";
   import { format as dateFormat, formatDistanceToNowStrict } from "date-fns";
   import { format as numberFormat } from "numerable";
-  import { getContext } from "svelte";
 
-  const profile = getContext<StatsType>("profile");
+  const { profile } = getProfileCtx();
 
   const defaultPatternDecimal: string = "0,0.##";
   const defaultPattern: string = "0,0";

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { getProfileCtx } from "$ctx/profile.svelte";
   import AdditionStat from "$lib/components/AdditionStat.svelte";
   import Item from "$lib/components/Item.svelte";
   import SectionSubtitle from "$lib/components/SectionSubtitle.svelte";
@@ -8,13 +9,12 @@
   import type { ValidStats as StatsType } from "$lib/types/stats";
   import { formatDate, formatDistanceToNowStrict } from "date-fns";
   import { format } from "numerable";
-  import { getContext } from "svelte";
   import { fade } from "svelte/transition";
 
-  const profile = getContext<StatsType>("profile");
+  const { profile } = getProfileCtx();
 
-  const highestPriorityMiningTool = profile.items.mining_tools.highest_priority_tool;
-  const miningTools = profile.items.mining_tools.tools;
+  const highestPriorityMiningTool = $derived(profile.items.mining_tools.highest_priority_tool);
+  const miningTools = $derived(profile.items.mining_tools.tools);
 </script>
 
 <Items>
