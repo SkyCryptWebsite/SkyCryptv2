@@ -67,7 +67,7 @@ function getPetLevel(petExp: number, type: string, rarity: string) {
 
   const maxLevel = petData.custom_pet_leveling[type]?.max_level ?? 100;
 
-  const levels = petData.custom_pet_leveling[type]?.pet_levels === undefined ? petData.pet_levels.slice(rarityOffset, rarityOffset + maxLevel - 1) : petData.custom_pet_leveling[type]?.pet_levels.concat(petData.custom_pet_leveling[type]?.pet_levels);
+  const levels = petData.pet_levels.slice(rarityOffset, rarityOffset + maxLevel - 1).concat(petData.custom_pet_leveling[type]?.pet_levels ?? []);
 
   let level = 1;
   let xpMaxLevel = 0;
