@@ -102,7 +102,7 @@
           }
         }
       },
-      { rootMargin: "-100px 0px -25% 0px" }
+      { rootMargin: "-12% 0px -25% 0px" }
     );
 
     const navbar = document.querySelector(".navbar") as HTMLElement;
@@ -126,11 +126,20 @@
 
 <ScrollArea.Root type="scroll" class="navbar group sticky top-[calc(3rem+env(safe-area-inset-top,0))] z-20" data-pinned={pinned}>
   <ScrollArea.Viewport>
-    <ScrollArea.Content class="!flex flex-nowrap items-center gap-2 whitespace-nowrap pb-2 font-semibold text-text/80">
+    <ScrollArea.Content class="!flex flex-nowrap items-center justify-center gap-2 whitespace-nowrap pb-2 font-semibold text-text/80">
       <div class="absolute bottom-[0.4375rem] z-[1] h-[2px] w-[calc(100%+0.5rem)] bg-icon"></div>
       <div class="absolute inset-0 bottom-2 group-data-[pinned=true]:bg-[#141414]/90"></div>
       {#each sections as section}
-        <Button.Root href="#{section.id}" class="relative px-2 py-3 after:absolute after:left-0 after:top-full after:h-0 after:w-full after:origin-top after:rounded-full after:bg-icon after:transition-all after:duration-100 hover:after:top-[calc(100%-4px)] hover:after:h-2 data-[active=true]:text-text data-[active=true]:after:top-[calc(100%-4px)] data-[active=true]:after:h-2" data-active={section.id === activeSection}>
+        <Button.Root
+          href="#{section.id}"
+          class="relative px-2 py-3 after:absolute after:left-0 after:top-full after:h-0 after:w-full after:origin-top after:rounded-full after:bg-icon after:transition-all after:duration-100 hover:after:top-[calc(100%-4px)] hover:after:h-2 data-[active=true]:text-text data-[active=true]:after:top-[calc(100%-4px)] data-[active=true]:after:h-2"
+          data-active={section.id === activeSection}
+          on:click={() => {
+            console.log(
+              "Active Section:",
+              Array.from(intersectingElements.entries()).map(([el, isIntersecting]) => ({ id: el.id, isIntersecting }))
+            );
+          }}>
           {section.title}
         </Button.Root>
       {/each}
