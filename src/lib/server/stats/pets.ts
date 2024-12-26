@@ -334,9 +334,22 @@ function getPetScore(pets: ProcessedPet[]) {
     break;
   }
 
+  const petScores = Object.keys(constants.PET_REWARDS).map(Number);
   return {
     amount: total,
-    stats: bonus
+    stats: bonus,
+    reward: Object.entries(constants.PET_REWARDS).map(([score, stats]) => {
+      const output = {
+        score: parseInt(score),
+        bonus: Object.values(stats).reduce((a, b) => a + b, 0)
+      } as { score: number; bonus: number; unlocked?: boolean };
+
+      if (parseInt(score) === Math.max(...petScores.filter((s) => s <= total))) {
+        output.unlocked = true;
+      }
+
+      return output;
+    })
   };
 }
 
