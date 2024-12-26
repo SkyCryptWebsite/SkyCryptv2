@@ -6,11 +6,18 @@
   import SectionSubtitle from "$lib/components/SectionSubtitle.svelte";
   import Items from "$lib/layouts/stats/Items.svelte";
   import { RARITY_COLORS } from "$lib/shared/constants/items";
+  import { STATS_DATA } from "$lib/shared/constants/stats";
   import { Collapsible } from "bits-ui";
   import ChevronDown from "lucide-svelte/icons/chevron-down";
 
   const { profile } = getProfileCtx();
   const accessories = $derived(profile.accessories);
+
+  // function formatValue(value: string) {
+  //   return parseFloat(value)
+  //     .toFixed(2)
+  //     .replace(/\.?0+$/, "");
+  // }
 </script>
 
 <Items title="Accessories">
@@ -131,10 +138,23 @@
               {/if}
             {/each}
           </Items>
-          {#if accessories.enrichments.missing > 0}
-            <p class="space-x-0.5 font-bold capitalize leading-6">
-              <span class="text-text/60">Enrichments: </span>
-              <span class="text-text">{accessories.enrichments.missing}× Missing Enrichment! </span>
+          {#if accessories.enrichments != null}
+            <p class="my-4 space-x-0.5 font-bold capitalize leading-6 text-text/60">
+              <span>Enrichments: </span>
+              {#each Object.entries(accessories.enrichments) as [key, value], index}
+                {#if key !== "missing"}
+                  <span class={STATS_DATA[key].color}>
+                    {value}×
+                    {STATS_DATA[key].name}
+                  </span>
+                  {#if Object.entries(accessories.enrichments).length - 1 !== index || (Object.entries(accessories.enrichments).length - 1 === index && accessories.enrichments.missing > 0)}
+                    // {" "}
+                  {/if}
+                {/if}
+              {/each}
+              {#if accessories.enrichments.missing > 0}
+                <span class="text-text">{accessories.enrichments.missing}× Missing Enrichment! </span>
+              {/if}
             </p>
           {/if}
           <Bonus stats={accessories.stats} class="my-0" />
