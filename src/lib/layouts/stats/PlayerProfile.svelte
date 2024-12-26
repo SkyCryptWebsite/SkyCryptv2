@@ -26,18 +26,32 @@
 
 <div class="mt-12 flex flex-wrap items-center gap-x-2 gap-y-3 text-4xl">
   Stats for
-  <div class="inline-flex items-center gap-2 rounded-full bg-[#7f7f7f]/20 py-2 pl-2 pr-4 align-middle text-3xl font-semibold">
-    <div class="nice-colors-dark light dark relative flex items-center justify-center overflow-hidden rounded-full bg-[var(--color)] px-2 py-1 text-xl" style={`--color:${profile.rank?.color}`}>
-      <div class="relative z-20 inline-flex justify-between gap-3 text-lg font-bold">
-        <span>{profile.rank?.tag}</span>
-        {#if profile.rank?.plus}
-          <span>{profile.rank?.plus}</span>
-        {/if}
+  <DropdownMenu.Root>
+    <DropdownMenu.Trigger class="inline-flex items-center rounded-full bg-[#7f7f7f]/20 py-2 pl-2 pr-4 align-middle text-3xl font-semibold">
+      <div class="nice-colors-dark light dark relative flex items-center justify-center overflow-hidden rounded-full bg-[var(--color)] px-2 py-1 text-xl" style={`--color:${profile.rank?.color}`}>
+        <div class="relative z-20 inline-flex justify-between gap-3 text-lg font-bold">
+          <span>{profile.rank?.tag}</span>
+          {#if profile.rank?.plus}
+            <span>{profile.rank?.plus}</span>
+          {/if}
+        </div>
+        <div class="absolute -right-3 bottom-0 top-0 z-10 h-14 w-1/2 skew-x-[-20deg] bg-[var(--plusColor)]" style={`--plusColor:${profile.rank?.plusColor ?? profile.rank?.color}`}></div>
       </div>
-      <div class="absolute -right-3 bottom-0 top-0 z-10 h-14 w-1/2 skew-x-[-20deg] bg-[var(--plusColor)]" style={`--plusColor:${profile.rank?.plusColor ?? profile.rank?.color}`}></div>
-    </div>
-    <span>{profile.displayName}</span>
-  </div>
+      <span class="px-4">{profile.displayName}</span>
+    </DropdownMenu.Trigger>
+
+    <DropdownMenu.Content class="z-[99999] min-w-64 overflow-hidden rounded-lg bg-background-grey/95 text-3xl font-semibold" align="start" side="bottom" transition={flyAndScale} transitionConfig={{ y: -8, duration: 150 }}>
+      {#each profile.members as member}
+        {#if member.username !== profile.username}
+          <DropdownMenu.Item href={`/stats/${member.username}/${profile.profile_cute_name}`} class="flex items-center p-4 hover:bg-text/20" data-sveltekit-preload-code="viewport">
+            <span class="px-4 {member.removed ? 'line-through' : ''}">
+              {member.username}
+            </span>
+          </DropdownMenu.Item>
+        {/if}
+      {/each}
+    </DropdownMenu.Content>
+  </DropdownMenu.Root>
   on
   <DropdownMenu.Root>
     <DropdownMenu.Trigger class="inline-flex items-center rounded-full bg-[#7f7f7f]/20 px-4 py-2 align-middle text-3xl font-semibold">
@@ -46,12 +60,20 @@
 
     <DropdownMenu.Content class="z-[99999]  min-w-64 overflow-hidden rounded-lg bg-background-grey/95 text-3xl font-semibold" align="start" side="bottom" transition={flyAndScale} transitionConfig={{ y: -8, duration: 150 }}>
       {#each profile.profiles ?? [] as otherProfile}
-        <DropdownMenu.Item href={`/stats/${profile.username}/${otherProfile.cute_name}`} class="flex items-center p-4 hover:bg-text/20" data-sveltekit-preload-code="viewport">
-          {otherProfile.cute_name}
-          {#if otherProfile.game_mode === "bingo"}
-            🎲
-          {/if}
-        </DropdownMenu.Item>
+        {#if otherProfile.profile_id !== profile.profile_id}
+          <DropdownMenu.Item href={`/stats/${profile.username}/${otherProfile.cute_name}`} class="flex items-center p-4 hover:bg-text/20" data-sveltekit-preload-code="viewport">
+            {otherProfile.cute_name}
+            {#if otherProfile.game_mode === "bingo"}
+              🎲
+            {/if}
+            {#if otherProfile.game_mode === "ironman"}
+              🥋
+            {/if}
+            {#if otherProfile.game_mode === "island"}
+              🌴
+            {/if}
+          </DropdownMenu.Item>
+        {/if}
       {/each}
     </DropdownMenu.Content>
   </DropdownMenu.Root>

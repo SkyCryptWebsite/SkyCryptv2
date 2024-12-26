@@ -58,6 +58,12 @@ export type Member = {
   item_data: MemberItemData;
   forge?: Forge;
   experimentation: Experimentation;
+  coop_invitation?: {
+    confirmed: boolean;
+  };
+  deletion_notice?: {
+    timestamp: number;
+  };
 };
 
 export type Medal = "gold" | "silver" | "bronze";

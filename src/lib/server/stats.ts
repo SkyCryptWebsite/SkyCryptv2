@@ -41,6 +41,7 @@ export async function getStats(profile: Profile, player: Player, extra: { museum
   const items = await stats.getItems(userProfile, userMuseum, ignoredPacks);
 
   const statsList = [
+    ["members", () => stats.getProfileMembers(profile.members)],
     ["profiles", () => getProfiles(profile.uuid)],
     ["stats", () => stats.getMainStats(userProfile, profile, items)],
     ["accessories", () => stats.getAccessories(userProfile, items, ignoredPacks)],
@@ -72,7 +73,6 @@ export async function getStats(profile: Profile, player: Player, extra: { museum
     profile_cute_name: profile.cute_name,
     game_mode: profile.game_mode,
     selected: profile.selected,
-    members: Object.keys(profile.members).filter((uuid) => uuid !== profile.uuid),
     rank: stats.getRank(player),
     social: player.socialMedia?.links ?? {},
     items: stripAllItems(items),
