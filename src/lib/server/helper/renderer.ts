@@ -471,7 +471,7 @@ export async function renderItem(skyblockId: string | undefined, query: ItemQuer
     pack_ids: query.pack
   });
 
-  if (customTexture) {
+  if (customTexture && customTexture.path?.endsWith("skull.png") === false) {
     if (customTexture.animated) {
       outputTexture.mime = "image/gif";
     }
