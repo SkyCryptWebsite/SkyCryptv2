@@ -41,14 +41,16 @@
             </div>
           </div>
           <div slot="tooltip" class="text-sm font-bold">
-            <div class="mb-4">
-              {#each item.amounts as user}
-                <span class="opacity-85">
-                  {user.username}:
-                </span>
-                <span class="text-text">{format(user.amount)}</span>
-              {/each}
-            </div>
+            {#if data.name !== "Boss"}
+              <div class="mb-4">
+                {#each item.amounts as user}
+                  <span class="opacity-85">
+                    {user.username}:
+                  </span>
+                  <span class="text-text">{format(user.amount)}</span>
+                {/each}
+              </div>
+            {/if}
             <div>
               <span class="opacity-85"> Total: </span>
               <span class="text-text opacity-100">{format(item.amount)}</span>

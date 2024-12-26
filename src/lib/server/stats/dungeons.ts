@@ -112,7 +112,7 @@ function formatCatacombsData(catacombs: Catacombs) {
       name: floor.name,
       texture: floor.texture,
       stats: {
-        times_played: catacombs.times_played?.[floor.id] ?? 0,
+        times_played: catacombs.times_played?.[floor.id] ?? catacombs.tier_completions?.[floor.id] ?? 0,
         tier_completions: catacombs.tier_completions?.[floor.id] ?? 0,
         milestone_completions: catacombs.milestone_completions?.[floor.id] ?? 0,
         best_score: catacombs.best_score?.[floor.id] ?? 0,
@@ -134,6 +134,23 @@ function formatCatacombsData(catacombs: Catacombs) {
   }
 
   return output;
+}
+
+export function getFloorCompletions(dungeonsData: Member["dungeons"]) {
+  const normalCompletions = dungeonsData?.dungeon_types?.catacombs?.tier_completions;
+  const masterCompletions = dungeonsData?.dungeon_types?.master_catacombs?.tier_completions;
+  if (!normalCompletions && !masterCompletions) {
+    return { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0 };
+  }
+
+  return {
+    ...Object.fromEntries(
+      Object.keys(normalCompletions ?? {})
+        .filter((key) => key !== "0")
+        .map((key) => [key, normalCompletions[key]])
+    ),
+    ...Object.fromEntries(Object.entries(masterCompletions ?? {}).map(([key, value]) => [key, (normalCompletions[key] || 0) + value * 2]))
+  };
 }
 
 export function getDungeons(userProfile: Member) {

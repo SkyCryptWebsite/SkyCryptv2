@@ -100,17 +100,7 @@ export function renderLore(text: string): string {
       continue;
     }
 
-    const timeRegex = /<local-time timestamp="(\d+)"><\/local-time>/;
-    const timeMatch = part.match(timeRegex);
-    // Delete the timestamp from the lore
-    if (timeMatch) {
-      // part = part.replace(timeRegex, dateFormat(fromUnixTime(obtained), "dd MMMM yyyy 'at' HH:mm"));
-      // TODO: Add the timestamp to the lore
-      part = "TODO: ADD LATER";
-    }
-
     output += "<span";
-
     if (color !== null) {
       if (color == "9" && MAX_ENCHANTS.has(part)) {
         output += ` style='color: var(--§6)'`;

@@ -11,7 +11,7 @@
   let { profile }: { profile: StatsType } = $props();
 
   $effect.pre(() => {
-    setProfileCtx(profile as ValidStats);
+    setProfileCtx(profile as unknown as ValidStats);
   });
 </script>
 

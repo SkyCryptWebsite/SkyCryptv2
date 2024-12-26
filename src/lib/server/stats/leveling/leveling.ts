@@ -111,7 +111,8 @@ export function getLevelByXp(
     uncappedLevel,
     levelWithProgress,
     unlockableLevelWithProgress,
-    maxed,
+    // ? NOTE: Temporarily mark this as false until we implement leaderboards
+    maxed: extra.type === "skyblock_level" ? false : maxed,
     texture: constants.SKILL_ICONS[extra.texture ?? extra.type]
     // maxExperience
   };

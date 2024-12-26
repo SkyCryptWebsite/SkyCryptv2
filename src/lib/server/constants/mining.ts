@@ -299,6 +299,10 @@ class HotM {
     return `§${color}Tier ${this.tier}`;
   }
 
+  get rarity() {
+    return this.status === "unlocked" ? "uncommon" : "special";
+  }
+
   get status() {
     if (this.tier <= this.level) {
       return "unlocked";
@@ -502,6 +506,10 @@ class Node {
   get displayName() {
     const nameColor = this.status === "maxed" ? "a" : this.status === "unlocked" ? "e" : "c";
     return `§${nameColor}§l${this.name}`;
+  }
+
+  get rarity() {
+    return this.status === "maxed" ? "uncommon" : this.status === "unlocked" ? "legendary" : "special";
   }
 
   get status() {
@@ -1611,12 +1619,14 @@ class HotmItem {
   itemData: { id: number; Damage: number; glowing: boolean; texture_path: string; skyblock_id?: string };
   resources: { token_of_the_mountain: number; mithril_powder: number; gemstone_powder: number };
   last_reset: number;
+  rarity: string;
   constructor() {
     this.position = 0;
     this.displayName = "";
     this.itemData = { id: 0, Damage: 0, glowing: false, texture_path: "", skyblock_id: "" };
     this.resources = { token_of_the_mountain: 0, mithril_powder: 0, gemstone_powder: 0 };
     this.last_reset = 0;
+    this.rarity = "special";
   }
 
   get position10x9(): number {
@@ -1628,6 +1638,7 @@ class HotmStats extends HotmItem {
   constructor(data: HotmItemData) {
     super();
     this.displayName = "§5Heart of the Mountain";
+    this.rarity = "epic";
     this.position = 1;
     this.itemData = {
       id: 397,
@@ -1652,6 +1663,7 @@ class CrystalHollowsCrystals extends HotmItem {
   constructor(data: HotmItemData) {
     super();
     this.displayName = "§5Crystal Hollows Crystals";
+    this.rarity = "epic";
     this.position = 2;
     this.itemData = {
       id: 397,
@@ -1705,6 +1717,7 @@ class HotmReset extends HotmItem {
   constructor(data: HotmItemData) {
     super();
     this.displayName = "§cReset Heart of the Mountain";
+    this.rarity = "special";
     this.position = 3;
     this.itemData = {
       id: 397,
@@ -1838,107 +1851,120 @@ export const MAX_PEAK_OF_THE_MOUNTAIN_LEVEL = 10;
 export const GEMSTONE_CRYSTALS = ["jade", "amber", "amethyst", "sapphire", "topaz", "jasper", "ruby", "opal", "aquamarine", "peridot", "citrine", "onyx"];
 
 export const FORGE = {
-  BEJEWELED_HANDLE: { name: "Bejeweled Handle", duration: 30000 },
   REFINED_DIAMOND: { name: "Refined Diamond", duration: 28800000 },
   REFINED_MITHRIL: { name: "Refined Mithril", duration: 21600000 },
   REFINED_TITANIUM: { name: "Refined Titanium", duration: 43200000 },
   REFINED_TUNGSTEN: { name: "Refined Tungsten", duration: 3600000 },
   REFINED_UMBER: { name: "Refined Umber", duration: 3600000 },
-  FUEL_TANK: { name: "Fuel Tank", duration: 36000000 },
-  DRILL_ENGINE: { name: "Drill Engine", duration: 108000000 },
+  MITHRIL_NECKLACE: { name: "Mithril Necklace", duration: 3600000 },
+  MITHRIL_CLOAK: { name: "Mithril Cloak", duration: 3600000 },
+  MITHRIL_BELT: { name: "Mithril Belt", duration: 3600000 },
+  MITHRIL_GAUNTLET: { name: "Mithril Gauntlet", duration: 3600000 },
+  TITANIUM_NECKLACE: { name: "Titanium Necklace", duration: 16200000 },
+  TITANIUM_CLOAK: { name: "Titanium Cloak", duration: 16200000 },
+  TITANIUM_BELT: { name: "Titanium Belt", duration: 16200000 },
+  TITANIUM_GAUNTLET: { name: "Titanium Gauntlet", duration: 16200000 },
+  TITANIUM_TALISMAN: { name: "Titanium Talisman", duration: 50400000 },
+  TITANIUM_RING: { name: "Titanium Ring", duration: 72000000 },
+  TITANIUM_ARTIFACT: { name: "Titanium Artifact", duration: 129600000 },
+  TITANIUM_RELIC: { name: "Titanium Relic", duration: 259200000 },
+  DIVAN_POWDER_COATING: { name: "Divan Powder Coating", duration: 129600000 },
+  DIVAN_HELMET: { name: "Helmet Of Divan", duration: 86400000 },
+  DIVAN_CHESTPLATE: { name: "Chestplate Of Divan", duration: 86400000 },
+  DIVAN_LEGGINGS: { name: "Leggings Of Divan", duration: 86400000 },
+  DIVAN_BOOTS: { name: "Boots Of Divan", duration: 86400000 },
+  AMBER_NECKLACE: { name: "Amber Necklace", duration: 86400000 },
+  SAPPHIRE_CLOAK: { name: "Sapphire Cloak", duration: 86400000 },
+  JADE_BELT: { name: "Jade Belt", duration: 86400000 },
+  AMETHYST_GAUNTLET: { name: "Amethyst Gauntlet", duration: 86400000 },
+  GEMSTONE_CHAMBER: { name: "Gemstone Chamber", duration: 14400000 },
+  DWARVEN_HANDWARMERS: { name: "Dwarven Handwarmers", duration: 14400000 },
+  DWARVEN_METAL: { name: "Dwarven Metal Talisman", duration: 86400000 },
+  DIVAN_PENDANT: { name: "Pendant of Divan", duration: 604800000 },
+  POWER_RELIC: { name: "Relic of Power", duration: 28800000 },
+  PERFECT_AMBER_GEM: { name: "Perfect Amber Gemstone", duration: 72000000 },
+  PERFECT_AMETHYST_GEM: { name: "Perfect Amethyst Gemstone", duration: 72000000 },
+  PERFECT_JADE_GEM: { name: "Perfect Jade Gemstone", duration: 72000000 },
+  PERFECT_JASPER_GEM: { name: "Perfect Jasper Gemstone", duration: 72000000 },
+  PERFECT_OPAL_GEM: { name: "Perfect Opal Gemstone", duration: 72000000 },
+  PERFECT_RUBY_GEM: { name: "Perfect Ruby Gemstone", duration: 72000000 },
+  PERFECT_SAPPHIRE_GEM: { name: "Perfect Sapphire Gemstone", duration: 72000000 },
+  PERFECT_TOPAZ_GEM: { name: "Perfect Topaz Gemstone", duration: 72000000 },
+  PERFECT_AQUAMARINE_GEM: { name: "Perfect Aquamarine Gem", duration: 72000000 },
+  PERFECT_CITRINE_GEM: { name: "Perfect Citrine Gem", duration: 72000000 },
+  PERFECT_ONYX_GEM: { name: "Perfect Onyx Gem", duration: 72000000 },
+  PERFECT_PERIDOT_GEM: { name: "Perfect Peridot Gem", duration: 72000000 },
+  BEJEWELED_HANDLE: { name: "Bejeweled Handle", duration: 30000 },
+  DRILL_ENGINE: { name: "Drill Motor", duration: 108000000 },
+  FUEL_TANK: { name: "Fuel Canister", duration: 36000000 },
+  GEMSTONE_MIXTURE: { name: "Gemstone Mixture", duration: 14400000 },
+  GLACITE_AMALGAMATION: { name: "Glacite Amalgamation", duration: 14400000 },
   GOLDEN_PLATE: { name: "Golden Plate", duration: 21600000 },
   MITHRIL_PLATE: { name: "Mithril Plate", duration: 64800000 },
   TUNGSTEN_PLATE: { name: "Tungsten Plate", duration: 10800000 },
   UMBER_PLATE: { name: "Umber Plate", duration: 10800000 },
-  GEMSTONE_MIXTURE: { name: "Gemstone Mixture", duration: 14400000 },
-  GLACITE_AMALGAMATION: { name: "Glacite Amalgamation", duration: 14400000 },
-  PERFECT_JASPER_GEM: { name: "Perfect Jasper Gemstone", duration: 72000000 },
-  PERFECT_RUBY_GEM: { name: "Perfect Ruby Gemstone", duration: 72000000 },
-  PERFECT_JADE_GEM: { name: "Perfect Jade Gemstone", duration: 72000000 },
-  PERFECT_SAPPHIRE_GEM: { name: "Perfect Sapphire Gemstone", duration: 72000000 },
-  PERFECT_AMBER_GEM: { name: "Perfect Amber Gemstone", duration: 72000000 },
-  PERFECT_TOPAZ_GEM: { name: "Perfect Topaz Gemstone", duration: 72000000 },
-  PERFECT_AMETHYST_GEM: { name: "Perfect Amethyst Gemstone", duration: 72000000 },
-  PERFECT_OPAL_GEM: { name: "Perfect Opal Gemstone", duration: 72000000 },
-  PERFECT_ONYX_GEM: { name: "Perfect Onyx Gem", duration: 72000000 },
-  PERFECT_CITRINE_GEM: { name: "Perfect Citrine Gem", duration: 72000000 },
-  PERFECT_AQUAMARINE_GEM: { name: "Perfect Aquamarine Gem", duration: 72000000 },
-  PERFECT_PERIDOT_GEM: { name: "Perfect Peridot Gem", duration: 72000000 },
-  PERFECT_PLATE: { name: "Perfect Plate", duration: 21600000 },
-  MITHRIL_PICKAXE: { name: "Mithril Pickaxe", duration: 2700000 },
-  BEACON_2: { name: "Beacon II", duration: 72000000 },
-  TITANIUM_TALISMAN: { name: "Titanium Talisman", duration: 50400000 },
+  PERFECT_PLATE: { name: "Perfect Plate", duration: 1800000 },
   DIAMONITE: { name: "Diamonite", duration: 21600000 },
-  POWER_CRYSTAL: { name: "Power Crystal", duration: 7200000 },
-  FORGE_TRAVEL_SCROLL: { name: "Travel Scroll to the Dwarven Forge", duration: 18000000 },
+  POCKET_ICEBERG: { name: "Pocket Iceberg", duration: 21600000 },
+  PETRIFIED_STARFALL: { name: "Petrified Starfall", duration: 21600000 },
+  PURE_MITHRIL: { name: "Pure Mithril", duration: 21600000 },
+  ROCK_GEMSTONE: { name: "Dwarven Geode", duration: 21600000 },
+  TITANIUM_TESSERACT: { name: "Titanium Tesseract", duration: 21600000 },
+  GLEAMING_CRYSTAL: { name: "Gleaming Crystal", duration: 21600000 },
+  HOT_STUFF: { name: "Scorched Topaz", duration: 21600000 },
+  AMBER_MATERIAL: { name: "Amber Material", duration: 21600000 },
+  FRIGID_HUSK: { name: "Frigid Husk", duration: 21600000 },
   BEJEWELED_COLLAR: { name: "Bejeweled Collar", duration: 7200000 },
-  CHISEL: { name: "Chisel", duration: 30000 },
-  TUNGSTEN_KEY: { name: "Tungsten Key", duration: 30000 },
-  UMBER_KEY: { name: "Umber Key", duration: 30000 },
-  FRIGID_HUSK: { name: "Frigid Husk", duration: 36000000 },
-  BASE_CAMP_TRAVEL_SCROLL: {
-    name: "Travel Scroll to the Dwarven Base Camp",
-    duration: 36000000
-  },
-  REFINED_MITHRIL_PICKAXE: { name: "Refined Mithril Pickaxe", duration: 79200000 },
-  MITHRIL_DRILL_1: { name: "Mithril Drill SX-R226", duration: 14400000 },
-  MITHRIL_FUEL_TANK: { name: "Mithril-Infused Fuel Tank", duration: 36000000 },
-  MITHRIL_DRILL_ENGINE: { name: "Mithril-Plated Drill Engine", duration: 54000000 },
-  BEACON_3: { name: "Beacon III", duration: 108000000 },
-  TITANIUM_RING: { name: "Titanium Ring", duration: 72000000 },
-  PURE_MITHRIL: { name: "Pure Mithril", duration: 43200000 },
-  ROCK_GEMSTONE: { name: "Rock Gemstone", duration: 79200000 },
-  PETRIFIED_STARFALL: { name: "Petrified Starfall", duration: 50400000 },
-  GOBLIN_OMELETTE_PESTO: { name: "Pesto Goblin Omelette", duration: 72000000 },
-  LVL_1_LEGENDARY_AMMONITE: { name: "[Lvl 1] Ammonite", duration: 1036800000 },
-  GEMSTONE_DRILL_1: { name: "Ruby Drill TX-15", duration: 3600000 },
   LVL_1_LEGENDARY_MOLE: { name: "[Lvl 1] Mole", duration: 259200000 },
-  MITHRIL_DRILL_2: { name: "Mithril Drill SX-R326", duration: 30000 },
-  TITANIUM_DRILL_ENGINE: { name: "Titanium-Plated Drill Engine", duration: 108000000 },
-  GOBLIN_OMELETTE: { name: "Goblin Omelette", duration: 64800000 },
-  BEACON_4: { name: "Beacon IV", duration: 144000000 },
-  TITANIUM_ARTIFACT: { name: "Titanium Artifact", duration: 129600000 },
-  HOT_STUFF: { name: "Hot Stuff", duration: 86400000 },
-  GOBLIN_OMELETTE_SUNNY_SIDE: { name: "Sunny Side Goblin Omelette", duration: 72000000 },
-  GEMSTONE_DRILL_2: { name: "Gemstone Drill LT-522", duration: 30000 },
-  TITANIUM_DRILL_1: { name: "Titanium Drill DR-X355", duration: 230400000 },
-  TITANIUM_DRILL_2: { name: "Titanium Drill DR-X455", duration: 30000 },
-  TITANIUM_DRILL_3: { name: "Titanium Drill DR-X555", duration: 30000 },
-  TITANIUM_FUEL_TANK: { name: "Titanium-Infused Fuel Tank", duration: 90000000 },
-  BEACON_5: { name: "Beacon V", duration: 180000000 },
-  TITANIUM_RELIC: { name: "Titanium Relic", duration: 259200000 },
-  GOBLIN_OMELETTE_SPICY: { name: "Spicy Goblin Omelette", duration: 72000000 },
-  GEMSTONE_CHAMBER: { name: "Gemstone Chamber", duration: 14400000 },
-  GEMSTONE_DRILL_3: { name: "Topaz Drill KGR-12", duration: 30000 },
-  RUBY_POLISHED_DRILL_ENGINE: { name: "Ruby-polished Drill Engine", duration: 72000000 },
-  GEMSTONE_FUEL_TANK: { name: "Gemstone Fuel Tank", duration: 108000000 },
-  GOBLIN_OMELETTE_BLUE_CHEESE: { name: "Blue Cheese Goblin Omelette", duration: 72000000 },
-  TITANIUM_DRILL_4: { name: "Titanium Drill DR-X655", duration: 30000 },
-  GEMSTONE_DRILL_4: { name: "Jasper Drill X", duration: 30000 },
-  SAPPHIRE_POLISHED_DRILL_ENGINE: { name: "Sapphire-polished Drill Engine", duration: 108000000 },
-  AMBER_MATERIAL: { name: "Amber Material", duration: 25200000 },
-  DIVAN_HELMET: { name: "Helmet Of Divan", duration: 82800000 },
-  DIVAN_CHESTPLATE: { name: "Chestplate Of Divan", duration: 82800000 },
-  DIVAN_LEGGINGS: { name: "Leggings Of Divan", duration: 82800000 },
-  DIVAN_BOOTS: { name: "Boots Of Divan", duration: 82800000 },
-  AMBER_POLISHED_DRILL_ENGINE: { name: "Amber-polished Drill Engine", duration: 180000000 },
-  PERFECTLY_CUT_FUEL_TANK: { name: "Perfectly-Cut Fuel Tank", duration: 180000000 },
-  DIVAN_DRILL: { name: "Divan's Drill", duration: 216000000 },
-  SECRET_RAILROAD_PASS: { name: "Secret Railroad Pass", duration: 30000 },
+  LVL_1_LEGENDARY_AMMONITE: { name: "[Lvl 1] Ammonite", duration: 259200000 },
+  LVL_1_LEGENDARY_PENGUIN: { name: "[Lvl 1] Penguin", duration: 604800000 },
   LVL_1_LEGENDARY_TYRANNOSAURUS: { name: "[Lvl 1] T-Rex", duration: 604800000 },
   LVL_1_LEGENDARY_SPINOSAURUS: { name: "[Lvl 1] Spinosaurus", duration: 604800000 },
   LVL_1_LEGENDARY_GOBLIN: { name: "[Lvl 1] Goblin", duration: 604800000 },
   LVL_1_LEGENDARY_ANKYLOSAURUS: { name: "[Lvl 1] Ankylosaurus", duration: 604800000 },
-  LVL_1_LEGENDARY_PENGUIN: { name: "[Lvl 1] Penguin", duration: 604800000 },
   LVL_1_LEGENDARY_MAMMOTH: { name: "[Lvl 1] Mammoth", duration: 604800000 },
-  DWARVEN_HANDWARMERS: { name: "Dwarven Handwarmers", duration: 14400000 },
-  REINFORCED_CHISEL: { name: "Reinforced Chisel", duration: 43200000 },
-  DWARVEN_METAL: { name: "Dwarven Metal Talisman", duration: 86400000 },
-  PORTABLE_CAMPFIRE: { name: "Portable Campfire", duration: 1800000 },
-  TUNGSTEN_KEYCHAIN: { name: "Tungsten Regulator", duration: 21600000 },
-  GLACITE_CHISEL: { name: "Glacite-Plated Chisel", duration: 64800000 },
-  PERFECT_CHISEL: { name: "Perfect Chisel", duration: 86400000 },
-  DIVAN_PENDANT: { name: "Pendant of Divan", duration: 604800000 },
-  POWER_RELIC: { name: "Relic of Power", duration: 28800000 },
-  SKELETON_KEY: { name: "Skeleton Key", duration: 1800000 }
+  MITHRIL_DRILL_1: { name: "Mithril Drill SX-R226", duration: 14400000 },
+  MITHRIL_DRILL_2: { name: "Mithril Drill SX-R326", duration: 30000 },
+  GEMSTONE_DRILL_1: { name: "Ruby Drill TX-15", duration: 14400000 },
+  GEMSTONE_DRILL_2: { name: "Gemstone Drill LT-522", duration: 30000 },
+  GEMSTONE_DRILL_3: { name: "Topaz Drill KGR-12", duration: 30000 },
+  GEMSTONE_DRILL_4: { name: "Jasper Drill X", duration: 30000 },
+  POLISHED_TOPAZ_ROD: { name: "Polished Topaz Rod", duration: 43200000 },
+  TITANIUM_DRILL_1: { name: "Titanium Drill DR-X355", duration: 14400000 },
+  TITANIUM_DRILL_2: { name: "Titanium Drill DR-X455", duration: 30000 },
+  TITANIUM_DRILL_3: { name: "Titanium Drill DR-X555", duration: 30000 },
+  TITANIUM_DRILL_4: { name: "Titanium Drill DR-X655", duration: 30000 },
+  CHISEL: { name: "Chisel", duration: 14400000 },
+  REINFORCED_CHISEL: { name: "Reinforced Chisel", duration: 30000 },
+  GLACITE_CHISEL: { name: "Glacite-Plated Chisel", duration: 30000 },
+  PERFECT_CHISEL: { name: "Perfect Chisel", duration: 30000 },
+  DIVAN_DRILL: { name: "Divan's Drill", duration: 30000 },
+  STARFALL_SEASONING: { name: "Starfall Seasoning", duration: 64800000 },
+  GOBLIN_OMELETTE: { name: "Goblin Omelette", duration: 64800000 },
+  GOBLIN_OMELETTE_BLUE_CHEESE: { name: "Blue Cheese Goblin Omelette", duration: 64800000 },
+  GOBLIN_OMELETTE_PESTO: { name: "Pesto Goblin Omelette", duration: 64800000 },
+  GOBLIN_OMELETTE_SPICY: { name: "Spicy Goblin Omelette", duration: 64800000 },
+  GOBLIN_OMELETTE_SUNNY_SIDE: { name: "Sunny Side Goblin Omelette", duration: 64800000 },
+  TUNGSTEN_KEYCHAIN: { name: "Tungsten Regulator", duration: 64800000 },
+  MITHRIL_DRILL_ENGINE: { name: "Mithril-Plated Drill Engine", duration: 86400000 },
+  TITANIUM_DRILL_ENGINE: { name: "Titanium-Plated Drill Engine", duration: 30000 },
+  RUBY_POLISHED_DRILL_ENGINE: { name: "Ruby-polished Drill Engine", duration: 30000 },
+  SAPPHIRE_POLISHED_DRILL_ENGINE: { name: "Sapphire-polished Drill Engine", duration: 30000 },
+  AMBER_POLISHED_DRILL_ENGINE: { name: "Amber-polished Drill Engine", duration: 30000 },
+  MITHRIL_FUEL_TANK: { name: "Mithril-Infused Fuel Tank", duration: 86400000 },
+  TITANIUM_FUEL_TANK: { name: "Titanium-Infused Fuel Tank", duration: 30000 },
+  GEMSTONE_FUEL_TANK: { name: "Gemstone Fuel Tank", duration: 30000 },
+  PERFECTLY_CUT_FUEL_TANK: { name: "Perfectly-Cut Fuel Tank", duration: 30000 },
+  BEACON_2: { name: "Beacon II", duration: 72000000 },
+  BEACON_3: { name: "Beacon III", duration: 108000000 },
+  BEACON_4: { name: "Beacon IV", duration: 144000000 },
+  BEACON_5: { name: "Beacon V", duration: 180000000 },
+  FORGE_TRAVEL_SCROLL: { name: "Travel Scroll to the Dwarven Forge", duration: 18000000 },
+  BASE_CAMP_TRAVEL_SCROLL: { name: "Travel Scroll to the Dwarven Base Camp", duration: 36000000 },
+  POWER_CRYSTAL: { name: "Power Crystal", duration: 7200000 },
+  SECRET_RAILROAD_PASS: { name: "Secret Railroad Pass", duration: 30000 },
+  TUNGSTEN_KEY: { name: "Tungsten Key", duration: 1800000 },
+  UMBER_KEY: { name: "Umber Key", duration: 1800000 },
+  SKELETON_KEY: { name: "Skeleton Key", duration: 1800000 },
+  PORTABLE_CAMPFIRE: { name: "Portable Campfire", duration: 1800000 }
 } as Record<string, { name: string; duration: number }>;

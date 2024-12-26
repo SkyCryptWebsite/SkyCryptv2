@@ -67,7 +67,7 @@ function getPetLevel(petExp: number, type: string, rarity: string) {
 
   const maxLevel = petData.custom_pet_leveling[type]?.max_level ?? 100;
 
-  const levels = petData.custom_pet_leveling[type]?.pet_levels === undefined ? petData.pet_levels.slice(rarityOffset, rarityOffset + maxLevel - 1) : petData.custom_pet_leveling[type]?.pet_levels.concat(petData.custom_pet_leveling[type]?.pet_levels);
+  const levels = petData.pet_levels.slice(rarityOffset, rarityOffset + maxLevel - 1).concat(petData.custom_pet_leveling[type]?.pet_levels ?? []);
 
   let level = 1;
   let xpMaxLevel = 0;
@@ -96,7 +96,7 @@ function getPetLevel(petExp: number, type: string, rarity: string) {
 function getPetData(level: number, type: string, rarity: string) {
   const petNums = NEU_CONSTANTS.get("petnums");
   if (petNums[type] === undefined || petNums[type][rarity] === undefined) {
-    return {};
+    return null;
   }
 
   const lvlMin = petNums[type][rarity]["1"];
@@ -144,7 +144,8 @@ function getProfilePets(pets: Pet[]) {
     } as ProcessedPet;
 
     const NEUItemId = `${pet.type};${constants.RARITIES.indexOf(pet.tier.toLowerCase())}`;
-    const petData = NEU_ITEMS.get(NEUItemId);
+    const NEUItemIdFallback = pet.heldItem === "PET_ITEM_TIER_BOOST" ? `${pet.type};${constants.RARITIES.indexOf(pet.tier.toLowerCase()) - 1}` : null;
+    const petData = NEU_ITEMS.get(NEUItemId) ?? NEU_ITEMS.get(NEUItemIdFallback as string);
     if (petData === undefined) {
       output.push(outputPet);
       continue;
@@ -155,7 +156,12 @@ function getProfilePets(pets: Pet[]) {
 
     outputPet.texture_path = `/api/head/${texture}?v6`;
 
-    const data = getPetData(outputPet.level.level, pet.type, pet.tier.toUpperCase());
+    let data = getPetData(outputPet.level.level, pet.type, pet.tier.toUpperCase());
+    if (!data && pet.heldItem === "PET_ITEM_TIER_BOOST") {
+      data = getPetData(outputPet.level.level, pet.type, constants.RARITIES[constants.RARITIES.indexOf(pet.tier.toLowerCase()) - 1].toUpperCase());
+    }
+
+    data ??= {};
     Object.assign(data, { LVL: outputPet.level.level });
 
     outputPet.stats = Object.keys(data)
@@ -328,9 +334,22 @@ function getPetScore(pets: ProcessedPet[]) {
     break;
   }
 
+  const petScores = Object.keys(constants.PET_REWARDS).map(Number);
   return {
     amount: total,
-    stats: bonus
+    stats: bonus,
+    reward: Object.entries(constants.PET_REWARDS).map(([score, stats]) => {
+      const output = {
+        score: parseInt(score),
+        bonus: Object.values(stats).reduce((a, b) => a + b, 0)
+      } as { score: number; bonus: number; unlocked?: boolean };
+
+      if (parseInt(score) === Math.max(...petScores.filter((s) => s <= total))) {
+        output.unlocked = true;
+      }
+
+      return output;
+    })
   };
 }
 
@@ -351,7 +370,7 @@ export async function getPets(userProfile: Member, items: ProcessedItem[], profi
 
   const pets = allPets.filter((pet) => pet.exp !== undefined);
   if (pets.length === 0) {
-    return output;
+    return {};
   }
 
   for (const pet of pets) {

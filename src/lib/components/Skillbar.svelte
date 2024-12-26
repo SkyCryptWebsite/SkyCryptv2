@@ -15,7 +15,7 @@
 
   const { hoverAction, isHovered } = createHover();
 
-  const isMaxed = skillData.level === skillData.maxLevel;
+  const isMaxed = skillData.maxed;
 </script>
 
 <div class={cn("group relative flex flex-grow basis-full flex-col sm:basis-1/3 sm:last:grow-0 sm:last:basis-1/2", className)} data-hover={$isHovered} data-maxed={isMaxed} use:hoverAction>

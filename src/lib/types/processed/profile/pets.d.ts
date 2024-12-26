@@ -94,6 +94,11 @@ export type Pets = {
   petScore?: {
     amount: number;
     stats: Record<string, number>;
+    reward: {
+      score: number;
+      bonus: number;
+      unlocked?: boolean;
+    }[];
   };
 };
 

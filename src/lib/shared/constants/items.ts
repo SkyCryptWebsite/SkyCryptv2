@@ -15,7 +15,8 @@ export const RARITY_COLORS = {
   supreme: "4",
   special: "c",
   very_special: "c",
-  admin: "4"
+  admin: "4",
+  ultimate: "4"
 } as Record<string, string>;
 
 export const POTION_COLORS = {

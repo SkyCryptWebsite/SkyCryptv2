@@ -7,7 +7,7 @@
 
   export let wardrobeItems: ProcessedSkyBlockItem[];
 
-  const highestItem = wardrobeItems.find((piece) => piece);
+  const highestItem = wardrobeItems.find((piece) => piece && piece.display_name);
   const pieces = ["helmet", "chestplate", "leggings", "boots"];
 
   const expanded = writable<boolean>(false);
@@ -22,7 +22,7 @@
     {:else}
       <Collapsible.Content transition={slide} class="flex flex-col gap-2">
         {#each wardrobeItems as piece, index}
-          {#if piece}
+          {#if piece && piece.display_name}
             <Item {piece} />
           {:else}
             <Avatar.Root class="rounded-lg bg-background-lore p-2">

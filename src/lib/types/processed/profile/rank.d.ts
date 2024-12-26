@@ -1,8 +1,8 @@
 export interface Rank {
-  color: string;
-  tag: string;
-  plus?: string;
-  plusColor?: string;
+  rankText: string;
+  rankColor: string;
+  plusText: string;
+  plusColor: string;
 }
 
 export type PlusColor = "BLACK" | "DARK_BLUE" | "DARK_GREEN" | "DARK_AQUA" | "DARK_RED" | "DARK_PURPLE" | "GOLD" | "GRAY" | "DARK_GRAY" | "BLUE" | "GREEN" | "AQUA" | "RED" | "LIGHT_PURPLE" | "YELLOW" | "WHITE";

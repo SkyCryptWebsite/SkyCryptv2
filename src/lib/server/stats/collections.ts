@@ -1,7 +1,53 @@
 import * as constants from "$lib/server/constants/constants";
 import { COLLECTIONS } from "$lib/server/constants/update-collections";
 import { getUsername } from "$lib/server/lib";
-import type { Collections, Member, Profile } from "$types/global";
+import type { CategoryItem, Collections, Member, Profile } from "$types/global";
+import { getKuudraCompletions } from "./crimson_isle";
+import { getFloorCompletions } from "./dungeons";
+
+function getBossCollections(userProfile: Member) {
+  const bossCollections = [];
+
+  const dungeons = getFloorCompletions(userProfile.dungeons ?? {});
+  for (const [floor, amount] of Object.entries(dungeons)) {
+    if (floor === "total") {
+      continue;
+    }
+
+    const index = parseInt(floor) - 1;
+    bossCollections.push({
+      name: constants.BOSS_COLLECTIONS[index].name,
+      id: floor,
+      texture: constants.BOSS_COLLECTIONS[index].texture,
+      amount: amount,
+      tier: constants.BOSS_COLLECTIONS[index].collections.filter((t) => t <= amount).length,
+      maxTier: constants.BOSS_COLLECTIONS[index].collections.length,
+      amounts: { username: "test", amount: 0 }
+    });
+  }
+
+  const kuudraCompletions = getKuudraCompletions(userProfile);
+  const kuudraCollection = constants.BOSS_COLLECTIONS.find((c) => c.name === "Kuudra");
+  if (kuudraCollection) {
+    bossCollections.push({
+      name: kuudraCollection.name,
+      id: "kuudra",
+      texture: kuudraCollection.texture,
+      amount: kuudraCompletions,
+      totalAmount: kuudraCompletions,
+      tier: kuudraCollection.collections.filter((t) => t <= kuudraCompletions).length,
+      maxTier: kuudraCollection.collections.length
+    });
+  }
+
+  return {
+    name: "Boss",
+    texture: "/api/item/SKULL_ITEM:1",
+    items: bossCollections as unknown as CategoryItem[],
+    totalTiers: bossCollections.length,
+    maxTiers: bossCollections.filter((a) => a.tier === a.maxTier).length
+  };
+}
 
 export async function getCollections(userProfile: Member, profile: Profile) {
   const output = { categories: {} } as Collections;
@@ -49,7 +95,6 @@ export async function getCollections(userProfile: Member, profile: Profile) {
       });
 
       output.categories[category].totalTiers = output.categories[category].items.length;
-
       output.categories[category].maxTiers = output.categories[category].items.filter((a) => a.tier === a.maxTier).length;
     }
 
@@ -58,8 +103,9 @@ export async function getCollections(userProfile: Member, profile: Profile) {
     output.categories[category].maxTiers = output.categories[category].items.filter((a) => a.tier === a.maxTier).length;
   }
 
-  output.totalCollections = Object.values(output.categories).reduce((a, b) => a + b.items.length, 0);
+  output.categories.boss = getBossCollections(userProfile);
 
+  output.totalCollections = Object.values(output.categories).reduce((a, b) => a + b.items.length, 0);
   output.maxedCollections = Object.values(output.categories)
     .map((a) => a.items)
     .flat()

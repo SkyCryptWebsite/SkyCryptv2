@@ -19,6 +19,7 @@ export type NodeData = {
 export type HotmItemData = {
   displayName?: string;
   position?: number;
+  rarity?: string;
   itemData?: {
     id: string;
     Damage: number;

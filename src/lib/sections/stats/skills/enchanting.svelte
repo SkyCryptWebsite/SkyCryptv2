@@ -4,7 +4,7 @@
   import Chip from "$lib/components/Chip.svelte";
   import SectionSubtitle from "$lib/components/SectionSubtitle.svelte";
   import { Collapsible } from "bits-ui";
-  import { formatDistanceStrict } from "date-fns";
+  import { formatDistanceToNowStrict } from "date-fns";
   import ChevronDown from "lucide-svelte/icons/chevron-down";
   import { fade } from "svelte/transition";
 
@@ -30,10 +30,10 @@
               <AdditionStat text="Bonus Clicks" data={`${enchating.stats.bonusClicks}`} />
             {/if}
             {#if enchating.stats.lastAttempt}
-              <AdditionStat text="Last Attempt" data={formatDistanceStrict(enchating.stats.lastAttempt, Date.now(), { addSuffix: true })} />
+              <AdditionStat text="Last Attempt" data={formatDistanceToNowStrict(enchating.stats.lastAttempt, { addSuffix: true })} />
             {/if}
             {#if enchating.stats.lastClaimed}
-              <AdditionStat text="Last Claimed" data={formatDistanceStrict(enchating.stats.lastClaimed, Date.now(), { addSuffix: true })} />
+              <AdditionStat text="Last Claimed" data={formatDistanceToNowStrict(enchating.stats.lastClaimed, { addSuffix: true })} />
             {/if}
           </div>
           <div class="w-full space-y-5 px-5 pb-5">

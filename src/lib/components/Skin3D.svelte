@@ -26,7 +26,7 @@
     });
 
     viewer.camera.position.set(-18, -3, 78);
-    viewer.controls.enableZoom = true;
+    viewer.controls.enableZoom = false;
     viewer.controls.enablePan = true;
     viewer.controls.enableRotate = true;
     viewer.canvas.removeAttribute("tabindex");

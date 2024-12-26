@@ -17,7 +17,7 @@
       <AdditionStat text="Items Sold" data={format(misc.auctions.total_sold.total)} asterisk={true}>
         {#each Object.entries(misc.auctions.total_sold) as [rarity, amount]}
           {#if rarity !== "total"}
-            <AdditionStat text={rarity} data={amount} textRarityColor={rarity.toLowerCase()} />
+            <AdditionStat text={rarity} data={format(amount)} textRarityColor={rarity.toLowerCase()} />
           {/if}
         {/each}
       </AdditionStat>
@@ -34,7 +34,7 @@
       <AdditionStat text="Items Bought" data={format(misc.auctions.total_bought.total)} asterisk={true}>
         {#each Object.entries(misc.auctions.total_bought) as [rarity, amount]}
           {#if rarity !== "total"}
-            <AdditionStat text={rarity} data={amount} textRarityColor={rarity.toLowerCase()} />
+            <AdditionStat text={rarity} data={format(amount)} textRarityColor={rarity.toLowerCase()} />
           {/if}
         {/each}
       </AdditionStat>

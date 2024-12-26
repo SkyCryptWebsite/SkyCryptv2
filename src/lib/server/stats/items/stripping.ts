@@ -93,7 +93,7 @@ export function stripAllItems(items: GetItemsItems) {
 
         if (key === "wardrobe") {
           const wardrobeItems = value as GetItemsItems["wardrobe"];
-          acc[key] = wardrobeItems.map((set) => stripItems(set.filter(Boolean)));
+          acc[key] = wardrobeItems.map((set) => stripItems(set));
         } else if (Array.isArray(value) && value.length > 0) {
           acc[key] = stripItems(value as ProcessedItem[]);
         } else {
