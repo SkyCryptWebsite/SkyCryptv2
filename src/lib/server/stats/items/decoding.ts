@@ -9,6 +9,10 @@ export async function decodeItems(base64Strings: string[]) {
     const decodedItems = await Promise.all(
       base64Strings.flat().map(async (item) => {
         try {
+          if (!item || !item.length) {
+            return [];
+          }
+
           const unzippedData = await new Promise<Buffer>((resolve, reject) =>
             gunzip(Buffer.from(item, "base64"), (error, unzippedData) => {
               if (error) reject(error);
@@ -20,7 +24,7 @@ export async function decodeItems(base64Strings: string[]) {
           const simplified = nbt.simplify(parsed.data);
           return simplified.i;
         } catch (error) {
-          console.error(`Failed to decode item: ${error}`);
+          console.error(`decodeItems | Failed to decode item: ${error}`);
           return null;
         }
       })
@@ -28,7 +32,7 @@ export async function decodeItems(base64Strings: string[]) {
 
     return decodedItems.filter((item) => item !== null);
   } catch (error) {
-    console.error(`Failed to decode items: ${error}`);
+    console.error(`decodeItems | Failed to decode items: ${error}`);
     return [];
   }
 }
@@ -38,7 +42,7 @@ export async function decodeItemsObject(base64Strings: Record<string, string>) {
     const decodedItemsArray = await decodeItems(Object.values(base64Strings));
     return Object.fromEntries(Object.keys(base64Strings).map((key, idx) => [key, decodedItemsArray[idx]]));
   } catch (error) {
-    console.error(`Failed to decode items object: ${error}`);
+    console.error(`decodeItemsObject | Failed to decode items object: ${error}`);
     return {};
   }
 }
@@ -56,7 +60,7 @@ export async function decodeItem(encodedItem: string) {
     const simplified = nbt.simplify(parsed.data);
     return simplified.i;
   } catch (error) {
-    console.error(`Failed to decode item: ${error}`);
+    console.error(`decodeItem | Failed to decode item: ${error}`);
     return null;
   }
 }

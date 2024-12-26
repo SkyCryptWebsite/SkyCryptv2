@@ -1,5 +1,5 @@
-import * as helper from "$lib/server/helper";
 import * as constants from "$lib/server/constants/constants";
+import * as helper from "$lib/server/helper";
 
 import { itemSorter } from "$lib/server/stats/items/processing";
 import { getMissingAccessories } from "$lib/server/stats/missing";

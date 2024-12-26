@@ -351,7 +351,7 @@ export async function getPets(userProfile: Member, items: ProcessedItem[], profi
 
   const pets = allPets.filter((pet) => pet.exp !== undefined);
   if (pets.length === 0) {
-    return output;
+    return {};
   }
 
   for (const pet of pets) {

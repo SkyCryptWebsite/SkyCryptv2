@@ -1,3 +1,4 @@
+import { dev } from "$app/environment";
 import { REDIS } from "$lib/server/db/redis";
 import { getDisplayName, getProfiles, sendWebhookMessage } from "$lib/server/lib";
 import * as stats from "$lib/server/stats/stats";
@@ -12,6 +13,10 @@ async function processStats<T>(player: Player, profile: Profile, stats: Array<[s
     try {
       result[key] = await fetchFn();
     } catch (error) {
+      if (dev) {
+        console.error(`Error fetching ${key} for ${profile.uuid}:`, error);
+      }
+
       const uuid = profile.uuid;
       const username = player.displayname;
       const profileId = profile.profile_id;

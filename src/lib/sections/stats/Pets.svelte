@@ -32,9 +32,9 @@
   // TODO: Once helper functions get moved to a global location, we can remove this function
 </script>
 
-{#if pets != null}
-  <Items title="Pets">
-    <div slot="text">
+<Items title="Pets">
+  {#if pets.pets?.length}
+    <div>
       <AdditionStat text="Unique Pets" data={`${pets.amount} / ${pets.total}`} maxed={pets.amount === pets.total} />
       <AdditionStat text="Unique Pet Skins" data={`${pets.amountSkins} / ${pets.totalSkins}`} maxed={pets.amountSkins === pets.totalSkins} />
       {#if pets.petScore != null}
@@ -128,5 +128,7 @@
         </Collapsible.Root>
       {/if}
     </div>
-  </Items>
-{/if}
+  {:else}
+    <p class="text-text/60">No data available</p>
+  {/if}
+</Items>
