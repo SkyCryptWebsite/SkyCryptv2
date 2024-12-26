@@ -112,7 +112,7 @@ function formatCatacombsData(catacombs: Catacombs) {
       name: floor.name,
       texture: floor.texture,
       stats: {
-        times_played: catacombs.times_played?.[floor.id] ?? 0,
+        times_played: catacombs.times_played?.[floor.id] ?? catacombs.tier_completions?.[floor.id] ?? 0,
         tier_completions: catacombs.tier_completions?.[floor.id] ?? 0,
         milestone_completions: catacombs.milestone_completions?.[floor.id] ?? 0,
         best_score: catacombs.best_score?.[floor.id] ?? 0,

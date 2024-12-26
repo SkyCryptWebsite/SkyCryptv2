@@ -130,7 +130,7 @@
               <Collapsible.Root class="p-5">
                 <Collapsible.Trigger class="group flex items-center gap-0.5">
                   <ChevronDown class="size-5 transition-all duration-300 group-data-[state=open]:-rotate-180" />
-                  <SectionSubtitle>Floor Stats</SectionSubtitle>
+                  <SectionSubtitle class="my-0">Floor Stats</SectionSubtitle>
                 </Collapsible.Trigger>
                 <Collapsible.Content>
                   {#each Object.entries(catacomb.stats) as [key, value]}
@@ -147,7 +147,7 @@
                 <Collapsible.Root class="px-5 pb-[2.5rem]">
                   <Collapsible.Trigger class="group flex items-center gap-0.5">
                     <ChevronDown class="size-5 transition-all duration-300 group-data-[state=open]:-rotate-180" />
-                    <SectionSubtitle>Best run</SectionSubtitle>
+                    <SectionSubtitle class="my-0">Best run</SectionSubtitle>
                   </Collapsible.Trigger>
                   <Collapsible.Content>
                     {#each Object.entries(catacomb.best_run) as [key, value]}
