@@ -96,7 +96,7 @@ function getPetLevel(petExp: number, type: string, rarity: string) {
 function getPetData(level: number, type: string, rarity: string) {
   const petNums = NEU_CONSTANTS.get("petnums");
   if (petNums[type] === undefined || petNums[type][rarity] === undefined) {
-    return {};
+    return null;
   }
 
   const lvlMin = petNums[type][rarity]["1"];
@@ -144,7 +144,8 @@ function getProfilePets(pets: Pet[]) {
     } as ProcessedPet;
 
     const NEUItemId = `${pet.type};${constants.RARITIES.indexOf(pet.tier.toLowerCase())}`;
-    const petData = NEU_ITEMS.get(NEUItemId);
+    const NEUItemIdFallback = pet.heldItem === "PET_ITEM_TIER_BOOST" ? `${pet.type};${constants.RARITIES.indexOf(pet.tier.toLowerCase()) - 1}` : null;
+    const petData = NEU_ITEMS.get(NEUItemId) ?? NEU_ITEMS.get(NEUItemIdFallback as string);
     if (petData === undefined) {
       output.push(outputPet);
       continue;
@@ -155,7 +156,12 @@ function getProfilePets(pets: Pet[]) {
 
     outputPet.texture_path = `/api/head/${texture}?v6`;
 
-    const data = getPetData(outputPet.level.level, pet.type, pet.tier.toUpperCase());
+    let data = getPetData(outputPet.level.level, pet.type, pet.tier.toUpperCase());
+    if (!data && pet.heldItem === "PET_ITEM_TIER_BOOST") {
+      data = getPetData(outputPet.level.level, pet.type, constants.RARITIES[constants.RARITIES.indexOf(pet.tier.toLowerCase()) - 1].toUpperCase());
+    }
+
+    data ??= {};
     Object.assign(data, { LVL: outputPet.level.level });
 
     outputPet.stats = Object.keys(data)
