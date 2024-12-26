@@ -14,7 +14,7 @@ async function processStats<T>(player: Player, profile: Profile, stats: Array<[s
       result[key] = await fetchFn();
     } catch (error) {
       if (dev) {
-        console.error(`Error fetching ${key} for ${profile.uuid}:`, error);
+        console.log(error);
       }
 
       const uuid = profile.uuid;
