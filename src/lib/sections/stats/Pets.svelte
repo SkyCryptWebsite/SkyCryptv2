@@ -4,18 +4,6 @@
   import Item from "$lib/components/Item.svelte";
   import SectionSubtitle from "$lib/components/SectionSubtitle.svelte";
   import Items from "$lib/layouts/stats/Items.svelte";
-  // import { PET_REWARDS } from "$lib/server/constants/pets";
-  /*
-  <!-- TODO: Format this on the back end -->
-  {#each Object.entries(PET_REWARDS) as [score, data]}
-    <div>
-      {score} Score: <span style="color: var(--§b)">+{data.magic_find} Magic Find</span>
-      {#if data.magic_find === pets.petScore.amount}
-        <span style="color: var(--§5);"> «</span>
-      {/if}
-    </div>
-  {/each}
-  */
 
   import { getProfileCtx } from "$ctx/profile.svelte";
   import { formatNumber, getRarityClass, uniqBy } from "$lib/shared/helper";
@@ -28,8 +16,6 @@
   const activePet = $derived(pets.pets.find((pet) => pet.active === true));
   const uniquePets = $derived(uniqBy(pets.pets, "type"));
   const otherPets = $derived(pets.pets.filter((pet) => !uniquePets.includes(pet)));
-
-  // TODO: Once helper functions get moved to a global location, we can remove this function
 </script>
 
 <Items title="Pets">
@@ -42,7 +28,16 @@
           <div class="max-w-xs space-y-6 font-bold">
             <h3 class="text-text/85">Pet score is calculated based on how many unique pets you have and the rarity of these pets.</h3>
             <h3 class="text-text/85">You gain an additional score for each max level pet you have!</h3>
-            <div class="flex flex-col"></div>
+            <div class="flex flex-col">
+              {#each pets.petScore.reward as { score, bonus, unlocked }}
+                <div>
+                  {score} Score: <span style="color: var(--§b)">+{bonus} Magic Find</span>
+                  {#if unlocked}
+                    <span style="color: var(--§5);"> «</span>
+                  {/if}
+                </div>
+              {/each}
+            </div>
           </div>
         </AdditionStat>
       {/if}

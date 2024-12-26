@@ -67,7 +67,7 @@ function getPetLevel(petExp: number, type: string, rarity: string) {
 
   const maxLevel = petData.custom_pet_leveling[type]?.max_level ?? 100;
 
-  const levels = petData.custom_pet_leveling[type]?.pet_levels === undefined ? petData.pet_levels.slice(rarityOffset, rarityOffset + maxLevel - 1) : petData.custom_pet_leveling[type]?.pet_levels.concat(petData.custom_pet_leveling[type]?.pet_levels);
+  const levels = petData.pet_levels.slice(rarityOffset, rarityOffset + maxLevel - 1).concat(petData.custom_pet_leveling[type]?.pet_levels ?? []);
 
   let level = 1;
   let xpMaxLevel = 0;
@@ -334,9 +334,22 @@ function getPetScore(pets: ProcessedPet[]) {
     break;
   }
 
+  const petScores = Object.keys(constants.PET_REWARDS).map(Number);
   return {
     amount: total,
-    stats: bonus
+    stats: bonus,
+    reward: Object.entries(constants.PET_REWARDS).map(([score, stats]) => {
+      const output = {
+        score: parseInt(score),
+        bonus: Object.values(stats).reduce((a, b) => a + b, 0)
+      } as { score: number; bonus: number; unlocked?: boolean };
+
+      if (parseInt(score) === Math.max(...petScores.filter((s) => s <= total))) {
+        output.unlocked = true;
+      }
+
+      return output;
+    })
   };
 }
 

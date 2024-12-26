@@ -299,6 +299,10 @@ class HotM {
     return `§${color}Tier ${this.tier}`;
   }
 
+  get rarity() {
+    return this.status === "unlocked" ? "uncommon" : "special";
+  }
+
   get status() {
     if (this.tier <= this.level) {
       return "unlocked";
@@ -502,6 +506,10 @@ class Node {
   get displayName() {
     const nameColor = this.status === "maxed" ? "a" : this.status === "unlocked" ? "e" : "c";
     return `§${nameColor}§l${this.name}`;
+  }
+
+  get rarity() {
+    return this.status === "maxed" ? "uncommon" : this.status === "unlocked" ? "legendary" : "special";
   }
 
   get status() {
@@ -1611,12 +1619,14 @@ class HotmItem {
   itemData: { id: number; Damage: number; glowing: boolean; texture_path: string; skyblock_id?: string };
   resources: { token_of_the_mountain: number; mithril_powder: number; gemstone_powder: number };
   last_reset: number;
+  rarity: string;
   constructor() {
     this.position = 0;
     this.displayName = "";
     this.itemData = { id: 0, Damage: 0, glowing: false, texture_path: "", skyblock_id: "" };
     this.resources = { token_of_the_mountain: 0, mithril_powder: 0, gemstone_powder: 0 };
     this.last_reset = 0;
+    this.rarity = "special";
   }
 
   get position10x9(): number {
@@ -1628,6 +1638,7 @@ class HotmStats extends HotmItem {
   constructor(data: HotmItemData) {
     super();
     this.displayName = "§5Heart of the Mountain";
+    this.rarity = "epic";
     this.position = 1;
     this.itemData = {
       id: 397,
@@ -1652,6 +1663,7 @@ class CrystalHollowsCrystals extends HotmItem {
   constructor(data: HotmItemData) {
     super();
     this.displayName = "§5Crystal Hollows Crystals";
+    this.rarity = "epic";
     this.position = 2;
     this.itemData = {
       id: 397,
@@ -1705,6 +1717,7 @@ class HotmReset extends HotmItem {
   constructor(data: HotmItemData) {
     super();
     this.displayName = "§cReset Heart of the Mountain";
+    this.rarity = "special";
     this.position = 3;
     this.itemData = {
       id: 397,

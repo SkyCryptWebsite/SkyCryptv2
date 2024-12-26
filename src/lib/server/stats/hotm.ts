@@ -33,6 +33,7 @@ export function getHotmItems(userProfile: Member, packs: string[]) {
     output[node.position10x9 - 1] = helper.generateItem({
       display_name: node.name,
       id: node.itemData.id,
+      rarity: node.rarity,
       damage: node.itemData.Damage,
       glowing: node.itemData.glowing,
       tag: {
@@ -53,6 +54,7 @@ export function getHotmItems(userProfile: Member, packs: string[]) {
 
     output[hotm.position10x9 - 1] = helper.generateItem({
       display_name: `Tier ${tier}`,
+      rarity: hotm.rarity,
       id: hotm.itemData.id,
       damage: hotm.itemData.Damage,
       glowing: hotm.itemData.glowing,
@@ -83,6 +85,7 @@ export function getHotmItems(userProfile: Member, packs: string[]) {
 
     output[item.position10x9 - 1] = helper.generateItem({
       display_name: helper.getRawLore(item.displayName),
+      rarity: item.rarity,
       id: item.itemData.id,
       damage: item.itemData.Damage,
       glowing: item.itemData.glowing,
