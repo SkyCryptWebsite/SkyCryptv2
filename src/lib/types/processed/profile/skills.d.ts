@@ -17,6 +17,7 @@ export type Skill = {
   unlockableLevelWithProgress: number;
   rank?: number;
   texture: string;
+  maxed: boolean;
 };
 
 export type Skills = {
