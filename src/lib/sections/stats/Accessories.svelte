@@ -131,10 +131,12 @@
               {/if}
             {/each}
           </Items>
-          <p class="space-x-0.5 font-bold capitalize leading-6">
-            <span class="text-text/60">Enrichments: </span>
-            <span class="text-text">{accessories.enrichments.missing}× Missing Enrichment! </span>
-          </p>
+          {#if accessories.enrichments.missing > 0}
+            <p class="space-x-0.5 font-bold capitalize leading-6">
+              <span class="text-text/60">Enrichments: </span>
+              <span class="text-text">{accessories.enrichments.missing}× Missing Enrichment! </span>
+            </p>
+          {/if}
           <Bonus stats={accessories.stats} class="my-0" />
 
           {#if accessories.accessories.length > 0 && accessories.accessories.find((accessory) => accessory.isInactive)}
