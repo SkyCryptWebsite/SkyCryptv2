@@ -18,9 +18,9 @@
   const otherPets = $derived(pets.pets.filter((pet) => !uniquePets.includes(pet)));
 </script>
 
-<Items title="Pets">
-  {#if pets.pets?.length}
-    <div>
+{#if pets.pets?.length}
+  <Items title="Pets">
+    <div slot="text">
       <AdditionStat text="Unique Pets" data={`${pets.amount} / ${pets.total}`} maxed={pets.amount === pets.total} />
       <AdditionStat text="Unique Pet Skins" data={`${pets.amountSkins} / ${pets.totalSkins}`} maxed={pets.amountSkins === pets.totalSkins} />
       {#if pets.petScore != null}
@@ -123,7 +123,9 @@
         </Collapsible.Root>
       {/if}
     </div>
-  {:else}
+  </Items>
+{:else}
+  <Items title="Pets">
     <p class="text-text/60">No data available</p>
-  {/if}
-</Items>
+  </Items>
+{/if}
