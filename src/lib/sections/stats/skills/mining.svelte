@@ -6,7 +6,6 @@
   import Items from "$lib/layouts/stats/Items.svelte";
   import { getRarityClass } from "$lib/shared/helper";
   import { cn } from "$lib/shared/utils";
-  import type { ValidStats as StatsType } from "$lib/types/stats";
   import { formatDate, formatDistanceToNowStrict } from "date-fns";
   import { format } from "numerable";
   import { fade } from "svelte/transition";
