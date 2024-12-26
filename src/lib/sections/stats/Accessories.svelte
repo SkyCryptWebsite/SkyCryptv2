@@ -12,12 +12,6 @@
 
   const { profile } = getProfileCtx();
   const accessories = $derived(profile.accessories);
-
-  // function formatValue(value: string) {
-  //   return parseFloat(value)
-  //     .toFixed(2)
-  //     .replace(/\.?0+$/, "");
-  // }
 </script>
 
 <Items title="Accessories">
