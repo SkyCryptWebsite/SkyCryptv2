@@ -1,6 +1,27 @@
 import * as constants from "$lib/server/constants/constants";
 import type { Member } from "$types/global";
 
+export function getKuudraCompletions(profile: Member) {
+  if (!profile.nether_island_player_data?.kuudra_completed_tiers) {
+    return 0;
+  }
+
+  let kills = 0;
+  const kuudra = profile.nether_island_player_data?.kuudra_completed_tiers;
+  for (const [kuudraId, amount] of Object.entries(kuudra)) {
+    const index = Object.keys(kuudra)
+      .filter((id) => !id.startsWith("highest"))
+      .indexOf(kuudraId);
+    if (kuudraId.startsWith("highest")) {
+      continue;
+    }
+
+    kills += amount * (index + 1);
+  }
+
+  return kills;
+}
+
 function getDojoRank(points: number) {
   if (points >= 1000) {
     return "S";
