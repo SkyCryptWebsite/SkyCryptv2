@@ -586,7 +586,7 @@ const timeoutId = setTimeout(async () => {
       const damage = texture.damage ?? 0;
       if (itemId !== undefined) {
         // Skip PLAYER_SKULL, but keep MOB SKULLS (Skeleton, Zombie, etc.)
-        if (itemId !== 397 || (itemId === 397 && [0, 1, 2].includes(damage))) {
+        if (itemId !== 397 || (itemId === 397 && [0, 1, 2, 4, 5].includes(damage))) {
           const key = `${pack.config.id}:${itemId}:${damage}`;
           const data = itemIdTextureMap.get(key) ?? [];
 

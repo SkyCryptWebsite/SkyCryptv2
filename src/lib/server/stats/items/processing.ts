@@ -194,8 +194,9 @@ export async function processItems(items: ProcessedItem[], source: string, custo
 
     item.extra = { source };
 
-    // ? NOTE: 'ENCHANTED_BOOK' is blacklisted here because it just slows down the process
-    if (customTextures && item.tag.ExtraAttributes.id !== "ENCHANTED_BOOK") {
+    if (item.tag.ExtraAttributes.id === "ENCHANTED_BOOK") {
+      item.texture_path = `/api/item/ENCHANTED_BOOK`;
+    } else if (customTextures) {
       const customTexture = getTexture(item, { pack_ids: packs, hotm: source === "storage_icons" });
 
       // ? NOTE: we're ignoring Vanilla leather armor because it's render using /leather/ endpoint (Coloring support)
@@ -212,15 +213,19 @@ export async function processItems(items: ProcessedItem[], source: string, custo
 
           item.texture_path = `/api/head/${uuid}?v6`;
         } catch (e) {
+          helper.addToItemLore(item, ["", "§cError: Missing texture"]);
+          item.texture_path = `/api/item/BARRIER`;
           console.error(e);
         }
       } else if (typeof item.id === "number" && item.id >= 298 && item.id <= 301) {
         // COLORED LEATHER ARMOR
         const color = (item.tag?.display?.color as unknown as number)?.toString(16).padStart(6, "0") ?? "955e3b";
-
         const type = ["helmet", "chestplate", "leggings", "boots"][item.id - 298];
 
         item.texture_path = `/api/leather/${type}/${color}`;
+      } else if (!item.texture_path) {
+        helper.addToItemLore(item, ["", "§cError: Missing texture"]);
+        item.texture_path = `/api/item/BARRIER`;
       }
     }
 
