@@ -18,7 +18,7 @@
         <p class="font-bold text-text/85">Rarities used:</p>
         {#each Object.entries(misc.mythological_event.burrows_dug_next) as [tier, count]}
           {#if tier !== "total"}
-            <AdditionStat text={tier} data={count} textRarityColor={tier.toLowerCase()} />
+            <AdditionStat text={tier} data={format(count)} textRarityColor={tier.toLowerCase()} />
           {/if}
         {/each}
       </AdditionStat>
@@ -27,7 +27,7 @@
         <p class="font-bold text-text/85">Rarities used:</p>
         {#each Object.entries(misc.mythological_event.burrows_dug_combat) as [tier, count]}
           {#if tier !== "total"}
-            <AdditionStat text={tier} data={count} textRarityColor={tier.toLowerCase()} />
+            <AdditionStat text={tier} data={format(count)} textRarityColor={tier.toLowerCase()} />
           {/if}
         {/each}
       </AdditionStat>
@@ -36,7 +36,7 @@
         <p class="font-bold text-text/85">Rarities used:</p>
         {#each Object.entries(misc.mythological_event.burrows_dug_treasure) as [tier, count]}
           {#if tier !== "total"}
-            <AdditionStat text={tier} data={count} textRarityColor={tier.toLowerCase()} />
+            <AdditionStat text={tier} data={format(count)} textRarityColor={tier.toLowerCase()} />
           {/if}
         {/each}
       </AdditionStat>
@@ -45,7 +45,7 @@
         <p class="font-bold text-text/85">Rarities used:</p>
         {#each Object.entries(misc.mythological_event.burrows_chains_complete) as [tier, count]}
           {#if tier !== "total"}
-            <AdditionStat text={tier} data={count} textRarityColor={tier.toLowerCase()} />
+            <AdditionStat text={tier} data={format(count)} textRarityColor={tier.toLowerCase()} />
           {/if}
         {/each}
       </AdditionStat>

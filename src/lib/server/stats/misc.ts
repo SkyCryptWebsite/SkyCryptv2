@@ -3,6 +3,19 @@ import * as helper from "$lib/server/helper";
 import type { Member, Misc, Profile } from "$types/global";
 import type { Player } from "$types/raw/player/lib";
 
+function formatMiscData(data: Record<string, number> | null) {
+  if (!data) {
+    return null;
+  }
+
+  return {
+    ...data,
+    total: Object.keys(data)
+      .filter((key) => key !== "total")
+      .reduce((acc, key) => acc + data[key], 0)
+  };
+}
+
 function getEssence(userProfile: Member) {
   const output = [];
   for (const [id, essence] of Object.entries(constants.ESSENCE)) {
@@ -208,7 +221,19 @@ export function getMisc(userProfile: Member, profile: Profile, player: Player) {
       disabled: userProfile.player_data?.disabled_potion_effects || []
     },
     profile_upgrades: getProfileUpgrades(profile),
-    auctions: userProfile.player_stats?.auctions,
+    auctions: {
+      bids: userProfile.player_stats?.auctions?.bids ?? 0,
+      highest_bid: userProfile.player_stats?.auctions?.highest_bid ?? 0,
+      won: userProfile.player_stats?.auctions?.won ?? 0,
+      total_bought: formatMiscData(userProfile.player_stats?.auctions?.total_bought),
+      gold_spent: userProfile.player_stats?.auctions?.gold_spent ?? 0,
+      created: userProfile.player_stats?.auctions?.created ?? 0,
+      fees: userProfile.player_stats?.auctions?.fees ?? 0,
+      completed: userProfile.player_stats?.auctions?.completed ?? 0,
+      total_sold: formatMiscData(userProfile.player_stats?.auctions?.total_sold),
+      gold_earned: userProfile.player_stats?.auctions?.gold_earned ?? 0,
+      no_bids: userProfile.player_stats?.auctions?.no_bids ?? 0
+    },
     claimed_items: getClaimedItems(player),
     uncategorized: {
       soulflow: userProfile.item_data?.soulflow ?? 0,
