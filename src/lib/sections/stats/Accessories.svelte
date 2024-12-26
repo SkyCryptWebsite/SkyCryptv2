@@ -133,7 +133,7 @@
             {/each}
           </Items>
           {#if accessories.enrichments != null}
-            <p class="my-4 space-x-0.5 font-bold capitalize leading-6 text-text/60">
+            <p class="space-x-0.5 font-bold capitalize leading-6 text-text/60">
               <span>Enrichments: </span>
               {#each Object.entries(accessories.enrichments) as [key, value], index}
                 {#if key !== "missing"}
