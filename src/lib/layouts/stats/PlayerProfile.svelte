@@ -37,14 +37,13 @@
         </div>
         <div class="absolute -right-3 bottom-0 top-0 z-10 h-14 w-1/2 skew-x-[-20deg] bg-[var(--plusColor)]" style={`--plusColor:${profile.rank?.plusColor ?? profile.rank?.rankColor}`}></div>
       </div>
-      <span class="px-4">{profile.displayName}</span>
+      <span class="pl-4">{profile.displayName}</span>
     </DropdownMenu.Trigger>
-
     <DropdownMenu.Content class="z-[99999] min-w-64 overflow-hidden rounded-lg bg-background-grey/95 text-3xl font-semibold" align="start" side="bottom" transition={flyAndScale} transitionConfig={{ y: -8, duration: 150 }}>
       {#each profile.members as member}
         {#if member.username !== profile.username}
           <DropdownMenu.Item href={`/stats/${member.username}/${profile.profile_cute_name}`} class="flex items-center p-4 hover:bg-text/20" data-sveltekit-preload-code="viewport">
-            <span class="px-4 {member.removed ? 'line-through' : ''}">
+            <span class="pl-4 {member.removed ? 'line-through' : ''}">
               {member.username}
             </span>
           </DropdownMenu.Item>
