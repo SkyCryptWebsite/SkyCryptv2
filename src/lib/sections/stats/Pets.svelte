@@ -52,7 +52,7 @@
             <div class="flex items-center">
               <Item piece={activePet} />
               <div class="ml-4 flex flex-col justify-center">
-                <h4 class={cn(getRarityClass(activePet.rarity ?? "common", "text"), "text-xl font-bold capitalize")}>{(activePet.rarity ?? "common").toLowerCase()} {activePet.display_name.toLowerCase()}</h4>
+                <h4 class={cn(getRarityClass(activePet.rarity ?? "common", "text"), "text-xl font-bold capitalize")}>{(activePet.rarity ?? "common").toLowerCase()} {activePet.type.toLowerCase()}</h4>
                 <h4 class="text-xl font-medium capitalize text-text">Level {activePet.level}</h4>
               </div>
             </div>
