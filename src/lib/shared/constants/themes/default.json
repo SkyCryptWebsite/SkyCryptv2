@@ -1,0 +1,21 @@
+{
+  "id": "default",
+  "name": "Default Theme",
+  "author": "SkyCrypt Team",
+  "schema": 2,
+  "images": {
+    "bg": "/img/bg.webp"
+  },
+  "backgrounds": {
+    "skillbar": { "type": "color", "color": "146 88% 35%" },
+    "maxedbar": { "type": "color", "color": "40 84% 44%" }
+  },
+  "colors": {
+    "logo": "327 96.8% 63.1%",
+    "link": "139 91% 48%",
+    "icon": "142 90% 42%",
+    "hover": "147 93% 49%",
+    "maxed": "40 88% 46%",
+    "gold": "39 98% 61%"
+  }
+}

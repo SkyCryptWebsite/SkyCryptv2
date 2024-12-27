@@ -2,6 +2,8 @@ import containerQueries from "@tailwindcss/container-queries";
 import type { Config } from "tailwindcss";
 import { fontFamily } from "tailwindcss/defaultTheme";
 import plugin from "tailwindcss/plugin";
+import scThemePlugin from "./src/plugins/themes";
+
 export default {
   darkMode: ["class"],
   content: ["./src/**/*.{html,js,svelte,ts}"],
@@ -13,8 +15,6 @@ export default {
         icon: "hsl(var(--icon) / <alpha-value>)",
         link: "hsl(var(--link) / <alpha-value>)",
         hover: "hsl(var(--hover) / <alpha-value>)",
-        skillbar: "hsl(var(--skillbar) / <alpha-value>)",
-        maxedbar: "hsl(var(--maxedbar) / <alpha-value>)",
         maxed: "hsl(var(--maxed) / <alpha-value>)",
         gold: "hsl(var(--gold) / <alpha-value>)",
         text: "hsl(var(--text) / <alpha-value>)",
@@ -84,6 +84,7 @@ export default {
         { values: theme("textShadow") }
       );
     }),
+    scThemePlugin,
     containerQueries
   ]
 } satisfies Config;

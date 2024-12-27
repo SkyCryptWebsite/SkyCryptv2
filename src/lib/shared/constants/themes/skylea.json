@@ -1,0 +1,19 @@
+{
+  "id": "skylea",
+  "name": "sky.lea.moe",
+  "author": "LeaPhant",
+  "schema": 2,
+  "enchanted_glint": "/img/enchanted-glint-legacy.png",
+  "images": {
+    "bg": "/img/themes/skylea/bg.webp"
+  },
+  "backgrounds": {
+    "skillbar": { "type": "color", "color": "#850F4A" }
+  },
+  "colors": {
+    "logo": "#f03c96",
+    "icon": "#A6145D",
+    "link": "#F94EA3",
+    "hover": "#F78DC2"
+  }
+}
