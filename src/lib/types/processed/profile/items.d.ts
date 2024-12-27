@@ -55,7 +55,7 @@ export type ItemQuery = {
   item_id?: number;
   id?: number;
   damage?: number;
-  pack?: string[];
+  packs?: string[];
   texture?: string;
   texture_path?: string;
 };
