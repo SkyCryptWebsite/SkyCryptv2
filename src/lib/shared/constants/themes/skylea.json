@@ -8,12 +8,12 @@
     "bg": "/img/themes/skylea/bg.webp"
   },
   "backgrounds": {
-    "skillbar": { "type": "color", "color": "#850F4A" }
+    "skillbar": { "type": "color", "color": "330 79.73% 29.02%" }
   },
   "colors": {
-    "logo": "#f03c96",
-    "icon": "#A6145D",
-    "link": "#F94EA3",
-    "hover": "#F78DC2"
+    "logo": "330 85.71% 58.82%",
+    "icon": "330 78.49% 36.47%",
+    "link": "330.18 93.44% 64.12%",
+    "hover": "330 86.89% 76.08%"
   }
 }

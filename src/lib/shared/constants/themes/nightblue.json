@@ -7,12 +7,12 @@
     "bg": "/resources/img/themes/nightblue/bg.webp"
   },
   "backgrounds": {
-    "skillbar": { "type": "color", "color": "#3BB9FF" }
+    "skillbar": { "type": "color", "color": "201.43 100% 61.57%" }
   },
   "colors": {
-    "logo": "#0b8ada",
-    "icon": "#3BB9FF",
-    "link": "#00FFFB",
-    "hover": "#0BAFCA"
+    "logo": "203.19 90.39% 44.9%",
+    "icon": "201.43 100% 61.57%",
+    "link": "179.06 100% 50%",
+    "hover": "188.48 89.67% 41.76%"
   }
 }

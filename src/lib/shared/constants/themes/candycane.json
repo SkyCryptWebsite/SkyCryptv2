@@ -8,8 +8,8 @@
     "bg": "/img/themes/candycane/bg.webp"
   },
   "backgrounds": {
-    "skillbar": { "type": "stripes", "angle": "45deg", "colors": ["#ff5555", "#ffffff"], "width": 10 },
-    "maxedbar": { "type": "stripes", "angle": "45deg", "colors": ["#ff4e2a", "#fdbb3c"], "width": 10 }
+    "skillbar": { "type": "stripes", "angle": "45deg", "colors": ["0 100% 66.67%", "0 0% 100%"], "width": 10 },
+    "maxedbar": { "type": "stripes", "angle": "45deg", "colors": ["10.14 100% 58.24%", "39.48 97.97% 61.37%"], "width": 10 }
   },
   "colors": {
     "logo": "0 100% 40%",

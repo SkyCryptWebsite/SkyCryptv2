@@ -7,12 +7,12 @@
     "bg": "/img/themes/sunrise/bg.webp"
   },
   "backgrounds": {
-    "skillbar": { "type": "color", "color": "#f2694e" }
+    "skillbar": { "type": "color", "color": "9.88 86.32% 62.75%" }
   },
   "colors": {
-    "logo": "#f5694c",
-    "link": "#F2694E",
-    "icon": "#F2694E",
-    "hover": "#ff9d57"
+    "logo": "10.3 89.42% 62.94%",
+    "link": "9.88 86.32% 62.75%",
+    "icon": "9.88 86.32% 62.75%",
+    "hover": "25 100% 67.06%"
   }
 }

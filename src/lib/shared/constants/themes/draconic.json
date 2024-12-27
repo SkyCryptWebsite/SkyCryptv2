@@ -7,12 +7,12 @@
     "bg": "/img/themes/draconic/bg.webp"
   },
   "backgrounds": {
-    "skillbar": { "type": "color", "color": "#ba5fde" }
+    "skillbar": { "type": "color", "color": "282.99 65.8% 62.16%" }
   },
   "colors": {
-    "logo": "#a956c8",
-    "link": "#7652b1",
-    "icon": "#ba5fde",
-    "hover": "#ba5fde"
+    "logo": "283.68 50.89% 56.08%",
+    "link": "262.74 37.85% 50.78%",
+    "icon": "282.99 65.8% 62.16%",
+    "hover": "282.99 65.8% 62.16%"
   }
 }
