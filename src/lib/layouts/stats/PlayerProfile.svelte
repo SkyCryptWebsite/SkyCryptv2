@@ -6,8 +6,12 @@
   import ChevronLeft from "lucide-svelte/icons/chevron-left";
   import ChevronRight from "lucide-svelte/icons/chevron-right";
   import ExternalLink from "lucide-svelte/icons/external-link";
-  import Share from "lucide-svelte/icons/share";
+  import Link from "lucide-svelte/icons/link";
   import Star from "lucide-svelte/icons/star";
+
+  let urlCopied = $state(false);
+  let uuidCopied = $state(false);
+  let showMore = $state(false);
 
   const { profile } = getProfileCtx();
 
@@ -21,7 +25,9 @@
     HYPIXEL: "hypixel.png"
   };
 
-  let showMore = $state(false);
+  function copyToClipboard(value: string) {
+    navigator.clipboard.writeText(value);
+  }
 </script>
 
 <div class="mt-12 flex flex-wrap items-center gap-x-2 gap-y-3 text-4xl">
@@ -109,16 +115,31 @@
     </Tooltip.Content>
   </Tooltip.Root>
 
-  <Button.Root
-    class="aspect-square rounded-full bg-icon/90 p-2 transition-opacity duration-150 hover:bg-icon"
-    on:click={async () => {
-      await navigator.share({
-        url: location.href,
-        title: `Stats for ${profile.username} on Hypixel`
-      });
-    }}>
-    <Share class="size-4" />
-  </Button.Root>
+  <Tooltip.Root openDelay={0} closeDelay={0} closeOnPointerDown={false}>
+    <Tooltip.Trigger asChild let:builder>
+      <button
+        use:builder.action
+        {...builder}
+        class="aspect-square rounded-full bg-icon/90 p-2 transition-opacity duration-150 hover:bg-icon"
+        onclick={() => {
+          copyToClipboard(window.location.href);
+          urlCopied = true;
+          setTimeout(() => {
+            urlCopied = false;
+          }, 2000);
+        }}>
+        <Link class="size-4" />
+      </button>
+    </Tooltip.Trigger>
+    <Tooltip.Content class="z-50 rounded-lg bg-background-grey p-4 font-semibold text-text/80" transition={flyAndScale} transitionConfig={{ y: 8, duration: 150 }} sideOffset={6} side="top" align="center">
+      <Tooltip.Arrow />
+      {#if urlCopied}
+        <p>Copied!</p>
+      {:else}
+        <p>Copy URL</p>
+      {/if}
+    </Tooltip.Content>
+  </Tooltip.Root>
 
   <Button.Root href={`https://plancke.io/hypixel/player/stats/${profile.username}`} target="_blank" class="flex items-center justify-center gap-1.5 rounded-full bg-icon/90 px-2 py-1 font-semibold transition-opacity duration-150 hover:bg-icon">
     Plancke <ExternalLink class="size-4" />
@@ -128,7 +149,32 @@
     Elite <ExternalLink class="size-4" />
   </Button.Root>
 
-  <Button.Root class="hidden items-center justify-center gap-1.5 rounded-full bg-icon/90 px-2 py-1 font-semibold transition-opacity duration-150 hover:bg-icon data-[visible=true]:flex" data-visible={showMore} on:click={() => navigator.clipboard.writeText(profile.uuid)}>Copy UUID</Button.Root>
+  <Tooltip.Root openDelay={0} closeDelay={0} closeOnPointerDown={false}>
+    <Tooltip.Trigger asChild let:builder>
+      <button
+        use:builder.action
+        {...builder}
+        class="hidden items-center justify-center gap-1.5 rounded-full bg-icon/90 px-2 py-1 font-semibold transition-opacity duration-150 hover:bg-icon data-[visible=true]:flex"
+        data-visible={showMore}
+        onclick={() => {
+          copyToClipboard(profile.uuid);
+          uuidCopied = true;
+          setTimeout(() => {
+            uuidCopied = false;
+          }, 2000);
+        }}>
+        Copy UUID
+      </button>
+    </Tooltip.Trigger>
+    <Tooltip.Content class="z-50 rounded-lg bg-background-grey p-4 font-semibold text-text/80" transition={flyAndScale} transitionConfig={{ y: 8, duration: 150 }} sideOffset={6} side="top" align="center">
+      <Tooltip.Arrow />
+      {#if uuidCopied}
+        <p>Copied!</p>
+      {:else}
+        <p>Copy UUID</p>
+      {/if}
+    </Tooltip.Content>
+  </Tooltip.Root>
 
   {#each Object.entries(profile.social) as [key, value]}
     {#if key === "DISCORD"}
