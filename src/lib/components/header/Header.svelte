@@ -149,8 +149,6 @@
     </button>
   </form> -->
 
-    <div class="hidden gap-2 @md:flex">
-      <Settings />
-    </div>
+    <Settings />
   </div>
 </header>
