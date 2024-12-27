@@ -4,7 +4,7 @@
   "author": "8KCoffeeWizard",
   "schema": 2,
   "images": {
-    "bg": "/resources/img/themes/nightblue/bg.webp"
+    "bg": "/img/themes/nightblue/bg.webp"
   },
   "backgrounds": {
     "skillbar": { "type": "color", "color": "201.43 100% 61.57%" }
