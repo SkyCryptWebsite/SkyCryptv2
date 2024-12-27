@@ -10,19 +10,18 @@
   import { getContext } from "svelte";
   import { Drawer } from "vaul-svelte";
 
-  let { piece, isInventory, showCount, showRecombobulated }: { piece: ProcessedSkyBlockItem | ProcessedSkyblockPet; isInventory: boolean; showCount: boolean; showRecombobulated: boolean } = $props();
+  let { piece, isInventory, showCount, showRecombobulated }: { piece: ProcessedSkyBlockItem | ProcessedSkyblockPet; isInventory?: boolean; showCount?: boolean; showRecombobulated?: boolean } = $props();
 
-  const pieceItem = piece as ProcessedSkyBlockItem;
-  const processedPet = piece as unknown as ProcessedSkyblockPet;
-  const itemName = pieceItem.display_name ?? "???";
+  const skyblockItem = piece as ProcessedSkyBlockItem;
+  const itemName = skyblockItem.display_name ?? "???";
   const itemNameHtml = renderLore(itemName);
   const isMulticolor = (itemNameHtml.match(/<\/span>/g) || []).length > 1;
   const bgColor = getRarityClass(piece.rarity ?? ("common".toLowerCase() as string), "bg");
-  const recombobulated = showRecombobulated && (pieceItem.recombobulated ?? false);
-  const enchanted = pieceItem.shiny;
-  const shine = enchanted || pieceItem.shiny;
+  const recombobulated = showRecombobulated && (skyblockItem.recombobulated ?? false);
+  const enchanted = skyblockItem.shiny;
+  const shine = enchanted || skyblockItem.shiny;
 
-  const showNumbers = showCount && pieceItem.Count > 1;
+  const showNumbers = showCount && (skyblockItem.Count ?? 0) > 1;
 
   const isHover = getContext<IsHover>("isHover");
 </script>
@@ -40,7 +39,7 @@
     {/if}
     {#if showNumbers}
       <div class="absolute bottom-0.5 right-0.5 text-2xl font-semibold text-white text-shadow-[.1em_.1em_.1em_#000]">
-        {pieceItem.Count}
+        {skyblockItem.Count}
       </div>
     {/if}
   </div>
@@ -60,7 +59,7 @@
       {/if}
       {#if showNumbers}
         <div class="absolute bottom-0.5 right-0.5 text-2xl font-semibold text-white text-shadow-[.1em_.1em_.1em_#000]">
-          {item.Count ?? 1}
+          {skyblockItem.Count ?? 1}
         </div>
       {/if}
     </Tooltip.Trigger>
@@ -78,15 +77,9 @@
         </p>
       </div>
       <div class="nice-colors-auto mx-auto w-full max-w-md overflow-auto p-6 font-semibold leading-snug">
-        {#if pieceItem.lore}
-          {#each pieceItem.lore as lore}
-            {@html renderLore(lore)}
-          {/each}
-        {:else if processedPet.lore}
-          {#each processedPet.lore as lore}
-            {@html renderLore(lore)}
-          {/each}
-        {/if}
+        {#each skyblockItem.lore as lore}
+          {@html renderLore(lore)}
+        {/each}
       </div>
     </Tooltip.Content>
   </Tooltip.Root>
@@ -114,15 +107,9 @@
         </div>
 
         <div class="nice-colors-auto mx-auto w-full max-w-md overflow-auto p-6 font-semibold leading-snug">
-          {#if pieceItem.tag?.display?.Lore}
-            {#each pieceItem.tag.display.Lore as lore}
-              {@html renderLore(lore)}
-            {/each}
-          {:else if processedPet.lore}
-            {#each processedPet.lore as lore}
-              {@html renderLore(lore)}
-            {/each}
-          {/if}
+          {#each skyblockItem.lore as lore}
+            {@html renderLore(lore)}
+          {/each}
         </div>
       </Drawer.Content>
     </Drawer.Portal>
