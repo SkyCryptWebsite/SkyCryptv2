@@ -141,19 +141,7 @@ export const MUSEUM_INVENTORY = {
         }
       },
       inventoryType: "weapons",
-      containsItems: [
-        {
-          display_name: "Weapons",
-          rarity: "uncommon",
-          tag: {
-            display: {
-              Lore: ["§7View all of the §6Weapons §7that", "§7you have donated to the", "§7§9Museum§7!", ""]
-            }
-          },
-          position: 4
-        },
-        ...categoryInventory
-      ],
+      containsItems: [],
       position: 19,
       progressType: "weapons"
     },
@@ -168,19 +156,7 @@ export const MUSEUM_INVENTORY = {
       },
       position: 21,
       inventoryType: "armor",
-      containsItems: [
-        {
-          display_name: "Armor Sets",
-          rarity: "uncommon",
-          tag: {
-            display: {
-              Lore: ["§7View all of the §9Armor Sets", "§9§7that you have donated to the", "§7§9Museum§7!", ""]
-            }
-          },
-          position: 4
-        },
-        ...categoryInventory
-      ],
+      containsItems: [],
       progressType: "armor"
     },
     {
@@ -194,20 +170,7 @@ export const MUSEUM_INVENTORY = {
       },
       position: 23,
       inventoryType: "rarities",
-      containsItems: [
-        {
-          display: "Rarities",
-          rarity: "uncommon",
-          texture_path: "/api/head/86addbd5dedad40999473be4a7f48f6236a79a0dce971b5dbd7372014ae394d",
-          tag: {
-            display: {
-              Lore: ["§7View all of the §5Rarities", "§5§7that you have donated to the", "§7§9Museum§7!", ""]
-            }
-          },
-          position: 4
-        },
-        ...categoryInventory
-      ],
+      containsItems: [],
       progressType: "rarities"
     },
     {
@@ -221,19 +184,7 @@ export const MUSEUM_INVENTORY = {
       },
       position: 25,
       inventoryType: "special",
-      containsItems: [
-        {
-          display_name: "Special Items",
-          rarity: "uncommon",
-          tag: {
-            display: {
-              Lore: ["§7View all of the §dSpecial Items", "§d§7that you have donated to the", "§7§9Museum§7!", "", "§7These items don't count towards", "§7Museum progress and rewards, but", "§7are cool nonetheless. Items that", "§7are §9rare §7and §6prestigious", "§6§7fit into this category, and", "§7can be displayed in the Main", "§7room of the Museum.", ""]
-            }
-          },
-          position: 4
-        },
-        ...categoryInventory
-      ],
+      containsItems: [],
       progressType: "special"
     },
     {
@@ -286,6 +237,7 @@ export const MUSEUM_INVENTORY = {
   missing_item: {
     weapons: {
       display_name: null,
+      texture_path: "/api/item/INK_SACK:8",
       rarity: "special",
       tag: {
         display: {
@@ -295,6 +247,7 @@ export const MUSEUM_INVENTORY = {
     },
     armor: {
       display_name: null,
+      texture_path: "/api/item/INK_SACK:8",
       rarity: "special",
       tag: {
         display: {
@@ -304,6 +257,7 @@ export const MUSEUM_INVENTORY = {
     },
     rarities: {
       display_name: null,
+      texture_path: "/api/item/INK_SACK:8",
       rarity: "special",
       tag: {
         display: {
@@ -315,6 +269,7 @@ export const MUSEUM_INVENTORY = {
   },
   higher_tier_donated: {
     display_name: null,
+    texture_path: "/api/item/INK_SACK:10",
     rarity: "special",
     tag: {
       display: {

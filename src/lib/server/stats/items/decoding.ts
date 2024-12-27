@@ -1,5 +1,5 @@
 // CREDITS: https://github.com/anderle02 & https://github.com/TGWaffles
-// Modified by: https://github.com/DUckySoLucky/
+// Modified by: https://github.com/DuckySoLucky/
 
 import nbt from "prismarine-nbt";
 import { gunzip } from "zlib";

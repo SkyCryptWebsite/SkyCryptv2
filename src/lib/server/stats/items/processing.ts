@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-import { getTexture } from "$lib/server/custom_resources";
-
 import * as constants from "$lib/server/constants/constants";
 import * as helper from "$lib/server/helper";
 
@@ -186,10 +183,10 @@ export function generateGemLore(type: string, tier: string, rarity: string): str
 }
 
 // Process items returned by API
-export async function processItems(items: ProcessedItem[], source: string, customTextures = false, packs: string[]): Promise<ProcessedItem[]> {
+export async function processItems(items: ProcessedItem[], source: string, packs: string[]): Promise<ProcessedItem[]> {
   for (const item of items) {
     if (!item.tag?.ExtraAttributes?.id) {
-      continue;
+      // continue;
     }
 
     // POTIONS
@@ -202,40 +199,7 @@ export async function processItems(items: ProcessedItem[], source: string, custo
 
     item.extra = { source };
 
-    if (item.tag.ExtraAttributes.id === "ENCHANTED_BOOK") {
-      item.texture_path = `/api/item/ENCHANTED_BOOK`;
-    } else if (customTextures) {
-      const customTexture = getTexture(item, { pack_ids: packs, hotm: source === "storage_icons" });
-
-      // ? NOTE: we're ignoring Vanilla leather armor because it's render using /leather/ endpoint (Coloring support)
-      const ignoreCustomTexture = customTexture && customTexture.path && customTexture.path.includes("/Vanilla/") && customTexture.path.includes("leather_");
-      if (customTexture?.path && ignoreCustomTexture === false) {
-        // CUSTOM TEXTURES
-        item.texture_path = customTexture.path;
-      } else if (item.tag?.SkullOwner?.Properties?.textures?.length > 0) {
-        // PLAYER SKULLS
-        try {
-          const json = JSON.parse(Buffer.from(item.tag.SkullOwner.Properties.textures[0].Value, "base64").toString());
-          const url = json.textures.SKIN.url;
-          const uuid = url.split("/").pop();
-
-          item.texture_path = `/api/head/${uuid}?v6`;
-        } catch (e) {
-          helper.addToItemLore(item, ["", "§cError: Missing texture"]);
-          item.texture_path = `/api/item/BARRIER`;
-          console.error(e);
-        }
-      } else if (typeof item.id === "number" && item.id >= 298 && item.id <= 301) {
-        // COLORED LEATHER ARMOR
-        const color = (item.tag?.display?.color as unknown as number)?.toString(16).padStart(6, "0") ?? "955e3b";
-        const type = ["helmet", "chestplate", "leggings", "boots"][item.id - 298];
-
-        item.texture_path = `/api/leather/${type}/${color}`;
-      } else if (!item.texture_path) {
-        helper.addToItemLore(item, ["", "§cError: Missing texture"]);
-        item.texture_path = `/api/item/BARRIER`;
-      }
-    }
+    helper.applyResourcePack(item, packs);
 
     if (item.tag?.display?.Name != undefined) {
       item.display_name = item.tag.display.Name;
@@ -253,6 +217,7 @@ export async function processItems(items: ProcessedItem[], source: string, custo
       const itemType = parseItemTypeFromLore(lore, item);
 
       for (const key in itemType) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-expect-error
         item[key] = itemType[key as keyof typeof itemType];
       }
@@ -265,7 +230,7 @@ export async function processItems(items: ProcessedItem[], source: string, custo
     }
 
     // Set HTML lore to be displayed on the website
-    if (itemLore.length > 0) {
+    if (itemLore.length > 0 && item.tag.ExtraAttributes) {
       if (item.tag.ExtraAttributes.rarity_upgrades) {
         itemLore.push("§8(Recombobulated)");
       }
