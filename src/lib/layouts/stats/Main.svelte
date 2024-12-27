@@ -22,8 +22,8 @@
     {/await}
   </div>
 
-  <div class="fixed right-0 top-0 h-dvh w-full backdrop-blur-lg backdrop-brightness-50 @[75rem]/parent:w-[calc(100%-30vw)]"></div>
-  <main class="relative mx-auto @container @[75rem]/parent:ml-[30vw]">
+  <div class="fixed right-0 top-0 min-h-dvh w-full backdrop-blur-lg backdrop-brightness-50 @[75rem]/parent:w-[calc(100%-30vw)]"></div>
+  <main data-vaul-drawer-wrapper class="relative mx-auto min-h-dvh @container @[75rem]/parent:ml-[30vw]">
     <div class="space-y-5 p-4 @[75rem]/parent:p-8">
       <PlayerProfile />
       <Skills />

@@ -6,6 +6,7 @@
   import Items from "$lib/layouts/stats/Items.svelte";
   import { getRarityClass } from "$lib/shared/helper";
   import { cn } from "$lib/shared/utils";
+  import { ScrollArea } from "bits-ui";
 
   const { profile } = getProfileCtx();
 
@@ -38,7 +39,24 @@
 </Items>
 
 <Items subtitle="Wardrobe">
-  {#each firstWardrobeItems as _, i}
-    <Wardrobe wardrobeItems={wardrobe[i]} />
-  {/each}
+  <div class="max-w-full">
+    <!-- min height was calc by: each piece of armor was 72px with a 8px gap and scrollbar was 2.5px and some more for gap for scrollbar -->
+    <ScrollArea.Root class="relative min-h-[330px]">
+      <ScrollArea.Viewport>
+        <ScrollArea.Content>
+          <div class="flex flex-row gap-5">
+            {#each firstWardrobeItems as _, i}
+              <div class="!min-h-[72px] !min-w-[72px]">
+                <Wardrobe wardrobeItems={wardrobe[i]} />
+              </div>
+            {/each}
+          </div>
+        </ScrollArea.Content>
+      </ScrollArea.Viewport>
+      <ScrollArea.Scrollbar orientation="horizontal" class="mt-2 flex h-2.5 w-full touch-none select-none rounded-full transition-all">
+        <ScrollArea.Thumb class="flex rounded-full bg-icon" />
+      </ScrollArea.Scrollbar>
+      <ScrollArea.Corner />
+    </ScrollArea.Root>
+  </div>
 </Items>
