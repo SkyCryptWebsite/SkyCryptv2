@@ -323,10 +323,20 @@ class HotM {
     };
 
     return {
-      id: parseInt(data[this.status].split(":")[0], 10),
-      Damage: parseInt(data[this.status].split(":")[1], 10),
+      id: parseInt(data[this.status].split(":")[0]),
+      damage: parseInt(data[this.status].split(":")[1]),
       glowing: false
     };
+  }
+
+  get texture_path() {
+    const data = {
+      locked: "STAINED_GLASS_PANE:14",
+      next: "STAINED_GLASS_PANE:4",
+      unlocked: "STAINED_GLASS_PANE:5"
+    };
+
+    return `/api/item/${data[this.status]}`;
   }
 
   get position10x9() {
@@ -401,7 +411,7 @@ class Node {
 
     return {
       id: parseInt(data[this.nodeType][this.status].split(":")[0], 10),
-      Damage: parseInt(data[this.nodeType][this.status].split(":")[1], 10),
+      damage: parseInt(data[this.nodeType][this.status].split(":")[1], 10),
       glowing: this.selectedPickaxeAbility === this.id
     };
   }
@@ -1616,14 +1626,16 @@ class MineshaftMayhem extends Node {
 class HotmItem {
   position: number;
   displayName: string;
-  itemData: { id: number; Damage: number; glowing: boolean; texture_path: string; skyblock_id?: string };
+  texture_path: string;
+  itemData: { id: number; damage: number; glowing: boolean; skyblock_id?: string };
   resources: { token_of_the_mountain: number; mithril_powder: number; gemstone_powder: number };
   last_reset: number;
   rarity: string;
   constructor() {
     this.position = 0;
     this.displayName = "";
-    this.itemData = { id: 0, Damage: 0, glowing: false, texture_path: "", skyblock_id: "" };
+    this.texture_path = "";
+    this.itemData = { id: 0, damage: 0, glowing: false, skyblock_id: "" };
     this.resources = { token_of_the_mountain: 0, mithril_powder: 0, gemstone_powder: 0 };
     this.last_reset = 0;
     this.rarity = "special";
@@ -1638,13 +1650,13 @@ class HotmStats extends HotmItem {
   constructor(data: HotmItemData) {
     super();
     this.displayName = "§5Heart of the Mountain";
+    this.texture_path = "/api/head/86f06eaa3004aeed09b3d5b45d976de584e691c0e9cade133635de93d23b9edb";
     this.rarity = "epic";
     this.position = 1;
     this.itemData = {
       id: 397,
-      Damage: 3,
-      glowing: false,
-      texture_path: "/api/head/86f06eaa3004aeed09b3d5b45d976de584e691c0e9cade133635de93d23b9edb"
+      damage: 3,
+      glowing: false
     };
     this.resources = {
       token_of_the_mountain: data.resources.token_of_the_mountain || 0,
@@ -1663,14 +1675,13 @@ class CrystalHollowsCrystals extends HotmItem {
   constructor(data: HotmItemData) {
     super();
     this.displayName = "§5Crystal Hollows Crystals";
+    this.texture_path = "/api/head/ef7835fc9e6daf632160e9b7ff378788a408064cc75ebf9f5158e615bdd59603";
     this.rarity = "epic";
     this.position = 2;
     this.itemData = {
       id: 397,
-      Damage: 3,
-      glowing: false,
-      texture_path: "/api/head/ef7835fc9e6daf632160e9b7ff378788a408064cc75ebf9f5158e615bdd59603",
-      skyblock_id: "hotm_crystal"
+      damage: 3,
+      glowing: false
     };
     this.crystals = data.crystals ?? {};
   }
@@ -1717,13 +1728,13 @@ class HotmReset extends HotmItem {
   constructor(data: HotmItemData) {
     super();
     this.displayName = "§cReset Heart of the Mountain";
+    this.texture_path = "/api/head/6448e275313532f54c4ba21894809a23dce52af01ddd1e89fc7689481fab737e";
     this.rarity = "special";
     this.position = 3;
     this.itemData = {
       id: 397,
-      Damage: 3,
+      damage: 3,
       glowing: false,
-      texture_path: "/api/head/6448e275313532f54c4ba21894809a23dce52af01ddd1e89fc7689481fab737e",
       skyblock_id: "hotm_reset"
     };
     this.last_reset = data.last_reset;
