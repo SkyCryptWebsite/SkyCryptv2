@@ -6,6 +6,7 @@
   import type { ProcessedSkyBlockItem, ProcessedSkyblockPet } from "$lib/types/global";
   import { Avatar, Tooltip } from "bits-ui";
   import Image from "lucide-svelte/icons/image";
+  import ContainedItem from "./ContainedItem.svelte";
 
   export let piece: ProcessedSkyBlockItem | ProcessedSkyblockPet;
   export let isInventory = false;
@@ -64,6 +65,21 @@
           {#each processedPet.lore as lore}
             {@html renderLore(lore)}
           {/each}
+        {/if}
+        {#if item.containsItems && item.containsItems.length > 0}
+          <div class="mt-4 border-t border-text/10 pt-4">
+            <div class="grid grid-cols-9 gap-1">
+              {#each item.containsItems.slice(0, Math.min(item.containsItems.length, 54)) as containedItem}
+                {#if containedItem.texture_path}
+                  <div class="flex aspect-square items-center justify-center rounded bg-text/[0.04]">
+                    <ContainedItem piece={containedItem} />
+                  </div>
+                {:else}
+                  <div class="aspect-square rounded bg-text/[0.04]"></div>
+                {/if}
+              {/each}
+            </div>
+          </div>
         {/if}
       </div>
     </Tooltip.Content>
