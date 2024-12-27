@@ -230,7 +230,7 @@ export async function processItems(items: ProcessedItem[], source: string, custo
     }
 
     if (item.tag?.display?.Name != undefined) {
-      item.display_name = helper.getRawLore(item.tag.display.Name);
+      item.display_name = item.tag.display.Name;
     }
 
     // Lore stuff
