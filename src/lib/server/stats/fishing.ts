@@ -32,7 +32,7 @@ function getTrophyFish(userProfile: Member) {
 
   return {
     totalCaught: userProfile.trophy_fish.total_caught ?? 0,
-    stage: constants.TROPHY_FISH_STAGES[userProfile.trophy_fish.rewards.length - 1] ?? "Bronze Hunter",
+    stage: constants.TROPHY_FISH_STAGES[Math.min(userProfile.trophy_fish.rewards?.length ?? 0, constants.TROPHY_FISH_STAGES.length) - 1] ?? "Bronze Hunter",
     trophyFish: output as TrophyFish[]
   };
 }

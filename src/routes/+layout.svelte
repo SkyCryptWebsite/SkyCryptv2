@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Header from "$lib/components/Header.svelte";
+  import Header from "$lib/components/header/Header.svelte";
   import { IsHover } from "$lib/hooks/is-hover.svelte";
   import { IsMobile } from "$lib/hooks/is-mobile.svelte";
   import { setContext } from "svelte";

@@ -1,28 +1,28 @@
 <script lang="ts">
+  import { getProfileCtx } from "$ctx/profile.svelte";
   import AdditionStat from "$lib/components/AdditionStat.svelte";
   import Item from "$lib/components/Item.svelte";
+  import SectionSubtitle from "$lib/components/SectionSubtitle.svelte";
   import Items from "$lib/layouts/stats/Items.svelte";
-  import { getRarityClass } from "$lib/shared/helper";
+  import { renderLore } from "$lib/shared/helper";
   import { cn } from "$lib/shared/utils";
-  import type { ValidStats as StatsType } from "$lib/types/stats";
-  import { formatDate, formatDistanceStrict } from "date-fns";
+  import { formatDate, formatDistanceToNowStrict } from "date-fns";
   import { format } from "numerable";
-  import { getContext } from "svelte";
   import { fade } from "svelte/transition";
 
-  const profile = getContext<StatsType>("profile");
+  const { profile } = getProfileCtx();
 
-  const highestPriorityMiningTool = profile.items.mining_tools.highest_priority_tool;
-  const miningTools = profile.items.mining_tools.tools;
+  const highestPriorityMiningTool = $derived(profile.items.mining_tools.highest_priority_tool);
+  const miningTools = $derived(profile.items.mining_tools.tools);
 </script>
 
 <Items>
   <div slot="text" class="space-y-2">
-    <h3 class="text-xl font-semibold">Mining Tools</h3>
+    <SectionSubtitle>Mining Tools</SectionSubtitle>
     {#if highestPriorityMiningTool}
       <p class="space-x-0.5 font-bold capitalize leading-6 text-text/60">
         <span>Active Tool:</span>
-        <span class={cn(getRarityClass(highestPriorityMiningTool.rarity ?? "", "text"))}>{highestPriorityMiningTool.display_name}</span>
+        {@html renderLore(highestPriorityMiningTool.display_name)}
       </p>
     {/if}
   </div>
@@ -31,7 +31,7 @@
   {/each}
 </Items>
 
-<h3 class="text-xl font-semibold">Dwarven Mines & Crystal Hollows</h3>
+<SectionSubtitle>Dwarven Mines & Crystal Hollows</SectionSubtitle>
 <div class="space-y-0.5">
   <AdditionStat text="Commissions Milestone" data={profile.mining.commissions.milestone.toString()} maxed={profile.mining.commissions.milestone === 6} />
   <AdditionStat text="Commissions" data={profile.mining.commissions.completions.toString()} asterisk={true}>Commissions from achievements across profiles</AdditionStat>
@@ -41,12 +41,12 @@
       Last purchased:
       <span class="text-text">
         {#if passActive}
-          {formatDistanceStrict(profile.mining.crystalHollows.crystalHollowsLastAccess, Date.now(), {
+          {formatDistanceToNowStrict(profile.mining.crystalHollows.crystalHollowsLastAccess, {
             addSuffix: true
           })}
         {:else}
           {formatDate(profile.mining.crystalHollows.crystalHollowsLastAccess, "dd MMMM yyyy 'at' HH:mm")}
-          ({formatDistanceStrict(profile.mining.crystalHollows.crystalHollowsLastAccess, Date.now(), {
+          ({formatDistanceToNowStrict(profile.mining.crystalHollows.crystalHollowsLastAccess, {
             addSuffix: true
           })})
         {/if}
@@ -100,7 +100,7 @@
   </AdditionStat>
 </div>
 
-<h3 class="text-xl font-semibold">Heart of the Mountain</h3>
+<SectionSubtitle>Heart of the Mountain</SectionSubtitle>
 <div class="space-y-0.5">
   <AdditionStat text="Tier" data={profile.mining.level.level.toString()} maxed={profile.mining.level.level === profile.mining.level.maxLevel} />
   <AdditionStat text="Token Of The Mountain" data={`${profile.mining.tokens.spent}/${profile.mining.tokens.total}`} />
@@ -119,28 +119,30 @@
   <AdditionStat text="Pickaxe Ability" data={profile.mining.selectedPickaxeAbility} />
 </div>
 
-<div class="relative mb-0 rounded-lg bg-background/30 p-5 @container">
-  <div class="grid grid-cols-[repeat(9,minmax(1.875rem,4.875rem))] place-content-center gap-1 pt-5 @md:gap-1.5 @xl:gap-2">
-    {#each profile.mining.hotm as item, index}
-      {#if item.display_name}
-        <div class="flex aspect-square items-center justify-center rounded bg-text/[0.04]" in:fade|global={{ duration: 300, delay: 5 * (index + 1) }}>
-          <Item piece={item} isInventory={true} />
-        </div>
-      {:else}
-        <div class="aspect-square rounded bg-text/[0.04]" in:fade|global={{ duration: 300, delay: 5 * (index + 1) }}></div>
-      {/if}
-    {/each}
+<div class="pt-5">
+  <div class="relative mb-0 rounded-lg bg-background/30 p-5 @container">
+    <div class="grid grid-cols-[repeat(9,minmax(1.875rem,4.875rem))] place-content-center gap-1 pt-5 @md:gap-1.5 @xl:gap-2">
+      {#each profile.mining.hotm as item, index}
+        {#if item.display_name}
+          <div class="flex aspect-square items-center justify-center rounded bg-text/[0.04]" in:fade|global={{ duration: 300, delay: 5 * (index + 1) }}>
+            <Item piece={item} isInventory={true} />
+          </div>
+        {:else}
+          <div class="aspect-square rounded bg-text/[0.04]" in:fade|global={{ duration: 300, delay: 5 * (index + 1) }}></div>
+        {/if}
+      {/each}
+    </div>
   </div>
 </div>
 
-<h3 class="text-xl font-semibold">Forge</h3>
+<h3 class="my-5 text-xl font-semibold capitalize text-text/90">Forge</h3>
 <div class="space-y-1">
   {#if profile.mining.forge.length === 0}
     No items currently forging!
   {/if}
   {#each profile.mining.forge as item}
     {@const ended = item.endingTime < Date.now()}
-    <AdditionStat text={`Slot ${item.slot}`} data={`${item.name} - ${ended ? "ended" : `ends ${formatDistanceStrict(item.endingTime, Date(), { addSuffix: true })}`}`} asterisk={true}>
+    <AdditionStat text={`Slot ${item.slot}`} data={`${item.name} - ${ended ? "ended" : `ends ${formatDistanceToNowStrict(item.endingTime, { addSuffix: true })}`}`} asterisk={true}>
       {formatDate(item.endingTime, "dd MMMM yyyy 'at' HH:mm")}
     </AdditionStat>
   {/each}

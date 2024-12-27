@@ -4,6 +4,7 @@ import { formatNumber } from "$lib/shared/helper";
 import type { AccessoriesOutput, Member } from "$types/global";
 import type { Accessories, Accessory, ProcessedItem, SpecialAccessory } from "$types/stats";
 import { getStatsFromItems } from "./items/stats";
+import { stripItems } from "./items/stripping";
 
 /**
  * Checks if an accessory is present in an array of accessories.
@@ -139,7 +140,6 @@ export async function getMissingAccessories(items: Accessories, userProfile: Mem
         price = await helper.getItemPrice(item.id);
       }
 
-      item.extra = { price };
       if (price > 0) {
         helper.addToItemLore(item, `§7Price: §6${Math.round(price).toLocaleString()} Coins §7(§6${formatNumber(Math.floor(price / helper.getMagicalPower(item.rarity, item.id)))} §7per MP)`);
       }
@@ -153,7 +153,7 @@ export async function getMissingAccessories(items: Accessories, userProfile: Mem
       helper.applyResourcePack(item, packs);
     }
 
-    (output[key as keyof typeof output] as ProcessedItem[]).sort((a: ProcessedItem, b: ProcessedItem) => {
+    (output[key as keyof typeof output] as unknown as ProcessedItem[]).sort((a: ProcessedItem, b: ProcessedItem) => {
       const aPrice = a.extra?.price || 0;
       const bPrice = b.extra?.price || 0;
 
@@ -169,7 +169,7 @@ export async function getMissingAccessories(items: Accessories, userProfile: Mem
 
   output.stats = getStatsFromItems(items.accessories);
   output.enrichments = getEnrichments(items.accessories);
-  output.unique = activeAccessories.filter((a) => a.isUnique === true).length;
+  output.unique = activeAccessories.length;
   output.total = constants.UNIQUE_ACCESSORIES_COUNT;
 
   output.recombobulated = activeAccessories.filter((a) => a.recombobulated === true).length;
@@ -210,6 +210,10 @@ export async function getMissingAccessories(items: Accessories, userProfile: Mem
       magicalPower: accessories.reduce((a, b) => a + helper.getMagicalPower(rarity, helper.getId(b)), 0)
     };
   }
+
+  output.accessories = stripItems(output.accessories as unknown as ProcessedItem[], ["isInactive"]);
+  output.missing = stripItems(output.missing as unknown as ProcessedItem[]);
+  output.upgrades = stripItems(output.upgrades as unknown as ProcessedItem[]);
 
   return output;
 }

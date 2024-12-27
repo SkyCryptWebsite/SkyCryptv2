@@ -58,6 +58,9 @@ export type Member = {
   item_data: MemberItemData;
   forge?: Forge;
   experimentation: Experimentation;
+  coop_invitation?: {
+    confirmed: boolean;
+  };
 };
 
 export type Medal = "gold" | "silver" | "bronze";
@@ -91,6 +94,9 @@ export type MemberProfile = {
   first_join?: number;
   cookie_buff_active?: boolean;
   personal_bank_upgrade?: number;
+  deletion_notice?: {
+    timestamp: number;
+  };
 };
 
 export type Banking = {

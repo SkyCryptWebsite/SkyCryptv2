@@ -1,10 +1,10 @@
 <script lang="ts">
+  import { getProfileCtx } from "$ctx/profile.svelte";
   import { cn } from "$lib/shared/utils";
-  import type { Stats as StatsType } from "$lib/types/stats";
   import * as skinview3d from "skinview3d";
-  import { getContext, onDestroy, onMount } from "svelte";
+  import { onDestroy, onMount } from "svelte";
 
-  const profile = getContext<StatsType>("profile");
+  const { profile } = getProfileCtx();
 
   let { class: className }: { class: string | undefined } = $props();
   let viewer: skinview3d.SkinViewer;
@@ -26,7 +26,7 @@
     });
 
     viewer.camera.position.set(-18, -3, 78);
-    viewer.controls.enableZoom = true;
+    viewer.controls.enableZoom = false;
     viewer.controls.enablePan = true;
     viewer.controls.enableRotate = true;
     viewer.canvas.removeAttribute("tabindex");

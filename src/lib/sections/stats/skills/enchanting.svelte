@@ -1,22 +1,21 @@
 <script lang="ts">
+  import { getProfileCtx } from "$ctx/profile.svelte";
   import AdditionStat from "$lib/components/AdditionStat.svelte";
   import Chip from "$lib/components/Chip.svelte";
-  import type { ValidStats as StatsType } from "$lib/types/stats";
+  import SectionSubtitle from "$lib/components/SectionSubtitle.svelte";
   import { Collapsible } from "bits-ui";
-  import { formatDistanceStrict } from "date-fns";
+  import { formatDistanceToNowStrict } from "date-fns";
   import ChevronDown from "lucide-svelte/icons/chevron-down";
-  import { getContext } from "svelte";
   import { fade } from "svelte/transition";
 
-  const profile = getContext<StatsType>("profile");
+  const { profile } = getProfileCtx();
 </script>
 
-<h3 class="text-xl font-semibold">Enchanting</h3>
-
+<SectionSubtitle>Enchanting</SectionSubtitle>
 <Collapsible.Root open={true}>
   <Collapsible.Trigger class="group flex items-center gap-0.5">
-    <ChevronDown class="size-4 transition-all duration-300 group-data-[state=open]:-rotate-180" />
-    Experiments
+    <ChevronDown class="size-5 transition-all duration-300 group-data-[state=open]:-rotate-180" />
+    <SectionSubtitle class="my-0">Experiments</SectionSubtitle>
   </Collapsible.Trigger>
   <Collapsible.Content class="mt-4 flex flex-wrap gap-5">
     {#if profile.enchanting}
@@ -31,10 +30,10 @@
               <AdditionStat text="Bonus Clicks" data={`${enchating.stats.bonusClicks}`} />
             {/if}
             {#if enchating.stats.lastAttempt}
-              <AdditionStat text="Last Attempt" data={formatDistanceStrict(enchating.stats.lastAttempt, Date.now(), { addSuffix: true })} />
+              <AdditionStat text="Last Attempt" data={formatDistanceToNowStrict(enchating.stats.lastAttempt, { addSuffix: true })} />
             {/if}
             {#if enchating.stats.lastClaimed}
-              <AdditionStat text="Last Claimed" data={formatDistanceStrict(enchating.stats.lastClaimed, Date.now(), { addSuffix: true })} />
+              <AdditionStat text="Last Claimed" data={formatDistanceToNowStrict(enchating.stats.lastClaimed, { addSuffix: true })} />
             {/if}
           </div>
           <div class="w-full space-y-5 px-5 pb-5">

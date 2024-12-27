@@ -1,15 +1,16 @@
 <script lang="ts">
+  import { getProfileCtx } from "$ctx/profile.svelte";
   import AdditionStat from "$lib/components/AdditionStat.svelte";
+  import SectionSubtitle from "$lib/components/SectionSubtitle.svelte";
   import Items from "$lib/layouts/stats/Items.svelte";
-  import type { ValidStats as StatsType } from "$lib/types/stats";
   import { format } from "numerable";
-  import { getContext } from "svelte";
 
-  const misc = getContext<StatsType["misc"]>("misc");
+  const { misc } = getProfileCtx();
 </script>
 
 {#if misc.mythological_event != null}
-  <Items title="Mythological Event">
+  <SectionSubtitle class="!uppercase">Mythological Event</SectionSubtitle>
+  <Items>
     <div slot="text">
       <AdditionStat text="Kills" data={format(misc.mythological_event.kills)} />
 
@@ -17,7 +18,7 @@
         <p class="font-bold text-text/85">Rarities used:</p>
         {#each Object.entries(misc.mythological_event.burrows_dug_next) as [tier, count]}
           {#if tier !== "total"}
-            <AdditionStat text={tier} data={count} textRarityColor={tier.toLowerCase()} />
+            <AdditionStat text={tier} data={format(count)} textRarityColor={tier.toLowerCase()} />
           {/if}
         {/each}
       </AdditionStat>
@@ -26,7 +27,7 @@
         <p class="font-bold text-text/85">Rarities used:</p>
         {#each Object.entries(misc.mythological_event.burrows_dug_combat) as [tier, count]}
           {#if tier !== "total"}
-            <AdditionStat text={tier} data={count} textRarityColor={tier.toLowerCase()} />
+            <AdditionStat text={tier} data={format(count)} textRarityColor={tier.toLowerCase()} />
           {/if}
         {/each}
       </AdditionStat>
@@ -35,7 +36,7 @@
         <p class="font-bold text-text/85">Rarities used:</p>
         {#each Object.entries(misc.mythological_event.burrows_dug_treasure) as [tier, count]}
           {#if tier !== "total"}
-            <AdditionStat text={tier} data={count} textRarityColor={tier.toLowerCase()} />
+            <AdditionStat text={tier} data={format(count)} textRarityColor={tier.toLowerCase()} />
           {/if}
         {/each}
       </AdditionStat>
@@ -44,7 +45,7 @@
         <p class="font-bold text-text/85">Rarities used:</p>
         {#each Object.entries(misc.mythological_event.burrows_chains_complete) as [tier, count]}
           {#if tier !== "total"}
-            <AdditionStat text={tier} data={count} textRarityColor={tier.toLowerCase()} />
+            <AdditionStat text={tier} data={format(count)} textRarityColor={tier.toLowerCase()} />
           {/if}
         {/each}
       </AdditionStat>

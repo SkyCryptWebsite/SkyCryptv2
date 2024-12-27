@@ -2,24 +2,24 @@
   import { page } from "$app/stores";
   import type { IsHover } from "$lib/hooks/is-hover.svelte";
   import { RARITIES, RARITY_COLORS } from "$lib/shared/constants/items";
-  import { getRarityClass, isEnchanted, removeFormatting, renderLore } from "$lib/shared/helper";
+  import { getRarityClass, removeFormatting, renderLore } from "$lib/shared/helper";
   import { cn, flyAndScale } from "$lib/shared/utils";
-  import type { ProcessedItem, ProcessedPet } from "$lib/types/global";
+  import type { ProcessedSkyBlockItem, ProcessedSkyblockPet } from "$lib/types/global";
   import { Avatar, Tooltip } from "bits-ui";
   import Image from "lucide-svelte/icons/image";
   import { getContext } from "svelte";
   import { Drawer } from "vaul-svelte";
 
-  let { piece, isInventory, showCount, showRecombobulated }: { piece: ProcessedItem | ProcessedPet; isInventory: boolean; showCount: boolean; showRecombobulated: boolean } = $props();
+  let { piece, isInventory, showCount, showRecombobulated }: { piece: ProcessedSkyBlockItem | ProcessedSkyblockPet; isInventory: boolean; showCount: boolean; showRecombobulated: boolean } = $props();
 
-  const pieceItem = piece as ProcessedItem;
-  const processedPet = piece as unknown as ProcessedPet;
-  const itemName = pieceItem.tag?.display?.Name ?? piece.display_name ?? "???";
+  const pieceItem = piece as ProcessedSkyBlockItem;
+  const processedPet = piece as unknown as ProcessedSkyblockPet;
+  const itemName = pieceItem.display_name ?? "???";
   const itemNameHtml = renderLore(itemName);
   const isMulticolor = (itemNameHtml.match(/<\/span>/g) || []).length > 1;
-  const bgColor = piece.rarity ? getRarityClass(piece.rarity.toLowerCase() as string, "bg") : "bg-background";
-  const enchanted = isEnchanted(pieceItem);
-  const recombobulated = showRecombobulated && pieceItem.recombobulated;
+  const bgColor = getRarityClass(piece.rarity ?? ("common".toLowerCase() as string), "bg");
+  const recombobulated = showRecombobulated && (pieceItem.recombobulated ?? false);
+  const enchanted = pieceItem.shiny;
   const shine = enchanted || pieceItem.shiny;
 
   const showNumbers = showCount && pieceItem.Count > 1;
@@ -48,7 +48,7 @@
 
 {#snippet tooltip()}
   <Tooltip.Root group="armor" openDelay={0} closeDelay={0}>
-    <Tooltip.Trigger class={cn(`relative flex aspect-square items-center justify-center overflow-clip rounded-lg`, isInventory ? "p-0" : `p-2 ${bgColor}`, { shine: shine })}>
+    <Tooltip.Trigger class={cn(`relative flex aspect-square items-center justify-center overflow-clip rounded-lg`, isInventory ? "p-0" : `p-2 ${bgColor}`, { shine: enchanted })}>
       <Avatar.Root>
         <Avatar.Image loading="lazy" src={$page.url.origin + piece.texture_path} alt={piece.display_name} class="data-[enchanted=true]:enchanted h-auto w-14 select-none" data-enchanted={enchanted} />
         <Avatar.Fallback>
@@ -60,7 +60,7 @@
       {/if}
       {#if showNumbers}
         <div class="absolute bottom-0.5 right-0.5 text-2xl font-semibold text-white text-shadow-[.1em_.1em_.1em_#000]">
-          {item.Count}
+          {item.Count ?? 1}
         </div>
       {/if}
     </Tooltip.Trigger>
@@ -78,8 +78,8 @@
         </p>
       </div>
       <div class="nice-colors-auto mx-auto w-full max-w-md overflow-auto p-6 font-semibold leading-snug">
-        {#if pieceItem.tag?.display?.Lore}
-          {#each pieceItem.tag.display.Lore as lore}
+        {#if pieceItem.lore}
+          {#each pieceItem.lore as lore}
             {@html renderLore(lore)}
           {/each}
         {:else if processedPet.lore}

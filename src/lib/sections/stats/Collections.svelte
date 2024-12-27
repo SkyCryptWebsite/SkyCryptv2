@@ -1,16 +1,14 @@
 <script lang="ts">
+  import { getProfileCtx } from "$ctx/profile.svelte";
   import AdditionStat from "$lib/components/AdditionStat.svelte";
   import Chip from "$lib/components/Chip.svelte";
   import Items from "$lib/layouts/stats/Items.svelte";
   import { cn } from "$lib/shared/utils";
-
-  import type { ValidStats as StatsType } from "$lib/types/stats";
   import { format } from "numerable";
-  import { getContext } from "svelte";
 
-  const profile = getContext<StatsType>("profile");
+  const { profile } = getProfileCtx();
 
-  const collections = profile.collections;
+  const collections = $derived(profile.collections);
 </script>
 
 <Items title="Collections" class="flex-col">
@@ -43,14 +41,16 @@
             </div>
           </div>
           <div slot="tooltip" class="text-sm font-bold">
-            <div class="mb-4">
-              {#each item.amounts as user}
-                <span class="opacity-85">
-                  {user.username}:
-                </span>
-                <span class="text-text">{format(user.amount)}</span>
-              {/each}
-            </div>
+            {#if data.name !== "Boss"}
+              <div class="mb-4">
+                {#each item.amounts as user}
+                  <span class="opacity-85">
+                    {user.username}:
+                  </span>
+                  <span class="text-text">{format(user.amount)}</span>
+                {/each}
+              </div>
+            {/if}
             <div>
               <span class="opacity-85"> Total: </span>
               <span class="text-text opacity-100">{format(item.amount)}</span>

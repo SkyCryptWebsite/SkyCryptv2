@@ -1,9 +1,8 @@
 <script lang="ts">
+  import Settings from "$lib/components/header/Settings.svelte";
   import { flyAndScale } from "$lib/shared/utils";
   import { Avatar, Button, Popover } from "bits-ui";
   import Info from "lucide-svelte/icons/info";
-  import PackageOpen from "lucide-svelte/icons/package-open";
-  import PaintBucket from "lucide-svelte/icons/paint-bucket";
 </script>
 
 <header class="fixed left-0 top-0 z-[1000] h-12 w-full overflow-clip bg-header px-2.5 pl-[max(0.625rem,env(safe-area-inset-left))] pr-[max(0.625rem,env(safe-area-inset-right))] pt-[env(safe-area-inset-top,0)] leading-[3rem] @container">
@@ -137,7 +136,6 @@
           </div>
         </Popover.Content>
       </Popover.Root>
-      <Button.Root href="/api" class="relative my-3 hidden shrink items-center justify-center rounded-full bg-text/70 p-1 px-2.5 text-sm font-semibold uppercase text-background/80 transition-all duration-100 hover:bg-text/80 hover:text-background @md:flex">API</Button.Root>
     </div>
 
     <!-- TODO: Implement player lookup
@@ -151,15 +149,6 @@
     </button>
   </form> -->
 
-    <div class="hidden gap-2 @md:flex">
-      <Button.Root class="relative my-1.5 flex shrink items-center justify-center gap-1 rounded-full bg-background/20 px-2.5 text-sm font-semibold text-text transition-all duration-100">
-        <PaintBucket class="size-5" />
-        Themes
-      </Button.Root>
-      <Button.Root class="relative my-1.5 flex shrink items-center justify-center gap-1 rounded-full bg-background/20 px-2.5 text-sm font-semibold text-text transition-all duration-100">
-        <PackageOpen class="size-5" />
-        Packs
-      </Button.Root>
-    </div>
+    <Settings />
   </div>
 </header>

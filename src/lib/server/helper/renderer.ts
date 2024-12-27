@@ -468,10 +468,10 @@ export async function renderItem(skyblockId: string | undefined, query: ItemQuer
 
   const customTexture = customResources.getTexture(item, {
     ignore_id: "name" in query,
-    pack_ids: query.pack
+    pack_ids: query.packs
   });
 
-  if (customTexture) {
+  if (customTexture && customTexture.path?.endsWith("skull.png") === false) {
     if (customTexture.animated) {
       outputTexture.mime = "image/gif";
     }

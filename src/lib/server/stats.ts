@@ -1,18 +1,29 @@
+import { dev } from "$app/environment";
 import { REDIS } from "$lib/server/db/redis";
-import { getDisplayName, getProfiles } from "$lib/server/lib";
+import { getDisplayName, getProfiles, sendWebhookMessage } from "$lib/server/lib";
 import * as stats from "$lib/server/stats/stats";
 import type { MuseumRawResponse, Profile } from "$types/global";
 import type { Player } from "$types/raw/player/lib";
+import { stripAllItems } from "./stats/items/stripping";
 
-async function processStats<T>(stats: Array<[string, () => Promise<T>]>, errors: Record<string, string>): Promise<Record<string, T | string>> {
+async function processStats<T>(player: Player, profile: Profile, stats: Array<[string, () => Promise<T>]>, errors: Record<string, string>): Promise<Record<string, T | string>> {
   const result: Record<string, T | string> = {};
 
   for (const [key, fetchFn] of stats) {
     try {
       result[key] = await fetchFn();
     } catch (error) {
+      if (dev) {
+        console.log(error);
+      }
+
+      const uuid = profile.uuid;
+      const username = player.displayname;
+      const profileId = profile.profile_id;
+      const profileCuteName: string = profile.cute_name;
+      await sendWebhookMessage(error as Error, { uuid, username, profileId, profileCuteName });
+
       errors[key] = error instanceof Error ? error.message : "Unknown error";
-      console.log(error);
     }
   }
 
@@ -35,6 +46,7 @@ export async function getStats(profile: Profile, player: Player, extra: { museum
   const items = await stats.getItems(userProfile, userMuseum, ignoredPacks);
 
   const statsList = [
+    ["members", () => stats.getProfileMembers(profile.members)],
     ["profiles", () => getProfiles(profile.uuid)],
     ["stats", () => stats.getMainStats(userProfile, profile, items)],
     ["accessories", () => stats.getAccessories(userProfile, items, ignoredPacks)],
@@ -56,7 +68,7 @@ export async function getStats(profile: Profile, player: Player, extra: { museum
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ] as Array<[string, () => Promise<any>]>;
 
-  const results = await processStats(statsList, errors);
+  const results = await processStats(player, profile, statsList, errors);
 
   const output = {
     displayName: getDisplayName(player.displayname, profile.uuid),
@@ -66,10 +78,9 @@ export async function getStats(profile: Profile, player: Player, extra: { museum
     profile_cute_name: profile.cute_name,
     game_mode: profile.game_mode,
     selected: profile.selected,
-    members: Object.keys(profile.members).filter((uuid) => uuid !== profile.uuid),
     rank: stats.getRank(player),
     social: player.socialMedia?.links ?? {},
-    items,
+    items: stripAllItems(items),
     ...results,
     errors
   };

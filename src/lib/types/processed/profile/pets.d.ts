@@ -1,3 +1,4 @@
+import type { ProcessedSkyblockPet } from "./items";
 import type { PetStatsExtra } from "./pet-stats";
 import type { ItemStats } from "./stats";
 
@@ -82,8 +83,8 @@ export type PetSkin = {
 };
 
 export type Pets = {
-  pets: ProcessedPet[];
-  missing: ProcessedPet[];
+  pets: ProcessedSkyblockPet[];
+  missing: ProcessedSkyblockPet[];
   amount: number;
   total: number;
   amountSkins: number;
@@ -93,6 +94,11 @@ export type Pets = {
   petScore?: {
     amount: number;
     stats: Record<string, number>;
+    reward: {
+      score: number;
+      bonus: number;
+      unlocked?: boolean;
+    }[];
   };
 };
 

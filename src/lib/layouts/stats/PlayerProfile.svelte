@@ -1,16 +1,20 @@
 <script lang="ts">
+  import { getProfileCtx } from "$ctx/profile.svelte";
   import { flyAndScale } from "$lib/shared/utils";
   import { favorites } from "$lib/stores/favorites";
-  import type { ValidStats as StatsType } from "$lib/types/stats";
   import { Avatar, Button, DropdownMenu, Tooltip } from "bits-ui";
   import ChevronLeft from "lucide-svelte/icons/chevron-left";
   import ChevronRight from "lucide-svelte/icons/chevron-right";
   import ExternalLink from "lucide-svelte/icons/external-link";
-  import Share from "lucide-svelte/icons/share";
+  import Link from "lucide-svelte/icons/link";
   import Star from "lucide-svelte/icons/star";
-  import { getContext } from "svelte";
 
-  const profile = getContext<StatsType>("profile");
+  let urlCopied = $state(false);
+  let uuidCopied = $state(false);
+  let showMore = $state(false);
+
+  const { profile } = getProfileCtx();
+
   const iconMapper: Record<string, string> = {
     TWITTER: "x-twitter.svg",
     YOUTUBE: "youtube.svg",
@@ -21,23 +25,38 @@
     HYPIXEL: "hypixel.png"
   };
 
-  let showMore = $state(false);
+  function copyToClipboard(value: string) {
+    navigator.clipboard.writeText(value);
+  }
 </script>
 
 <div class="mt-12 flex flex-wrap items-center gap-x-2 gap-y-3 text-4xl">
   Stats for
-  <div class="inline-flex items-center gap-2 rounded-full bg-[#7f7f7f]/20 py-2 pl-2 pr-4 align-middle text-3xl font-semibold">
-    <div class="nice-colors-dark light dark relative flex items-center justify-center overflow-hidden rounded-full bg-[var(--color)] px-2 py-1 text-xl" style={`--color:${profile.rank?.color}`}>
-      <div class="relative z-20 inline-flex justify-between gap-3 text-lg font-bold">
-        <span>{profile.rank?.tag}</span>
-        {#if profile.rank?.plus}
-          <span>{profile.rank?.plus}</span>
-        {/if}
+  <DropdownMenu.Root>
+    <DropdownMenu.Trigger class="inline-flex items-center rounded-full bg-[#7f7f7f]/20 py-2 pl-2 pr-4 align-middle text-3xl font-semibold">
+      <div class="nice-colors-dark light dark relative flex items-center justify-center overflow-hidden rounded-full bg-[var(--color)] px-2 py-1 text-xl" style={`--color:${profile.rank?.rankColor}`}>
+        <div class="relative z-20 inline-flex justify-between gap-3 text-lg font-bold">
+          <span>{profile.rank?.rankText}</span>
+          {#if profile.rank?.plusText}
+            <span>{profile.rank.plusText}</span>
+          {/if}
+        </div>
+        <div class="absolute -right-3 bottom-0 top-0 z-10 h-14 w-1/2 skew-x-[-20deg] bg-[var(--plusColor)]" style={`--plusColor:${profile.rank?.plusColor ?? profile.rank?.rankColor}`}></div>
       </div>
-      <div class="absolute -right-3 bottom-0 top-0 z-10 h-14 w-1/2 skew-x-[-20deg] bg-[var(--plusColor)]" style={`--plusColor:${profile.rank?.plusColor ?? profile.rank?.color}`}></div>
-    </div>
-    <span>{profile.displayName}</span>
-  </div>
+      <span class="pl-4">{profile.displayName}</span>
+    </DropdownMenu.Trigger>
+    <DropdownMenu.Content class="z-[99999] min-w-64 overflow-hidden rounded-lg bg-background-grey/95 text-3xl font-semibold" align="start" side="bottom" transition={flyAndScale} transitionConfig={{ y: -8, duration: 150 }}>
+      {#each profile.members as member}
+        {#if member.username !== profile.username}
+          <DropdownMenu.Item href={`/stats/${member.username}/${profile.profile_cute_name}`} class="flex items-center p-4 hover:bg-text/20" data-sveltekit-preload-code="viewport">
+            <span class="pl-4 {member.removed ? 'line-through' : ''}">
+              {member.username}
+            </span>
+          </DropdownMenu.Item>
+        {/if}
+      {/each}
+    </DropdownMenu.Content>
+  </DropdownMenu.Root>
   on
   <DropdownMenu.Root>
     <DropdownMenu.Trigger class="inline-flex items-center rounded-full bg-[#7f7f7f]/20 px-4 py-2 align-middle text-3xl font-semibold">
@@ -45,13 +64,21 @@
     </DropdownMenu.Trigger>
 
     <DropdownMenu.Content class="z-[99999]  min-w-64 overflow-hidden rounded-lg bg-background-grey/95 text-3xl font-semibold" align="start" side="bottom" transition={flyAndScale} transitionConfig={{ y: -8, duration: 150 }}>
-      {#each profile.profiles as otherProfile}
-        <DropdownMenu.Item href={`/stats/${profile.username}/${otherProfile.cute_name}`} class="flex items-center p-4 hover:bg-text/20" data-sveltekit-preload-code="viewport">
-          {otherProfile.cute_name}
-          {#if otherProfile.game_mode === "bingo"}
-            🎲
-          {/if}
-        </DropdownMenu.Item>
+      {#each profile.profiles ?? [] as otherProfile}
+        {#if otherProfile.profile_id !== profile.profile_id}
+          <DropdownMenu.Item href={`/stats/${profile.username}/${otherProfile.cute_name}`} class="flex items-center p-4 hover:bg-text/20" data-sveltekit-preload-code="viewport">
+            {otherProfile.cute_name}
+            {#if otherProfile.game_mode === "bingo"}
+              🎲
+            {/if}
+            {#if otherProfile.game_mode === "ironman"}
+              🥋
+            {/if}
+            {#if otherProfile.game_mode === "island"}
+              🌴
+            {/if}
+          </DropdownMenu.Item>
+        {/if}
       {/each}
     </DropdownMenu.Content>
   </DropdownMenu.Root>
@@ -88,16 +115,31 @@
     </Tooltip.Content>
   </Tooltip.Root>
 
-  <Button.Root
-    class="aspect-square rounded-full bg-icon/90 p-2 transition-opacity duration-150 hover:bg-icon"
-    on:click={async () => {
-      await navigator.share({
-        url: location.href,
-        title: `Stats for ${profile.username} on Hypixel`
-      });
-    }}>
-    <Share class="size-4" />
-  </Button.Root>
+  <Tooltip.Root openDelay={0} closeDelay={0} closeOnPointerDown={false}>
+    <Tooltip.Trigger asChild let:builder>
+      <button
+        use:builder.action
+        {...builder}
+        class="aspect-square rounded-full bg-icon/90 p-2 transition-opacity duration-150 hover:bg-icon"
+        onclick={() => {
+          copyToClipboard(window.location.href);
+          urlCopied = true;
+          setTimeout(() => {
+            urlCopied = false;
+          }, 2000);
+        }}>
+        <Link class="size-4" />
+      </button>
+    </Tooltip.Trigger>
+    <Tooltip.Content class="z-50 rounded-lg bg-background-grey p-4 font-semibold text-text/80" transition={flyAndScale} transitionConfig={{ y: 8, duration: 150 }} sideOffset={6} side="top" align="center">
+      <Tooltip.Arrow />
+      {#if urlCopied}
+        <p>Copied!</p>
+      {:else}
+        <p>Copy URL</p>
+      {/if}
+    </Tooltip.Content>
+  </Tooltip.Root>
 
   <Button.Root href={`https://plancke.io/hypixel/player/stats/${profile.username}`} target="_blank" class="flex items-center justify-center gap-1.5 rounded-full bg-icon/90 px-2 py-1 font-semibold transition-opacity duration-150 hover:bg-icon">
     Plancke <ExternalLink class="size-4" />
@@ -107,7 +149,32 @@
     Elite <ExternalLink class="size-4" />
   </Button.Root>
 
-  <Button.Root class="hidden items-center justify-center gap-1.5 rounded-full bg-icon/90 px-2 py-1 font-semibold transition-opacity duration-150 hover:bg-icon data-[visible=true]:flex" data-visible={showMore} on:click={() => navigator.clipboard.writeText(profile.uuid)}>Copy UUID</Button.Root>
+  <Tooltip.Root openDelay={0} closeDelay={0} closeOnPointerDown={false}>
+    <Tooltip.Trigger asChild let:builder>
+      <button
+        use:builder.action
+        {...builder}
+        class="hidden items-center justify-center gap-1.5 rounded-full bg-icon/90 px-2 py-1 font-semibold transition-opacity duration-150 hover:bg-icon data-[visible=true]:flex"
+        data-visible={showMore}
+        onclick={() => {
+          copyToClipboard(profile.uuid);
+          uuidCopied = true;
+          setTimeout(() => {
+            uuidCopied = false;
+          }, 2000);
+        }}>
+        Copy UUID
+      </button>
+    </Tooltip.Trigger>
+    <Tooltip.Content class="z-50 rounded-lg bg-background-grey p-4 font-semibold text-text/80" transition={flyAndScale} transitionConfig={{ y: 8, duration: 150 }} sideOffset={6} side="top" align="center">
+      <Tooltip.Arrow />
+      {#if uuidCopied}
+        <p>Copied!</p>
+      {:else}
+        <p>Copy UUID</p>
+      {/if}
+    </Tooltip.Content>
+  </Tooltip.Root>
 
   {#each Object.entries(profile.social) as [key, value]}
     {#if key === "DISCORD"}

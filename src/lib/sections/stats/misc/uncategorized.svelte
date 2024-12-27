@@ -1,15 +1,16 @@
 <script lang="ts">
+  import { getProfileCtx } from "$ctx/profile.svelte";
   import AdditionStat from "$lib/components/AdditionStat.svelte";
+  import SectionSubtitle from "$lib/components/SectionSubtitle.svelte";
   import Items from "$lib/layouts/stats/Items.svelte";
-  import type { ValidStats as StatsType } from "$lib/types/stats";
   import { format } from "numerable";
-  import { getContext } from "svelte";
 
-  const misc = getContext<StatsType["misc"]>("misc");
+  const { misc } = getProfileCtx();
 </script>
 
 {#if misc.uncategorized != null}
-  <Items title="Uncategorized">
+  <SectionSubtitle class="!uppercase">Uncategorized</SectionSubtitle>
+  <Items>
     <div slot="text">
       {#if misc.uncategorized.soulflow}
         <AdditionStat text="Soulflow" data={format(misc.uncategorized.soulflow as number, "0.00a")} />

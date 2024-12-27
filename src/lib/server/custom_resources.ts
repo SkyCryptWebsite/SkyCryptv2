@@ -1,3 +1,4 @@
+import { dev } from "$app/environment";
 import { createCanvas, loadImage, type Canvas } from "@napi-rs/canvas";
 import fs from "fs-extra";
 import _ from "lodash";
@@ -21,10 +22,11 @@ import { getFileHash } from "$lib/server/helper/hashes";
 import type { ItemTexture, OutputResourcePack, OutputTexture, ResourcePack, TextureAnimation, TextureModel } from "$types/custom-resources";
 import type { Item, ProcessedItem, getTextureParams } from "$types/processed/profile/items";
 import child_process from "child_process";
+import { format } from "numerable";
 const execFile = util.promisify(child_process.execFile);
 
 const NORMALIZED_SIZE = 128;
-const RESOURCE_CACHING = process.env.NODE_ENV === "development";
+const RESOURCE_CACHING = dev;
 
 const FOLDER_PATH = getFolderPath();
 const RESOURCE_PACK_FOLDER = path.resolve(getFolderPath(), "static", "resourcepacks");
@@ -165,6 +167,9 @@ async function loadPackConfigs() {
 }
 
 async function loadResourcePacks() {
+  if (resourcesReady === true) {
+    return;
+  }
   resourcePacks = resourcePacks.sort((a, b) => a.config.priority - b.config.priority);
 
   for (const pack of resourcePacks) {
@@ -530,6 +535,8 @@ async function loadResourcePacks() {
 
       pack.textures.push(texture as ItemTexture);
     }
+
+    console.log(`[CUSTOM-RESOURCES] Loaded ${format(pack.textures.length)} textures from ${pack.config.id}`);
   }
 }
 
@@ -583,7 +590,7 @@ const timeoutId = setTimeout(async () => {
       const damage = texture.damage ?? 0;
       if (itemId !== undefined) {
         // Skip PLAYER_SKULL, but keep MOB SKULLS (Skeleton, Zombie, etc.)
-        if (itemId !== 397 || (itemId === 397 && [0, 1, 2].includes(damage))) {
+        if (itemId !== 397 || itemId === 397) {
           const key = `${pack.config.id}:${itemId}:${damage}`;
           const data = itemIdTextureMap.get(key) ?? [];
 

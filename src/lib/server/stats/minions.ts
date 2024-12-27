@@ -8,7 +8,7 @@ function getMinionSlots(profile: Profile, tiers: number) {
   const highestSlots = minionSlots.findLastIndex((slots) => tiers >= slots);
 
   return {
-    bonusSlots: profile.community_upgrades.upgrade_states.filter((u) => u.upgrade === "minion_slots").length,
+    bonusSlots: profile.community_upgrades?.upgrade_states?.filter((u) => u.upgrade === "minion_slots").length ?? 0,
     current: constants.MINION_SLOTS[minionSlots[highestSlots]],
     next: minionSlots[highestSlots + 1] - tiers
   };

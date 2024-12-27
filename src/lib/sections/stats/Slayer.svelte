@@ -1,21 +1,22 @@
 <script lang="ts">
+  import { getProfileCtx } from "$ctx/profile.svelte";
   import AdditionStat from "$lib/components/AdditionStat.svelte";
   import Bonus from "$lib/components/Bonus.svelte";
   import SectionTitle from "$lib/components/SectionTitle.svelte";
-  import type { ValidStats as StatsType } from "$lib/types/stats";
   import { Avatar, Progress } from "bits-ui";
   import Image from "lucide-svelte/icons/image";
   import { format } from "numerable";
-  import { getContext } from "svelte";
 
-  const profile = getContext<StatsType>("profile");
-  const slayer = profile.slayer;
+  const { profile } = getProfileCtx();
+  const slayer = $derived(profile.slayer);
 </script>
 
 <div class="space-y-4">
   <SectionTitle>Slayer</SectionTitle>
   {#if slayer}
-    <AdditionStat text="Total Slayer XP" data={format(slayer.totalSlayerExp)} />
+    <div class="pb-1.5 pt-4">
+      <AdditionStat text="Total Slayer XP" data={format(slayer.totalSlayerExp)} />
+    </div>
     <div class="flex flex-wrap gap-5">
       {#each Object.entries(slayer.data) as [key, value]}
         {#if value.level.xp > 0}
@@ -61,7 +62,7 @@
                     XP
                   </div>
                 </div>
-                <div class="h-full w-full flex-1 transition-all duration-1000 ease-in-out group-data-[maxed=false]:bg-skillbar group-data-[maxed=true]:bg-maxedbar" style={`transform: translateX(-${100 - (value.level.xp / (value.level.maxed ? value.level.xp : value.level.xpForNext)) * 100}%)`}></div>
+                <div class="group-data-[maxed=false]:bg-skillbar group-data-[maxed=true]:bg-maxedbar h-full w-full flex-1 transition-all duration-1000 ease-in-out" style={`transform: translateX(-${100 - (value.level.xp / (value.level.maxed ? value.level.xp : value.level.xpForNext)) * 100}%)`}></div>
               </Progress.Root>
             </div>
           </div>

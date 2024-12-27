@@ -1,0 +1,22 @@
+{
+  "id": "default-light",
+  "name": "Default Light Theme",
+  "author": "SkyCrypt Team",
+  "schema": 2,
+  "light": true,
+  "images": {
+    "bg": "/img/themes/light/bg.webp"
+  },
+  "backgrounds": {
+    "skillbar": { "type": "color", "color": "115.97 60,36% 56.47%" },
+    "maxedbar": { "type": "color", "color": "39.48 97.97% 61.37%" }
+  },
+  "colors": {
+    "logo": "140.25 90.75% 33.92%",
+    "icon": "135.58 100% 35.49%",
+    "link": "138.73 95.35% 42.16%",
+    "hover": "138.83 91.02% 48.04%",
+    "maxed": "40 88.09% 46.08%",
+    "gold": "38.98 100% 38.63%"
+  }
+}

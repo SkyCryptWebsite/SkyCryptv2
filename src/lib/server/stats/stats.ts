@@ -8,6 +8,7 @@ export * from "$lib/server/stats/farming";
 export * from "$lib/server/stats/fishing";
 export * from "$lib/server/stats/items";
 export * from "$lib/server/stats/main_stats";
+export * from "$lib/server/stats/members";
 export * from "$lib/server/stats/mining";
 export * from "$lib/server/stats/minions";
 export * from "$lib/server/stats/misc";

@@ -1,15 +1,15 @@
 <script lang="ts">
+  import { getProfileCtx } from "$ctx/profile.svelte";
   import AdditionStat from "$lib/components/AdditionStat.svelte";
-  import type { ValidStats as StatsType } from "$lib/types/stats";
+  import SectionSubtitle from "$lib/components/SectionSubtitle.svelte";
   import { format } from "numerable";
-  import { getContext } from "svelte";
 
-  const misc = getContext<StatsType["misc"]>("misc");
+  const { misc } = getProfileCtx();
 </script>
 
 {#if misc.races != null}
   <div class="space-y-4">
-    <h3 class="text-xl font-semibold">Races</h3>
+    <SectionSubtitle class="!uppercase">Races</SectionSubtitle>
     <div class="flex flex-wrap gap-4">
       {#each Object.entries(misc.races) as [_, race]}
         <div class="flex min-w-64 flex-col gap-1 rounded-lg bg-background/30">

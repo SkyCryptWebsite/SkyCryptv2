@@ -28,7 +28,7 @@ export type Stats = {
   profile_cute_name: string;
   game_mode: string;
   selected: boolean;
-  members: string[];
+  members: { uuid: string; username: string }[];
   skills: Skills;
   rank: Rank | undefined;
   social: Record<string, string>;
@@ -61,7 +61,7 @@ export type ValidStats = {
   profile_cute_name: string;
   game_mode: string;
   selected: boolean;
-  members: string[];
+  members: { uuid: string; username: string; removed: boolean }[];
   skills: Skills;
   rank: Rank | undefined;
   social: Record<string, string>;
