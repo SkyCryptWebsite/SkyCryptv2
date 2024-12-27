@@ -3,7 +3,6 @@
   import { flyAndScale } from "$lib/shared/utils";
   import { Avatar, Button, Popover } from "bits-ui";
   import Info from "lucide-svelte/icons/info";
-  import PaintBucket from "lucide-svelte/icons/paint-bucket";
 </script>
 
 <header class="fixed left-0 top-0 z-[1000] h-12 w-full overflow-clip bg-header px-2.5 pl-[max(0.625rem,env(safe-area-inset-left))] pr-[max(0.625rem,env(safe-area-inset-right))] pt-[env(safe-area-inset-top,0)] leading-[3rem] @container">
@@ -152,11 +151,6 @@
   </form> -->
 
     <div class="hidden gap-2 @md:flex">
-      <Button.Root class="relative my-1.5 flex shrink items-center justify-center gap-1 rounded-full bg-background/20 px-2.5 text-sm font-semibold text-text transition-all duration-100">
-        <PaintBucket class="size-5" />
-        Themes
-      </Button.Root>
-
       <Settings />
     </div>
   </div>
