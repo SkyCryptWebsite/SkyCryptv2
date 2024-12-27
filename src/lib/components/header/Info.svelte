@@ -1,46 +1,12 @@
 <script lang="ts">
   import type { IsHover } from "$lib/hooks/is-hover.svelte";
-  import type { Theme } from "$lib/shared/constants/themes";
-  import themes from "$lib/shared/constants/themes";
   import { flyAndScale } from "$lib/shared/utils";
-  import { disabledPacks } from "$lib/stores/packs";
-  import { theme as themeStore } from "$lib/stores/themes";
   import { Button, Popover } from "bits-ui";
   import Info from "lucide-svelte/icons/info";
-  import { getContext, onMount } from "svelte";
-  import { derived, get } from "svelte/store";
+  import { getContext } from "svelte";
   import { Drawer } from "vaul-svelte";
 
-  let settingsOpen = $state(false);
-
   const isHover = getContext<IsHover>("isHover");
-
-  const initialPackConfig = get(disabledPacks);
-  const hasPackConfigChanged = derived(disabledPacks, ($disabledPacks) => {
-    return JSON.stringify($disabledPacks.sort()) !== JSON.stringify(initialPackConfig.sort());
-  });
-
-  function changeTheme(themeId: Theme["id"]) {
-    const theme = themes.find((theme) => theme.id === themeId);
-    if (!theme) {
-      themeStore.set("default");
-      document.documentElement.dataset.theme = "default";
-      document.cookie = `theme=default; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/`;
-      return;
-    }
-    if (theme.light) {
-      document.documentElement.dataset.mode = "light";
-    } else {
-      document.documentElement.dataset.mode = "dark";
-    }
-
-    document.documentElement.dataset.theme = theme.id;
-    document.cookie = `theme=${theme.id}; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/`;
-  }
-
-  onMount(() => {
-    changeTheme($themeStore);
-  });
 </script>
 
 {#snippet info()}
