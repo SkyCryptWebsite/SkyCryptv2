@@ -69,42 +69,6 @@ async function retrieveMuseumItems() {
   console.log(`[MUSEUM] Updated museum items in ${Date.now() - timeNow}ms`);
 }
 
-const categoryInventory = [
-  {
-    display_name: "Go Back",
-    texture_path: "/api/item/ARROW",
-    rarity: "uncommon",
-    tag: {
-      display: {
-        Lore: []
-      }
-    },
-    position: 48
-  },
-  {
-    display_name: "Close",
-    texture_path: "/api/item/BARRIER",
-    rarity: "special",
-    tag: {
-      display: {
-        Lore: []
-      }
-    },
-    position: 49
-  },
-  {
-    display_name: "Next Page",
-    texture_path: "/api/item/ARROW",
-    rarity: "uncommon",
-    tag: {
-      display: {
-        Lore: []
-      }
-    },
-    position: 53
-  }
-];
-
 const MUSEUM: MuseumConstants = {
   armor_to_id: {},
   armor_sets: {},
