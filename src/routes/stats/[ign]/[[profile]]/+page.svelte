@@ -12,6 +12,7 @@
     if (!user) return;
 
     const { username, profile_cute_name } = user;
+    if (!username) return;
 
     const current = page.url.pathname;
     const wanted = `/stats/${username}/${profile_cute_name || ""}`;

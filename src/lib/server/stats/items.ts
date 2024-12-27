@@ -48,7 +48,7 @@ export async function getItems(userProfile: Member, userMuseum: MuseumRaw | null
         return [key, []];
       }
 
-      const processed = await processItems(decodedItems[idx], key, true, packs);
+      const processed = await processItems(decodedItems[idx], key, packs);
       return [key, processed];
     })
   );
@@ -75,7 +75,7 @@ export async function getItems(userProfile: Member, userMuseum: MuseumRaw | null
     }
   }
 
-  output.museumItems = userMuseum ? await decodeMusemItems(userMuseum, false, []) : null;
+  output.museumItems = userMuseum ? await decodeMusemItems(userMuseum, []) : null;
 
   output.armor = getArmor(output.armor);
   output.equipment = getEquipment(output.equipment);

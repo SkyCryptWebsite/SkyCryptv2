@@ -82,7 +82,15 @@
     ].filter((tab) => tab.items.length > 0)
   );
 
-  const openStorageTab = writable<string>("0");
+  let openStorageTab = writable<string>("0");
+  $effect(() => {
+    console.log($openTab);
+    if ($openTab === "storage") {
+      openStorageTab.set("0");
+    } else if ($openTab === "museum") {
+      openStorageTab.set("19");
+    }
+  });
 
   const [send, receive] = crossfade({
     duration: 300,
@@ -125,7 +133,7 @@
   {#each tabs as tab}
     <Tabs.Content value={tab.id} asChild let:builder>
       {#if $openTab === tab.id}
-        {#if tab.id === "storage"}
+        {#if tab.id === "storage" || tab.id === "museum"}
           <div use:builder.action {...builder}>
             <Tabs.Root bind:value={$openStorageTab}>
               <Tabs.List class="grid grid-cols-[repeat(9,minmax(1.875rem,4.875rem))] place-content-center gap-1 pt-5 @md:gap-1.5 @xl:gap-2">
@@ -146,8 +154,8 @@
                   </Tabs.Trigger>
                 {/each}
               </Tabs.List>
-              {#if tab.items[Number($openStorageTab)].containsItems}
-                {@const containedItems = tab.items[Number($openStorageTab)].containsItems as ProcessedSkyBlockItem[]}
+              {#if tab.items[Number($openStorageTab)]?.containsItems}
+                {@const containedItems = (tab.items[Number($openStorageTab)].containsItems as ProcessedSkyBlockItem[]) || []}
                 <div class="grid grid-cols-[repeat(9,minmax(1.875rem,4.875rem))] place-content-center gap-1 pt-5 @md:gap-1.5 @xl:gap-2">
                   {#each containedItems as containedItem, index}
                     <Tabs.Content value={$openStorageTab.toString()}>
