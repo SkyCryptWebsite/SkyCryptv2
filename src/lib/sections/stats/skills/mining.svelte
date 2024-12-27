@@ -4,7 +4,7 @@
   import Item from "$lib/components/Item.svelte";
   import SectionSubtitle from "$lib/components/SectionSubtitle.svelte";
   import Items from "$lib/layouts/stats/Items.svelte";
-  import { getRarityClass } from "$lib/shared/helper";
+  import { renderLore } from "$lib/shared/helper";
   import { cn } from "$lib/shared/utils";
   import { formatDate, formatDistanceToNowStrict } from "date-fns";
   import { format } from "numerable";
@@ -22,7 +22,7 @@
     {#if highestPriorityMiningTool}
       <p class="space-x-0.5 font-bold capitalize leading-6 text-text/60">
         <span>Active Tool:</span>
-        <span class={cn(getRarityClass(highestPriorityMiningTool.rarity ?? "", "text"))}>{highestPriorityMiningTool.display_name}</span>
+        {@html renderLore(highestPriorityMiningTool.display_name)}
       </p>
     {/if}
   </div>
