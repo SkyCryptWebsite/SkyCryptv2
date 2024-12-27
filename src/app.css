@@ -7,34 +7,33 @@
 /* For preview to work you need to have the naumovs.color-highlight extension installed */
 
 @layer base {
-  :root,
-  .dark {
+  :root {
     /* Icon Green (used for Skill Icons, Underlines etc.) */
-    --icon: 142 90% 42%;
+    /* --icon: 142 90% 42%; */
     /* Preview: hsl(142, 90%, 42%) */
 
     /* Link Green (used for Links, Unclaimed Slayers, Crafted Minions etc.) */
-    --link: 139 91% 48%;
+    /* --link: 139 91% 48%; */
     /* Preview: hsl(139, 91%, 48%) */
 
     /* Hover Green (used only for link hovers) */
-    --hover: 147 93% 49%;
+    /* --hover: 147 93% 49%; */
     /* Preview:  hsl(147, 93%, 49%) */
 
     /* Skill Bar Green (used for Skill Progress Bars) */
-    --skillbar: 146 88% 35%;
+    /* --skillbar: 146 88% 35%; */
     /* Preview: hsl(146, 88%, 35%) */
 
     /* Maxed Bar Gold (used for Maxed Progress Bars) */
-    --maxedbar: 40 84% 44%;
+    /* --maxedbar: 40 84% 44%; */
     /* Preview: hsl(40, 84%, 44%) */
 
     /* Maxed Gold (used for Maxed things etc.) */
-    --maxed: 40 88% 46%;
+    /* --maxed: 40 88% 46%; */
     /* Preview: hsl(40, 88%, 46%) */
 
     /* Golden Text (used for Golden Text) */
-    --gold: 39 98% 61%;
+    /* --gold: 39 98% 61%; */
     /* Preview: hsl(39, 98%, 61%) */
 
     /* Most of the text */

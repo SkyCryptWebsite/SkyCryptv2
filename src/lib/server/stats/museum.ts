@@ -173,15 +173,14 @@ export function getMuseumItems(decodedMuseumItems: DecodedMuseumItems) {
         }
 
         // WEAPONS, ARMOR & RARITIES
-        const itemArray = MUSEUM_INVENTORY[inventoryType as keyof typeof MUSEUM_INVENTORY];
-        const itemId = Array.isArray(itemArray) ? (itemArray[slotIndex] as unknown as string) : undefined;
+        const itemId = MUSEUM[inventoryType as "weapons" | "armor" | "rarities"][slotIndex];
         if (itemId === undefined) {
           continue;
         }
 
         const museumItem = museumData.items[itemId];
         // MISSING ITEM
-        if (museumItem === undefined) {
+        if (museumItem === undefined || museumItem.missing) {
           const itemData = JSON.parse(JSON.stringify(MUSEUM_INVENTORY.missing_item[inventoryType as "weapons" | "armor" | "rarities"]));
           itemData.display_name = helper.titleCase(MUSEUM.armor_to_id[itemId] ?? itemId);
 
@@ -199,9 +198,9 @@ export function getMuseumItems(decodedMuseumItems: DecodedMuseumItems) {
         }
 
         // NORMAL ITEM
-        const itemData = museumItem.data[0];
-        if (museumItem.data.length > 1) {
-          itemData.containsItems = museumItem.data.map((i: ProcessedItem) => helper.generateItem(i));
+        const itemData = museumItem.items[0];
+        if (museumItem.items.length > 1) {
+          itemData.containsItems = museumItem.items.map((i: ProcessedItem) => helper.generateItem(i));
         }
 
         itemSlot.containsItems[slot + page * 54] = helper.generateItem(itemData);

@@ -1,0 +1,18 @@
+{
+  "id": "burning-cinnabar",
+  "name": "Burning Cinnabar Theme",
+  "author": "rainbowcraft2",
+  "schema": 2,
+  "images": {
+    "bg": "/img/themes/burning-cinnabar/bg.webp"
+  },
+  "backgrounds": {
+    "skillbar": { "type": "color", "color": "3.64 73.33% 55.88%" }
+  },
+  "colors": {
+    "logo": "350.63 80% 39.22%",
+    "icon": "3.52 68% 49.02%",
+    "link": "3.52 68% 49.02%",
+    "hover": "3.64 73.33% 55.88%"
+  }
+}

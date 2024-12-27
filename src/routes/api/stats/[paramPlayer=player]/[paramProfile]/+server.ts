@@ -4,15 +4,14 @@ import { json } from "@sveltejs/kit";
 import zlib from "zlib";
 import type { RequestHandler } from "./$types";
 
-export const GET: RequestHandler = async ({ params, request }) => {
+export const GET: RequestHandler = async ({ params, request, cookies }) => {
   const timeNow = Date.now();
   const { paramPlayer, paramProfile } = params;
 
   const [profile, player] = await Promise.all([getProfile(paramPlayer, paramProfile, { cache: true }), fetchPlayer(paramPlayer, { cache: true })]);
   const museum = await fetchMuseum(profile.profile_id);
 
-  const packs = [] as string[];
-  // const packs = ["FURFSKY_REBORN", "RNBW_PLUS", "SKYBLOCK_PACK", "HYPIXELPLUS", "WORLDS_AND_BEYOND", "VANILLA_PLUS"];
+  const packs = JSON.parse(cookies.get("disabledPacks") || "[]");
   const stats = await getStats(profile, player, { museum, packs: packs });
 
   const acceptEncoding = request.headers.get("accept-encoding");

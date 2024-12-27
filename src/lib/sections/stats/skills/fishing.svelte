@@ -5,8 +5,7 @@
   import Item from "$lib/components/Item.svelte";
   import SectionSubtitle from "$lib/components/SectionSubtitle.svelte";
   import Items from "$lib/layouts/stats/Items.svelte";
-  import { getRarityClass, renderLore } from "$lib/shared/helper";
-  import { cn } from "$lib/shared/utils";
+  import { renderLore } from "$lib/shared/helper";
   import { Avatar, Collapsible } from "bits-ui";
   import ChevronDown from "lucide-svelte/icons/chevron-down";
   import Image from "lucide-svelte/icons/image";
@@ -37,7 +36,7 @@
       {#if highestPriorityFishingTool}
         <p class="space-x-0.5 font-bold capitalize leading-6 text-text/60">
           <span>Active Rod:</span>
-          <span class={cn(getRarityClass(highestPriorityFishingTool.rarity ?? "common", "text"))}>{highestPriorityFishingTool.display_name}</span>
+          {@html renderLore(highestPriorityFishingTool.display_name)}
         </p>
       {/if}
     </div>

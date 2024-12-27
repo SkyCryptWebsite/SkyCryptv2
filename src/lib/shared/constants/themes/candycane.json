@@ -1,0 +1,22 @@
+{
+  "id": "candycane",
+  "name": "Candy Cane Theme",
+  "author": "Cookie_Wookie_7",
+  "schema": 2,
+  "light": true,
+  "images": {
+    "bg": "/img/themes/candycane/bg.webp"
+  },
+  "backgrounds": {
+    "skillbar": { "type": "stripes", "angle": "45deg", "colors": ["0 100% 66.67%", "0 0% 100%"], "width": 10 },
+    "maxedbar": { "type": "stripes", "angle": "45deg", "colors": ["10.14 100% 58.24%", "39.48 97.97% 61.37%"], "width": 10 }
+  },
+  "colors": {
+    "logo": "0 100% 40%",
+    "icon": "0 100% 39.6%",
+    "link": "0 100% 40.4%",
+    "hover": "0 100% 46.1%",
+    "maxed": "40 88.1% 46.1%",
+    "gold": "39 100% 38.6%"
+  }
+}

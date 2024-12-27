@@ -201,7 +201,7 @@ export async function sendWebhookMessage(
   }
 ) {
   try {
-    if (DISCORD_WEBHOOK === undefined || username === undefined) {
+    if (DISCORD_WEBHOOK === undefined || DISCORD_WEBHOOK.length === 0) {
       return;
     }
 

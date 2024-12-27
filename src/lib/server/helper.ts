@@ -182,12 +182,51 @@ export function addToItemLore(item: Partial<ProcessedItem>, lore: string | strin
  * @returns {Promise<Item>} A Promise that resolves with the modified item.
  */
 export async function applyResourcePack(item: ProcessedItem, packs: string[]) {
-  const customTexture = getTexture(item, {
-    pack_ids: packs
-  });
+  if (item.texture_path) {
+    return item;
+  }
 
-  if (customTexture) {
-    item.texture_path = (customTexture.path ?? "").toString();
+  if (item.tag?.ExtraAttributes?.id === "ENCHANTED_BOOK") {
+    item.texture_path = `/api/item/ENCHANTED_BOOK`;
+    return item;
+  }
+
+  // CUSTOM TEXTURES
+  const customTexture = getTexture(item, { pack_ids: packs });
+  if (customTexture?.path) {
+    // ? NOTE: we're ignoring Vanilla leather armor because it's render using /leather/ endpoint (Coloring support)
+    const ignoreCustomTexture = customTexture && customTexture.path && customTexture.path.includes("/Vanilla/") && customTexture.path.includes("leather_");
+    // ? NOTE: we're ignoring Skull-3.png because it's render using /head/ endpoint (Player Skull support)
+    const hasHeadTexture = customTexture && customTexture.path && customTexture.path.endsWith("skull-3.png") && item.tag?.SkullOwner?.Properties?.textures?.length > 0;
+    if (!ignoreCustomTexture && !hasHeadTexture) {
+      item.texture_path = customTexture.path;
+    }
+  }
+
+  if (!item.texture_path) {
+    if (item.tag?.SkullOwner?.Properties?.textures?.length > 0) {
+      // PLAYER SKULLS
+      try {
+        const json = JSON.parse(Buffer.from(item.tag.SkullOwner.Properties.textures[0].Value, "base64").toString());
+        const url = json.textures.SKIN.url;
+        const uuid = url.split("/").pop();
+
+        item.texture_path = `/api/head/${uuid}?v6`;
+      } catch (e) {
+        addToItemLore(item, ["", "§cError: Missing texture"]);
+        item.texture_path = `/api/item/BARRIER`;
+        console.error(e);
+      }
+    } else if (typeof item.id === "number" && item.id >= 298 && item.id <= 301) {
+      // COLORED LEATHER ARMOR
+      const color = (item.tag?.display?.color as unknown as number)?.toString(16).padStart(6, "0") ?? "955e3b";
+      const type = ["helmet", "chestplate", "leggings", "boots"][item.id - 298];
+
+      item.texture_path = `/api/leather/${type}/${color}`;
+    } else if (!item.texture_path) {
+      addToItemLore(item, ["", "§cError: Missing texture"]);
+      item.texture_path = `/api/item/BARRIER`;
+    }
   }
 
   return item;

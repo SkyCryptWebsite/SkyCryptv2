@@ -1,0 +1,18 @@
+{
+  "id": "nightblue",
+  "name": "Night Blue Theme",
+  "author": "8KCoffeeWizard",
+  "schema": 2,
+  "images": {
+    "bg": "/img/themes/nightblue/bg.webp"
+  },
+  "backgrounds": {
+    "skillbar": { "type": "color", "color": "201.43 100% 61.57%" }
+  },
+  "colors": {
+    "logo": "203.19 90.39% 44.9%",
+    "icon": "201.43 100% 61.57%",
+    "link": "179.06 100% 50%",
+    "hover": "188.48 89.67% 41.76%"
+  }
+}

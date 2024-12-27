@@ -1,0 +1,18 @@
+{
+  "id": "sunrise",
+  "name": "Sunrise Orange Theme",
+  "author": "rainbowcraft2",
+  "schema": 2,
+  "images": {
+    "bg": "/img/themes/sunrise/bg.webp"
+  },
+  "backgrounds": {
+    "skillbar": { "type": "color", "color": "9.88 86.32% 62.75%" }
+  },
+  "colors": {
+    "logo": "10.3 89.42% 62.94%",
+    "link": "9.88 86.32% 62.75%",
+    "icon": "9.88 86.32% 62.75%",
+    "hover": "25 100% 67.06%"
+  }
+}

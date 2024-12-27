@@ -1,0 +1,18 @@
+{
+  "id": "warpwing",
+  "name": "Forest Walk",
+  "author": "WarpWing",
+  "schema": 2,
+  "images": {
+    "bg": "https://blog.warpwing.cloud/_astro/demo-banner.BbPub-ks_1KHh80.webp"
+  },
+  "backgrounds": {
+    "skillbar": { "type": "color", "color": "185.45 100% 36.67%" }
+  },
+  "colors": {
+    "logo": "185.08 77.63% 29.8%",
+    "icon": "185.45 100% 36.67%",
+    "link": "185.45 100% 36.67%",
+    "hover": "185.45 100% 36.67%"
+  }
+}

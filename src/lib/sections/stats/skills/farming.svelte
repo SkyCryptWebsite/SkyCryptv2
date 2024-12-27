@@ -5,8 +5,7 @@
   import Item from "$lib/components/Item.svelte";
   import SectionSubtitle from "$lib/components/SectionSubtitle.svelte";
   import Items from "$lib/layouts/stats/Items.svelte";
-  import { formatNumber, getRarityClass } from "$lib/shared/helper";
-  import { cn } from "$lib/shared/utils";
+  import { formatNumber, renderLore } from "$lib/shared/helper";
   import { Collapsible } from "bits-ui";
   import ChevronDown from "lucide-svelte/icons/chevron-down";
 
@@ -59,7 +58,7 @@
     {#if highestPriorityFarmingTool}
       <p class="space-x-0.5 font-bold capitalize leading-6 text-text/60">
         <span>Active Tool:</span>
-        <span class={cn(getRarityClass(highestPriorityFarmingTool.rarity ?? "common", "text"))}>{highestPriorityFarmingTool.display_name}</span>
+        {@html renderLore(highestPriorityFarmingTool.display_name)}
       </p>
     {/if}
   </div>
