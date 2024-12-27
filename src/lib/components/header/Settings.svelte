@@ -98,7 +98,7 @@
             <Label.Root for={theme.id} class="flex items-center justify-between gap-4 rounded-lg bg-text/[0.05] p-2">
               <div class="flex items-center gap-2">
                 <Avatar.Root class="shrink-0 select-none">
-                  <Avatar.Image src={`/api/themes/${encodeURIComponent(theme["colors"]!.logo)}${theme.light ? "/true" : ""}/logo.svg`} alt={theme.name} class="pointer-events-none aspect-square size-10 h-full select-none rounded-lg">testing</Avatar.Image>
+                  <Avatar.Image src={`/api/themes/${btoa(theme["colors"]!.logo)}${theme.light ? "/true" : ""}/logo.svg`} alt={theme.name} class="pointer-events-none aspect-square size-10 h-full select-none rounded-lg">testing</Avatar.Image>
                   <Avatar.Fallback class="flex items-center rounded-lg text-center font-semibold uppercase">{theme.name.slice(0, 2)}</Avatar.Fallback>
                 </Avatar.Root>
                 <div class="flex flex-col">

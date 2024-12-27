@@ -136,7 +136,6 @@
           </div>
         </Popover.Content>
       </Popover.Root>
-      <Button.Root href="/api" class="relative my-3 hidden shrink items-center justify-center rounded-full bg-text/70 p-1 px-2.5 text-sm font-semibold uppercase text-background/80 transition-all duration-100 hover:bg-text/80 hover:text-background @md:flex">API</Button.Root>
     </div>
 
     <!-- TODO: Implement player lookup
