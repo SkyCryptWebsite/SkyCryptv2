@@ -4,6 +4,7 @@ import fs from "node:fs";
 import simpleGit from "simple-git";
 import { NBTParser } from "./NBTParser";
 import { formatBestiaryConstants } from "./parsers/bestiary";
+import { updateNotEnoughUpdatesRepository } from "./updateNEURepository";
 
 export const NEU_ITEMS = new Map<string, NEUItem>();
 export const NEU_CONSTANTS = new Map();
@@ -32,6 +33,8 @@ export async function intializeNEURepository() {
 
 export async function parseNEURepository() {
   if (building) return;
+
+  await updateNotEnoughUpdatesRepository();
 
   const timeNow = performance.now();
   const itemsPath = "NotEnoughUpdates-REPO/items";
