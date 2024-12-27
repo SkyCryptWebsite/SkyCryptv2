@@ -16,6 +16,14 @@ export function itemSorter(a: ProcessedItem, b: ProcessedItem) {
     return constants.RARITIES.indexOf(b.rarity) - constants.RARITIES.indexOf(a.rarity);
   }
 
+  if (a.extra.source === "inventory" && b.extra.source !== "inventory") {
+    return -1;
+  }
+
+  if (a.extra.source !== "inventory" && b.extra.source === "inventory") {
+    return 1;
+  }
+
   return a.display_name.localeCompare(b.display_name);
 }
 
