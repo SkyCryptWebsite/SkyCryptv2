@@ -1,4 +1,5 @@
 <script lang="ts">
+  import type { IsHover } from "$lib/hooks/is-hover.svelte";
   import { packConfigs } from "$lib/shared/constants/packs";
   import type { Theme } from "$lib/shared/constants/themes";
   import themes from "$lib/shared/constants/themes";
@@ -10,10 +11,13 @@
   import Cog from "lucide-svelte/icons/cog";
   import PackageOpen from "lucide-svelte/icons/package-open";
   import PaintBucket from "lucide-svelte/icons/paint-bucket";
-  import { onMount } from "svelte";
+  import { getContext, onMount } from "svelte";
   import { derived, get } from "svelte/store";
+  import { Drawer } from "vaul-svelte";
 
   let settingsOpen = $state(false);
+
+  const isHover = getContext<IsHover>("isHover");
 
   const initialPackConfig = get(disabledPacks);
   const hasPackConfigChanged = derived(disabledPacks, ($disabledPacks) => {
@@ -55,7 +59,7 @@
         Themes
       </Tabs.Trigger>
     </Tabs.List>
-    <Tabs.Content value="packs" class="flex flex-col gap-4 ">
+    <Tabs.Content value="packs" class="flex flex-col gap-4">
       {#each packConfigs as pack}
         <Label.Root for={pack.id} class="flex items-center justify-between gap-4 rounded-lg bg-text/[0.05] p-2">
           <div class="flex items-center gap-2">
@@ -114,12 +118,29 @@
   </Tabs.Root>
 {/snippet}
 
-<Popover.Root bind:open={settingsOpen}>
-  <Popover.Trigger class="group absolute right-4 top-1/2 flex aspect-square shrink -translate-y-1/2 items-center justify-center gap-1 rounded-full bg-background/20 px-2.5 py-1.5 text-sm font-semibold text-text transition-all duration-100 @md:relative @md:right-0 @md:top-0 @md:my-1.5 @md:translate-y-0">
-    <Cog class="size-5 transition-all duration-300 data-[is-open=true]:rotate-45" data-is-open={settingsOpen} />
-    <p class="hidden @md:block">Settings</p>
-  </Popover.Trigger>
-  <Popover.Content transition={flyAndScale} transitionConfig={{ duration: 300, y: -8 }} side="bottom" sideOffset={8} align="center" collisionPadding={8} class="z-[9999] min-w-[32rem] rounded-lg bg-background-grey/95 px-8 py-4">
-    {@render settings()}
-  </Popover.Content>
-</Popover.Root>
+{#if isHover.current}
+  <Popover.Root bind:open={settingsOpen}>
+    <Popover.Trigger class="group absolute right-4 top-1/2 flex aspect-square shrink -translate-y-1/2 items-center justify-center gap-1 rounded-full bg-background/20 px-2.5 py-1.5 text-sm font-semibold text-text transition-all duration-100 @md:relative @md:right-0 @md:top-0 @md:my-1.5 @md:translate-y-0">
+      <Cog class="size-5 transition-all duration-300 data-[is-open=true]:rotate-45" data-is-open={settingsOpen} />
+      <p class="hidden @md:block">Settings</p>
+    </Popover.Trigger>
+    <Popover.Content transition={flyAndScale} transitionConfig={{ duration: 300, y: -8 }} side="bottom" sideOffset={8} align="center" collisionPadding={8} class="z-[9999] min-w-[32rem] rounded-lg bg-background-grey/95 px-8 py-4">
+      {@render settings()}
+    </Popover.Content>
+  </Popover.Root>
+{:else}
+  <Drawer.Root shouldScaleBackground={true} setBackgroundColorOnScale={false} bind:open={settingsOpen}>
+    <Drawer.Trigger class="group absolute right-4 top-1/2 flex aspect-square shrink -translate-y-1/2 items-center justify-center gap-1 rounded-full bg-background/20 px-2.5 py-1.5 text-sm font-semibold text-text transition-all duration-100 @md:relative @md:right-0 @md:top-0 @md:my-1.5 @md:translate-y-0">
+      <Cog class="size-5 transition-all duration-300 data-[is-open=true]:rotate-45" data-is-open={settingsOpen} />
+      <p class="hidden @md:block">Settings</p>
+    </Drawer.Trigger>
+    <Drawer.Portal>
+      <Drawer.Overlay class="fixed inset-0 z-[998] bg-black/80" />
+      <Drawer.Content class="fixed bottom-0 left-0 right-0 z-[999] flex max-h-[calc(96%-48px)] flex-col rounded-t-[10px] bg-background-lore">
+        <div class="mx-auto w-full max-w-md overflow-auto p-6">
+          {@render settings()}
+        </div>
+      </Drawer.Content>
+    </Drawer.Portal>
+  </Drawer.Root>
+{/if}
