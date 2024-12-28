@@ -1,3 +1,4 @@
+import * as helper from "$lib/server/helper";
 import { isEnchanted } from "$lib/shared/helper";
 import type { GetItemsItems, ProcessedItem, ProcessedPet, ProcessedSkyBlockItem, ProcessedSkyblockPet } from "$types/stats";
 
@@ -35,7 +36,7 @@ export function stripItem(item: ProcessedItem | ProcessedPet, keys?: string[]): 
     output.rarity = itemData.rarity;
   }
 
-  if (itemData.shiny || itemData.glowing || isEnchanted(itemData)) {
+  if (itemData.shiny || itemData.glowing || isEnchanted(itemData) || helper.getId(itemData) === "POTION") {
     output.shiny = true;
   }
 

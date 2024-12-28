@@ -1,7 +1,9 @@
 <script lang="ts">
   import Item from "$lib/components/Item.svelte";
+  import type { IsHover } from "$lib/hooks/is-hover.svelte";
   import type { ProcessedSkyBlockItem } from "$types/stats";
   import { Avatar, Collapsible } from "bits-ui";
+  import { getContext } from "svelte";
   import { writable } from "svelte/store";
   import { slide } from "svelte/transition";
 
@@ -10,10 +12,16 @@
   const highestItem = wardrobeItems.find((piece) => piece && piece.display_name);
   const pieces = ["helmet", "chestplate", "leggings", "boots"];
 
+  const isHover = getContext<IsHover>("isHover");
+
   const expanded = writable<boolean>(false);
+
+  if (!isHover.current) {
+    expanded.set(true);
+  }
 </script>
 
-<Collapsible.Root bind:open={$expanded}>
+<Collapsible.Root bind:open={$expanded} disabled={!isHover.current}>
   <Collapsible.Trigger class="mt-2 flex flex-col gap-2">
     {#if !$expanded}
       {#if highestItem}

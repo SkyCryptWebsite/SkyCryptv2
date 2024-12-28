@@ -7,7 +7,6 @@ export const GET: RequestHandler = async ({ params }) => {
   const { type, color } = params;
 
   const potionColor = POTION_COLORS[color];
-
   try {
     const attachment = await getPotion(type, potionColor);
 
