@@ -3,6 +3,7 @@
   import AdditionStat from "$lib/components/AdditionStat.svelte";
   import SectionSubtitle from "$lib/components/SectionSubtitle.svelte";
   import Items from "$lib/layouts/stats/Items.svelte";
+  import { formatTime } from "$lib/shared/helper";
   import { format } from "numerable";
 
   const { misc } = getProfileCtx();
@@ -19,10 +20,10 @@
           {/if}
         {/each}
       </AdditionStat>
-      <AdditionStat text="Fastest Kill" data={misc.dragons.fastest_kill.best} asterisk={true}>
+      <AdditionStat text="Fastest Kill" data={formatTime(misc.dragons.fastest_kill.best)} asterisk={true}>
         {#each Object.entries(misc.dragons.fastest_kill) as [text, data]}
           {#if text !== "best"}
-            <AdditionStat {text} {data} />
+            <AdditionStat {text} data={formatTime(data)} />
           {/if}
         {/each}
       </AdditionStat>
