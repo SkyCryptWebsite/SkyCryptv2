@@ -6,7 +6,7 @@
   import Items from "$lib/layouts/stats/Items.svelte";
 
   import { getProfileCtx } from "$ctx/profile.svelte";
-  import { formatNumber, getRarityClass, uniqBy } from "$lib/shared/helper";
+  import { formatNumber, getRarityClass, renderLore, uniqBy } from "$lib/shared/helper";
   import { cn } from "$lib/shared/utils";
   import { Collapsible } from "bits-ui";
   import ChevronDown from "lucide-svelte/icons/chevron-down";
@@ -52,7 +52,7 @@
             <div class="flex items-center">
               <Item piece={activePet} />
               <div class="ml-4 flex flex-col justify-center">
-                <h4 class={cn(getRarityClass(activePet.rarity ?? "common", "text"), "text-xl font-bold capitalize")}>{(activePet.rarity ?? "common").toLowerCase()} {activePet.type.toLowerCase()}</h4>
+                <h4 class={cn(getRarityClass(activePet.rarity ?? "common", "text"), "text-xl font-bold capitalize")}>{(activePet.rarity ?? "common").toLowerCase()} {@html renderLore(activePet.display_name.toLowerCase())}</h4>
                 <h4 class="text-xl font-medium capitalize text-text">Level {activePet.level}</h4>
               </div>
             </div>
