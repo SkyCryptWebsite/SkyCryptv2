@@ -84,7 +84,6 @@
 
   let openStorageTab = writable<string>("0");
   $effect(() => {
-    console.log($openTab);
     if ($openTab === "storage") {
       openStorageTab.set("0");
     } else if ($openTab === "museum") {
