@@ -174,7 +174,6 @@ function getProfilePets(pets: Pet[]) {
         {} as Record<string, number>
       );
 
-    outputPet.display_name = replaceVariables(petData.displayname, data);
     outputPet.lore = [];
     for (const line of petData.lore) {
       if (line.startsWith("§7§eRight-click to add this pet to")) {
