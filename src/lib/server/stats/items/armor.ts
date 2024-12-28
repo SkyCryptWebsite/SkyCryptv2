@@ -30,7 +30,6 @@ export function getArmor(armor: ProcessedItem[]) {
     // Getting armor_name
     armor.forEach((armorPiece) => {
       let name = armorPiece.display_name;
-      console.log(name);
 
       // Removing skin, stars and color codes
       name = name.replace(/[§][bdB]|[^A-Za-z -']/g, "").trim();
