@@ -1,5 +1,6 @@
 <script lang="ts">
   import { page } from "$app/stores";
+  import ContainedItem from "$lib/components/ContainedItem.svelte";
   import type { IsHover } from "$lib/hooks/is-hover.svelte";
   import { RARITIES, RARITY_COLORS } from "$lib/shared/constants/items";
   import { getRarityClass, removeFormatting, renderLore } from "$lib/shared/helper";
@@ -80,6 +81,21 @@
         {#each skyblockItem.lore as lore}
           {@html renderLore(lore)}
         {/each}
+        {#if skyblockItem.containsItems && skyblockItem.containsItems.length > 0}
+          <div class="mt-4 border-t border-text/10 pt-4">
+            <div class="grid grid-cols-9 gap-1">
+              {#each skyblockItem.containsItems.slice(0, Math.min(skyblockItem.containsItems.length, 54)) as containedItem}
+                {#if containedItem.texture_path}
+                  <div class="flex aspect-square items-center justify-center rounded bg-text/[0.04]">
+                    <ContainedItem piece={containedItem} />
+                  </div>
+                {:else}
+                  <div class="aspect-square rounded bg-text/[0.04]"></div>
+                {/if}
+              {/each}
+            </div>
+          </div>
+        {/if}
       </div>
     </Tooltip.Content>
   </Tooltip.Root>
