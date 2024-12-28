@@ -228,7 +228,7 @@ export const SKILL_ICONS = {
   carpentry: "/api/item/CRAFTING_TABLE",
   social: "/api/item/EMERALD",
   dungeoneering: "/api/head/964e1c3e315c8d8fffc37985b6681c5bd16a6f97ffd07199e8a05efbef103793",
-  healer: "/api/potion/normal/2",
+  healer: "/api/potion/normal/f52423",
   mage: "/api/item/BLAZE_ROD",
   archer: "/api/item/BOW",
   berserk: "/api/item/IRON_SWORD",
