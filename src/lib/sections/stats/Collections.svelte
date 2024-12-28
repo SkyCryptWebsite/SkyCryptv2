@@ -44,10 +44,12 @@
             {#if data.name !== "Boss"}
               <div class="mb-4">
                 {#each item.amounts as user}
-                  <span class="opacity-85">
-                    {user.username}:
-                  </span>
-                  <span class="text-text">{format(user.amount)}</span>
+                  <div>
+                    <span class="opacity-85">
+                      {user.username}:
+                    </span>
+                    <span class="text-text">{format(user.amount)}</span>
+                  </div>
                 {/each}
               </div>
             {/if}
