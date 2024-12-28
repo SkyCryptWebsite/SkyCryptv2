@@ -226,7 +226,7 @@ function getProfilePets(pets: Pet[]) {
       outputPet.lore.push(`§2${"-".repeat(progress)}§f${"-".repeat(20 - progress)} §e${numerator} §6/ §e${denominator}`);
     }
 
-    outputPet.lore.push(``, `§7Total XP: §e${formatNumber(outputPet.level.xp, 1)} §6/ §e${formatNumber(outputPet.level.xpMaxLevel)} §6(100%)`, `§7Candy Used: §e${pet.candyUsed ?? 0} §6/ §e10`);
+    outputPet.lore.push(``, `§7Total XP: §e${formatNumber(outputPet.level.xp, 1)} §6/ §e${formatNumber(outputPet.level.xpMaxLevel)} §6(${((outputPet.level.xp / outputPet.level.xpMaxLevel) * 100).toFixed(2)}%)`, `§7Candy Used: §e${pet.candyUsed ?? 0} §6/ §e10`);
 
     if (outputPet.price && outputPet.price > 0) {
       outputPet.lore.push(``, `§7Item Value: §6${Math.floor(outputPet.price).toLocaleString()} Coins §7(§6${formatNumber(outputPet.price)}§7)`);
