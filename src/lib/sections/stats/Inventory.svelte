@@ -162,7 +162,7 @@
                       {#key $openStorageTab}
                         {#if containedItem.texture_path}
                           <div class="flex aspect-square items-center justify-center rounded bg-text/[0.04]" in:fade|global={{ duration: 300, delay: 5 * (index + 1) }}>
-                            <Item piece={containedItem} isInventory={true} showRecombobulated={false} />
+                            <Item piece={containedItem} isInventory={true} showRecombobulated={false} showCount={true} />
                           </div>
                         {:else}
                           <div class="aspect-square rounded bg-text/[0.04]" in:fade|global={{ duration: 300, delay: 5 * (index + 1) }}></div>
@@ -183,9 +183,9 @@
               {#if item.texture_path}
                 <div class="flex aspect-square items-center justify-center rounded bg-text/[0.04]" in:fade|global={{ duration: 300, delay: 5 * (index + 1) }}>
                   {#if tab.id === "inv"}
-                    <Item piece={{ ...item, rarity: item.rarity ?? "uncommon" } as ProcessedSkyBlockItem} isInventory={true} showRecombobulated={false} />
+                    <Item piece={{ ...item, rarity: item.rarity ?? "uncommon" } as ProcessedSkyBlockItem} isInventory={true} showRecombobulated={false} showCount={true} />
                   {:else}
-                    <Item piece={item} isInventory={true} showRecombobulated={false} />
+                    <Item piece={item} isInventory={true} showRecombobulated={false} showCount={true} />
                   {/if}
                 </div>
               {:else}
