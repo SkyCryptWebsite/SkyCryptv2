@@ -61,7 +61,7 @@
         <li class="flex">
           <span class="flex-1 capitalize text-text/85">
             - {crystalName}:
-            <span class={cn("capitalize", crystalStatus === "PLACED" ? "text-minecraft-a" : "text-minecraft-c")}>
+            <span class={cn("capitalize", crystalStatus === "PLACED" ? "text-minecraft-e" : crystalStatus === "FOUND" ? "text-minecraft-a" : "text-minecraft-c")}>
               {crystalStatus.replace("_", " ").toLowerCase()}
             </span>
           </span>
@@ -75,7 +75,7 @@
         <li class="flex">
           <span class="flex-1 capitalize text-text/85">
             - {crystalName}:
-            <span class={cn("capitalize", crystalStatus === "PLACED" ? "text-minecraft-a" : "text-minecraft-c")}>
+            <span class={cn("capitalize", crystalStatus === "FOUND" ? "text-minecraft-a" : "text-minecraft-c")}>
               {crystalStatus.replace("_", " ").toLowerCase()}
             </span>
           </span>
