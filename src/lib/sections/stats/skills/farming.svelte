@@ -52,20 +52,24 @@
   </div>
 </div>
 
-<Items>
-  <div slot="text" class="space-y-2">
-    <SectionSubtitle>Farming Tools</SectionSubtitle>
-    {#if highestPriorityFarmingTool}
-      <p class="space-x-0.5 font-bold capitalize leading-6 text-text/60">
-        <span>Active Tool:</span>
-        {@html renderLore(highestPriorityFarmingTool.display_name)}
-      </p>
-    {/if}
-  </div>
-  {#each farmingTools as tool}
-    <Item piece={tool} />
-  {/each}
-</Items>
+{#if farmingTools.length > 0}
+  <Items>
+    <div slot="text" class="space-y-2">
+      <SectionSubtitle>Farming Tools</SectionSubtitle>
+      {#if highestPriorityFarmingTool}
+        <p class="space-x-0.5 font-bold capitalize leading-6 text-text/60">
+          <span>Active Tool:</span>
+          {@html renderLore(highestPriorityFarmingTool.display_name)}
+        </p>
+      {/if}
+    </div>
+    {#each farmingTools as tool}
+      <Item piece={tool} />
+    {/each}
+  </Items>
+{:else}
+  <div class="mt-3"></div>
+{/if}
 
 <Collapsible.Root>
   <Collapsible.Trigger class="group flex items-center gap-0.5">
