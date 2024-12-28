@@ -137,9 +137,9 @@
               <span>Enrichments: </span>
               {#each Object.entries(accessories.enrichments) as [key, value], index}
                 {#if key !== "missing"}
-                  <span class={STATS_DATA[key].color}>
+                  <span class={STATS_DATA[key.toLowerCase()].color}>
                     {value}×
-                    {STATS_DATA[key].name}
+                    {STATS_DATA[key.toLowerCase()].name}
                   </span>
                   {#if Object.entries(accessories.enrichments).length - 1 !== index || (Object.entries(accessories.enrichments).length - 1 === index && accessories.enrichments.missing > 0)}
                     // {" "}

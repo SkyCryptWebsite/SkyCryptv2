@@ -109,7 +109,7 @@
                     {format(trophyFish.silver)}
                   </div>
                   <div class="flex items-center gap-1">
-                    <div class="size-4 rounded-full bg-[#b4b4b5]"></div>
+                    <div class="size-4 rounded-full bg-[#feb801]"></div>
                     {format(trophyFish.gold)}
                   </div>
                   <div class="flex items-center gap-1">
