@@ -922,7 +922,7 @@ class WarmHeart extends Node {
 
   perk(level: number) {
     const val = helper.round(level * 0.4, 1);
-    return [`§7Grants §b+${val} ${SYMBOLS.cold_resistance} Cold Resistance§7.`];
+    return [`§7Grants §b+${val} ${SYMBOLS.cold_resistence} Cold Resistance§7.`];
   }
 }
 
