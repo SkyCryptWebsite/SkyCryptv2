@@ -152,9 +152,11 @@ function getProfilePets(userProfile: Member, pets: Pet[]) {
     }
 
     const skinData = pet.skin ? NEU_ITEMS.get(`PET_SKIN_${pet.skin}`) : null;
-    const texture = skinData ? helper.getHeadTextureUUID(skinData.nbttag.SkullOwner.Properties.textures[0].Value) : helper.getHeadTextureUUID(petData.nbttag.SkullOwner.Properties.textures[0].Value);
-
+    const texture = helper.getHeadTextureUUID((skinData ?? petData).nbttag.SkullOwner.Properties.textures[0].Value);
     outputPet.texture_path = `/api/head/${texture}?v6`;
+    if (outputPet.skin) {
+      outputPet.display_name += " ✦";
+    }
 
     let data = getPetData(outputPet.level.level, pet.type, pet.tier.toUpperCase());
     if (!data && pet.heldItem === "PET_ITEM_TIER_BOOST") {
