@@ -1,12 +1,12 @@
 <script lang="ts">
   import { page } from "$app/stores";
+  import ContainedItem from "$lib/components/ContainedItem.svelte";
   import { RARITIES, RARITY_COLORS } from "$lib/shared/constants/items";
   import { getRarityClass, removeFormatting, renderLore } from "$lib/shared/helper";
   import { cn, flyAndScale } from "$lib/shared/utils";
   import type { ProcessedSkyBlockItem, ProcessedSkyblockPet } from "$lib/types/global";
   import { Avatar, Tooltip } from "bits-ui";
   import Image from "lucide-svelte/icons/image";
-  import ContainedItem from "./ContainedItem.svelte";
 
   export let piece: ProcessedSkyBlockItem | ProcessedSkyblockPet;
   export let isInventory = false;
