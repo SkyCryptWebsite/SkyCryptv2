@@ -5,7 +5,7 @@
   import Item from "$lib/components/Item.svelte";
   import SectionSubtitle from "$lib/components/SectionSubtitle.svelte";
   import Items from "$lib/layouts/stats/Items.svelte";
-  import { renderLore } from "$lib/shared/helper";
+  import { renderLore, titleCase } from "$lib/shared/helper";
   import { Avatar, Collapsible } from "bits-ui";
   import ChevronDown from "lucide-svelte/icons/chevron-down";
   import Image from "lucide-svelte/icons/image";
@@ -88,7 +88,13 @@
       <div class="space-y-0.5">
         {#if profile.fishing.trophyFish}
           <AdditionStat text="Total Caught" data={format(profile.fishing.trophyFish.totalCaught)} />
-          <AdditionStat text="Current Stage" data={profile.fishing.trophyFish.stage} />
+          <AdditionStat text="Current Stage" data={profile.fishing.trophyFish.stage.name} asterisk={true}>
+            <div class="mb-4">
+              {#each profile.fishing.trophyFish.stage.progress as tier}
+                <AdditionStat text={titleCase(tier.tier)} data={`${tier.caught} / ${tier.total}`} />
+              {/each}
+            </div>
+          </AdditionStat>
         {/if}
       </div>
 

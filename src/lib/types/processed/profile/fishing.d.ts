@@ -8,7 +8,14 @@ export type Fishing = {
   kills: { id: string; name: string; texture: string; amount: number }[];
   trophyFish: {
     totalCaught: number;
-    stage: string;
+    stage: {
+      name: string;
+      progress: {
+        tier: string;
+        caught: number;
+        total: number;
+      }[];
+    };
     trophyFish: TrophyFish[];
   } | null;
 };
