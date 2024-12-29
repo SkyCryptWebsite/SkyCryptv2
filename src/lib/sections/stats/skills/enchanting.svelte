@@ -10,7 +10,6 @@
 
   const { profile } = getProfileCtx();
   const enchanting = $derived(profile.enchanting.data);
-  console.log(profile.enchanting);
 </script>
 
 <SectionSubtitle>Enchanting</SectionSubtitle>
