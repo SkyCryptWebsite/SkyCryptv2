@@ -4,6 +4,13 @@ import type { ProcessedItem } from "$types/stats";
 import { getStatsFromItems } from "./stats";
 
 export function getArmor(armor: ProcessedItem[]) {
+  if (armor.every((a) => !helper.getId(a).length)) {
+    return {
+      armor: [],
+      stats: {}
+    };
+  }
+
   // One armor piece
   if (armor.length === 1) {
     const armorPiece = armor.find((x) => x.rarity);
@@ -29,10 +36,13 @@ export function getArmor(armor: ProcessedItem[]) {
 
     // Getting armor_name
     armor.forEach((armorPiece) => {
-      let name = armorPiece.display_name;
+      let name = armorPiece.display_name ?? "";
 
-      // Removing skin, stars and color codes
-      name = name.replace(/[§][bdB]|[^A-Za-z -']/g, "").trim();
+      // Removing Unicode characters first
+      name = name.replace(/§[0-9a-fk-or]/g, "");
+      // Then removing Minecraft color codes
+      // eslint-disable-next-line no-control-regex
+      name = name.replace(/[^\x00-\x7F]/g, "").trim();
 
       // Removing modifier
       if (armorPiece.tag?.ExtraAttributes?.modifier != undefined) {
@@ -53,7 +63,9 @@ export function getArmor(armor: ProcessedItem[]) {
     // Getting full armor reforge (same reforge on all pieces)
     if (armor.filter((a) => a.tag?.ExtraAttributes?.modifier != undefined && a.tag?.ExtraAttributes?.modifier == armor[0].tag.ExtraAttributes.modifier).length == 4) {
       reforgeName = armor[0].display_name
-        .replace(/[§][bdB]|[^A-Za-z -']/g, "")
+        .replace(/§[0-9a-fk-or]/g, "")
+        // eslint-disable-next-line no-control-regex
+        .replace(/[^\x00-\x7F]/g, "")
         .trim()
         .split(" ")[0];
     }
