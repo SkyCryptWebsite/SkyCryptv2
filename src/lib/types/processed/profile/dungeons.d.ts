@@ -1,6 +1,7 @@
 import type { Skill } from "./skills";
 
 export type DungeonsStats = {
+  unlocked: boolean;
   level: Skill;
   classes: {
     selectedClass: string;

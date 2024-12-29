@@ -1836,7 +1836,7 @@ class HotmReset extends HotmItem {
       output.push("", "§7§c§lWARNING: This is permanent.", "§c§lYou can not go back after resetting your Heart of the Mountain!");
     } else {
       const timeLeft = Math.abs(Date.now() - (this.last_reset + 24 * 60 * 60 * 1000)); // ms
-      output.push("", `§c§lYou can reset again in ${helper.formatTime(timeLeft / 1000)}`);
+      output.push("", `§c§lYou can reset again in ${helper.formatTime(isNaN(timeLeft) ? 0 : (timeLeft ?? 0))}`);
     }
 
     return output;

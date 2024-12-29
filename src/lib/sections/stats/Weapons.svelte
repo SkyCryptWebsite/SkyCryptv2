@@ -9,14 +9,17 @@
 
 <Items title="Weapons">
   <div slot="text">
-    <!-- TODO: add colors later -->
-    <p class="font-bold">
-      <span class="text-text/60">Active Weapon: </span>
-      {@html renderLore(profile.items.weapons.highest_priority_weapon.display_name)}
-    </p>
+    {#if profile.items.weapons?.highest_priority_weapon?.display_name}
+      <p class="font-bold">
+        <span class="text-text/60">Active Weapon: </span>
+        {@html renderLore(profile.items.weapons.highest_priority_weapon.display_name)}
+      </p>
+    {/if}
   </div>
 
-  {#each profile.items.weapons.weapons as weapon}
-    <Item piece={weapon} />
-  {/each}
+  {#if profile.items.weapons.weapons.length}
+    {#each profile.items.weapons.weapons as weapon}
+      <Item piece={weapon} />
+    {/each}
+  {/if}
 </Items>

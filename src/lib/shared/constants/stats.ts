@@ -509,6 +509,12 @@ export const STATS_DATA: StatsData = {
     color: "text-minecraft-5"
   }
 };
+
+export const STAT_ALIASES = {
+  crit_damage: "critical_damage",
+  crit_chance: "critical_chance"
+} as Record<string, string>;
+
 export const STATS_BONUS = {
   // Skills
   skill_farming: {

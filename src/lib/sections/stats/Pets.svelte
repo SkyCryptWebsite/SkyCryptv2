@@ -126,6 +126,6 @@
   </Items>
 {:else}
   <Items title="Pets">
-    <p class="text-text/60">No data available</p>
+    <p class="space-x-0.5 leading-6">{profile.username} doesn't have any pets</p>
   </Items>
 {/if}

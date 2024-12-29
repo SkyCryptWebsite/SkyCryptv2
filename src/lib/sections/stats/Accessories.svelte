@@ -197,6 +197,6 @@
       {/if}
     </div>
   {:else}
-    <p class="text-text/60">No data available</p>
+    <p class="space-x-0.5 leading-6">{profile.username} doesn't have any accessories</p>
   {/if}
 </Items>

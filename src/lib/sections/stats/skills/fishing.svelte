@@ -29,11 +29,11 @@
   {/if}
 </div>
 
+<SectionSubtitle>Fishing Rods</SectionSubtitle>
 {#if fishingTools.length > 0}
   <Items>
     <div slot="text" class="space-y-2">
-      <SectionSubtitle>Fishing Rods</SectionSubtitle>
-      {#if highestPriorityFishingTool}
+      {#if highestPriorityFishingTool && highestPriorityFishingTool.display_name}
         <p class="space-x-0.5 font-bold capitalize leading-6 text-text/60">
           <span>Active Rod:</span>
           {@html renderLore(highestPriorityFishingTool.display_name)}
@@ -44,6 +44,8 @@
       <Item piece={tool} />
     {/each}
   </Items>
+{:else}
+  <p class="space-x-0.5 leading-6">{profile.username} doesn't have any fishing tools.</p>
 {/if}
 
 {#if Object.entries(profile.fishing.kills).find(([_, seaCreature]) => seaCreature.amount > 0)}

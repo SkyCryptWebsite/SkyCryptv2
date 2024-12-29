@@ -27,14 +27,14 @@ function formatGameData(gameData: Member["experimentation"]["simon"], key: strin
 
 export function getEnchanting(userProfile: Member) {
   if (userProfile.experimentation === undefined) {
-    return null;
+    return { unlocked: false };
   }
 
-  const output = {} as Enchanting;
+  const output = { data: {} } as Enchanting;
   for (const key in constants.EXPERIMENTS.games) {
     const gameData = userProfile.experimentation[key];
 
-    output[key] = {
+    output.data[key] = {
       name: constants.EXPERIMENTS.games[key].name,
       stats: {
         lastAttempt: gameData.last_attempt,

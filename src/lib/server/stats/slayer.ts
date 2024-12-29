@@ -61,7 +61,7 @@ function getLevel(slayer: string, data: SlayerBoss) {
 export function getSlayer(userProfile: Member) {
   const slayerData = userProfile.slayer?.slayer_bosses;
   if (slayerData === undefined) {
-    return null;
+    return { unlocked: false };
   }
 
   const output = { data: {} } as SlayerData;

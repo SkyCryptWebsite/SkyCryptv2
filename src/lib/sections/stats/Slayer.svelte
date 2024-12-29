@@ -14,7 +14,9 @@
 
 <div class="space-y-4">
   <SectionTitle>Slayer</SectionTitle>
-  {#if slayer}
+  {#if slayer.unlocked === false}
+    <p class="space-x-0.5 leading-6">{profile.username} hasn't unlocked Slayers yet.</p>
+  {:else}
     <div class="pb-1.5 pt-4">
       <AdditionStat text="Total Slayer XP" data={format(slayer.totalSlayerExp)} />
     </div>

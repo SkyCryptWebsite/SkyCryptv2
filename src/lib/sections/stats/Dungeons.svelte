@@ -17,7 +17,9 @@
 
 <div class="space-y-4">
   <SectionTitle>Dungeons</SectionTitle>
-  {#if dungeons}
+  {#if dungeons.unlocked === false}
+    <p class="space-x-0.5 leading-6">{profile.username} hasn't unlocked Dungeons yet.</p>
+  {:else if dungeons}
     <div class="flex flex-col flex-wrap justify-start gap-x-4 gap-y-2 pt-4 sm:flex-row">
       <Skillbar class="" skill="Catacombs" skillData={dungeons.level} />
       {#each Object.entries(dungeons.classes.classes) as [className, classData]}
