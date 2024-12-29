@@ -1,23 +1,23 @@
 import * as constants from "$lib/server/constants/constants";
 import * as helper from "$lib/server/helper";
-import type { ProcessedItem } from "$types/stats.js";
+import type { ProcessedItem } from "$types/stats";
 import { getStatsFromItems } from "./stats";
 
 export function getArmor(armor: ProcessedItem[]) {
-  if (armor.some((a) => helper.getId(a) === "") === true) {
+  if (armor.every((a) => !helper.getId(a).length)) {
     return {
-      armor: armor.filter((a) => helper.getId(a) !== "").reverse(),
+      armor: [],
       stats: {}
     };
   }
 
+  // One armor piece
   if (armor.length === 1) {
     const armorPiece = armor.find((x) => x.rarity);
-    if (armorPiece === undefined) {
+    if (!armorPiece) {
       return {
-        armor,
-        set_name: "Unknown",
-        set_rarity: "UNKNOWN"
+        armor: armor.reverse(),
+        stats: getStatsFromItems(armor)
       };
     }
 
@@ -29,15 +29,20 @@ export function getArmor(armor: ProcessedItem[]) {
     };
   }
 
+  // Full armor set (4 pieces)
   if (armor.length === 4) {
     let outputName;
     let reforgeName;
 
+    // Getting armor_name
     armor.forEach((armorPiece) => {
-      let name = armorPiece.display_name;
+      let name = armorPiece.display_name ?? "";
 
-      // Removing skin and stars / Whitelisting a-z and 0-9
-      name = name.replace(/[^A-Za-z0-9 -']/g, "").trim();
+      // Removing Unicode characters first
+      name = name.replace(/§[0-9a-fk-or]/g, "");
+      // Then removing Minecraft color codes
+      // eslint-disable-next-line no-control-regex
+      name = name.replace(/[^\x00-\x7F]/g, "").trim();
 
       // Removing modifier
       if (armorPiece.tag?.ExtraAttributes?.modifier != undefined) {
@@ -45,12 +50,9 @@ export function getArmor(armor: ProcessedItem[]) {
       }
 
       // Converting armor_name to generic name
-      // Ex: Superior Dragon Helmet -> Superior Dragon Armor
       if (/^Armor .*? (Helmet|Chestplate|Leggings|Boots)$/g.test(name)) {
-        // name starts with Armor and ends with piece name, remove piece name
         name = name.replaceAll(/(Helmet|Chestplate|Leggings|Boots)/g, "").trim();
       } else {
-        // removing old 'Armor' and replacing the piece name with 'Armor'
         name = name.replace("Armor", "").replace("  ", " ").trim();
         name = name.replaceAll(/(Helmet|Chestplate|Leggings|Boots)/g, "Armor").trim();
       }
@@ -61,7 +63,9 @@ export function getArmor(armor: ProcessedItem[]) {
     // Getting full armor reforge (same reforge on all pieces)
     if (armor.filter((a) => a.tag?.ExtraAttributes?.modifier != undefined && a.tag?.ExtraAttributes?.modifier == armor[0].tag.ExtraAttributes.modifier).length == 4) {
       reforgeName = armor[0].display_name
-        .replace(/[^A-Za-z0-9 -']/g, "")
+        .replace(/§[0-9a-fk-or]/g, "")
+        // eslint-disable-next-line no-control-regex
+        .replace(/[^\x00-\x7F]/g, "")
         .trim()
         .split(" ")[0];
     }

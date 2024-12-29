@@ -7,13 +7,16 @@
   import Stats from "$lib/layouts/stats/Stats.svelte";
   import Armor from "$lib/sections/stats/Armor.svelte";
   import type { Stats as StatsType, ValidStats } from "$lib/types/stats";
-
   let { profile }: { profile: StatsType } = $props();
 
   $effect.pre(() => {
     setProfileCtx(profile as unknown as ValidStats);
   });
 </script>
+
+{#await import("$lib/components/SEO.svelte") then { default: SEO }}
+  <SEO />
+{/await}
 
 <div class="relative @container/parent">
   <div class="fixed left-0 top-1/2 z-10 hidden h-dvh w-[30vw] -translate-y-1/2 @container min-[1200px]:block">
@@ -22,8 +25,8 @@
     {/await}
   </div>
 
-  <div class="fixed right-0 top-0 h-dvh w-full backdrop-blur-lg backdrop-brightness-50 @[75rem]/parent:w-[calc(100%-30vw)]"></div>
-  <main class="relative mx-auto @container @[75rem]/parent:ml-[30vw]">
+  <div class="fixed right-0 top-0 min-h-dvh w-full backdrop-blur-lg group-data-[mode=dark]/html:backdrop-brightness-50 group-data-[mode=light]/html:backdrop-brightness-100 @[75rem]/parent:w-[calc(100%-30vw)]"></div>
+  <main data-vaul-drawer-wrapper class="relative mx-auto min-h-dvh @container @[75rem]/parent:ml-[30vw]">
     <div class="space-y-5 p-4 @[75rem]/parent:p-8">
       <PlayerProfile />
       <Skills />

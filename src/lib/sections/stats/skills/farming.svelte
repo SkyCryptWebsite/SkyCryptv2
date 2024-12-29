@@ -52,36 +52,42 @@
   </div>
 </div>
 
-<Items>
-  <div slot="text" class="space-y-2">
-    <SectionSubtitle>Farming Tools</SectionSubtitle>
-    {#if highestPriorityFarmingTool}
-      <p class="space-x-0.5 font-bold capitalize leading-6 text-text/60">
-        <span>Active Tool:</span>
-        {@html renderLore(highestPriorityFarmingTool.display_name)}
-      </p>
-    {/if}
-  </div>
-  {#each farmingTools as tool}
-    <Item piece={tool} />
-  {/each}
-</Items>
-
-<Collapsible.Root>
-  <Collapsible.Trigger class="group flex items-center gap-0.5">
-    <ChevronDown class="size-5 transition-all duration-300 group-data-[state=open]:-rotate-180" />
-    <SectionSubtitle class="my-0">Farming Crops</SectionSubtitle>
-  </Collapsible.Trigger>
-  <Collapsible.Content class="mt-4 flex flex-wrap gap-4">
-    {@const crops = Object.entries(profile.farming.contests)}
-    {#each crops as [_, cropData], index}
-      <Chip image={{ src: cropData.texture }} animationOptions={{ animate: true, amountOfItems: crops.length, index: index }}>
-        <div class="flex flex-col gap-0.5">
-          <h4 class="text-lg font-semibold">{cropData.name}</h4>
-          <AdditionStat text="Personal Best" data={formatNumber(cropData.collected)} />
-          <AdditionStat text="Contests" data={cropData.amount.toString()} />
-        </div>
-      </Chip>
+<SectionSubtitle>Farming Tools</SectionSubtitle>
+{#if farmingTools.length > 0}
+  <Items>
+    <div slot="text" class="space-y-2">
+      {#if highestPriorityFarmingTool && highestPriorityFarmingTool.display_name}
+        <p class="space-x-0.5 font-bold capitalize leading-6 text-text/60">
+          <span>Active Tool:</span>
+          {@html renderLore(highestPriorityFarmingTool.display_name)}
+        </p>
+      {/if}
+    </div>
+    {#each farmingTools as tool}
+      <Item piece={tool} />
     {/each}
-  </Collapsible.Content>
-</Collapsible.Root>
+  </Items>
+{:else}
+  <p class="space-x-0.5 leading-6">{profile.username} doesn't have any farming tools.</p>
+{/if}
+
+{#if Object.entries(profile.farming.contests).find(([_, cropData]) => cropData.amount > 0)}
+  <Collapsible.Root class="mt-5">
+    <Collapsible.Trigger class="group flex items-center gap-0.5">
+      <ChevronDown class="size-5 transition-all duration-300 group-data-[state=open]:-rotate-180" />
+      <SectionSubtitle class="my-0">Farming Crops</SectionSubtitle>
+    </Collapsible.Trigger>
+    <Collapsible.Content class="mt-4 flex flex-wrap gap-4">
+      {@const crops = Object.entries(profile.farming.contests)}
+      {#each crops as [_, cropData], index}
+        <Chip image={{ src: cropData.texture }} animationOptions={{ animate: true, amountOfItems: crops.length, index: index }}>
+          <div class="flex flex-col gap-0.5">
+            <h4 class="text-lg font-semibold">{cropData.name}</h4>
+            <AdditionStat text="Personal Best" data={formatNumber(cropData.collected)} />
+            <AdditionStat text="Contests" data={cropData.amount.toString()} />
+          </div>
+        </Chip>
+      {/each}
+    </Collapsible.Content>
+  </Collapsible.Root>
+{/if}

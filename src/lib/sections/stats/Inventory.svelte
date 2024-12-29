@@ -84,7 +84,6 @@
 
   let openStorageTab = writable<string>("0");
   $effect(() => {
-    console.log($openTab);
     if ($openTab === "storage") {
       openStorageTab.set("0");
     } else if ($openTab === "museum") {
@@ -98,103 +97,107 @@
   });
 </script>
 
-<SectionTitle class="pb-4">Inventory</SectionTitle>
+<SectionTitle>Inventory</SectionTitle>
 
-<Tabs.Root bind:value={$openTab} class="relative mb-0 rounded-lg bg-background/30 p-5 @container">
-  <Tabs.List>
-    <ScrollArea.Root>
-      <ScrollArea.Viewport class="border-b border-icon">
-        <ScrollArea.Content class="!flex h-full shrink-0 flex-nowrap items-center gap-3 whitespace-nowrap px-4">
-          {#each tabs as tab}
-            {@const isActive = $openTab === tab.id}
-            <Tabs.Trigger value={tab.id} class="group relative flex items-center justify-center gap-0.5 pb-2 text-xs uppercase">
-              <Avatar.Root class="size-8">
-                <Avatar.Image loading="lazy" src={tab.icon} class="size-8 object-contain" />
-                <Avatar.Fallback>
-                  <Image class="size-8" />
-                </Avatar.Fallback>
-              </Avatar.Root>
-              {tab.id}
-              {#if isActive}
-                <div class="absolute -bottom-1 h-2 w-full rounded-full bg-icon" in:send={{ key: "active-tab" }} out:receive={{ key: "active-tab" }}></div>
-              {:else}
-                <div class="absolute -bottom-1 h-2 w-full rounded-full bg-icon opacity-0 transition-opacity duration-300 group-hover:opacity-100" out:fade={{ duration: 300 }}></div>
-              {/if}
-            </Tabs.Trigger>
-          {/each}
-        </ScrollArea.Content>
-      </ScrollArea.Viewport>
-      <ScrollArea.Scrollbar orientation="horizontal">
-        <ScrollArea.Thumb />
-      </ScrollArea.Scrollbar>
-    </ScrollArea.Root>
-  </Tabs.List>
+{#if tabs.length > 0}
+  <Tabs.Root bind:value={$openTab} class="relative mb-0 rounded-lg bg-background/30 p-5 pt-4 @container">
+    <Tabs.List>
+      <ScrollArea.Root>
+        <ScrollArea.Viewport class="border-b border-icon">
+          <ScrollArea.Content class="!flex h-full shrink-0 flex-nowrap items-center gap-3 whitespace-nowrap px-4">
+            {#each tabs as tab}
+              {@const isActive = $openTab === tab.id}
+              <Tabs.Trigger value={tab.id} class="group relative flex items-center justify-center gap-0.5 pb-2 text-xs uppercase">
+                <Avatar.Root class="size-8">
+                  <Avatar.Image loading="lazy" src={tab.icon} class="size-8 object-contain" />
+                  <Avatar.Fallback>
+                    <Image class="size-8" />
+                  </Avatar.Fallback>
+                </Avatar.Root>
+                {tab.id}
+                {#if isActive}
+                  <div class="absolute -bottom-1 h-2 w-full rounded-full bg-icon" in:send={{ key: "active-tab" }} out:receive={{ key: "active-tab" }}></div>
+                {:else}
+                  <div class="absolute -bottom-1 h-2 w-full rounded-full bg-icon opacity-0 transition-opacity duration-300 group-hover:opacity-100" out:fade={{ duration: 300 }}></div>
+                {/if}
+              </Tabs.Trigger>
+            {/each}
+          </ScrollArea.Content>
+        </ScrollArea.Viewport>
+        <ScrollArea.Scrollbar orientation="horizontal">
+          <ScrollArea.Thumb />
+        </ScrollArea.Scrollbar>
+      </ScrollArea.Root>
+    </Tabs.List>
 
-  {#each tabs as tab}
-    <Tabs.Content value={tab.id} asChild let:builder>
-      {#if $openTab === tab.id}
-        {#if tab.id === "storage" || tab.id === "museum"}
-          <div use:builder.action {...builder}>
-            <Tabs.Root bind:value={$openStorageTab}>
-              <Tabs.List class="grid grid-cols-[repeat(9,minmax(1.875rem,4.875rem))] place-content-center gap-1 pt-5 @md:gap-1.5 @xl:gap-2">
-                {#each tab.items as item, index}
-                  <Tabs.Trigger let:builder asChild value={item.texture_path ? index.toString() : "undefined"}>
-                    <div use:builder.action {...builder} class="group">
-                      {#if tab.hr === index}
-                        <hr class="col-start-1 col-end-10 h-4 border-0" />
-                      {/if}
-                      {#if item.texture_path}
-                        <div class="flex aspect-square items-center justify-center rounded group-data-[state=active]:bg-text/10 group-data-[state=inactive]:bg-text/[0.04]" in:fade|global={{ duration: 300, delay: 5 * (index + 1) }}>
-                          <Item piece={item} isInventory={true} showRecombobulated={false} />
-                        </div>
-                      {:else}
-                        <div class="aspect-square rounded bg-text/[0.04]" in:fade|global={{ duration: 300, delay: 5 * (index + 1) }}></div>
-                      {/if}
-                    </div>
-                  </Tabs.Trigger>
-                {/each}
-              </Tabs.List>
-              {#if tab.items[Number($openStorageTab)]?.containsItems}
-                {@const containedItems = (tab.items[Number($openStorageTab)].containsItems as ProcessedSkyBlockItem[]) || []}
-                <div class="grid grid-cols-[repeat(9,minmax(1.875rem,4.875rem))] place-content-center gap-1 pt-5 @md:gap-1.5 @xl:gap-2">
-                  {#each containedItems as containedItem, index}
-                    <Tabs.Content value={$openStorageTab.toString()}>
-                      {#key $openStorageTab}
-                        {#if containedItem.texture_path}
-                          <div class="flex aspect-square items-center justify-center rounded bg-text/[0.04]" in:fade|global={{ duration: 300, delay: 5 * (index + 1) }}>
-                            <Item piece={containedItem} isInventory={true} showRecombobulated={false} />
+    {#each tabs as tab}
+      <Tabs.Content value={tab.id} asChild let:builder>
+        {#if $openTab === tab.id}
+          {#if tab.id === "storage" || tab.id === "museum"}
+            <div use:builder.action {...builder}>
+              <Tabs.Root bind:value={$openStorageTab}>
+                <Tabs.List class="grid grid-cols-[repeat(9,minmax(1.875rem,4.875rem))] place-content-center gap-1 pt-5 @md:gap-1.5 @xl:gap-2">
+                  {#each tab.items as item, index}
+                    <Tabs.Trigger let:builder asChild value={item.texture_path ? index.toString() : "undefined"}>
+                      <div use:builder.action {...builder} class="group">
+                        {#if tab.hr === index}
+                          <hr class="col-start-1 col-end-10 h-4 border-0" />
+                        {/if}
+                        {#if item.texture_path}
+                          <div class="flex aspect-square items-center justify-center rounded group-data-[state=active]:bg-text/10 group-data-[state=inactive]:bg-text/[0.04]" in:fade|global={{ duration: 300, delay: 5 * (index + 1) }}>
+                            <Item piece={item} isInventory={true} showRecombobulated={false} />
                           </div>
                         {:else}
                           <div class="aspect-square rounded bg-text/[0.04]" in:fade|global={{ duration: 300, delay: 5 * (index + 1) }}></div>
                         {/if}
-                      {/key}
-                    </Tabs.Content>
+                      </div>
+                    </Tabs.Trigger>
                   {/each}
-                </div>
-              {/if}
-            </Tabs.Root>
-          </div>
-        {:else}
-          <div use:builder.action {...builder} class="grid grid-cols-[repeat(9,minmax(1.875rem,4.875rem))] place-content-center gap-1 pt-5 @md:gap-1.5 @xl:gap-2">
-            {#each tab.items as item, index}
-              {#if tab.hr === index}
-                <hr class="col-start-1 col-end-10 h-4 border-0" />
-              {/if}
-              {#if item.texture_path}
-                <div class="flex aspect-square items-center justify-center rounded bg-text/[0.04]" in:fade|global={{ duration: 300, delay: 5 * (index + 1) }}>
-                  {#if tab.id === "inv"}
-                    <Item piece={{ ...item, rarity: item.rarity ?? "uncommon" } as ProcessedSkyBlockItem} isInventory={true} showRecombobulated={false} />
-                  {:else}
-                    <Item piece={item} isInventory={true} showRecombobulated={false} />
-                  {/if}
-                </div>
-              {:else}
-                <div class="aspect-square rounded bg-text/[0.04]" in:fade|global={{ duration: 300, delay: 5 * (index + 1) }}></div>
-              {/if}
-            {/each}
-          </div>
+                </Tabs.List>
+                {#if tab.items[Number($openStorageTab)]?.containsItems}
+                  {@const containedItems = (tab.items[Number($openStorageTab)].containsItems as ProcessedSkyBlockItem[]) || []}
+                  <div class="grid grid-cols-[repeat(9,minmax(1.875rem,4.875rem))] place-content-center gap-1 pt-5 @md:gap-1.5 @xl:gap-2">
+                    {#each containedItems as containedItem, index}
+                      <Tabs.Content value={$openStorageTab.toString()}>
+                        {#key $openStorageTab}
+                          {#if containedItem.texture_path}
+                            <div class="flex aspect-square items-center justify-center rounded bg-text/[0.04]" in:fade|global={{ duration: 300, delay: 5 * (index + 1) }}>
+                              <Item piece={containedItem} isInventory={true} showRecombobulated={false} showCount={true} />
+                            </div>
+                          {:else}
+                            <div class="aspect-square rounded bg-text/[0.04]" in:fade|global={{ duration: 300, delay: 5 * (index + 1) }}></div>
+                          {/if}
+                        {/key}
+                      </Tabs.Content>
+                    {/each}
+                  </div>
+                {/if}
+              </Tabs.Root>
+            </div>
+          {:else}
+            <div use:builder.action {...builder} class="grid grid-cols-[repeat(9,minmax(1.875rem,4.875rem))] place-content-center gap-1 pt-5 @md:gap-1.5 @xl:gap-2">
+              {#each tab.items as item, index}
+                {#if tab.hr === index}
+                  <hr class="col-start-1 col-end-10 h-4 border-0" />
+                {/if}
+                {#if item.texture_path}
+                  <div class="flex aspect-square items-center justify-center rounded bg-text/[0.04]" in:fade|global={{ duration: 300, delay: 5 * (index + 1) }}>
+                    {#if tab.id === "inv"}
+                      <Item piece={{ ...item, rarity: item.rarity ?? "uncommon" } as ProcessedSkyBlockItem} isInventory={true} showRecombobulated={false} showCount={true} />
+                    {:else}
+                      <Item piece={item} isInventory={true} showRecombobulated={false} showCount={true} />
+                    {/if}
+                  </div>
+                {:else}
+                  <div class="aspect-square rounded bg-text/[0.04]" in:fade|global={{ duration: 300, delay: 5 * (index + 1) }}></div>
+                {/if}
+              {/each}
+            </div>
+          {/if}
         {/if}
-      {/if}
-    </Tabs.Content>
-  {/each}
-</Tabs.Root>
+      </Tabs.Content>
+    {/each}
+  </Tabs.Root>
+{:else}
+  <p class="space-x-0.5 leading-6">{profile.username} doesn't have any items.</p>
+{/if}

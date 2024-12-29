@@ -3,6 +3,7 @@
   import AdditionStat from "$lib/components/AdditionStat.svelte";
   import Bonus from "$lib/components/Bonus.svelte";
   import SectionTitle from "$lib/components/SectionTitle.svelte";
+  import { calculatePercentage } from "$lib/shared/helper";
   import { Avatar, Progress } from "bits-ui";
   import Image from "lucide-svelte/icons/image";
   import { format } from "numerable";
@@ -13,7 +14,9 @@
 
 <div class="space-y-4">
   <SectionTitle>Slayer</SectionTitle>
-  {#if slayer}
+  {#if slayer.unlocked === false}
+    <p class="space-x-0.5 leading-6">{profile.username} hasn't unlocked Slayers yet.</p>
+  {:else}
     <div class="pb-1.5 pt-4">
       <AdditionStat text="Total Slayer XP" data={format(slayer.totalSlayerExp)} />
     </div>
@@ -62,7 +65,7 @@
                     XP
                   </div>
                 </div>
-                <div class="group-data-[maxed=false]:bg-skillbar group-data-[maxed=true]:bg-maxedbar h-full w-full flex-1 transition-all duration-1000 ease-in-out" style={`transform: translateX(-${100 - (value.level.xp / (value.level.maxed ? value.level.xp : value.level.xpForNext)) * 100}%)`}></div>
+                <div class="h-full w-full flex-1 transition-all duration-1000 ease-in-out group-data-[maxed=true]:[background:--maxedbar] group-data-[maxed=false]:[background:--skillbar]" style={`transform: translateX(-${100 - parseFloat(calculatePercentage(value.level.xp, value.level.maxed ? value.level.xp : value.level.xpForNext))}%)`}></div>
               </Progress.Root>
             </div>
           </div>

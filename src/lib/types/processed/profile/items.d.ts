@@ -55,7 +55,7 @@ export type ItemQuery = {
   item_id?: number;
   id?: number;
   damage?: number;
-  pack?: string[];
+  packs?: string[];
   texture?: string;
   texture_path?: string;
 };
@@ -239,18 +239,18 @@ export type Items = {
   wardrobe: ProcessedSkyBlockItem[][];
   weapons: {
     weapons: ProcessedSkyBlockItem[];
-    highest_priority_weapon: ProcessedSkyBlockItem;
+    highest_priority_weapon?: ProcessedSkyBlockItem;
   };
   farming_tools: {
-    highest_priority_tool: ProcessedSkyBlockItem | null;
+    highest_priority_tool?: ProcessedSkyBlockItem | null;
     tools: ProcessedSkyBlockItem[];
   };
   mining_tools: {
-    highest_priority_tool: ProcessedSkyBlockItem | null;
+    highest_priority_tool?: ProcessedSkyBlockItem | null;
     tools: ProcessedSkyBlockItem[];
   };
   fishing_tools: {
-    highest_priority_tool: ProcessedSkyBlockItem | null;
+    highest_priority_tool?: ProcessedSkyBlockItem | null;
     tools: ProcessedSkyBlockItem[];
   };
   pets: ProcessedSkyBlockItem[];

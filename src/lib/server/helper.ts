@@ -182,13 +182,17 @@ export function addToItemLore(item: Partial<ProcessedItem>, lore: string | strin
  * @returns {Promise<Item>} A Promise that resolves with the modified item.
  */
 export async function applyResourcePack(item: ProcessedItem, packs: string[]) {
+  if (item.texture_path) {
+    return item;
+  }
+
   if (item.tag?.ExtraAttributes?.id === "ENCHANTED_BOOK") {
     item.texture_path = `/api/item/ENCHANTED_BOOK`;
     return item;
   }
 
-  const customTexture = getTexture(item, { pack_ids: packs });
   // CUSTOM TEXTURES
+  const customTexture = getTexture(item, { pack_ids: packs });
   if (customTexture?.path) {
     // ? NOTE: we're ignoring Vanilla leather armor because it's render using /leather/ endpoint (Coloring support)
     const ignoreCustomTexture = customTexture && customTexture.path && customTexture.path.includes("/Vanilla/") && customTexture.path.includes("leather_");

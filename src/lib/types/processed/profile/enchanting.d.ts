@@ -1,5 +1,8 @@
 export type Enchanting = {
-  [string: string]: ProcessedExperimentationGame;
+  unlocked: boolean;
+  data: {
+    [string: string]: ProcessedExperimentationGame;
+  };
 };
 
 export type ProcessedExperimentationGame = {

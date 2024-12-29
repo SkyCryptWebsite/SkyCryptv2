@@ -1,7 +1,7 @@
 import type { RequestHandler } from "./$types";
 
 export const GET: RequestHandler = async ({ params }) => {
-  const color = decodeURIComponent(params.color);
+  const color = atob(params.color) ?? "0, 0%, 0%";
   const invert = params.invert;
 
   console.log("--- HERE ---");

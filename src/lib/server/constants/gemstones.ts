@@ -214,19 +214,19 @@ export const GEMSTONES = {
     color: "8",
     stats: {
       ROUGH: {
-        crit_damage: [1, 1, 2, 2, 3, 4, null]
+        critical_damage: [1, 1, 2, 2, 3, 4, null]
       },
       FLAWED: {
-        crit_damage: [2, 2, 3, 3, 4, 6, null]
+        critical_damage: [2, 2, 3, 3, 4, 6, null]
       },
       FINE: {
-        crit_damage: [3, 3, 4, 5, 6, 8, null]
+        critical_damage: [3, 3, 4, 5, 6, 8, null]
       },
       FLAWLESS: {
-        crit_damage: [4, 5, 6, 7, 8, 10, null]
+        critical_damage: [4, 5, 6, 7, 8, 10, null]
       },
       PERFECT: {
-        crit_damage: [5, 6, 7, 8, 10, 12, null]
+        critical_damage: [5, 6, 7, 8, 10, 12, null]
       }
     }
   },

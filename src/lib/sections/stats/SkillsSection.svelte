@@ -13,20 +13,20 @@
 {#if profile.items && profile.items.mining_tools && profile.mining}
   <Mining />
 {:else}
-  <p>Something went wrong</p>
+  <p class="space-x-0.5 leading-6">{profile.username} doesn't have anything related to mining.</p>
 {/if}
 {#if profile.items && profile.items.farming_tools && profile.farming}
   <Farming />
 {:else}
-  <p>Something went wrong</p>
+  <p class="space-x-0.5 leading-6">{profile.username} doesn't have anything related to farming.</p>
 {/if}
 {#if profile.items && profile.items.fishing_bag && profile.fishing}
   <Fishing />
 {:else}
-  <p>Something went wrong</p>
+  <p class="space-x-0.5 leading-6">{profile.username} doesn't have anything related to fishing.</p>
 {/if}
 {#if profile.enchanting}
   <Enchanting />
 {:else}
-  <p>Something went wrong</p>
+  <p class="space-x-0.5 leading-6">{profile.username} doesn't have anything related to enchanting.</p>
 {/if}

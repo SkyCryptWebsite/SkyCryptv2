@@ -1,4 +1,5 @@
 export type SlayerData = {
+  unlocked: boolean;
   data: Record<string, SlayerInfo>;
   stats: Record<string, number>;
   totalSlayerExp: number;
