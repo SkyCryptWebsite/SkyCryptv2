@@ -37,7 +37,7 @@ export const STATS_DATA: StatsData = {
     suffix: "",
     color: "text-minecraft-f"
   },
-  crit_chance: {
+  critical_chance: {
     name: "Crit Chance",
     nameLore: "Crit Chance",
     nameShort: "Crit Chance",
@@ -47,7 +47,7 @@ export const STATS_DATA: StatsData = {
     color: "text-minecraft-9",
     percent: true
   },
-  crit_damage: {
+  critical_damage: {
     name: "Crit Damage",
     nameLore: "Crit Damage",
     nameShort: "Crit Damage",
@@ -522,7 +522,7 @@ export const STATS_BONUS = {
     15: { defense: 2, mining_fortune: 4 }
   },
   skill_combat: {
-    1: { crit_chance: 0.5 }
+    1: { critical_chance: 0.5 }
   },
   skill_foraging: {
     1: { strength: 1, foraging_fortune: 4 },
@@ -564,19 +564,19 @@ export const STATS_BONUS = {
     9: { health: 6 }
   },
   slayer_spider: {
-    1: { crit_damage: 1 },
-    5: { crit_damage: 2 },
-    7: { crit_damage: 2 },
-    8: { crit_damage: 3 }
+    1: { critical_damage: 1 },
+    5: { critical_damage: 2 },
+    7: { critical_damage: 2 },
+    8: { critical_damage: 3 }
   },
   slayer_wolf: {
     1: { speed: 1 },
     2: { health: 2 },
     3: { speed: 1 },
     4: { health: 2 },
-    5: { crit_damage: 1 },
+    5: { critical_damage: 1 },
     6: { health: 3 },
-    7: { crit_damage: 2 },
+    7: { critical_damage: 2 },
     8: { speed: 1 },
     9: { health: 5 }
   },

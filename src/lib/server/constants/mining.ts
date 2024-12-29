@@ -1152,7 +1152,7 @@ class LonesomeMiner extends Node {
 
   perk(level: number) {
     const val = helper.round(5 + (level - 1) * 0.5, 1);
-    return [`§7Increases §c${SYMBOLS.strength} Strength, §9${SYMBOLS.crit_chance} Crit Chance, §9${SYMBOLS.crit_damage} Crit Damage, §a${SYMBOLS.defense} Defense, and §c${SYMBOLS.health} Health §7statistics gain by §a${val}% §7while on §bMining Islands§7.`];
+    return [`§7Increases §c${SYMBOLS.strength} Strength, §9${SYMBOLS.critical_chance} Crit Chance, §9${SYMBOLS.critical_damage} Crit Damage, §a${SYMBOLS.defense} Defense, and §c${SYMBOLS.health} Health §7statistics gain by §a${val}% §7while on §bMining Islands§7.`];
   }
 }
 
