@@ -101,7 +101,7 @@
                   </Collapsible.Content>
                 </Collapsible.Root>
               {:else}
-                <div class="p-5 text-center">This player has not played this floor.</div>
+                <div class="p-5 text-center">This player has not completed this floor.</div>
               {/if}
             </div>
           {/each}
@@ -166,7 +166,7 @@
                   </Collapsible.Content>
                 </Collapsible.Root>
               {:else}
-                <div class="p-5 text-center">This player has not played this floor.</div>
+                <div class="p-5 text-center">This player has not completed this floor.</div>
               {/if}
             </div>
           {/each}
