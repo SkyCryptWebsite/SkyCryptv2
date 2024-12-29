@@ -194,6 +194,9 @@ importers:
       svelte-preprocess:
         specifier: ^6.0.3
         version: 6.0.3(postcss-load-config@4.0.2(postcss@8.4.49))(postcss@8.4.49)(svelte@5.16.0)(typescript@5.7.2)
+      svelte-seo:
+        specifier: ^1.6.1
+        version: 1.6.1(typescript@5.7.2)
       svelte-tiny-virtual-list:
         specifier: ^2.1.2
         version: 2.1.2
@@ -2308,6 +2311,11 @@ packages:
   safe-buffer@5.2.1:
     resolution: {integrity: sha512-rp3So07KcdmmKbGvgaNxQSJr7bGVSVk5S9Eq1F+ppbRo70+YeaDxkw5Dd8NPN+GD6bjnYm2VuPuCXmpuYvmCXQ==}
 
+  schema-dts@1.1.2:
+    resolution: {integrity: sha512-MpNwH0dZJHinVxk9bT8XUdjKTxMYrA5bLtrrGmFA6PTLwlOKnhi67XoRd6/ty+Djt6ZC0slR57qFhZDNMI6DhQ==}
+    peerDependencies:
+      typescript: '>=4.1.0'
+
   semver@7.6.3:
     resolution: {integrity: sha512-oVekP1cKtI+CTDvHWYFUcMtsK/00wmAEfyqKfNdARm8u1wNVhSgaX7A8d4UuIlUI5e84iEwOhs7ZPYRmzU9U6A==}
     engines: {node: '>=10'}
@@ -2480,6 +2488,9 @@ packages:
         optional: true
       typescript:
         optional: true
+
+  svelte-seo@1.6.1:
+    resolution: {integrity: sha512-vTKvOA0rl3HVhgbyoMhwz0P1s+18ldOT+lHlTlrQn7Mn0SBx7Ia7MB+llF4O/mYoiV5idmNu8i3xWsam8COsbw==}
 
   svelte-tiny-virtual-list@2.1.2:
     resolution: {integrity: sha512-jeP/WMvgFUR4mYXHGPiCexjX5DuzSO+3xzHNhxfcsFyy+uYPtnqI5UGb383swpzQAyXB0OBqYfzpYihD/5gxnA==}
@@ -4656,6 +4667,10 @@ snapshots:
 
   safe-buffer@5.2.1: {}
 
+  schema-dts@1.1.2(typescript@5.7.2):
+    dependencies:
+      typescript: 5.7.2
+
   semver@7.6.3: {}
 
   set-cookie-parser@2.7.1: {}
@@ -4841,6 +4856,12 @@ snapshots:
       postcss: 8.4.49
       postcss-load-config: 4.0.2(postcss@8.4.49)
       typescript: 5.7.2
+
+  svelte-seo@1.6.1(typescript@5.7.2):
+    dependencies:
+      schema-dts: 1.1.2(typescript@5.7.2)
+    transitivePeerDependencies:
+      - typescript
 
   svelte-tiny-virtual-list@2.1.2: {}
 
