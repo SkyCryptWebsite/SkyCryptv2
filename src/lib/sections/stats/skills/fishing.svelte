@@ -5,7 +5,7 @@
   import Item from "$lib/components/Item.svelte";
   import SectionSubtitle from "$lib/components/SectionSubtitle.svelte";
   import Items from "$lib/layouts/stats/Items.svelte";
-  import { renderLore } from "$lib/shared/helper";
+  import { renderLore, titleCase } from "$lib/shared/helper";
   import { Avatar, Collapsible } from "bits-ui";
   import ChevronDown from "lucide-svelte/icons/chevron-down";
   import Image from "lucide-svelte/icons/image";
@@ -29,11 +29,11 @@
   {/if}
 </div>
 
+<SectionSubtitle>Fishing Rods</SectionSubtitle>
 {#if fishingTools.length > 0}
   <Items>
     <div slot="text" class="space-y-2">
-      <SectionSubtitle>Fishing Rods</SectionSubtitle>
-      {#if highestPriorityFishingTool}
+      {#if highestPriorityFishingTool && highestPriorityFishingTool.display_name}
         <p class="space-x-0.5 font-bold capitalize leading-6 text-text/60">
           <span>Active Rod:</span>
           {@html renderLore(highestPriorityFishingTool.display_name)}
@@ -44,6 +44,8 @@
       <Item piece={tool} />
     {/each}
   </Items>
+{:else}
+  <p class="space-x-0.5 leading-6">{profile.username} doesn't have any fishing tools.</p>
 {/if}
 
 {#if Object.entries(profile.fishing.kills).find(([_, seaCreature]) => seaCreature.amount > 0)}
@@ -86,7 +88,13 @@
       <div class="space-y-0.5">
         {#if profile.fishing.trophyFish}
           <AdditionStat text="Total Caught" data={format(profile.fishing.trophyFish.totalCaught)} />
-          <AdditionStat text="Current Stage" data={profile.fishing.trophyFish.stage} />
+          <AdditionStat text="Current Stage" data={profile.fishing.trophyFish.stage.name} asterisk={true}>
+            <div class="mb-4">
+              {#each profile.fishing.trophyFish.stage.progress as tier}
+                <AdditionStat text={titleCase(tier.tier)} data={`${tier.caught} / ${tier.total}`} />
+              {/each}
+            </div>
+          </AdditionStat>
         {/if}
       </div>
 

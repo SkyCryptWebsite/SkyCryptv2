@@ -140,22 +140,35 @@ export function getFloorCompletions(dungeonsData: Member["dungeons"]) {
   const normalCompletions = dungeonsData?.dungeon_types?.catacombs?.tier_completions;
   const masterCompletions = dungeonsData?.dungeon_types?.master_catacombs?.tier_completions;
   if (!normalCompletions && !masterCompletions) {
-    return { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0 };
+    return {
+      normal: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0 },
+      master: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0 },
+      total: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0 }
+    };
   }
 
+  const normal = Object.fromEntries(
+    Object.keys(normalCompletions ?? {})
+      .filter((key) => key !== "0" && key !== "total")
+      .map((key) => [key, normalCompletions[key]])
+  );
+  const master = Object.fromEntries(
+    Object.entries(masterCompletions ?? {})
+      .filter(([key]) => key !== "0" && key !== "total")
+      .map(([key, value]) => [key, (masterCompletions[key] || 0) + value * 2])
+  );
+  const total = Object.fromEntries(Object.keys(normal).map((key) => [key, (normal[key] || 0) + (master[key] || 0)]));
+
   return {
-    ...Object.fromEntries(
-      Object.keys(normalCompletions ?? {})
-        .filter((key) => key !== "0")
-        .map((key) => [key, normalCompletions[key]])
-    ),
-    ...Object.fromEntries(Object.entries(masterCompletions ?? {}).map(([key, value]) => [key, (normalCompletions[key] || 0) + value * 2]))
+    normal,
+    master,
+    total
   };
 }
 
 export function getDungeons(userProfile: Member) {
   if (userProfile.dungeons?.dungeon_types === undefined) {
-    return null;
+    return { unlocked: false };
   }
 
   const dungeonClasses = getDungeonClasses(userProfile);

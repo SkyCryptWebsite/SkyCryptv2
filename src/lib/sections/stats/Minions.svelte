@@ -3,6 +3,7 @@
   import AdditionStat from "$lib/components/AdditionStat.svelte";
   import Chip from "$lib/components/Chip.svelte";
   import Items from "$lib/layouts/stats/Items.svelte";
+  import { calculatePercentage } from "$lib/shared/helper";
   import { cn } from "$lib/shared/utils";
   import { Avatar, Button } from "bits-ui";
   import ExternalLink from "lucide-svelte/icons/external-link";
@@ -17,7 +18,7 @@
 
 <Items title="Minions" class="flex-col">
   <div slot="text">
-    <AdditionStat text="Unique Minions" data="{minions.maxedTiers} / {minions.totalTiers}" subData="({((100 * minions.maxedTiers) / minions.totalTiers).toFixed(0)}%)" maxed={minions.maxedTiers === minions.totalTiers} />
+    <AdditionStat text="Unique Minions" data="{minions.maxedTiers} / {minions.totalTiers} ({calculatePercentage(minions.maxedTiers, minions.totalTiers, 0)}%)" maxed={minions.maxedTiers === minions.totalTiers} />
     <AdditionStat text="Minion Slots" data={minions.minionsSlots.current} subData="({minions.minionsSlots.next} to next slot)" />
     <AdditionStat text="Bonus Minion Slots" data="{minions.minionsSlots.bonusSlots} / 5" maxed={minions.minionsSlots.bonusSlots === 5} />
     <AdditionStat text="Maxed Minions" data="{minions.maxedMinions} / {minions.totalMinions}" maxed={minions.maxedMinions === minions.totalMinions} />

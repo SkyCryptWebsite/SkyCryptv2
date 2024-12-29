@@ -224,3 +224,13 @@ export function validateURL(url: string): boolean {
     return true;
   }
 }
+
+export function calculatePercentage(value: number, total: number, decimal: number = 2): string {
+  if (total === 0 || value === 0) {
+    return "0";
+  }
+
+  return Math.round((value / total) * 100)
+    .toFixed(decimal)
+    .replace(/\.0+$/, "");
+}

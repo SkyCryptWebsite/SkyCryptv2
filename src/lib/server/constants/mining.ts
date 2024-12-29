@@ -1152,7 +1152,7 @@ class LonesomeMiner extends Node {
 
   perk(level: number) {
     const val = helper.round(5 + (level - 1) * 0.5, 1);
-    return [`§7Increases §c${SYMBOLS.strength} Strength, §9${SYMBOLS.crit_chance} Crit Chance, §9${SYMBOLS.crit_damage} Crit Damage, §a${SYMBOLS.defense} Defense, and §c${SYMBOLS.health} Health §7statistics gain by §a${val}% §7while on §bMining Islands§7.`];
+    return [`§7Increases §c${SYMBOLS.strength} Strength, §9${SYMBOLS.critical_chance} Crit Chance, §9${SYMBOLS.critical_damage} Crit Damage, §a${SYMBOLS.defense} Defense, and §c${SYMBOLS.health} Health §7statistics gain by §a${val}% §7while on §bMining Islands§7.`];
   }
 }
 
@@ -1836,7 +1836,7 @@ class HotmReset extends HotmItem {
       output.push("", "§7§c§lWARNING: This is permanent.", "§c§lYou can not go back after resetting your Heart of the Mountain!");
     } else {
       const timeLeft = Math.abs(Date.now() - (this.last_reset + 24 * 60 * 60 * 1000)); // ms
-      output.push("", `§c§lYou can reset again in ${helper.formatTime(timeLeft / 1000)}`);
+      output.push("", `§c§lYou can reset again in ${helper.formatTime(isNaN(timeLeft) ? 0 : (timeLeft ?? 0))}`);
     }
 
     return output;

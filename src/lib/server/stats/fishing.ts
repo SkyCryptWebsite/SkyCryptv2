@@ -3,6 +3,23 @@ import * as helper from "$lib/server/helper";
 import type { Member } from "$types/global";
 import type { TrophyFish } from "$types/stats";
 
+function getTrophyFishProgress(userProfile: Member) {
+  if (userProfile.trophy_fish === undefined) {
+    return null;
+  }
+
+  const output = [];
+  for (const tier of constants.TROPHY_FISH_TIERS) {
+    output.push({
+      tier: tier,
+      caught: Object.keys(userProfile.trophy_fish).filter((key) => key.endsWith(`_${tier}`)).length,
+      total: 18
+    });
+  }
+
+  return output;
+}
+
 function getTrophyFish(userProfile: Member) {
   if (userProfile.trophy_fish === undefined) {
     return null;
@@ -32,7 +49,10 @@ function getTrophyFish(userProfile: Member) {
 
   return {
     totalCaught: userProfile.trophy_fish.total_caught ?? 0,
-    stage: constants.TROPHY_FISH_STAGES[Math.min(userProfile.trophy_fish.rewards?.length ?? 0, constants.TROPHY_FISH_STAGES.length) - 1] ?? "Bronze Hunter",
+    stage: {
+      name: constants.TROPHY_FISH_STAGES[Math.min(userProfile.trophy_fish.rewards?.length ?? 0, constants.TROPHY_FISH_STAGES.length) - 1] ?? "Bronze Hunter",
+      progress: getTrophyFishProgress(userProfile)
+    },
     trophyFish: output as TrophyFish[]
   };
 }

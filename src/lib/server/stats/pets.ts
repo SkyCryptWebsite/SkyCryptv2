@@ -118,7 +118,7 @@ function getPetData(level: number, type: string, rarity: string) {
   return output;
 }
 
-function getProfilePets(pets: Pet[]) {
+function getProfilePets(userProfile: Member, pets: Pet[]) {
   let output = [] as ProcessedPet[];
   if (pets === undefined) {
     return output;
@@ -152,9 +152,11 @@ function getProfilePets(pets: Pet[]) {
     }
 
     const skinData = pet.skin ? NEU_ITEMS.get(`PET_SKIN_${pet.skin}`) : null;
-    const texture = skinData ? helper.getHeadTextureUUID(skinData.nbttag.SkullOwner.Properties.textures[0].Value) : helper.getHeadTextureUUID(petData.nbttag.SkullOwner.Properties.textures[0].Value);
-
+    const texture = helper.getHeadTextureUUID((skinData ?? petData).nbttag.SkullOwner.Properties.textures[0].Value);
     outputPet.texture_path = `/api/head/${texture}?v6`;
+    if (outputPet.skin) {
+      outputPet.display_name += " ✦";
+    }
 
     let data = getPetData(outputPet.level.level, pet.type, pet.tier.toUpperCase());
     if (!data && pet.heldItem === "PET_ITEM_TIER_BOOST") {
@@ -174,9 +176,27 @@ function getProfilePets(pets: Pet[]) {
         {} as Record<string, number>
       );
 
-    outputPet.display_name = replaceVariables(petData.displayname, data);
     outputPet.lore = [];
     for (const line of petData.lore) {
+      // ? NOTE: This is a work around for a Montezuma pet, needed otherwise the description will be incorrect
+      if (pet.type === "FRACTURED_MONTEZUMA_SOUL") {
+        const soulPieces = (userProfile?.rift?.dead_cats?.found_cats ?? []).length;
+        if (line === "§7Found: §96/9 Soul Pieces") {
+          outputPet.lore.push(`§7Found: §9${soulPieces}/9 Soul Pieces`);
+          continue;
+        }
+
+        if (line === "§7Rift Time: §a+100s") {
+          outputPet.lore.push(`§7Rift Time: §a+${soulPieces * 15}s`);
+          continue;
+        }
+
+        if (line === "§7Mana Regen: §a+12%") {
+          outputPet.lore.push(`§7Mana Regen: §a+${soulPieces * 2}%`);
+          continue;
+        }
+      }
+
       if (line.startsWith("§7§eRight-click to add this pet to")) {
         break;
       }
@@ -272,7 +292,7 @@ function getProfilePets(pets: Pet[]) {
   return output;
 }
 
-function getMissingPets(pets: ProcessedPet[], gameMode: string) {
+function getMissingPets(userProfile: Member, pets: ProcessedPet[], gameMode: string) {
   const ownedPetTypes = pets.map((pet) => pet.type);
 
   const missingPets = [];
@@ -298,7 +318,7 @@ function getMissingPets(pets: ProcessedPet[], gameMode: string) {
     });
   }
 
-  return getProfilePets(missingPets as unknown as Pet[]);
+  return getProfilePets(userProfile, missingPets as unknown as Pet[]);
 }
 
 function getPetScore(pets: ProcessedPet[]) {
@@ -377,8 +397,8 @@ export async function getPets(userProfile: Member, items: ProcessedItem[], profi
     await getItemNetworth(pet, { cache: true, returnItemData: false });
   }
 
-  output.pets = getProfilePets(pets) as unknown as ProcessedSkyblockPet[];
-  output.missing = getMissingPets(output.pets as unknown as ProcessedPet[], profile.game_mode) as unknown as ProcessedSkyblockPet[];
+  output.pets = getProfilePets(userProfile, pets) as unknown as ProcessedSkyblockPet[];
+  output.missing = getMissingPets(userProfile, output.pets as unknown as ProcessedPet[], profile.game_mode) as unknown as ProcessedSkyblockPet[];
 
   const maxPetIds = getMaxPetIds();
   output.amount = uniqBy(output.pets, "type").length;

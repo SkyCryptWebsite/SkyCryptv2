@@ -7,6 +7,7 @@
   import Items from "$lib/layouts/stats/Items.svelte";
   import { RARITY_COLORS } from "$lib/shared/constants/items";
   import { STATS_DATA } from "$lib/shared/constants/stats";
+  import { calculatePercentage } from "$lib/shared/helper";
   import { Collapsible } from "bits-ui";
   import ChevronDown from "lucide-svelte/icons/chevron-down";
 
@@ -18,7 +19,7 @@
   {#if accessories.magicalPower?.total}
     <div>
       <AdditionStat text="Unique Accessories" data={`${accessories.unique} / ${accessories.total}`} maxed={accessories.unique === accessories.total} />
-      <AdditionStat text="Completion" data={`${Math.round((accessories.unique / accessories.total) * 100)}%`} maxed={accessories.unique === accessories.total} />
+      <AdditionStat text="Completion" data={`${calculatePercentage(accessories.unique, accessories.total)}%`} maxed={accessories.unique === accessories.total} />
       <AdditionStat text="Recombobulated" data={`${accessories.recombobulated} / ${accessories.totalRecombobulated}`} maxed={accessories.recombobulated === accessories.totalRecombobulated} />
       <AdditionStat text="Magical Power" data={accessories.magicalPower.total} asterisk={true} maxed={accessories.unique === accessories.total}
         ><div class="max-w-xs space-y-2 font-bold">
@@ -196,6 +197,6 @@
       {/if}
     </div>
   {:else}
-    <p class="text-text/60">No data available</p>
+    <p class="space-x-0.5 leading-6">{profile.username} doesn't have any accessories</p>
   {/if}
 </Items>

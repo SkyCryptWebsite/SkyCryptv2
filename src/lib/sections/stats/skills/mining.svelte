@@ -16,22 +16,26 @@
   const miningTools = $derived(profile.items.mining_tools.tools);
 </script>
 
-<Items>
-  <div slot="text" class="space-y-2">
-    <SectionSubtitle>Mining Tools</SectionSubtitle>
-    {#if highestPriorityMiningTool}
-      <p class="space-x-0.5 font-bold capitalize leading-6 text-text/60">
-        <span>Active Tool:</span>
-        {@html renderLore(highestPriorityMiningTool.display_name)}
-      </p>
-    {/if}
-  </div>
-  {#each miningTools as tool}
-    <Item piece={tool} />
-  {/each}
-</Items>
+<SectionSubtitle>Mining Tools</SectionSubtitle>
+{#if miningTools.length > 0}
+  <Items>
+    <div slot="text" class="space-y-2">
+      {#if highestPriorityMiningTool && highestPriorityMiningTool.display_name}
+        <p class="space-x-0.5 font-bold capitalize leading-6 text-text/60">
+          <span>Active Tool:</span>
+          {@html renderLore(highestPriorityMiningTool.display_name)}
+        </p>
+      {/if}
+    </div>
+    {#each miningTools as tool}
+      <Item piece={tool} />
+    {/each}
+  </Items>
+{:else}
+  <p class="space-x-0.5 leading-6">{profile.username} doesn't have any mining tools.</p>
+{/if}
 
-<SectionSubtitle>Dwarven Mines & Crystal Hollows</SectionSubtitle>
+<SectionSubtitle class="mt-5">Dwarven Mines & Crystal Hollows</SectionSubtitle>
 <div class="space-y-0.5">
   <AdditionStat text="Commissions Milestone" data={profile.mining.commissions.milestone.toString()} maxed={profile.mining.commissions.milestone === 6} />
   <AdditionStat text="Commissions" data={profile.mining.commissions.completions.toString()} asterisk={true}>Commissions from achievements across profiles</AdditionStat>
@@ -61,7 +65,7 @@
         <li class="flex">
           <span class="flex-1 capitalize text-text/85">
             - {crystalName}:
-            <span class={cn("capitalize", crystalStatus === "PLACED" ? "text-minecraft-a" : "text-minecraft-c")}>
+            <span class={cn("capitalize", crystalStatus === "PLACED" ? "text-minecraft-e" : crystalStatus === "FOUND" ? "text-minecraft-a" : "text-minecraft-c")}>
               {crystalStatus.replace("_", " ").toLowerCase()}
             </span>
           </span>
@@ -75,7 +79,7 @@
         <li class="flex">
           <span class="flex-1 capitalize text-text/85">
             - {crystalName}:
-            <span class={cn("capitalize", crystalStatus === "PLACED" ? "text-minecraft-a" : "text-minecraft-c")}>
+            <span class={cn("capitalize", crystalStatus === "FOUND" ? "text-minecraft-a" : "text-minecraft-c")}>
               {crystalStatus.replace("_", " ").toLowerCase()}
             </span>
           </span>
@@ -100,7 +104,7 @@
   </AdditionStat>
 </div>
 
-<SectionSubtitle>Heart of the Mountain</SectionSubtitle>
+<SectionSubtitle class="mt-5">Heart of the Mountain</SectionSubtitle>
 <div class="space-y-0.5">
   <AdditionStat text="Tier" data={profile.mining.level.level.toString()} maxed={profile.mining.level.level === profile.mining.level.maxLevel} />
   <AdditionStat text="Token Of The Mountain" data={`${profile.mining.tokens.spent}/${profile.mining.tokens.total}`} />
@@ -119,21 +123,23 @@
   <AdditionStat text="Pickaxe Ability" data={profile.mining.selectedPickaxeAbility} />
 </div>
 
-<div class="pt-5">
-  <div class="relative mb-0 rounded-lg bg-background/30 p-5 @container">
-    <div class="grid grid-cols-[repeat(9,minmax(1.875rem,4.875rem))] place-content-center gap-1 pt-5 @md:gap-1.5 @xl:gap-2">
-      {#each profile.mining.hotm as item, index}
-        {#if item.display_name}
-          <div class="flex aspect-square items-center justify-center rounded bg-text/[0.04]" in:fade|global={{ duration: 300, delay: 5 * (index + 1) }}>
-            <Item piece={item} isInventory={true} />
-          </div>
-        {:else}
-          <div class="aspect-square rounded bg-text/[0.04]" in:fade|global={{ duration: 300, delay: 5 * (index + 1) }}></div>
-        {/if}
-      {/each}
+{#if profile.mining.hotm.length > 0}
+  <div class="pt-5">
+    <div class="relative mb-0 rounded-lg bg-background/30 p-5 @container">
+      <div class="grid grid-cols-[repeat(9,minmax(1.875rem,4.875rem))] place-content-center gap-1 pt-5 @md:gap-1.5 @xl:gap-2">
+        {#each profile.mining.hotm as item, index}
+          {#if item.display_name}
+            <div class="flex aspect-square items-center justify-center rounded bg-text/[0.04]" in:fade|global={{ duration: 300, delay: 5 * (index + 1) }}>
+              <Item piece={item} isInventory={true} />
+            </div>
+          {:else}
+            <div class="aspect-square rounded bg-text/[0.04]" in:fade|global={{ duration: 300, delay: 5 * (index + 1) }}></div>
+          {/if}
+        {/each}
+      </div>
     </div>
   </div>
-</div>
+{/if}
 
 <h3 class="my-5 text-xl font-semibold capitalize text-text/90">Forge</h3>
 <div class="space-y-1">

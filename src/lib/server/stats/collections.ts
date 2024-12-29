@@ -9,7 +9,7 @@ function getBossCollections(userProfile: Member) {
   const bossCollections = [];
 
   const dungeons = getFloorCompletions(userProfile.dungeons ?? {});
-  for (const [floor, amount] of Object.entries(dungeons)) {
+  for (const [floor, amount] of Object.entries(dungeons.total)) {
     if (floor === "total") {
       continue;
     }
@@ -22,7 +22,16 @@ function getBossCollections(userProfile: Member) {
       amount: amount,
       tier: constants.BOSS_COLLECTIONS[index].collections.filter((t) => t <= amount).length,
       maxTier: constants.BOSS_COLLECTIONS[index].collections.length,
-      amounts: { username: "test", amount: 0 }
+      amounts: [
+        {
+          username: "Normal",
+          amount: dungeons.normal[floor]
+        },
+        {
+          username: "Master Mode",
+          amount: dungeons.master[floor]
+        }
+      ]
     });
   }
 

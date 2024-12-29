@@ -39,10 +39,14 @@ export function getMinions(profile: Profile) {
         name: minionData.name ?? minion.toLowerCase().split("_").map(helper.titleCase).join(" "),
         texture: minionData.texture,
         maxTier: minionData.maxTier ?? 11,
-        tiers: craftedMinions
-          .filter((m) => m.split("_").slice(0, -1).join("_") === minion)
-          .map((m) => parseInt(m.split("_").at(-1) as string))
-          .sort((a, b) => a - b)
+        tiers: Array.from(
+          new Set(
+            craftedMinions
+              .filter((m) => m.split("_").slice(0, -1).join("_") === minion)
+              .map((m) => parseInt(m.split("_").at(-1) as string))
+              .sort((a, b) => a - b)
+          )
+        )
       });
     }
 

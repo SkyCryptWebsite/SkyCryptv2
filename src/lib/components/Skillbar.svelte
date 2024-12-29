@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { formatNumber } from "$lib/shared/helper";
+  import { calculatePercentage, formatNumber } from "$lib/shared/helper";
   import { cn, flyAndScale } from "$lib/shared/utils";
   import type { Skill } from "$lib/types/global";
   import { Avatar, Progress, Tooltip } from "bits-ui";
@@ -60,6 +60,6 @@
         XP
       </div>
     </div>
-    <div class="h-full w-full flex-1 rounded-full transition-all duration-1000 ease-in-out group-data-[maxed=true]:[background:--maxedbar] group-data-[maxed=false]:[background:--skillbar]" style={`transform: translateX(-${100 - (skillData.xpCurrent / (isMaxed ? skillData.xpCurrent : skillData.xpForNext)) * 100}%)`}></div>
+    <div class="h-full w-full flex-1 rounded-full transition-all duration-1000 ease-in-out group-data-[maxed=true]:[background:--maxedbar] group-data-[maxed=false]:[background:--skillbar]" style={`transform: translateX(-${100 - parseFloat(calculatePercentage(skillData.xpCurrent, isMaxed ? skillData.xpCurrent : skillData.xpForNext))}%)`}></div>
   </Progress.Root>
 </div>
