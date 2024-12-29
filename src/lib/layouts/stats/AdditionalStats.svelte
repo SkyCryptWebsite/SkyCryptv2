@@ -1,7 +1,7 @@
 <script lang="ts">
   import { getProfileCtx } from "$ctx/profile.svelte";
   import AdditionStat from "$lib/components/AdditionStat.svelte";
-  import { formatNumber } from "$lib/shared/helper";
+  import { calculatePercentage, formatNumber } from "$lib/shared/helper";
   import { format as dateFormat, formatDistanceToNowStrict } from "date-fns";
   import { format as numberFormat } from "numerable";
 
@@ -49,7 +49,7 @@
     </div>
   </AdditionStat>
   <AdditionStat text="Fairy Souls" data={`${profile.stats.fairySouls.found} / ${profile.stats.fairySouls.total}`} asterisk={true}>
-    {((profile.stats.fairySouls.found / profile.stats.fairySouls.total) * 100).toFixed(2)}% of fairy souls found.
+    {calculatePercentage(profile.stats.fairySouls.found, profile.stats.fairySouls.total)}% of fairy souls found.
   </AdditionStat>
   <AdditionStat text="Networth" data={formatNumber(profile.stats.networth.networth)} asterisk={true}>
     <div class="max-w-xs space-y-2 font-bold">
