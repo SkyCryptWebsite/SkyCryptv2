@@ -75,11 +75,12 @@ function getForge(userProfile: Member) {
 export function getMining(userProfile: Member, player: Player, packs: string[]) {
   const HOTM = getLevelByXp(userProfile.mining_core?.experience, { type: "hotm" });
   const totalTokens = calcHotmTokens(HOTM.level, userProfile.mining_core?.nodes?.special_0 ?? 0);
-  const crystalNucleusRuns = Math.min(
-    ...Object.values(userProfile.mining_core?.crystals ?? {})
-      .filter((x) => x.total_placed)
-      .map((x) => x.total_placed ?? 0)
-  );
+
+  const crystalNucleusRuns = Object.values(userProfile.mining_core?.crystals ?? {})
+    .filter((x) => x.total_placed)
+    .map((x) => x.total_placed ?? 0);
+
+  const crystalNucleusRunsAmount = crystalNucleusRuns.length ? Math.min(...crystalNucleusRuns) : 0;
 
   return {
     level: HOTM,
@@ -99,7 +100,7 @@ export function getMining(userProfile: Member, player: Player, packs: string[]) 
     },
     crystalHollows: {
       crystalHollowsLastAccess: userProfile.mining_core?.greater_mines_last_access,
-      nucleusRuns: crystalNucleusRuns,
+      nucleusRuns: crystalNucleusRunsAmount,
       progress: getCrystalNucleusRunData(userProfile)
     },
     powder: {
