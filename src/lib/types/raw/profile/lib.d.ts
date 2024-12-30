@@ -88,6 +88,7 @@ export type Contest = {
 
 export type Leveling = {
   experience: number;
+  highest_pet_score?: number;
 };
 
 export type MemberProfile = {
