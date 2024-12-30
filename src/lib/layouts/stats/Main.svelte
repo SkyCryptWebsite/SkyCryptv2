@@ -7,13 +7,16 @@
   import Stats from "$lib/layouts/stats/Stats.svelte";
   import Armor from "$lib/sections/stats/Armor.svelte";
   import type { Stats as StatsType, ValidStats } from "$lib/types/stats";
-
   let { profile }: { profile: StatsType } = $props();
 
   $effect.pre(() => {
     setProfileCtx(profile as unknown as ValidStats);
   });
 </script>
+
+{#await import("$lib/components/SEO.svelte") then { default: SEO }}
+  <SEO />
+{/await}
 
 <div class="relative @container/parent">
   <div class="fixed left-0 top-1/2 z-10 hidden h-dvh w-[30vw] -translate-y-1/2 @container min-[1200px]:block">
