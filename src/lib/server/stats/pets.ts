@@ -131,7 +131,7 @@ function getProfilePets(userProfile: Member, pets: Pet[]) {
 
     const outputPet = {
       type: pet.type,
-      display_name: helper.titleCase(pet.type.replaceAll("_", " ")),
+      display_name: helper.titleCase(pet.type),
       rarity: pet.tier,
       active: pet.active,
       price: pet.price,
@@ -187,7 +187,7 @@ function getProfilePets(userProfile: Member, pets: Pet[]) {
         }
 
         if (line === "§7Rift Time: §a+100s") {
-          outputPet.lore.push(`§7Rift Time: §a+${soulPieces * 15}s`);
+          outputPet.lore.push(`§7Rift Time: §a+${10 + soulPieces * 15}s`);
           continue;
         }
 
@@ -324,9 +324,13 @@ function getMissingPets(userProfile: Member, pets: ProcessedPet[], gameMode: str
 function getPetScore(pets: ProcessedPet[]) {
   const highestRarity = {} as Record<string, number>;
   const highestLevel = {} as Record<string, number>;
-
   const petData = NEU_CONSTANTS.get("pets");
   for (const pet of pets) {
+    // ? NOTE: FRACTURED_MONTEZUMA_SOUL is a rift pet so it's not accounted in the calculation
+    if (pet.type === "FRACTURED_MONTEZUMA_SOUL") {
+      continue;
+    }
+
     const rarityIndex = constants.RARITIES.indexOf(pet.rarity.toLowerCase()) + 1;
     if (rarityIndex > (highestRarity[pet.type] ?? 0)) {
       highestRarity[pet.type] = rarityIndex;

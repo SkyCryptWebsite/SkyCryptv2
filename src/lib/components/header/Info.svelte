@@ -77,36 +77,12 @@
       </ul>
     </li>
     <li>
-      Libraries:
-      <ul>
-        <li>
-          <Button.Root class="font-semibold text-link" rel="noreferrer" href="https://twemoji.twitter.com/" target="_blank">Twemoji</Button.Root>
-          by
-          <span class="text-text/70">Twitter</span>
-        </li>
-        <li>
-          <Button.Root class="font-semibold text-link" rel="noreferrer" href="https://github.com/bs-community/skinview3d/" target="_blank">skinview3d</Button.Root>
-          by <span class="text-text/70">Blessing Skin</span>
-        </li>
-      </ul>
+      3D Skin View: <Button.Root class="font-semibold text-link" rel="noreferrer" href="https://github.com/bs-community/skinview3d/" target="_blank">Blessing Skin</Button.Root>
+      by <span class="text-text/70">SkyHelper</span>
     </li>
     <li>
-      Weight Calculations:
-      <ul>
-        <li>
-          <Button.Root class="font-semibold text-link" rel="noreferrer" href="https://github.com/Senither/hypixel-skyblock-facade" target="_blank">Hypixel SkyBlock Facade</Button.Root>
-          by <span class="text-text/70">Senither</span>
-        </li>
-        <li>
-          <Button.Root class="font-semibold text-link" rel="noreferrer" href="https://github.com/Antonio32A/lilyweight" target="_blank">lilyweight</Button.Root>
-          by <span class="text-text/70">LappySheep</span> and <span class="text-text/70">Antonio32A</span>
-        </li>
-        <li>
-          <Button.Root class="font-semibold text-link" rel="noreferrer" href="https://elitebot.dev/" target="_blank">Farming Weight</Button.Root>
-          by
-          <span class="text-text/70">Elite</span>
-        </li>
-      </ul>
+      Farming Weight: <Button.Root class="font-semibold text-link" rel="noreferrer" href="https://elitebot.dev/" target="_blank">Elite</Button.Root>
+      by <span class="text-text/70">SkyHelper</span>
     </li>
     <li>
       Networth: <Button.Root class="font-semibold text-link" rel="noreferrer" href="https://www.npmjs.com/package/skyhelper-networth" target="_blank">SkyHelper Networth</Button.Root>
@@ -117,8 +93,12 @@
       by <span class="text-text/70">Hypixel</span>
     </li>
     <li>
-      Data: <Button.Root class="font-semibold text-link" rel="noreferrer" href="https://api.hypixel.net/" target="_blank">Hypixel API</Button.Root>
+      Player Data: <Button.Root class="font-semibold text-link" rel="noreferrer" href="https://api.hypixel.net/" target="_blank">Hypixel API</Button.Root>
       by <span class="text-text/70">Hypixel</span>
+    </li>
+    <li>
+      Game Data: <Button.Root class="font-semibold text-link" rel="noreferrer" href="https://github.com/NotEnoughUpdates/NotEnoughUpdates-REPO" target="_blank">NotEnoughUpdates-REPO</Button.Root>
+      by <span class="text-text/70">NEU</span>
     </li>
   </ul>
 {/snippet}

@@ -75,7 +75,7 @@ export async function getItems(userProfile: Member, userMuseum: MuseumRaw | null
     }
   }
 
-  output.museumItems = userMuseum ? await decodeMusemItems(userMuseum, []) : null;
+  output.museumItems = userMuseum ? await decodeMusemItems(userMuseum, packs) : null;
 
   output.armor = getArmor(output.armor);
   output.equipment = getEquipment(output.equipment);

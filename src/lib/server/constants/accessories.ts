@@ -213,3 +213,15 @@ export const RECOMBABLE_ACCESSORIES_COUNT = new Set(
 export function getUpgradeList(id: string) {
   return accessoryUpgrades.find((list) => list.includes(id)) ?? [];
 }
+
+export function getBaseIdFromAlias(id: string) {
+  for (const [base, aliases] of Object.entries(ACCESSORY_ALIASES)) {
+    if (aliases.includes(id) === false) {
+      continue;
+    }
+
+    return base;
+  }
+
+  return id;
+}
