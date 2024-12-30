@@ -187,7 +187,7 @@ function getProfilePets(userProfile: Member, pets: Pet[]) {
         }
 
         if (line === "§7Rift Time: §a+100s") {
-          outputPet.lore.push(`§7Rift Time: §a+${soulPieces * 15}s`);
+          outputPet.lore.push(`§7Rift Time: §a+${10 + soulPieces * 15}s`);
           continue;
         }
 
