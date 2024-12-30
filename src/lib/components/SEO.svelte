@@ -1,6 +1,6 @@
 <script lang="ts">
   import { getProfileCtx } from "$ctx/profile.svelte";
-  import { formatNumber, removeFormatting } from "$lib/shared/helper";
+  import { formatNumber, removeFormatting, titleCase } from "$lib/shared/helper";
   import type { Skill } from "$types/stats";
   import { formatDistanceToNowStrict } from "date-fns";
   import SvelteSeo from "svelte-seo";
@@ -41,12 +41,7 @@
 
     // Skyblock Level
     if (profile.skyblock_level.xp !== 0 && profile.skyblock_level.level !== 0) {
-      output += `🌟 Skyblock Level: ${(profile.skyblock_level.level + profile.skyblock_level.progress).toFixed(0)}\n`;
-    }
-
-    // Armor
-    if (profile.items.armor?.set_name !== undefined) {
-      output += `🛡️ ${removeFormatting(profile.items.armor.set_name)}\n`;
+      output += `🌟 Skyblock Level: ${formatNumber(profile.skyblock_level.levelWithProgress)}\n`;
     }
 
     // Sword
@@ -54,26 +49,52 @@
       output += `🗡️ ${removeFormatting(profile.items.weapons.highest_priority_weapon.display_name)}\n`;
     }
 
-    // Skills
-    const skills = (profile.skills?.skills ?? {}) as Record<string, Skill>;
-    if (skills !== undefined) {
-      const skill = Object.keys(skills).sort((a, b) => skills[b].xp - skills[a].xp)[0];
-
-      if (skills[skill].level !== undefined) {
-        output += `${skillEmojis[skill]} ${skill.charAt(0).toUpperCase() + skill.slice(1)} ${skills[skill].level}\n`;
-      }
+    // Armor
+    if (profile.items.armor?.set_name !== undefined) {
+      output += `🛡️ ${removeFormatting(profile.items.armor.set_name)}\n`;
     }
 
     // Pet
     if (profile.pets?.pets !== undefined) {
       const activePet = profile.pets.pets.find((a) => a.active);
       if (activePet !== undefined) {
-        output += `🐾 ${(activePet.rarity ?? "common").charAt(0).toUpperCase() + (activePet.rarity ?? "common").slice(1)} ${activePet.display_name} (Lvl ${activePet.level})\n`;
+        output += `🐾 [LvL ${activePet.level}] ${titleCase(activePet.rarity ?? "common")} ${activePet.display_name} \n`;
       }
     }
 
     // Line break
     output += "\n";
+
+    // Skills
+    const skills = (profile.skills?.skills ?? {}) as Record<string, Skill>;
+    if (skills !== undefined) {
+      output += "📚 Skills: ";
+
+      for (const skill in skills) {
+        if (skills[skill].level !== undefined) {
+          output += `${skillEmojis[skill]} ${skills[skill].level} `;
+        }
+      }
+
+      output += "\n";
+    }
+
+    // Dungeons
+    if (profile.dungeons !== undefined) {
+      const dungeonsLevel = profile.dungeons?.level?.level;
+      if (dungeonsLevel > 0) {
+        output += `${skillEmojis["dungeons"]} Dungeons: ${dungeonsLevel} `;
+      }
+
+      const classes = profile.dungeons?.classes?.classes;
+      if (classes !== undefined) {
+        for (const [dclass, data] of Object.entries(classes)) {
+          output += `${skillEmojis[dclass]} ${data.level ?? 0} `;
+        }
+      }
+
+      output += "\n";
+    }
 
     // Slayers
     if (profile.slayer?.totalSlayerExp > 0) {
@@ -96,38 +117,7 @@
       output += "\n";
     }
 
-    // Dungeons
-    if (profile.dungeons !== undefined) {
-      const dungeonsLevel = profile.dungeons?.level?.level;
-      if (dungeonsLevel > 0) {
-        output += `${skillEmojis["dungeons"]} Catacombs: ${dungeonsLevel}\n`;
-      }
-
-      const classes = profile.dungeons?.classes?.classes;
-      if (classes !== undefined) {
-        for (const [dclass, data] of Object.entries(classes)) {
-          output += `${skillEmojis[dclass]} ${data.level ?? 0} `;
-        }
-      }
-
-      output += "\n";
-    }
-
     output += "\n";
-
-    if (profile.skills?.averageSkillLevel || profile.dungeons?.classes?.classAverage) {
-      // Skill Average
-      if (profile.skills.averageSkillLevel !== undefined) {
-        output += `📚 Avg Skill Level: ${profile.skills.averageSkillLevel.toFixed(2)}\n`;
-      }
-
-      // Dungeons classs average
-      if (profile.dungeons?.classes?.classAverage) {
-        output += `⚔️ Avg Class Level: ${profile.dungeons?.classes?.classAverage.toFixed(2)}\n`;
-      }
-
-      output += "\n";
-    }
 
     // Networth, Bank & purse
     if (profile.stats.networth.noInventory === false) {

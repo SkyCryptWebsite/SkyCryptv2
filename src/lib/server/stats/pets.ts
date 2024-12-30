@@ -131,7 +131,7 @@ function getProfilePets(userProfile: Member, pets: Pet[]) {
 
     const outputPet = {
       type: pet.type,
-      display_name: helper.titleCase(pet.type.replaceAll("_", " ")),
+      display_name: helper.titleCase(pet.type),
       rarity: pet.tier,
       active: pet.active,
       price: pet.price,
