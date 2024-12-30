@@ -57,7 +57,7 @@ export async function getAccessories(userProfile: Member, items: GetItemsItems, 
     const id = helper.getId(accessory);
     const rarity = accessory.rarity ?? "common";
 
-    const duplicates = accessories.filter((a) => helper.getId(a) === id);
+    const duplicates = accessories.filter((a) => constants.getBaseIdFromAlias(helper.getId(a)) === constants.getBaseIdFromAlias(id));
     if (duplicates.length > 1) {
       for (const duplicate of duplicates) {
         if (constants.RARITIES.indexOf(duplicate.rarity ?? "common") < constants.RARITIES.indexOf(rarity)) {
@@ -80,29 +80,6 @@ export async function getAccessories(userProfile: Member, items: GetItemsItems, 
       if (duplicates.every((a) => a.isInactive === true)) {
         accessory.isInactive = false;
       }
-    }
-
-    const ACCESSORY_ALIASES = constants.ACCESSORY_ALIASES;
-    if (id in ACCESSORY_ALIASES || Object.values(ACCESSORY_ALIASES).flat().includes(id)) {
-      const alias = Object.keys(ACCESSORY_ALIASES).find((key) => ACCESSORY_ALIASES[key].includes(id));
-      if (!alias) {
-        continue;
-      }
-
-      const aliases = [alias, ACCESSORY_ALIASES[alias]].flat();
-      for (const a of accessories) {
-        if (aliases.includes(helper.getId(a)) && a !== accessory) {
-          if (a.tag.display.Lore.at(-1)?.includes("§7Inactive: §cAlias of") === false) {
-            helper.addToItemLore(a, ["", `§7Inactive: §cAlias of ${accessory.display_name}`]);
-          }
-
-          a.isInactive = true;
-        }
-      }
-
-      accessory.isInactive = false;
-      accessory.tag.display.Lore.pop();
-      accessory.tag.display.Lore.pop();
     }
   }
 
