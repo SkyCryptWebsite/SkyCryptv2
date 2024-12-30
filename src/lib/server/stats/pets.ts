@@ -321,8 +321,32 @@ function getMissingPets(userProfile: Member, pets: ProcessedPet[], gameMode: str
   return getProfilePets(userProfile, missingPets as unknown as Pet[]);
 }
 
-function getPetScore(userProfile: Member) {
-  const total = userProfile.leveling?.highest_pet_score ?? 0;
+function getPetScore(pets: ProcessedPet[]) {
+  const highestRarity = {} as Record<string, number>;
+  const highestLevel = {} as Record<string, number>;
+  const petData = NEU_CONSTANTS.get("pets");
+  for (const pet of pets) {
+    // ? NOTE: FRACTURED_MONTEZUMA_SOUL is a rift pet so it's not accounted in the calculation
+    if (pet.type === "FRACTURED_MONTEZUMA_SOUL") {
+      continue;
+    }
+
+    const rarityIndex = constants.RARITIES.indexOf(pet.rarity.toLowerCase()) + 1;
+    if (rarityIndex > (highestRarity[pet.type] ?? 0)) {
+      highestRarity[pet.type] = rarityIndex;
+    }
+
+    if (pet.level.level > (highestLevel[pet.type] ?? 0)) {
+      const maxLevel = petData.custom_pet_leveling[pet.type]?.max_level ?? 100;
+      if (pet.level.level < maxLevel) {
+        continue;
+      }
+
+      highestLevel[pet.type] = 1;
+    }
+  }
+
+  const total = Object.values(highestRarity).reduce((a, b) => a + b, 0) + Object.values(highestLevel).reduce((a, b) => a + b, 0);
 
   let bonus = {} as Record<string, number>;
   for (const score of Object.keys(constants.PET_REWARDS).reverse()) {
@@ -388,7 +412,7 @@ export async function getPets(userProfile: Member, items: ProcessedItem[], profi
   output.amountSkins = uniqBy(output.pets, "skin").length;
   output.totalSkins = getPetSkins().length;
 
-  output.petScore = getPetScore(userProfile);
+  output.petScore = getPetScore(output.pets as unknown as ProcessedPet[]);
   output.totalPetExp = (output.pets as unknown as ProcessedPet[]).reduce((a, b) => a + b.level.xp, 0);
   output.totalCandyUsed = (output.pets as unknown as ProcessedPet[]).reduce((a, b) => a + b.candyUsed, 0);
 
