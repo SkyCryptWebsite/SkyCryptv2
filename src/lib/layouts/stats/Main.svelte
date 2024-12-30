@@ -1,6 +1,7 @@
 <script lang="ts">
   import { setProfileCtx } from "$ctx/profile.svelte";
   import Navbar from "$lib/components/Navbar.svelte";
+  import SEO from "$lib/components/SEO.svelte";
   import AdditionalStats from "$lib/layouts/stats/AdditionalStats.svelte";
   import PlayerProfile from "$lib/layouts/stats/PlayerProfile.svelte";
   import Skills from "$lib/layouts/stats/Skills.svelte";
@@ -14,9 +15,7 @@
   });
 </script>
 
-{#await import("$lib/components/SEO.svelte") then { default: SEO }}
-  <SEO />
-{/await}
+<SEO />
 
 <div class="relative @container/parent">
   <div class="fixed left-0 top-1/2 z-10 hidden h-dvh w-[30vw] -translate-y-1/2 @container min-[1200px]:block">
