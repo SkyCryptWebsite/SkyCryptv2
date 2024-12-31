@@ -15,9 +15,9 @@
   const accessories = $derived(profile.accessories);
 </script>
 
-<Items title="Accessories">
-  {#if accessories.magicalPower?.total}
-    <div>
+{#if accessories.magicalPower?.total}
+  <Items title="Accessories">
+    <div slot="text">
       <AdditionStat text="Unique Accessories" data={`${accessories.unique} / ${accessories.total}`} maxed={accessories.unique === accessories.total} />
       <AdditionStat text="Completion" data={`${calculatePercentage(accessories.unique, accessories.total)}%`} maxed={accessories.unique === accessories.total} />
       <AdditionStat text="Recombobulated" data={`${accessories.recombobulated} / ${accessories.totalRecombobulated}`} maxed={accessories.recombobulated === accessories.totalRecombobulated} />
@@ -196,7 +196,9 @@
         </Collapsible.Root>
       {/if}
     </div>
-  {:else}
+  </Items>
+{:else}
+  <Items title="Accessories">
     <p class="space-x-0.5 leading-6">{profile.username} doesn't have any accessories</p>
-  {/if}
-</Items>
+  </Items>
+{/if}
