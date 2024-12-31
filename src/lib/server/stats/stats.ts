@@ -1,4 +1,5 @@
 export * from "$lib/server/stats/accessories";
+export * from "$lib/server/stats/api_settings";
 export * from "$lib/server/stats/bestiary";
 export * from "$lib/server/stats/collections";
 export * from "$lib/server/stats/crimson_isle";

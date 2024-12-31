@@ -64,7 +64,8 @@ export async function getStats(profile: Profile, player: Player, extra: { museum
     ["bestiary", () => stats.getBestiary(userProfile)],
     ["crimson_isle", () => stats.getCrimsonIsle(userProfile)],
     ["rift", () => stats.getRift(userProfile)],
-    ["misc", () => stats.getMisc(userProfile, profile, player)]
+    ["misc", () => stats.getMisc(userProfile, profile, player)],
+    ["apiSettings", () => stats.getAPISettings(profile, userProfile, userMuseum)]
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ] as Array<[string, () => Promise<any>]>;
 
