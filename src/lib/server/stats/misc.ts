@@ -5,14 +5,15 @@ import type { Player } from "$types/raw/player/lib";
 
 function formatMiscData(data: Record<string, number> | null) {
   if (!data) {
-    return null;
+    return { total: 0 };
   }
 
   return {
     ...data,
-    total: Object.keys(data)
-      .filter((key) => key !== "total")
-      .reduce((acc, key) => acc + data[key], 0)
+    total:
+      Object.keys(data)
+        .filter((key) => key !== "total")
+        .reduce((acc, key) => acc + data[key], 0) ?? 0
   };
 }
 
@@ -123,6 +124,10 @@ function getRaces(userProfile: Member) {
     }
   }
 
+  if (Object.keys(output).length === 0) {
+    return null;
+  }
+
   return output;
 }
 
@@ -139,13 +144,19 @@ function getDragons(userProfile: Member) {
 
   Object.assign(dragonDeaths, { total: Object.values(dragonDeaths).reduce((a, b) => a + b, 0) });
 
-  return {
-    ender_crystals_destroyed: userProfile.player_stats?.end_island?.dragon_fight?.ender_crystals_destroyed ?? {},
-    most_damage: userProfile.player_stats?.end_island?.dragon_fight?.most_damage ?? {},
-    fastest_kill: userProfile.player_stats?.end_island?.dragon_fight?.fastest_kill ?? {},
-    last_hits: lastDragonHits,
-    deaths: dragonDeaths
+  const output = {
+    ender_crystals_destroyed: userProfile.player_stats?.end_island?.dragon_fight?.ender_crystals_destroyed,
+    most_damage: userProfile.player_stats?.end_island?.dragon_fight?.most_damage,
+    fastest_kill: userProfile.player_stats?.end_island?.dragon_fight?.fastest_kill,
+    last_hits: Object.keys(lastDragonHits).length > 1 ? lastDragonHits : null,
+    deaths: Object.keys(dragonDeaths).length > 1 ? dragonDeaths : null
   };
+
+  if (Object.values(output).every((x) => !x)) {
+    return null;
+  }
+
+  return output;
 }
 
 function getPetMilestone(type: string, amount: number) {
@@ -214,7 +225,7 @@ export function getMisc(userProfile: Member, profile: Profile, player: Player) {
       sea_creatures_killed: getPetMilestone("sea_creatures_killed", userProfile.player_stats?.pets?.milestone?.sea_creatures_killed ?? 0),
       ores_mined: getPetMilestone("ores_mined", userProfile?.player_stats?.pets?.milestone.ores_mined ?? 0)
     },
-    mythological_event: userProfile.player_stats?.mythos,
+    mythological_event: userProfile.player_stats?.mythos ?? null,
     effects: {
       active: userProfile.player_data?.active_effects || [],
       paused: userProfile.player_data?.paused_effects || [],

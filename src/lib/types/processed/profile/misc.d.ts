@@ -35,7 +35,7 @@ export type Misc = {
     most_magma_damage_dealt: number;
     most_cannonballs_hit: number;
   };
-  dragons: {
+  dragons?: {
     ender_crystals_destroyed: number;
     most_damage: Record<string, number>;
     fastest_kill: Record<string, number>;

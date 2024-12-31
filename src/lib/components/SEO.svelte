@@ -45,7 +45,7 @@
     }
 
     // Sword
-    if (profile.items.weapons?.highest_priority_weapon !== undefined) {
+    if (profile.items.weapons?.highest_priority_weapon?.display_name !== undefined) {
       output += `🗡️ ${removeFormatting(profile.items.weapons.highest_priority_weapon.display_name)}\n`;
     }
 
