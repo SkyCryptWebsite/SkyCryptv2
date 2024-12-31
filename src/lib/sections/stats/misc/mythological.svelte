@@ -12,43 +12,53 @@
   <SectionSubtitle class="!uppercase">Mythological Event</SectionSubtitle>
   <Items>
     <div slot="text">
-      <AdditionStat text="Kills" data={format(misc.mythological_event.kills)} />
+      {#if misc.mythological_event.kills != null}
+        <AdditionStat text="Kills" data={format(misc.mythological_event.kills)} />
+      {/if}
 
-      <AdditionStat text="Dug Arrows" data={format(misc.mythological_event.burrows_dug_next.total)} asterisk={true}>
-        <p class="font-bold text-text/85">Rarities used:</p>
-        {#each Object.entries(misc.mythological_event.burrows_dug_next) as [tier, count]}
-          {#if tier !== "total"}
-            <AdditionStat text={tier} data={format(count)} textRarityColor={tier.toLowerCase()} />
-          {/if}
-        {/each}
-      </AdditionStat>
+      {#if misc.mythological_event.burrows_dug_next != null}
+        <AdditionStat text="Dug Arrows" data={format(misc.mythological_event.burrows_dug_next.total)} asterisk={true}>
+          <p class="font-bold text-text/85">Rarities used:</p>
+          {#each Object.entries(misc.mythological_event.burrows_dug_next) as [tier, count]}
+            {#if tier !== "total"}
+              <AdditionStat text={tier} data={format(count)} textRarityColor={tier.toLowerCase()} />
+            {/if}
+          {/each}
+        </AdditionStat>
+      {/if}
 
-      <AdditionStat text="Dug Monsters" data={format(misc.mythological_event.burrows_dug_combat.total)} asterisk={true}>
-        <p class="font-bold text-text/85">Rarities used:</p>
-        {#each Object.entries(misc.mythological_event.burrows_dug_combat) as [tier, count]}
-          {#if tier !== "total"}
-            <AdditionStat text={tier} data={format(count)} textRarityColor={tier.toLowerCase()} />
-          {/if}
-        {/each}
-      </AdditionStat>
+      {#if misc.mythological_event.burrows_dug_combat != null}
+        <AdditionStat text="Dug Monsters" data={format(misc.mythological_event.burrows_dug_combat.total)} asterisk={true}>
+          <p class="font-bold text-text/85">Rarities used:</p>
+          {#each Object.entries(misc.mythological_event.burrows_dug_combat) as [tier, count]}
+            {#if tier !== "total"}
+              <AdditionStat text={tier} data={format(count)} textRarityColor={tier.toLowerCase()} />
+            {/if}
+          {/each}
+        </AdditionStat>
+      {/if}
 
-      <AdditionStat text="Dug Treasure" data={format(misc.mythological_event.burrows_dug_treasure.total)} asterisk={true}>
-        <p class="font-bold text-text/85">Rarities used:</p>
-        {#each Object.entries(misc.mythological_event.burrows_dug_treasure) as [tier, count]}
-          {#if tier !== "total"}
-            <AdditionStat text={tier} data={format(count)} textRarityColor={tier.toLowerCase()} />
-          {/if}
-        {/each}
-      </AdditionStat>
+      {#if misc.mythological_event.burrows_dug_treasure != null}
+        <AdditionStat text="Dug Treasure" data={format(misc.mythological_event.burrows_dug_treasure.total)} asterisk={true}>
+          <p class="font-bold text-text/85">Rarities used:</p>
+          {#each Object.entries(misc.mythological_event.burrows_dug_treasure) as [tier, count]}
+            {#if tier !== "total"}
+              <AdditionStat text={tier} data={format(count)} textRarityColor={tier.toLowerCase()} />
+            {/if}
+          {/each}
+        </AdditionStat>
+      {/if}
 
-      <AdditionStat text="Chains Completed" data={format(misc.mythological_event.burrows_chains_complete.total)} asterisk={true}>
-        <p class="font-bold text-text/85">Rarities used:</p>
-        {#each Object.entries(misc.mythological_event.burrows_chains_complete) as [tier, count]}
-          {#if tier !== "total"}
-            <AdditionStat text={tier} data={format(count)} textRarityColor={tier.toLowerCase()} />
-          {/if}
-        {/each}
-      </AdditionStat>
+      {#if misc.mythological_event.burrows_chains_complete != null}
+        <AdditionStat text="Chains Completed" data={format(misc.mythological_event.burrows_chains_complete.total)} asterisk={true}>
+          <p class="font-bold text-text/85">Rarities used:</p>
+          {#each Object.entries(misc.mythological_event.burrows_chains_complete) as [tier, count]}
+            {#if tier !== "total"}
+              <AdditionStat text={tier} data={format(count)} textRarityColor={tier.toLowerCase()} />
+            {/if}
+          {/each}
+        </AdditionStat>
+      {/if}
     </div>
   </Items>
 {/if}
