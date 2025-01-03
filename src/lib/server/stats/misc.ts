@@ -163,7 +163,7 @@ function getPetMilestone(type: string, amount: number) {
   return {
     amount: amount ?? 0,
     rarity: constants.MILESTONE_RARITIES[constants.PET_MILESTONES[type].findLastIndex((x) => amount >= x)] ?? "common",
-    total: constants.PET_MILESTONES[type].at(-1) ?? 0,
+    total: amount,
     progress: amount ? Math.min((amount / (constants.PET_MILESTONES[type].at(-1) ?? 1)) * 100, 100).toFixed(2) : "0"
   };
 }
