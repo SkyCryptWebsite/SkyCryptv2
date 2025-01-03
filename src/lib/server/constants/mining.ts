@@ -1703,7 +1703,7 @@ class HotmItem {
   displayName: string;
   texture_path: string;
   itemData: { id: number; damage: number; glowing: boolean; skyblock_id?: string };
-  resources: { token_of_the_mountain: number; mithril_powder: number; gemstone_powder: number };
+  resources: { token_of_the_mountain: number; mithril_powder: number; gemstone_powder: number; glacite_powder: number };
   last_reset: number;
   rarity: string;
   constructor() {
@@ -1711,7 +1711,7 @@ class HotmItem {
     this.displayName = "";
     this.texture_path = "";
     this.itemData = { id: 0, damage: 0, glowing: false, skyblock_id: "" };
-    this.resources = { token_of_the_mountain: 0, mithril_powder: 0, gemstone_powder: 0 };
+    this.resources = { token_of_the_mountain: 0, mithril_powder: 0, gemstone_powder: 0, glacite_powder: 0 };
     this.last_reset = 0;
     this.rarity = "special";
   }
@@ -1736,12 +1736,13 @@ class HotmStats extends HotmItem {
     this.resources = {
       token_of_the_mountain: data.resources.token_of_the_mountain || 0,
       mithril_powder: data.resources.mithril_powder || 0,
-      gemstone_powder: data.resources.gemstone_powder || 0
+      gemstone_powder: data.resources.gemstone_powder || 0,
+      glacite_powder: data.resources.glacite_powder || 0
     };
   }
 
   get lore() {
-    return [`§7Token of the Mountain: §5${this.resources.token_of_the_mountain.toLocaleString()}`, "", "§7§8Use §5Token of the Mountain §8to unlock perks and abilities above!", "", `§9${SYMBOLS.powder} Powder`, "§9Powders §8are dropped from mining ores in the §2Dwarven Mines §8and are used to upgrade the perks you've unlocked!", "", `§7Mithril Powder: §2${this.resources.mithril_powder.toLocaleString()}`, `§7Gemstone Powder: §d${this.resources.gemstone_powder.toLocaleString()}`, "", "§8Increase your chance to gain extra Powder by unlocking perks, equipping the §2Mithril Golem Pet§8, and more!"];
+    return [`§7Token of the Mountain: §5${this.resources.token_of_the_mountain.toLocaleString()}`, "", "§7§8Use §5Token of the Mountain §8to unlock perks and abilities above!", "", `§9᠅ Powder`, "§9Powders §8are dropped from mining ores in the §2Dwarven Mines §8and are used to upgrade the perks you've unlocked!", "", `§7Mithril Powder: §2${this.resources.mithril_powder.toLocaleString()}`, `§7Gemstone Powder: §d${this.resources.gemstone_powder.toLocaleString()}`, `§7Glaite Powder: §b${this.resources.gemstone_powder.toLocaleString()}`, "", "§8Increase your chance to gain extra Powder by unlocking perks, equipping the §2Mithril Golem Pet§8, and more!"];
   }
 }
 
@@ -1816,7 +1817,8 @@ class HotmReset extends HotmItem {
     this.resources = {
       token_of_the_mountain: data.resources.token_of_the_mountain || 0,
       mithril_powder: data.resources.mithril_powder || 0,
-      gemstone_powder: data.resources.gemstone_powder || 0
+      gemstone_powder: data.resources.gemstone_powder || 0,
+      glacite_powder: data.resources.glacite_powder || 0
     };
   }
 

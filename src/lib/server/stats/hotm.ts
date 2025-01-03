@@ -75,9 +75,9 @@ export function getHotmItems(userProfile: Member, packs: string[]) {
     const item = new itemClass({
       resources: {
         token_of_the_mountain: calcHotmTokens(hotmLevelData.level, data.nodes?.special_0 ?? 0),
-        mithril_powder: userProfile.mining_core.powder_spent_glacite,
-        gemstone_powder: userProfile.mining_core.powder_spent_gemstone,
-        glacite_powder: userProfile.mining_core.powder_spent_glacite
+        mithril_powder: userProfile.mining_core.powder_mithril_total,
+        gemstone_powder: userProfile.mining_core.powder_gemstone_total,
+        glacite_powder: userProfile.mining_core.powder_glacite_total
       },
       crystals: userProfile.mining_core.crystals,
       last_reset: userProfile.mining_core.last_reset
