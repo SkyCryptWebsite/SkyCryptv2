@@ -234,6 +234,10 @@ function getProfilePets(userProfile: Member, pets: Pet[]) {
       }
     }
 
+    if (outputPet.lore.at(-1) !== "") {
+      outputPet.lore.push("");
+    }
+
     if (outputPet.level.xp >= outputPet.level.xpMaxLevel) {
       outputPet.lore.push(``, `§bMAX LEVEL`);
     } else {
