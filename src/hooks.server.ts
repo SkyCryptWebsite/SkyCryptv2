@@ -10,7 +10,7 @@ import { startRedis } from "./lib/server/db/redis";
 
 export const init: ServerInit = async () => {
   console.log("[SkyCrypt] Starting...");
-  resourcesInit();
+  await resourcesInit();
 
   await startMongo()?.then(() => {
     console.log("[MONGO] MongoDB succeesfully connected");
