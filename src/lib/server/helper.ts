@@ -222,8 +222,6 @@ export async function applyResourcePack(item: ProcessedItem, packs: string[]) {
       const type = ["helmet", "chestplate", "leggings", "boots"][item.id - 298];
 
       item.texture_path = `/api/leather/${type}/${color}`;
-    } else if (!item.texture_path) {
-      addToItemLore(item, ["", "§cError: Missing texture"]);
     }
   }
 
