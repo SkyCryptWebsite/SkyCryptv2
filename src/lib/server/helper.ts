@@ -214,8 +214,6 @@ export async function applyResourcePack(item: ProcessedItem, packs: string[]) {
 
         item.texture_path = `/api/head/${uuid}?v6`;
       } catch (e) {
-        addToItemLore(item, ["", "§cError: Missing texture"]);
-        item.texture_path = `/api/item/BARRIER`;
         console.error(e);
       }
     } else if (typeof item.id === "number" && item.id >= 298 && item.id <= 301) {
@@ -226,7 +224,6 @@ export async function applyResourcePack(item: ProcessedItem, packs: string[]) {
       item.texture_path = `/api/leather/${type}/${color}`;
     } else if (!item.texture_path) {
       addToItemLore(item, ["", "§cError: Missing texture"]);
-      item.texture_path = `/api/item/BARRIER`;
     }
   }
 
