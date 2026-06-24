@@ -1,24 +1,4 @@
-export { aprilFools2024Theme } from "./april-fools-2024";
-export { burningCinnabarTheme } from "./burning-cinnabar";
-export { candycaneTheme } from "./candycane";
 export { defaultTheme } from "./default";
-export { draconicTheme } from "./draconic";
-export { lightTheme } from "./light";
-export { minionahTheme } from "./minionah";
-export { nightblueTheme } from "./nightblue";
-export { skyleaTheme } from "./skylea";
-export { sunriseTheme } from "./sunrise";
-export { warpwingTheme } from "./warpwing";
-import { aprilFools2024Theme } from "./april-fools-2024";
-import { burningCinnabarTheme } from "./burning-cinnabar";
-import { candycaneTheme } from "./candycane";
 import { defaultTheme } from "./default";
-import { draconicTheme } from "./draconic";
-import { lightTheme } from "./light";
-import { minionahTheme } from "./minionah";
-import { nightblueTheme } from "./nightblue";
-import { skyleaTheme } from "./skylea";
-import { sunriseTheme } from "./sunrise";
-import { warpwingTheme } from "./warpwing";
 
-export const FIRST_PARTY_THEMES = [defaultTheme, lightTheme, aprilFools2024Theme, burningCinnabarTheme, candycaneTheme, draconicTheme, minionahTheme, nightblueTheme, skyleaTheme, sunriseTheme, warpwingTheme] as const;
+export const FIRST_PARTY_THEMES = [defaultTheme] as const;

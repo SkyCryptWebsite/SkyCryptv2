@@ -41,8 +41,13 @@ export const listLatestPostsForNotifications = query(
     limit: z.number().int().min(1).max(10).default(5)
   }),
   async ({ limit }) => {
-    const { data } = await listPostsRequest(asListParams({ page: 1, limit, depth: 1, sort: "-publishedAt", "where[_status][equals]": "published" }));
-    return data as PostListResponse;
+    try {
+      const { data } = await listPostsRequest(asListParams({ page: 1, limit, depth: 1, sort: "-publishedAt", "where[_status][equals]": "published" }));
+      return data as PostListResponse;
+    } catch (error) {
+      console.warn("Failed to load latest newsroom posts for notifications", error);
+      return null;
+    }
   }
 );
 

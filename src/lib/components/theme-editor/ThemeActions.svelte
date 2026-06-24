@@ -1,12 +1,14 @@
 <script lang="ts">
   import { getInternalState } from "$ctx";
-  import type { ThemeV3 } from "$lib/shared/themes/schema";
+  import type { ThemeV4 } from "$lib/shared/themes/schema";
   import { getThemeShareURL } from "$lib/shared/themes/sharing";
+  import { Button } from "$ui/button";
+  import { Input } from "$ui/input";
+  import { Label } from "$ui/label";
   import RotateCcw from "@lucide/svelte/icons/rotate-ccw";
   import Save from "@lucide/svelte/icons/save";
   import Share2 from "@lucide/svelte/icons/share-2";
   import X from "@lucide/svelte/icons/x";
-  import { Button, Label } from "bits-ui";
   import { toast } from "svelte-sonner";
 
   let {
@@ -16,7 +18,7 @@
     handleNameChange,
     handleAuthorChange
   } = $props<{
-    workingTheme: ThemeV3;
+    workingTheme: ThemeV4;
     onReset: () => void;
     onSave: () => void;
     handleNameChange: (name: string) => void;
@@ -41,35 +43,35 @@
   }
 </script>
 
-<div class="flex flex-col gap-4 bg-header p-4">
+<div class="flex flex-col gap-4 bg-card p-4 text-card-foreground">
   <div class="flex items-center justify-between">
-    <h2 class="text-xl font-bold text-text">Theme Editor</h2>
-    <Button.Root onclick={handleClose} class="rounded-lg bg-background/20 p-2 text-text hover:bg-background/30 focus:ring-2 focus:ring-link focus:ring-offset-2 focus:outline-none">
+    <h2 class="text-xl font-bold">Theme Editor</h2>
+    <Button onclick={handleClose} variant="ghost" size="icon" aria-label="Close theme editor">
       <X class="size-5" />
-    </Button.Root>
+    </Button>
   </div>
 
   <div class="grid grid-cols-2 gap-4">
     <div class="flex flex-col gap-2">
-      <Label.Root for="theme-name" class="text-xs font-bold text-text/60 uppercase">Theme Name</Label.Root>
-      <input id="theme-name" type="text" value={(workingTheme as ThemeV3).metadata.name} class="rounded-lg border border-text/10 bg-text/5 px-3 py-2 text-sm text-text placeholder:text-text/40 focus:border-link focus:outline-none" placeholder="My Cool Theme" autocomplete="off" oninput={(e) => handleNameChange((e.target as HTMLInputElement).value)} />
+      <Label for="theme-name" class="text-xs font-bold text-muted-foreground uppercase">Theme Name</Label>
+      <Input id="theme-name" type="text" value={workingTheme.metadata.name} placeholder="My Cool Theme" autocomplete="off" oninput={(e) => handleNameChange(e.currentTarget.value)} />
     </div>
     <div class="flex flex-col gap-2">
-      <Label.Root for="theme-author" class="text-xs font-bold text-text/60 uppercase">Author</Label.Root>
-      <input id="theme-author" type="text" value={(workingTheme as ThemeV3).metadata.author} class="rounded-lg border border-text/10 bg-text/5 px-3 py-2 text-sm text-text placeholder:text-text/40 focus:border-link focus:outline-none" placeholder="Your Name" autocomplete="off" oninput={(e) => handleAuthorChange((e.target as HTMLInputElement).value)} />
+      <Label for="theme-author" class="text-xs font-bold text-muted-foreground uppercase">Author</Label>
+      <Input id="theme-author" type="text" value={workingTheme.metadata.author} placeholder="Your Name" autocomplete="off" oninput={(e) => handleAuthorChange(e.currentTarget.value)} />
     </div>
   </div>
 
   <div class="flex gap-2">
-    <Button.Root onclick={onSave} class="flex flex-1 items-center justify-center gap-2 rounded-lg bg-icon/90 px-4 py-2 font-bold transition-transform hover:bg-icon active:scale-95">
+    <Button onclick={onSave} class="flex-1">
       <Save class="size-4" />
       Save Theme
-    </Button.Root>
-    <Button.Root onclick={handleShare} title="Copy Share URL" class="flex items-center justify-center rounded-lg bg-text/10 px-3 py-2 text-text transition-transform hover:bg-text/20 active:scale-95 ">
+    </Button>
+    <Button onclick={handleShare} title="Copy Share URL" aria-label="Copy Share URL" variant="secondary" size="icon">
       <Share2 class="size-4" />
-    </Button.Root>
-    <Button.Root onclick={onReset} title="Reset Changes" class="flex items-center justify-center rounded-lg bg-red-500/10 px-3 py-2 text-red-400 transition-transform hover:bg-red-500/20 active:scale-95">
+    </Button>
+    <Button onclick={onReset} title="Reset Changes" aria-label="Reset Changes" variant="destructive" size="icon">
       <RotateCcw class="size-4" />
-    </Button.Root>
+    </Button>
   </div>
 </div>

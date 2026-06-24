@@ -157,71 +157,43 @@
     font-display: swap;
   }
 
-  /* For color preview to work you need to have the 'naumovs.color-highlight' extension installed */
   :root {
-    /* Icon Green (used for Skill Icons, Underlines etc.) */
-    /* --icon: oklch(73.62% 0.2129 147.69); */
-    --icon: var(--chart-2);
-
-    /* Link Green (used for Links, Unclaimed Slayers, Crafted Minions etc.) */
-    --link: oklch(81.56% 0.2459 146.24);
-
-    /* Hover Green (used only for link hovers) */
-    --hover: oklch(83.81% 0.2303 149.89);
-
-    /* Skill Bar Green (used for Skill Progress Bars) */
-    /* --skillbar: oklch(63.98% 0.1731 150.18); */
+    /* TODO: remove these compatibility aliases after all legacy token consumers are migrated to shadcn tokens. */
+    --icon: var(--primary);
+    --link: var(--primary);
+    --hover: var(--accent);
     --skillbar: var(--primary);
-
-    /* Maxed Bar Gold (used for Maxed Progress Bars) */
-    --maxedbar: oklch(69.69% 0.1423 76.74);
-
-    /* Maxed Gold (used for Maxed things etc.) */
-    --maxed: oklch(72.84% 0.1506 75.86);
-
-    /* Golden Text (used for Golden Text) */
-    --gold: oklch(82.84% 0.1548 78.27);
-
-    /* Header Logo */
-    --logo: oklch(68.48% 0.2338 351.45);
-
-    /* Most of the text */
-    --text: oklch(1 0 0);
-    /* background of the header */
-    --header: oklch(0.28 0 0);
-    /* used for info box and theme/pack selector */
-    --grey_background: oklch(0.24 0 0);
-    /* used for item lore */
-    --lore_background: oklch(0.17 0 0 / 0.9);
-
-    /* used when --bg can't be used */
-    --bg: oklch(0.18 0 0);
-
-    /* Normal Background */
+    --maxedbar: var(--chart-4);
+    --maxed: var(--chart-4);
+    --gold: var(--chart-5);
+    --logo: var(--primary);
+    --text: var(--foreground);
+    --header: var(--card);
+    --grey_background: var(--muted);
+    --lore_background: var(--popover);
+    --bg: var(--background);
     --bg-url: url(/img/bg.avif);
+    --mctooltip-bg: oklch(0.205 0 0);
 
-    /* Minecraft Tooltip */
-    --mctooltip-bg: oklch(12.142% 0.05582 328.352 / 0.93);
+    /* Minecraft color codes (nice-light palette) */
+    --§0: oklch(0.54 0 0);
+    --§1: oklch(0.5 0.28 269.85);
+    --§2: oklch(0.66 0.23 142.5);
+    --§3: oklch(0.71 0.12 185.91);
+    --§4: oklch(0.5 0.19 27.28);
+    --§5: oklch(0.66 0.3 328.31);
+    --§6: oklch(0.8 0.17 73.27);
+    --§7: oklch(0.78 0 0);
+    --§8: oklch(0.68 0 0);
+    --§9: oklch(0.66 0.16 273.97);
+    --§a: oklch(0.79 0.2 143.36);
+    --§b: oklch(0.81 0.11 211.69);
+    --§c: oklch(0.68 0.2 24.09);
+    --§d: oklch(0.74 0.23 336.42);
+    --§e: oklch(0.94 0.16 109.12);
+    --§f: oklch(1 0 0);
 
-    /* Minecraft color codes (nice-dark palette) */
-    --§0: oklch(0 0 0);
-    --§1: oklch(0.32 0.14 264.6);
-    --§2: oklch(0.64 0.22 142.5);
-    --§3: oklch(0.58 0.1 194.78);
-    --§4: oklch(0.42 0.17 28.49);
-    --§5: oklch(0.5 0.23 328.34);
-    --§6: oklch(0.71 0.15 72.75);
-    --§7: oklch(0.5 0 0);
-    --§8: oklch(0.31 0 0);
-    --§9: oklch(0.51 0.25 273.16);
-    --§a: oklch(0.7 0.2 143.13);
-    --§b: oklch(0.69 0.11 211.66);
-    --§c: oklch(0.56 0.17 24.75);
-    --§d: oklch(0.7 0.19 338.3);
-    --§e: oklch(0.84 0.17 93.53);
-    --§f: oklch(0.66 0 0);
-
-    color-scheme: dark;
+    color-scheme: light;
 
     --background: oklch(1 0 0);
     --foreground: oklch(0.145 0 0);
@@ -261,6 +233,8 @@
   }
 
   .dark {
+    color-scheme: dark;
+
     --background: oklch(0.145 0 0);
     --foreground: oklch(0.985 0 0);
     --card: oklch(0.205 0 0);

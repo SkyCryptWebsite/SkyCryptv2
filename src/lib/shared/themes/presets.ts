@@ -92,5 +92,7 @@ export function getPaletteColors(palette: string, overrides?: Record<string, str
   if (!paletteColors) {
     throw new Error(`Unknown palette: ${palette}`);
   }
-  return { ...paletteColors, ...(overrides || {}) };
+
+  const normalizedOverrides = Object.fromEntries(Object.entries(overrides ?? {}).map(([code, color]) => [code.startsWith("§") ? code : `§${code}`, color]));
+  return { ...paletteColors, ...normalizedOverrides };
 }

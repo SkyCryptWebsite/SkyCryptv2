@@ -1,176 +1,214 @@
-import { describe, it } from "vitest";
+// @vitest-environment happy-dom
+
+import { afterEach, beforeEach, describe, it, vi } from "vitest";
 import { DEFAULT_THEME } from "./defaults";
-import { mergeThemeWithDefaults } from "./engine";
+import { mergeThemeWithDefaults, PREVIEW_THEME_ID, RUNTIME_THEMES_STYLE_ID, ThemeEngine } from "./engine";
+import type { PartialThemeV4, ThemeV4 } from "./schema";
 
-describe.concurrent("Theme Engine Tests", () => {
-  describe.concurrent("mergeThemeWithDefaults", () => {
-    it("should pass through provided colors without filling missing ones from defaults", ({ expect }) => {
-      const partial = {
-        colors: {
-          icon: "oklch(0.5 0.2 100)"
+vi.mock("mode-watcher", () => ({
+  setTheme: (id: string) => {
+    document.documentElement.setAttribute("data-theme", id);
+  }
+}));
+
+function customTheme(id = "custom-theme"): ThemeV4 {
+  return {
+    ...DEFAULT_THEME,
+    metadata: {
+      ...DEFAULT_THEME.metadata,
+      id,
+      name: "Custom Theme",
+      author: "Tester"
+    },
+    cssVars: {
+      primary: "oklch(0.5 0.1 100)",
+      accent3: "oklch(0.6 0.1 80)",
+      radius: "1rem"
+    },
+    extras: {
+      minecraft: {
+        palette: "nice-dark",
+        overrides: {
+          a: "oklch(0.9 0.1 100)"
         }
-      };
+      },
+      pageBackground: {
+        url: "https://example.com/bg.png"
+      },
+      enchantedGlint: "https://example.com/glint.png"
+    }
+  };
+}
 
-      const merged = mergeThemeWithDefaults(partial);
+function runtimeStyle(): HTMLStyleElement | null {
+  return document.getElementById(RUNTIME_THEMES_STYLE_ID) as HTMLStyleElement | null;
+}
 
-      expect(merged.colors?.icon).toBe("oklch(0.5 0.2 100)");
-      // Colors NOT provided should remain undefined (not filled from defaults)
-      expect(merged.colors?.link).toBeUndefined();
-      expect(merged.colors?.hover).toBeUndefined();
-      expect(merged.colors?.text).toBeUndefined();
-      // Metadata should still be filled from defaults
+describe("Theme Engine", () => {
+  beforeEach(() => {
+    document.head.innerHTML = "";
+    document.documentElement.removeAttribute("data-theme");
+  });
+
+  afterEach(() => {
+    document.head.innerHTML = "";
+    document.documentElement.removeAttribute("data-theme");
+    localStorage.clear();
+  });
+
+  describe("mergeThemeWithDefaults", () => {
+    it("preserves partial css vars without filling from defaults", ({ expect }) => {
+      const merged = mergeThemeWithDefaults({
+        cssVars: {
+          primary: "oklch(0.5 0.1 100)"
+        }
+      });
+
+      expect(merged.schema).toBe(4);
+      expect(merged.cssVars.primary).toBe("oklch(0.5 0.1 100)");
+      expect(merged.cssVars.background).toBeUndefined();
       expect(merged.metadata.id).toBe(DEFAULT_THEME.metadata.id);
-      expect(merged.metadata.name).toBe(DEFAULT_THEME.metadata.name);
-      expect(merged.metadata.author).toBe(DEFAULT_THEME.metadata.author);
-      expect(merged.schema).toBe(3);
     });
 
-    it("should preserve override values", ({ expect }) => {
-      const customId = "custom-theme-123";
-      const customName = "My Custom Theme";
-      const customAuthor = "Test Author";
-      const customIcon = "oklch(0.8 0.3 50)";
-      const customLink = "oklch(0.9 0.2 100)";
-
-      const partial = {
+    it("merges mode, metadata, and extras", ({ expect }) => {
+      const partial: PartialThemeV4 = {
+        mode: "light",
         metadata: {
-          id: customId,
-          name: customName,
-          author: customAuthor
+          id: "custom",
+          name: "Custom"
         },
-        colors: {
-          icon: customIcon,
-          link: customLink
-        }
-      };
-
-      const merged = mergeThemeWithDefaults(partial);
-
-      expect(merged.metadata.id).toBe(customId);
-      expect(merged.metadata.name).toBe(customName);
-      expect(merged.metadata.author).toBe(customAuthor);
-      expect(merged.colors?.icon).toBe(customIcon);
-      expect(merged.colors?.link).toBe(customLink);
-    });
-
-    it("should pass through backgrounds without filling missing ones from defaults", ({ expect }) => {
-      const partial = {
-        backgrounds: {
-          skillbar: {
-            type: "color" as const,
-            color: "oklch(0.5 0.1 100)"
+        extras: {
+          minecraft: {
+            palette: "true-colors"
+          },
+          pageBackground: {
+            url: "https://example.com/bg.png"
           }
         }
       };
 
       const merged = mergeThemeWithDefaults(partial);
 
-      expect(merged.backgrounds?.skillbar?.type).toBe("color");
-      if (merged.backgrounds?.skillbar?.type === "color") {
-        expect(merged.backgrounds.skillbar.color).toBe("oklch(0.5 0.1 100)");
-      }
-      // maxedbar was not provided, so it should be undefined
-      expect(merged.backgrounds?.maxedbar).toBeUndefined();
+      expect(merged.mode).toBe("light");
+      expect(merged.metadata.id).toBe("custom");
+      expect(merged.metadata.name).toBe("Custom");
+      expect(merged.metadata.author).toBe(DEFAULT_THEME.metadata.author);
+      expect(merged.extras?.minecraft?.palette).toBe("true-colors");
+      expect(merged.extras?.pageBackground?.url).toBe("https://example.com/bg.png");
+    });
+  });
+
+  describe("themeToCssRule", () => {
+    it("serializes shadcn vars, Minecraft colors, background, and glint", ({ expect }) => {
+      const rule = ThemeEngine.themeToCssRule(customTheme("test-theme"));
+
+      expect(rule).toContain(':root[data-theme="test-theme"]');
+      expect(rule).toContain("  --primary: oklch(0.5 0.1 100);");
+      expect(rule).toContain("  --accent-3: oklch(0.6 0.1 80);");
+      expect(rule).toContain("  --radius: 1rem;");
+      expect(rule).toContain("  --§0: oklch(0 0 0);");
+      expect(rule).toContain("  --§a: oklch(0.9 0.1 100);");
+      expect(rule).toContain("  --bg-url: url(/api/image-proxy?url=https%3A%2F%2Fexample.com%2Fbg.png);");
+      expect(rule).toContain("  --enchanted-glint: url(/api/image-proxy?url=https%3A%2F%2Fexample.com%2Fglint.png);");
     });
 
-    it("should merge minecraft palette and overrides", ({ expect }) => {
-      const partial = {
-        minecraft: {
-          palette: "true-colors" as const,
-          overrides: {
-            a: "oklch(0.5 0.1 100)"
-          } as Record<string, string>
+    it("uses local paths for first-party static images", ({ expect }) => {
+      const rule = ThemeEngine.themeToCssRule({
+        ...customTheme("first-party-assets"),
+        extras: {
+          minecraft: {
+            palette: "nice-light"
+          },
+          pageBackground: {
+            url: "https://sky.shiiyu.moe/img/bg.avif"
+          },
+          enchantedGlint: "https://cupcake.shiiyu.moe/img/enchanted-glint-legacy.avif"
         }
-      };
+      });
 
-      const merged = mergeThemeWithDefaults(partial);
-
-      expect(merged.minecraft.palette).toBe("true-colors");
-      expect(merged.minecraft.overrides).toEqual({ a: "oklch(0.5 0.1 100)" });
+      expect(rule).toContain("  --bg-url: url(/img/bg.avif);");
+      expect(rule).toContain("  --enchanted-glint: url(/img/enchanted-glint-legacy.avif);");
     });
 
-    it("should handle empty partial theme", ({ expect }) => {
-      const merged = mergeThemeWithDefaults({});
-
-      expect(merged.metadata.id).toBe(DEFAULT_THEME.metadata.id);
-      expect(merged.metadata.name).toBe(DEFAULT_THEME.metadata.name);
-      // Colors and backgrounds should be undefined when not provided
-      expect(merged.colors).toBeUndefined();
-      expect(merged.backgrounds).toBeUndefined();
-      expect(merged.minecraft).toEqual(DEFAULT_THEME.minecraft);
-    });
-
-    it("should merge metadata timestamps correctly", ({ expect }) => {
-      const customCreatedAt = 1234567890;
-      const partial = {
-        metadata: {
-          createdAt: customCreatedAt
+    it("omits undefined css vars", ({ expect }) => {
+      const rule = ThemeEngine.themeToCssRule({
+        ...customTheme("minimal-theme"),
+        cssVars: {
+          primary: "oklch(0.5 0.1 100)"
         }
-      };
+      });
 
-      const merged = mergeThemeWithDefaults(partial);
-
-      expect(merged.metadata.createdAt).toBe(customCreatedAt);
-      expect(merged.metadata.updatedAt).toBe(DEFAULT_THEME.metadata.updatedAt);
-      expect(merged.metadata.version).toBe(DEFAULT_THEME.metadata.version);
+      expect(rule).toContain("  --primary: oklch(0.5 0.1 100);");
+      expect(rule).not.toContain("--foreground:");
     });
 
-    it("should handle stripes background override", ({ expect }) => {
-      const partial = {
-        backgrounds: {
-          maxedbar: {
-            type: "stripes" as const,
-            angle: "90deg",
-            colors: ["oklch(0.7 0.2 100)", "oklch(0.8 0.1 200)"] as [string, string],
-            width: 10
+    it("throws for invalid theme ids", ({ expect }) => {
+      expect(() =>
+        ThemeEngine.themeToCssRule({
+          ...customTheme("valid-theme"),
+          metadata: {
+            ...customTheme("valid-theme").metadata,
+            id: "Bad Theme"
           }
-        }
-      };
+        })
+      ).toThrow("Cannot generate CSS for invalid theme");
+    });
+  });
 
-      const merged = mergeThemeWithDefaults(partial);
+  describe("runtime stylesheet", () => {
+    it("creates and updates one managed style tag", ({ expect }) => {
+      ThemeEngine.syncRuntimeThemes([customTheme("custom-a")]);
+      const firstStyle = runtimeStyle();
 
-      expect(merged.backgrounds?.maxedbar?.type).toBe("stripes");
-      if (merged.backgrounds?.maxedbar?.type === "stripes") {
-        expect(merged.backgrounds.maxedbar.angle).toBe("90deg");
-        expect(merged.backgrounds.maxedbar.colors).toEqual(["oklch(0.7 0.2 100)", "oklch(0.8 0.1 200)"]);
-        expect(merged.backgrounds.maxedbar.width).toBe(10);
-      }
+      ThemeEngine.syncRuntimeThemes([customTheme("custom-b")]);
+      const secondStyle = runtimeStyle();
+
+      expect(firstStyle).toBeTruthy();
+      expect(secondStyle).toBe(firstStyle);
+      expect(document.querySelectorAll(`#${RUNTIME_THEMES_STYLE_ID}`)).toHaveLength(1);
+      expect(secondStyle?.textContent).not.toContain("custom-a");
+      expect(secondStyle?.textContent).toContain("custom-b");
     });
 
-    it("should preserve page background URL override", ({ expect }) => {
-      const customUrl = "https://example.com/custom-bg.jpg";
-      const partial = {
-        backgrounds: {
-          page: {
-            url: customUrl
-          }
-        }
-      };
+    it("excludes the CSS-defined default theme", ({ expect }) => {
+      ThemeEngine.syncRuntimeThemes([DEFAULT_THEME, customTheme("custom-a")]);
 
-      const merged = mergeThemeWithDefaults(partial);
-
-      expect(merged.backgrounds?.page?.url).toBe(customUrl);
+      expect(runtimeStyle()?.textContent).not.toContain(':root[data-theme="default"]');
+      expect(runtimeStyle()?.textContent).toContain(':root[data-theme="custom-a"]');
     });
 
-    it("should handle enchantedGlint override", ({ expect }) => {
-      const customGlint = "https://example.com/custom-glint.png";
-      const partial = {
-        enchantedGlint: customGlint
-      };
+    it("removes deleted custom theme rules after resync", ({ expect }) => {
+      ThemeEngine.syncRuntimeThemes([customTheme("custom-a"), customTheme("custom-b")]);
+      ThemeEngine.syncRuntimeThemes([customTheme("custom-b")]);
 
-      const merged = mergeThemeWithDefaults(partial);
-
-      expect(merged.enchantedGlint).toBe(customGlint);
+      expect(runtimeStyle()?.textContent).not.toContain("custom-a");
+      expect(runtimeStyle()?.textContent).toContain("custom-b");
     });
 
-    it("should preserve light mode flag", ({ expect }) => {
-      const partial = {
-        light: true
-      };
+    it("keeps deterministic rule order", ({ expect }) => {
+      ThemeEngine.syncRuntimeThemes([customTheme("custom-b"), customTheme("custom-a")]);
 
-      const merged = mergeThemeWithDefaults(partial);
+      const text = runtimeStyle()?.textContent ?? "";
+      expect(text.indexOf("custom-a")).toBeLessThan(text.indexOf("custom-b"));
+    });
+  });
 
-      expect(merged.light).toBe(true);
+  describe("preview", () => {
+    it("writes a preview rule and activates the preview theme id", ({ expect }) => {
+      ThemeEngine.previewTheme(customTheme("editable-theme"));
+
+      expect(runtimeStyle()?.textContent).toContain(`data-theme="${PREVIEW_THEME_ID}"`);
+      expect(document.documentElement.getAttribute("data-theme")).toBe(PREVIEW_THEME_ID);
+    });
+
+    it("clears only the preview rule", ({ expect }) => {
+      ThemeEngine.syncRuntimeThemes([customTheme("saved-theme")]);
+      ThemeEngine.previewTheme(customTheme("editable-theme"));
+      ThemeEngine.clearPreview();
+
+      const text = runtimeStyle()?.textContent ?? "";
+      expect(text).toContain("saved-theme");
+      expect(text).not.toContain(PREVIEW_THEME_ID);
     });
   });
 });

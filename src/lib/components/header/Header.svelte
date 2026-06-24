@@ -1,15 +1,25 @@
 <script lang="ts">
   import { dev } from "$app/environment";
   import { page } from "$app/state";
-  import { getInternalState, getTheme } from "$ctx";
+  import { getInternalState, getThemeContext } from "$ctx";
   import Settings from "$lib/components/header/settings";
   import { getThemeIcons } from "$lib/shared/api/themes.remote";
+  import { readComputedThemeCssVars } from "$lib/shared/themes/computed-css-vars";
   import Menu from "$src/lib/components/header/Menu.svelte";
+  import { Button as ShadcnButton } from "$ui/button";
+  import MoonIcon from "@lucide/svelte/icons/moon";
+  import SunIcon from "@lucide/svelte/icons/sun";
+  import SunMoonIcon from "@lucide/svelte/icons/sun-moon";
   import { Avatar, Button } from "bits-ui";
+  import { mode, resetMode, toggleMode, userPrefersMode } from "mode-watcher";
 
   const internalState = getInternalState();
-  const theme = getTheme();
-  const themeIconQuery = $derived(getThemeIcons({ color: theme.activeTheme?.colors?.logo, invert: theme.activeTheme?.light }));
+  const theme = getThemeContext();
+  const themeIconColor = $derived.by(() => {
+    const computedCssVars = readComputedThemeCssVars();
+    return theme.activeTheme?.cssVars.sidebarPrimary ?? theme.activeTheme?.cssVars.chart2 ?? theme.activeTheme?.cssVars.primary ?? computedCssVars.sidebarPrimary ?? computedCssVars.chart2 ?? computedCssVars.primary;
+  });
+  const themeIconQuery = $derived(getThemeIcons({ color: themeIconColor, invert: mode.current === "light" }));
 
   const packageVersion = __NPM_PACKAGE_VERSION__;
 
@@ -59,6 +69,17 @@
 
     <Menu />
 
-    <Settings />
+    <div class="flex gap-1">
+      <ShadcnButton variant="outline" onclick={toggleMode} ondblclick={resetMode}>
+        {#if userPrefersMode.current === "system"}
+          <SunMoonIcon />
+        {:else if userPrefersMode.current === "dark"}
+          <MoonIcon />
+        {:else if userPrefersMode.current === "light"}
+          <SunIcon />
+        {/if}
+      </ShadcnButton>
+      <Settings />
+    </div>
   </div>
 </header>

@@ -16,6 +16,7 @@
   import Wifi from "@lucide/svelte/icons/wifi";
   import WifiOff from "@lucide/svelte/icons/wifi-off";
   import { Tooltip } from "bits-ui";
+  import { mode, ModeWatcher, setMode } from "mode-watcher";
   import { onMount, type Snippet } from "svelte";
   import SvelteSeo from "svelte-seo";
   import { toast, Toaster, type ToasterProps } from "svelte-sonner";
@@ -91,6 +92,10 @@
     if (e.key.toLowerCase() === "m" && dev) {
       // toggle minecraft styled tooltips for testing
       preferences.mctooltip = !preferences.mctooltip;
+    }
+    if (e.key.toLowerCase() === "t" && dev) {
+      // toggle minecraft styled tooltips for testing
+      setMode(mode.current === "light" ? "dark" : "light");
     }
   }
 
@@ -175,6 +180,8 @@
   let innerWidth = $state(0);
 </script>
 
+<ModeWatcher defaultMode="dark" defaultTheme="default" themeStorageKey="skycryptActiveTheme" darkClassNames={["dark"]} lightClassNames={["light"]} themeColors={{ dark: "#282828", light: "#dbdbdb" }} />
+
 <svelte:document onkeydown={handleKeydown} />
 
 <svelte:window
@@ -207,7 +214,6 @@
       // @ts-expect-error It accepts any property
       image: "/img/app-icons/svg.svg"
     }}
-    themeColor={themeContext.activeTheme?.light ? "#dbdbdb" : "#282828"}
     manifest="/manifest.webmanifest" />
   <JsonLd data={websiteJsonLd} />
 {/if}
@@ -249,7 +255,9 @@
   <svelte:boundary>
     {#snippet failed()}{/snippet}
     {const latestNewsroom = await listLatestPostsForNotifications({ limit: 5 })}
-    <NewPostsNotifier posts={latestNewsroom.docs} />
+    {#if latestNewsroom}
+      <NewPostsNotifier posts={latestNewsroom.docs} />
+    {/if}
   </svelte:boundary>
 {/if}
 <Tooltip.Provider delayDuration={0}>
@@ -259,7 +267,7 @@
 <CommandPalette {ign} bind:loading={commandLoading} />
 
 {#if internalState.themeEditorOpen && !isMobile.current}
-  <div class="fixed left-0 isolate z-40 h-[calc(100dvh-3rem)] w-[30vw] glass dark:glass-brightness-50 light:glass-brightness-100" transition:fly={{ x: -300, duration: 300 }}>
+  <div class="fixed left-0 top-12 isolate z-40 h-[calc(100dvh-3rem)] w-[30vw] glass dark:glass-brightness-50 light:glass-brightness-100" transition:fly={{ x: -300, duration: 300 }}>
     <ThemeEditor />
   </div>
 {/if}

@@ -1,8 +1,10 @@
 <script lang="ts">
-  import { getInternalState, getTheme } from "$ctx";
+  import { getInternalState, getThemeContext } from "$ctx";
   import { SettingsTab } from "$lib/components/header/types";
   import { getThemeIcons } from "$lib/shared/api/themes.remote";
+  import { readComputedThemeCssVars } from "$lib/shared/themes/computed-css-vars";
   import { FIRST_PARTY_THEMES } from "$lib/shared/themes/first-party";
+  import type { ThemeV4 } from "$lib/shared/themes/schema";
   import { getThemeShareURL } from "$lib/shared/themes/sharing";
   import * as AlertDialog from "$ui/alert-dialog";
   import { Button } from "$ui/button";
@@ -15,9 +17,10 @@
   import Plus from "@lucide/svelte/icons/plus";
   import Trash2 from "@lucide/svelte/icons/trash-2";
   import { Avatar, RadioGroup } from "bits-ui";
+  import { mode } from "mode-watcher";
   import { toast } from "svelte-sonner";
 
-  const themeContext = getTheme();
+  const themeContext = getThemeContext();
   const internalState = getInternalState();
 
   let deleteDialogOpen = $state(false);
@@ -55,6 +58,11 @@
     internalState.themeEditorOpen = true;
     internalState.settingsOpen = false; // Close settings modal
   }
+
+  function getThemeIconColor(theme: ThemeV4): string {
+    const computedCssVars = readComputedThemeCssVars();
+    return theme.cssVars.sidebarPrimary ?? theme.cssVars.chart2 ?? theme.cssVars.primary ?? computedCssVars.sidebarPrimary ?? computedCssVars.chart2 ?? computedCssVars.primary ?? "oklch(0.627 0.194 149.214)";
+  }
 </script>
 
 <Tabs.Content value={SettingsTab.Themes} class="space-y-4">
@@ -73,7 +81,7 @@
   <RadioGroup.Root class="mt-4 flex max-h-96 flex-col gap-4 overflow-x-clip overflow-y-auto" bind:value={themeContext.current}>
     <h5 class="text-sm font-semibold">Official Themes</h5>
     {#each FIRST_PARTY_THEMES as theme (theme.metadata.id)}
-      {#await getThemeIcons({ color: theme.colors.logo, invert: theme.light }) then iconSvg}
+      {#await getThemeIcons({ color: getThemeIconColor(theme), invert: mode.current === "light" }) then iconSvg}
         {const iconDataUrl = `data:image/svg+xml;base64,${btoa(iconSvg)}`}
         <Label for={theme.metadata.id} class="flex items-center justify-between gap-4 rounded-xl border p-2">
           <div class="flex items-center gap-2">
@@ -109,7 +117,7 @@
       <p class="text-muted-foreground italic">No custom themes yet. Create your own theme or import one from the community!</p>
     {:else}
       {#each themeContext.userThemes as theme (theme.metadata.id)}
-        {#await getThemeIcons({ color: theme.colors?.logo, invert: theme.light }) then iconSvg}
+        {#await getThemeIcons({ color: getThemeIconColor(theme), invert: mode.current === "light" }) then iconSvg}
           {const iconDataUrl = `data:image/svg+xml;base64,${btoa(iconSvg)}`}
           <Label for={theme.metadata.id} class="flex items-center justify-between gap-2 rounded-xl border p-2">
             <div class="flex items-center gap-2">

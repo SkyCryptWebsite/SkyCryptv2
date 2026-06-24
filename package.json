@@ -87,6 +87,7 @@
     "formsnap": "^2.0.1",
     "globals": "^17.6.0",
     "ky": "^2.0.2",
+    "mode-watcher": "^1.1.0",
     "numerable": "^0.3.15",
     "orval": "^8.17.0",
     "paneforge": "^1.0.2",
