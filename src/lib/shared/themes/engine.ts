@@ -9,6 +9,8 @@ export const RUNTIME_THEMES_STYLE_ID = "skycrypt-runtime-themes";
 export const PREVIEW_THEME_ID = "__skycrypt-preview";
 
 const FIRST_PARTY_IMAGE_HOSTS = new Set(["sky.shiiyu.moe", "cupcake.shiiyu.moe"]);
+const LOCAL_FIRST_PARTY_IMAGE_PATHS = new Set(["/img/bg.avif", "/img/enchanted-glint.avif", "/img/enchanted-glint-legacy.avif"]);
+const REMOVED_FIRST_PARTY_THEME_IMAGE_PREFIX = "/img/themes/";
 const runtimeThemeRules = new Map<string, string>();
 let previewThemeRule: string | null = null;
 
@@ -40,8 +42,19 @@ export function mergeThemeWithDefaults(partial: PartialThemeV4): ThemeV4 {
 
 function themeImageUrl(url: string): string {
   const targetUrl = new URL(url);
-  if (FIRST_PARTY_IMAGE_HOSTS.has(targetUrl.hostname) && targetUrl.pathname.startsWith("/img/")) {
-    return `url(${targetUrl.pathname}${targetUrl.search}${targetUrl.hash})`;
+
+  if (FIRST_PARTY_IMAGE_HOSTS.has(targetUrl.hostname)) {
+    const path = `${targetUrl.pathname}${targetUrl.search}${targetUrl.hash}`;
+
+    if (LOCAL_FIRST_PARTY_IMAGE_PATHS.has(targetUrl.pathname)) {
+      return `url(${path})`;
+    }
+
+    if (targetUrl.pathname.startsWith(REMOVED_FIRST_PARTY_THEME_IMAGE_PREFIX)) {
+      return "url(/img/bg.avif)";
+    }
+
+    return `url(${targetUrl.href})`;
   }
 
   return `url(/api/image-proxy?url=${encodeURIComponent(url)})`;
@@ -123,6 +136,11 @@ export class ThemeEngine {
 
     previewThemeRule = ThemeEngine.themeToCssRule(theme, PREVIEW_THEME_ID);
     updateRuntimeStyleElement();
+  }
+
+  static activatePreviewTheme(): void {
+    if (typeof document === "undefined") return;
+
     setTheme(PREVIEW_THEME_ID);
   }
 

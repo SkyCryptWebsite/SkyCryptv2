@@ -2,7 +2,7 @@
   import { getInternalState, getThemeContext } from "$ctx";
   import { SettingsTab } from "$lib/components/header/types";
   import { getThemeIcons } from "$lib/shared/api/themes.remote";
-  import { readComputedThemeCssVars } from "$lib/shared/themes/computed-css-vars";
+  import { readDefaultThemeCssVars } from "$lib/shared/themes/computed-css-vars";
   import { FIRST_PARTY_THEMES } from "$lib/shared/themes/first-party";
   import type { ThemeV4 } from "$lib/shared/themes/schema";
   import { getThemeShareURL } from "$lib/shared/themes/sharing";
@@ -60,8 +60,8 @@
   }
 
   function getThemeIconColor(theme: ThemeV4): string {
-    const computedCssVars = readComputedThemeCssVars();
-    return theme.cssVars.sidebarPrimary ?? theme.cssVars.chart2 ?? theme.cssVars.primary ?? computedCssVars.sidebarPrimary ?? computedCssVars.chart2 ?? computedCssVars.primary ?? "oklch(0.627 0.194 149.214)";
+    const defaultCssVars = readDefaultThemeCssVars();
+    return theme.cssVars.sidebarPrimary ?? theme.cssVars.chart2 ?? theme.cssVars.primary ?? defaultCssVars.sidebarPrimary ?? defaultCssVars.chart2 ?? defaultCssVars.primary ?? "oklch(0.627 0.194 149.214)";
   }
 </script>
 

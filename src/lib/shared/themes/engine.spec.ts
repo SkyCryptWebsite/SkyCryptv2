@@ -5,10 +5,14 @@ import { DEFAULT_THEME } from "./defaults";
 import { mergeThemeWithDefaults, PREVIEW_THEME_ID, RUNTIME_THEMES_STYLE_ID, ThemeEngine } from "./engine";
 import type { PartialThemeV4, ThemeV4 } from "./schema";
 
-vi.mock("mode-watcher", () => ({
-  setTheme: (id: string) => {
+const modeWatcherMock = vi.hoisted(() => ({
+  setTheme: vi.fn((id: string) => {
     document.documentElement.setAttribute("data-theme", id);
-  }
+  })
+}));
+
+vi.mock("mode-watcher", () => ({
+  setTheme: modeWatcherMock.setTheme
 }));
 
 function customTheme(id = "custom-theme"): ThemeV4 {
@@ -48,6 +52,7 @@ describe("Theme Engine", () => {
   beforeEach(() => {
     document.head.innerHTML = "";
     document.documentElement.removeAttribute("data-theme");
+    modeWatcherMock.setTheme.mockClear();
   });
 
   afterEach(() => {
@@ -130,6 +135,40 @@ describe("Theme Engine", () => {
       expect(rule).toContain("  --enchanted-glint: url(/img/enchanted-glint-legacy.avif);");
     });
 
+    it("falls removed first-party theme images back to the default background", ({ expect }) => {
+      const rule = ThemeEngine.themeToCssRule({
+        ...customTheme("removed-first-party-assets"),
+        extras: {
+          minecraft: {
+            palette: "nice-light"
+          },
+          pageBackground: {
+            url: "https://sky.shiiyu.moe/img/themes/light/bg.avif"
+          }
+        }
+      });
+
+      expect(rule).toContain("  --bg-url: url(/img/bg.avif);");
+      expect(rule).not.toContain("/img/themes/light/bg.avif");
+    });
+
+    it("uses direct URLs for non-local first-party images", ({ expect }) => {
+      const rule = ThemeEngine.themeToCssRule({
+        ...customTheme("remote-first-party-assets"),
+        extras: {
+          minecraft: {
+            palette: "nice-light"
+          },
+          pageBackground: {
+            url: "https://sky.shiiyu.moe/img/custom/user-bg.avif"
+          }
+        }
+      });
+
+      expect(rule).toContain("  --bg-url: url(https://sky.shiiyu.moe/img/custom/user-bg.avif);");
+      expect(rule).not.toContain("/api/image-proxy");
+    });
+
     it("omits undefined css vars", ({ expect }) => {
       const rule = ThemeEngine.themeToCssRule({
         ...customTheme("minimal-theme"),
@@ -194,10 +233,18 @@ describe("Theme Engine", () => {
   });
 
   describe("preview", () => {
-    it("writes a preview rule and activates the preview theme id", ({ expect }) => {
+    it("writes a preview rule without activating the preview theme id", ({ expect }) => {
       ThemeEngine.previewTheme(customTheme("editable-theme"));
 
       expect(runtimeStyle()?.textContent).toContain(`data-theme="${PREVIEW_THEME_ID}"`);
+      expect(modeWatcherMock.setTheme).not.toHaveBeenCalled();
+      expect(document.documentElement.getAttribute("data-theme")).toBeNull();
+    });
+
+    it("activates the preview theme id separately", ({ expect }) => {
+      ThemeEngine.activatePreviewTheme();
+
+      expect(modeWatcherMock.setTheme).toHaveBeenCalledWith(PREVIEW_THEME_ID);
       expect(document.documentElement.getAttribute("data-theme")).toBe(PREVIEW_THEME_ID);
     });
 

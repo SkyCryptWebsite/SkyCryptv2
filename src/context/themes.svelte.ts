@@ -10,6 +10,22 @@ import { createContext, untrack } from "svelte";
 const ACTIVE_THEME_STORAGE_KEY = "skycryptActiveTheme";
 themeStorageKey.current = ACTIVE_THEME_STORAGE_KEY;
 
+function ignoreSkippedViewTransition(error: unknown): void {
+  if (error instanceof DOMException && error.name === "AbortError") return;
+  console.warn("Theme transition failed", error);
+}
+
+function runThemeTransition(callback: () => void): void {
+  if (!document.startViewTransition) {
+    callback();
+    return;
+  }
+
+  const transition = document.startViewTransition(callback);
+  void transition.ready.catch(ignoreSkippedViewTransition);
+  void transition.finished.catch(ignoreSkippedViewTransition);
+}
+
 const devalueSerializer = {
   serialize: devalue.stringify,
   deserialize: <T>(value: string): T | undefined => {
@@ -58,10 +74,11 @@ export class ThemeContext {
         if (!this.isFirstParty(resolvedId)) {
           setMode(theme.mode);
         }
-        if (document.startViewTransition) {
-          document.startViewTransition(() => ThemeEngine.setActiveTheme(resolvedId));
-        } else {
+
+        if (resolvedId === this.activeThemeId) {
           ThemeEngine.setActiveTheme(resolvedId);
+        } else {
+          runThemeTransition(() => ThemeEngine.setActiveTheme(resolvedId));
         }
       }
     } else {

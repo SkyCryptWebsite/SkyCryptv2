@@ -1,7 +1,7 @@
 import { DEFAULT_THEME, type ThemeV4 } from "$lib/shared/themes";
 import * as devalue from "devalue";
 import { flushSync, untrack } from "svelte";
-import { afterEach, beforeEach, describe, it } from "vitest";
+import { afterEach, beforeEach, describe, it, vi } from "vitest";
 import { ThemeContext } from "./themes.svelte";
 
 function customTheme(id = "custom"): ThemeV4 {
@@ -20,12 +20,19 @@ function customTheme(id = "custom"): ThemeV4 {
 }
 
 describe("ThemeContext", () => {
+  const originalStartViewTransition = document.startViewTransition;
+
   beforeEach(() => {
     localStorage.clear();
   });
 
   afterEach(() => {
     localStorage.clear();
+    Object.defineProperty(document, "startViewTransition", {
+      configurable: true,
+      value: originalStartViewTransition,
+      writable: true
+    });
   });
 
   it("resolves first-party themes", ({ expect }) => {
@@ -119,6 +126,44 @@ describe("ThemeContext", () => {
       });
     });
 
+    cleanup();
+  });
+
+  it("ignores skipped view transition rejections when selecting a theme", async ({ expect }) => {
+    const startViewTransition = vi.fn((callback: () => void) => {
+      callback();
+
+      return {
+        ready: Promise.reject(new DOMException("Transition was skipped", "AbortError")),
+        finished: Promise.reject(new DOMException("Transition was skipped", "AbortError")),
+        updateCallbackDone: Promise.resolve(),
+        skipTransition: vi.fn()
+      };
+    });
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+
+    Object.defineProperty(document, "startViewTransition", {
+      configurable: true,
+      value: startViewTransition,
+      writable: true
+    });
+
+    const cleanup = $effect.root(() => {
+      const themes = new ThemeContext();
+      flushSync();
+
+      untrack(() => {
+        themes.saveTheme(customTheme("custom-transition"));
+        themes.activeThemeId = "custom-transition";
+      });
+    });
+
+    await Promise.resolve();
+
+    expect(startViewTransition).toHaveBeenCalledTimes(1);
+    expect(warn).not.toHaveBeenCalledWith("Theme transition failed", expect.anything());
+
+    warn.mockRestore();
     cleanup();
   });
 });

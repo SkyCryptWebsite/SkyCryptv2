@@ -2,7 +2,7 @@
   import { getInternalState, getThemeContext } from "$ctx";
   import { readComputedThemeCssVars } from "$lib/shared/themes/computed-css-vars";
   import { DEFAULT_THEME } from "$lib/shared/themes/defaults";
-  import { mergeThemeWithDefaults, ThemeEngine } from "$lib/shared/themes/engine";
+  import { mergeThemeWithDefaults, PREVIEW_THEME_ID, ThemeEngine } from "$lib/shared/themes/engine";
   import { partialThemeV4Schema, themeV4Schema, type ThemeV4 } from "$lib/shared/themes/schema";
   import { flyAndScale } from "$lib/shared/utils";
   import { Switch } from "$ui/switch";
@@ -26,10 +26,11 @@
 
   const internalState = getInternalState();
   const themeContext = getThemeContext();
-  const initialThemeId = activeModeWatcherTheme.current || "default";
+  const initialThemeId = resolveRestorableThemeId(activeModeWatcherTheme.current || "default");
   const initialMode = mode.current ?? "dark";
   let restoreThemeId = initialThemeId;
   let restoreMode = initialMode;
+  let previewActive = false;
 
   function cloneTheme(theme: ThemeV4): ThemeV4 {
     return devalue.parse(devalue.stringify(theme));
@@ -49,6 +50,11 @@
         enchantedGlint: theme.extras?.enchantedGlint ?? DEFAULT_THEME.extras?.enchantedGlint
       }
     };
+  }
+
+  function resolveRestorableThemeId(id: string): string {
+    if (id === PREVIEW_THEME_ID) return "default";
+    return themeContext.allThemes.some((theme) => theme.metadata.id === id) ? id : "default";
   }
 
   function getInitialTheme(): ThemeV4 {
@@ -169,21 +175,46 @@
   }
 
   $effect(() => {
+    if (!internalState.themeEditorOpen) return;
+
     const result = themeV4Schema.safeParse(workingTheme);
     if (result.success) {
-      ThemeEngine.previewTheme(result.data);
+      untrack(() => {
+        ThemeEngine.previewTheme(result.data);
+      });
     }
   });
 
   $effect(() => {
-    if (!internalState.themeEditorOpen) {
-      restoreInitialTheme();
-    }
+    const isOpen = internalState.themeEditorOpen;
+    untrack(() => {
+      if (isOpen) {
+        if (!previewActive) {
+          const initialTheme = getInitialTheme();
+          workingTheme = initialTheme;
+          jsonString = JSON.stringify(initialTheme, null, 2);
+          jsonError = null;
+          previewActive = true;
+          ThemeEngine.activatePreviewTheme();
+        }
+        return;
+      }
+
+      if (previewActive) {
+        previewActive = false;
+        restoreInitialTheme();
+      }
+    });
   });
 
   $effect(() => {
     return () => {
-      restoreInitialTheme();
+      untrack(() => {
+        if (previewActive) {
+          previewActive = false;
+          restoreInitialTheme();
+        }
+      });
     };
   });
 </script>

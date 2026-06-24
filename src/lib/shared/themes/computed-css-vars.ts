@@ -16,3 +16,18 @@ export function readComputedThemeCssVars(): ShadcnThemeVars {
 
   return cssVars;
 }
+
+export function readDefaultThemeCssVars(): ShadcnThemeVars {
+  if (typeof document === "undefined") return {};
+
+  const root = document.documentElement;
+  const activeTheme = root.dataset.theme;
+  if (!activeTheme || activeTheme === "default") return readComputedThemeCssVars();
+
+  try {
+    delete root.dataset.theme;
+    return readComputedThemeCssVars();
+  } finally {
+    root.dataset.theme = activeTheme;
+  }
+}
