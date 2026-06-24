@@ -38,7 +38,7 @@
         {/snippet}
       </Collapsible.Content>
     {/key}
-    <Collapsible.Trigger class={buttonVariants({ variant: "outline", class: "data-[state=open]:mt-3.5 w-full dark:bg-foreground/5 font-semibold" })}>
+    <Collapsible.Trigger class={buttonVariants({ variant: "outline", class: "data-[state=open]:mt-3.5 w-full hover:bg-muted/5 bg-foreground/5 font-semibold" })}>
       {#if statsQuery?.loading}
         <Spinner />
       {:else}

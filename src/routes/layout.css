@@ -241,7 +241,7 @@
     --accent-3: oklch(69.69% 0.1423 76.74);
     --accent-4: oklch(82.84% 0.1548 78.27);
     --destructive: oklch(0.577 0.245 27.325);
-    --border: oklch(0.922 0 0);
+    --border: oklch(1 0 0 / 10%);
     --input: oklch(0.922 0 0);
     --ring: oklch(0.708 0 0);
     --chart-1: oklch(0.871 0.15 154.449);
@@ -439,17 +439,6 @@
   --§f: oklch(0.66 0 0);
 }
 
-@utility light {
-  --text: oklch(0 0 0);
-  --background: oklch(1 0 0);
-  --header: oklch(0.89 0 0);
-  --grey_background: oklch(0.92 0 0);
-  --lore_background: oklch(1 0 0 / 0.93);
-
-  --bg: oklch(1 0 0);
-  color-scheme: light;
-}
-
 @utility shine {
   @apply overflow-hidden before:pointer-events-none before:absolute before:inset-0 before:z-8 before:size-full before:animate-shine before:rounded-lg before:bg-linear-to-t before:from-[oklch(1_0_0/0)] before:via-[oklch(1_0_0/0.50)] before:to-[oklch(0.77_0.09_243.21/0)];
 }
@@ -465,6 +454,11 @@
   background-color: var(--glass-mode-bg);
   -webkit-backdrop-filter: var(--glass-mode-backdrop-filter);
   backdrop-filter: var(--glass-mode-backdrop-filter);
+
+  &:is(.light *) {
+    background-color: var(--glass-performance-bg);
+    --glass-mode-backdrop-filter: none;
+  }
 }
 
 @utility glass-bg-* {

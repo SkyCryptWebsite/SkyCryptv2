@@ -128,7 +128,7 @@
           {#if piece.wiki}
             <Button.Root href={piece.wiki} target="_blank" class="flex shrink items-center justify-center rounded-[0.625rem] bg-text/5 p-2 whitespace-nowrap transition-colors ease-out hover:bg-text/8">
               {#if preferences.mctooltip}
-                <span class="font-skyblock-icons text-2xl px-2 block ml-0.5 mt-0.5">ⓘ</span>
+                <span class="font-skyblock-icons light:invert text-2xl px-2 block ml-0.5 mt-0.5">ⓘ</span>
               {:else}
                 <Info class="mr-2 ml-2 size-6 p-0" />
               {/if}

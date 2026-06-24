@@ -1,11 +1,7 @@
 <script lang="ts">
   import { getHoverContext, getProfileContext } from "$ctx";
-  import { flyAndScale } from "$lib/shared/utils";
-  import X from "@lucide/svelte/icons/x";
-  import { Dialog } from "bits-ui";
-  import { cubicOut } from "svelte/easing";
-  import { fade } from "svelte/transition";
-  import { Drawer } from "vaul-svelte";
+  import * as Dialog from "$ui/dialog";
+  import * as Drawer from "$ui/drawer";
 
   const profile = $derived(getProfileContext().current);
 
@@ -38,7 +34,7 @@
 </div>
 
 {#snippet video()}
-  <video preload="metadata" poster="/img/enable-api-thumbnail.avif" muted loop disablepictureinpicture disableremoteplayback controlslist="nodownload noremoteplayback noplaybackrate" controls autoplay playsinline class="data-[is-hover=false]:rounded-t-lg data-[is-hover=true]:rounded-lg" data-is-hover={isHover.current}>
+  <video preload="metadata" poster="/img/enable-api-thumbnail.avif" muted loop disablepictureinpicture disableremoteplayback controlslist="nodownload noremoteplayback noplaybackrate" controls autoplay playsinline class="data-[is-hover=false]:rounded-t-lg data-[is-hover=true]:rounded-none" data-is-hover={isHover.current}>
     <!-- Best quality (AV1 in WebM) -->
     <source src="/video/enable-api-av1.webm" type="video/webm; codecs=av01" />
 
@@ -58,38 +54,18 @@
 {#snippet modal()}
   <Dialog.Root>
     <Dialog.Trigger class="text-link underline">See here</Dialog.Trigger>
-    <Dialog.Portal>
-      <Dialog.Overlay forceMount class="fixed inset-0 z-40 bg-black/80">
-        {#snippet child({ props, open })}
-          {#if open}
-            <div {...props} transition:fade={{ duration: 300, easing: cubicOut }}></div>
-          {/if}
-        {/snippet}
-      </Dialog.Overlay>
-      <Dialog.Content forceMount class="fixed top-[50%] left-[50%] z-50 w-full max-w-5xl -translate-x-1/2 -translate-y-1/2 p-5">
-        {#snippet child({ props, open })}
-          {#if open}
-            <div {...props} transition:flyAndScale>
-              {@render video()}
-              <Dialog.Close class="absolute top-6 right-6 p-2 text-text/80">
-                <X class="size-6" />
-              </Dialog.Close>
-            </div>
-          {/if}
-        {/snippet}
-      </Dialog.Content>
-    </Dialog.Portal>
+    <Dialog.Content class="w-full sm:max-w-5xl overflow-clip p-0">
+      {@render video()}
+    </Dialog.Content>
   </Dialog.Root>
 {/snippet}
 
 {#snippet drawer()}
   <Drawer.Root shouldScaleBackground={true} setBackgroundColorOnScale={false}>
     <Drawer.Trigger class="text-link underline">See here</Drawer.Trigger>
-    <Drawer.Portal>
-      <Drawer.Overlay class="fixed inset-0 z-40 bg-black/80" />
-      <Drawer.Content class="fixed right-0 bottom-0 left-0 z-50 max-h-[96%]">
-        {@render video()}
-      </Drawer.Content>
-    </Drawer.Portal>
+
+    <Drawer.Content class="before:glass before:glass-bg-popover [&>div:first-child]:mb-4 before:bg-transparent">
+      {@render video()}
+    </Drawer.Content>
   </Drawer.Root>
 {/snippet}

@@ -218,8 +218,7 @@
     {/if}
   </div>
 
-  <div class="fixed top-12 right-0 min-h-dvh w-full light:bg-foreground/50 dark:bg-background/50 @[75rem]/parent:w-[70%]"></div>
-
+  <div class="fixed top-12 right-0 min-h-dvh w-full dark:bg-background/50 @[75rem]/parent:w-[70%]"></div>
   <main data-vaul-drawer-wrapper class="@container relative mx-auto @[75rem]/parent:ml-[30%]">
     {#if getProfileContext().current}
       <div class="space-y-5 p-4 @[75rem]/parent:p-8">
