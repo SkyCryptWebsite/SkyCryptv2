@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.8.1-beta.1
+
+### Patch Changes
+
+- Move theme selection to mode-watcher and generate runtime CSS for custom themes. _[`88c623e`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/88c623e5f7f85d808866a02a707404a4743de467) [@DarthGigi](https://github.com/DarthGigi)_
+
 ## 3.8.1-beta.0
 
 ### Patch Changes
