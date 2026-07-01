@@ -31,7 +31,7 @@ SkyCrypt-Frontend, as the name suggests, is the frontend of SkyCrypt. The backen
   1. `pnpm build` to build the project.
   2. `node build` to start the production server, or `pnpm preview` to use Vite's preview server (not recommended for production deployment).
 
-5. You can now open your browser and go to the address listen in the terminal
+5. You can now open your browser and go to the address listed in the terminal
 
 - For development, by default, the address is `http://localhost:5173`.
 - For preview, by default, the address is `http://localhost:4173`
@@ -43,7 +43,7 @@ If you're not sure what code editor to use VS Code ([Visual Studio Code](https:/
 
 #### Recommended Extensions
 
-VS Code will automatically suggest the extentions we set in the `.vscode/extensions.json` file. Just go to the Extensions tab, click on the `Filter Extensions...` button, and select the `Recommended` filter. Install all the extensions that are listed there.
+VS Code will automatically suggest the extensions we set in the `.vscode/extensions.json` file. Just go to the Extensions tab, click on the `Filter Extensions...` button, and select the `Recommended` filter. Install all the extensions that are listed there.
 
 #### Recommended Settings
 
