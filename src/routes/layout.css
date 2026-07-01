@@ -172,7 +172,7 @@
     --grey_background: var(--muted);
     --lore_background: var(--popover);
     --bg: var(--background);
-    --bg-url: url(/img/bg.avif);
+    --bg-url: url(/img/bg-light.avif);
     --mctooltip-bg: oklch(0.205 0 0);
 
     /* Minecraft color codes (nice-light palette) */
@@ -234,6 +234,7 @@
 
   .dark {
     color-scheme: dark;
+    --bg-url: url(/img/bg.avif);
 
     --background: oklch(0.145 0 0);
     --foreground: oklch(0.985 0 0);
