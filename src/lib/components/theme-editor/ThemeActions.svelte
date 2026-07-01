@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { getInternalState } from "$ctx";
   import type { ThemeV4 } from "$lib/shared/themes/schema";
   import { getThemeShareURL } from "$lib/shared/themes/sharing";
   import { Button } from "$ui/button";
@@ -8,7 +7,6 @@
   import RotateCcw from "@lucide/svelte/icons/rotate-ccw";
   import Save from "@lucide/svelte/icons/save";
   import Share2 from "@lucide/svelte/icons/share-2";
-  import X from "@lucide/svelte/icons/x";
   import { toast } from "svelte-sonner";
 
   let {
@@ -25,12 +23,6 @@
     handleAuthorChange: (author: string) => void;
   }>();
 
-  const internalState = getInternalState();
-
-  function handleClose() {
-    internalState.themeEditorOpen = false;
-  }
-
   async function handleShare() {
     const url = await getThemeShareURL(workingTheme);
     try {
@@ -43,21 +35,18 @@
   }
 </script>
 
-<div class="flex flex-col gap-4 bg-card p-4 text-card-foreground">
+<div class="flex flex-col gap-4 text-card-foreground">
   <div class="flex items-center justify-between">
     <h2 class="text-xl font-bold">Theme Editor</h2>
-    <Button onclick={handleClose} variant="ghost" size="icon" aria-label="Close theme editor">
-      <X class="size-5" />
-    </Button>
   </div>
 
   <div class="grid grid-cols-2 gap-4">
     <div class="flex flex-col gap-2">
-      <Label for="theme-name" class="text-xs font-bold text-muted-foreground uppercase">Theme Name</Label>
+      <Label for="theme-name">Theme Name</Label>
       <Input id="theme-name" type="text" value={workingTheme.metadata.name} placeholder="My Cool Theme" autocomplete="off" oninput={(e) => handleNameChange(e.currentTarget.value)} />
     </div>
     <div class="flex flex-col gap-2">
-      <Label for="theme-author" class="text-xs font-bold text-muted-foreground uppercase">Author</Label>
+      <Label for="theme-author">Author</Label>
       <Input id="theme-author" type="text" value={workingTheme.metadata.author} placeholder="Your Name" autocomplete="off" oninput={(e) => handleAuthorChange(e.currentTarget.value)} />
     </div>
   </div>
@@ -67,7 +56,7 @@
       <Save class="size-4" />
       Save Theme
     </Button>
-    <Button onclick={handleShare} title="Copy Share URL" aria-label="Copy Share URL" variant="secondary" size="icon">
+    <Button onclick={handleShare} title="Copy Share URL" aria-label="Copy Share URL" variant="outline" size="icon">
       <Share2 class="size-4" />
     </Button>
     <Button onclick={onReset} title="Reset Changes" aria-label="Reset Changes" variant="destructive" size="icon">

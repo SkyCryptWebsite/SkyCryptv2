@@ -13,6 +13,7 @@
   import { getPacks } from "$lib/shared/api/skycrypt-api.remote";
   import { parseThemeFromURL } from "$lib/shared/themes/sharing";
   import * as Drawer from "$ui/drawer";
+  import * as Sheet from "$ui/sheet";
   import Wifi from "@lucide/svelte/icons/wifi";
   import WifiOff from "@lucide/svelte/icons/wifi-off";
   import { Tooltip } from "bits-ui";
@@ -22,7 +23,6 @@
   import { toast, Toaster, type ToasterProps } from "svelte-sonner";
   import { SvelteURLSearchParams } from "svelte/reactivity";
   import { writable } from "svelte/store";
-  import { fly } from "svelte/transition";
   import "./layout.css";
 
   let { children }: { children: Snippet } = $props();
@@ -266,16 +266,18 @@
 
 <CommandPalette {ign} bind:loading={commandLoading} />
 
-{#if internalState.themeEditorOpen && !isMobile.current}
-  <div class="fixed left-0 top-12 isolate z-40 h-[calc(100dvh-3rem)] w-[30vw] glass dark:glass-brightness-50 light:glass-brightness-100" transition:fly={{ x: -300, duration: 300 }}>
-    <ThemeEditor />
-  </div>
+{#if !isMobile.current}
+  <Sheet.Root bind:open={internalState.themeEditorOpen}>
+    <Sheet.Content side="left" class="h-[calc(100%-3rem)]! *:data-dialog-close:bg-transparent *:data-dialog-close:border *:data-dialog-close:border-border top-12! overflow-y-auto p-4 glass-bg-popover w-[30%]! glass standard:bg-transparent! max-w-none!" showOverlay={false} escapeKeydownBehavior="ignore" interactOutsideBehavior="ignore" preventScroll={false}>
+      <ThemeEditor />
+    </Sheet.Content>
+  </Sheet.Root>
 {/if}
 
 {#if isMobile.current}
   <Drawer.Root bind:open={internalState.themeEditorOpen} shouldScaleBackground={true}>
-    <Drawer.Content class="before:glass before:glass-bg-popover [&>div:first-child]:hidden! before:bg-transparent">
-      <div class="flex-1 overflow-auto">
+    <Drawer.Content class="before:glass before:glass-bg-popover [&>div:first-child]:my-4 before:bg-transparent">
+      <div class="overflow-auto p-4">
         <ThemeEditor />
       </div>
     </Drawer.Content>

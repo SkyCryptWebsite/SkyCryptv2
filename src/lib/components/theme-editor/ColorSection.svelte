@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { Input } from "$ui/input";
-  import { Label } from "$ui/label";
   import { hexToOklch, oklchToHex } from "$lib/shared/themes/color-utils";
   import { readComputedThemeCssVars } from "$lib/shared/themes/computed-css-vars";
   import type { ShadcnThemeVarKey, ThemeV4 } from "$lib/shared/themes/schema";
+  import { Input } from "$ui/input";
+  import { Label } from "$ui/label";
 
   let { workingTheme = $bindable() } = $props<{
     workingTheme: ThemeV4;
@@ -45,7 +45,7 @@
   }
 </script>
 
-<div class="flex flex-col gap-6 p-4">
+<div class="flex flex-col gap-4">
   {#each GROUPS as group (group.name)}
     <div class="flex flex-col gap-3">
       <h3 class="text-sm font-bold tracking-wider text-muted-foreground uppercase">{group.name}</h3>
@@ -53,25 +53,22 @@
         {#each group.keys as key (key)}
           <div class="flex flex-col gap-1.5">
             <Label for="color-{key}" class="text-xs font-semibold text-foreground/80">{formatKey(key)}</Label>
-            <input
+            <Input
               id="color-{key}"
               type="color"
               value={oklchToHex(getColorValue(key))}
               oninput={(e) => {
                 setColorValue(key, e.currentTarget.value);
               }}
-              class="h-8 w-full cursor-pointer rounded-md border border-border bg-muted transition-colors focus:border-ring focus:outline-none" />
+              class="p-0" />
           </div>
         {/each}
       </div>
     </div>
   {/each}
 
-  <div class="flex flex-col gap-3">
-    <h3 class="text-sm font-bold tracking-wider text-muted-foreground uppercase">Radius</h3>
-    <div class="flex flex-col gap-1.5">
-      <Label for="theme-radius" class="text-xs font-semibold text-foreground/80">Radius</Label>
-      <Input id="theme-radius" value={workingTheme.cssVars.radius ?? readComputedThemeCssVars().radius ?? "0.625rem"} oninput={(e) => (workingTheme.cssVars.radius = e.currentTarget.value)} />
-    </div>
+  <div class="flex flex-col gap-1.5">
+    <Label for="theme-radius" class="text-xs font-semibold text-foreground/80">Base Corner Radius</Label>
+    <Input id="theme-radius" value={workingTheme.cssVars.radius ?? readComputedThemeCssVars().radius ?? "0.625rem"} oninput={(e) => (workingTheme.cssVars.radius = e.currentTarget.value)} />
   </div>
 </div>

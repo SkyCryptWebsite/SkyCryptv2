@@ -4,19 +4,17 @@
   import { DEFAULT_THEME } from "$lib/shared/themes/defaults";
   import { mergeThemeWithDefaults, PREVIEW_THEME_ID, ThemeEngine } from "$lib/shared/themes/engine";
   import { partialThemeV4Schema, themeV4Schema, type ThemeV4 } from "$lib/shared/themes/schema";
-  import { flyAndScale } from "$lib/shared/utils";
+  import * as Item from "$ui/item";
+  import { Label } from "$ui/label";
+  import * as Select from "$ui/select";
+  import { Separator } from "$ui/separator";
   import { Switch } from "$ui/switch";
   import * as Tabs from "$ui/tabs";
   import { Textarea } from "$ui/textarea";
-  import Check from "@lucide/svelte/icons/check";
-  import ChevronsDown from "@lucide/svelte/icons/chevrons-down";
-  import ChevronsUp from "@lucide/svelte/icons/chevrons-up";
-  import ChevronsUpDown from "@lucide/svelte/icons/chevrons-up-down";
   import Moon from "@lucide/svelte/icons/moon";
   import Sun from "@lucide/svelte/icons/sun";
-  import { Select } from "bits-ui";
   import * as devalue from "devalue";
-  import { mode, setMode, setTheme, theme as activeModeWatcherTheme } from "mode-watcher";
+  import { theme as activeModeWatcherTheme, mode, setMode, setTheme } from "mode-watcher";
   import { untrack } from "svelte";
   import { toast } from "svelte-sonner";
   import BackgroundSection from "./BackgroundSection.svelte";
@@ -222,89 +220,62 @@
 <div class="flex h-full w-full flex-col">
   <ThemeActions {workingTheme} onReset={handleReset} onSave={handleSave} {handleNameChange} {handleAuthorChange} />
 
-  <div class="flex-1 overflow-y-auto">
-    <div class="p-4">
-      <div class="mb-4 flex flex-col gap-2">
-        <label for="fork-select" class="text-xs font-bold text-muted-foreground uppercase">Start From</label>
+  <div class="flex-1 mt-4 space-y-4">
+    <Separator />
+    <div class="flex flex-col gap-2">
+      <Label for="fork-select">Start From</Label>
 
-        <Select.Root type="single" onValueChange={(value) => handleFork(value)}>
-          <Select.Trigger id="fork-select" class="flex items-center justify-between rounded-lg bg-muted p-2 text-left">
-            <span>{workingTheme.metadata.name || "Select a theme..."}</span>
-            <ChevronsUpDown class="size-4 text-muted-foreground" />
-          </Select.Trigger>
-          <Select.Portal>
-            <Select.Content forceMount class="focus-override z-50 max-h-(--bits-select-content-available-height) w-(--bits-select-anchor-width) min-w-(--bits-select-anchor-width) rounded-lg bg-popover px-1 py-3 text-popover-foreground outline-hidden select-none data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1" sideOffset={10}>
-              {#snippet child({ open, props, wrapperProps })}
-                {#if open}
-                  <div {...wrapperProps}>
-                    <div {...props} transition:flyAndScale>
-                      <Select.ScrollUpButton class="flex w-full items-center justify-center">
-                        <ChevronsUp class="size-3" />
-                      </Select.ScrollUpButton>
-
-                      <Select.Viewport class="p-1">
-                        {#each themeContext.allThemes as theme (theme.metadata.id)}
-                          <Select.Item class="flex h-10 w-full items-center rounded-lg py-3 pr-1.5 pl-5 text-sm capitalize outline-hidden select-none data-disabled:opacity-50 data-highlighted:bg-muted" label={theme.metadata.name} value={theme.metadata.id}>
-                            {#snippet children({ selected })}
-                              {theme.metadata.name}
-
-                              {#if selected}
-                                <div class="ml-auto">
-                                  <Check aria-label="check" />
-                                </div>
-                              {/if}
-                            {/snippet}
-                          </Select.Item>
-                        {/each}
-                      </Select.Viewport>
-                      <Select.ScrollDownButton class="flex w-full items-center justify-center">
-                        <ChevronsDown class="size-3" />
-                      </Select.ScrollDownButton>
-                    </div>
-                  </div>
-                {/if}
-              {/snippet}
-            </Select.Content>
-          </Select.Portal>
-        </Select.Root>
-      </div>
-
-      <Tabs.Root value="visual" onValueChange={onTabChange} class="w-full">
-        <Tabs.List class="grid w-full grid-cols-2">
-          <Tabs.Trigger value="visual">Visual</Tabs.Trigger>
-          <Tabs.Trigger value="code">Code (JSON)</Tabs.Trigger>
-        </Tabs.List>
-
-        <Tabs.Content value="visual" class="mt-4 flex flex-col gap-4">
-          <div class="flex items-center justify-between rounded-lg bg-muted p-4">
-            <div class="flex items-center gap-3">
-              {#if mode.current === "light"}
-                <Sun class="size-5" />
-              {:else}
-                <Moon class="size-5" />
-              {/if}
-              <div class="flex flex-col">
-                <span class="text-sm font-bold text-foreground">{mode.current === "light" ? "Light Mode" : "Dark Mode"}</span>
-                <span class="text-xs text-muted-foreground">Toggle between light and dark base mode</span>
-              </div>
-            </div>
-            <Switch checked={mode.current === "light"} onCheckedChange={setLightMode} />
-          </div>
-
-          <ColorSection bind:workingTheme />
-          <BackgroundSection bind:workingTheme />
-          <MCColorSection bind:workingTheme />
-        </Tabs.Content>
-
-        <Tabs.Content value="code" class="mt-4 flex flex-col gap-2">
-          <Textarea value={jsonString} oninput={handleJsonChange} class="h-125 font-mono text-xs" spellcheck="false" />
-          {#if jsonError}
-            <div class="rounded-lg bg-destructive/10 p-3 text-xs text-destructive">
-              Error: {jsonError}
-            </div>
-          {/if}
-        </Tabs.Content>
-      </Tabs.Root>
+      <Select.Root type="single" onValueChange={(value) => handleFork(value)}>
+        <Select.Trigger id="fork-select" class="w-full">
+          <span>{workingTheme.metadata.name || "Select a theme..."}</span>
+        </Select.Trigger>
+        <Select.Content>
+          {#each themeContext.allThemes as theme (theme.metadata.id)}
+            <Select.Item label={theme.metadata.name} value={theme.metadata.id}></Select.Item>
+          {/each}
+        </Select.Content>
+      </Select.Root>
     </div>
+
+    <Tabs.Root value="visual" onValueChange={onTabChange} class="w-full">
+      <Tabs.List class="w-full bg-transparent border">
+        <Tabs.Trigger value="visual">Visual</Tabs.Trigger>
+        <Tabs.Trigger value="code">Code (JSON)</Tabs.Trigger>
+      </Tabs.List>
+
+      <Tabs.Content value="visual" class="flex flex-col gap-4">
+        <Item.Root variant="outline">
+          <Item.Media variant="icon">
+            {#if mode.current === "light"}
+              <Sun />
+            {:else}
+              <Moon />
+            {/if}
+          </Item.Media>
+          <Item.Content>
+            <Item.Title>{mode.current === "light" ? "Light Mode" : "Dark Mode"}</Item.Title>
+            <Item.Description>Toggle between light and dark base mode</Item.Description>
+          </Item.Content>
+          <Item.Actions>
+            <Switch checked={mode.current === "light"} onCheckedChange={setLightMode} />
+          </Item.Actions>
+        </Item.Root>
+
+        <ColorSection bind:workingTheme />
+        <Separator />
+        <BackgroundSection bind:workingTheme />
+        <Separator />
+        <MCColorSection bind:workingTheme />
+      </Tabs.Content>
+
+      <Tabs.Content value="code" class="mt-4 flex flex-col gap-2">
+        <Textarea value={jsonString} oninput={handleJsonChange} class="h-125 font-mono text-xs" spellcheck="false" />
+        {#if jsonError}
+          <div class="rounded-lg bg-destructive/10 p-3 text-xs text-destructive">
+            Error: {jsonError}
+          </div>
+        {/if}
+      </Tabs.Content>
+    </Tabs.Root>
   </div>
 </div>
