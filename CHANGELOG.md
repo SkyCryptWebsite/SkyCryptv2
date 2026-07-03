@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.9.0-beta.2
+
+### Minor Changes
+
+- Add dual-mode custom themes with V5 schema migration and mode-watcher-driven light/dark switching. _[`c30f460`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/c30f460ebe9ae6c65d7fcd5442698fb56ab0809f) [@DarthGigi](https://github.com/DarthGigi)_
+
 ## 3.8.1-beta.1
 
 ### Patch Changes
