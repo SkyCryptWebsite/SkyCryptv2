@@ -1,14 +1,14 @@
 <script lang="ts">
   import { hexToOklch, oklchToHex } from "$lib/shared/themes/color-utils";
-  import { DEFAULT_THEME } from "$lib/shared/themes/defaults";
   import { MC_PALETTES, paletteNames } from "$lib/shared/themes/presets";
-  import type { SkyCryptThemeExtras, ThemeV4 } from "$lib/shared/themes/schema";
+  import type { SkyCryptThemeExtras, ThemeModeName, ThemeV5 } from "$lib/shared/themes/schema";
   import { Input } from "$ui/input";
   import { Label } from "$ui/label";
   import * as Select from "$ui/select";
 
-  let { workingTheme = $bindable() } = $props<{
-    workingTheme: ThemeV4;
+  let { workingTheme = $bindable(), editingMode } = $props<{
+    workingTheme: ThemeV5;
+    editingMode: ThemeModeName;
   }>();
 
   type McCode = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "a" | "b" | "c" | "d" | "e" | "f";
@@ -18,13 +18,13 @@
   const mcCodes: McCode[] = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"];
 
   function ensureMinecraft() {
-    workingTheme.extras ??= {};
-    workingTheme.extras.minecraft ??= {
-      palette: DEFAULT_THEME.extras?.minecraft?.palette ?? "nice-light"
+    workingTheme.modes[editingMode].extras ??= {};
+    workingTheme.modes[editingMode].extras!.minecraft ??= {
+      palette: "nice-light"
     };
   }
 
-  let minecraft: MinecraftExtras = $derived(workingTheme.extras?.minecraft ?? DEFAULT_THEME.extras?.minecraft ?? { palette: "nice-light" });
+  let minecraft: MinecraftExtras = $derived(workingTheme.modes[editingMode].extras?.minecraft ?? { palette: "nice-light" });
 
   function getEffectiveColor(code: McCode) {
     if (minecraft.overrides?.[code]) return minecraft.overrides[code];
@@ -35,13 +35,13 @@
 
   function setPalette(value: string) {
     ensureMinecraft();
-    workingTheme.extras.minecraft.palette = value as McPalette;
+    workingTheme.modes[editingMode].extras!.minecraft!.palette = value as McPalette;
   }
 
   function setOverride(code: McCode, color: string) {
     ensureMinecraft();
-    workingTheme.extras.minecraft.overrides ??= {};
-    workingTheme.extras.minecraft.overrides[code] = color;
+    workingTheme.modes[editingMode].extras!.minecraft!.overrides ??= {};
+    workingTheme.modes[editingMode].extras!.minecraft!.overrides[code] = color;
   }
 </script>
 

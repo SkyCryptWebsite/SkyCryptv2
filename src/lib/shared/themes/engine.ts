@@ -2,8 +2,8 @@ import { setTheme } from "mode-watcher";
 import { SHADCN_CSS_VAR_MAP } from "./css-vars";
 import { DEFAULT_THEME } from "./defaults";
 import { getPaletteColors } from "./presets";
-import { themeV4Schema } from "./schema";
-import type { PartialThemeV4, ShadcnThemeVarKey, SkyCryptThemeExtras, ThemeV4 } from "./schema";
+import { themeV5Schema } from "./schema";
+import type { PartialThemeV5, ShadcnThemeVarKey, ThemeModeDefinition, ThemeModeName, ThemeV5 } from "./schema";
 
 export const RUNTIME_THEMES_STYLE_ID = "skycrypt-runtime-themes";
 export const PREVIEW_THEME_ID = "__skycrypt-preview";
@@ -13,26 +13,22 @@ const LOCAL_FIRST_PARTY_IMAGE_PATHS = new Set(["/img/bg.avif", "/img/enchanted-g
 const REMOVED_FIRST_PARTY_THEME_IMAGE_PREFIX = "/img/themes/";
 const runtimeThemeRules = new Map<string, string>();
 let previewThemeRule: string | null = null;
+type PartialThemeModeDefinition = NonNullable<NonNullable<PartialThemeV5["modes"]>[ThemeModeName]>;
 
-function mergeExtras(partial: PartialThemeV4["extras"]): SkyCryptThemeExtras {
-  const defaultExtras = DEFAULT_THEME.extras;
-
+function mergeModeWithDefaults(partial: PartialThemeModeDefinition | undefined): ThemeModeDefinition {
   return {
-    minecraft: {
-      palette: partial?.minecraft?.palette ?? defaultExtras?.minecraft?.palette ?? "nice-light",
-      overrides: partial?.minecraft?.overrides ?? defaultExtras?.minecraft?.overrides
-    },
-    pageBackground: partial?.pageBackground ?? defaultExtras?.pageBackground,
-    enchantedGlint: partial?.enchantedGlint ?? defaultExtras?.enchantedGlint
+    cssVars: partial?.cssVars ?? {},
+    extras: partial?.extras
   };
 }
 
-export function mergeThemeWithDefaults(partial: PartialThemeV4): ThemeV4 {
+export function mergeThemeWithDefaults(partial: PartialThemeV5): ThemeV5 {
   return {
-    schema: 4,
-    mode: partial.mode ?? DEFAULT_THEME.mode,
-    cssVars: partial.cssVars ?? {},
-    extras: mergeExtras(partial.extras),
+    schema: 5,
+    modes: {
+      dark: mergeModeWithDefaults(partial.modes?.dark),
+      light: mergeModeWithDefaults(partial.modes?.light)
+    },
     metadata: {
       ...DEFAULT_THEME.metadata,
       ...partial.metadata
@@ -99,8 +95,34 @@ function addDeclaration(declarations: string[], cssVar: string, value: string | 
   }
 }
 
+function modeToCssRule(themeId: string, modeName: ThemeModeName, modeDefinition: ThemeModeDefinition): string {
+  const declarations: string[] = [];
+
+  for (const [key, cssVar] of Object.entries(SHADCN_CSS_VAR_MAP)) {
+    addDeclaration(declarations, cssVar, modeDefinition.cssVars[key as ShadcnThemeVarKey]);
+  }
+
+  const minecraft = modeDefinition.extras?.minecraft;
+  if (minecraft) {
+    const colors = getPaletteColors(minecraft.palette, minecraft.overrides);
+    for (const [code, color] of Object.entries(colors)) {
+      declarations.push(`  --${code}: ${color};`);
+    }
+  }
+
+  if (modeDefinition.extras?.pageBackground?.url) {
+    declarations.push(`  --bg-url: ${themeImageUrl(modeDefinition.extras.pageBackground.url)};`);
+  }
+
+  if (modeDefinition.extras?.enchantedGlint) {
+    declarations.push(`  --enchanted-glint: ${themeImageUrl(modeDefinition.extras.enchantedGlint)};`);
+  }
+
+  return [`:root[data-theme="${cssEscape(themeId)}"].${modeName} {`, ...declarations, "}"].join("\n");
+}
+
 export class ThemeEngine {
-  static syncRuntimeThemes(themes: ThemeV4[]): void {
+  static syncRuntimeThemes(themes: ThemeV5[]): void {
     if (typeof document === "undefined") return;
 
     runtimeThemeRules.clear();
@@ -112,7 +134,7 @@ export class ThemeEngine {
     updateRuntimeStyleElement();
   }
 
-  static upsertRuntimeTheme(theme: ThemeV4): void {
+  static upsertRuntimeTheme(theme: ThemeV5): void {
     if (typeof document === "undefined") return;
     if (theme.metadata.id === DEFAULT_THEME.metadata.id) return;
 
@@ -131,7 +153,7 @@ export class ThemeEngine {
     setTheme(id);
   }
 
-  static previewTheme(theme: ThemeV4): void {
+  static previewTheme(theme: ThemeV5): void {
     if (typeof document === "undefined") return;
 
     previewThemeRule = ThemeEngine.themeToCssRule(theme, PREVIEW_THEME_ID);
@@ -151,36 +173,15 @@ export class ThemeEngine {
     updateRuntimeStyleElement();
   }
 
-  static themeToCssRule(theme: ThemeV4, idOverride?: string): string {
-    const result = themeV4Schema.safeParse(theme);
+  static themeToCssRule(theme: ThemeV5, idOverride?: string): string {
+    const result = themeV5Schema.safeParse(theme);
     if (!result.success) {
       throw new Error(`Cannot generate CSS for invalid theme: ${result.error.issues[0]?.message ?? "invalid theme"}`);
     }
 
     const resolvedTheme = mergeThemeWithDefaults(result.data);
     const id = idOverride ?? resolvedTheme.metadata.id;
-    const declarations: string[] = [];
 
-    for (const [key, cssVar] of Object.entries(SHADCN_CSS_VAR_MAP)) {
-      addDeclaration(declarations, cssVar, resolvedTheme.cssVars[key as ShadcnThemeVarKey]);
-    }
-
-    const minecraft = resolvedTheme.extras?.minecraft;
-    if (minecraft) {
-      const colors = getPaletteColors(minecraft.palette, minecraft.overrides);
-      for (const [code, color] of Object.entries(colors)) {
-        declarations.push(`  --${code}: ${color};`);
-      }
-    }
-
-    if (resolvedTheme.extras?.pageBackground?.url) {
-      declarations.push(`  --bg-url: ${themeImageUrl(resolvedTheme.extras.pageBackground.url)};`);
-    }
-
-    if (resolvedTheme.extras?.enchantedGlint) {
-      declarations.push(`  --enchanted-glint: ${themeImageUrl(resolvedTheme.extras.enchantedGlint)};`);
-    }
-
-    return [`:root[data-theme="${cssEscape(id)}"] {`, ...declarations, "}"].join("\n");
+    return [modeToCssRule(id, "dark", resolvedTheme.modes.dark), modeToCssRule(id, "light", resolvedTheme.modes.light)].join("\n\n");
   }
 }

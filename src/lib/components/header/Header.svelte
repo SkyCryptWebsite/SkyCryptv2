@@ -5,6 +5,7 @@
   import Settings from "$lib/components/header/settings";
   import { getThemeIcons } from "$lib/shared/api/themes.remote";
   import { readComputedThemeCssVars } from "$lib/shared/themes/computed-css-vars";
+  import type { ThemeModeName } from "$lib/shared/themes/schema";
   import Menu from "$src/lib/components/header/Menu.svelte";
   import { Button as ShadcnButton } from "$ui/button";
   import MoonIcon from "@lucide/svelte/icons/moon";
@@ -17,7 +18,9 @@
   const theme = getThemeContext();
   const themeIconColor = $derived.by(() => {
     const computedCssVars = readComputedThemeCssVars();
-    return theme.activeTheme?.cssVars.sidebarPrimary ?? theme.activeTheme?.cssVars.chart2 ?? theme.activeTheme?.cssVars.primary ?? computedCssVars.sidebarPrimary ?? computedCssVars.chart2 ?? computedCssVars.primary;
+    const modeName: ThemeModeName = mode.current === "light" ? "light" : "dark";
+    const themeCssVars = theme.activeTheme?.modes[modeName].cssVars;
+    return themeCssVars?.sidebarPrimary ?? themeCssVars?.chart2 ?? themeCssVars?.primary ?? computedCssVars.sidebarPrimary ?? computedCssVars.chart2 ?? computedCssVars.primary;
   });
   const themeIconQuery = $derived(getThemeIcons({ color: themeIconColor, invert: mode.current === "light" }));
 

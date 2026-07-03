@@ -4,7 +4,7 @@
   import { getThemeIcons } from "$lib/shared/api/themes.remote";
   import { readDefaultThemeCssVars } from "$lib/shared/themes/computed-css-vars";
   import { FIRST_PARTY_THEMES } from "$lib/shared/themes/first-party";
-  import type { ThemeV4 } from "$lib/shared/themes/schema";
+  import type { ThemeModeName, ThemeV5 } from "$lib/shared/themes/schema";
   import { getThemeShareURL } from "$lib/shared/themes/sharing";
   import * as AlertDialog from "$ui/alert-dialog";
   import { Button } from "$ui/button";
@@ -59,9 +59,17 @@
     internalState.settingsOpen = false; // Close settings modal
   }
 
-  function getThemeIconColor(theme: ThemeV4): string {
+  function getThemeIconColor(theme: ThemeV5): string {
     const defaultCssVars = readDefaultThemeCssVars();
-    return theme.cssVars.sidebarPrimary ?? theme.cssVars.chart2 ?? theme.cssVars.primary ?? defaultCssVars.sidebarPrimary ?? defaultCssVars.chart2 ?? defaultCssVars.primary ?? "oklch(0.627 0.194 149.214)";
+    const modeName: ThemeModeName = mode.current === "light" ? "light" : "dark";
+    const vars = theme.modes[modeName].cssVars;
+    return vars.sidebarPrimary ?? vars.chart2 ?? vars.primary ?? defaultCssVars.sidebarPrimary ?? defaultCssVars.chart2 ?? defaultCssVars.primary ?? "oklch(0.627 0.194 149.214)";
+  }
+
+  function getThemeIconKey(theme: ThemeV5): string {
+    const iconColor = getThemeIconColor(theme);
+    const modeName = mode.current === "light" ? "light" : "dark";
+    return `${theme.metadata.id}:${modeName}:${iconColor}:${mode.current === "light"}`;
   }
 </script>
 
@@ -81,27 +89,29 @@
   <RadioGroup.Root class="mt-4 flex max-h-96 flex-col gap-4 overflow-x-clip overflow-y-auto" bind:value={themeContext.current}>
     <h5 class="text-sm font-semibold">Official Themes</h5>
     {#each FIRST_PARTY_THEMES as theme (theme.metadata.id)}
-      {#await getThemeIcons({ color: getThemeIconColor(theme), invert: mode.current === "light" }) then iconSvg}
-        {const iconDataUrl = `data:image/svg+xml;base64,${btoa(iconSvg)}`}
-        <Label for={theme.metadata.id} class="flex items-center justify-between gap-4 rounded-xl border p-2">
-          <div class="flex items-center gap-2">
-            <Avatar.Root class="shrink-0 select-none">
-              <Avatar.Image loading="lazy" src={iconDataUrl} alt={theme.metadata.name} class="pointer-events-none aspect-square size-10 h-full rounded-xl select-none"></Avatar.Image>
-              <Avatar.Fallback class="flex items-center rounded-xl text-center font-semibold uppercase">{theme.metadata.name.slice(0, 2)}</Avatar.Fallback>
-            </Avatar.Root>
-            <div class="flex flex-col">
-              <h4 class="font-semibold text-text/90">{theme.metadata.name}</h4>
-              <p class="overflow-hidden font-normal text-ellipsis whitespace-nowrap text-text/60">
-                by
-                <span class="text-text/80">{theme.metadata.author}</span>
-              </p>
+      {#key getThemeIconKey(theme)}
+        {#await getThemeIcons({ color: getThemeIconColor(theme), invert: mode.current === "light" }) then iconSvg}
+          {const iconDataUrl = `data:image/svg+xml;base64,${btoa(iconSvg)}`}
+          <Label for={theme.metadata.id} class="flex items-center justify-between gap-4 rounded-xl border p-2">
+            <div class="flex items-center gap-2">
+              <Avatar.Root class="shrink-0 select-none">
+                <Avatar.Image loading="lazy" src={iconDataUrl} alt={theme.metadata.name} class="pointer-events-none aspect-square size-10 h-full rounded-xl select-none"></Avatar.Image>
+                <Avatar.Fallback class="flex items-center rounded-xl text-center font-semibold uppercase">{theme.metadata.name.slice(0, 2)}</Avatar.Fallback>
+              </Avatar.Root>
+              <div class="flex flex-col">
+                <h4 class="font-semibold text-text/90">{theme.metadata.name}</h4>
+                <p class="overflow-hidden font-normal text-ellipsis whitespace-nowrap text-text/60">
+                  by
+                  <span class="text-text/80">{theme.metadata.author}</span>
+                </p>
+              </div>
             </div>
-          </div>
-          <RadioGroup.Item id={theme.metadata.id} value={theme.metadata.id} class="group inline-flex h-6 min-h-6 w-10 shrink-0 cursor-pointer items-center rounded-full px-0 transition-colors ease-out">
-            <Check class="size-6 text-icon group-data-[state=unchecked]:invisible" />
-          </RadioGroup.Item>
-        </Label>
-      {/await}
+            <RadioGroup.Item id={theme.metadata.id} value={theme.metadata.id} class="group inline-flex h-6 min-h-6 w-10 shrink-0 cursor-pointer items-center rounded-full px-0 transition-colors ease-out">
+              <Check class="size-6 text-icon group-data-[state=unchecked]:invisible" />
+            </RadioGroup.Item>
+          </Label>
+        {/await}
+      {/key}
     {/each}
 
     <div class="space-y-2">
@@ -117,42 +127,44 @@
       <p class="text-muted-foreground italic">No custom themes yet. Create your own theme or import one from the community!</p>
     {:else}
       {#each themeContext.userThemes as theme (theme.metadata.id)}
-        {#await getThemeIcons({ color: getThemeIconColor(theme), invert: mode.current === "light" }) then iconSvg}
-          {const iconDataUrl = `data:image/svg+xml;base64,${btoa(iconSvg)}`}
-          <Label for={theme.metadata.id} class="flex items-center justify-between gap-2 rounded-xl border p-2">
-            <div class="flex items-center gap-2">
-              <Avatar.Root class="shrink-0 select-none">
-                <Avatar.Image loading="lazy" src={iconDataUrl} alt={theme.metadata.name} class="pointer-events-none aspect-square size-10 h-full rounded-xl select-none"></Avatar.Image>
-                <Avatar.Fallback class="flex items-center rounded-xl text-center font-semibold uppercase">{theme.metadata.name.slice(0, 2)}</Avatar.Fallback>
-              </Avatar.Root>
-              <div class="flex flex-col">
-                <h4 class="font-semibold">{theme.metadata.name}</h4>
-                <p class="overflow-hidden font-normal text-ellipsis whitespace-nowrap text-muted-foreground">
-                  by
-                  {theme.metadata.author}
-                </p>
+        {#key getThemeIconKey(theme)}
+          {#await getThemeIcons({ color: getThemeIconColor(theme), invert: mode.current === "light" }) then iconSvg}
+            {const iconDataUrl = `data:image/svg+xml;base64,${btoa(iconSvg)}`}
+            <Label for={theme.metadata.id} class="flex items-center justify-between gap-2 rounded-xl border p-2">
+              <div class="flex items-center gap-2">
+                <Avatar.Root class="shrink-0 select-none">
+                  <Avatar.Image loading="lazy" src={iconDataUrl} alt={theme.metadata.name} class="pointer-events-none aspect-square size-10 h-full rounded-xl select-none"></Avatar.Image>
+                  <Avatar.Fallback class="flex items-center rounded-xl text-center font-semibold uppercase">{theme.metadata.name.slice(0, 2)}</Avatar.Fallback>
+                </Avatar.Root>
+                <div class="flex flex-col">
+                  <h4 class="font-semibold">{theme.metadata.name}</h4>
+                  <p class="overflow-hidden font-normal text-ellipsis whitespace-nowrap text-muted-foreground">
+                    by
+                    {theme.metadata.author}
+                  </p>
+                </div>
               </div>
-            </div>
 
-            <div class="flex items-center gap-1">
-              <RadioGroup.Item id={theme.metadata.id} value={theme.metadata.id} class="group inline-flex h-6 min-h-6 w-10 shrink-0 cursor-pointer items-center rounded-full px-0 transition-colors ease-out">
-                <Check class="size-6 text-icon group-data-[state=unchecked]:invisible" />
-              </RadioGroup.Item>
+              <div class="flex items-center gap-1">
+                <RadioGroup.Item id={theme.metadata.id} value={theme.metadata.id} class="group inline-flex h-6 min-h-6 w-10 shrink-0 cursor-pointer items-center rounded-full px-0 transition-colors ease-out">
+                  <Check class="size-6 text-icon group-data-[state=unchecked]:invisible" />
+                </RadioGroup.Item>
 
-              <Button title="Edit theme" variant="secondary" onclick={() => openThemeEditor(theme.metadata.id)} aria-label="Edit theme">
-                <Edit class="size-4" />
-              </Button>
+                <Button title="Edit theme" variant="secondary" onclick={() => openThemeEditor(theme.metadata.id)} aria-label="Edit theme">
+                  <Edit class="size-4" />
+                </Button>
 
-              <Button title="Share theme" variant="secondary" onclick={() => shareTheme(theme.metadata.id)} aria-label="Share theme">
-                <Link2 class="size-4" />
-              </Button>
+                <Button title="Share theme" variant="secondary" onclick={() => shareTheme(theme.metadata.id)} aria-label="Share theme">
+                  <Link2 class="size-4" />
+                </Button>
 
-              <Button title="Delete theme" variant="destructive" onclick={() => confirmDelete(theme.metadata.id)} aria-label="Delete theme">
-                <Trash2 class="size-4" />
-              </Button>
-            </div>
-          </Label>
-        {/await}
+                <Button title="Delete theme" variant="destructive" onclick={() => confirmDelete(theme.metadata.id)} aria-label="Delete theme">
+                  <Trash2 class="size-4" />
+                </Button>
+              </div>
+            </Label>
+          {/await}
+        {/key}
       {/each}
     {/if}
   </RadioGroup.Root>

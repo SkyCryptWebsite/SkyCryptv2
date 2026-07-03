@@ -1,12 +1,13 @@
 <script lang="ts">
   import { hexToOklch, oklchToHex } from "$lib/shared/themes/color-utils";
   import { readComputedThemeCssVars } from "$lib/shared/themes/computed-css-vars";
-  import type { ShadcnThemeVarKey, ThemeV4 } from "$lib/shared/themes/schema";
+  import type { ShadcnThemeVarKey, ThemeModeName, ThemeV5 } from "$lib/shared/themes/schema";
   import { Input } from "$ui/input";
   import { Label } from "$ui/label";
 
-  let { workingTheme = $bindable() } = $props<{
-    workingTheme: ThemeV4;
+  let { workingTheme = $bindable(), editingMode } = $props<{
+    workingTheme: ThemeV5;
+    editingMode: ThemeModeName;
   }>();
 
   const GROUPS: { name: string; keys: ShadcnThemeVarKey[] }[] = [
@@ -37,11 +38,11 @@
   }
 
   function getColorValue(key: ShadcnThemeVarKey): string {
-    return workingTheme.cssVars[key] ?? readComputedThemeCssVars()[key] ?? "oklch(0.5 0 0)";
+    return workingTheme.modes[editingMode].cssVars[key] ?? readComputedThemeCssVars()[key] ?? "oklch(0.5 0 0)";
   }
 
   function setColorValue(key: ShadcnThemeVarKey, hex: string) {
-    workingTheme.cssVars[key] = hexToOklch(hex);
+    workingTheme.modes[editingMode].cssVars[key] = hexToOklch(hex);
   }
 </script>
 
@@ -69,6 +70,6 @@
 
   <div class="flex flex-col gap-1.5">
     <Label for="theme-radius" class="text-xs font-semibold text-foreground/80">Base Corner Radius</Label>
-    <Input id="theme-radius" value={workingTheme.cssVars.radius ?? readComputedThemeCssVars().radius ?? "0.625rem"} oninput={(e) => (workingTheme.cssVars.radius = e.currentTarget.value)} />
+    <Input id="theme-radius" value={workingTheme.modes[editingMode].cssVars.radius ?? readComputedThemeCssVars().radius ?? "0.625rem"} oninput={(e) => (workingTheme.modes[editingMode].cssVars.radius = e.currentTarget.value)} />
   </div>
 </div>

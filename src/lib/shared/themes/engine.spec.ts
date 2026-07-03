@@ -3,7 +3,7 @@
 import { afterEach, beforeEach, describe, it, vi } from "vitest";
 import { DEFAULT_THEME } from "./defaults";
 import { mergeThemeWithDefaults, PREVIEW_THEME_ID, RUNTIME_THEMES_STYLE_ID, ThemeEngine } from "./engine";
-import type { PartialThemeV4, ThemeV4 } from "./schema";
+import type { PartialThemeV5, ThemeV5 } from "./schema";
 
 const modeWatcherMock = vi.hoisted(() => ({
   setTheme: vi.fn((id: string) => {
@@ -15,7 +15,7 @@ vi.mock("mode-watcher", () => ({
   setTheme: modeWatcherMock.setTheme
 }));
 
-function customTheme(id = "custom-theme"): ThemeV4 {
+function customTheme(id = "custom-theme"): ThemeV5 {
   return {
     ...DEFAULT_THEME,
     metadata: {
@@ -24,22 +24,44 @@ function customTheme(id = "custom-theme"): ThemeV4 {
       name: "Custom Theme",
       author: "Tester"
     },
-    cssVars: {
-      primary: "oklch(0.5 0.1 100)",
-      accent3: "oklch(0.6 0.1 80)",
-      radius: "1rem"
-    },
-    extras: {
-      minecraft: {
-        palette: "nice-dark",
-        overrides: {
-          a: "oklch(0.9 0.1 100)"
+    modes: {
+      dark: {
+        cssVars: {
+          primary: "oklch(0.5 0.1 100)",
+          accent3: "oklch(0.6 0.1 80)",
+          radius: "1rem"
+        },
+        extras: {
+          minecraft: {
+            palette: "nice-dark",
+            overrides: {
+              a: "oklch(0.9 0.1 100)"
+            }
+          },
+          pageBackground: {
+            url: "https://example.com/bg.png"
+          },
+          enchantedGlint: "https://example.com/glint.png"
         }
       },
-      pageBackground: {
-        url: "https://example.com/bg.png"
-      },
-      enchantedGlint: "https://example.com/glint.png"
+      light: {
+        cssVars: {
+          primary: "oklch(0.7 0.1 100)"
+        }
+      }
+    }
+  };
+}
+
+function withDarkExtras(theme: ThemeV5, extras: ThemeV5["modes"]["dark"]["extras"]): ThemeV5 {
+  return {
+    ...theme,
+    modes: {
+      ...theme.modes,
+      dark: {
+        ...theme.modes.dark,
+        extras
+      }
     }
   };
 }
@@ -64,51 +86,62 @@ describe("Theme Engine", () => {
   describe("mergeThemeWithDefaults", () => {
     it("preserves partial css vars without filling from defaults", ({ expect }) => {
       const merged = mergeThemeWithDefaults({
-        cssVars: {
-          primary: "oklch(0.5 0.1 100)"
+        modes: {
+          dark: {
+            cssVars: {
+              primary: "oklch(0.5 0.1 100)"
+            }
+          }
         }
       });
 
-      expect(merged.schema).toBe(4);
-      expect(merged.cssVars.primary).toBe("oklch(0.5 0.1 100)");
-      expect(merged.cssVars.background).toBeUndefined();
+      expect(merged.schema).toBe(5);
+      expect(merged.modes.dark.cssVars.primary).toBe("oklch(0.5 0.1 100)");
+      expect(merged.modes.dark.cssVars.background).toBeUndefined();
+      expect(merged.modes.light.cssVars).toEqual({});
       expect(merged.metadata.id).toBe(DEFAULT_THEME.metadata.id);
     });
 
-    it("merges mode, metadata, and extras", ({ expect }) => {
-      const partial: PartialThemeV4 = {
-        mode: "light",
+    it("merges metadata and per-mode extras", ({ expect }) => {
+      const partial: PartialThemeV5 = {
         metadata: {
           id: "custom",
           name: "Custom"
         },
-        extras: {
-          minecraft: {
-            palette: "true-colors"
-          },
-          pageBackground: {
-            url: "https://example.com/bg.png"
+        modes: {
+          light: {
+            extras: {
+              minecraft: {
+                palette: "true-colors"
+              },
+              pageBackground: {
+                url: "https://example.com/bg.png"
+              }
+            }
           }
         }
       };
 
       const merged = mergeThemeWithDefaults(partial);
 
-      expect(merged.mode).toBe("light");
       expect(merged.metadata.id).toBe("custom");
       expect(merged.metadata.name).toBe("Custom");
       expect(merged.metadata.author).toBe(DEFAULT_THEME.metadata.author);
-      expect(merged.extras?.minecraft?.palette).toBe("true-colors");
-      expect(merged.extras?.pageBackground?.url).toBe("https://example.com/bg.png");
+      expect(merged.modes.light.extras?.minecraft?.palette).toBe("true-colors");
+      expect(merged.modes.light.extras?.pageBackground?.url).toBe("https://example.com/bg.png");
+      expect(merged.modes.dark.extras).toBeUndefined();
     });
   });
 
   describe("themeToCssRule", () => {
-    it("serializes shadcn vars, Minecraft colors, background, and glint", ({ expect }) => {
+    it("serializes mode-scoped shadcn vars, Minecraft colors, background, and glint", ({ expect }) => {
       const rule = ThemeEngine.themeToCssRule(customTheme("test-theme"));
 
-      expect(rule).toContain(':root[data-theme="test-theme"]');
+      expect(rule).toContain(':root[data-theme="test-theme"].dark');
+      expect(rule).toContain(':root[data-theme="test-theme"].light');
+      expect(rule.indexOf(':root[data-theme="test-theme"].dark')).toBeLessThan(rule.indexOf(':root[data-theme="test-theme"].light'));
       expect(rule).toContain("  --primary: oklch(0.5 0.1 100);");
+      expect(rule).toContain("  --primary: oklch(0.7 0.1 100);");
       expect(rule).toContain("  --accent-3: oklch(0.6 0.1 80);");
       expect(rule).toContain("  --radius: 1rem;");
       expect(rule).toContain("  --§0: oklch(0 0 0);");
@@ -118,9 +151,8 @@ describe("Theme Engine", () => {
     });
 
     it("uses local paths for first-party static images", ({ expect }) => {
-      const rule = ThemeEngine.themeToCssRule({
-        ...customTheme("first-party-assets"),
-        extras: {
+      const rule = ThemeEngine.themeToCssRule(
+        withDarkExtras(customTheme("first-party-assets"), {
           minecraft: {
             palette: "nice-light"
           },
@@ -128,42 +160,40 @@ describe("Theme Engine", () => {
             url: "https://sky.shiiyu.moe/img/bg.avif"
           },
           enchantedGlint: "https://cupcake.shiiyu.moe/img/enchanted-glint-legacy.avif"
-        }
-      });
+        })
+      );
 
       expect(rule).toContain("  --bg-url: url(/img/bg.avif);");
       expect(rule).toContain("  --enchanted-glint: url(/img/enchanted-glint-legacy.avif);");
     });
 
     it("falls removed first-party theme images back to the default background", ({ expect }) => {
-      const rule = ThemeEngine.themeToCssRule({
-        ...customTheme("removed-first-party-assets"),
-        extras: {
+      const rule = ThemeEngine.themeToCssRule(
+        withDarkExtras(customTheme("removed-first-party-assets"), {
           minecraft: {
             palette: "nice-light"
           },
           pageBackground: {
             url: "https://sky.shiiyu.moe/img/themes/light/bg.avif"
           }
-        }
-      });
+        })
+      );
 
       expect(rule).toContain("  --bg-url: url(/img/bg.avif);");
       expect(rule).not.toContain("/img/themes/light/bg.avif");
     });
 
     it("uses direct URLs for non-local first-party images", ({ expect }) => {
-      const rule = ThemeEngine.themeToCssRule({
-        ...customTheme("remote-first-party-assets"),
-        extras: {
+      const rule = ThemeEngine.themeToCssRule(
+        withDarkExtras(customTheme("remote-first-party-assets"), {
           minecraft: {
             palette: "nice-light"
           },
           pageBackground: {
             url: "https://sky.shiiyu.moe/img/custom/user-bg.avif"
           }
-        }
-      });
+        })
+      );
 
       expect(rule).toContain("  --bg-url: url(https://sky.shiiyu.moe/img/custom/user-bg.avif);");
       expect(rule).not.toContain("/api/image-proxy");
@@ -172,8 +202,15 @@ describe("Theme Engine", () => {
     it("omits undefined css vars", ({ expect }) => {
       const rule = ThemeEngine.themeToCssRule({
         ...customTheme("minimal-theme"),
-        cssVars: {
-          primary: "oklch(0.5 0.1 100)"
+        modes: {
+          dark: {
+            cssVars: {
+              primary: "oklch(0.5 0.1 100)"
+            }
+          },
+          light: {
+            cssVars: {}
+          }
         }
       });
 
@@ -213,7 +250,8 @@ describe("Theme Engine", () => {
       ThemeEngine.syncRuntimeThemes([DEFAULT_THEME, customTheme("custom-a")]);
 
       expect(runtimeStyle()?.textContent).not.toContain(':root[data-theme="default"]');
-      expect(runtimeStyle()?.textContent).toContain(':root[data-theme="custom-a"]');
+      expect(runtimeStyle()?.textContent).toContain(':root[data-theme="custom-a"].dark');
+      expect(runtimeStyle()?.textContent).toContain(':root[data-theme="custom-a"].light');
     });
 
     it("removes deleted custom theme rules after resync", ({ expect }) => {
@@ -233,10 +271,12 @@ describe("Theme Engine", () => {
   });
 
   describe("preview", () => {
-    it("writes a preview rule without activating the preview theme id", ({ expect }) => {
+    it("writes dark and light preview rules without activating the preview theme id", ({ expect }) => {
       ThemeEngine.previewTheme(customTheme("editable-theme"));
 
-      expect(runtimeStyle()?.textContent).toContain(`data-theme="${PREVIEW_THEME_ID}"`);
+      const text = runtimeStyle()?.textContent ?? "";
+      expect(text).toContain(`data-theme="${PREVIEW_THEME_ID}"].dark`);
+      expect(text).toContain(`data-theme="${PREVIEW_THEME_ID}"].light`);
       expect(modeWatcherMock.setTheme).not.toHaveBeenCalled();
       expect(document.documentElement.getAttribute("data-theme")).toBeNull();
     });

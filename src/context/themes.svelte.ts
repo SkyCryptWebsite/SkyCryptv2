@@ -1,9 +1,9 @@
 import { browser } from "$app/environment";
 import { loadOldStorageKey } from "$ctx/utils";
-import { DEFAULT_THEME, mergeThemeWithDefaults, ThemeEngine, themeV4Schema, type ThemeV4 } from "$lib/shared/themes";
+import { DEFAULT_THEME, legacyThemeV4Schema, mergeThemeWithDefaults, migrateThemeV4ToV5, ThemeEngine, themeV5Schema, type ThemeV5 } from "$lib/shared/themes";
 import { FIRST_PARTY_THEMES } from "$lib/shared/themes/first-party";
 import * as devalue from "devalue";
-import { setMode, setTheme, theme as activeModeWatcherTheme, themeStorageKey } from "mode-watcher";
+import { setTheme, theme as activeModeWatcherTheme, themeStorageKey } from "mode-watcher";
 import { PersistedState } from "runed";
 import { createContext, untrack } from "svelte";
 
@@ -38,25 +38,19 @@ const devalueSerializer = {
 };
 
 export class ThemeContext {
-  #themes = new PersistedState<ThemeV4[]>("skycryptThemes", [], { serializer: devalueSerializer });
+  #themes = new PersistedState<unknown[]>("skycryptThemes", [], { serializer: devalueSerializer });
 
   constructor() {
     $effect.pre(() => {
       untrack(() => {
         this.#migrateOldTheme();
+        this.#normalizePersistedThemes();
         this.#normalizeActiveThemeStorage();
-        this.#discardInvalidThemes();
         ThemeEngine.syncRuntimeThemes(this.userThemes);
 
         const activeId = this.#resolveTheme(this.activeThemeId) ? this.activeThemeId : "default";
         if (browser) {
           setTheme(activeId);
-          const theme = this.#resolveTheme(activeId);
-          if (theme) {
-            if (!this.isFirstParty(theme.metadata.id)) {
-              setMode(theme.mode);
-            }
-          }
         }
       });
     });
@@ -71,10 +65,6 @@ export class ThemeContext {
       const resolvedId = this.#resolveTheme(id) ? id : "default";
       const theme = this.#resolveTheme(resolvedId);
       if (theme) {
-        if (!this.isFirstParty(resolvedId)) {
-          setMode(theme.mode);
-        }
-
         if (resolvedId === this.activeThemeId) {
           ThemeEngine.setActiveTheme(resolvedId);
         } else {
@@ -86,20 +76,21 @@ export class ThemeContext {
     }
   }
 
-  get activeTheme(): ThemeV4 | null {
+  get activeTheme(): ThemeV5 | null {
     return this.#resolveTheme(this.activeThemeId);
   }
 
-  get allThemes(): ThemeV4[] {
+  get allThemes(): ThemeV5[] {
     return [...FIRST_PARTY_THEMES, ...this.userThemes];
   }
 
-  get userThemes(): ThemeV4[] {
-    return Array.isArray(this.#themes.current) ? this.#themes.current : [];
+  get userThemes(): ThemeV5[] {
+    if (!Array.isArray(this.#themes.current)) return [];
+    return this.#themes.current.filter((theme): theme is ThemeV5 => themeV5Schema.safeParse(theme).success);
   }
 
-  saveTheme(theme: ThemeV4): void {
-    const result = themeV4Schema.safeParse(theme);
+  saveTheme(theme: ThemeV5): void {
+    const result = themeV5Schema.safeParse(theme);
     if (!result.success) {
       console.warn("Cannot save invalid theme", result.error);
       return;
@@ -115,9 +106,9 @@ export class ThemeContext {
     if (existingIndex >= 0) {
       const updated = [...this.userThemes];
       updated[existingIndex] = {
-        ...theme,
+        ...result.data,
         metadata: {
-          ...theme.metadata,
+          ...result.data.metadata,
           updatedAt: Date.now()
         }
       };
@@ -126,9 +117,9 @@ export class ThemeContext {
       this.#themes.current = [
         ...this.userThemes,
         {
-          ...theme,
+          ...result.data,
           metadata: {
-            ...theme.metadata,
+            ...result.data.metadata,
             createdAt: Date.now(),
             updatedAt: Date.now(),
             version: 1
@@ -154,12 +145,12 @@ export class ThemeContext {
     }
   }
 
-  duplicateTheme(id: string): ThemeV4 | null {
+  duplicateTheme(id: string): ThemeV5 | null {
     const original = this.#resolveTheme(id);
     if (!original) return null;
 
     const duplicateId = `${id}-copy-${Date.now()}`;
-    const duplicate: ThemeV4 = {
+    const duplicate: ThemeV5 = {
       ...original,
       metadata: {
         ...original.metadata,
@@ -179,7 +170,7 @@ export class ThemeContext {
     return id === "default" || FIRST_PARTY_THEMES.some((t) => t.metadata.id === id);
   }
 
-  #resolveTheme(id: string): ThemeV4 | null {
+  #resolveTheme(id: string): ThemeV5 | null {
     if (id === "default") return DEFAULT_THEME;
 
     const firstParty = FIRST_PARTY_THEMES.find((t) => t.metadata.id === id);
@@ -191,14 +182,27 @@ export class ThemeContext {
     return null;
   }
 
-  #discardInvalidThemes(): void {
+  #normalizePersistedThemes(): void {
     if (!Array.isArray(this.#themes.current)) {
       this.#themes.current = [];
       return;
     }
 
-    const validThemes = this.#themes.current.filter((theme) => themeV4Schema.safeParse(theme).success);
-    if (validThemes.length !== this.#themes.current.length) {
+    const validThemes: ThemeV5[] = [];
+    for (const theme of this.#themes.current) {
+      const v5 = themeV5Schema.safeParse(theme);
+      if (v5.success) {
+        validThemes.push(v5.data);
+        continue;
+      }
+
+      const v4 = legacyThemeV4Schema.safeParse(theme);
+      if (v4.success) {
+        validThemes.push(migrateThemeV4ToV5(v4.data));
+      }
+    }
+
+    if (devalue.stringify(validThemes) !== devalue.stringify(this.#themes.current)) {
       this.#themes.current = validThemes;
     }
   }

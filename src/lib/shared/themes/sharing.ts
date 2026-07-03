@@ -1,34 +1,48 @@
 import * as devalue from "devalue";
 import { DEFAULT_THEME } from "./defaults";
 import { mergeThemeWithDefaults } from "./engine";
-import { partialThemeV4Schema, themeV4Schema } from "./schema";
-import type { PartialThemeV4, ThemeV4 } from "./schema";
+import { migratePartialThemeV4ToV5, partialThemeV4Schema, partialThemeV5Schema, themeV5Schema } from "./schema";
+import type { PartialThemeV5, ThemeModeName, ThemeV5 } from "./schema";
 
-function stripDefaults(theme: ThemeV4, defaults: ThemeV4): PartialThemeV4 {
-  const partial: PartialThemeV4 = {
-    schema: 4
+function stripDefaults(theme: ThemeV5, defaults: ThemeV5): PartialThemeV5 {
+  const partial: PartialThemeV5 = {
+    schema: 5
   };
 
-  const metadataDiffs: Partial<ThemeV4["metadata"]> = {};
+  const metadataDiffs: Partial<ThemeV5["metadata"]> = {};
   if (theme.metadata.id !== defaults.metadata.id) metadataDiffs.id = theme.metadata.id;
   if (theme.metadata.name !== defaults.metadata.name) metadataDiffs.name = theme.metadata.name;
   if (theme.metadata.author !== defaults.metadata.author) metadataDiffs.author = theme.metadata.author;
   if (theme.metadata.version !== defaults.metadata.version) metadataDiffs.version = theme.metadata.version;
   if (Object.keys(metadataDiffs).length > 0) partial.metadata = metadataDiffs;
 
-  if (theme.mode !== defaults.mode) partial.mode = theme.mode;
+  const modeDiffs: PartialThemeV5["modes"] = {};
+  for (const modeName of ["dark", "light"] as const satisfies ThemeModeName[]) {
+    const mode = theme.modes[modeName];
+    const defaultMode = defaults.modes[modeName];
+    const cssVarDiffs: ThemeV5["modes"][ThemeModeName]["cssVars"] = {};
 
-  const cssVarDiffs: ThemeV4["cssVars"] = {};
-  for (const key in theme.cssVars) {
-    const k = key as keyof ThemeV4["cssVars"];
-    if (theme.cssVars[k] !== defaults.cssVars[k]) {
-      cssVarDiffs[k] = theme.cssVars[k];
+    for (const key in mode.cssVars) {
+      const k = key as keyof ThemeV5["modes"][ThemeModeName]["cssVars"];
+      if (mode.cssVars[k] !== defaultMode.cssVars[k]) {
+        cssVarDiffs[k] = mode.cssVars[k];
+      }
+    }
+
+    const modePartial: NonNullable<PartialThemeV5["modes"]>[ThemeModeName] = {};
+    if (Object.keys(cssVarDiffs).length > 0) modePartial.cssVars = cssVarDiffs;
+
+    if (devalue.stringify(mode.extras) !== devalue.stringify(defaultMode.extras)) {
+      modePartial.extras = mode.extras;
+    }
+
+    if (Object.keys(modePartial).length > 0) {
+      modeDiffs[modeName] = modePartial;
     }
   }
-  if (Object.keys(cssVarDiffs).length > 0) partial.cssVars = cssVarDiffs;
 
-  if (devalue.stringify(theme.extras) !== devalue.stringify(defaults.extras)) {
-    partial.extras = theme.extras;
+  if (modeDiffs && Object.keys(modeDiffs).length > 0) {
+    partial.modes = modeDiffs;
   }
 
   return partial;
@@ -53,8 +67,16 @@ function base64urlDecode(str: string): Uint8Array | null {
   }
 }
 
-export async function encodeTheme(theme: ThemeV4): Promise<string> {
-  const result = themeV4Schema.safeParse(theme);
+function parseSharedThemePayload(json: string): unknown {
+  try {
+    return devalue.parse(json);
+  } catch {
+    return JSON.parse(json);
+  }
+}
+
+export async function encodeTheme(theme: ThemeV5): Promise<string> {
+  const result = themeV5Schema.safeParse(theme);
   if (!result.success) {
     throw new Error(result.error.issues[0]?.message ?? "Cannot encode invalid theme");
   }
@@ -74,7 +96,7 @@ export async function encodeTheme(theme: ThemeV4): Promise<string> {
   return base64urlEncode(new Uint8Array(compressedData));
 }
 
-export async function decodeTheme(hash: string): Promise<ThemeV4 | null> {
+export async function decodeTheme(hash: string): Promise<ThemeV5 | null> {
   try {
     const compressedData = base64urlDecode(hash);
     if (!compressedData) return null;
@@ -89,22 +111,29 @@ export async function decodeTheme(hash: string): Promise<ThemeV4 | null> {
     const decompressedStream = stream.pipeThrough(new DecompressionStream("deflate"));
     const decompressedData = await new Response(decompressedStream).arrayBuffer();
     const json = new TextDecoder().decode(decompressedData);
-    const parsed = devalue.parse(json);
-    const result = partialThemeV4Schema.safeParse(parsed);
-    if (!result.success || result.data.schema !== 4) return null;
+    const parsed = parseSharedThemePayload(json);
+    const v5Result = partialThemeV5Schema.safeParse(parsed);
+    if (v5Result.success && (v5Result.data.schema === 5 || v5Result.data.schema === undefined)) {
+      return mergeThemeWithDefaults(v5Result.data);
+    }
 
-    return mergeThemeWithDefaults(result.data);
+    const v4Result = partialThemeV4Schema.safeParse(parsed);
+    if (v4Result.success && (v4Result.data.schema === 4 || v4Result.data.schema === undefined)) {
+      return mergeThemeWithDefaults(migratePartialThemeV4ToV5(v4Result.data));
+    }
+
+    return null;
   } catch {
     return null;
   }
 }
 
-export async function getThemeShareURL(theme: ThemeV4): Promise<string> {
+export async function getThemeShareURL(theme: ThemeV5): Promise<string> {
   const encoded = await encodeTheme(theme);
   return `${window.location.origin}?theme=${encoded}`;
 }
 
-export async function parseThemeFromURL(url: string): Promise<ThemeV4 | null> {
+export async function parseThemeFromURL(url: string): Promise<ThemeV5 | null> {
   const match = url.match(/\?theme=([^&]+)/);
   if (!match) return null;
 

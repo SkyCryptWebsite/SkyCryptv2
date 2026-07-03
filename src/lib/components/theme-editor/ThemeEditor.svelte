@@ -1,17 +1,18 @@
 <script lang="ts">
   import { getInternalState, getThemeContext } from "$ctx";
-  import { readComputedThemeCssVars } from "$lib/shared/themes/computed-css-vars";
   import { DEFAULT_THEME } from "$lib/shared/themes/defaults";
   import { mergeThemeWithDefaults, PREVIEW_THEME_ID, ThemeEngine } from "$lib/shared/themes/engine";
-  import { partialThemeV4Schema, themeV4Schema, type ThemeV4 } from "$lib/shared/themes/schema";
+  import { partialThemeV5Schema, themeV5Schema, type ThemeModeName, type ThemeV5 } from "$lib/shared/themes/schema";
+  import { Button } from "$ui/button";
   import * as Item from "$ui/item";
   import { Label } from "$ui/label";
   import * as Select from "$ui/select";
   import { Separator } from "$ui/separator";
-  import { Switch } from "$ui/switch";
   import * as Tabs from "$ui/tabs";
   import { Textarea } from "$ui/textarea";
+  import ArrowLeftRight from "@lucide/svelte/icons/arrow-left-right";
   import Moon from "@lucide/svelte/icons/moon";
+  import RotateCcw from "@lucide/svelte/icons/rotate-ccw";
   import Sun from "@lucide/svelte/icons/sun";
   import * as devalue from "devalue";
   import { theme as activeModeWatcherTheme, mode, setMode, setTheme } from "mode-watcher";
@@ -30,22 +31,23 @@
   let restoreMode = initialMode;
   let previewActive = false;
 
-  function cloneTheme(theme: ThemeV4): ThemeV4 {
+  function cloneTheme(theme: ThemeV5): ThemeV5 {
     return devalue.parse(devalue.stringify(theme));
   }
 
-  function ensureEditorDefaults(theme: ThemeV4): ThemeV4 {
+  function ensureEditorDefaults(theme: ThemeV5): ThemeV5 {
     return {
       ...theme,
-      mode: mode.current ?? theme.mode,
-      cssVars: { ...readComputedThemeCssVars(), ...theme.cssVars },
-      extras: {
-        minecraft: {
-          palette: theme.extras?.minecraft?.palette ?? DEFAULT_THEME.extras?.minecraft?.palette ?? "nice-light",
-          overrides: theme.extras?.minecraft?.overrides ?? DEFAULT_THEME.extras?.minecraft?.overrides
+      schema: 5,
+      modes: {
+        dark: {
+          cssVars: theme.modes.dark.cssVars ?? {},
+          extras: theme.modes.dark.extras
         },
-        pageBackground: theme.extras?.pageBackground ?? DEFAULT_THEME.extras?.pageBackground,
-        enchantedGlint: theme.extras?.enchantedGlint ?? DEFAULT_THEME.extras?.enchantedGlint
+        light: {
+          cssVars: theme.modes.light.cssVars ?? {},
+          extras: theme.modes.light.extras
+        }
       }
     };
   }
@@ -55,13 +57,10 @@
     return themeContext.allThemes.some((theme) => theme.metadata.id === id) ? id : "default";
   }
 
-  function getInitialTheme(): ThemeV4 {
+  function getInitialTheme(): ThemeV5 {
     if (internalState.themeEditorId) {
       const existing = themeContext.allThemes.find((theme) => theme.metadata.id === internalState.themeEditorId);
       if (existing) {
-        if (!themeContext.isFirstParty(existing.metadata.id)) {
-          setMode(existing.mode);
-        }
         return ensureEditorDefaults(cloneTheme(existing));
       }
     }
@@ -69,13 +68,12 @@
     return ensureEditorDefaults(cloneTheme(themeContext.activeTheme ?? DEFAULT_THEME));
   }
 
-  let workingTheme = $state<ThemeV4>(getInitialTheme());
+  const initialEditorTheme = getInitialTheme();
+  let sourceTheme = $state<ThemeV5>(initialEditorTheme);
+  let workingTheme = $state<ThemeV5>(cloneTheme(initialEditorTheme));
+  let editingMode = $state<ThemeModeName>((mode.current ?? "dark") === "light" ? "light" : "dark");
   let jsonString = $state(untrack(() => JSON.stringify(workingTheme, null, 2)));
   let jsonError = $state<string | null>(null);
-
-  function getInitialThemeSource(): ThemeV4 {
-    return themeContext.allThemes.find((theme) => theme.metadata.id === initialThemeId) ?? DEFAULT_THEME;
-  }
 
   function restoreInitialTheme() {
     ThemeEngine.clearPreview();
@@ -84,13 +82,7 @@
   }
 
   function handleReset() {
-    const initialTheme = getInitialThemeSource();
-    if (!themeContext.isFirstParty(initialTheme.metadata.id)) {
-      setMode(initialTheme.mode);
-    } else {
-      setMode(initialMode);
-    }
-    workingTheme = ensureEditorDefaults(cloneTheme(initialTheme));
+    workingTheme = ensureEditorDefaults(cloneTheme(sourceTheme));
   }
 
   function handleSave() {
@@ -99,7 +91,7 @@
       themeToSave.metadata.id = `custom-${Date.now()}`;
     }
 
-    const result = themeV4Schema.safeParse(themeToSave);
+    const result = themeV5Schema.safeParse(themeToSave);
     if (!result.success) {
       toast.error(result.error.issues[0]?.message ?? "Theme is invalid.");
       return;
@@ -108,7 +100,8 @@
     themeContext.saveTheme(result.data);
     themeContext.activeThemeId = result.data.metadata.id;
     restoreThemeId = result.data.metadata.id;
-    restoreMode = mode.current ?? result.data.mode;
+    restoreMode = mode.current ?? editingMode;
+    sourceTheme = ensureEditorDefaults(cloneTheme(result.data));
     workingTheme = ensureEditorDefaults(cloneTheme(result.data));
     toast.success("Theme saved!");
   }
@@ -119,21 +112,21 @@
 
     try {
       const parsed = JSON.parse(jsonString);
-      const full = themeV4Schema.safeParse(parsed);
+      const full = themeV5Schema.safeParse(parsed);
       if (full.success) {
         workingTheme = ensureEditorDefaults(full.data);
         jsonError = null;
         return;
       }
 
-      const partial = partialThemeV4Schema.safeParse(parsed);
-      if (partial.success && partial.data.schema === 4) {
+      const partial = partialThemeV5Schema.safeParse(parsed);
+      if (partial.success && (partial.data.schema === 5 || partial.data.schema === undefined)) {
         workingTheme = ensureEditorDefaults(mergeThemeWithDefaults({ ...partial.data, metadata: { ...workingTheme.metadata, ...partial.data.metadata } }));
         jsonError = null;
         return;
       }
 
-      jsonError = partial.success ? "Theme JSON must use schema version 4." : partial.error.issues[0]?.message;
+      jsonError = partial.success ? "Theme JSON must use schema version 5." : partial.error.issues[0]?.message;
     } catch (err) {
       jsonError = (err as Error).message;
     }
@@ -149,9 +142,7 @@
     const base = themeContext.allThemes.find((theme) => theme.metadata.id === themeId);
     if (!base) return;
 
-    if (!themeContext.isFirstParty(base.metadata.id)) {
-      setMode(base.mode);
-    }
+    sourceTheme = ensureEditorDefaults(cloneTheme(base));
     workingTheme = ensureEditorDefaults(cloneTheme(base));
     workingTheme.metadata.id = `custom-${Date.now()}`;
     workingTheme.metadata.name = `${base.metadata.name} (Copy)`;
@@ -166,16 +157,26 @@
     workingTheme.metadata.author = author;
   }
 
-  function setLightMode(checked: boolean) {
-    const nextMode = checked ? "light" : "dark";
-    workingTheme.mode = nextMode;
+  function setEditingMode(nextMode: ThemeModeName) {
+    editingMode = nextMode;
     setMode(nextMode);
+  }
+
+  function copyModeTo(targetMode: ThemeModeName) {
+    const sourceMode: ThemeModeName = targetMode === "dark" ? "light" : "dark";
+    workingTheme.modes[targetMode] = devalue.parse(devalue.stringify(workingTheme.modes[sourceMode]));
+    toast.success(`${sourceMode === "dark" ? "Dark" : "Light"} mode copied.`);
+  }
+
+  function resetCurrentMode() {
+    workingTheme.modes[editingMode] = cloneTheme(sourceTheme).modes[editingMode];
+    toast.success(`${editingMode === "dark" ? "Dark" : "Light"} mode reset.`);
   }
 
   $effect(() => {
     if (!internalState.themeEditorOpen) return;
 
-    const result = themeV4Schema.safeParse(workingTheme);
+    const result = themeV5Schema.safeParse(workingTheme);
     if (result.success) {
       untrack(() => {
         ThemeEngine.previewTheme(result.data);
@@ -189,9 +190,11 @@
       if (isOpen) {
         if (!previewActive) {
           const initialTheme = getInitialTheme();
-          workingTheme = initialTheme;
+          sourceTheme = initialTheme;
+          workingTheme = cloneTheme(initialTheme);
           jsonString = JSON.stringify(initialTheme, null, 2);
           jsonError = null;
+          editingMode = (mode.current ?? initialMode) === "light" ? "light" : "dark";
           previewActive = true;
           ThemeEngine.activatePreviewTheme();
         }
@@ -246,26 +249,46 @@
       <Tabs.Content value="visual" class="flex flex-col gap-4">
         <Item.Root variant="outline">
           <Item.Media variant="icon">
-            {#if mode.current === "light"}
+            {#if editingMode === "light"}
               <Sun />
             {:else}
               <Moon />
             {/if}
           </Item.Media>
           <Item.Content>
-            <Item.Title>{mode.current === "light" ? "Light Mode" : "Dark Mode"}</Item.Title>
-            <Item.Description>Toggle between light and dark base mode</Item.Description>
+            <Item.Title>{editingMode === "light" ? "Editing Light Mode" : "Editing Dark Mode"}</Item.Title>
+            <Item.Description>Switch branches without changing the selected theme</Item.Description>
           </Item.Content>
           <Item.Actions>
-            <Switch checked={mode.current === "light"} onCheckedChange={setLightMode} />
+            <div class="flex items-center gap-1">
+              <Button type="button" size="sm" variant={editingMode === "dark" ? "default" : "outline"} onclick={() => setEditingMode("dark")}>
+                <Moon class="size-4" />
+                Dark
+              </Button>
+              <Button type="button" size="sm" variant={editingMode === "light" ? "default" : "outline"} onclick={() => setEditingMode("light")}>
+                <Sun class="size-4" />
+                Light
+              </Button>
+            </div>
           </Item.Actions>
         </Item.Root>
 
-        <ColorSection bind:workingTheme />
+        <div class="flex flex-wrap gap-2">
+          <Button type="button" variant="secondary" size="sm" onclick={() => copyModeTo(editingMode === "dark" ? "light" : "dark")}>
+            <ArrowLeftRight class="size-4" />
+            Copy {editingMode === "dark" ? "dark to light" : "light to dark"}
+          </Button>
+          <Button type="button" variant="outline" size="sm" onclick={resetCurrentMode}>
+            <RotateCcw class="size-4" />
+            Reset {editingMode}
+          </Button>
+        </div>
+
+        <ColorSection bind:workingTheme {editingMode} />
         <Separator />
-        <BackgroundSection bind:workingTheme />
+        <BackgroundSection bind:workingTheme {editingMode} />
         <Separator />
-        <MCColorSection bind:workingTheme />
+        <MCColorSection bind:workingTheme {editingMode} />
       </Tabs.Content>
 
       <Tabs.Content value="code" class="mt-4 flex flex-col gap-2">

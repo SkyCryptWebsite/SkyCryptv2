@@ -1,10 +1,10 @@
-import { DEFAULT_THEME, type ThemeV4 } from "$lib/shared/themes";
+import { DEFAULT_THEME, type ThemeV5 } from "$lib/shared/themes";
 import * as devalue from "devalue";
 import { flushSync, untrack } from "svelte";
 import { afterEach, beforeEach, describe, it, vi } from "vitest";
 import { ThemeContext } from "./themes.svelte";
 
-function customTheme(id = "custom"): ThemeV4 {
+function customTheme(id = "custom"): ThemeV5 {
   return {
     ...DEFAULT_THEME,
     metadata: {
@@ -13,8 +13,17 @@ function customTheme(id = "custom"): ThemeV4 {
       name: "Custom Theme",
       author: "Tester"
     },
-    cssVars: {
-      primary: "oklch(0.5 0.1 100)"
+    modes: {
+      dark: {
+        cssVars: {
+          primary: "oklch(0.5 0.1 100)"
+        }
+      },
+      light: {
+        cssVars: {
+          primary: "oklch(0.8 0.1 100)"
+        }
+      }
     }
   };
 }
@@ -49,7 +58,7 @@ describe("ThemeContext", () => {
     cleanup();
   });
 
-  it("filters persisted V3 custom themes", ({ expect }) => {
+  it("filters persisted V3 custom themes and keeps V5 themes", ({ expect }) => {
     localStorage.setItem(
       "skycryptThemes",
       devalue.stringify([
@@ -70,6 +79,41 @@ describe("ThemeContext", () => {
       untrack(() => {
         expect(themes.userThemes).toHaveLength(1);
         expect(themes.userThemes[0].metadata.id).toBe("custom");
+      });
+    });
+
+    cleanup();
+  });
+
+  it("migrates persisted V4 custom themes", ({ expect }) => {
+    localStorage.setItem(
+      "skycryptThemes",
+      devalue.stringify([
+        {
+          schema: 4,
+          mode: "dark",
+          cssVars: {
+            primary: "oklch(0.5 0.1 100)"
+          },
+          metadata: {
+            ...DEFAULT_THEME.metadata,
+            id: "legacy-custom",
+            name: "Legacy Custom",
+            author: "Tester"
+          }
+        }
+      ])
+    );
+
+    const cleanup = $effect.root(() => {
+      const themes = new ThemeContext();
+      flushSync();
+
+      untrack(() => {
+        expect(themes.userThemes).toHaveLength(1);
+        expect(themes.userThemes[0].schema).toBe(5);
+        expect(themes.userThemes[0].modes.dark.cssVars.primary).toBe("oklch(0.5 0.1 100)");
+        expect(themes.userThemes[0].modes.light.cssVars).toEqual({});
       });
     });
 

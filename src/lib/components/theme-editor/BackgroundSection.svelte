@@ -1,26 +1,27 @@
 <script lang="ts">
-  import type { ThemeV4 } from "$lib/shared/themes/schema";
+  import type { ThemeModeName, ThemeV5 } from "$lib/shared/themes/schema";
   import { Input } from "$ui/input";
   import { Label } from "$ui/label";
   import ImageIcon from "@lucide/svelte/icons/image";
   import Sparkles from "@lucide/svelte/icons/sparkles";
 
-  let { workingTheme = $bindable() } = $props<{
-    workingTheme: ThemeV4;
+  let { workingTheme = $bindable(), editingMode } = $props<{
+    workingTheme: ThemeV5;
+    editingMode: ThemeModeName;
   }>();
 
   function ensureExtras() {
-    workingTheme.extras ??= {};
+    workingTheme.modes[editingMode].extras ??= {};
   }
 
   function setPageBackground(url: string) {
     ensureExtras();
-    workingTheme.extras.pageBackground = url ? { url } : undefined;
+    workingTheme.modes[editingMode].extras!.pageBackground = url ? { url } : undefined;
   }
 
   function setEnchantedGlint(url: string) {
     ensureExtras();
-    workingTheme.extras.enchantedGlint = url || undefined;
+    workingTheme.modes[editingMode].extras!.enchantedGlint = url || undefined;
   }
 </script>
 
@@ -31,7 +32,7 @@
       <Label for="page-bg-url" class="text-xs font-semibold text-foreground/80">Image URL</Label>
     </div>
     <p class="text-[10px] text-muted-foreground">Must start with https://</p>
-    <Input id="page-bg-url" type="url" value={workingTheme.extras?.pageBackground?.url ?? ""} oninput={(e) => setPageBackground(e.currentTarget.value)} placeholder="https://imgur.com/..." pattern="^https://.*" />
+    <Input id="page-bg-url" type="url" value={workingTheme.modes[editingMode].extras?.pageBackground?.url ?? ""} oninput={(e) => setPageBackground(e.currentTarget.value)} placeholder="https://imgur.com/..." pattern="^https://.*" />
   </div>
 
   <div class="flex flex-col gap-1.5">
@@ -40,6 +41,6 @@
       <Label for="enchanted-glint-url" class="text-xs font-semibold text-foreground/80">Glint Texture URL</Label>
     </div>
     <p class="text-[10px] text-muted-foreground">Custom enchanted glint texture. Must start with https://. Leave empty for default.</p>
-    <Input id="enchanted-glint-url" type="url" value={workingTheme.extras?.enchantedGlint ?? ""} oninput={(e) => setEnchantedGlint(e.currentTarget.value)} placeholder="https://example.com/glint.png" pattern="^https://.*" />
+    <Input id="enchanted-glint-url" type="url" value={workingTheme.modes[editingMode].extras?.enchantedGlint ?? ""} oninput={(e) => setEnchantedGlint(e.currentTarget.value)} placeholder="https://example.com/glint.png" pattern="^https://.*" />
   </div>
 </div>

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { ThemeV4 } from "$lib/shared/themes/schema";
+  import type { ThemeV5 } from "$lib/shared/themes/schema";
   import { getThemeShareURL } from "$lib/shared/themes/sharing";
   import { Button } from "$ui/button";
   import { Input } from "$ui/input";
@@ -16,7 +16,7 @@
     handleNameChange,
     handleAuthorChange
   } = $props<{
-    workingTheme: ThemeV4;
+    workingTheme: ThemeV5;
     onReset: () => void;
     onSave: () => void;
     handleNameChange: (name: string) => void;

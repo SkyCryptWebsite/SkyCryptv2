@@ -96,26 +96,107 @@ const metadataSchema = z.object({
   version: z.number().int().positive().default(1)
 });
 
-export const themeV4Schema = z.object({
-  schema: z.literal(4),
-  mode: z.enum(["light", "dark"]),
-  cssVars: shadcnThemeVarsSchema.default({}),
-  extras: skyCryptThemeExtrasSchema.optional(),
-  metadata: metadataSchema
-});
+export const themeModeNameSchema = z.enum(["dark", "light"]);
+
+export const legacyThemeV4Schema = z
+  .object({
+    schema: z.literal(4),
+    mode: themeModeNameSchema,
+    cssVars: shadcnThemeVarsSchema.default({}),
+    extras: skyCryptThemeExtrasSchema.optional(),
+    metadata: metadataSchema
+  })
+  .strict();
 
 export const partialThemeV4Schema = z
   .object({
     schema: z.literal(4).optional(),
-    mode: z.enum(["light", "dark"]).optional(),
+    mode: themeModeNameSchema.optional(),
     cssVars: shadcnThemeVarsSchema.optional(),
     extras: skyCryptThemeExtrasSchema.optional(),
     metadata: metadataSchema.partial().optional()
   })
   .strict();
 
-export type ThemeV4 = z.infer<typeof themeV4Schema>;
+export const themeModeDefinitionSchema = z
+  .object({
+    cssVars: shadcnThemeVarsSchema.default({}),
+    extras: skyCryptThemeExtrasSchema.optional()
+  })
+  .strict();
+
+export const themeV5Schema = z
+  .object({
+    schema: z.literal(5),
+    modes: z
+      .object({
+        dark: themeModeDefinitionSchema,
+        light: themeModeDefinitionSchema
+      })
+      .strict(),
+    metadata: metadataSchema
+  })
+  .strict();
+
+const partialThemeModeDefinitionSchema = z
+  .object({
+    cssVars: shadcnThemeVarsSchema.optional(),
+    extras: skyCryptThemeExtrasSchema.optional()
+  })
+  .strict();
+
+export const partialThemeV5Schema = z
+  .object({
+    schema: z.literal(5).optional(),
+    modes: z
+      .object({
+        dark: partialThemeModeDefinitionSchema.optional(),
+        light: partialThemeModeDefinitionSchema.optional()
+      })
+      .strict()
+      .optional(),
+    metadata: metadataSchema.partial().optional()
+  })
+  .strict();
+
+export function migrateThemeV4ToV5(theme: ThemeV4): ThemeV5 {
+  return {
+    schema: 5,
+    modes: {
+      dark: {
+        cssVars: theme.mode === "dark" ? { ...theme.cssVars } : {},
+        extras: theme.mode === "dark" ? theme.extras : undefined
+      },
+      light: {
+        cssVars: theme.mode === "light" ? { ...theme.cssVars } : {},
+        extras: theme.mode === "light" ? theme.extras : undefined
+      }
+    },
+    metadata: {
+      ...theme.metadata
+    }
+  };
+}
+
+export function migratePartialThemeV4ToV5(theme: PartialThemeV4): PartialThemeV5 {
+  const mode = theme.mode ?? "dark";
+
+  return {
+    schema: 5,
+    modes: {
+      dark: mode === "dark" ? { cssVars: theme.cssVars, extras: theme.extras } : undefined,
+      light: mode === "light" ? { cssVars: theme.cssVars, extras: theme.extras } : undefined
+    },
+    metadata: theme.metadata
+  };
+}
+
+export type ThemeModeName = z.infer<typeof themeModeNameSchema>;
+export type ThemeModeDefinition = z.infer<typeof themeModeDefinitionSchema>;
+export type ThemeV4 = z.infer<typeof legacyThemeV4Schema>;
 export type PartialThemeV4 = z.infer<typeof partialThemeV4Schema>;
+export type ThemeV5 = z.infer<typeof themeV5Schema>;
+export type PartialThemeV5 = z.infer<typeof partialThemeV5Schema>;
 export type ShadcnThemeVars = z.infer<typeof shadcnThemeVarsSchema>;
 export type ShadcnThemeVarKey = keyof ShadcnThemeVars;
 export type SkyCryptThemeExtras = z.infer<typeof skyCryptThemeExtrasSchema>;

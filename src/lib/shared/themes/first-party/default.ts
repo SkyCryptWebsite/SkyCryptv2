@@ -1,15 +1,13 @@
-import type { ThemeV4 } from "../schema";
+import type { ThemeV5 } from "../schema";
 
 export const defaultTheme = {
-  schema: 4,
-  mode: "dark",
-  cssVars: {},
-  extras: {
-    minecraft: {
-      palette: "nice-light"
+  schema: 5,
+  modes: {
+    dark: {
+      cssVars: {}
     },
-    pageBackground: {
-      url: "https://sky.shiiyu.moe/img/bg.avif"
+    light: {
+      cssVars: {}
     }
   },
   metadata: {
@@ -20,4 +18,4 @@ export const defaultTheme = {
     updatedAt: Date.now(),
     version: 1
   }
-} satisfies ThemeV4;
+} satisfies ThemeV5;
