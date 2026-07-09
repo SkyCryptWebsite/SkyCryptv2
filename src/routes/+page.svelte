@@ -9,14 +9,21 @@
   import { listPosts } from "$lib/shared/api/cms-api.remote";
   import { searchUser } from "$lib/shared/api/skycrypt-api.remote";
   import { getContributors } from "$routes/contributors.remote";
+  import { Button } from "$ui/button";
+  import * as ButtonGroup from "$ui/button-group";
+  import { Input } from "$ui/input";
+  import * as Item from "$ui/item";
+  import { Skeleton } from "$ui/skeleton";
+  import { Spinner } from "$ui/spinner";
+  import * as Tooltip from "$ui/tooltip";
   import ArrowRight from "@lucide/svelte/icons/arrow-right";
   import CodeXml from "@lucide/svelte/icons/code-xml";
   import GitPullRequestArrow from "@lucide/svelte/icons/git-pull-request-arrow";
-  import LoaderCircle from "@lucide/svelte/icons/loader-circle";
+  import NewspaperIcon from "@lucide/svelte/icons/newspaper";
+  import SearchIcon from "@lucide/svelte/icons/search";
   import Server from "@lucide/svelte/icons/server";
   import Star from "@lucide/svelte/icons/star";
   import { isHttpError } from "@sveltejs/kit";
-  import { Button } from "bits-ui";
   import { onMount } from "svelte";
   import { Role } from "./enums";
   import { schema } from "./schema";
@@ -105,115 +112,133 @@
   });
 </script>
 
-<main class="@container mx-auto flex max-w-272 flex-col justify-center gap-6 pt-5 pr-[max(1.25rem+env(safe-area-inset-right))] pb-[max(1.25rem+env(safe-area-inset-bottom))] pl-[max(1.25rem+env(safe-area-inset-left))]">
-  <div class="flex w-full flex-col justify-center gap-6 rounded-lg py-6 text-3xl glass glass-brightness-150 dark:glass-brightness-50 glass-contrast-60 dark:glass-contrast-100">
+<main class="@container mx-auto flex max-w-272 overscroll-y-contain flex-col justify-center gap-4 mt-4 pr-[max(1.25rem+env(safe-area-inset-right))] pb-[max(1.25rem+env(safe-area-inset-bottom))] pl-[max(1.25rem+env(safe-area-inset-left))]">
+  <div class="flex w-full flex-col justify-center-safe items-center-safe gap-4 rounded-xl p-4 text-3xl glass glass-brightness-150 dark:glass-brightness-50 glass-contrast-60 dark:glass-contrast-100 border">
     <div class="flex flex-col justify-center gap-2">
-      <div class="flex flex-col gap-6">
-        <label for="search" class="m-1 w-full text-center font-semibold">Show SkyBlock stats for</label>
-        <!-- svelte-ignore a11y_autofocus -->
-        <input
-          id="search"
-          type="search"
-          required
-          autofocus
-          placeholder="Enter username"
-          class="relative h-16 grow bg-text/10 text-center font-normal text-text placeholder:text-text/80 focus-visible:outline-hidden"
-          bind:value={searchQuery}
-          onchange={() => void submitSearch()}
-          onkeydown={(e) => {
-            if (e.key.toLowerCase() === "enter" || e.key.toLowerCase() === "search") {
-              e.preventDefault();
-              void submitSearch();
-            }
-          }} />
-      </div>
-
-      {#if !searchQueryValidated.success && searchQuery != null && searchQuery.length > 0}
-        <div class="text-center text-sm font-semibold text-text/80">
-          {searchQueryValidated.error.issues[0].message}
+      <div class="flex flex-col gap-4 items-center-safe justify-center-safe">
+        <div>
+          <h1 class="text-3xl font-bold text-center">SkyCrypt</h1>
+          <h2 class="text-xl font-semibold text-muted-foreground text-center">A beautiful site for sharing your SkyBlock profile 🍣</h2>
         </div>
-      {/if}
-      {#if submittedSearchError}
-        <div class="text-center text-sm font-semibold text-text/80">{submittedSearchError}</div>
-      {/if}
-    </div>
-    <Button.Root class="mx-auto flex w-full max-w-fit items-center justify-center rounded-3xl bg-icon px-6 py-3 text-base font-bold text-white uppercase transition-all duration-150 ease-out text-shadow-[0_0_3px_oklch(0%_0_0/50%)] hover:scale-[1.015] disabled:opacity-50 dark:text-text" disabled={searchQuery != null && searchQuery.length > 0 && !searchQueryValidated.success} onclick={() => void submitSearch()}>
-      {#if submittedSearchLoading}
-        <LoaderCircle class="size-6 animate-spin" />
-      {:else}
-        Show me
-      {/if}
-    </Button.Root>
-  </div>
+        <div>
+          <ButtonGroup.Root>
+            <Input
+              id="search"
+              type="search"
+              required
+              autofocus
+              placeholder="Enter username"
+              class="font-medium md:text-lg bg-primary/50 border-primary/80 placeholder:text-primary-foreground focus-visible:ring-primary/50 focus-visible:border-primary/80"
+              bind:value={searchQuery}
+              onchange={() => void submitSearch()}
+              onkeydown={(e) => {
+                if (e.key.toLowerCase() === "enter" || e.key.toLowerCase() === "search") {
+                  e.preventDefault();
+                  void submitSearch();
+                }
+              }} />
 
-  {#if selectedCta}
-    <CtaCard href={selectedCta.href} text={selectedCta.text} img={selectedCta.img} />
-  {/if}
+            <Button variant="outline" disabled={searchQuery != null && searchQuery.length > 0 && !searchQueryValidated.success} onclick={() => void submitSearch()} class="border-primary/80 focus-visible:ring-primary/50 focus-visible:border-primary/80">
+              {#if submittedSearchLoading}
+                <Spinner class="size-4" />
+              {:else}
+                <SearchIcon class="size-4" />
+              {/if}
+            </Button>
+          </ButtonGroup.Root>
+        </div>
+
+        {#if !searchQueryValidated.success && searchQuery != null && searchQuery.length > 0}
+          <div class="text-center text-sm font-semibold text-destructive">
+            {searchQueryValidated.error.issues[0].message}
+          </div>
+        {/if}
+        {#if submittedSearchError}
+          <div class="text-center text-sm font-semibold text-destructive">{submittedSearchError}</div>
+        {/if}
+      </div>
+    </div>
+
+    {#if selectedCta}
+      <CtaCard href={selectedCta.href} text={selectedCta.text} img={selectedCta.img} />
+    {:else}
+      <Skeleton class="h-18.5 w-2/4 rounded-xl" />
+    {/if}
+  </div>
 
   <svelte:boundary>
     {#snippet pending()}
-      <section class="flex flex-col gap-4">
-        <div class="h-16 animate-pulse rounded-lg glass glass-brightness-150 dark:glass-brightness-50 glass-contrast-60 dark:glass-contrast-100"></div>
+      <section class="glass glass-brightness-150 flex flex-col gap-4 p-4 rounded-xl dark:glass-brightness-50 glass-contrast-60 dark:glass-contrast-100">
+        <Skeleton class="h-6 w-1/5 rounded" />
+        <Skeleton class="h-6 w-2/5 rounded" />
         <div class="grid grid-cols-1 gap-5 @md:grid-cols-2 @xl:grid-cols-3">
           {#each new Array(3) as _, i (i)}
-            <div class="flex flex-col overflow-hidden rounded-lg glass glass-brightness-150 dark:glass-brightness-50 glass-contrast-60 dark:glass-contrast-100">
-              <div class="aspect-video w-full animate-pulse bg-text/10"></div>
+            <div class="flex flex-col overflow-hidden rounded-xl border">
+              <Skeleton class="aspect-video w-full rounded-none" />
               <div class="flex flex-col gap-2.5 p-4">
-                <div class="h-4 w-2/5 animate-pulse rounded bg-text/10"></div>
-                <div class="h-6 w-4/5 animate-pulse rounded bg-text/10"></div>
-                <div class="h-12 w-full animate-pulse rounded bg-text/10"></div>
+                <Skeleton class="h-4 w-2/5 rounded" />
+                <Skeleton class="h-6 w-4/5 rounded" />
+                <Skeleton class="h-12 rounded" />
               </div>
             </div>
           {/each}
         </div>
       </section>
     {/snippet}
+
     {#snippet failed()}{/snippet}
 
     {const newsroom = await listPosts({ page: 1, limit: 3 })}
     {#if newsroom.docs.length > 0}
       <section class="flex flex-col gap-4">
-        <div class="flex items-center justify-between gap-4 rounded-lg px-5 py-4 glass glass-brightness-150 dark:glass-brightness-50 glass-contrast-60 dark:glass-contrast-100">
-          <div class="flex flex-col gap-0.5">
-            <h2 class="text-xl leading-tight font-bold text-text">Newsroom</h2>
-            <p class="text-xs text-text/70">Latest announcements and updates</p>
-          </div>
-          <Button.Root href="/newsroom" data-sveltekit-preload-data="hover" class="flex shrink-0 items-center gap-1 text-sm font-semibold text-link transition-colors hover:text-hover">
-            View all
-            <ArrowRight class="size-4" />
-          </Button.Root>
-        </div>
-        <div class="grid grid-cols-1 gap-5 @md:grid-cols-2 @xl:grid-cols-3">
-          {#each newsroom.docs as post (post.id)}
-            <PostCard {post} />
-          {/each}
-        </div>
+        <Item.Root variant="outline" class="glass glass-brightness-150 dark:glass-brightness-50 glass-contrast-60 dark:glass-contrast-100">
+          <Item.Media variant="icon">
+            <NewspaperIcon class="size-6" />
+          </Item.Media>
+          <Item.Content>
+            <Item.Title>Newsroom</Item.Title>
+            <Item.Description>Latest announcements and updates</Item.Description>
+          </Item.Content>
+          <Item.Actions>
+            <Button href="/newsroom" data-sveltekit-preload-data="hover" variant="outline">
+              View all
+              <ArrowRight class="size-4" />
+            </Button>
+          </Item.Actions>
+          <Item.Footer class="grid grid-cols-1 gap-5 @md:grid-cols-2 @xl:grid-cols-3">
+            {#each newsroom.docs as post (post.id)}
+              <PostCard {post} />
+            {/each}
+          </Item.Footer>
+        </Item.Root>
       </section>
     {/if}
   </svelte:boundary>
 
-  <div class="grid grid-cols-1 gap-5 @xl:grid-cols-2 @5xl:grid-cols-3">
-    {#if favorites.current.length === 0}
-      <ContributorCard user={{ id: "0", username: "No favorites set!", quote: "Why don't you set a favorite?" }} options={{ tip: true }} {iconMapper} />
-    {:else}
-      {#each favorites.current.toReversed() as favorite, index (index)}
-        <ContributorCard user={{ id: favorite.uuid, username: favorite.ign, role: Role.FAVORITE, displayName: favorite.displayName }} options={{ favorite: true }} {iconMapper} />
-      {/each}
-    {/if}
-
-    <svelte:boundary>
-      {#snippet pending()}
-        {#each new Array(3 * 4) as _, index (index)}
-          <ContributorCardSkeleton />
+  <Tooltip.Provider delayDuration={75} skipDelayDuration={75}>
+    <div class="grid grid-cols-1 gap-5 @xl:grid-cols-2 @5xl:grid-cols-3">
+      {#if favorites.current.length === 0}
+        <ContributorCard user={{ id: "0", username: "No favorites set!", quote: "Why don't you set a favorite?" }} options={{ tip: true }} {iconMapper} />
+      {:else}
+        {#each favorites.current.toReversed() as favorite, index (index)}
+          <ContributorCard user={{ id: favorite.uuid, username: favorite.ign, role: Role.FAVORITE, displayName: favorite.displayName }} options={{ favorite: true }} {iconMapper} />
         {/each}
-      {/snippet}
-      {#snippet failed(err, retry)}
-        <Notice title="Failed to load contributors." type="error" error={err} {retry} class="col-span-full" />
-      {/snippet}
+      {/if}
 
-      {#each await getContributors() as contributor (contributor.id)}
-        <ContributorCard user={contributor} {iconMapper} />
-      {/each}
-    </svelte:boundary>
-  </div>
+      <svelte:boundary>
+        {#snippet pending()}
+          {#each new Array(3 * 4) as _, index (index)}
+            <ContributorCardSkeleton />
+          {/each}
+        {/snippet}
+        {#snippet failed(err, retry)}
+          <Notice title="Failed to load contributors." type="error" error={err} {retry} class="col-span-full" />
+        {/snippet}
+
+        {#each await getContributors() as contributor (contributor.id)}
+          <ContributorCard user={contributor} {iconMapper} />
+        {/each}
+      </svelte:boundary>
+    </div>
+  </Tooltip.Provider>
 </main>

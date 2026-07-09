@@ -1,5 +1,7 @@
 <script lang="ts">
-  import { Avatar, Button } from "bits-ui";
+  import { buttonVariants } from "$src/lib/components/ui/button";
+  import * as Item from "$ui/item";
+  import ExternalLinkIcon from "@lucide/svelte/icons/external-link";
 
   interface Props {
     href: string;
@@ -16,16 +18,22 @@
   let { href, text, img }: Props = $props();
 </script>
 
-<Button.Root {href} target="_blank" rel="noreferrer" class="flex w-full items-center gap-4 rounded-lg p-4 transition-all duration-300 ease-out hover:scale-[1.05] glass glass-brightness-150 dark:glass-brightness-50 glass-contrast-60 dark:glass-contrast-100">
-  <Avatar.Root class="size-12 shrink-0 rounded-lg select-none">
-    <Avatar.Image loading="lazy" src={img.src} alt={img.alt} class="pointer-events-none size-12 rounded-lg" />
-    <Avatar.Fallback class="flex h-full items-center justify-center text-lg font-semibold text-text/60 uppercase">{img.alt.slice(0, 2)}</Avatar.Fallback>
-  </Avatar.Root>
-  <div>
-    <div class="font-semibold">
-      <span class="text-text/70">SkyCrypt's</span>
-      <span class="text-link">{text.title}</span>
-    </div>
-    <div class="font-medium text-text/90 opacity-85">{text.description}</div>
-  </div>
-</Button.Root>
+<Item.Root variant="outline" class="[a]:hover:scale-95 delay-75 w-fit standard:[a]:hover:bg-inherit [a]:transition-[scale] duration-300 ease-out">
+  {#snippet child({ props })}
+    <!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
+    <a {href} target="_blank" {...props}>
+      <Item.Media variant="image">
+        <img loading="lazy" src={img.src} alt={img.alt} />
+      </Item.Media>
+      <Item.Content>
+        <Item.Title>SkyCrypt's {text.title}</Item.Title>
+        <Item.Description>{text.description}</Item.Description>
+      </Item.Content>
+      <Item.Actions>
+        <div class={buttonVariants({ variant: "outline" })}>
+          <ExternalLinkIcon />
+        </div>
+      </Item.Actions>
+    </a>
+  {/snippet}
+</Item.Root>

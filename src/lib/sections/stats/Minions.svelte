@@ -44,7 +44,6 @@
           <Item.Content>
             <Item.Title class="gap-1">Looking for a place to trade minions? Check out <span class="underline text-primary inline-flex items-start gap-0.5 flex-nowrap">MinionAH <ExternalLinkIcon class="size-3" /></span></Item.Title>
           </Item.Content>
-          <Item.Actions />
         </a>
       {/snippet}
     </Item.Root>

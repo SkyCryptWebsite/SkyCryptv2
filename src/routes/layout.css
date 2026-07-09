@@ -272,21 +272,8 @@
     --sidebar-ring: oklch(0.556 0 0);
   }
 
-  ::-webkit-scrollbar {
-    width: 10px;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background-color: var(--icon);
-    border-radius: 5px;
-  }
-
-  ::-webkit-scrollbar-track {
-    background-color: transparent;
-  }
-
   *:focus-visible {
-    outline: var(--color-skillbar) auto 1px;
+    outline: var(--primary) auto 1px;
   }
 
   *::selection {
@@ -344,7 +331,7 @@
   }
 
   html {
-    @apply scrollbar-gutter-stable font-sans;
+    @apply font-sans;
   }
 
   [data-slot="scroll-area-thumb"] {

@@ -12,9 +12,9 @@
   const alt = $derived(block.alt ?? media?.alt ?? "");
 </script>
 
-<figure class="my-6 flex flex-col items-center gap-2">
-  <img {src} {alt} {width} {height} loading="lazy" class="h-auto max-w-full rounded-lg bg-background-grey" />
+<figure class="my-4 flex flex-col items-center gap-2">
+  <img {src} {alt} {width} {height} loading="lazy" class="h-auto max-w-full rounded-xl border" />
   {#if block.caption}
-    <figcaption class="text-center text-sm text-text/60 italic">{block.caption}</figcaption>
+    <figcaption class="text-center text-sm text-muted-foreground italic">{block.caption}</figcaption>
   {/if}
 </figure>

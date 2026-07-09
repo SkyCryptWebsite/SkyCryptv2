@@ -1,13 +1,15 @@
 <script lang="ts">
   import TypeBadge from "$lib/components/newsroom/TypeBadge.svelte";
   import { clientLocale } from "$lib/hooks/client-locale.svelte";
+  import { cn } from "$src/lib/shared/utils";
   import type { Author, AuthorView, Post } from "$types";
+  import { Badge } from "$ui/badge";
   import ImageIcon from "@lucide/svelte/icons/image";
   import Star from "@lucide/svelte/icons/star";
   import { Avatar, Button } from "bits-ui";
 
   /** `as` sets the title's heading level so the card fits its surrounding document outline. */
-  const { post, as = "h3" }: { post: Post; as?: "h2" | "h3" } = $props();
+  const { post, as = "h3", glass = false }: { post: Post; as?: "h2" | "h3"; glass?: boolean } = $props();
 
   const dateFormatter = $derived(new Intl.DateTimeFormat(clientLocale.current, { year: "numeric", month: "long", day: "numeric" }));
   const formatDate = (iso: string | null | undefined): string => {
@@ -29,19 +31,19 @@
   const overflowTags = $derived((post.tags?.length ?? 0) - visibleTags.length);
 </script>
 
-<Button.Root href="/newsroom/{post.slug}" data-sveltekit-preload-data="hover" class="group relative flex h-full w-full min-w-0 flex-col overflow-hidden rounded-lg text-left glass glass-brightness-150 dark:glass-brightness-50 glass-contrast-60 dark:glass-contrast-100">
+<Button.Root href="/newsroom/{post.slug}" data-sveltekit-preload-data="hover" class={cn("group relative flex h-full w-full min-w-0 flex-col overflow-hidden rounded-xl text-left data-[featured=true]:border-accent-2/50 border hover:scale-95 transition-[scale] duration-300 delay-75 ease-out focus-visible:scale-95", { glass })} data-featured={post.featured}>
   <div class="relative aspect-video w-full overflow-hidden bg-background-lore">
     {#if thumb && post.heroImage}
-      <Avatar.Root class="size-full transition-transform duration-300 ease-out group-hover:scale-105">
+      <Avatar.Root class="size-full">
         <Avatar.Image src={thumb.url} alt={post.heroImage.alt ?? ""} width={thumb.width} height={thumb.height} loading="lazy" class="size-full object-cover" />
-        <Avatar.Fallback class="flex size-full items-center justify-center bg-text/10">
+        <Avatar.Fallback class="flex size-full items-center justify-center bg-foreground/10">
           <ImageIcon class="size-6" aria-label="Image failed to load" />
         </Avatar.Fallback>
       </Avatar.Root>
     {/if}
-    <div class="pointer-events-none absolute inset-0 bg-linear-to-t from-background/70 via-background/10 to-transparent group-hover:opacity-0 transition-opacity duration-300 ease-out"></div>
+    <div class="pointer-events-none absolute inset-0 bg-linear-to-t group-data-[featured=true]:from-accent-2/70 group-data-[featured=true]:via-accent-2/10 from-background/70 via-background/10 to-transparent group-hover:opacity-0 transition-opacity delay-75 duration-300 ease-out"></div>
     {#if post.featured}
-      <Star class="size-6 absolute top-2 left-2 shrink-0 fill-gold text-gold" aria-label="Featured" />
+      <Star class="size-6 absolute rounded-full top-2 left-2 shrink-0 fill-accent-2 text-accent-2" aria-label="Featured" />
     {/if}
   </div>
   <div class="flex flex-1 flex-col gap-2.5 p-4">
@@ -58,7 +60,7 @@
       <time datetime={post.publishedAt} class="shrink-0 text-text/60">{formatDate(post.publishedAt)}</time>
     </div>
 
-    <svelte:element this={as} class="text-xl leading-tight font-bold text-text transition-colors group-hover:text-hover">{post.title}</svelte:element>
+    <svelte:element this={as} class="text-xl leading-tight font-bold text-background-foreground transition-colors">{post.title}</svelte:element>
 
     {#if post.excerpt}
       <p class="line-clamp-3 text-sm leading-relaxed text-text/80">{post.excerpt}</p>
@@ -67,10 +69,10 @@
     <div class="mt-auto flex flex-wrap items-center gap-1.5 pt-1">
       <TypeBadge type={post.type} />
       {#each visibleTags as tag (tag)}
-        <span class="rounded-full bg-text/10 px-2 py-0.5 text-[10px] font-medium text-text/70">#{tag}</span>
+        <Badge variant="outline">#{tag}</Badge>
       {/each}
       {#if overflowTags > 0}
-        <span class="rounded-full bg-text/10 px-2 py-0.5 text-[10px] font-medium text-text/50">+{overflowTags}</span>
+        <Badge variant="outline">+{overflowTags}</Badge>
       {/if}
     </div>
   </div>

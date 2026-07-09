@@ -28,7 +28,7 @@
     font-size: 1.875rem;
     line-height: 1.25;
     font-weight: 700;
-    color: var(--color-text);
+    color: var(--color-foreground);
   }
 
   .newsroom-rich-text :global(h2) {
@@ -36,7 +36,7 @@
     font-size: 1.5rem;
     line-height: 2rem;
     font-weight: 700;
-    color: var(--color-text);
+    color: var(--color-foreground);
   }
 
   .newsroom-rich-text :global(h3) {
@@ -44,7 +44,7 @@
     font-size: 1.25rem;
     line-height: 1.75rem;
     font-weight: 700;
-    color: var(--color-text);
+    color: var(--color-foreground);
   }
 
   .newsroom-rich-text :global(h4) {
@@ -52,7 +52,7 @@
     font-size: 1.125rem;
     line-height: 1.75rem;
     font-weight: 700;
-    color: var(--color-text);
+    color: var(--color-foreground);
   }
 
   .newsroom-rich-text :global(h5) {
@@ -60,7 +60,7 @@
     font-size: 1rem;
     line-height: 1.5rem;
     font-weight: 700;
-    color: var(--color-text);
+    color: var(--color-foreground);
   }
 
   .newsroom-rich-text :global(h6) {
@@ -69,25 +69,25 @@
     line-height: 1.25rem;
     font-weight: 700;
     text-transform: uppercase;
-    color: color-mix(in oklch, var(--color-text) 70%, transparent);
+    color: color-mix(in oklch, var(--color-foreground) 70%, transparent);
   }
 
   .newsroom-rich-text :global(blockquote) {
     margin-block: 0.75rem;
-    border-left: 4px solid var(--color-background-grey);
+    border-left: 4px solid var(--color-border);
     padding-left: 1rem;
-    color: color-mix(in oklch, var(--color-text) 80%, transparent);
+    color: color-mix(in oklch, var(--color-foreground) 80%, transparent);
     font-style: italic;
   }
 
   .newsroom-rich-text :global(hr) {
     margin-block: 1.5rem;
-    border-color: var(--color-background-grey);
+    border-color: var(--color-border);
   }
 
   .newsroom-rich-text :global(code) {
     border-radius: 0.25rem;
-    background: var(--color-background-lore);
+    background: var(--color-background);
     padding: 0.125rem 0.375rem;
     font-family: var(--font-mono);
     font-size: 0.875em;
