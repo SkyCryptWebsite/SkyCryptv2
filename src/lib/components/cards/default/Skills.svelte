@@ -27,7 +27,7 @@
   {/if}
 
   {#if shouldShowSkills && profile.skills?.skills}
-    <div class="h-px w-full rounded-full bg-text/30 py-px"></div>
+    <div class="h-px w-full rounded-full bg-foreground/30 py-px"></div>
     <div class={cn("grid grid-cols-3 gap-x-4 gap-y-2", shouldShowDungeons ? "grid-cols-5" : "grid-cols-3")}>
       {#each Object.entries(profile.skills.skills) as [skillName, skillData], index (index)}
         <Skillbar skill={skillName} {skillData} apiEnabled={profile.apiSettings?.skills} />
@@ -36,7 +36,7 @@
   {/if}
 
   {#if shouldShowDungeons}
-    <div class="h-px w-full rounded-full bg-text/30 py-px"></div>
+    <div class="h-px w-full rounded-full bg-foreground/30 py-px"></div>
     <div class={cn("grid grid-cols-3 gap-x-4 gap-y-2", shouldShowSkills ? "grid-cols-5" : "grid-cols-3")}>
       {#if shouldShowDungeons && !shouldShowSkills && dungeons?.level}
         <Skillbar skill="Catacombs" skillData={dungeons.level} apiEnabled={profile.apiSettings?.skills} />

@@ -30,8 +30,8 @@
     </span>
   </div>
 
-  <Progress.Root value={skillData.xpCurrent} max={isMaxed ? skillData.xpCurrent : skillData.xpForNext} class="relative ml-2 flex h-4 overflow-hidden rounded-full data-[api=false]:bg-gray-500 data-[api=true]:bg-text/30" data-api={apiEnabled}>
-    <div class="relative h-full flex-1 rounded-full transition-all duration-300 ease-out data-[api=false]:bg-gray-500 data-[api=true]:data-[maxed=false]:bg-skillbar data-[api=true]:data-[maxed=true]:bg-maxed" style="transform: translateX({-size}%);" data-maxed={isMaxed} data-api={apiEnabled}></div>
+  <Progress.Root value={skillData.xpCurrent} max={isMaxed ? skillData.xpCurrent : skillData.xpForNext} class="relative ml-2 flex h-4 overflow-hidden rounded-full bg-foreground/30" data-api={apiEnabled}>
+    <div class="relative h-full flex-1 rounded-full z-10 data-[api=false]:hidden data-[api=true]:data-[maxed=false]:bg-primary data-[api=true]:data-[maxed=true]:bg-accent-3" style="transform: translateX({-size}%);" data-maxed={isMaxed} data-api={apiEnabled}></div>
 
     {#if apiEnabled && showXP}
       <div class="absolute inset-0 flex h-full justify-center">

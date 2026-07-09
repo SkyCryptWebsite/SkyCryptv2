@@ -40,21 +40,22 @@
   const mainStyle = $derived(["background-image: url(skycrypt-background)", "background-size: cover", "background-position: center", settings?.border && settings?.borderColor ? `border: 2px solid ${settings.borderColor}` : null].filter(Boolean).join("; "));
 </script>
 
-<main class="relative h-full overflow-hidden rounded-4xl" style={mainStyle}>
+<main class="relative dark h-85 w-375 overflow-hidden rounded-xl" style={mainStyle}>
+  <header>
+    <div class="absolute top-76 left-4 flex items-center justify-center gap-2 text-base font-bold text-white" data-sveltekit-preload-data="hover">
+      <img src="skycrypt-logo" alt="SkyCrypt" class="pointer-events-none size-6 select-none" />
+      <span>SkyCrypt</span>
+    </div>
+  </header>
+
   <div class="flex h-full w-full items-start justify-start">
     <Player showMinecraftName={settings?.showMinecraftName ?? false} />
     <div
-      class="relative z-50 flex h-full w-full flex-col gap-y-2 overflow-hidden rounded-4xl p-2 px-4 backdrop-blur-lg
+      class="relative z-50 flex h-full w-full flex-col gap-y-2 overflow-hidden rounded-xl p-2 px-4 backdrop-blur-lg
 backdrop-brightness-50">
       <Profile />
       <Skills />
       <Stats />
     </div>
   </div>
-  <footer>
-    <div class="absolute top-2 left-2 flex items-center justify-center gap-2 text-base font-bold text-white" data-sveltekit-preload-data="hover">
-      <img src="skycrypt-logo" alt="SkyCrypt" class="pointer-events-none size-6 select-none" />
-      <span>SkyCrypt</span>
-    </div>
-  </footer>
 </main>
