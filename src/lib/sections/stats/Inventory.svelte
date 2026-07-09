@@ -73,7 +73,7 @@
           <Separator orientation="horizontal" />
         {:else}
           <div class="@container-scroll flex h-fit relative w-full md:sticky md:top-1/4 md:w-fit">
-            <Tabs.List class="bg-transparent @stuck-top:bg-background/50 h-fit transition-colors duration-150">
+            <Tabs.List class="bg-transparent rounded-xl @stuck-top:bg-background/50 h-fit transition-colors duration-150">
               <ScrollArea class="h-144" orientation="vertical" type="auto" viewportClasses="scroll-fade-track-y rounded-xl rounded-br-none">
                 <div class="flex flex-col gap-3 px-4 py-4">
                   {@render inventoryTabItems(inventories, selectedTabName)}
@@ -85,7 +85,7 @@
           </div>
         {/if}
 
-        <Tabs.Content class="mx-auto sm:mt-4 sm:pt-4 w-full p-2 sm:p-0 md:mt-0 md:px-4" value={selectedTabName}>
+        <Tabs.Content class="mx-auto sm:my-4 sm:py-4 w-full p-2 sm:p-0 md:my-0 md:px-4" value={selectedTabName}>
           {#if selectedTabName === "Search"}
             {#if uuid && profileId}
               <InventorySearch bind:search={searchValue} {uuid} {profileId} {itemSnippet} />
@@ -123,11 +123,11 @@
 {/snippet}
 
 {#snippet emptyItem()}
-  <div class="aspect-square rounded-sm bg-text/4"></div>
+  <div class="aspect-square rounded-xl border bg-text/4"></div>
 {/snippet}
 
 {#snippet gap()}
-  <hr class="col-span-full h-4 border-0" />
+  <Separator class="col-span-full my-4" />
 {/snippet}
 
 {#snippet multipleInventorySection(items: ModelsStrippedItem[], currentInventory: ModelsInventory)}
@@ -139,7 +139,7 @@
             {#snippet child({ props })}
               <div {...props}>
                 {#if item.texture_path}
-                  <div class="relative flex aspect-square items-center justify-center rounded-sm group-data-[state=active]:bg-text/10 group-data-[state=inactive]:bg-text/4 data-[shine=true]:shine" data-shine={!preferences.performanceMode && shouldShine(item)}>
+                  <div class="relative flex aspect-square items-center justify-center rounded-xl border overflow-clip group-data-[state=active]:bg-text/10 group-data-[state=inactive]:bg-text/4 data-[shine=true]:shine" data-shine={!preferences.performanceMode && shouldShine(item)}>
                     {@render itemSnippet(item)}
                   </div>
                 {:else}
@@ -151,10 +151,21 @@
         {/each}
       {/if}
     </Tabs.List>
+
     {#if items?.length}
       {#each items as item, index (index)}
         <Tabs.Content value={index.toString()}>
+          <div class="grid place-content-center gap-1 @md:gap-1.5 @xl:gap-2" {@attach animateObfuscatedText}>
+            <div class="rounded-xl my-4 border bg-background/50 p-4">
+              {#if item?.lore}
+                {#each item?.lore as lore, index (index)}
+                  {@html renderLore(lore)}
+                {/each}
+              {/if}
+            </div>
+          </div>
           <div class="grid grid-cols-[repeat(9,minmax(1.875rem,4.875rem))] place-content-center gap-1 @md:gap-1.5 @xl:gap-2">
+            {@render gap()}
             {#if item?.containsItems}
               {#each item.containsItems as containedItem, index2 (index2)}
                 {#if index2 > 0}
@@ -164,7 +175,7 @@
                 {/if}
                 <Tabs.Content value={index.toString()}>
                   {#if containedItem.texture_path}
-                    <div class="relative flex aspect-square items-center justify-center rounded-sm bg-text/4 data-[shine=true]:shine" data-shine={!preferences.performanceMode && shouldShine(item)}>
+                    <div class="relative flex aspect-square items-center justify-center rounded-xl border overflow-clip bg-text/4 data-[shine=true]:shine" data-shine={!preferences.performanceMode && shouldShine(item)}>
                       {@render itemSnippet(containedItem)}
                     </div>
                   {:else}
@@ -173,15 +184,6 @@
                 </Tabs.Content>
               {/each}
             {/if}
-          </div>
-          <div class="grid place-content-center gap-1 @md:gap-1.5 @xl:gap-2" {@attach animateObfuscatedText}>
-            <div class="rounded-xl my-4 border bg-background/50 p-4">
-              {#if item?.lore}
-                {#each item?.lore as lore, index (index)}
-                  {@html renderLore(lore)}
-                {/each}
-              {/if}
-            </div>
           </div>
         </Tabs.Content>
       {/each}
