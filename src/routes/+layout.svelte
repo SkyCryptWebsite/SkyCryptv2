@@ -13,6 +13,7 @@
   import { getPacks } from "$lib/shared/api/skycrypt-api.remote";
   import { parseThemeFromURL } from "$lib/shared/themes/sharing";
   import * as Drawer from "$ui/drawer";
+  import { Separator } from "$ui/separator";
   import * as Sheet from "$ui/sheet";
   import Wifi from "@lucide/svelte/icons/wifi";
   import WifiOff from "@lucide/svelte/icons/wifi-off";
@@ -225,12 +226,12 @@
   class="sm:mr-8"
   pauseWhenPageIsHidden={true}
   toastOptions={{
-    class: "glass! gap-2! rounded-lg! border-none! font-semibold! text-text/80! glass-brightness-50",
+    class: "standard:glass! performance:bg-popover! gap-2! rounded-xl! border! text-foreground!",
 
     classes: {
-      closeButton: "text-text/80! border-none! hover:opacity-60! bg-background-grey! hover:bg-background-grey!",
-      description: "text-pretty! font-medium!",
-      title: "text-pretty! font-semibold!"
+      closeButton: "bg-secondary!",
+      description: "text-pretty!",
+      title: "text-pretty!"
     }
   }} />
 
@@ -247,7 +248,8 @@
 <div class="pointer-events-none fixed inset-0 group z-[-1] isolate h-dvh w-screen" data-isSkinHidden={innerWidth < 1210} data-isStatsPage={page.url.pathname.startsWith("/stats") && !page.error}>
   <div class="size-full relative z-10 group-data-[isSkinHidden=true]:group-data-[isStatsPage=true]:blur-lg [background-image:var(--bg-url)] bg-cover bg-scroll bg-center bg-no-repeat bg-background"></div>
 
-  <div class="absolute inset-0 size-full z-20 group-data-[skinHidden=true]:hidden group-data-[isStatsPage=false]:hidden [background-image:var(--bg-url)] blur-lg bg-cover bg-scroll bg-center bg-no-repeat" style="--percent: 29.75%; clip-path: polygon(var(--percent) 0%, 100% 0%, 100% 100%, var(--percent) 100%);"></div>
+  <div class="absolute inset-0 size-full z-20 group-data-[skinHidden=true]:hidden group-data-[isStatsPage=false]:hidden [background-image:var(--bg-url)] blur-lg bg-cover bg-scroll bg-center bg-no-repeat" style="--percent: 30%; clip-path: polygon(var(--percent) 0%, 100% 0%, 100% 100%, var(--percent) 100%);"></div>
+  <Separator class="absolute inset-0 h-screen top-12 left-[calc(30%-1px)] z-50 group-data-[isSkinHidden=true]:hidden group-data-[isStatsPage=false]:hidden" orientation="vertical" />
 </div>
 
 <Header />
