@@ -3,9 +3,11 @@
   import { clientLocale } from "$lib/hooks/client-locale.svelte";
   import TypeBadge from "$src/lib/components/newsroom/TypeBadge.svelte";
   import type { Post } from "$types";
+  import { Badge } from "$ui/badge";
+  import { Button } from "$ui/button";
   import ImageIcon from "@lucide/svelte/icons/image";
   import Newspaper from "@lucide/svelte/icons/newspaper";
-  import { Avatar, Button } from "bits-ui";
+  import { Avatar } from "bits-ui";
 
   interface Props {
     posts: Post[];
@@ -37,47 +39,46 @@
   }
 </script>
 
-<section role="status" aria-live="polite" class="flex w-full max-w-sm flex-col gap-3 rounded-lg px-4 py-3 text-text shadow-lg shadow-black/10 glass glass-brightness-150 dark:glass-brightness-50 glass-contrast-60 dark:glass-contrast-100 @container-normal @sm:max-w-md">
+<section role="status" aria-live="polite" class="flex w-full max-w-sm flex-col gap-3 px-4 py-3 text-foreground shadow-lg shadow-black/10 @container-normal @sm:max-w-md">
   <div class="flex flex-col min-w-0 items-start gap-3">
     {#if thumb && newestUnseen.heroImage}
-      <Avatar.Root class="relative aspect-video w-full max-w-sm mx-auto shrink-0 overflow-hidden rounded-lg bg-background-lore">
+      <Avatar.Root class="relative aspect-video w-full max-w-sm mx-auto shrink-0 overflow-hidden rounded-xl border">
         <Avatar.Image src={thumb.url} alt={newestUnseen.heroImage.alt ?? ""} width={thumb.width} height={thumb.height} loading="lazy" class="size-full object-cover" />
-        <Avatar.Fallback class="flex size-full items-center justify-center bg-text/10">
+        <Avatar.Fallback class="flex size-full items-center justify-center bg-foretext-foreground/10">
           <ImageIcon class="size-5" aria-label="Image failed to load" />
         </Avatar.Fallback>
         <div class="pointer-events-none absolute inset-0 bg-linear-to-t from-background/70 via-background/10 to-transparent group-hover:opacity-0 transition-opacity duration-300 ease-out"></div>
       </Avatar.Root>
     {:else}
-      <div class="flex size-10 shrink-0 items-center justify-center rounded-lg bg-link/15 text-link">
+      <div class="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/15 text-primary">
         <Newspaper class="size-5" />
       </div>
     {/if}
-
-    <div class="min-w-0 flex-1 space-y-1">
-      <p class="text-lg lg:text-xl leading-tight font-bold text-text">{newestUnseen.title}</p>
-      {#if newestUnseen.excerpt}
-        <p class="line-clamp-3 text-sm leading-relaxed text-text/80">{newestUnseen.excerpt}</p>
-      {/if}
-      {#if publishedDate}
-        <time datetime={newestUnseen.publishedAt ?? undefined} class="shrink-0 text-xs font-medium text-text/60">{publishedDate}</time>
-      {/if}
-    </div>
-
     <div class="mt-auto flex flex-wrap items-center gap-1.5 pt-1">
       <TypeBadge type={newestUnseen.type} />
       {#each visibleTags as tag (tag)}
-        <span class="rounded-full bg-text/10 px-2 py-0.5 text-[10px] font-medium text-text/70">#{tag}</span>
+        <Badge variant="outline">#{tag}</Badge>
       {/each}
       {#if overflowTags > 0}
-        <span class="rounded-full bg-text/10 px-2 py-0.5 text-[10px] font-medium text-text/50">+{overflowTags}</span>
+        <Badge variant="outline">+{overflowTags}</Badge>
+      {/if}
+    </div>
+
+    <div class="min-w-0 flex-1 space-y-1">
+      <p class="text-lg lg:text-xl leading-tight font-bold text-foreground">{newestUnseen.title}</p>
+      {#if newestUnseen.excerpt}
+        <p class="line-clamp-3 text-sm leading-relaxed text-foreground/80">{newestUnseen.excerpt}</p>
+      {/if}
+      {#if publishedDate}
+        <time datetime={newestUnseen.publishedAt ?? undefined} class="shrink-0 text-xs font-medium text-muted-foreground">{publishedDate}</time>
       {/if}
     </div>
   </div>
 
   <div class="flex items-center justify-end gap-2">
-    <Button.Root aria-label="Dismiss newsroom notifications" class="rounded-lg px-3 py-1.5 text-sm font-bold transition-colors hover:text-hover text-text/70" onclick={dismiss}>Close</Button.Root>
+    <Button aria-label="Dismiss newsroom notifications" onclick={dismiss} variant="outline">Close</Button>
     {#if newestUnseen.slug}
-      <Button.Root href="/newsroom/{newestUnseen.slug}" data-sveltekit-preload-data="hover" class="rounded-lg bg-link px-3 py-1.5 text-sm font-bold text-background transition-colors hover:bg-hover" onclick={dismiss}>Read</Button.Root>
+      <Button href="/newsroom/{newestUnseen.slug}" data-sveltekit-preload-data="hover" onclick={dismiss}>Read</Button>
     {/if}
   </div>
 </section>
