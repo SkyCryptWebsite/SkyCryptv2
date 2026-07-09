@@ -178,8 +178,6 @@
   });
 
   let innerWidth = $state(0);
-
-  $inspect(!page.error);
 </script>
 
 <ModeWatcher defaultMode="dark" defaultTheme="default" themeStorageKey="skycryptActiveTheme" darkClassNames={["dark"]} lightClassNames={["light"]} themeColors={{ dark: "#282828", light: "#dbdbdb" }} />
