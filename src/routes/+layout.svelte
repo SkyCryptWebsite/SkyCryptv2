@@ -178,6 +178,8 @@
   });
 
   let innerWidth = $state(0);
+
+  $inspect(!page.error);
 </script>
 
 <ModeWatcher defaultMode="dark" defaultTheme="default" themeStorageKey="skycryptActiveTheme" darkClassNames={["dark"]} lightClassNames={["light"]} themeColors={{ dark: "#282828", light: "#dbdbdb" }} />
@@ -244,7 +246,7 @@
   <PerformanceMode />
 {/if}
 
-<div class="pointer-events-none fixed inset-0 group z-[-1] isolate h-dvh w-screen" data-isSkinHidden={innerWidth < 1210} data-isStatsPage={page.url.pathname.startsWith("/stats")}>
+<div class="pointer-events-none fixed inset-0 group z-[-1] isolate h-dvh w-screen" data-isSkinHidden={innerWidth < 1210} data-isStatsPage={page.url.pathname.startsWith("/stats") && !page.error}>
   <div class="size-full relative z-10 group-data-[isSkinHidden=true]:group-data-[isStatsPage=true]:blur-lg [background-image:var(--bg-url)] bg-cover bg-scroll bg-center bg-no-repeat bg-background"></div>
 
   <div class="absolute inset-0 size-full z-20 group-data-[skinHidden=true]:hidden group-data-[isStatsPage=false]:hidden [background-image:var(--bg-url)] blur-lg bg-cover bg-scroll bg-center bg-no-repeat" style="--percent: 29.75%; clip-path: polygon(var(--percent) 0%, 100% 0%, 100% 100%, var(--percent) 100%);"></div>
