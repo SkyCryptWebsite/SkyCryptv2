@@ -30,19 +30,18 @@
     </span>
   </div>
 
-  <Progress.Root value={skillData.xpCurrent} max={isMaxed ? skillData.xpCurrent : skillData.xpForNext} class="relative ml-2 flex h-4 overflow-hidden rounded-full bg-foreground/30" data-api={apiEnabled}>
-    <div class="relative h-full flex-1 rounded-full z-10 data-[api=false]:hidden data-[api=true]:data-[maxed=false]:bg-primary data-[api=true]:data-[maxed=true]:bg-accent-3" style="transform: translateX({-size}%);" data-maxed={isMaxed} data-api={apiEnabled}></div>
-
+  <Progress.Root value={skillData.xpCurrent} max={isMaxed ? skillData.xpCurrent : skillData.xpForNext} class="relative ml-2 flex h-4 overflow-hidden rounded-full border bg-foreground/30" data-api={apiEnabled}>
     {#if apiEnabled && showXP}
-      <div class="absolute inset-0 flex h-full justify-center">
+      <div class="absolute inset-0 z-20 flex h-full justify-center">
         <div class="text-xs font-semibold text-white">
           {calculatedXP} XP
         </div>
       </div>
     {/if}
+    <div class="relative h-full flex-1 rounded-full z-10 data-[api=false]:hidden data-[api=true]:data-[maxed=false]:bg-primary data-[api=true]:data-[maxed=true]:bg-accent-3" style="transform: translateX({-size}%);" data-maxed={isMaxed} data-api={apiEnabled}></div>
   </Progress.Root>
 
-  <div class="absolute bottom-0 left-0 z-10 flex size-9 items-center justify-center rounded-full p-1 drop-shadow-sm data-[api=false]:bg-gray-600 data-[maxed=false]:bg-primary data-[maxed=true]:bg-accent-3" data-maxed={isMaxed} data-api={apiEnabled}>
+  <div class="absolute bottom-0 border left-0 z-10 flex size-9 items-center justify-center rounded-full p-1 drop-shadow-sm data-[api=false]:bg-gray-600 data-[maxed=false]:bg-primary data-[maxed=true]:bg-accent-3" data-maxed={isMaxed} data-api={apiEnabled}>
     <img loading="lazy" class="pointer-events-none size-6.5 [image-rendering:pixelated] data-[api=false]:grayscale" src={skillData.texture} alt={skill} data-api={apiEnabled} />
   </div>
 </div>
