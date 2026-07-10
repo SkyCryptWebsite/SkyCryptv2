@@ -101,7 +101,7 @@
     "satori-html": "^0.3.2",
     "shadcn-svelte": "^1.3.0",
     "skinview3d": "^3.4.2",
-    "super-sitemap": "^1.0.12",
+    "super-sitemap": "^2.0.4",
     "svelte": "^5.56.3",
     "svelte-check": "^4.6.0",
     "svelte-persisted-store": "^0.12.0",

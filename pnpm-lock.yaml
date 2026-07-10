@@ -211,8 +211,8 @@ importers:
         specifier: ^3.4.2
         version: 3.4.2
       super-sitemap:
-        specifier: ^1.0.12
-        version: 1.0.12(svelte@5.56.3(@typescript-eslint/types@8.61.1))
+        specifier: ^2.0.4
+        version: 2.0.4
       svelte:
         specifier: ^5.56.3
         version: 5.56.3(@typescript-eslint/types@8.61.1)
@@ -5352,10 +5352,8 @@ packages:
   stylis@4.2.0:
     resolution: {integrity: sha512-Orov6g6BB1sDfYgzWfTHDOxamtX1bE/zo104Dh9e6fqJ3PooipYyfJ0pUmrZO2wAvO8YbEyeFrkV91XTsGMSrw==}
 
-  super-sitemap@1.0.12:
-    resolution: {integrity: sha512-C3gfAS1RZxL5bbZGtgnIOitMhfqAt8RmhW8AWTia6c8n9RW3Zx7f/SxVeFWZD0I1nUAx2pkxuWazVtev0Nmb5w==}
-    peerDependencies:
-      svelte: '>=4.0.0 <6.0.0'
+  super-sitemap@2.0.4:
+    resolution: {integrity: sha512-GVoa8ZcORd4jjDWl9Tz3MRMXYBnM4q5jX9vaK9LAoWrdXLWjYLB3e5innjul1RS/Ih5+x5vBpIf8bCyoW20yJQ==}
 
   superstruct@2.0.2:
     resolution: {integrity: sha512-uV+TFRZdXsqXTL2pRvujROjdZQ4RAlBUS5BTh9IGm+jTqQntYThciG/qu57Gs69yjnVUSqdxF9YLmSnpupBW9A==}
@@ -11177,9 +11175,7 @@ snapshots:
 
   stylis@4.2.0: {}
 
-  super-sitemap@1.0.12(svelte@5.56.3(@typescript-eslint/types@8.61.1)):
-    dependencies:
-      svelte: 5.56.3(@typescript-eslint/types@8.61.1)
+  super-sitemap@2.0.4: {}
 
   superstruct@2.0.2:
     optional: true
