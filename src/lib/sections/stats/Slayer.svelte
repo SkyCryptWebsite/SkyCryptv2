@@ -34,7 +34,7 @@
             {#each Object.entries(slayer.data) as [key, value], index (index)}
               {#if value.level && value.level.xp != null && value.level.xp > 0}
                 <div class="relative flex min-w-xs flex-col items-center gap-1 space-y-5 overflow-hidden rounded-xl bg-background/50 border">
-                  <div class="flex w-full items-center justify-center gap-1.5 border-b-2 border-icon py-2 text-center font-semibold uppercase">
+                  <div class="flex w-full items-center justify-center gap-1.5 border-b-2 border-primary py-2 text-center font-semibold uppercase">
                     <Avatar.Root class="after:border-none rounded-none">
                       <Avatar.Image loading="lazy" src={value.texture} class="size-8 rounded-2xl object-contain [image-rendering:pixelated]" />
                       <Avatar.Fallback class="bg-transparent rounded-none">

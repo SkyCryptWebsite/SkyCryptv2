@@ -179,7 +179,7 @@
       <ScrollAreaItems>
         {#each creatures as [_, creature], index (index)}
           <div class="flex h-full max-h-56 flex-col rounded-lg bg-background/30 p-2 whitespace-nowrap">
-            <div class="flex h-12 items-center justify-center border-b-2 border-icon pb-2 text-center font-bold">
+            <div class="flex h-12 items-center justify-center border-b-2 border-primary pb-2 text-center font-bold">
               {creature.name}
             </div>
             <div class="mt-2 flex h-full w-full flex-col items-center justify-center gap-4">

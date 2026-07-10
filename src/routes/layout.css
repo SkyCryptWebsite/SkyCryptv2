@@ -14,7 +14,6 @@
 
 @theme {
   /* Colors */
-  --color-icon: var(--icon);
   --color-link: var(--link);
   --color-hover: var(--hover);
   --color-skillbar: var(--primary);
@@ -159,7 +158,6 @@
 
   :root {
     /* TODO: remove these compatibility aliases after all legacy token consumers are migrated to shadcn tokens. */
-    --icon: var(--primary);
     --link: var(--primary);
     --hover: var(--accent);
     --skillbar: var(--primary);

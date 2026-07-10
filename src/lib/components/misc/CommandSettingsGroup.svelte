@@ -99,7 +99,7 @@
           closeCommand();
         }
       }}>
-      <div class="rounded-lg bg-icon/80 p-1">
+      <div class="rounded-lg bg-primary/80 p-1">
         {#if item.type === "toggle" && item.iconProps}
           {const Icon = item.icon}
           {const props = Object.fromEntries(Object.entries(item.iconProps).map(([key, value]) => [key, typeof value === "function" ? (value as () => unknown)() : value]))}

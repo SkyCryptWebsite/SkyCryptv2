@@ -107,33 +107,33 @@
     </Collapsible.Trigger>
     <Collapsible.Content class="gap-2 pt-1 flex flex-nowrap overflow-auto">
       {#each cardPresets as preset (preset.id)}
-        <Button onclick={() => selectPreset(preset.id)} class={cn("h-full fle flex-col gap-1.5 rounded-lg border-2 p-2 transition-all", selectedPreset.id === preset.id ? "border-icon bg-icon/10" : "border-text/10 bg-text/5 hover:border-text/20 hover:bg-text/10")}>
+        <Button onclick={() => selectPreset(preset.id)} class={cn("h-full fle flex-col gap-1.5 rounded-lg border-2 p-2 transition-all", selectedPreset.id === preset.id ? "border-primary bg-primary/10" : "border-text/10 bg-text/5 hover:border-text/20 hover:bg-text/10")}>
           <div class="flex h-10 w-28 items-stretch gap-1 rounded bg-text/5 p-1">
             <div class="w-1/4 rounded-sm bg-text/15"></div>
             <div class="flex flex-1 flex-col justify-between gap-px">
               <div class="h-1 w-3/4 rounded-full bg-text/20"></div>
               <div class="flex gap-0.5">
-                <div class="h-1 flex-1 rounded-full bg-icon/30"></div>
-                <div class="h-1 flex-1 rounded-full bg-icon/20"></div>
+                <div class="h-1 flex-1 rounded-full bg-primary/30"></div>
+                <div class="h-1 flex-1 rounded-full bg-primary/20"></div>
               </div>
               <div class="h-px w-full bg-text/10"></div>
               <div class="flex gap-px">
                 {#each Array(5) as _, i (i)}
-                  <div class="h-1 flex-1 rounded-full bg-icon/25"></div>
+                  <div class="h-1 flex-1 rounded-full bg-primary/25"></div>
                 {/each}
               </div>
               <div class="flex gap-px">
                 {#each Array(2) as _, i (i)}
-                  <div class="h-1 flex-1 rounded-full bg-icon/25"></div>
+                  <div class="h-1 flex-1 rounded-full bg-primary/25"></div>
                 {/each}
                 {#each Array(3) as _, i (i)}
-                  <div class="h-1 flex-1 rounded-full bg-icon/15"></div>
+                  <div class="h-1 flex-1 rounded-full bg-primary/15"></div>
                 {/each}
               </div>
               <div class="h-px w-full bg-text/10"></div>
               <div class="flex gap-px">
                 {#each Array(5) as _, i (i)}
-                  <div class="h-1 flex-1 rounded-full bg-icon/20"></div>
+                  <div class="h-1 flex-1 rounded-full bg-primary/20"></div>
                 {/each}
               </div>
               <div class="h-0.5 w-full rounded-full bg-text/10"></div>
@@ -184,7 +184,7 @@
                   <Item.Title>{option.label}</Item.Title>
                 </Item.Content>
                 <Item.Actions>
-                  <input type="text" id={option.key} value={settings[option.key] as string} oninput={(e) => updateSetting(option.key, e.currentTarget.value)} class="w-full max-w-40 rounded-md border border-text/10 bg-text/5 px-2 py-1 text-sm text-text focus:border-icon focus:outline-none" />
+                  <input type="text" id={option.key} value={settings[option.key] as string} oninput={(e) => updateSetting(option.key, e.currentTarget.value)} class="w-full max-w-40 rounded-md border border-text/10 bg-text/5 px-2 py-1 text-sm text-text focus:border-primary focus:outline-none" />
                 </Item.Actions>
               </Item.Root>
             </Label>
@@ -195,7 +195,7 @@
                   <Item.Title>{option.label}</Item.Title>
                 </Item.Content>
                 <Item.Actions>
-                  <input type="number" id={option.key} value={settings[option.key] as number} oninput={(e) => updateSetting(option.key, Number(e.currentTarget.value))} class="w-full max-w-24 rounded-md border border-text/10 bg-text/5 px-2 py-1 text-sm text-text focus:border-icon focus:outline-none" />
+                  <input type="number" id={option.key} value={settings[option.key] as number} oninput={(e) => updateSetting(option.key, Number(e.currentTarget.value))} class="w-full max-w-24 rounded-md border border-text/10 bg-text/5 px-2 py-1 text-sm text-text focus:border-primary focus:outline-none" />
                 </Item.Actions>
               </Item.Root>
             </Label>

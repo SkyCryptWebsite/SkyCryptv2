@@ -16,7 +16,7 @@
     </div>
   {/snippet}
   <ScrollArea.Scrollbar orientation="horizontal" class="flex h-2.5 w-full touch-none rounded-full transition-all ease-out select-none md:hidden">
-    <ScrollArea.Thumb class="flex rounded-full bg-icon" />
+    <ScrollArea.Thumb class="flex rounded-full bg-primary" />
   </ScrollArea.Scrollbar>
   <ScrollArea.Corner />
 </ScrollAreaPrimitive>

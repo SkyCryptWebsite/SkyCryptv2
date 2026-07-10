@@ -11,7 +11,7 @@
 </script>
 
 <div class="mx-auto w-full max-w-lg overflow-clip">
-  <div class="bg-icon py-1 text-center text-xl font-semibold uppercase">Notice</div>
+  <div class="bg-primary py-1 text-center text-xl font-semibold uppercase">Notice</div>
   <div class="p-5 text-center text-base font-medium text-pretty">
     <p>
       {#each apiSettings as [key, _], index (index)}

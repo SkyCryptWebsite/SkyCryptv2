@@ -42,7 +42,7 @@
     {/if}
   </Progress.Root>
 
-  <div class="absolute bottom-0 left-0 z-10 flex size-9 items-center justify-center rounded-full p-1 drop-shadow-sm data-[api=false]:bg-gray-600 data-[maxed=false]:bg-icon data-[maxed=true]:bg-maxed" data-maxed={isMaxed} data-api={apiEnabled}>
+  <div class="absolute bottom-0 left-0 z-10 flex size-9 items-center justify-center rounded-full p-1 drop-shadow-sm data-[api=false]:bg-gray-600 data-[maxed=false]:bg-primary data-[maxed=true]:bg-accent-3" data-maxed={isMaxed} data-api={apiEnabled}>
     <img loading="lazy" class="pointer-events-none size-6.5 [image-rendering:pixelated] data-[api=false]:grayscale" src={skillData.texture} alt={skill} data-api={apiEnabled} />
   </div>
 </div>

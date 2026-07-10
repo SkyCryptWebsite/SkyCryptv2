@@ -79,7 +79,7 @@
               <div class="flex items-center gap-2">
                 <Avatar.Root class="shrink-0 select-none">
                   <Avatar.Image loading="lazy" src={piece.sourceTab.icon} alt={piece.sourceTab.name} class="pointer-events-none aspect-square size-10 h-full rounded-lg select-none [image-rendering:pixelated]" />
-                  <Avatar.Fallback class="flex size-10 items-center justify-center rounded-lg bg-icon/90 text-center font-semibold uppercase">
+                  <Avatar.Fallback class="flex size-10 items-center justify-center rounded-lg bg-primary/90 text-center font-semibold uppercase">
                     {piece.sourceTab.name?.slice(0, 2)}
                   </Avatar.Fallback>
                 </Avatar.Root>
@@ -105,7 +105,7 @@
                 <div class="flex items-center gap-2">
                   <Avatar.Root class="shrink-0 select-none">
                     <Avatar.Image loading="lazy" src={packData.icon} alt={packData.name} class="pointer-events-none aspect-square size-10 h-full rounded-lg select-none [image-rendering:pixelated]" />
-                    <Avatar.Fallback class="flex size-10 items-center justify-center rounded-lg bg-icon/90 text-center font-semibold uppercase">
+                    <Avatar.Fallback class="flex size-10 items-center justify-center rounded-lg bg-primary/90 text-center font-semibold uppercase">
                       {packData.name?.slice(0, 2)}
                     </Avatar.Fallback>
                   </Avatar.Root>

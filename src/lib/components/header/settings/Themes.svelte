@@ -107,7 +107,7 @@
               </div>
             </div>
             <RadioGroup.Item id={theme.metadata.id} value={theme.metadata.id} class="group inline-flex h-6 min-h-6 w-10 shrink-0 cursor-pointer items-center rounded-full px-0 transition-colors ease-out">
-              <Check class="size-6 text-icon group-data-[state=unchecked]:invisible" />
+              <Check class="size-6 text-primary group-data-[state=unchecked]:invisible" />
             </RadioGroup.Item>
           </Label>
         {/await}
@@ -147,7 +147,7 @@
 
               <div class="flex items-center gap-1">
                 <RadioGroup.Item id={theme.metadata.id} value={theme.metadata.id} class="group inline-flex h-6 min-h-6 w-10 shrink-0 cursor-pointer items-center rounded-full px-0 transition-colors ease-out">
-                  <Check class="size-6 text-icon group-data-[state=unchecked]:invisible" />
+                  <Check class="size-6 text-primary group-data-[state=unchecked]:invisible" />
                 </RadioGroup.Item>
 
                 <Button title="Edit theme" variant="secondary" onclick={() => openThemeEditor(theme.metadata.id)} aria-label="Edit theme">
