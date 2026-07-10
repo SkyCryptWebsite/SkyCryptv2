@@ -83,7 +83,7 @@
                     {piece.sourceTab.name?.slice(0, 2)}
                   </Avatar.Fallback>
                 </Avatar.Root>
-                <div class="font-semibold text-link">
+                <div class="font-semibold text-primary">
                   You can find this item in the <span class="capitalize">{piece.sourceTab.name}</span> tab
                 </div>
               </div>
@@ -110,7 +110,7 @@
                     </Avatar.Fallback>
                   </Avatar.Root>
                   <div class="flex flex-col">
-                    <div class="font-semibold text-link">
+                    <div class="font-semibold text-primary">
                       <span class="underline">
                         {packData.name}
                       </span>

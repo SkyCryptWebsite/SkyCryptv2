@@ -14,7 +14,6 @@
 
 @theme {
   /* Colors */
-  --color-link: var(--link);
   --color-hover: var(--hover);
   --color-skillbar: var(--primary);
   --color-maxedbar: var(--maxedbar);
@@ -158,7 +157,6 @@
 
   :root {
     /* TODO: remove these compatibility aliases after all legacy token consumers are migrated to shadcn tokens. */
-    --link: var(--primary);
     --hover: var(--accent);
     --skillbar: var(--primary);
     --maxedbar: var(--chart-4);
@@ -275,7 +273,7 @@
   }
 
   *::selection {
-    background-color: var(--color-link);
+    background-color: var(--primary);
     color: var(--color-text);
     text-shadow: var(--text-shadow-lg);
   }

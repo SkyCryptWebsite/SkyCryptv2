@@ -91,7 +91,7 @@
               <div class="flex gap-1">
                 {#each arabicTiers.slice(0, minion.maxTier) as tier (tier)}
                   {const unlocked = tiers.includes(tier)}
-                  <span class={cn("text-sm font-medium", { "text-link": unlocked })}>{romanTiers[tier - 1]}</span>
+                  <span class={cn("text-sm font-medium", { "text-primary": unlocked })}>{romanTiers[tier - 1]}</span>
                 {/each}
               </div>
             {/snippet}

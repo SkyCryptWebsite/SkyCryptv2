@@ -3,7 +3,7 @@
 
   const TYPE_STYLES: Record<PostType, string> = {
     announcement: "bg-gold/15 text-gold border border-bg-gold/15",
-    news: "bg-link/15 text-link border border-bg-link/15",
+    news: "bg-primary/15 text-primary border border-primary/15",
     update: "bg-minecraft-a/15 text-minecraft-a border border-bg-minecraft-a/15",
     changelog: "bg-minecraft-d/15 text-minecraft-d border border-bg-minecraft-d/15",
     guide: "bg-minecraft-b/15 text-minecraft-b border border-bg-minecraft-b/15",

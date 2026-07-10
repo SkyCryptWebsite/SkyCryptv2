@@ -133,6 +133,7 @@ describe.concurrent("richTextToHtml()", () => {
 
     expect(result).toContain('href="https://example.com"');
     expect(result).toContain('target="_blank" rel="noopener noreferrer"');
+    expect(result).toContain('class="text-primary underline underline-offset-2 transition-colors hover:text-hover"');
   });
 
   it("renders same-tab links when newTab is false", ({ expect }) => {
@@ -186,6 +187,7 @@ describe.concurrent("richTextToHtml()", () => {
 
     expect(result).toContain('href="/stats/uuid-1"');
     expect(result).toContain('data-sveltekit-preload-data="hover"');
+    expect(result).toContain('class="font-semibold text-primary underline underline-offset-2 transition-colors hover:text-hover"');
     expect(result).toContain(">Gigi</a>");
   });
 

@@ -42,6 +42,6 @@
 {#snippet notice()}
   <p>You're currently on the SkyCrypt development site (cupcake) This version contains the latest features and updates, but it may also have bugs or incomplete functionalities.</p>
   <p>
-    Please use this site with caution and report any issues you encounter. For the stable version of SkyCrypt (sky), please visit <a href="https://sky.shiiyu.moe" class="text-link underline">sky.shiiyu.moe</a>.
+    Please use this site with caution and report any issues you encounter. For the stable version of SkyCrypt (sky), please visit <a href="https://sky.shiiyu.moe" class="text-primary underline">sky.shiiyu.moe</a>.
   </p>
 {/snippet}

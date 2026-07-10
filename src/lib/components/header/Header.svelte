@@ -65,7 +65,7 @@
         </Button.Root>
 
         {#if packageVersion}
-          <Button.Root class="text-xs leading-none font-normal text-text/60 transition-colors hover:text-link/60 data-[cupcake=true]:text-yellow-500/60 data-[cupcake=true]:hover:text-yellow-500" rel="noreferrer" href="https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/releases/tag/v{packageVersion}" target="_blank" data-cupcake={page.url.origin.includes("cupcake") || dev}>v{packageVersion}</Button.Root>
+          <Button.Root class="text-xs leading-none font-normal text-text/60 transition-colors hover:text-primary/60 data-[cupcake=true]:text-yellow-500/60 data-[cupcake=true]:hover:text-yellow-500" rel="noreferrer" href="https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/releases/tag/v{packageVersion}" target="_blank" data-cupcake={page.url.origin.includes("cupcake") || dev}>v{packageVersion}</Button.Root>
         {/if}
       </div>
     </div>

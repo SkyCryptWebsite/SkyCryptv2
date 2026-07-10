@@ -14,10 +14,10 @@
   <p>
     Currently running version
     <span class="font-semibold">
-      {#if packageVersion}<Button.Root class="text-link" rel="noreferrer" href="https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/releases/tag/v{packageVersion}" target="_blank">{packageVersion}</Button.Root>{/if}
+      {#if packageVersion}<Button.Root class="text-primary" rel="noreferrer" href="https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/releases/tag/v{packageVersion}" target="_blank">{packageVersion}</Button.Root>{/if}
       {#if commitHash}
         <span class="opacity-50">
-          {#if packageVersion}({/if}<Button.Root class="text-link" rel="noreferrer" href="https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/{commitHash}" target="_blank">{commitHash}</Button.Root>{#if packageVersion}){/if}
+          {#if packageVersion}({/if}<Button.Root class="text-primary" rel="noreferrer" href="https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/{commitHash}" target="_blank">{commitHash}</Button.Root>{#if packageVersion}){/if}
         </span>
       {/if}
     </span>
@@ -26,21 +26,21 @@
   <p>Version information is not available.</p>
 {/if}
 <p>
-  You can report bugs, suggest features on <Button.Root class="font-semibold text-link" href={PUBLIC_DISCORD_INVITE} target="_blank" rel="noreferrer">Discord</Button.Root>, and/or contribute to the code on <Button.Root class="font-semibold text-link" href="https://github.com/SkyCryptWebsite" target="_blank" rel="noreferrer">GitHub</Button.Root>. It would be much appreciated!
+  You can report bugs, suggest features on <Button.Root class="font-semibold text-primary" href={PUBLIC_DISCORD_INVITE} target="_blank" rel="noreferrer">Discord</Button.Root>, and/or contribute to the code on <Button.Root class="font-semibold text-primary" href="https://github.com/SkyCryptWebsite" target="_blank" rel="noreferrer">GitHub</Button.Root>. It would be much appreciated!
 </p>
 <p>
-  SkyCrypt Frontend is open source under GNU AGPLv3. View the source on <Button.Root class="font-semibold text-link" href="https://github.com/SkyCryptWebsite/SkyCrypt-Frontend" target="_blank" rel="noreferrer">GitHub</Button.Root>.
+  SkyCrypt Frontend is open source under GNU AGPLv3. View the source on <Button.Root class="font-semibold text-primary" href="https://github.com/SkyCryptWebsite/SkyCrypt-Frontend" target="_blank" rel="noreferrer">GitHub</Button.Root>.
 </p>
 <p>
-  Join our community on <Button.Root class="font-semibold text-link" href={PUBLIC_DISCORD_INVITE} target="_blank" rel="noreferrer">Discord</Button.Root>!
+  Join our community on <Button.Root class="font-semibold text-primary" href={PUBLIC_DISCORD_INVITE} target="_blank" rel="noreferrer">Discord</Button.Root>!
 </p>
 <p>
-  Help keep SkyCrypt ad free by donating on <Button.Root class="font-semibold text-link" href={PUBLIC_PATREON} target="_blank" rel="noreferrer">Patreon</Button.Root>!
+  Help keep SkyCrypt ad free by donating on <Button.Root class="font-semibold text-primary" href={PUBLIC_PATREON} target="_blank" rel="noreferrer">Patreon</Button.Root>!
 </p>
 <p>
-  The original project, <Button.Root class="font-semibold text-link" href="https://sky.lea.moe">sky.lea.moe</Button.Root>, was created by
-  <Button.Root class="font-semibold text-link" href="https://github.com/LeaPhant" target="_blank" rel="noreferrer">LeaPhant</Button.Root>. Thanks for all of what you've done Lea!
+  The original project, <Button.Root class="font-semibold text-primary" href="https://sky.lea.moe">sky.lea.moe</Button.Root>, was created by
+  <Button.Root class="font-semibold text-primary" href="https://github.com/LeaPhant" target="_blank" rel="noreferrer">LeaPhant</Button.Root>. Thanks for all of what you've done Lea!
 </p>
-<Button.Root class="flex items-center-safe gap-1 font-semibold text-link" href="https://github.com/SkyCryptWebsite/SkyCrypt-Frontend#credits" target="_blank">
+<Button.Root class="flex items-center-safe gap-1 font-semibold text-primary" href="https://github.com/SkyCryptWebsite/SkyCrypt-Frontend#credits" target="_blank">
   Used Resources <ExternalLink class="size-4" />
 </Button.Root>

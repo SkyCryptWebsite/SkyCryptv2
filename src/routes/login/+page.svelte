@@ -12,7 +12,7 @@
         <Avatar.Fallback class="flex size-16 items-center justify-center rounded-2xl bg-text/10 text-lg font-semibold text-text/60 uppercase">SC</Avatar.Fallback>
       </Avatar.Root>
       <div class="flex flex-col gap-1.5">
-        <h1 class="text-2xl font-bold tracking-tight">Sign in to <span class="text-link">SkyCrypt</span></h1>
+        <h1 class="text-2xl font-bold tracking-tight">Sign in to <span class="text-primary">SkyCrypt</span></h1>
       </div>
     </header>
 

@@ -53,7 +53,7 @@
 
 {#snippet modal()}
   <Dialog.Root>
-    <Dialog.Trigger class="text-link underline">See here</Dialog.Trigger>
+    <Dialog.Trigger class="text-primary underline">See here</Dialog.Trigger>
     <Dialog.Content class="w-full sm:max-w-5xl overflow-clip p-0">
       {@render video()}
     </Dialog.Content>
@@ -62,7 +62,7 @@
 
 {#snippet drawer()}
   <Drawer.Root shouldScaleBackground={true} setBackgroundColorOnScale={false}>
-    <Drawer.Trigger class="text-link underline">See here</Drawer.Trigger>
+    <Drawer.Trigger class="text-primary underline">See here</Drawer.Trigger>
 
     <Drawer.Content class="before:glass before:glass-bg-popover [&>div:first-child]:mb-4 before:bg-transparent">
       {@render video()}
