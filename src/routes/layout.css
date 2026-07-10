@@ -14,7 +14,6 @@
 
 @theme {
   /* Colors */
-  --color-skillbar: var(--primary);
   --color-maxedbar: var(--maxedbar);
   --color-maxed: var(--maxed);
   --color-gold: var(--gold);
@@ -156,7 +155,6 @@
 
   :root {
     /* TODO: remove these compatibility aliases after all legacy token consumers are migrated to shadcn tokens. */
-    --skillbar: var(--primary);
     --maxedbar: var(--chart-4);
     --maxed: var(--chart-4);
     --gold: var(--chart-5);
@@ -277,7 +275,7 @@
   }
 
   *::target-text {
-    background-color: var(--color-skillbar);
+    background-color: var(--primary);
     color: var(--color-text);
     text-shadow: var(--text-shadow-md);
   }
