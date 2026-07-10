@@ -14,7 +14,6 @@
 
 @theme {
   /* Colors */
-  --color-maxedbar: var(--maxedbar);
   --color-maxed: var(--maxed);
   --color-gold: var(--gold);
   --color-text: var(--text);
@@ -155,7 +154,6 @@
 
   :root {
     /* TODO: remove these compatibility aliases after all legacy token consumers are migrated to shadcn tokens. */
-    --maxedbar: var(--chart-4);
     --maxed: var(--chart-4);
     --gold: var(--chart-5);
     --logo: var(--primary);
