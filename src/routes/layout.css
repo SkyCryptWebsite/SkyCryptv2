@@ -15,7 +15,6 @@
 @theme {
   /* Colors */
   --color-background: var(--background);
-  --color-background-grey: var(--grey_background);
   --color-background-lore: var(--lore_background);
   --color-bg: var(--bg);
   --color-mctooltip-bg: var(--mctooltip-bg);
@@ -149,7 +148,6 @@
 
   :root {
     /* TODO: remove these compatibility aliases after all legacy token consumers are migrated to shadcn tokens. */
-    --grey_background: var(--muted);
     --lore_background: var(--popover);
     --bg: var(--background);
     --bg-url: url(/img/bg-light.avif);
@@ -349,7 +347,7 @@
   }
 
   [data-arrow] {
-    @apply text-background-grey;
+    @apply text-muted;
   }
 
   ::-webkit-color-swatch-wrapper {
@@ -387,7 +385,7 @@
 
 @utility glass {
   --glass-bg: transparent;
-  --glass-performance-bg: var(--color-background-grey);
+  --glass-performance-bg: var(--muted);
   --glass-brightness: 50%;
   --glass-contrast: 100%;
   --glass-mode-bg: var(--glass-bg);

@@ -141,7 +141,7 @@ function richTextConverters(): HTMLConvertersFunction<NewsroomNodeTypes> {
       const widthAttribute = width ? ` width="${escapeAttribute(width)}"` : "";
       const heightAttribute = height ? ` height="${escapeAttribute(height)}"` : "";
 
-      return `<figure${providedStyleTag} class="my-6 flex flex-col items-center gap-2"><img src="${escapeAttribute(src)}" alt="${escapeAttribute(alt)}"${widthAttribute}${heightAttribute} loading="lazy" class="h-auto max-w-full rounded-lg bg-background-grey" /></figure>`;
+      return `<figure${providedStyleTag} class="my-6 flex flex-col items-center gap-2"><img src="${escapeAttribute(src)}" alt="${escapeAttribute(alt)}"${widthAttribute}${heightAttribute} loading="lazy" class="h-auto max-w-full rounded-lg bg-muted" /></figure>`;
     }
   });
 }
