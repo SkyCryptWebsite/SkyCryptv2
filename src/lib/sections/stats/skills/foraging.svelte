@@ -56,10 +56,10 @@
               <Chip class={cn("h-fit w-fit", { "opacity-50": !hasUnlocked })} image={{ src: data.texture ?? "" }}>
                 <div class="flex flex-col">
                   <div class="font-bold whitespace-nowrap">
-                    <span class={cn("capitalize", { "text-gold": hasMaxed })}>{name.replaceAll("_", " ").toLowerCase()}</span>
+                    <span class={cn("capitalize", { "text-accent-4": hasMaxed })}>{name.replaceAll("_", " ").toLowerCase()}</span>
                     <div class="text-sm">
-                      <span class={cn({ "text-gold": hasMaxed })}>Level:</span>
-                      <span class={cn({ "text-gold": hasMaxed })}>{format(data.milestone)}</span>
+                      <span class={cn({ "text-accent-4": hasMaxed })}>Level:</span>
+                      <span class={cn({ "text-accent-4": hasMaxed })}>{format(data.milestone)}</span>
                     </div>
                   </div>
                 </div>

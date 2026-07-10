@@ -42,7 +42,7 @@
           {#if data}
             <div class="mb-4 text-base font-semibold uppercase">
               {#if data.mobsMaxed === data.mobs?.length}
-                <span class="text-gold">Max!</span>
+                <span class="text-accent-4">Max!</span>
               {:else}
                 <span class="text-text/80">{data.mobsMaxed} / {data.mobs?.length} maxed</span>
               {/if}
@@ -56,7 +56,7 @@
             <div class="flex flex-col">
               <div class="font-bold whitespace-nowrap">
                 <span class={cn(hasMaxed ? "text-accent-2" : "opacity-60")}>{mob.name}</span>
-                <span class={cn({ "text-gold": hasMaxed })}>{mob.tier}</span>
+                <span class={cn({ "text-accent-4": hasMaxed })}>{mob.tier}</span>
                 <div class="text-sm">
                   <span class="opacity-60">Kills:</span>
                   <span class="text-text">{format(mob.kills)}</span>
@@ -67,7 +67,7 @@
               <div class="text-sm font-bold">
                 {#if hasMaxed}
                   <span class="opacity-85">Progress:</span>
-                  <span class="text-gold">max!</span>
+                  <span class="text-accent-4">max!</span>
                 {:else}
                   <div class="flex flex-col gap-4">
                     <div>

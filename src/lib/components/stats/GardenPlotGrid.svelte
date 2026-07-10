@@ -21,7 +21,7 @@
 <div class="flex items-center gap-1 text-base font-semibold">
   <SectionSubtitle>Plots</SectionSubtitle>
   {#if allMaxed}
-    <span class="text-gold">Max!</span>
+    <span class="text-accent-4">Max!</span>
   {:else}
     <span class="text-text/80">({plot?.unlocked} / {plot?.total} max)</span>
   {/if}

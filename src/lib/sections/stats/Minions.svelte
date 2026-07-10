@@ -69,7 +69,7 @@
           {#if data}
             <div class="mb-4 text-base font-semibold uppercase">
               {#if data.maxedMinions === data.totalMinions}
-                <span class="text-gold">Max!</span>
+                <span class="text-accent-4">Max!</span>
               {:else}
                 <span class="text-text/80">{data.maxedMinions} / {data.totalMinions} maxed</span>
               {/if}
@@ -84,7 +84,7 @@
             <div class={cn("flex flex-col", { "text-accent-2": hasMaxed })}>
               <div class="font-bold whitespace-nowrap">
                 <span class={cn(hasMaxed ? "text-accent-2" : "opacity-60")}>{minion.name}</span>
-                <span class={cn({ "text-gold": hasMaxed })}>{hasTier ? tiers[tiers.length - 1] : 0}</span>
+                <span class={cn({ "text-accent-4": hasMaxed })}>{hasTier ? tiers[tiers.length - 1] : 0}</span>
               </div>
             </div>
             {#snippet tooltip()}

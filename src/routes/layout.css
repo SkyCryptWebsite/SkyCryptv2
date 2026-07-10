@@ -14,7 +14,6 @@
 
 @theme {
   /* Colors */
-  --color-gold: var(--gold);
   --color-text: var(--text);
   --color-background: var(--background);
   --color-background-grey: var(--grey_background);
@@ -153,7 +152,6 @@
 
   :root {
     /* TODO: remove these compatibility aliases after all legacy token consumers are migrated to shadcn tokens. */
-    --gold: var(--chart-5);
     --logo: var(--primary);
     --text: var(--foreground);
     --header: var(--card);

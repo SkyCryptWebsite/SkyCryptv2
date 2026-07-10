@@ -39,7 +39,7 @@
           {#if data}
             <div class="mb-4 text-base font-semibold uppercase">
               {#if data.maxTiers === data.totalTiers}
-                <span class="text-gold">Max!</span>
+                <span class="text-accent-4">Max!</span>
               {:else}
                 <span class="text-text/80">{data.maxTiers} / {data.totalTiers} maxed</span>
               {/if}
@@ -53,7 +53,7 @@
             <div class="flex flex-col">
               <div class="font-bold whitespace-nowrap">
                 <span class={cn(hasMaxed ? "text-accent-2" : "opacity-60")}>{item.name}</span>
-                <span class={cn({ "text-gold": hasMaxed })}>{item.tier}</span>
+                <span class={cn({ "text-accent-4": hasMaxed })}>{item.tier}</span>
                 <div class="text-sm">
                   <span class="opacity-60">Amount:</span>
                   <span class="text-text">{format(item.totalAmount)}</span>

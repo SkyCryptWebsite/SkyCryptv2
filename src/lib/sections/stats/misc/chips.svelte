@@ -38,7 +38,7 @@
           <div class="flex flex-col">
             <div class="font-bold whitespace-nowrap">
               <span class={cn(hasMaxed ? "text-accent-2" : "opacity-60")}>{item.name}</span>
-              <div class={cn("text-sm", hasMaxed ? "text-gold" : "text-text")}>
+              <div class={cn("text-sm", hasMaxed ? "text-accent-4" : "text-text")}>
                 <span class="opacity-60">Amount:</span>
                 <span>
                   {format(item.amount)}{#if item.maxAmount != null}/{item.maxAmount}{/if}

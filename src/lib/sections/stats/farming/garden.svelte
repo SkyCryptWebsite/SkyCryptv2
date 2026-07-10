@@ -122,7 +122,7 @@
                       <div class="flex flex-col">
                         <div class="font-bold whitespace-nowrap">
                           <span class={cn("capitalize", hasMaxed ? "text-accent-2" : "opacity-60")}>{gardenChip.name}</span>
-                          <div class={cn("text-sm", hasMaxed ? "text-gold" : "text-text")}>
+                          <div class={cn("text-sm", hasMaxed ? "text-accent-4" : "text-text")}>
                             <span class="opacity-60">Level:</span>
                             {format(gardenChip.amount)}/{gardenChip.maxLevel}
                           </div>
@@ -183,7 +183,7 @@
       <SectionSubtitle>Crop Upgrades</SectionSubtitle>
 
       {#if allMaxed}
-        <span class="text-gold">Max!</span>
+        <span class="text-accent-4">Max!</span>
       {:else}
         <span class="text-text/80">({Object.values(garden.cropUpgrades).filter((upgrade) => upgrade.level?.maxed).length} / {Object.values(garden.cropUpgrades).length} max)</span>
       {/if}
@@ -195,7 +195,7 @@
           <div class="flex flex-col">
             <div class="font-bold whitespace-nowrap">
               <span class={cn(hasMaxed ? "text-accent-2" : "opacity-60")}>{upgrade.name}</span>
-              <span class={cn({ "text-gold": hasMaxed })}>{upgrade.level?.level}</span>
+              <span class={cn({ "text-accent-4": hasMaxed })}>{upgrade.level?.level}</span>
             </div>
           </div>
         </Chip>
@@ -211,7 +211,7 @@
       <SectionSubtitle>Milestones</SectionSubtitle>
 
       {#if allMaxed}
-        <span class="text-gold">Max!</span>
+        <span class="text-accent-4">Max!</span>
       {:else if garden.cropUpgrades}
         <span class="text-text/80">({Object.values(garden.cropMilestones).filter((upgrade) => upgrade.level?.maxed).length} / {Object.values(garden.cropUpgrades).length} max)</span>
       {/if}
@@ -223,7 +223,7 @@
           <div class="flex flex-col">
             <div class="font-bold whitespace-nowrap">
               <span class={cn(hasMaxed ? "text-accent-2" : "opacity-60")}>{milestone.name}</span>
-              <span class={cn({ "text-gold": hasMaxed })}>{milestone.level?.level}</span>
+              <span class={cn({ "text-accent-4": hasMaxed })}>{milestone.level?.level}</span>
             </div>
           </div>
 

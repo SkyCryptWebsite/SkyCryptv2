@@ -92,7 +92,7 @@
               <div class="font-bold">
                 <div class={cn("truncate", rarityClass, hasMaxed && "text-accent-2")}>{shard.name}</div>
                 <div class="mt-1 space-y-0.5 text-sm wrap-break-word whitespace-normal">
-                  <div class={hasMaxed ? "text-gold" : undefined}>
+                  <div class={hasMaxed ? "text-accent-4" : undefined}>
                     <span class="opacity-60">Syphoned:</span>
                     <span>{format(shard.syphoned ?? 0)} / {format(shard.maxSyphon ?? 0)}</span>
                   </div>

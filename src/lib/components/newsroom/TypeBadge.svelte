@@ -2,7 +2,7 @@
   import type { PostType } from "$types";
 
   const TYPE_STYLES: Record<PostType, string> = {
-    announcement: "bg-gold/15 text-gold border border-bg-gold/15",
+    announcement: "bg-accent-4/15 text-accent-4 border border-accent-4/15",
     news: "bg-primary/15 text-primary border border-primary/15",
     update: "bg-minecraft-a/15 text-minecraft-a border border-bg-minecraft-a/15",
     changelog: "bg-minecraft-d/15 text-minecraft-d border border-bg-minecraft-d/15",
