@@ -133,7 +133,7 @@
     {/if}
   </header>
 
-  <div class={cn("p-4 text-base leading-7 text-foreground md:p-8 [&>*:last-child]:mb-0", containerClass)}>
+  <div class={cn("p-4 md:p-8", containerClass)}>
     <PostRenderer body={post.body ?? []} />
   </div>
 </article>

@@ -9,3 +9,6 @@ bun.lockb
 /static/
 .changeset/
 /drizzle/
+
+# Upstream stylesheet kept verbatim.
+/src/routes/typeset.css

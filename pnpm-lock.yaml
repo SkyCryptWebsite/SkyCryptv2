@@ -57,6 +57,9 @@ importers:
       '@eslint/js':
         specifier: ^10.0.1
         version: 10.0.1(eslint@10.5.0(jiti@2.7.0))
+      '@fontsource-variable/geist-mono':
+        specifier: ^5.2.8
+        version: 5.2.8
       '@fontsource-variable/montserrat':
         specifier: ^5.2.8
         version: 5.2.8
@@ -1353,6 +1356,9 @@ packages:
 
   '@floating-ui/utils@0.2.11':
     resolution: {integrity: sha512-RiB/yIh78pcIxl6lLMG0CgBXAZ2Y0eVHqMPYugu+9U0AeT6YBeiJpf7lbdJNIugFP5SIjwNRgo4DhR1Qxi26Gg==}
+
+  '@fontsource-variable/geist-mono@5.2.8':
+    resolution: {integrity: sha512-KI5bj+hkkRiHttYHmccotUZ80ZuZyai+RwI1d7UId0clkx/jXxlo8qYK8j54WzmpBjtMoEMPyllV7faDcj+6RA==}
 
   '@fontsource-variable/montserrat@5.2.8':
     resolution: {integrity: sha512-d8wykq7GCKhEOlLwEuQIOK3w3qsXNxwDlH0meru4AZZzQ4/+rZyvHWKL6BBtHdmbovSHEEQDkwkD8qYUKlcFtQ==}
@@ -6999,6 +7005,8 @@ snapshots:
       tabbable: 6.4.0
 
   '@floating-ui/utils@0.2.11': {}
+
+  '@fontsource-variable/geist-mono@5.2.8': {}
 
   '@fontsource-variable/montserrat@5.2.8': {}
 

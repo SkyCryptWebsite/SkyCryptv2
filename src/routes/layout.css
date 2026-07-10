@@ -1,7 +1,9 @@
 @import "tailwindcss";
+@import "./typeset.css";
 @import "tw-animate-css";
 @import "shadcn-svelte/tailwind.css";
 @import "@fontsource-variable/montserrat";
+@import "@fontsource-variable/geist-mono";
 @import "@fontsource/unifontex";
 @source "app.html";
 @source inline("{group-data-[rainbow=false]/html:,}{text-,bg-}minecraft-{0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f}{,!}");
@@ -11,6 +13,15 @@
 @custom-variant standard (&:where([data-performance="false"], [data-performance="false"] *));
 
 @plugin "tailwindcss-motion";
+
+.typeset-article {
+  --typeset-font-body: var(--font-montserrat);
+  --typeset-font-heading: var(--font-montserrat);
+  --typeset-font-mono: var(--font-geist-mono);
+  --typeset-size: 16px;
+  --typeset-leading: 1.6;
+  --typeset-flow: 1.25em;
+}
 
 @theme {
   /* Colors */
@@ -145,6 +156,8 @@
   }
 
   :root {
+    --font-montserrat: "Montserrat Variable", sans-serif;
+    --font-geist-mono: "Geist Mono Variable", monospace;
     --bg-url: url(/img/bg-light.avif);
     --mctooltip-bg: oklch(0.205 0 0);
 

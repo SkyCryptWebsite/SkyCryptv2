@@ -71,7 +71,7 @@ describe.concurrent("richTextToHtml()", () => {
     expect(result).toContain("<h2>Heading</h2>");
   });
 
-  it("renders ordered and unordered lists with newsroom classes", ({ expect }) => {
+  it("renders classless ordered and unordered lists for Typeset", ({ expect }) => {
     const result = richTextToHtml(
       root([
         {
@@ -99,8 +99,8 @@ describe.concurrent("richTextToHtml()", () => {
       ])
     );
 
-    expect(result).toContain('<ol class="my-3 ml-6 list-decimal space-y-1">');
-    expect(result).toContain('<ul class="my-3 ml-6 list-disc space-y-1">');
+    expect(result).toContain("<ol><li>One</li></ol>");
+    expect(result).toContain("<ul><li>Two</li></ul>");
   });
 
   it("renders checked and unchecked checklist items", ({ expect }) => {
@@ -124,6 +124,8 @@ describe.concurrent("richTextToHtml()", () => {
     );
 
     expect(result).toContain('type="checkbox" checked disabled');
+    expect(result).toContain('<ul class="contains-task-list">');
+    expect(result).toContain('<li class="task-list-item">');
     expect(result).toContain('class="text-foreground/60 line-through"');
     expect(result).toContain('type="checkbox" disabled');
   });
@@ -133,7 +135,7 @@ describe.concurrent("richTextToHtml()", () => {
 
     expect(result).toContain('href="https://example.com"');
     expect(result).toContain('target="_blank" rel="noopener noreferrer"');
-    expect(result).toContain('class="text-primary underline underline-offset-2 transition-colors hover:text-accent"');
+    expect(result).not.toContain("class=");
   });
 
   it("renders same-tab links when newTab is false", ({ expect }) => {
@@ -173,6 +175,8 @@ describe.concurrent("richTextToHtml()", () => {
     expect(result).toContain('src="/card.png"');
     expect(result).toContain('width="800"');
     expect(result).toContain('height="450"');
+    expect(result).toContain('class="flex flex-col items-center"');
+    expect(result).toContain('class="bg-muted"');
   });
 
   it("renders upload nodes using media url fallback", ({ expect }) => {
@@ -187,14 +191,14 @@ describe.concurrent("richTextToHtml()", () => {
 
     expect(result).toContain('href="/stats/uuid-1"');
     expect(result).toContain('data-sveltekit-preload-data="hover"');
-    expect(result).toContain('class="font-semibold text-primary underline underline-offset-2 transition-colors hover:text-accent"');
+    expect(result).toContain('class="font-semibold text-primary transition-colors hover:text-accent"');
     expect(result).toContain(">Gigi</a>");
   });
 
   it("renders user relationships without mcUuid as text", ({ expect }) => {
     const result = richTextToHtml(root([{ type: "relationship", relationTo: "users", value: { displayName: "Gigi", name: "gigi" }, version: 1 }]));
 
-    expect(result).toContain('<span class="font-semibold text-foreground">Gigi</span>');
+    expect(result).toContain('<span class="font-semibold">Gigi</span>');
   });
 
   it("skips unsupported relationships", ({ expect }) => {

@@ -50,6 +50,7 @@
     "@dnd-kit/helpers": "^0.5.0",
     "@dnd-kit/svelte": "^0.5.0",
     "@eslint/js": "^10.0.1",
+    "@fontsource-variable/geist-mono": "^5.2.8",
     "@fontsource-variable/montserrat": "^5.2.8",
     "@fontsource/unifontex": "^5.2.6",
     "@internationalized/date": "^3.12.2",
