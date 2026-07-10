@@ -27,7 +27,7 @@
 {#snippet petCard(pet: ModelsStrippedPet)}
   <div>
     <Item piece={pet} />
-    <p class="mt-2 text-center font-semibold">LVL {pet.level}</p>
+    <p class="mt-2 text-center font-semibold data-[maxed=true]:text-accent-2" data-maxed={pet.level === pet.maxLevel}>LVL {pet.level}</p>
   </div>
 {/snippet}
 
