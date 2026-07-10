@@ -107,16 +107,16 @@
     </Collapsible.Trigger>
     <Collapsible.Content class="gap-2 pt-1 flex flex-nowrap overflow-auto">
       {#each cardPresets as preset (preset.id)}
-        <Button onclick={() => selectPreset(preset.id)} class={cn("h-full fle flex-col gap-1.5 rounded-lg border-2 p-2 transition-all", selectedPreset.id === preset.id ? "border-primary bg-primary/10" : "border-text/10 bg-text/5 hover:border-text/20 hover:bg-text/10")}>
-          <div class="flex h-10 w-28 items-stretch gap-1 rounded bg-text/5 p-1">
-            <div class="w-1/4 rounded-sm bg-text/15"></div>
+        <Button onclick={() => selectPreset(preset.id)} class={cn("h-full fle flex-col gap-1.5 rounded-lg border-2 p-2 transition-all", selectedPreset.id === preset.id ? "border-primary bg-primary/10" : "border-foreground/10 bg-foreground/5 hover:border-foreground/20 hover:bg-foreground/10")}>
+          <div class="flex h-10 w-28 items-stretch gap-1 rounded bg-foreground/5 p-1">
+            <div class="w-1/4 rounded-sm bg-foreground/15"></div>
             <div class="flex flex-1 flex-col justify-between gap-px">
-              <div class="h-1 w-3/4 rounded-full bg-text/20"></div>
+              <div class="h-1 w-3/4 rounded-full bg-foreground/20"></div>
               <div class="flex gap-0.5">
                 <div class="h-1 flex-1 rounded-full bg-primary/30"></div>
                 <div class="h-1 flex-1 rounded-full bg-primary/20"></div>
               </div>
-              <div class="h-px w-full bg-text/10"></div>
+              <div class="h-px w-full bg-foreground/10"></div>
               <div class="flex gap-px">
                 {#each Array(5) as _, i (i)}
                   <div class="h-1 flex-1 rounded-full bg-primary/25"></div>
@@ -130,16 +130,16 @@
                   <div class="h-1 flex-1 rounded-full bg-primary/15"></div>
                 {/each}
               </div>
-              <div class="h-px w-full bg-text/10"></div>
+              <div class="h-px w-full bg-foreground/10"></div>
               <div class="flex gap-px">
                 {#each Array(5) as _, i (i)}
                   <div class="h-1 flex-1 rounded-full bg-primary/20"></div>
                 {/each}
               </div>
-              <div class="h-0.5 w-full rounded-full bg-text/10"></div>
+              <div class="h-0.5 w-full rounded-full bg-foreground/10"></div>
             </div>
           </div>
-          <span class="text-xs font-semibold text-text/70">{preset.name}</span>
+          <span class="text-xs font-semibold text-foreground/70">{preset.name}</span>
         </Button>
       {/each}
     </Collapsible.Content>
@@ -173,7 +173,7 @@
                   <Item.Title>{option.label}</Item.Title>
                 </Item.Content>
                 <Item.Actions>
-                  <input type="color" id={option.key} value={settings[option.key] as string} oninput={(e) => updateSetting(option.key, e.currentTarget.value)} class="size-8 cursor-pointer rounded-md border border-text/10 bg-transparent" />
+                  <input type="color" id={option.key} value={settings[option.key] as string} oninput={(e) => updateSetting(option.key, e.currentTarget.value)} class="size-8 cursor-pointer rounded-md border border-foreground/10 bg-transparent" />
                 </Item.Actions>
               </Item.Root>
             </Label>
@@ -184,7 +184,7 @@
                   <Item.Title>{option.label}</Item.Title>
                 </Item.Content>
                 <Item.Actions>
-                  <input type="text" id={option.key} value={settings[option.key] as string} oninput={(e) => updateSetting(option.key, e.currentTarget.value)} class="w-full max-w-40 rounded-md border border-text/10 bg-text/5 px-2 py-1 text-sm text-text focus:border-primary focus:outline-none" />
+                  <input type="text" id={option.key} value={settings[option.key] as string} oninput={(e) => updateSetting(option.key, e.currentTarget.value)} class="w-full max-w-40 rounded-md border border-foreground/10 bg-foreground/5 px-2 py-1 text-sm text-foreground focus:border-primary focus:outline-none" />
                 </Item.Actions>
               </Item.Root>
             </Label>
@@ -195,7 +195,7 @@
                   <Item.Title>{option.label}</Item.Title>
                 </Item.Content>
                 <Item.Actions>
-                  <input type="number" id={option.key} value={settings[option.key] as number} oninput={(e) => updateSetting(option.key, Number(e.currentTarget.value))} class="w-full max-w-24 rounded-md border border-text/10 bg-text/5 px-2 py-1 text-sm text-text focus:border-primary focus:outline-none" />
+                  <input type="number" id={option.key} value={settings[option.key] as number} oninput={(e) => updateSetting(option.key, Number(e.currentTarget.value))} class="w-full max-w-24 rounded-md border border-foreground/10 bg-foreground/5 px-2 py-1 text-sm text-foreground focus:border-primary focus:outline-none" />
                 </Item.Actions>
               </Item.Root>
             </Label>
@@ -235,11 +235,11 @@
     <Avatar.Root class="relative bg-transparent after:border-none size-full shrink overflow-hidden rounded-lg" bind:loadingStatus>
       {#if isImagePending}
         <div class="absolute inset-0 z-10 flex items-center justify-center">
-          <LoaderCircleIcon class="size-8 animate-spin text-text/40" />
+          <LoaderCircleIcon class="size-8 animate-spin text-foreground/40" />
         </div>
       {/if}
       <Avatar.Image src={debouncedUrl.current} class="object-contain aspect-auto rounded-none" />
-      <Avatar.Fallback class="flex aspect-75/17 rounded-lg w-full items-center justify-center text-sm text-text/40">Card Preview</Avatar.Fallback>
+      <Avatar.Fallback class="flex aspect-75/17 rounded-lg w-full items-center justify-center text-sm text-foreground/40">Card Preview</Avatar.Fallback>
     </Avatar.Root>
   </div>
 {/snippet}

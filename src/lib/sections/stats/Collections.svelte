@@ -41,7 +41,7 @@
               {#if data.maxTiers === data.totalTiers}
                 <span class="text-accent-4">Max!</span>
               {:else}
-                <span class="text-text/80">{data.maxTiers} / {data.totalTiers} maxed</span>
+                <span class="text-foreground/80">{data.maxTiers} / {data.totalTiers} maxed</span>
               {/if}
             </div>
           {/if}
@@ -56,7 +56,7 @@
                 <span class={cn({ "text-accent-4": hasMaxed })}>{item.tier}</span>
                 <div class="text-sm">
                   <span class="opacity-60">Amount:</span>
-                  <span class="text-text">{format(item.totalAmount)}</span>
+                  <span class="text-foreground">{format(item.totalAmount)}</span>
                 </div>
               </div>
             </div>
@@ -69,14 +69,14 @@
                         <span class="opacity-85">
                           {user.username}:
                         </span>
-                        <span class="text-text">{format(user.amount)}</span>
+                        <span class="text-foreground">{format(user.amount)}</span>
                       </div>
                     {/each}
                   </div>
                 {/if}
                 <div>
                   <span class="opacity-85"> Total: </span>
-                  <span class="text-text opacity-100">{format(item.totalAmount)}</span>
+                  <span class="text-foreground opacity-100">{format(item.totalAmount)}</span>
                 </div>
               </div>
             {/snippet}

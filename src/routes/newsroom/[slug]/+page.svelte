@@ -109,7 +109,7 @@
         </Badge>
       {/if}
     </div>
-    <h1 class="text-4xl leading-tight font-bold text-text md:text-5xl">{post.title}</h1>
+    <h1 class="text-4xl leading-tight font-bold text-foreground md:text-5xl">{post.title}</h1>
     <div class="flex items-center gap-4 text-sm">
       <Avatar.Root class="size-10 shrink-0">
         {#if author.mcUuid}
@@ -118,7 +118,7 @@
         <Avatar.Fallback class="flex size-10 items-center justify-center bg-foreground/10 text-sm font-semibold text-foreground/60 uppercase">{initials}</Avatar.Fallback>
       </Avatar.Root>
       <div class="flex flex-col leading-tight">
-        <span class="font-semibold text-text">{displayName}</span>
+        <span class="font-semibold text-foreground">{displayName}</span>
         <time datetime={post.publishedAt} class="text-xs text-foreground/60">{formatDate(post.publishedAt)}</time>
       </div>
     </div>
@@ -133,7 +133,7 @@
     {/if}
   </header>
 
-  <div class={cn("p-4 text-base leading-7 text-text md:p-8 [&>*:last-child]:mb-0", containerClass)}>
+  <div class={cn("p-4 text-base leading-7 text-foreground md:p-8 [&>*:last-child]:mb-0", containerClass)}>
     <PostRenderer body={post.body ?? []} />
   </div>
 </article>

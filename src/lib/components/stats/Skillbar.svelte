@@ -45,7 +45,7 @@
     <div class="relative ml-10 text-sm font-semibold capitalize">
       {skill}
       {#if apiEnabled}
-        <span class="text-text/80">
+        <span class="text-foreground/80">
           {skillData.level}
         </span>
       {/if}

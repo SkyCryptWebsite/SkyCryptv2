@@ -51,8 +51,8 @@
 <main class="@container mx-auto flex max-w-272 flex-col gap-6 pt-5 pr-[max(1.25rem,env(safe-area-inset-right))] pb-[max(1.25rem,env(safe-area-inset-bottom))] pl-[max(1.25rem,env(safe-area-inset-left))]">
   <div class="flex flex-col gap-4 rounded-xl p-4 glass border glass-brightness-150 dark:glass-brightness-50 glass-contrast-60 dark:glass-contrast-100 @md:flex-row @md:items-center @md:justify-between">
     <header class="flex flex-col gap-1">
-      <h1 class="text-3xl leading-tight font-bold text-text">Newsroom</h1>
-      <p class="text-sm text-text/70">Latest announcements and updates from the SkyCrypt team.</p>
+      <h1 class="text-3xl leading-tight font-bold text-foreground">Newsroom</h1>
+      <p class="text-sm text-foreground/70">Latest announcements and updates from the SkyCrypt team.</p>
     </header>
     <div class="flex flex-col items-stretch gap-3 @sm:flex-row @sm:items-center">
       <Select.Root bind:value={selectValue} type="single" onValueChange={onFilterChange}>

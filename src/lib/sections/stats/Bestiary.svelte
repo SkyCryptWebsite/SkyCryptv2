@@ -44,7 +44,7 @@
               {#if data.mobsMaxed === data.mobs?.length}
                 <span class="text-accent-4">Max!</span>
               {:else}
-                <span class="text-text/80">{data.mobsMaxed} / {data.mobs?.length} maxed</span>
+                <span class="text-foreground/80">{data.mobsMaxed} / {data.mobs?.length} maxed</span>
               {/if}
             </div>
           {/if}
@@ -59,7 +59,7 @@
                 <span class={cn({ "text-accent-4": hasMaxed })}>{mob.tier}</span>
                 <div class="text-sm">
                   <span class="opacity-60">Kills:</span>
-                  <span class="text-text">{format(mob.kills)}</span>
+                  <span class="text-foreground">{format(mob.kills)}</span>
                 </div>
               </div>
             </div>
@@ -74,11 +74,11 @@
                       <span class="opacity-85">
                         Progress to Tier {(mob.tier ?? 0) + 1}:
                       </span>
-                      <span class="text-text">{format(mob.kills)} / {format(mob.nextTierKills)}</span>
+                      <span class="text-foreground">{format(mob.kills)} / {format(mob.nextTierKills)}</span>
                     </div>
                     <div>
                       <span class="opacity-85"> Overall progress: </span>
-                      <span class="text-text opacity-100">{format(mob.kills)} / {format(mob.maxKills)}</span>
+                      <span class="text-foreground opacity-100">{format(mob.kills)} / {format(mob.maxKills)}</span>
                     </div>
                   </div>
                 {/if}

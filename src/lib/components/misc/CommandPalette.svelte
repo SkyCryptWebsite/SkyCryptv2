@@ -122,7 +122,7 @@
           {#if submittedSearchLoading || loading}
             <Spinner />
           {:else}
-            <Search class="size-4 text-text" />
+            <Search class="size-4 text-foreground" />
           {/if}
 
           Search for {searchQuery}

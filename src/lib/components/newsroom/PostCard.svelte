@@ -52,18 +52,18 @@
         {#if author.mcUuid}
           <Avatar.Root class="size-4 shrink-0">
             <Avatar.Image loading="lazy" src="https://nmsr.nickac.dev/face/{author.mcUuid}" alt={displayName} class="size-full [image-rendering:pixelated]" />
-            <Avatar.Fallback class="flex size-full items-center justify-center bg-text/10 text-[0.5rem] font-semibold text-text/60 uppercase">{initials}</Avatar.Fallback>
+            <Avatar.Fallback class="flex size-full items-center justify-center bg-foreground/10 text-[0.5rem] font-semibold text-foreground/60 uppercase">{initials}</Avatar.Fallback>
           </Avatar.Root>
         {/if}
-        <span class="truncate text-text/60">{displayName}</span>
+        <span class="truncate text-foreground/60">{displayName}</span>
       </div>
-      <time datetime={post.publishedAt} class="shrink-0 text-text/60">{formatDate(post.publishedAt)}</time>
+      <time datetime={post.publishedAt} class="shrink-0 text-foreground/60">{formatDate(post.publishedAt)}</time>
     </div>
 
     <svelte:element this={as} class="text-xl leading-tight font-bold text-background-foreground transition-colors">{post.title}</svelte:element>
 
     {#if post.excerpt}
-      <p class="line-clamp-3 text-sm leading-relaxed text-text/80">{post.excerpt}</p>
+      <p class="line-clamp-3 text-sm leading-relaxed text-foreground/80">{post.excerpt}</p>
     {/if}
 
     <div class="mt-auto flex flex-wrap items-center gap-1.5 pt-1">

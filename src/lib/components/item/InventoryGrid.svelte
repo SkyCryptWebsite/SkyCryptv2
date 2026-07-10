@@ -22,11 +22,11 @@
           {/if}
         {/if}
         {#if item.texture_path}
-          <div class="relative flex aspect-square items-center size-full overflow-clip border justify-center rounded-xl bg-text/4 data-[shine=true]:shine" data-shine={!preferences.performanceMode && shouldShine(item)}>
+          <div class="relative flex aspect-square items-center size-full overflow-clip border justify-center rounded-xl bg-foreground/4 data-[shine=true]:shine" data-shine={!preferences.performanceMode && shouldShine(item)}>
             {@render itemSnippet(inventoryId === "inventory" ? ({ ...item, rarity: item.rarity ?? "uncommon" } as ModelsStrippedItem) : item)}
           </div>
         {:else}
-          <div class="aspect-square rounded-xl border bg-text/4"></div>
+          <div class="aspect-square rounded-xl border bg-foreground/4"></div>
         {/if}
       {/each}
     </div>

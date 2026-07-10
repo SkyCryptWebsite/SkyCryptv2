@@ -60,13 +60,13 @@
     <span class="capitalize">{stat.replace(/_/g, " ")}</span>
   </div>
 
-  <Label class="font-bold capitalize {STATS_DATA[stat].color}">Base {stat.replaceAll("_", " ")}: <span class="text-text">{format(statData.base)}</span></Label>
+  <Label class="font-bold capitalize {STATS_DATA[stat].color}">Base {stat.replaceAll("_", " ")}: <span class="text-foreground">{format(statData.base)}</span></Label>
   <p>Base value every player has at the beginning of their SkyBlock adventure!</p>
 
   {#if statData.total}
     <Separator />
 
-    <Label class="font-bold capitalize {STATS_DATA[stat].color}">Bonus {stat.replaceAll("_", " ")}: <span class="text-text">{format(statData.total)}</span></Label>
+    <Label class="font-bold capitalize {STATS_DATA[stat].color}">Bonus {stat.replaceAll("_", " ")}: <span class="text-foreground">{format(statData.total)}</span></Label>
     <p>Bonus value obtained from:</p>
 
     <ul class="flex flex-col list-disc list-inside">

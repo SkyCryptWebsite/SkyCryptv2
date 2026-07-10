@@ -40,7 +40,7 @@
         </Avatar.Fallback>
       </Avatar.Root>
 
-      <p class={cn("relative min-w-0 wrap-break-word group-data-[mctooltip=false]/itemtooltip:text-center group-data-[mctooltip=false]/itemtooltip:text-base group-data-[mctooltip=false]/itemtooltip:font-semibold group-data-[mctooltip=false]/itemtooltip:uppercase data-[multicolor=true]:rounded-full data-[multicolor=true]:py-1 group-data-[mctooltip=false]/itemtooltip:data-[multicolor=true]:bg-background-lore group-data-[mctooltip=false]/itemtooltip:data-[multicolor=true]:px-2 group-data-[mctooltip=false]/itemtooltip:sm:text-lg", preferences.mctooltip ? textColor : "data-[multicolor=false]:text-text")} data-multicolor={isMulticolor}>
+      <p class={cn("relative min-w-0 wrap-break-word group-data-[mctooltip=false]/itemtooltip:text-center group-data-[mctooltip=false]/itemtooltip:text-base group-data-[mctooltip=false]/itemtooltip:font-semibold group-data-[mctooltip=false]/itemtooltip:uppercase data-[multicolor=true]:rounded-full data-[multicolor=true]:py-1 group-data-[mctooltip=false]/itemtooltip:data-[multicolor=true]:bg-background-lore group-data-[mctooltip=false]/itemtooltip:data-[multicolor=true]:px-2 group-data-[mctooltip=false]/itemtooltip:sm:text-lg", preferences.mctooltip ? textColor : "data-[multicolor=false]:text-foreground")} data-multicolor={isMulticolor}>
         {#if preferences.mctooltip}
           {@html itemNameHtml}
         {:else}
@@ -58,15 +58,15 @@
         {/if}
 
         {#if skyblockItem && "containsItems" in skyblockItem && Array.isArray(skyblockItem?.containsItems) && !skyblockItem?.containsItems.every((item) => Object.keys(item).length === 0)}
-          <div class="mt-4 border-t border-text/10 pt-4">
+          <div class="mt-4 border-t border-foreground/10 pt-4">
             <div class="grid grid-cols-9 gap-1">
               {#each skyblockItem?.containsItems.slice(0, Math.min(skyblockItem?.containsItems.length, 54)) as containedItem, index (index)}
                 {#if containedItem.texture_path}
-                  <div class="flex aspect-square items-center justify-center rounded-sm bg-text/4">
+                  <div class="flex aspect-square items-center justify-center rounded-sm bg-foreground/4">
                     <ContainedItem piece={containedItem} isInventory={true} />
                   </div>
                 {:else}
-                  <div class="aspect-square rounded-sm bg-text/4"></div>
+                  <div class="aspect-square rounded-sm bg-foreground/4"></div>
                 {/if}
               {/each}
             </div>
@@ -75,7 +75,7 @@
 
         {#if piece && piece.sourceTab}
           <div class="mt-4">
-            <div class="flex items-center justify-between gap-4 rounded-[0.625rem] bg-text/5 p-2 transition-colors ease-out hover:bg-text/8">
+            <div class="flex items-center justify-between gap-4 rounded-[0.625rem] bg-foreground/5 p-2 transition-colors ease-out hover:bg-foreground/8">
               <div class="flex items-center gap-2">
                 <Avatar.Root class="shrink-0 select-none">
                   <Avatar.Image loading="lazy" src={piece.sourceTab.icon} alt={piece.sourceTab.name} class="pointer-events-none aspect-square size-10 h-full rounded-lg select-none [image-rendering:pixelated]" />
@@ -91,8 +91,8 @@
           </div>
         {/if}
         {#if hasColor}
-          <div class="mt-4 flex max-w-72 items-center justify-start gap-4 rounded-[0.625rem] bg-text/5 p-2 transition-colors ease-out">
-            <div class="flex items-center gap-2 text-text/60">
+          <div class="mt-4 flex max-w-72 items-center justify-start gap-4 rounded-[0.625rem] bg-foreground/5 p-2 transition-colors ease-out">
+            <div class="flex items-center gap-2 text-foreground/60">
               <TriangleAlert class="size-10" />
               <div class="text-sm font-semibold">Due to abuse, all leather armor uses default color values</div>
             </div>
@@ -101,7 +101,7 @@
         <div class="mt-4 flex w-full flex-nowrap gap-4">
           {#if packData}
             <Button.Root href={packData.url} target="_blank">
-              <div class="flex items-center justify-between gap-4 rounded-[0.625rem] bg-text/5 p-2 transition-colors ease-out hover:bg-text/8">
+              <div class="flex items-center justify-between gap-4 rounded-[0.625rem] bg-foreground/5 p-2 transition-colors ease-out hover:bg-foreground/8">
                 <div class="flex items-center gap-2">
                   <Avatar.Root class="shrink-0 select-none">
                     <Avatar.Image loading="lazy" src={packData.icon} alt={packData.name} class="pointer-events-none aspect-square size-10 h-full rounded-lg select-none [image-rendering:pixelated]" />
@@ -114,10 +114,10 @@
                       <span class="underline">
                         {packData.name}
                       </span>
-                      <span class="text-sm text-text/60">{packData.version}</span>
+                      <span class="text-sm text-foreground/60">{packData.version}</span>
                     </div>
-                    <div class="text-sm text-text/60">
-                      by <span class="text-text/80">{packData.author}</span>
+                    <div class="text-sm text-foreground/60">
+                      by <span class="text-foreground/80">{packData.author}</span>
                     </div>
                   </div>
                 </div>
@@ -126,7 +126,7 @@
           {/if}
 
           {#if piece.wiki}
-            <Button.Root href={piece.wiki} target="_blank" class="flex shrink items-center justify-center rounded-[0.625rem] bg-text/5 p-2 whitespace-nowrap transition-colors ease-out hover:bg-text/8">
+            <Button.Root href={piece.wiki} target="_blank" class="flex shrink items-center justify-center rounded-[0.625rem] bg-foreground/5 p-2 whitespace-nowrap transition-colors ease-out hover:bg-foreground/8">
               {#if preferences.mctooltip}
                 <span class="font-skyblock-icons light:invert text-2xl px-2 block ml-0.5 mt-0.5">ⓘ</span>
               {:else}

@@ -71,7 +71,7 @@
               {#if data.maxedMinions === data.totalMinions}
                 <span class="text-accent-4">Max!</span>
               {:else}
-                <span class="text-text/80">{data.maxedMinions} / {data.totalMinions} maxed</span>
+                <span class="text-foreground/80">{data.maxedMinions} / {data.totalMinions} maxed</span>
               {/if}
             </div>
           {/if}

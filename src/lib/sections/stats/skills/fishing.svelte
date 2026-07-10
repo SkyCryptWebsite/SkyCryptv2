@@ -66,7 +66,7 @@
       {#if fishingTools && fishingTools.tools && fishingTools.tools.length > 0}
         <div class="space-y-2">
           {#if highestPriorityFishingTool && highestPriorityFishingTool.display_name}
-            <p class="space-x-0.5 leading-6 font-bold text-text/60 capitalize" {@attach animateObfuscatedText}>
+            <p class="space-x-0.5 leading-6 font-bold text-foreground/60 capitalize" {@attach animateObfuscatedText}>
               <span>Active Rod:</span>
               {@html renderLore(highestPriorityFishingTool.display_name)}
             </p>
@@ -126,11 +126,11 @@
             <ScrollAreaItems>
               {#each trophyFishes as [_, trophyFish], index (index)}
                 {const highestTier = tiers.find((tier) => (trophyFish[tier] ?? 0) > 0)}
-                {const highestTierColor = highestTier ? colors[highestTier].text : "text-text/60"}
+                {const highestTierColor = highestTier ? colors[highestTier].text : "text-foreground/60"}
                 <Chip class="px-4 whitespace-nowrap" image={{ src: trophyFish.texture ?? "" }}>
                   <div class="flex flex-col">
                     <div class="flex flex-col gap-0.5">
-                      <h4 class="font-bold {highestTierColor}">{trophyFish.name} <span class="font-medium text-text/70">x{format((trophyFish.bronze ?? 0) + (trophyFish.silver ?? 0) + (trophyFish.gold ?? 0) + (trophyFish.diamond ?? 0))}</span></h4>
+                      <h4 class="font-bold {highestTierColor}">{trophyFish.name} <span class="font-medium text-foreground/70">x{format((trophyFish.bronze ?? 0) + (trophyFish.silver ?? 0) + (trophyFish.gold ?? 0) + (trophyFish.diamond ?? 0))}</span></h4>
                     </div>
                     <div class="grid grid-cols-2 grid-rows-2">
                       <div class="flex items-center gap-1">
@@ -190,7 +190,7 @@
                 </Avatar.Fallback>
               </Avatar.Root>
               <div class="text-center font-bold">
-                {creature.amount} <span class="text-text/60">Kills</span>
+                {creature.amount} <span class="text-foreground/60">Kills</span>
               </div>
             </div>
           </div>

@@ -152,7 +152,7 @@
                       <div transition:fade={{ duration: 300, easing: cubicOut }} {...props}>
                         <Avatar.Image loading="lazy" src="https://nmsr.nickac.dev/fullbody/{profile.uuid}?no=shadow" alt="{profile.username}'s avatar" class="max-h-[32rem] object-cover" />
                         <Avatar.Fallback>
-                          <Image class="size-24 object-cover text-text" />
+                          <Image class="size-24 object-cover text-foreground" />
                         </Avatar.Fallback>
                       </div>
                     {/snippet}
@@ -171,7 +171,7 @@
           <div class="absolute h-[50dvh] w-2 rounded-xs bg-primary transition-[clip-path] duration-300 ease-out [clip-path:inset(50%_0_50%_0)] group-hover/pane:[clip-path:inset(0_0_0_0)]"></div>
 
           <div class="z-10 flex h-7 min-w-5 items-center justify-center rounded-sm bg-background-grey transition-colors duration-300 ease-out group-hover/pane:bg-primary">
-            <GripVertical class="size-4 text-text/80" />
+            <GripVertical class="size-4 text-foreground/80" />
           </div>
         </PaneResizer>
       </div>
@@ -208,7 +208,7 @@
           <div transition:fade={{ duration: 300, easing: cubicOut }} {...props}>
             <Avatar.Image loading="lazy" src="https://nmsr.nickac.dev/fullbody/{profile.uuid}?no=shadow" alt="{profile.username}'s avatar" class="max-h-128 object-cover" />
             <Avatar.Fallback>
-              <Image class="size-24 object-cover text-text" />
+              <Image class="size-24 object-cover text-foreground" />
             </Avatar.Fallback>
           </div>
         {/snippet}

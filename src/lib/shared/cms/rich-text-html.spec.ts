@@ -124,7 +124,7 @@ describe.concurrent("richTextToHtml()", () => {
     );
 
     expect(result).toContain('type="checkbox" checked disabled');
-    expect(result).toContain('class="text-text/60 line-through"');
+    expect(result).toContain('class="text-foreground/60 line-through"');
     expect(result).toContain('type="checkbox" disabled');
   });
 
@@ -194,7 +194,7 @@ describe.concurrent("richTextToHtml()", () => {
   it("renders user relationships without mcUuid as text", ({ expect }) => {
     const result = richTextToHtml(root([{ type: "relationship", relationTo: "users", value: { displayName: "Gigi", name: "gigi" }, version: 1 }]));
 
-    expect(result).toContain('<span class="font-semibold text-text">Gigi</span>');
+    expect(result).toContain('<span class="font-semibold text-foreground">Gigi</span>');
   });
 
   it("skips unsupported relationships", ({ expect }) => {

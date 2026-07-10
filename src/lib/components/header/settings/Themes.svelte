@@ -99,10 +99,10 @@
                 <Avatar.Fallback class="flex items-center rounded-xl text-center font-semibold uppercase">{theme.metadata.name.slice(0, 2)}</Avatar.Fallback>
               </Avatar.Root>
               <div class="flex flex-col">
-                <h4 class="font-semibold text-text/90">{theme.metadata.name}</h4>
-                <p class="overflow-hidden font-normal text-ellipsis whitespace-nowrap text-text/60">
+                <h4 class="font-semibold text-foreground/90">{theme.metadata.name}</h4>
+                <p class="overflow-hidden font-normal text-ellipsis whitespace-nowrap text-foreground/60">
                   by
-                  <span class="text-text/80">{theme.metadata.author}</span>
+                  <span class="text-foreground/80">{theme.metadata.author}</span>
                 </p>
               </div>
             </div>

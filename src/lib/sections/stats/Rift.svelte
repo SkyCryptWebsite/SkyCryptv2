@@ -165,7 +165,7 @@
                 <div class="text-sm font-bold">
                   <div>
                     <span class="opacity-85">Obtained:</span>
-                    <span class="text-text">
+                    <span class="text-foreground">
                       {#if hasUnlocked && timecharm.unlockedAt != null}
                         {formatDate(timecharm.unlockedAt, "dd MMMM yyyy 'at' HH:mm", { in: tz(Intl.DateTimeFormat().resolvedOptions().timeZone) })}
                       {/if}

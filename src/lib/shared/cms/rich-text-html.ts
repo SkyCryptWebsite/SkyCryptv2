@@ -116,7 +116,7 @@ function richTextConverters(): HTMLConvertersFunction<NewsroomNodeTypes> {
       const children = nodesToHTML({ nodes: node.children }).join("");
       if (isRecord(parent as unknown) && (parent as unknown as JsonRecord).listType === "check") {
         const checked = node.checked === true;
-        return `<li class="flex items-start gap-2 leading-7"><input type="checkbox"${checked ? " checked" : ""} disabled class="mt-1.5 size-3.5 shrink-0 accent-primary" /><span class="${checked ? "text-text/60 line-through" : ""}">${children}</span></li>`;
+        return `<li class="flex items-start gap-2 leading-7"><input type="checkbox"${checked ? " checked" : ""} disabled class="mt-1.5 size-3.5 shrink-0 accent-primary" /><span class="${checked ? "text-foreground/60 line-through" : ""}">${children}</span></li>`;
       }
       return `<li class="leading-7">${children}</li>`;
     },
@@ -125,7 +125,7 @@ function richTextConverters(): HTMLConvertersFunction<NewsroomNodeTypes> {
       const name = user?.displayName?.trim() || user?.name || "";
       if (!user || !name) return "";
       const label = escapeHtml(name);
-      if (!user.mcUuid) return `<span${providedStyleTag} class="font-semibold text-text">${label}</span>`;
+      if (!user.mcUuid) return `<span${providedStyleTag} class="font-semibold text-foreground">${label}</span>`;
       const href = escapeAttribute(`/stats/${encodeURIComponent(user.mcUuid)}`);
       return `<a${providedStyleTag} href="${href}" data-sveltekit-preload-data="hover" class="${userRelationshipClass}">${label}</a>`;
     },

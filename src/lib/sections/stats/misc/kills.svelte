@@ -29,9 +29,9 @@
             <VirtualList height={320} width="100%" itemCount={misc.kills.kills.length} itemSize={misc.kills.kills.length > 0 ? 20 : 0} scrollDirection="vertical">
               {#snippet item({ index, style })}
                 <div {style} class="px-4 font-semibold whitespace-nowrap">
-                  <div class="inline-block text-text/60 capitalize">#{index + 1}</div>
-                  <div class="inline-block text-text">{sortedKills[index].name}</div>
-                  <div class="inline-block text-text/60">: {format(sortedKills[index].amount)}</div>
+                  <div class="inline-block text-foreground/60 capitalize">#{index + 1}</div>
+                  <div class="inline-block text-foreground">{sortedKills[index].name}</div>
+                  <div class="inline-block text-foreground/60">: {format(sortedKills[index].amount)}</div>
                 </div>
               {/snippet}
             </VirtualList>
@@ -44,9 +44,9 @@
             <VirtualList height={320} width="100%" itemCount={misc.kills.deaths.length} itemSize={misc.kills.deaths.length > 0 ? 20 : 0} scrollDirection="vertical">
               {#snippet item({ index, style })}
                 <div {style} class="px-4 font-semibold whitespace-nowrap">
-                  <div class="inline-block text-text/60 capitalize">#{index + 1}</div>
-                  <div class="inline-block text-text">{sortedDeaths[index].name}</div>
-                  <div class="inline-block text-text/60">: {format(sortedDeaths[index].amount)}</div>
+                  <div class="inline-block text-foreground/60 capitalize">#{index + 1}</div>
+                  <div class="inline-block text-foreground">{sortedDeaths[index].name}</div>
+                  <div class="inline-block text-foreground/60">: {format(sortedDeaths[index].amount)}</div>
                 </div>
               {/snippet}
             </VirtualList>

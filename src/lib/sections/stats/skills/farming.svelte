@@ -84,7 +84,7 @@
       {#if farmingTools && farmingTools.tools && farmingTools.tools.length > 0}
         <div class="space-y-2">
           {#if highestPriorityFarmingTool && highestPriorityFarmingTool.display_name}
-            <p class="space-x-0.5 leading-6 font-bold text-text/60 capitalize" {@attach animateObfuscatedText}>
+            <p class="space-x-0.5 leading-6 font-bold text-foreground/60 capitalize" {@attach animateObfuscatedText}>
               <span>Active Tool:</span>
               {@html renderLore(highestPriorityFarmingTool.display_name)}
             </p>

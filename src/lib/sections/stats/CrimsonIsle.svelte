@@ -45,7 +45,7 @@
                   <span class="opacity-60">{tier.name}</span>
                   <div class="text-sm">
                     <span class="opacity-60">Kills:</span>
-                    <span class="text-text">{format(tier.kills)}</span>
+                    <span class="text-foreground">{format(tier.kills)}</span>
                   </div>
                 </div>
               </Chip>
@@ -69,19 +69,19 @@
                   {#if challenge.points != null}
                     <div class="text-sm">
                       <span class="opacity-60">Points:</span>
-                      <span class="text-text">{format(challenge.points)}</span>
+                      <span class="text-foreground">{format(challenge.points)}</span>
                     </div>
                   {/if}
                   {#if challenge.rank}
                     <div class="text-sm">
                       <span class="opacity-60">Rank:</span>
-                      <span class="text-text">{challenge.rank}</span>
+                      <span class="text-foreground">{challenge.rank}</span>
                     </div>
                   {/if}
                   {#if challenge.time}
                     <div class="text-sm">
                       <span class="opacity-60">Time:</span>
-                      <span class="text-text">{formatTime(challenge.time)}</span>
+                      <span class="text-foreground">{formatTime(challenge.time)}</span>
                     </div>
                   {/if}
                 </div>

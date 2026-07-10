@@ -99,7 +99,7 @@
                 </Item.Content>
                 {#if member.removed}
                   <Item.Media>
-                    <Ban class="size-4 shrink-0 text-text light:invert" />
+                    <Ban class="size-4 shrink-0 text-foreground light:invert" />
                   </Item.Media>
                 {/if}
               </a>

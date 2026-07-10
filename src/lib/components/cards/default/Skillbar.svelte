@@ -23,9 +23,9 @@
 </script>
 
 <div class={cn("group relative isolate flex grow basis-full flex-col sm:basis-1/3 sm:last:odd:grow sm:last:odd:basis-1/2", !apiEnabled && "opacity-50 grayscale", className)} data-maxed={isMaxed}>
-  <div class="relative ml-10 flex gap-1 text-sm font-semibold text-text capitalize">
+  <div class="relative ml-10 flex gap-1 text-sm font-semibold text-foreground capitalize">
     {skill}
-    <span class="text-text/80">
+    <span class="text-foreground/80">
       {skillData.level}
     </span>
   </div>

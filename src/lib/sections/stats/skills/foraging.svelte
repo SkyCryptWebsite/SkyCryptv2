@@ -77,7 +77,7 @@
       {#if foragingTools && foragingTools.tools && foragingTools.tools.length > 0}
         <div class="space-y-2">
           {#if highestPriorityForagingTool && highestPriorityForagingTool.display_name}
-            <p class="space-x-0.5 leading-6 font-bold text-text/60 capitalize" {@attach animateObfuscatedText}>
+            <p class="space-x-0.5 leading-6 font-bold text-foreground/60 capitalize" {@attach animateObfuscatedText}>
               <span>Active Tool:</span>
               {@html renderLore(highestPriorityForagingTool.display_name)}
             </p>

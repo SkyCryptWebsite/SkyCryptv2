@@ -65,7 +65,7 @@
                 {#if typeof Icon === "string"}
                   <img src={Icon} alt="Technoblade Icon" class="size-4" />
                 {:else}
-                  <Icon class={cn("size-4", options?.favorite ? "fill-[oklch(75.25%_0.0023_17.21)] stroke-[oklch(75.25%_0.0023_17.21)]" : "text-text/60")} />
+                  <Icon class={cn("size-4", options?.favorite ? "fill-[oklch(75.25%_0.0023_17.21)] stroke-[oklch(75.25%_0.0023_17.21)]" : "text-foreground/60")} />
                 {/if}
               </div>
             {/snippet}
@@ -83,17 +83,17 @@
 <!-- <div class={cn("relative rounded-lg", { "transition-all duration-300 ease-out hover:scale-105": !options?.tip })}>
   <Button href={options?.tip ? undefined : resolve("/stats/[ign]", { ign: user.id })} class="relative flex h-full w-full min-w-0 items-center gap-4 rounded-lg p-5 text-left glass glass-brightness-150 dark:glass-brightness-50 glass-contrast-60 dark:glass-contrast-100">
     <Avatar.Root class="size-16 shrink-0">
-      <Avatar.Image loading="lazy" src={options?.tip ? "https://nmsr.nickac.dev/face/bc8ea1f51f253ff5142ca11ae45193a4ad8c3ab5e9c6eec8ba7a4fcb7bac40" : `https://nmsr.nickac.dev/face/${user.id}`} alt={user.username} class={cn("aspect-square size-16 [image-rendering:pixelated]", options?.tip ? "rounded-lg bg-text/10" : "")} />
-      <Avatar.Fallback class="flex h-full items-center justify-center rounded-lg bg-text/10 text-lg font-semibold text-text/60 uppercase">
+      <Avatar.Image loading="lazy" src={options?.tip ? "https://nmsr.nickac.dev/face/bc8ea1f51f253ff5142ca11ae45193a4ad8c3ab5e9c6eec8ba7a4fcb7bac40" : `https://nmsr.nickac.dev/face/${user.id}`} alt={user.username} class={cn("aspect-square size-16 [image-rendering:pixelated]", options?.tip ? "rounded-lg bg-foreground/10" : "")} />
+      <Avatar.Fallback class="flex h-full items-center justify-center rounded-lg bg-foreground/10 text-lg font-semibold text-foreground/60 uppercase">
         {user.username?.slice(0, 2)}
       </Avatar.Fallback>
     </Avatar.Root>
     <div class="flex flex-col justify-center gap-0">
-      <div class="text-lg font-semibold text-text">
+      <div class="text-lg font-semibold text-foreground">
         {user.displayName ?? user.username}
       </div>
       {#if user.quote}
-        <div class={cn("pr-4 text-sm font-medium text-pretty text-text/80", user.role === Role.TECHNOBLADE ? "italic" : "")}>{@html user.quote}</div>
+        <div class={cn("pr-4 text-sm font-medium text-pretty text-foreground/80", user.role === Role.TECHNOBLADE ? "italic" : "")}>{@html user.quote}</div>
       {/if}
     </div>
   </Button>

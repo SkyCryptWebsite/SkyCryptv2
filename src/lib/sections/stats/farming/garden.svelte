@@ -100,7 +100,7 @@
                           <span class="capitalize opacity-60">{gardenUpgrade.name}</span>
                           <div class="text-sm">
                             <span class="opacity-60">Level:</span>
-                            <span class="text-text">{format(gardenUpgrade.level)}</span>
+                            <span class="text-foreground">{format(gardenUpgrade.level)}</span>
                           </div>
                         </div>
                       </div>
@@ -122,7 +122,7 @@
                       <div class="flex flex-col">
                         <div class="font-bold whitespace-nowrap">
                           <span class={cn("capitalize", hasMaxed ? "text-accent-2" : "opacity-60")}>{gardenChip.name}</span>
-                          <div class={cn("text-sm", hasMaxed ? "text-accent-4" : "text-text")}>
+                          <div class={cn("text-sm", hasMaxed ? "text-accent-4" : "text-foreground")}>
                             <span class="opacity-60">Level:</span>
                             {format(gardenChip.amount)}/{gardenChip.maxLevel}
                           </div>
@@ -185,7 +185,7 @@
       {#if allMaxed}
         <span class="text-accent-4">Max!</span>
       {:else}
-        <span class="text-text/80">({Object.values(garden.cropUpgrades).filter((upgrade) => upgrade.level?.maxed).length} / {Object.values(garden.cropUpgrades).length} max)</span>
+        <span class="text-foreground/80">({Object.values(garden.cropUpgrades).filter((upgrade) => upgrade.level?.maxed).length} / {Object.values(garden.cropUpgrades).length} max)</span>
       {/if}
     </div>
     <ScrollAreaItems>
@@ -213,7 +213,7 @@
       {#if allMaxed}
         <span class="text-accent-4">Max!</span>
       {:else if garden.cropUpgrades}
-        <span class="text-text/80">({Object.values(garden.cropMilestones).filter((upgrade) => upgrade.level?.maxed).length} / {Object.values(garden.cropUpgrades).length} max)</span>
+        <span class="text-foreground/80">({Object.values(garden.cropMilestones).filter((upgrade) => upgrade.level?.maxed).length} / {Object.values(garden.cropUpgrades).length} max)</span>
       {/if}
     </div>
     <ScrollAreaItems>
