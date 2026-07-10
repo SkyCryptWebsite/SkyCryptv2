@@ -40,7 +40,7 @@
         </Avatar.Fallback>
       </Avatar.Root>
 
-      <p class={cn("relative min-w-0 wrap-break-word group-data-[mctooltip=false]/itemtooltip:text-center group-data-[mctooltip=false]/itemtooltip:text-base group-data-[mctooltip=false]/itemtooltip:font-semibold group-data-[mctooltip=false]/itemtooltip:uppercase data-[multicolor=true]:rounded-full data-[multicolor=true]:py-1 group-data-[mctooltip=false]/itemtooltip:data-[multicolor=true]:bg-background-lore group-data-[mctooltip=false]/itemtooltip:data-[multicolor=true]:px-2 group-data-[mctooltip=false]/itemtooltip:sm:text-lg", preferences.mctooltip ? textColor : "data-[multicolor=false]:text-foreground")} data-multicolor={isMulticolor}>
+      <p class={cn("relative min-w-0 wrap-break-word group-data-[mctooltip=false]/itemtooltip:text-center group-data-[mctooltip=false]/itemtooltip:text-base group-data-[mctooltip=false]/itemtooltip:font-semibold group-data-[mctooltip=false]/itemtooltip:uppercase data-[multicolor=true]:rounded-full data-[multicolor=true]:py-1 group-data-[mctooltip=false]/itemtooltip:data-[multicolor=true]:bg-popover group-data-[mctooltip=false]/itemtooltip:data-[multicolor=true]:px-2 group-data-[mctooltip=false]/itemtooltip:sm:text-lg", preferences.mctooltip ? textColor : "data-[multicolor=false]:text-foreground")} data-multicolor={isMulticolor}>
         {#if preferences.mctooltip}
           {@html itemNameHtml}
         {:else}

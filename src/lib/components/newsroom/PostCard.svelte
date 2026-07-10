@@ -32,7 +32,7 @@
 </script>
 
 <Button.Root href="/newsroom/{post.slug}" data-sveltekit-preload-data="hover" class={cn("group relative flex h-full w-full min-w-0 flex-col overflow-hidden rounded-xl text-left data-[featured=true]:border-accent-2/50 border hover:scale-95 transition-[scale] duration-300 delay-75 ease-out focus-visible:scale-95", { glass })} data-featured={post.featured}>
-  <div class="relative aspect-video w-full overflow-hidden bg-background-lore">
+  <div class="relative aspect-video w-full overflow-hidden bg-popover">
     {#if thumb && post.heroImage}
       <Avatar.Root class="size-full">
         <Avatar.Image src={thumb.url} alt={post.heroImage.alt ?? ""} width={thumb.width} height={thumb.height} loading="lazy" class="size-full object-cover" />
