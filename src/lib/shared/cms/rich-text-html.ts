@@ -1,6 +1,6 @@
 import type { BlockRichText, Media } from "$types";
-import { convertLexicalToHTML, type HTMLConvertersFunction } from "@payloadcms/richtext-lexical/html";
 import type { DefaultNodeTypes } from "@payloadcms/richtext-lexical";
+import { convertLexicalToHTML, type HTMLConvertersFunction } from "@payloadcms/richtext-lexical/html";
 import type { SerializedEditorState, SerializedLexicalNode } from "@payloadcms/richtext-lexical/lexical";
 
 type JsonRecord = Record<string, unknown>;
