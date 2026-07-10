@@ -51,6 +51,7 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
+      actions: write
       contents: write
       pull-requests: write
 
@@ -59,7 +60,6 @@ jobs:
         uses: actions/checkout@v6
         with:
           fetch-depth: 0
-          token: ${{ secrets.PAT_TOKEN }}
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v6
@@ -81,8 +81,13 @@ jobs:
       - name: Prepare Stable Release
         run: node scripts/release-stable.mjs
         env:
-          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
-          GH_TOKEN: ${{ secrets.PAT_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Deploy stable release
+        run: gh workflow run website.yml --ref prod
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   sync_dev_after_stable:
     name: Sync Prod Back To Dev
@@ -98,7 +103,6 @@ jobs:
         uses: actions/checkout@v6
         with:
           fetch-depth: 0
-          token: ${{ secrets.PAT_TOKEN }}
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v6

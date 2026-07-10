@@ -1,6 +1,7 @@
-import { execSync } from "node:child_process";
+import { execFileSync, execSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
+import { buildReleaseBody, extractReleaseSection, selectPreviousRelease } from "./release-notes.js";
 
 const changesetDir = path.join(process.cwd(), ".changeset");
 
@@ -18,6 +19,26 @@ function runOptional(command) {
 
 function output(command) {
   return execSync(command, { encoding: "utf8" }).trim();
+}
+
+function outputOptional(command) {
+  try {
+    return output(command);
+  } catch {
+    return "";
+  }
+}
+
+function getReleaseBody(version, tag) {
+  const changelog = fs.readFileSync(path.join(process.cwd(), "CHANGELOG.md"), "utf8");
+  const releases = JSON.parse(output("gh release list --limit 100 --json tagName,isDraft,isPrerelease,publishedAt"));
+  const previousRelease = selectPreviousRelease(releases, { prerelease: true, currentTag: tag });
+
+  return buildReleaseBody({ changelogSection: extractReleaseSection(changelog, version), currentTag: tag, previousRelease });
+}
+
+function createRelease(tag, body) {
+  execFileSync("gh", ["release", "create", tag, "--title", tag, "--notes-file", "-", "--prerelease"], { input: body, stdio: ["pipe", "inherit", "inherit"] });
 }
 
 run("git fetch origin dev");
@@ -62,6 +83,7 @@ if (!version.includes("beta")) {
 }
 
 const tag = `v${version}`;
+const releaseBody = getReleaseBody(version, tag);
 const remoteTag = output(`git ls-remote --tags origin ${tag}`);
 
 if (remoteTag) {
@@ -69,5 +91,12 @@ if (remoteTag) {
 } else {
   run(`git tag ${tag}`);
   run(`git push origin ${tag}`);
-  run(`gh release create ${tag} --title ${tag} --generate-notes --prerelease`);
+}
+
+const existingRelease = outputOptional(`gh release view ${tag} --json tagName --jq '.tagName'`);
+
+if (existingRelease) {
+  console.info(`Release ${tag} already exists, skipping`);
+} else {
+  createRelease(tag, releaseBody);
 }
