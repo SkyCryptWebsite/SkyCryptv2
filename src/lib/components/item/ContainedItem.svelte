@@ -1,19 +1,16 @@
 <script lang="ts">
-  import { getPreferences } from "$ctx";
   import type { ModelsStrippedItem } from "$lib/shared/api/orval-generated";
   import { cn } from "$lib/shared/utils";
   import Image from "@lucide/svelte/icons/image";
   import { Avatar } from "bits-ui";
 
   let { piece, isInventory }: { piece: ModelsStrippedItem; isInventory?: boolean } = $props();
-
-  const preferences = getPreferences();
 </script>
 
 <div class="relative flex aspect-square items-center justify-center overflow-clip p-0">
-  <div class={cn("absolute inset-0 rounded-xl", { "data-[enchanted=true]:shine": !preferences.performanceMode })} data-enchanted={piece.shiny}></div>
+  <div class="absolute inset-0 rounded-xl"></div>
   <Avatar.Root>
-    <Avatar.Image loading="lazy" src={piece.texture_path} alt={piece.display_name} class={cn("h-auto w-14 select-none [image-rendering:pixelated] data-[enchanted=true]:enchanted", isInventory ? "w-8" : "w-14")} data-enchanted={piece.shiny} />
+    <Avatar.Image loading="lazy" src={piece.texture_path} alt={piece.display_name} class={cn("h-auto w-14 select-none [image-rendering:pixelated] data-[enchanted=true]:enchanted", isInventory ? "w-8" : "w-14")} />
     <Avatar.Fallback>
       <Image class={cn(isInventory ? "size-8" : "size-14")} />
     </Avatar.Fallback>

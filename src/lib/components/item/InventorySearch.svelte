@@ -1,17 +1,13 @@
 <script lang="ts">
-  import { getPreferences } from "$ctx";
   import { SectionBoundary } from "$lib/components/sections";
   import { type ModelsStrippedItem } from "$lib/shared/api/orval-generated";
   import { searchInventorySection } from "$lib/shared/api/skycrypt-api.remote";
-  import { shouldShine } from "$lib/shared/helper";
   import EmptyStat from "$src/lib/components/EmptyStat.svelte";
   import { Input } from "$ui/input";
   import SearchIcon from "@lucide/svelte/icons/search";
   import SearchX from "@lucide/svelte/icons/search-x";
   import { Debounced } from "runed";
   import type { Snippet } from "svelte";
-
-  const preferences = getPreferences();
 
   let { search = $bindable(), uuid, profileId, itemSnippet }: { search?: string; uuid: string; profileId: string; itemSnippet: Snippet<[ModelsStrippedItem]> } = $props();
 
@@ -38,7 +34,7 @@
           <div class="grid grid-cols-[repeat(9,minmax(1.875rem,4.875rem))] place-content-center gap-1 pt-5 @md:gap-1.5 @xl:gap-2">
             {#each items as item, index (index)}
               {#if item}
-                <div class="relative flex aspect-square size-full items-center justify-center rounded-xl border overflow-clip bg-foreground/5 data-[shine=true]:shine" data-shine={!preferences.performanceMode && shouldShine(item)}>
+                <div class="relative flex aspect-square size-full items-center justify-center rounded-xl border overflow-clip bg-foreground/5">
                   {@render itemSnippet(item)}
                 </div>
               {:else}

@@ -2,7 +2,7 @@
   import { getInternalState, getPreferences, itemTooltipTether } from "$ctx";
   import type { ModelsStrippedItem } from "$lib/shared/api/orval-generated";
   import { RARITIES, RARITY_COLORS } from "$lib/shared/constants/rarities";
-  import { formatNumber, getRarityClass, shouldShine } from "$lib/shared/helper";
+  import { formatNumber, getRarityClass } from "$lib/shared/helper";
   import { cn } from "$lib/shared/utils";
   import ImageOff from "@lucide/svelte/icons/image-off";
   import { Avatar, Tooltip, type AvatarImageLoadingStatus } from "bits-ui";
@@ -29,7 +29,6 @@
   const bgColor = $derived(getRarityClass(piece.rarity ?? ("common".toLowerCase() as string), "bg"));
   const recombobulated = $derived(showRecombobulated && (skyblockItem.recombobulated ?? false));
   const enchanted = $derived(skyblockItem?.texture_path?.includes("/api/leather/") ? false : skyblockItem.shiny);
-  const shine = $derived(!preferences.performanceMode && shouldShine(skyblockItem));
   const showNumbers = $derived(showCount && (skyblockItem.Count ?? 0) > 1);
 
   $effect(() => {
@@ -40,7 +39,7 @@
 </script>
 
 <Tooltip.Trigger
-  class={cn("overflow-clip nice-colors-dark", isInventory ? "p-0" : `relative p-2 ${bgColor}`, { shine: shine && !isInventory }, { "rounded-xl": !isInventory }, "standard:transition-all standard:duration-150 standard:ease-out standard:hover:scale-110 standard:active:scale-110")}
+  class={cn("overflow-clip nice-colors-dark", isInventory ? "p-0" : `relative p-2 ${bgColor}`, { "rounded-xl": !isInventory }, "standard:transition-all standard:duration-150 standard:ease-out standard:hover:scale-110 standard:active:scale-110")}
   bind:ref={targetNode}
   onclick={() => {
     if (skyblockItem.containsItems && !skyblockItem.displayInline) {

@@ -6,7 +6,7 @@
   import { Section } from "$lib/components/sections";
   import { type ModelsInventory, type ModelsStrippedItem } from "$lib/shared/api/orval-generated";
   import { getInventories } from "$lib/shared/api/skycrypt-api.remote";
-  import { renderLore, shouldShine } from "$lib/shared/helper";
+  import { renderLore } from "$lib/shared/helper";
   import { animateObfuscatedText } from "$lib/shared/mc-text/obfuscated";
   import { cn } from "$lib/shared/utils";
   import * as Avatar from "$ui/avatar";
@@ -139,7 +139,7 @@
             {#snippet child({ props })}
               <div {...props}>
                 {#if item.texture_path}
-                  <div class="relative flex aspect-square items-center justify-center rounded-xl border overflow-clip group-data-[state=active]:bg-foreground/10 group-data-[state=inactive]:bg-foreground/5 data-[shine=true]:shine" data-shine={!preferences.performanceMode && shouldShine(item)}>
+                  <div class="relative flex aspect-square items-center justify-center rounded-xl border overflow-clip group-data-[state=active]:bg-foreground/10 group-data-[state=inactive]:bg-foreground/5">
                     {@render itemSnippet(item)}
                   </div>
                 {:else}
@@ -175,7 +175,7 @@
                 {/if}
                 <Tabs.Content value={index.toString()}>
                   {#if containedItem.texture_path}
-                    <div class="relative flex aspect-square items-center justify-center rounded-xl border overflow-clip bg-foreground/5 data-[shine=true]:shine" data-shine={!preferences.performanceMode && shouldShine(item)}>
+                    <div class="relative flex aspect-square items-center justify-center rounded-xl border overflow-clip bg-foreground/5">
                       {@render itemSnippet(containedItem)}
                     </div>
                   {:else}

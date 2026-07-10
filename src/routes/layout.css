@@ -35,19 +35,8 @@
   --tw-shadow-color: --alpha(var(--color-background) / 50%);
 
   /* Animations */
-  --animate-shine: shine 4s infinite;
   --animate-spin-slow: spin 3s linear infinite;
   --animate-chroma: chroma-bg 40000s linear infinite;
-
-  @keyframes shine {
-    0% {
-      transform: translateY(120%);
-    }
-    33%,
-    100% {
-      transform: translateY(-120%);
-    }
-  }
 
   @keyframes chroma-bg {
     from {
@@ -385,10 +374,6 @@
   --§d: oklch(0.7 0.19 338.3);
   --§e: oklch(0.84 0.17 93.53);
   --§f: oklch(0.66 0 0);
-}
-
-@utility shine {
-  @apply overflow-hidden before:pointer-events-none before:absolute before:inset-0 before:z-8 before:size-full before:animate-shine before:rounded-xl before:bg-linear-to-t before:from-[oklch(1_0_0/0)] before:via-[oklch(1_0_0/0.50)] before:to-[oklch(0.77_0.09_243.21/0)];
 }
 
 @utility glass {

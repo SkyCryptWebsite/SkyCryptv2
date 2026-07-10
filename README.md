@@ -75,6 +75,7 @@ Original Site: [sky.lea.moe](https://sky.lea.moe/) by LeaPhant
 - [FurfSky Reborn](https://modrinth.com/resourcepack/furfsky-reborn) by The Reborn Team
 - [Hypixel Plus](https://modrinth.com/resourcepack/hypixel-plus) by ic22487
 - [Default Minecraft Textures](https://www.minecraft.net/) by Mojang
+- [Minecraft Glint Animation](https://hypixelskyblock.minecraft.wiki/images/Mcglint.gif) by Hypixel SkyBlock Wiki
 
 #### Background Image:
 

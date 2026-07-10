@@ -32,7 +32,7 @@
 </script>
 
 <div class={cn("group relative flex grow basis-full flex-col sm:basis-1/3 sm:last:odd:grow sm:last:odd:basis-1/2", !apiEnabled && "opacity-50 grayscale", className)} data-maxed={isMaxed} data-api={apiEnabled} onpointerenter={() => (isHovered = true)} onpointerleave={() => (isHovered = false)} role="none">
-  <div class={cn("absolute border bottom-0 left-0 z-10 flex size-9 items-center justify-center rounded-full p-1 drop-shadow-sm group-data-[api=false]:bg-muted-foreground! group-data-[maxed=false]:bg-chart-2 group-data-[maxed=true]:bg-accent-2", { "group-data-[api=true]:group-data-[maxed=true]:shine": !preferences.performanceMode })}>
+  <div class={cn("absolute border bottom-0 left-0 z-10 flex size-9 items-center justify-center rounded-full p-1 drop-shadow-sm group-data-[api=false]:bg-muted-foreground! group-data-[maxed=false]:bg-chart-2 group-data-[maxed=true]:bg-accent-2")}>
     <Avatar.Root class="select-none size-6.5 after:border-none rounded-none">
       <Avatar.Image loading="lazy" class="pointer-events-none size-6.5 /Users/gigi/Library/Application Support/CleanShot/media/media_n1jqFH4qxo/ScreenShot 2026-06-10 at 12.47 AM cKk3jnx9.png rounded-none group-[api=false]:grayscale" src={skillData.texture} alt={skill} />
       <Avatar.Fallback class="bg-transparent">
