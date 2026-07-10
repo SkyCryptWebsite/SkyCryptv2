@@ -37,8 +37,8 @@ type UserRelationship = {
   name?: string | null;
 };
 
-const linkClass = "text-primary underline underline-offset-2 transition-colors hover:text-hover";
-const userRelationshipClass = "font-semibold text-primary underline underline-offset-2 transition-colors hover:text-hover";
+const linkClass = "text-primary underline underline-offset-2 transition-colors hover:text-accent";
+const userRelationshipClass = "font-semibold text-primary underline underline-offset-2 transition-colors hover:text-accent";
 
 function isRecord(value: unknown): value is JsonRecord {
   return typeof value === "object" && value !== null;
