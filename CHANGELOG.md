@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.9.0-beta.4
+
+### Patch Changes
+
+- Migrate sitemap generation to Super Sitemap v2. _[`95548d3`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/95548d317521c0298fd379c987ef67cc30968942) [@DarthGigi](https://github.com/DarthGigi)_
+
 ## 3.9.0-beta.3
 
 ### Patch Changes
