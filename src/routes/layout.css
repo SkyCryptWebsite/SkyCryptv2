@@ -17,7 +17,6 @@
   --color-background: var(--background);
   --color-background-grey: var(--grey_background);
   --color-background-lore: var(--lore_background);
-  --color-header: var(--header);
   --color-bg: var(--bg);
   --color-mctooltip-bg: var(--mctooltip-bg);
 
@@ -150,7 +149,6 @@
 
   :root {
     /* TODO: remove these compatibility aliases after all legacy token consumers are migrated to shadcn tokens. */
-    --header: var(--card);
     --grey_background: var(--muted);
     --lore_background: var(--popover);
     --bg: var(--background);
