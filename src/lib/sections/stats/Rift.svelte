@@ -32,7 +32,7 @@
         {#if rift.motes}
           <AdditionStat text="Motes" data={format(rift.motes.purse)} asterisk={true}>
             <div class="max-w-xs space-y-2">
-              <div class="rounded-lg space-y-1">
+              <div class="rounded-xl space-y-1">
                 <Label class="gap-1">
                   Lifetime Motes:
                   <span class="font-bold">

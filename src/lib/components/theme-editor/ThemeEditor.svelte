@@ -294,7 +294,7 @@
       <Tabs.Content value="code" class="mt-4 flex flex-col gap-2">
         <Textarea value={jsonString} oninput={handleJsonChange} class="h-125 font-mono text-xs" spellcheck="false" />
         {#if jsonError}
-          <div class="rounded-lg bg-destructive/10 p-3 text-xs text-destructive">
+          <div class="rounded-xl bg-destructive/10 p-3 text-xs text-destructive">
             Error: {jsonError}
           </div>
         {/if}

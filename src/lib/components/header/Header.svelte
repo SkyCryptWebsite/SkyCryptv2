@@ -46,7 +46,7 @@
   <div class="flex h-full w-full items-center-safe justify-between">
     <div class="flex gap-2">
       <Button.Root href="/" class="flex items-center-safe justify-center-safe gap-2 font-bold" data-sveltekit-preload-data="hover">
-        <Avatar.Root class="size-6 shrink-0 rounded-lg select-none">
+        <Avatar.Root class="size-6 shrink-0 rounded-xl select-none">
           {#if themeIconQuery.current}
             <Avatar.Image loading="lazy" src="data:image/svg+xml;base64,{btoa(themeIconQuery.current)}" alt="SkyCrypt" class="pointer-events-none h-6 select-none" />
           {:else}

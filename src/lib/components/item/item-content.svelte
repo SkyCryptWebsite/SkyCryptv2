@@ -62,11 +62,11 @@
             <div class="grid grid-cols-9 gap-1">
               {#each skyblockItem?.containsItems.slice(0, Math.min(skyblockItem?.containsItems.length, 54)) as containedItem, index (index)}
                 {#if containedItem.texture_path}
-                  <div class="flex aspect-square items-center justify-center rounded-sm bg-foreground/4">
+                  <div class="flex aspect-square items-center justify-center rounded-xl bg-foreground/5">
                     <ContainedItem piece={containedItem} isInventory={true} />
                   </div>
                 {:else}
-                  <div class="aspect-square rounded-sm bg-foreground/4"></div>
+                  <div class="aspect-square rounded-xl bg-foreground/5"></div>
                 {/if}
               {/each}
             </div>
@@ -78,8 +78,8 @@
             <div class="flex items-center justify-between gap-4 rounded-[0.625rem] bg-foreground/5 p-2 transition-colors ease-out hover:bg-foreground/8">
               <div class="flex items-center gap-2">
                 <Avatar.Root class="shrink-0 select-none">
-                  <Avatar.Image loading="lazy" src={piece.sourceTab.icon} alt={piece.sourceTab.name} class="pointer-events-none aspect-square size-10 h-full rounded-lg select-none [image-rendering:pixelated]" />
-                  <Avatar.Fallback class="flex size-10 items-center justify-center rounded-lg bg-primary/90 text-center font-semibold uppercase">
+                  <Avatar.Image loading="lazy" src={piece.sourceTab.icon} alt={piece.sourceTab.name} class="pointer-events-none aspect-square size-10 h-full rounded-xl select-none [image-rendering:pixelated]" />
+                  <Avatar.Fallback class="flex size-10 items-center justify-center rounded-xl bg-primary/90 text-center font-semibold uppercase">
                     {piece.sourceTab.name?.slice(0, 2)}
                   </Avatar.Fallback>
                 </Avatar.Root>
@@ -104,8 +104,8 @@
               <div class="flex items-center justify-between gap-4 rounded-[0.625rem] bg-foreground/5 p-2 transition-colors ease-out hover:bg-foreground/8">
                 <div class="flex items-center gap-2">
                   <Avatar.Root class="shrink-0 select-none">
-                    <Avatar.Image loading="lazy" src={packData.icon} alt={packData.name} class="pointer-events-none aspect-square size-10 h-full rounded-lg select-none [image-rendering:pixelated]" />
-                    <Avatar.Fallback class="flex size-10 items-center justify-center rounded-lg bg-primary/90 text-center font-semibold uppercase">
+                    <Avatar.Image loading="lazy" src={packData.icon} alt={packData.name} class="pointer-events-none aspect-square size-10 h-full rounded-xl select-none [image-rendering:pixelated]" />
+                    <Avatar.Fallback class="flex size-10 items-center justify-center rounded-xl bg-primary/90 text-center font-semibold uppercase">
                       {packData.name?.slice(0, 2)}
                     </Avatar.Fallback>
                   </Avatar.Root>

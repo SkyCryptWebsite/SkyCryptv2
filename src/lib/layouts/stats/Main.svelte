@@ -170,7 +170,7 @@
         <PaneResizer class="fixed top-1/2 left-(--size) z-20 flex w-2 -translate-x-1 -translate-y-[calc(50%-1.5rem)] items-center justify-center rounded-xs opacity-30 transition-opacity duration-300 ease-out group-hover/pane:opacity-100" style="--size: {leftSize}%">
           <div class="absolute h-[50dvh] w-2 rounded-xs bg-primary transition-[clip-path] duration-300 ease-out [clip-path:inset(50%_0_50%_0)] group-hover/pane:[clip-path:inset(0_0_0_0)]"></div>
 
-          <div class="z-10 flex h-7 min-w-5 items-center justify-center rounded-sm bg-muted transition-colors duration-300 ease-out group-hover/pane:bg-primary">
+          <div class="z-10 flex h-7 min-w-5 items-center justify-center rounded-xl bg-muted transition-colors duration-300 ease-out group-hover/pane:bg-primary">
             <GripVertical class="size-4 text-foreground/80" />
           </div>
         </PaneResizer>

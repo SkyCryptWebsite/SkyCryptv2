@@ -123,7 +123,7 @@
 {/snippet}
 
 {#snippet emptyItem()}
-  <div class="aspect-square rounded-xl border bg-foreground/4"></div>
+  <div class="aspect-square rounded-xl border bg-foreground/5"></div>
 {/snippet}
 
 {#snippet gap()}
@@ -139,7 +139,7 @@
             {#snippet child({ props })}
               <div {...props}>
                 {#if item.texture_path}
-                  <div class="relative flex aspect-square items-center justify-center rounded-xl border overflow-clip group-data-[state=active]:bg-foreground/10 group-data-[state=inactive]:bg-foreground/4 data-[shine=true]:shine" data-shine={!preferences.performanceMode && shouldShine(item)}>
+                  <div class="relative flex aspect-square items-center justify-center rounded-xl border overflow-clip group-data-[state=active]:bg-foreground/10 group-data-[state=inactive]:bg-foreground/5 data-[shine=true]:shine" data-shine={!preferences.performanceMode && shouldShine(item)}>
                     {@render itemSnippet(item)}
                   </div>
                 {:else}
@@ -175,7 +175,7 @@
                 {/if}
                 <Tabs.Content value={index.toString()}>
                   {#if containedItem.texture_path}
-                    <div class="relative flex aspect-square items-center justify-center rounded-xl border overflow-clip bg-foreground/4 data-[shine=true]:shine" data-shine={!preferences.performanceMode && shouldShine(item)}>
+                    <div class="relative flex aspect-square items-center justify-center rounded-xl border overflow-clip bg-foreground/5 data-[shine=true]:shine" data-shine={!preferences.performanceMode && shouldShine(item)}>
                       {@render itemSnippet(containedItem)}
                     </div>
                   {:else}

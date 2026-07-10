@@ -30,7 +30,7 @@
   onclick={() => (internalState.content = tooltipContent)}
   tether={genericTooltipTether}
   payload={{
-    class: "z-50 [&>div]:leading-7 performance:bg-popover space-y-2 rounded-lg [&>span]:invisible bg-transparent glass border glass-bg-popover p-4 text-sm",
+    class: "z-50 [&>div]:leading-7 performance:bg-popover space-y-2 rounded-xl [&>span]:invisible bg-transparent glass border glass-bg-popover p-4 text-sm",
     side: "top",
     sideOffset: 4,
     align: "center",

@@ -64,7 +64,7 @@
 {/key}
 
 {#snippet loadingState()}
-  <div class="rounded-lg p-6 border">
+  <div class="rounded-xl p-6 border">
     <div class="flex items-center gap-2">
       <Spinner />
       <span class="font-semibold">Loading {titleCase(internalState.tabValue)}</span>

@@ -178,7 +178,7 @@
       {const creatures = Object.entries(creaturesList)}
       <ScrollAreaItems>
         {#each creatures as [_, creature], index (index)}
-          <div class="flex h-full max-h-56 flex-col rounded-lg bg-background/30 p-2 whitespace-nowrap">
+          <div class="flex h-full max-h-56 flex-col rounded-xl bg-background/30 p-2 whitespace-nowrap">
             <div class="flex h-12 items-center justify-center border-b-2 border-primary pb-2 text-center font-bold">
               {creature.name}
             </div>

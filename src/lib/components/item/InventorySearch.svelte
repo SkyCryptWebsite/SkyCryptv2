@@ -38,11 +38,11 @@
           <div class="grid grid-cols-[repeat(9,minmax(1.875rem,4.875rem))] place-content-center gap-1 pt-5 @md:gap-1.5 @xl:gap-2">
             {#each items as item, index (index)}
               {#if item}
-                <div class="relative flex aspect-square items-center justify-center rounded-sm bg-foreground/4 data-[shine=true]:shine" data-shine={!preferences.performanceMode && shouldShine(item)}>
+                <div class="relative flex aspect-square size-full items-center justify-center rounded-xl border overflow-clip bg-foreground/5 data-[shine=true]:shine" data-shine={!preferences.performanceMode && shouldShine(item)}>
                   {@render itemSnippet(item)}
                 </div>
               {:else}
-                <div class="aspect-square rounded-sm bg-foreground/4"></div>
+                <div class="aspect-square rounded-xl border bg-foreground/5"></div>
               {/if}
             {/each}
           </div>

@@ -11,7 +11,7 @@
 </script>
 
 <div class="relative flex aspect-square items-center justify-center overflow-clip p-0">
-  <div class={cn("absolute inset-0 rounded-lg", { "data-[enchanted=true]:shine": !preferences.performanceMode })} data-enchanted={piece.shiny}></div>
+  <div class={cn("absolute inset-0 rounded-xl", { "data-[enchanted=true]:shine": !preferences.performanceMode })} data-enchanted={piece.shiny}></div>
   <Avatar.Root>
     <Avatar.Image loading="lazy" src={piece.texture_path} alt={piece.display_name} class={cn("h-auto w-14 select-none [image-rendering:pixelated] data-[enchanted=true]:enchanted", isInventory ? "w-8" : "w-14")} data-enchanted={piece.shiny} />
     <Avatar.Fallback>

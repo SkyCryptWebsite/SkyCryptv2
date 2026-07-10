@@ -388,7 +388,7 @@
 }
 
 @utility shine {
-  @apply overflow-hidden before:pointer-events-none before:absolute before:inset-0 before:z-8 before:size-full before:animate-shine before:rounded-lg before:bg-linear-to-t before:from-[oklch(1_0_0/0)] before:via-[oklch(1_0_0/0.50)] before:to-[oklch(0.77_0.09_243.21/0)];
+  @apply overflow-hidden before:pointer-events-none before:absolute before:inset-0 before:z-8 before:size-full before:animate-shine before:rounded-xl before:bg-linear-to-t before:from-[oklch(1_0_0/0)] before:via-[oklch(1_0_0/0.50)] before:to-[oklch(0.77_0.09_243.21/0)];
 }
 
 @utility glass {

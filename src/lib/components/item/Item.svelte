@@ -40,7 +40,7 @@
 </script>
 
 <Tooltip.Trigger
-  class={cn("overflow-clip nice-colors-dark", isInventory ? "p-0" : `relative p-2 ${bgColor}`, { shine: shine && !isInventory }, { "rounded-lg": !isInventory }, "standard:transition-all standard:duration-150 standard:ease-out standard:hover:scale-110 standard:active:scale-110")}
+  class={cn("overflow-clip nice-colors-dark", isInventory ? "p-0" : `relative p-2 ${bgColor}`, { shine: shine && !isInventory }, { "rounded-xl": !isInventory }, "standard:transition-all standard:duration-150 standard:ease-out standard:hover:scale-110 standard:active:scale-110")}
   bind:ref={targetNode}
   onclick={() => {
     if (skyblockItem.containsItems && !skyblockItem.displayInline) {
@@ -60,7 +60,7 @@
           {#if loadingStatus === "loading"}
             {@render loadingState()}
           {:else}
-            <Avatar.Fallback class={cn("rounded-lg", isInventory ? "size-6 sm:size-14" : "size-14")}>
+            <Avatar.Fallback class={cn("rounded-xl", isInventory ? "size-6 sm:size-14" : "size-14")}>
               <ImageOff class="size-full" />
             </Avatar.Fallback>
           {/if}
@@ -83,5 +83,5 @@
 {/if}
 
 {#snippet loadingState()}
-  <div class={cn("animate-pulse rounded-lg bg-foreground/30", isInventory ? "size-8 sm:size-14" : "size-14")}></div>
+  <div class={cn("animate-pulse rounded-xl bg-foreground/30", isInventory ? "size-8 sm:size-14" : "size-14")}></div>
 {/snippet}

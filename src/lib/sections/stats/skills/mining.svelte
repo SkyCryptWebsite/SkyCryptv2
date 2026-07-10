@@ -192,11 +192,11 @@
           <div class="grid grid-cols-[repeat(9,minmax(1.875rem,4.875rem))] place-content-center gap-1 @md:gap-1.5 @xl:gap-2">
             {#each mining.hotm as item, index (index)}
               {#if item.display_name}
-                <div class="flex aspect-square items-center justify-center rounded-sm bg-foreground/5" in:fade|global={{ duration: 300, delay: 5 * (index + 1), easing: cubicOut }}>
+                <div class="flex aspect-square items-center justify-center rounded-xl border bg-foreground/5" in:fade|global={{ duration: 300, delay: 5 * (index + 1), easing: cubicOut }}>
                   <Item piece={item} isInventory={true} />
                 </div>
               {:else}
-                <div class="aspect-square rounded-sm bg-foreground/5" in:fade|global={{ duration: 300, delay: 5 * (index + 1), easing: cubicOut }}></div>
+                <div class="aspect-square border rounded-xl bg-foreground/5" in:fade|global={{ duration: 300, delay: 5 * (index + 1), easing: cubicOut }}></div>
               {/if}
             {/each}
           </div>
