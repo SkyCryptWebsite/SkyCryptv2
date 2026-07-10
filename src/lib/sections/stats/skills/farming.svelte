@@ -111,7 +111,7 @@
               {#each crops as [_, cropData], index (index)}
                 <Chip image={{ src: cropData.texture ?? "" }} animationOptions={{ animate: true, amountOfItems: crops.length, index: index }}>
                   <div class="flex flex-col gap-0.5 whitespace-nowrap">
-                    <h4 class="text-lg font-semibold data-[maxed=true]:text-maxed" data-maxed={cropData.maxed}>{cropData.name}</h4>
+                    <h4 class="text-lg font-semibold data-[maxed=true]:text-accent-2" data-maxed={cropData.maxed}>{cropData.name}</h4>
                     {#if cropData.collected != null}
                       <AdditionStat text="Personal Best" data={formatNumber(cropData.collected)} />
                     {/if}

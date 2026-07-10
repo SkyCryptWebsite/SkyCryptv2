@@ -121,7 +121,7 @@
                     <Chip class={cn("h-fit w-fit", { "opacity-50": !hasUnlocked })} image={{ src: gardenChip.texture ?? "" }}>
                       <div class="flex flex-col">
                         <div class="font-bold whitespace-nowrap">
-                          <span class={cn("capitalize", hasMaxed ? "text-maxed" : "opacity-60")}>{gardenChip.name}</span>
+                          <span class={cn("capitalize", hasMaxed ? "text-accent-2" : "opacity-60")}>{gardenChip.name}</span>
                           <div class={cn("text-sm", hasMaxed ? "text-gold" : "text-text")}>
                             <span class="opacity-60">Level:</span>
                             {format(gardenChip.amount)}/{gardenChip.maxLevel}
@@ -146,7 +146,7 @@
                     <Chip class={cn("h-fit w-fit", { "opacity-50": !hasUnlocked })} image={{ src: mutation.texture ?? "" }}>
                       <div class="flex flex-col">
                         <div class="font-bold whitespace-nowrap">
-                          <span class={cn("capitalize", hasMaxed ? "text-maxed" : "opacity-60")}>{mutation.name}</span>
+                          <span class={cn("capitalize", hasMaxed ? "text-accent-2" : "opacity-60")}>{mutation.name}</span>
                         </div>
                       </div>
                     </Chip>
@@ -194,7 +194,7 @@
         <Chip image={{ src: upgrade.texture ?? "" }} class={cn("h-fit w-fit", { "opacity-50": !upgrade.level?.level })}>
           <div class="flex flex-col">
             <div class="font-bold whitespace-nowrap">
-              <span class={cn(hasMaxed ? "text-maxed" : "opacity-60")}>{upgrade.name}</span>
+              <span class={cn(hasMaxed ? "text-accent-2" : "opacity-60")}>{upgrade.name}</span>
               <span class={cn({ "text-gold": hasMaxed })}>{upgrade.level?.level}</span>
             </div>
           </div>
@@ -222,7 +222,7 @@
         <Chip image={{ src: milestone.texture ?? "" }} class={cn("h-fit w-fit flex-col overflow-clip pb-0", { "opacity-50": !milestone.level?.xp })}>
           <div class="flex flex-col">
             <div class="font-bold whitespace-nowrap">
-              <span class={cn(hasMaxed ? "text-maxed" : "opacity-60")}>{milestone.name}</span>
+              <span class={cn(hasMaxed ? "text-accent-2" : "opacity-60")}>{milestone.name}</span>
               <span class={cn({ "text-gold": hasMaxed })}>{milestone.level?.level}</span>
             </div>
           </div>

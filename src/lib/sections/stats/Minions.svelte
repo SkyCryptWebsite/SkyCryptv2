@@ -81,9 +81,9 @@
           {const hasTier = tiers[tiers.length - 1]}
           {const hasMaxed = hasTier === minion.maxTier}
           <Chip image={{ src: minion.texture ?? "" }} class={cn("h-fit w-fit", { "opacity-50": !hasTier })}>
-            <div class={cn("flex flex-col", { "text-maxed": hasMaxed })}>
+            <div class={cn("flex flex-col", { "text-accent-2": hasMaxed })}>
               <div class="font-bold whitespace-nowrap">
-                <span class={cn(hasMaxed ? "text-maxed" : "opacity-60")}>{minion.name}</span>
+                <span class={cn(hasMaxed ? "text-accent-2" : "opacity-60")}>{minion.name}</span>
                 <span class={cn({ "text-gold": hasMaxed })}>{hasTier ? tiers[tiers.length - 1] : 0}</span>
               </div>
             </div>

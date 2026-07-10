@@ -90,7 +90,7 @@
           <Chip image={{ src: shard.texture ?? "" }} class="w-fit max-w-full">
             <div class="flex min-w-0 flex-col">
               <div class="font-bold">
-                <div class={cn("truncate", rarityClass, hasMaxed && "text-maxed")}>{shard.name}</div>
+                <div class={cn("truncate", rarityClass, hasMaxed && "text-accent-2")}>{shard.name}</div>
                 <div class="mt-1 space-y-0.5 text-sm wrap-break-word whitespace-normal">
                   <div class={hasMaxed ? "text-gold" : undefined}>
                     <span class="opacity-60">Syphoned:</span>

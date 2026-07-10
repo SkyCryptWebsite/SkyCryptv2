@@ -55,7 +55,7 @@
           <Chip image={{ src: mob.texture ?? "" }} class={cn("h-fit w-fit", { "opacity-50": !hasKilled })}>
             <div class="flex flex-col">
               <div class="font-bold whitespace-nowrap">
-                <span class={cn(hasMaxed ? "text-maxed" : "opacity-60")}>{mob.name}</span>
+                <span class={cn(hasMaxed ? "text-accent-2" : "opacity-60")}>{mob.name}</span>
                 <span class={cn({ "text-gold": hasMaxed })}>{mob.tier}</span>
                 <div class="text-sm">
                   <span class="opacity-60">Kills:</span>
