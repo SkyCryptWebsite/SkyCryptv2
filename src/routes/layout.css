@@ -20,7 +20,6 @@
   --color-background-lore: var(--lore_background);
   --color-header: var(--header);
   --color-bg: var(--bg);
-  --color-logo: var(--logo);
   --color-mctooltip-bg: var(--mctooltip-bg);
 
   /* Text Shadow */
@@ -152,7 +151,6 @@
 
   :root {
     /* TODO: remove these compatibility aliases after all legacy token consumers are migrated to shadcn tokens. */
-    --logo: var(--primary);
     --text: var(--foreground);
     --header: var(--card);
     --grey_background: var(--muted);
