@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.9.0-beta.3
+
+### Patch Changes
+
+- Restore generated card fonts and keyed images under Takumi v2. _[`94f1d7b`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/94f1d7b548d65f96e8b38ed6d2b10407060d90c2) [@DarthGigi](https://github.com/DarthGigi)_
+
 ## 3.9.0-beta.2
 
 ### Minor Changes
