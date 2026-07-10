@@ -329,7 +329,7 @@
   }
 
   html {
-    @apply font-sans;
+    @apply scrollbar-gutter-stable font-sans;
   }
 
   [data-slot="scroll-area-thumb"] {
