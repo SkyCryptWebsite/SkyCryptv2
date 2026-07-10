@@ -30,7 +30,7 @@
     ...settings
   });
 
-  // The persistent image is referenced via background-image CSS rather than
+  // The per-render keyed image is referenced via background-image CSS rather than
   // an absolutely-positioned <img>: takumi-js 1.1.x reworked inline-formatting-
   // context detection (commit adc48da, "Treat absolute/floated children as
   // out-of-flow"), which left the previous <img class="absolute inset-0">

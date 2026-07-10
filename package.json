@@ -128,7 +128,7 @@
     "@sentry/sveltekit": "^10.58.0",
     "culori": "^4.0.2",
     "simple-git-hooks": "^2.13.1",
-    "takumi-js": "^1.8.5"
+    "takumi-js": "^2.0.2"
   },
   "engines": {
     "node": "^24",

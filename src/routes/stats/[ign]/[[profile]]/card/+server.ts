@@ -14,12 +14,9 @@ import type { RequestHandler } from "./$types";
 
 const { PUBLIC_ORIGIN: baseUrl } = env;
 
-const { fonts, persistentImages } = await initializeAssets();
+const { fonts, images } = await initializeAssets();
 
-const renderer = new Renderer({
-  fonts,
-  persistentImages
-});
+const renderer = new Renderer();
 
 export const GET: RequestHandler = async ({ params, request, url }) => {
   const { ign, profile } = params;
@@ -73,15 +70,13 @@ export const GET: RequestHandler = async ({ params, request, url }) => {
       },
       stylesheets: [appStyles],
       emoji: "twemoji",
+      fonts,
+      images,
       renderer
     });
 
-    const response = new Response(await imageResponse.arrayBuffer(), {
-      status: imageResponse.status,
-      statusText: imageResponse.statusText,
-      headers: imageResponse.headers
-    });
-    return response;
+    await imageResponse.ready;
+    return imageResponse;
   } catch (error) {
     console.error("Error generating image:", error);
     try {
@@ -98,13 +93,13 @@ export const GET: RequestHandler = async ({ params, request, url }) => {
         },
         stylesheets: [appStyles],
         emoji: "twemoji",
+        fonts,
+        images,
         renderer
       });
 
-      return new Response(await errorResponse.arrayBuffer(), {
-        status: 200,
-        headers: errorResponse.headers
-      });
+      await errorResponse.ready;
+      return errorResponse;
     } catch (error) {
       console.error("Error generating error image:", error);
       return new Response("Internal Server Error", { status: 500 });
@@ -113,7 +108,7 @@ export const GET: RequestHandler = async ({ params, request, url }) => {
 };
 
 async function initializeAssets() {
-  if (building) return { fonts: [], persistentImages: [] };
+  if (building) return { fonts: [], images: [] };
   const [
     // prettier-ignore
     montserratNormalBuffer,
@@ -139,7 +134,7 @@ async function initializeAssets() {
     }
   ];
 
-  const persistentImages: ImageSource[] = [
+  const images: ImageSource[] = [
     {
       src: "skycrypt-logo",
       data: skycryptLogo
@@ -150,5 +145,5 @@ async function initializeAssets() {
     }
   ];
 
-  return { fonts, persistentImages };
+  return { fonts, images };
 }
