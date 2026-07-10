@@ -15,7 +15,6 @@
 @theme {
   /* Colors */
   --color-background: var(--background);
-  --color-bg: var(--bg);
   --color-mctooltip-bg: var(--mctooltip-bg);
 
   /* Text Shadow */
@@ -146,8 +145,6 @@
   }
 
   :root {
-    /* TODO: remove these compatibility aliases after all legacy token consumers are migrated to shadcn tokens. */
-    --bg: var(--background);
     --bg-url: url(/img/bg-light.avif);
     --mctooltip-bg: oklch(0.205 0 0);
 
