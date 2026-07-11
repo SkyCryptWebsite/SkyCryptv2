@@ -1,5 +1,12 @@
 # Changelog
 
+## 3.9.0-beta.5
+
+### Patch Changes
+
+- Detect unavailable hardware graphics acceleration and lock Performance Mode to avoid expensive visual effects. _[`a2ded10`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/a2ded10e2a04758d92781b38372c04d8ea21dcd2) [@DarthGigi](https://github.com/DarthGigi)_
+- Replace native settings list scrollbars with consistent custom scroll areas. _[`7d05c76`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/7d05c7648dd1d202a9c32c61fd19a97157138053) [@DarthGigi](https://github.com/DarthGigi)_
+
 ## 3.9.0-beta.4
 
 ### Patch Changes

@@ -5,7 +5,9 @@
     "skycrypt-frontend": "3.8.0"
   },
   "changesets": [
+    "bright-acceleration-lock",
     "brown-clowns-dress",
+    "calm-settings-scrollbars",
     "clean-glass-utilities",
     "fresh-themes-watch",
     "fuzzy-sitemaps-upgrade",
