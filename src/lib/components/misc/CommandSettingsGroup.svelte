@@ -91,6 +91,7 @@
     <Command.Item
       value={item.value}
       keywords={item.keywords}
+      disabled={item.type === "toggle" && item.preferenceKey === "performanceMode" && preferences.performanceModeForced}
       onSelect={() => {
         if (item.type === "tab") {
           handleSettingTab(item.tab);
@@ -108,7 +109,7 @@
           <item.icon class="size-4" />
         {/if}
       </div>
-      {item.label}
+      {item.type === "toggle" && item.preferenceKey === "performanceMode" && preferences.performanceModeForced ? "Performance Mode Locked" : item.label}
     </Command.Item>
   {/each}
 </Command.Group>

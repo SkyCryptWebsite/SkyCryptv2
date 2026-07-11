@@ -1,7 +1,7 @@
 import { sections } from "$lib/sections/constants";
 import type { SectionID } from "$lib/sections/types";
 import { flushSync, untrack } from "svelte";
-import { afterEach, beforeEach, describe, it } from "vitest";
+import { afterEach, beforeEach, describe, it, vi } from "vitest";
 import { PreferencesContext } from "./preferences.svelte";
 
 describe("PreferencesContext Tests", () => {
@@ -9,12 +9,14 @@ describe("PreferencesContext Tests", () => {
     localStorage.clear();
     delete document.documentElement.dataset.performance;
     delete document.documentElement.dataset.rainbow;
+    vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockImplementation((() => ({}) as WebGL2RenderingContext) as unknown as typeof HTMLCanvasElement.prototype.getContext);
   });
 
   afterEach(() => {
     localStorage.clear();
     delete document.documentElement.dataset.performance;
     delete document.documentElement.dataset.rainbow;
+    vi.restoreAllMocks();
   });
 
   describe("Initialization", () => {
@@ -542,6 +544,66 @@ describe("PreferencesContext Tests", () => {
           flushSync();
           expect(document.documentElement.dataset.performance).toBe("true");
           expect(prefs.performanceMode).toBe(true);
+        });
+      });
+
+      cleanup();
+    });
+  });
+
+  describe("graphics acceleration lock", () => {
+    it("forces Performance Mode without overwriting the saved preference", ({ expect }) => {
+      const cleanup = $effect.root(() => {
+        const prefs = new PreferencesContext();
+
+        untrack(() => {
+          prefs.setGraphicsAccelerationAvailable(true);
+          prefs.performanceMode = false;
+          prefs.setGraphicsAccelerationAvailable(false);
+          flushSync();
+
+          expect(prefs.graphicsAccelerationAvailable).toBe(false);
+          expect(prefs.performanceModeForced).toBe(true);
+          expect(prefs.performanceMode).toBe(true);
+          expect(document.documentElement.dataset.performance).toBe("true");
+          expect(JSON.parse(localStorage.getItem("skycryptPreferences")!).performanceMode).toBe(false);
+        });
+      });
+
+      cleanup();
+    });
+
+    it("ignores attempts to disable a forced Performance Mode", ({ expect }) => {
+      const cleanup = $effect.root(() => {
+        const prefs = new PreferencesContext();
+
+        untrack(() => {
+          prefs.setGraphicsAccelerationAvailable(false);
+          prefs.performanceMode = false;
+          flushSync();
+
+          expect(prefs.performanceMode).toBe(true);
+          expect(document.documentElement.dataset.performance).toBe("true");
+        });
+      });
+
+      cleanup();
+    });
+
+    it("restores the saved preference when acceleration becomes available", ({ expect }) => {
+      const cleanup = $effect.root(() => {
+        const prefs = new PreferencesContext();
+
+        untrack(() => {
+          prefs.setGraphicsAccelerationAvailable(true);
+          prefs.performanceMode = false;
+          prefs.setGraphicsAccelerationAvailable(false);
+          prefs.setGraphicsAccelerationAvailable(true);
+          flushSync();
+
+          expect(prefs.performanceModeForced).toBe(false);
+          expect(prefs.performanceMode).toBe(false);
+          expect(document.documentElement.dataset.performance).toBe("false");
         });
       });
 

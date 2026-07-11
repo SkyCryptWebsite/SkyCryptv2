@@ -112,6 +112,15 @@
     if (window.innerWidth <= 600) {
       position.set("bottom-center");
     }
+
+    if (preferences.performanceModeForced) {
+      toast.warning("Performance Mode Locked", {
+        id: "performance-mode-locked",
+        description: "SkyCrypt could not access hardware graphics acceleration, so Performance Mode has been locked on. Enable graphics acceleration in your browser settings and reload SkyCrypt to restore Standard Mode.",
+        duration: 10000,
+        closeButton: false
+      });
+    }
   });
 
   beforeNavigate(({ type }) => {

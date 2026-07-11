@@ -9,6 +9,7 @@
     title,
     description,
     checked,
+    disabled = false,
     id,
     onCheckedChange,
     children,
@@ -18,6 +19,7 @@
     title: string;
     description: string;
     checked: boolean;
+    disabled?: boolean;
     id: string;
     onCheckedChange: () => void;
     children?: Snippet;
@@ -35,5 +37,5 @@
     <p class="text-muted-foreground">{description}</p>
   </div>
 
-  <Switch {id} {checked} {onCheckedChange} />
+  <Switch {id} {checked} {disabled} {onCheckedChange} />
 </Label>

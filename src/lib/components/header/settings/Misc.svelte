@@ -58,7 +58,7 @@
   </div>
 
   <div class="flex max-h-96 flex-col gap-4 overflow-x-clip overflow-y-auto">
-    <SettingToggleRow id="performance" title="Performance Mode" description="Disables blur, transparency and backdrop effects for better performance on low-end devices." checked={preferences.performanceMode} onCheckedChange={() => (preferences.performanceMode = !preferences.performanceMode)}>
+    <SettingToggleRow id="performance" title="Performance Mode" description={preferences.performanceModeForced ? "Locked on because hardware graphics acceleration is unavailable. Enable it in your browser settings and reload SkyCrypt to use Standard Mode." : "Disables blur, transparency and backdrop effects for better performance on low-end devices."} checked={preferences.performanceMode} disabled={preferences.performanceModeForced} onCheckedChange={() => (preferences.performanceMode = !preferences.performanceMode)}>
       {#snippet icon()}
         <Fan class="size-5 shrink-0 will-change-transform data-[performance=false]:animate-spin-slow data-[performance=true]:animate-spin" data-performance={preferences.performanceMode} />
       {/snippet}
@@ -70,8 +70,12 @@
 
           <Tooltip.Content class="performance:bg-popover [&>div:last-child]:hidden rounded-xl bg-transparent glass border text-foreground glass-bg-popover p-4 text-sm">
             <div class="space-y-2">
-              <p>You might not need this! We've noticed that often the reason for low performance is due to Graphics Acceleration being disabled in the browser settings.</p>
-              <p>Graphics Acceleration gives the browsers access to your GPU for rendering, which can significantly improve performance; especially with opacity and blur effects.</p>
+              {#if preferences.performanceModeForced}
+                <p>Performance Mode is locked on because SkyCrypt could not access hardware graphics acceleration.</p>
+              {:else}
+                <p>You might not need this! We've noticed that often the reason for low performance is due to Graphics Acceleration being disabled in the browser settings.</p>
+                <p>Graphics Acceleration gives the browsers access to your GPU for rendering, which can significantly improve performance; especially with opacity and blur effects.</p>
+              {/if}
               <p>
                 Enable <a href="https://www.google.com/search?q=enable+graphics+acceleration+in+%5Bbrowser%5D" target="_blank" rel="noopener noreferrer" class="text-primary underline">Graphics Acceleration</a> in your browser settings first, and if you still experience performance issues, then consider enabling Performance Mode.
               </p>
