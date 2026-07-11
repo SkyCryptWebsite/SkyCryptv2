@@ -9,6 +9,7 @@
   import * as AlertDialog from "$ui/alert-dialog";
   import { Button } from "$ui/button";
   import { Label } from "$ui/label";
+  import { ScrollArea } from "$ui/scroll-area";
   import * as Tabs from "$ui/tabs";
   import Check from "@lucide/svelte/icons/check";
   import Edit from "@lucide/svelte/icons/edit-2";
@@ -86,88 +87,90 @@
     </div>
   </div>
 
-  <RadioGroup.Root class="mt-4 flex max-h-96 flex-col gap-4 overflow-x-clip overflow-y-auto" bind:value={themeContext.current}>
-    <h5 class="text-sm font-semibold">Official Themes</h5>
-    {#each FIRST_PARTY_THEMES as theme (theme.metadata.id)}
-      {#key getThemeIconKey(theme)}
-        {#await getThemeIcons({ color: getThemeIconColor(theme), invert: mode.current === "light" }) then iconSvg}
-          {const iconDataUrl = `data:image/svg+xml;base64,${btoa(iconSvg)}`}
-          <Label for={theme.metadata.id} class="flex items-center justify-between gap-4 rounded-xl border p-2">
-            <div class="flex items-center gap-2">
-              <Avatar.Root class="shrink-0 select-none">
-                <Avatar.Image loading="lazy" src={iconDataUrl} alt={theme.metadata.name} class="pointer-events-none aspect-square size-10 h-full rounded-xl select-none"></Avatar.Image>
-                <Avatar.Fallback class="flex items-center rounded-xl text-center font-semibold uppercase">{theme.metadata.name.slice(0, 2)}</Avatar.Fallback>
-              </Avatar.Root>
-              <div class="flex flex-col">
-                <h4 class="font-semibold text-foreground/90">{theme.metadata.name}</h4>
-                <p class="overflow-hidden font-normal text-ellipsis whitespace-nowrap text-foreground/60">
-                  by
-                  <span class="text-foreground/80">{theme.metadata.author}</span>
-                </p>
-              </div>
-            </div>
-            <RadioGroup.Item id={theme.metadata.id} value={theme.metadata.id} class="group inline-flex h-6 min-h-6 w-10 shrink-0 cursor-pointer items-center rounded-full px-0 transition-colors ease-out">
-              <Check class="size-6 text-primary group-data-[state=unchecked]:invisible" />
-            </RadioGroup.Item>
-          </Label>
-        {/await}
-      {/key}
-    {/each}
-
-    <div class="space-y-2">
-      <h5 class="text-sm font-semibold">Custom Themes</h5>
-
-      <Button variant="secondary" class="w-full" onclick={() => openThemeEditor()}>
-        <Plus class="size-5" />
-        Create a Theme
-      </Button>
-    </div>
-
-    {#if themeContext.userThemes.length === 0}
-      <p class="text-muted-foreground italic">No custom themes yet. Create your own theme or import one from the community!</p>
-    {:else}
-      {#each themeContext.userThemes as theme (theme.metadata.id)}
+  <ScrollArea class="mt-4 h-fit" type="always" viewportClasses="max-h-96" scrollbarYClasses="py-2">
+    <RadioGroup.Root class="flex flex-col gap-4 pr-3" bind:value={themeContext.current}>
+      <h5 class="text-sm font-semibold">Official Themes</h5>
+      {#each FIRST_PARTY_THEMES as theme (theme.metadata.id)}
         {#key getThemeIconKey(theme)}
           {#await getThemeIcons({ color: getThemeIconColor(theme), invert: mode.current === "light" }) then iconSvg}
             {const iconDataUrl = `data:image/svg+xml;base64,${btoa(iconSvg)}`}
-            <Label for={theme.metadata.id} class="flex items-center justify-between gap-2 rounded-xl border p-2">
+            <Label for={theme.metadata.id} class="flex items-center justify-between gap-4 rounded-xl border p-2">
               <div class="flex items-center gap-2">
                 <Avatar.Root class="shrink-0 select-none">
                   <Avatar.Image loading="lazy" src={iconDataUrl} alt={theme.metadata.name} class="pointer-events-none aspect-square size-10 h-full rounded-xl select-none"></Avatar.Image>
                   <Avatar.Fallback class="flex items-center rounded-xl text-center font-semibold uppercase">{theme.metadata.name.slice(0, 2)}</Avatar.Fallback>
                 </Avatar.Root>
                 <div class="flex flex-col">
-                  <h4 class="font-semibold">{theme.metadata.name}</h4>
-                  <p class="overflow-hidden font-normal text-ellipsis whitespace-nowrap text-muted-foreground">
+                  <h4 class="font-semibold text-foreground/90">{theme.metadata.name}</h4>
+                  <p class="overflow-hidden font-normal text-ellipsis whitespace-nowrap text-foreground/60">
                     by
-                    {theme.metadata.author}
+                    <span class="text-foreground/80">{theme.metadata.author}</span>
                   </p>
                 </div>
               </div>
-
-              <div class="flex items-center gap-1">
-                <RadioGroup.Item id={theme.metadata.id} value={theme.metadata.id} class="group inline-flex h-6 min-h-6 w-10 shrink-0 cursor-pointer items-center rounded-full px-0 transition-colors ease-out">
-                  <Check class="size-6 text-primary group-data-[state=unchecked]:invisible" />
-                </RadioGroup.Item>
-
-                <Button title="Edit theme" variant="secondary" onclick={() => openThemeEditor(theme.metadata.id)} aria-label="Edit theme">
-                  <Edit class="size-4" />
-                </Button>
-
-                <Button title="Share theme" variant="secondary" onclick={() => shareTheme(theme.metadata.id)} aria-label="Share theme">
-                  <Link2 class="size-4" />
-                </Button>
-
-                <Button title="Delete theme" variant="destructive" onclick={() => confirmDelete(theme.metadata.id)} aria-label="Delete theme">
-                  <Trash2 class="size-4" />
-                </Button>
-              </div>
+              <RadioGroup.Item id={theme.metadata.id} value={theme.metadata.id} class="group inline-flex h-6 min-h-6 w-10 shrink-0 cursor-pointer items-center rounded-full px-0 transition-colors ease-out">
+                <Check class="size-6 text-primary group-data-[state=unchecked]:invisible" />
+              </RadioGroup.Item>
             </Label>
           {/await}
         {/key}
       {/each}
-    {/if}
-  </RadioGroup.Root>
+
+      <div class="space-y-2">
+        <h5 class="text-sm font-semibold">Custom Themes</h5>
+
+        <Button variant="secondary" class="w-full" onclick={() => openThemeEditor()}>
+          <Plus class="size-5" />
+          Create a Theme
+        </Button>
+      </div>
+
+      {#if themeContext.userThemes.length === 0}
+        <p class="text-muted-foreground italic">No custom themes yet. Create your own theme or import one from the community!</p>
+      {:else}
+        {#each themeContext.userThemes as theme (theme.metadata.id)}
+          {#key getThemeIconKey(theme)}
+            {#await getThemeIcons({ color: getThemeIconColor(theme), invert: mode.current === "light" }) then iconSvg}
+              {const iconDataUrl = `data:image/svg+xml;base64,${btoa(iconSvg)}`}
+              <Label for={theme.metadata.id} class="flex items-center justify-between gap-2 rounded-xl border p-2">
+                <div class="flex items-center gap-2">
+                  <Avatar.Root class="shrink-0 select-none">
+                    <Avatar.Image loading="lazy" src={iconDataUrl} alt={theme.metadata.name} class="pointer-events-none aspect-square size-10 h-full rounded-xl select-none"></Avatar.Image>
+                    <Avatar.Fallback class="flex items-center rounded-xl text-center font-semibold uppercase">{theme.metadata.name.slice(0, 2)}</Avatar.Fallback>
+                  </Avatar.Root>
+                  <div class="flex flex-col">
+                    <h4 class="font-semibold">{theme.metadata.name}</h4>
+                    <p class="overflow-hidden font-normal text-ellipsis whitespace-nowrap text-muted-foreground">
+                      by
+                      {theme.metadata.author}
+                    </p>
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-1">
+                  <RadioGroup.Item id={theme.metadata.id} value={theme.metadata.id} class="group inline-flex h-6 min-h-6 w-10 shrink-0 cursor-pointer items-center rounded-full px-0 transition-colors ease-out">
+                    <Check class="size-6 text-primary group-data-[state=unchecked]:invisible" />
+                  </RadioGroup.Item>
+
+                  <Button title="Edit theme" variant="secondary" onclick={() => openThemeEditor(theme.metadata.id)} aria-label="Edit theme">
+                    <Edit class="size-4" />
+                  </Button>
+
+                  <Button title="Share theme" variant="secondary" onclick={() => shareTheme(theme.metadata.id)} aria-label="Share theme">
+                    <Link2 class="size-4" />
+                  </Button>
+
+                  <Button title="Delete theme" variant="destructive" onclick={() => confirmDelete(theme.metadata.id)} aria-label="Delete theme">
+                    <Trash2 class="size-4" />
+                  </Button>
+                </div>
+              </Label>
+            {/await}
+          {/key}
+        {/each}
+      {/if}
+    </RadioGroup.Root>
+  </ScrollArea>
 </Tabs.Content>
 
 <AlertDialog.Root bind:open={deleteDialogOpen}>

@@ -3,6 +3,7 @@
   import { SettingsTab } from "$lib/components/header/types";
   import { Button } from "$ui/button";
   import * as Kbd from "$ui/kbd";
+  import { ScrollArea } from "$ui/scroll-area";
   import * as Tabs from "$ui/tabs";
   import * as Tooltip from "$ui/tooltip";
   import CircleQuestionMark from "@lucide/svelte/icons/circle-question-mark";
@@ -57,70 +58,72 @@
     </div>
   </div>
 
-  <div class="flex max-h-96 flex-col gap-4 overflow-x-clip overflow-y-auto">
-    <SettingToggleRow id="performance" title="Performance Mode" description={preferences.performanceModeForced ? "Locked on because hardware graphics acceleration is unavailable. Enable it in your browser settings and reload SkyCrypt to use Standard Mode." : "Disables blur, transparency and backdrop effects for better performance on low-end devices."} checked={preferences.performanceMode} disabled={preferences.performanceModeForced} onCheckedChange={() => (preferences.performanceMode = !preferences.performanceMode)}>
-      {#snippet icon()}
-        <Fan class="size-5 shrink-0 will-change-transform data-[performance=false]:animate-spin-slow data-[performance=true]:animate-spin" data-performance={preferences.performanceMode} />
-      {/snippet}
-      <Tooltip.Provider delayDuration={0}>
-        <Tooltip.Root>
-          <Tooltip.Trigger class="flex items-center gap-1">
-            <CircleQuestionMark class="size-4 h-lh text-foreground/60" />
-          </Tooltip.Trigger>
+  <ScrollArea class="h-fit" type="always" viewportClasses="max-h-96" scrollbarYClasses="py-2">
+    <div class="flex flex-col gap-4 pr-3">
+      <SettingToggleRow id="performance" title="Performance Mode" description={preferences.performanceModeForced ? "Locked on because hardware graphics acceleration is unavailable. Enable it in your browser settings and reload SkyCrypt to use Standard Mode." : "Disables blur, transparency and backdrop effects for better performance on low-end devices."} checked={preferences.performanceMode} disabled={preferences.performanceModeForced} onCheckedChange={() => (preferences.performanceMode = !preferences.performanceMode)}>
+        {#snippet icon()}
+          <Fan class="size-5 shrink-0 will-change-transform data-[performance=false]:animate-spin-slow data-[performance=true]:animate-spin" data-performance={preferences.performanceMode} />
+        {/snippet}
+        <Tooltip.Provider delayDuration={0}>
+          <Tooltip.Root>
+            <Tooltip.Trigger class="flex items-center gap-1">
+              <CircleQuestionMark class="size-4 h-lh text-foreground/60" />
+            </Tooltip.Trigger>
 
-          <Tooltip.Content class="performance:bg-popover [&>div:last-child]:hidden rounded-xl bg-transparent glass border text-foreground glass-bg-popover p-4 text-sm">
-            <div class="space-y-2">
-              {#if preferences.performanceModeForced}
-                <p>Performance Mode is locked on because SkyCrypt could not access hardware graphics acceleration.</p>
-              {:else}
-                <p>You might not need this! We've noticed that often the reason for low performance is due to Graphics Acceleration being disabled in the browser settings.</p>
-                <p>Graphics Acceleration gives the browsers access to your GPU for rendering, which can significantly improve performance; especially with opacity and blur effects.</p>
-              {/if}
-              <p>
-                Enable <a href="https://www.google.com/search?q=enable+graphics+acceleration+in+%5Bbrowser%5D" target="_blank" rel="noopener noreferrer" class="text-primary underline">Graphics Acceleration</a> in your browser settings first, and if you still experience performance issues, then consider enabling Performance Mode.
-              </p>
-            </div>
-          </Tooltip.Content>
-        </Tooltip.Root>
-      </Tooltip.Provider>
-    </SettingToggleRow>
+            <Tooltip.Content class="performance:bg-popover [&>div:last-child]:hidden rounded-xl bg-transparent glass border text-foreground glass-bg-popover p-4 text-sm">
+              <div class="space-y-2">
+                {#if preferences.performanceModeForced}
+                  <p>Performance Mode is locked on because SkyCrypt could not access hardware graphics acceleration.</p>
+                {:else}
+                  <p>You might not need this! We've noticed that often the reason for low performance is due to Graphics Acceleration being disabled in the browser settings.</p>
+                  <p>Graphics Acceleration gives the browsers access to your GPU for rendering, which can significantly improve performance; especially with opacity and blur effects.</p>
+                {/if}
+                <p>
+                  Enable <a href="https://www.google.com/search?q=enable+graphics+acceleration+in+%5Bbrowser%5D" target="_blank" rel="noopener noreferrer" class="text-primary underline">Graphics Acceleration</a> in your browser settings first, and if you still experience performance issues, then consider enabling Performance Mode.
+                </p>
+              </div>
+            </Tooltip.Content>
+          </Tooltip.Root>
+        </Tooltip.Provider>
+      </SettingToggleRow>
 
-    <SettingToggleRow id="glint" title="Show Glint" description="Show the enchantment glint effect on enchanted items." checked={preferences.showGlint} onCheckedChange={() => (preferences.showGlint = !preferences.showGlint)}>
-      {#snippet icon()}
-        <Sparkle class="size-5 shrink-0" />
-      {/snippet}
-    </SettingToggleRow>
+      <SettingToggleRow id="glint" title="Show Glint" description="Show the enchantment glint effect on enchanted items." checked={preferences.showGlint} onCheckedChange={() => (preferences.showGlint = !preferences.showGlint)}>
+        {#snippet icon()}
+          <Sparkle class="size-5 shrink-0" />
+        {/snippet}
+      </SettingToggleRow>
 
-    <SettingToggleRow id="mctooltip" title="Minecraft Styled Tooltips" description="Enable Minecraft styled tooltips for items." checked={preferences.mctooltip} onCheckedChange={() => (preferences.mctooltip = !preferences.mctooltip)}>
-      {#snippet icon()}
-        <Pickaxe class="size-5 shrink-0" />
-      {/snippet}
-    </SettingToggleRow>
+      <SettingToggleRow id="mctooltip" title="Minecraft Styled Tooltips" description="Enable Minecraft styled tooltips for items." checked={preferences.mctooltip} onCheckedChange={() => (preferences.mctooltip = !preferences.mctooltip)}>
+        {#snippet icon()}
+          <Pickaxe class="size-5 shrink-0" />
+        {/snippet}
+      </SettingToggleRow>
 
-    <SettingToggleRow id="rainbow" title="Rainbow Colors" titleClass="group-data-[rainbow=true]/html:chroma-gradient" description="Enable rainbow colors animation for maxed enchants on items." checked={preferences.rainbowEnchantments} onCheckedChange={() => (preferences.rainbowEnchantments = !preferences.rainbowEnchantments)}>
-      {#snippet icon()}
-        <Rainbow class="size-5 shrink-0" />
-      {/snippet}
-    </SettingToggleRow>
+      <SettingToggleRow id="rainbow" title="Rainbow Colors" titleClass="group-data-[rainbow=true]/html:chroma-gradient" description="Enable rainbow colors animation for maxed enchants on items." checked={preferences.rainbowEnchantments} onCheckedChange={() => (preferences.rainbowEnchantments = !preferences.rainbowEnchantments)}>
+        {#snippet icon()}
+          <Rainbow class="size-5 shrink-0" />
+        {/snippet}
+      </SettingToggleRow>
 
-    <div class="flex items-center justify-between gap-4 rounded-xl border p-2">
-      <div class="flex flex-col items-start">
-        <div class="flex items-center-safe gap-1">
-          <Keyboard class="size-5 h-lh shrink-0" />
-          <h4 class="font-semibold">Keybind</h4>
+      <div class="flex items-center justify-between gap-4 rounded-xl border p-2">
+        <div class="flex flex-col items-start">
+          <div class="flex items-center-safe gap-1">
+            <Keyboard class="size-5 h-lh shrink-0" />
+            <h4 class="font-semibold">Keybind</h4>
+          </div>
+
+          <p class="text-muted-foreground">Set the keybind to open the command menu</p>
         </div>
-
-        <p class="text-muted-foreground">Set the keybind to open the command menu</p>
+        <Button variant="outline" onclick={handleKeybindClick} onkeydown={handleKeybindKeydown} tabindex={0}>
+          <Kbd.Root>
+            {#if isListening}
+              <span class="animate-pulse">Press a key</span>
+            {:else}
+              <span class="min-w-2 text-center">{preferences.keybind}</span>
+            {/if}
+          </Kbd.Root>
+        </Button>
       </div>
-      <Button variant="outline" onclick={handleKeybindClick} onkeydown={handleKeybindKeydown} tabindex={0}>
-        <Kbd.Root>
-          {#if isListening}
-            <span class="animate-pulse">Press a key</span>
-          {:else}
-            <span class="min-w-2 text-center">{preferences.keybind}</span>
-          {/if}
-        </Kbd.Root>
-      </Button>
     </div>
-  </div>
+  </ScrollArea>
 </Tabs.Content>

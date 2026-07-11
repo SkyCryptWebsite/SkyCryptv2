@@ -3,6 +3,7 @@
   import { SettingsTab } from "$lib/components/header/types";
   import { sections } from "$lib/sections/constants";
   import { Button } from "$ui/button";
+  import { ScrollArea } from "$ui/scroll-area";
   import * as Tabs from "$ui/tabs";
   import { Feedback } from "@dnd-kit/dom";
   import { OptimisticSortingPlugin, SortableKeyboardPlugin } from "@dnd-kit/dom/sortable";
@@ -41,22 +42,24 @@
       </div>
     </div>
   </div>
-  <div class="flex max-h-96 flex-col gap-4 overflow-x-clip overflow-y-auto">
-    {#key providerKey}
-      <DragDropProvider {onDragEnd}>
-        {#each sectionOrder as section, index (section.id)}
-          {const sortable = createSortable({
-            id: section.id,
-            get index() {
-              return index;
-            },
-            plugins: [SortableKeyboardPlugin, OptimisticSortingPlugin, Feedback.configure({ feedback: "clone" })]
-          })}
-          {@render sectionRowContent(section, sortable, true)}
-        {/each}
-      </DragDropProvider>
-    {/key}
-  </div>
+  <ScrollArea class="h-fit" type="always" viewportClasses="max-h-96" scrollbarYClasses="py-2">
+    <div class="flex flex-col gap-4 pr-3">
+      {#key providerKey}
+        <DragDropProvider {onDragEnd}>
+          {#each sectionOrder as section, index (section.id)}
+            {const sortable = createSortable({
+              id: section.id,
+              get index() {
+                return index;
+              },
+              plugins: [SortableKeyboardPlugin, OptimisticSortingPlugin, Feedback.configure({ feedback: "clone" })]
+            })}
+            {@render sectionRowContent(section, sortable, true)}
+          {/each}
+        </DragDropProvider>
+      {/key}
+    </div>
+  </ScrollArea>
   {#if differsFromDefault}
     <Button
       variant="destructive"

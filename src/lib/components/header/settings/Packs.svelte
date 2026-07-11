@@ -3,6 +3,7 @@
   import { SettingsTab } from "$lib/components/header/types";
   import { Button } from "$ui/button";
   import { Label } from "$ui/label";
+  import { ScrollArea } from "$ui/scroll-area";
   import { Switch } from "$ui/switch";
   import * as Tabs from "$ui/tabs";
   import PackageOpen from "@lucide/svelte/icons/package-open";
@@ -29,31 +30,33 @@
     </div>
   </div>
   {#if packs.length > 0}
-    <div class="flex max-h-96 flex-col gap-4 overflow-x-clip overflow-y-auto">
-      {#each packs as pack (pack.id)}
-        <Label for={pack.id} class="flex items-center justify-between gap-4 rounded-xl border p-2">
-          <div class="flex items-center gap-2">
-            <Avatar.Root class="shrink-0 select-none">
-              <Avatar.Image loading="lazy" src={pack.icon} alt={pack.name} class="pointer-events-none aspect-square size-10 h-full rounded-xl select-none [image-rendering:pixelated]" />
-              <Avatar.Fallback class="flex items-center rounded-xl text-center uppercase">{pack.name?.slice(0, 2)}</Avatar.Fallback>
-            </Avatar.Root>
-            <div class="flex flex-col">
-              <h4>
-                <Button href={pack.url} variant="link" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline p-0 m-0 h-auto">{pack.name}</Button>
-                <small>{pack.version}</small>
-              </h4>
-              <p class="overflow-hidden font-normal text-ellipsis whitespace-nowrap text-muted-foreground">
-                by
-                {pack.author}
-              </p>
+    <ScrollArea class="h-fit" type="always" viewportClasses="max-h-96" scrollbarYClasses="py-2">
+      <div class="flex flex-col gap-4 pr-3">
+        {#each packs as pack (pack.id)}
+          <Label for={pack.id} class="flex items-center justify-between gap-4 rounded-xl border p-2">
+            <div class="flex items-center gap-2">
+              <Avatar.Root class="shrink-0 select-none">
+                <Avatar.Image loading="lazy" src={pack.icon} alt={pack.name} class="pointer-events-none aspect-square size-10 h-full rounded-xl select-none [image-rendering:pixelated]" />
+                <Avatar.Fallback class="flex items-center rounded-xl text-center uppercase">{pack.name?.slice(0, 2)}</Avatar.Fallback>
+              </Avatar.Root>
+              <div class="flex flex-col">
+                <h4>
+                  <Button href={pack.url} variant="link" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline p-0 m-0 h-auto">{pack.name}</Button>
+                  <small>{pack.version}</small>
+                </h4>
+                <p class="overflow-hidden font-normal text-ellipsis whitespace-nowrap text-muted-foreground">
+                  by
+                  {pack.author}
+                </p>
+              </div>
             </div>
-          </div>
-          {#if pack.id}
-            <Switch id={pack.id} checked={!disabledPacks.current.includes(pack.id)} onCheckedChange={() => (disabledPacks.current = !disabledPacks.current.includes(pack.id ?? "") ? [...new Set([...disabledPacks.current, pack.id ?? ""])] : disabledPacks.current.filter((id) => id !== (pack.id ?? "")))} />
-          {/if}
-        </Label>
-      {/each}
-    </div>
+            {#if pack.id}
+              <Switch id={pack.id} checked={!disabledPacks.current.includes(pack.id)} onCheckedChange={() => (disabledPacks.current = !disabledPacks.current.includes(pack.id ?? "") ? [...new Set([...disabledPacks.current, pack.id ?? ""])] : disabledPacks.current.filter((id) => id !== (pack.id ?? "")))} />
+            {/if}
+          </Label>
+        {/each}
+      </div>
+    </ScrollArea>
   {:else}
     <p class="text-center text-sm text-foreground/60">No packs available.</p>
   {/if}
