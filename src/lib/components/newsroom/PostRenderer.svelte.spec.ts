@@ -34,8 +34,8 @@ const imageBlock = {
 } satisfies Block;
 
 describe.concurrent("PostRenderer", () => {
-  it("applies Typeset to classless newsroom rich content", ({ expect }) => {
-    const { container } = render(PostRenderer, { body: [richTextBlock, imageBlock] });
+  it("applies Typeset to classless newsroom rich content", async ({ expect }) => {
+    const { container } = await render(PostRenderer, { body: [richTextBlock, imageBlock] });
 
     const typeset = container.querySelector(".typeset.typeset-article.max-w-\\[37em\\]");
     const heading = container.querySelector("h2");

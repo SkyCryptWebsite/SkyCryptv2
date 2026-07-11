@@ -5,7 +5,7 @@ import AdditionStat from "./AdditionStat.svelte";
 
 describe.concurrent("AdditionStat Tests", () => {
   it("renders basic stat with text and data", async ({ expect }) => {
-    const { container } = render(WithContext, {
+    const { container } = await render(WithContext, {
       component: AdditionStat,
       componentProps: {
         text: "strength",
@@ -21,7 +21,7 @@ describe.concurrent("AdditionStat Tests", () => {
   });
 
   it("renders with subData", async ({ expect }) => {
-    const { container } = render(WithContext, {
+    const { container } = await render(WithContext, {
       component: AdditionStat,
       componentProps: {
         text: "health",
@@ -37,7 +37,7 @@ describe.concurrent("AdditionStat Tests", () => {
   });
 
   it("applies maxed class when maxed prop is true", async ({ expect }) => {
-    const { container } = render(WithContext, {
+    const { container } = await render(WithContext, {
       component: AdditionStat,
       componentProps: {
         text: "crit damage",
@@ -52,7 +52,7 @@ describe.concurrent("AdditionStat Tests", () => {
   });
 
   it("applies accent color when dataMaxed is true", async ({ expect }) => {
-    const { container } = render(WithContext, {
+    const { container } = await render(WithContext, {
       component: AdditionStat,
       componentProps: {
         text: "speed",
@@ -68,7 +68,7 @@ describe.concurrent("AdditionStat Tests", () => {
   });
 
   it("renders info tooltip indicator when asterisk prop is true", async ({ expect }) => {
-    const { container } = render(WithContext, {
+    const { container } = await render(WithContext, {
       component: AdditionStat,
       componentProps: {
         text: "magic find",
@@ -86,7 +86,7 @@ describe.concurrent("AdditionStat Tests", () => {
   });
 
   it("applies custom class", async ({ expect }) => {
-    const { container } = render(WithContext, {
+    const { container } = await render(WithContext, {
       component: AdditionStat,
       componentProps: {
         text: "defense",
@@ -101,7 +101,7 @@ describe.concurrent("AdditionStat Tests", () => {
   });
 
   it("capitalizes text label", async ({ expect }) => {
-    const { container } = render(WithContext, {
+    const { container } = await render(WithContext, {
       component: AdditionStat,
       componentProps: {
         text: "sea creature chance",
@@ -116,7 +116,7 @@ describe.concurrent("AdditionStat Tests", () => {
   });
 
   it("renders without subData", async ({ expect }) => {
-    const { container } = render(WithContext, {
+    const { container } = await render(WithContext, {
       component: AdditionStat,
       componentProps: {
         text: "intelligence",

@@ -7,7 +7,7 @@ const icon = createRawSnippet(() => ({ render: () => '<svg aria-hidden="true"></
 
 describe("SettingToggleRow", () => {
   it("forwards its disabled state to the switch", async ({ expect }) => {
-    const { container } = render(SettingToggleRow, {
+    const { container } = await render(SettingToggleRow, {
       icon,
       title: "Performance Mode",
       description: "Locked on",

@@ -4,7 +4,7 @@ import SectionTitle from "./SectionTitle.svelte";
 
 describe.concurrent("SectionTitle Tests", () => {
   it("renders with text prop", async ({ expect }) => {
-    const { container } = render(SectionTitle, { text: "Test Section" });
+    const { container } = await render(SectionTitle, { text: "Test Section" });
 
     const heading = container.querySelector("h3");
     expect(heading).toBeTruthy();
@@ -12,7 +12,7 @@ describe.concurrent("SectionTitle Tests", () => {
   });
 
   it("applies default classes", async ({ expect }) => {
-    const { container } = render(SectionTitle, { text: "Test" });
+    const { container } = await render(SectionTitle, { text: "Test" });
 
     const heading = container.querySelector("h3");
     expect(heading?.classList.contains("text-2xl")).toBe(true);
@@ -22,7 +22,7 @@ describe.concurrent("SectionTitle Tests", () => {
   });
 
   it("applies custom class via class prop", async ({ expect }) => {
-    const { container } = render(SectionTitle, {
+    const { container } = await render(SectionTitle, {
       text: "Custom",
       class: "custom-class"
     });
@@ -42,7 +42,7 @@ describe.concurrent("SectionTitle Tests", () => {
   });
 
   it("renders empty heading when neither text nor children provided", async ({ expect }) => {
-    const { container } = render(SectionTitle, {});
+    const { container } = await render(SectionTitle, {});
 
     const heading = container.querySelector("h3");
     expect(heading).toBeTruthy();
@@ -50,7 +50,7 @@ describe.concurrent("SectionTitle Tests", () => {
   });
 
   it("handles complex class merging via cn()", async ({ expect }) => {
-    const { container } = render(SectionTitle, {
+    const { container } = await render(SectionTitle, {
       text: "Test",
       class: "mt-10 text-2xl"
     });
@@ -62,7 +62,7 @@ describe.concurrent("SectionTitle Tests", () => {
   });
 
   it("renders h3 element", async ({ expect }) => {
-    const { container } = render(SectionTitle, { text: "Test" });
+    const { container } = await render(SectionTitle, { text: "Test" });
 
     const heading = container.querySelector("h3");
     expect(heading?.tagName).toBe("H3");
