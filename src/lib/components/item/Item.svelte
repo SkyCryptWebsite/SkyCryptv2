@@ -1,12 +1,11 @@
 <script lang="ts">
-  import { getInternalState, getPreferences, itemTooltipTether } from "$ctx";
+  import { getInternalState, itemTooltipTether } from "$ctx";
   import type { ModelsStrippedItem } from "$lib/shared/api/orval-generated";
   import { RARITIES, RARITY_COLORS } from "$lib/shared/constants/rarities";
   import { formatNumber, getRarityClass } from "$lib/shared/helper";
   import { cn } from "$lib/shared/utils";
   import ImageOff from "@lucide/svelte/icons/image-off";
   import { Avatar, Tooltip, type AvatarImageLoadingStatus } from "bits-ui";
-
   import { IsInViewport } from "runed";
 
   type Props = {
@@ -21,7 +20,6 @@
   let hasBeenInViewport = $state(false);
   let loadingStatus = $state<AvatarImageLoadingStatus>(null!);
 
-  const preferences = getPreferences();
   const internalState = getInternalState();
 
   const inViewport = new IsInViewport(() => targetNode, { rootMargin: "200px 0px", threshold: 0 });

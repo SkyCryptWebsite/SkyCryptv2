@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Notice } from "$components/notices";
-  import { getInternalState, getMobileContext, getPreferences, getProfileContext } from "$ctx";
+  import { getInternalState, getMobileContext, getProfileContext } from "$ctx";
   import { InventoryGrid, InventorySearch, Item } from "$lib/components/item";
   import { ScrollItems } from "$lib/components/misc";
   import { Section } from "$lib/components/sections";
@@ -18,7 +18,6 @@
   import { cubicOut } from "svelte/easing";
   import { crossfade } from "svelte/transition";
 
-  const preferences = getPreferences();
   const internalState = getInternalState();
   const isMobile = getMobileContext();
 

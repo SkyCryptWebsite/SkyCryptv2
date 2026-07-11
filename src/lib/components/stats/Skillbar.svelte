@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { getPreferences } from "$ctx";
   import type { ModelsSkill } from "$lib/shared/api/orval-generated";
   import { calculatePercentage, formatNumber } from "$lib/shared/helper";
   import * as Avatar from "$ui/avatar";
@@ -20,7 +19,6 @@
   let { skill, skillData, apiEnabled = true, class: className }: Props = $props();
 
   const isMaxed = $derived(skillData.maxed);
-  const preferences = getPreferences();
   const tween = new Tween(100, { duration: 1000, easing: cubicInOut });
   let isHovered = $state(false);
 
