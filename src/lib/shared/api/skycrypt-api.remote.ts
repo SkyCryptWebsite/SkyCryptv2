@@ -1,5 +1,5 @@
 import { prerender, query } from "$app/server";
-import { getApiCombinedUuidProfileId, getApiEmbedUuid, getApiGardenUuidProfileId, getApiInventorySearchUuidProfileIdSearchParam, getApiInventoryUuidProfileId, getApiNetworthUuidProfileId, getApiPlayerStatsUuidProfileId, getApiResourcepacks, getApiStatsUuidProfileId, getApiUsernameUuid, getApiUuidUsername, type ModelsProcessingError } from "$lib/shared/api/orval-generated";
+import { getApiCombinedUuidProfileId, getApiEmbedUuid, getApiGardenUuidProfileId, getApiInventorySearchUuidProfileIdSearchParam, getApiInventoryUuidProfileId, getApiNetworthUuidProfileId, getApiPlayerStatsUuidProfileId, getApiResourcepacks, getApiSource, getApiStatsUuidProfileId, getApiUsernameUuid, getApiUuidUsername, type ModelsProcessingError, type ModelsSourceInfo } from "$lib/shared/api/orval-generated";
 import { GetApiCombinedUuidProfileIdParams, GetApiEmbedUuidParams, GetApiEmbedUuidQueryParams, GetApiGardenUuidProfileIdParams, GetApiInventorySearchUuidProfileIdSearchParamParams, GetApiInventoryUuidProfileIdParams, GetApiNetworthUuidProfileIdParams, GetApiPlayerStatsUuidProfileIdParams, GetApiStatsUuidProfileIdParams, GetApiUsernameUuidParams, GetApiUuidUsernameParams } from "$lib/shared/api/orval-generated-zod";
 import { APIEndpointName } from "$types";
 import { error, isHttpError } from "@sveltejs/kit";
@@ -92,4 +92,15 @@ export const getUsernamePrerendered = prerender(GetApiUsernameUuidParams, async 
 /** Fetch packs */
 export const getPacks = prerender(async () => {
   return fetchSection(APIEndpointName.RESOURCEPACK, () => getApiResourcepacks());
+});
+
+/** Fetch the version of the currently running backend service. */
+export const getBackendSource = query(async (): Promise<ModelsSourceInfo | null> => {
+  try {
+    const { data } = await getApiSource({ cache: "no-store" });
+    return data;
+  } catch (error) {
+    console.warn("Failed to load backend version information", error);
+    return null;
+  }
 });

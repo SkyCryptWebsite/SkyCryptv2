@@ -1,6 +1,8 @@
 <script lang="ts">
   import { env } from "$env/dynamic/public";
   import { PUBLIC_COMMIT_HASH } from "$env/static/public";
+  import { getBackendSource } from "$lib/shared/api/skycrypt-api.remote";
+  import { Spinner } from "$ui/spinner";
   import ExternalLink from "@lucide/svelte/icons/external-link";
   import { Button } from "bits-ui";
 
@@ -25,6 +27,29 @@
 {:else}
   <p>Version information is not available.</p>
 {/if}
+
+<svelte:boundary>
+  {#snippet failed()}{/snippet}
+  {#snippet pending()}
+    <div class="flex items-center gap-2">
+      <Spinner />
+      Loading backend version information
+    </div>
+  {/snippet}
+  {const backend = await getBackendSource()}
+  {#if backend?.commit}
+    <p>
+      Currently running backend version
+      <span class="font-semibold">
+        {#if backend.repository}
+          <Button.Root class="text-primary" rel="noreferrer" href="{backend.repository}/commit/{backend.commit}" target="_blank">{backend.commit}</Button.Root>
+        {:else}
+          {backend.commit}
+        {/if}
+      </span>
+    </p>
+  {/if}
+</svelte:boundary>
 <p>
   You can report bugs, suggest features on <Button.Root class="font-semibold text-primary" href={PUBLIC_DISCORD_INVITE} target="_blank" rel="noreferrer">Discord</Button.Root>, and/or contribute to the code on <Button.Root class="font-semibold text-primary" href="https://github.com/SkyCryptWebsite" target="_blank" rel="noreferrer">GitHub</Button.Root>. It would be much appreciated!
 </p>
