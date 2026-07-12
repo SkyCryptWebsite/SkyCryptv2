@@ -7,6 +7,7 @@
   import ImageOff from "@lucide/svelte/icons/image-off";
   import { Avatar, Tooltip, type AvatarImageLoadingStatus } from "bits-ui";
   import { IsInViewport } from "runed";
+  import ResolvedItemImage from "./ResolvedItemImage.svelte";
 
   type Props = {
     piece: ModelsStrippedItem;
@@ -19,11 +20,12 @@
   let targetNode = $state<HTMLButtonElement | null>(null);
   let hasBeenInViewport = $state(false);
   let loadingStatus = $state<AvatarImageLoadingStatus>(null!);
+  let resolvedTexturePack = $state<string>();
 
   const internalState = getInternalState();
 
   const inViewport = new IsInViewport(() => targetNode, { rootMargin: "200px 0px", threshold: 0 });
-  const skyblockItem = $derived(piece);
+  const skyblockItem = $derived({ ...piece, texture_pack: resolvedTexturePack ?? piece.texture_pack });
   const bgColor = $derived(getRarityClass(piece.rarity ?? ("common".toLowerCase() as string), "bg"));
   const recombobulated = $derived(showRecombobulated && (skyblockItem.recombobulated ?? false));
   const enchanted = $derived(skyblockItem?.texture_path?.includes("/api/leather/") ? false : skyblockItem.shiny);
@@ -53,7 +55,7 @@
     <div {...props}>
       {#if hasBeenInViewport}
         <Avatar.Root bind:loadingStatus class={cn("after:border-none", isInventory ? "size-6 sm:size-14" : "size-14")}>
-          <Avatar.Image loading="lazy" src={piece.texture_path} alt={piece.display_name} class={cn("pointer-events-none aspect-square select-none [image-rendering:pixelated] data-[enchanted=true]:enchanted", isInventory ? "size-6 sm:size-14" : "size-14")} data-enchanted={enchanted} />
+          <ResolvedItemImage loading="lazy" src={piece.texture_path} alt={piece.display_name} class={cn("pointer-events-none aspect-square select-none [image-rendering:pixelated] data-[enchanted=true]:enchanted", isInventory ? "size-6 sm:size-14" : "size-14")} {enchanted} onresolved={(resolution) => (resolvedTexturePack = resolution.texture_pack)} />
           {#if loadingStatus === "loading"}
             {@render loadingState()}
           {:else}

@@ -9,6 +9,7 @@
   import TriangleAlert from "@lucide/svelte/icons/triangle-alert";
   import { Avatar, Button } from "bits-ui";
   import ContainedItem from "./ContainedItem.svelte";
+  import ResolvedItemImage from "./ResolvedItemImage.svelte";
 
   type Props = {
     piece: ModelsStrippedItem;
@@ -16,9 +17,10 @@
   };
 
   let { piece, isDrawer }: Props = $props();
+  let resolvedTexturePack = $state<string>();
   const preferences = getPreferences();
 
-  const skyblockItem = $derived(piece);
+  const skyblockItem = $derived({ ...piece, texture_pack: resolvedTexturePack ?? piece.texture_pack });
   const itemName = $derived(piece?.display_name);
   const itemNameHtml = $derived(itemName ? renderLore(itemName) : "");
   const isMulticolor = $derived((itemNameHtml?.match(/<\/span>/g) || [])?.length > 1);
@@ -34,7 +36,7 @@
   <div class="group-data-[mctooltip=false]/itemtooltip:contents group-data-[mctooltip=true]/itemtooltip:minecraft-tooltip group-data-[mctooltip=true]/itemtooltip:max-h-[calc(100dvh-8rem)] group-data-[mctooltip=true]/itemtooltip:overflow-auto">
     <div class={cn("flex-nowrap items-center justify-center gap-4 nice-colors-dark group-data-[mctooltip=false]/itemtooltip:flex group-data-[mctooltip=false]/itemtooltip:p-5", { "group-data-[mctooltip=false]/itemtooltip:rounded-t-[10px]": isDrawer }, preferences.mctooltip ? undefined : bgColor)}>
       <Avatar.Root class="shrink-0 px-2 group-data-[mctooltip=true]/itemtooltip:hidden">
-        <Avatar.Image loading="lazy" src={piece?.texture_path} alt={piece?.display_name} class="h-auto w-8 flex-none shrink-0 overflow-hidden [image-rendering:pixelated] data-[enchanted=true]:enchanted" data-enchanted={enchanted} />
+        <ResolvedItemImage loading="lazy" src={piece?.texture_path} alt={piece?.display_name} class="h-auto w-8 flex-none shrink-0 overflow-hidden [image-rendering:pixelated] data-[enchanted=true]:enchanted" {enchanted} onresolved={(resolution) => (resolvedTexturePack = resolution.texture_pack)} />
         <Avatar.Fallback>
           <Image class="size-8" />
         </Avatar.Fallback>
