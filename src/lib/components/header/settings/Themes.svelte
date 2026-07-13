@@ -102,7 +102,7 @@
                 </Avatar.Root>
                 <div class="flex flex-col">
                   <h4 class="font-semibold text-foreground/90">{theme.metadata.name}</h4>
-                  <p class="overflow-hidden font-normal text-ellipsis whitespace-nowrap text-foreground/60">
+                  <p class="overflow-hidden font-normal text-ellipsis whitespace-nowrap text-muted-foreground">
                     by
                     <span class="text-foreground/80">{theme.metadata.author}</span>
                   </p>

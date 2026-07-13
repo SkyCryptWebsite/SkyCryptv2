@@ -41,7 +41,7 @@
       {#if armor && armor.armor}
         {#if armor.armor.length > 0 && !armor.armor.every((piece) => !piece.display_name)}
           {#if armor.set_name}
-            <p class="space-x-0.5 leading-6 font-bold text-foreground/60 capitalize">
+            <p class="space-x-0.5 leading-6 font-bold text-muted-foreground capitalize">
               <span>Set:</span>
               <span class={cn(getRarityClass(armor.set_rarity ?? "", "text"))}>{armor.set_name}</span>
             </p>
@@ -138,7 +138,7 @@
         <div>
           {#if weapons.highest_priority_weapon?.display_name}
             <p class="font-bold" {@attach animateObfuscatedText}>
-              <span class="text-foreground/60">Active Weapon: </span>
+              <span class="text-muted-foreground">Active Weapon: </span>
               {@html renderLore(weapons.highest_priority_weapon.display_name)}
             </p>
           {/if}

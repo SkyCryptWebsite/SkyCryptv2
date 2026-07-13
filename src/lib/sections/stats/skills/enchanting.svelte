@@ -49,7 +49,7 @@
                       <Chip image={{ src: game.texture ?? "" }} class="w-full max-w-none">
                         <div class="flex flex-col">
                           <div class="flex flex-col gap-0.5">
-                            <h4 class="font-bold text-foreground/60">{game.name}</h4>
+                            <h4 class="font-bold text-muted-foreground">{game.name}</h4>
                           </div>
                           <div class="flex w-full flex-col gap-0.5">
                             {#if game.attempts}

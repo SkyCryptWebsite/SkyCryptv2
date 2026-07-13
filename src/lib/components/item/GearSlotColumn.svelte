@@ -18,7 +18,7 @@
 
 <div data-slot="gear-slot-column" class={cn("flex shrink-0 flex-col gap-2", className)}>
   {#if label}
-    <span class="text-center text-xs font-semibold tracking-wide text-foreground/60 uppercase">{label}</span>
+    <span class="text-center text-xs font-semibold tracking-wide text-muted-foreground uppercase">{label}</span>
   {/if}
 
   <div class="flex flex-col gap-2">

@@ -46,7 +46,7 @@
                   {#if value.kills}
                     <div class="flex h-full w-full flex-wrap gap-5 px-5 uppercase">
                       {#each Object.entries(value.kills) as [key, killValue], index (index)}
-                        <div class="flex flex-col items-center gap-1 text-sm font-bold text-foreground/60">
+                        <div class="flex flex-col items-center gap-1 text-sm font-bold text-muted-foreground">
                           <span>
                             {#if !isNaN(Number(key))}
                               Tier {["I", "II", "III", "IV", "V"][Number(key) - 1]}
@@ -62,7 +62,7 @@
                     </div>
                   {/if}
                   <div class="w-full">
-                    <p class="mb-2 w-full space-y-5 px-5 text-center font-semibold text-foreground/60 capitalize">
+                    <p class="mb-2 w-full space-y-5 px-5 text-center font-semibold text-muted-foreground capitalize">
                       {key} Level {value.level.level}
                     </p>
 

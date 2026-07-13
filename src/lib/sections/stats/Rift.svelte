@@ -39,7 +39,7 @@
                     {format(rift.motes.lifetime)}
                   </span>
                 </Label>
-                <p class="font-medium italic text-xs text-foreground/60">Total Motes earned in Rift.</p>
+                <p class="font-medium italic text-xs text-muted-foreground">Total Motes earned in Rift.</p>
               </div>
               <Separator />
               <div class="space-y-1">
@@ -49,7 +49,7 @@
                     {rift.motes.orbs}
                   </span>
                 </Label>
-                <p class="font-medium italic text-xs text-foreground/60">Amount of Mote Orbs player has picked up inside of the Rift.</p>
+                <p class="font-medium italic text-xs text-muted-foreground">Amount of Mote Orbs player has picked up inside of the Rift.</p>
               </div>
             </div>
           </AdditionStat>
@@ -63,7 +63,7 @@
                   {(((rift.enigma.souls ?? 0) / (rift.enigma.totalSouls ?? 0)) * 100).toFixed(2)}%
                 </span>
               </Label>
-              <p class="font-medium text-xs italic text-foreground/60">Percentage of Enigma Souls found.</p>
+              <p class="font-medium text-xs italic text-muted-foreground">Percentage of Enigma Souls found.</p>
             </div>
           </AdditionStat>
         {/if}

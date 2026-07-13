@@ -94,7 +94,7 @@
         {/if}
         {#if hasColor}
           <div class="mt-4 flex max-w-72 items-center justify-start gap-4 rounded-[0.625rem] bg-foreground/5 p-2 transition-colors ease-out">
-            <div class="flex items-center gap-2 text-foreground/60">
+            <div class="flex items-center gap-2 text-muted-foreground">
               <TriangleAlert class="size-10" />
               <div class="text-sm font-semibold">Due to abuse, all leather armor uses default color values</div>
             </div>
@@ -116,9 +116,9 @@
                       <span class="underline">
                         {packData.name}
                       </span>
-                      <span class="text-sm text-foreground/60">{packData.version}</span>
+                      <span class="text-sm text-muted-foreground">{packData.version}</span>
                     </div>
-                    <div class="text-sm text-foreground/60">
+                    <div class="text-sm text-muted-foreground">
                       by <span class="text-foreground/80">{packData.author}</span>
                     </div>
                   </div>

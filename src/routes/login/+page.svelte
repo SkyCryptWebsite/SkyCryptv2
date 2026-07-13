@@ -9,7 +9,7 @@
     <header class="flex flex-col items-center gap-4 text-center">
       <Avatar.Root class="size-16 select-none">
         <Avatar.Image loading="eager" src="/img/app-icons/svg.svg" alt="SkyCrypt" class="pointer-events-none size-16 rounded-2xl" />
-        <Avatar.Fallback class="flex size-16 items-center justify-center rounded-2xl bg-foreground/10 text-lg font-semibold text-foreground/60 uppercase">SC</Avatar.Fallback>
+        <Avatar.Fallback class="flex size-16 items-center justify-center rounded-2xl bg-foreground/10 text-lg font-semibold text-muted-foreground uppercase">SC</Avatar.Fallback>
       </Avatar.Root>
       <div class="flex flex-col gap-1.5">
         <h1 class="text-2xl font-bold tracking-tight">Sign in to <span class="text-primary">SkyCrypt</span></h1>

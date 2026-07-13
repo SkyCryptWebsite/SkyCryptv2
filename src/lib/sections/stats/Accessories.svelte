@@ -113,7 +113,7 @@
             <SectionSubtitle>Active Accessories</SectionSubtitle>
 
             {#if accessories.enrichments != null}
-              <p class="space-x-0.5 leading-6 font-bold text-foreground/60 capitalize">
+              <p class="space-x-0.5 leading-6 font-bold text-muted-foreground capitalize">
                 <span>Enrichments: </span>
                 {#each Object.entries(accessories.enrichments) as [key, value], index (index)}
                   {#if key !== "missing" && STATS_DATA[key.toLowerCase()]}

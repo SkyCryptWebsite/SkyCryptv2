@@ -58,7 +58,7 @@
       </div>
     </ScrollArea>
   {:else}
-    <p class="text-center text-sm text-foreground/60">No packs available.</p>
+    <p class="text-center text-sm text-muted-foreground">No packs available.</p>
   {/if}
   {#if hasPackConfigChanged}
     <Button

@@ -48,7 +48,7 @@
     <GearSlotColumn label="Armor" items={armor} emptySlots={armorSlots} />
     <GearSlotColumn label="Equip." items={equipment} emptySlots={equipmentSlots} />
     <div class="flex shrink-0 flex-col gap-2">
-      <span class="text-center text-xs font-semibold tracking-wide text-foreground/60 uppercase">Pet</span>
+      <span class="text-center text-xs font-semibold tracking-wide text-muted-foreground uppercase">Pet</span>
       {#if pet?.display_name}
         <Item piece={pet} />
       {:else}
@@ -80,13 +80,13 @@
   <Separator />
 
   <div class="space-y-2">
-    <span class="text-xs font-semibold tracking-wide text-foreground/60 uppercase">Tuning Points</span>
+    <span class="text-xs font-semibold tracking-wide text-muted-foreground uppercase">Tuning Points</span>
     {#if tuningPoints.length > 0}
       <dl class="grid grid-cols-2 gap-x-4 gap-y-1 text-sm">
         {#each tuningPoints as [stat, amount] (stat)}
           {const statData = tuningStat(stat)}
           <div class="flex items-baseline justify-between gap-2 tabular-nums">
-            <dt class={cn("flex items-center gap-1", statData?.color ?? "text-foreground/60")}>
+            <dt class={cn("flex items-center gap-1", statData?.color ?? "text-muted-foreground")}>
               {#if statData}
                 <span class="font-skyblock-icons">{statData.symbol}</span>
                 {statData.nameTiny}
@@ -99,7 +99,7 @@
         {/each}
       </dl>
     {:else}
-      <p class="text-sm text-foreground/60">None</p>
+      <p class="text-sm text-muted-foreground">None</p>
     {/if}
   </div>
 </article>

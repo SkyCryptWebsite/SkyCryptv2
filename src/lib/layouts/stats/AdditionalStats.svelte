@@ -66,7 +66,7 @@
                 {numberFormat(profile.skills.totalSkillXp, defaultPattern)}
               </span>
             </Label>
-            <p class="font-medium text-foreground/60 max-w-xs">Total XP gained in all skills except Social and Runecrafting.</p>
+            <p class="font-medium text-muted-foreground max-w-xs">Total XP gained in all skills except Social and Runecrafting.</p>
           </div>
           {#if profile.skills.averageSkillLevelWithProgress != null}
             <Separator />
@@ -77,7 +77,7 @@
                 {profile.skills.averageSkillLevelWithProgress.toFixed(2)}
               </span>
             </Label>
-            <p class="font-medium text-foreground/60 max-w-xs">Average skill level over all skills except Social and Runecrafting, includes progress to next level.</p>
+            <p class="font-medium text-muted-foreground max-w-xs">Average skill level over all skills except Social and Runecrafting, includes progress to next level.</p>
           {/if}
           <Separator />
 
@@ -87,7 +87,7 @@
               {numberFormat(profile.skills.averageSkillLevel, defaultPatternDecimal)}
             </span>
           </Label>
-          <p class="font-medium text-foreground/60 max-w-xs">Average skill level without including partial level progress.</p>
+          <p class="font-medium text-muted-foreground max-w-xs">Average skill level without including partial level progress.</p>
         </AdditionStat>
       {/if}
       {#if profile.fairySouls}
@@ -99,14 +99,14 @@
     <svelte:boundary>
       {const networth = $derived(profileUUID != null && profileId != null ? await getProfileNetworth({ uuid: profileUUID, profileId }) : null)}
       {#snippet pending()}
-        <div class="my-0 flex items-center gap-1 font-bold text-foreground/60">
+        <div class="my-0 flex items-center gap-1 font-bold text-muted-foreground">
           Networth:
           <Spinner />
         </div>
       {/snippet}
 
       {#snippet failed(err, retry)}
-        <div class="my-0 flex items-center gap-0.5 font-bold text-foreground/60">
+        <div class="my-0 flex items-center gap-0.5 font-bold text-muted-foreground">
           <Popover.Root bind:open={networthOpen}>
             <Popover.Trigger
               onpointerenter={() => {

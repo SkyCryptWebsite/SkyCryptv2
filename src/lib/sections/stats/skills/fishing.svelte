@@ -105,7 +105,7 @@
             <ScrollAreaItems>
               {#each trophyFishes as [_, trophyFish], index (index)}
                 {const highestTier = tiers.find((tier) => (trophyFish[tier] ?? 0) > 0)}
-                {const highestTierColor = highestTier ? colors[highestTier].text : "text-foreground/60"}
+                {const highestTierColor = highestTier ? colors[highestTier].text : "text-muted-foreground"}
                 <Chip class="px-4 whitespace-nowrap" image={{ src: trophyFish.texture ?? "" }}>
                   <div class="flex flex-col">
                     <div class="flex flex-col gap-0.5">
@@ -169,7 +169,7 @@
                 </Avatar.Fallback>
               </Avatar.Root>
               <div class="text-center font-bold">
-                {creature.amount} <span class="text-foreground/60">Kills</span>
+                {creature.amount} <span class="text-muted-foreground">Kills</span>
               </div>
             </div>
           </div>

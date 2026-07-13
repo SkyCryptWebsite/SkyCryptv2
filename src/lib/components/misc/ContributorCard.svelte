@@ -65,7 +65,7 @@
                 {#if typeof Icon === "string"}
                   <img src={Icon} alt="Technoblade Icon" class="size-4" />
                 {:else}
-                  <Icon class={cn("size-4", options?.favorite ? "fill-[oklch(75.25%_0.0023_17.21)] stroke-[oklch(75.25%_0.0023_17.21)]" : "text-foreground/60")} />
+                  <Icon class={cn("size-4", options?.favorite ? "fill-[oklch(75.25%_0.0023_17.21)] stroke-[oklch(75.25%_0.0023_17.21)]" : "text-muted-foreground")} />
                 {/if}
               </div>
             {/snippet}
@@ -84,7 +84,7 @@
   <Button href={options?.tip ? undefined : resolve("/stats/[ign]", { ign: user.id })} class="relative flex h-full w-full min-w-0 items-center gap-4 rounded-xl p-5 text-left glass glass-brightness-150 dark:glass-brightness-50 glass-contrast-60 dark:glass-contrast-100">
     <Avatar.Root class="size-16 shrink-0">
       <Avatar.Image loading="lazy" src={options?.tip ? "https://nmsr.nickac.dev/face/bc8ea1f51f253ff5142ca11ae45193a4ad8c3ab5e9c6eec8ba7a4fcb7bac40" : `https://nmsr.nickac.dev/face/${user.id}`} alt={user.username} class={cn("aspect-square size-16 [image-rendering:pixelated]", options?.tip ? "rounded-xl bg-foreground/10" : "")} />
-      <Avatar.Fallback class="flex h-full items-center justify-center rounded-xl bg-foreground/10 text-lg font-semibold text-foreground/60 uppercase">
+      <Avatar.Fallback class="flex h-full items-center justify-center rounded-xl bg-foreground/10 text-lg font-semibold text-muted-foreground uppercase">
         {user.username?.slice(0, 2)}
       </Avatar.Fallback>
     </Avatar.Root>

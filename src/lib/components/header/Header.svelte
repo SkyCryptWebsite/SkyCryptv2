@@ -53,7 +53,7 @@
             <Avatar.Image loading="lazy" src="/img/app-icons/svg.svg" alt="SkyCrypt" class="pointer-events-none h-6 select-none" />
           {/if}
 
-          <Avatar.Fallback class="flex h-full items-center justify-center text-lg font-semibold text-foreground/60 uppercase">SC</Avatar.Fallback>
+          <Avatar.Fallback class="flex h-full items-center justify-center text-lg font-semibold text-muted-foreground uppercase">SC</Avatar.Fallback>
         </Avatar.Root>
       </Button.Root>
       <div class="flex flex-col items-start justify-center-safe gap-1">
@@ -65,7 +65,7 @@
         </Button.Root>
 
         {#if packageVersion}
-          <Button.Root class="text-xs leading-none font-normal text-foreground/60 transition-colors hover:text-primary/60 data-[cupcake=true]:text-yellow-500/60 data-[cupcake=true]:hover:text-yellow-500" rel="noreferrer" href="https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/releases/tag/v{packageVersion}" target="_blank" data-cupcake={page.url.origin.includes("cupcake") || dev}>v{packageVersion}</Button.Root>
+          <Button.Root class="text-xs leading-none font-normal text-muted-foreground transition-colors hover:text-primary/60 data-[cupcake=true]:text-yellow-500/60 data-[cupcake=true]:hover:text-yellow-500" rel="noreferrer" href="https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/releases/tag/v{packageVersion}" target="_blank" data-cupcake={page.url.origin.includes("cupcake") || dev}>v{packageVersion}</Button.Root>
         {/if}
       </div>
     </div>

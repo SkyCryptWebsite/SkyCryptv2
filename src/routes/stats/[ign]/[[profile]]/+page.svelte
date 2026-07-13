@@ -48,7 +48,7 @@
       <div class="flex h-screen items-center justify-center">
         <div class="rounded-xl bg-foreground/5 p-6 glass">
           <div class="flex items-center gap-2">
-            <LoaderCircle class="size-5 animate-spin text-foreground/60" />
+            <LoaderCircle class="size-5 animate-spin text-muted-foreground" />
             <span class="font-semibold text-foreground/80">Loading profile...</span>
           </div>
         </div>

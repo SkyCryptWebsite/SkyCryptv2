@@ -56,8 +56,8 @@
 {/if}
 
 {#snippet additionalStatLabel()}
-  <Item.Content class="flex text-base font-bold text-foreground/60 items-center flex-row w-fit">
-    <div class={!asterisk ? cn("my-0 flex items-center gap-1 font-bold text-foreground/60 data-[is-tooltip=false]:cursor-default", { "text-accent-2": maxed }, className) : "contents"}>
+  <Item.Content class="flex text-base font-bold text-muted-foreground items-center flex-row w-fit">
+    <div class={!asterisk ? cn("my-0 flex items-center gap-1 font-bold text-muted-foreground data-[is-tooltip=false]:cursor-default", { "text-accent-2": maxed }, className) : "contents"}>
       <div style={textRarityColor ? `color: var(--§${RARITY_COLORS[textRarityColor]})` : ""} class="capitalize">
         {text}:
       </div>

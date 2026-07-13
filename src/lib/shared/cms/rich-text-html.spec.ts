@@ -126,7 +126,7 @@ describe.concurrent("richTextToHtml()", () => {
     expect(result).toContain('type="checkbox" checked disabled');
     expect(result).toContain('<ul class="contains-task-list">');
     expect(result).toContain('<li class="task-list-item">');
-    expect(result).toContain('class="text-foreground/60 line-through"');
+    expect(result).toContain('class="text-muted-foreground line-through"');
     expect(result).toContain('type="checkbox" disabled');
   });
 

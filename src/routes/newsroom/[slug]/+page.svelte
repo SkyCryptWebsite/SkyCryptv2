@@ -115,11 +115,11 @@
         {#if author.mcUuid}
           <Avatar.Image loading="lazy" src="https://nmsr.nickac.dev/face/{author.mcUuid}" alt={displayName} class="size-10 [image-rendering:pixelated]" />
         {/if}
-        <Avatar.Fallback class="flex size-10 items-center justify-center bg-foreground/10 text-sm font-semibold text-foreground/60 uppercase">{initials}</Avatar.Fallback>
+        <Avatar.Fallback class="flex size-10 items-center justify-center bg-foreground/10 text-sm font-semibold text-muted-foreground uppercase">{initials}</Avatar.Fallback>
       </Avatar.Root>
       <div class="flex flex-col leading-tight">
         <span class="font-semibold text-foreground">{displayName}</span>
-        <time datetime={post.publishedAt} class="text-xs text-foreground/60">{formatDate(post.publishedAt)}</time>
+        <time datetime={post.publishedAt} class="text-xs text-muted-foreground">{formatDate(post.publishedAt)}</time>
       </div>
     </div>
     {#if post.tags && post.tags.length > 0}

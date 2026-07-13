@@ -114,7 +114,7 @@ function richTextConverters(): HTMLConvertersFunction<NewsroomNodeTypes> {
       const children = nodesToHTML({ nodes: node.children }).join("");
       if (isRecord(parent as unknown) && (parent as unknown as JsonRecord).listType === "check") {
         const checked = node.checked === true;
-        return `<li class="task-list-item"><input type="checkbox"${checked ? " checked" : ""} disabled /><span${checked ? ' class="text-foreground/60 line-through"' : ""}>${children}</span></li>`;
+        return `<li class="task-list-item"><input type="checkbox"${checked ? " checked" : ""} disabled /><span${checked ? ' class="text-muted-foreground line-through"' : ""}>${children}</span></li>`;
       }
       return `<li>${children}</li>`;
     },

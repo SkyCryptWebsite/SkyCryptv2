@@ -67,7 +67,7 @@
         <Tooltip.Provider delayDuration={0}>
           <Tooltip.Root>
             <Tooltip.Trigger class="flex items-center gap-1">
-              <CircleQuestionMark class="size-4 h-lh text-foreground/60" />
+              <CircleQuestionMark class="size-4 h-lh text-muted-foreground" />
             </Tooltip.Trigger>
 
             <Tooltip.Content class="performance:bg-popover [&>div:last-child]:hidden rounded-xl bg-transparent glass border text-foreground glass-bg-popover p-4 text-sm">

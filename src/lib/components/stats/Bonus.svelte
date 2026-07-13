@@ -16,7 +16,7 @@
 </script>
 
 {#if statsData.length > 0}
-  <p class={cn("space-x-0.5 leading-6 font-bold text-foreground/60 capitalize", classNames)}>
+  <p class={cn("space-x-0.5 leading-6 font-bold text-muted-foreground capitalize", classNames)}>
     <span>{title}</span>
     {#each statsData as [key, value], index (index)}
       {const displayKey = (STAT_ALIASES[key] !== undefined ? STAT_ALIASES[key] : key).toLowerCase()}
