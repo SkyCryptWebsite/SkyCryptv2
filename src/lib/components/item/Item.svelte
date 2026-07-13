@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { getInternalState, itemTooltipTether } from "$ctx";
+  import { getInternalState } from "$ctx/internal.svelte";
+  import { itemTooltipTether } from "$ctx/tooltips.svelte";
   import type { ModelsStrippedItem } from "$lib/shared/api/orval-generated";
   import { RARITIES, RARITY_COLORS } from "$lib/shared/constants/rarities";
   import { formatNumber, getRarityClass } from "$lib/shared/helper";
@@ -25,7 +26,7 @@
   const internalState = getInternalState();
 
   const inViewport = new IsInViewport(() => targetNode, { rootMargin: "200px 0px", threshold: 0 });
-  const skyblockItem = $derived({ ...piece, texture_pack: resolvedTexturePack ?? piece.texture_pack });
+  const skyblockItem = $derived({ ...piece, texture_pack: resolvedTexturePack });
   const bgColor = $derived(getRarityClass(piece.rarity ?? ("common".toLowerCase() as string), "bg"));
   const recombobulated = $derived(showRecombobulated && (skyblockItem.recombobulated ?? false));
   const enchanted = $derived(skyblockItem?.texture_path?.includes("/api/leather/") ? false : skyblockItem.shiny);

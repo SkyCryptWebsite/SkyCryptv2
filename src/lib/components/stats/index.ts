@@ -2,6 +2,8 @@ export { default as AdditionStat } from "./AdditionStat.svelte";
 export { default as Bonus } from "./Bonus.svelte";
 export { default as DungeonCataCard } from "./DungeonCataCard.svelte";
 export { default as GardenPlotGrid } from "./GardenPlotGrid.svelte";
+export { default as Loadouts } from "./Loadouts.svelte";
 export { default as NetworthCard } from "./NetworthCard.svelte";
+export { default as SkillGear } from "./SkillGear.svelte";
 export { default as Skillbar } from "./Skillbar.svelte";
 export { default as Stat } from "./Stat.svelte";

@@ -1,12 +1,10 @@
 <script lang="ts">
   import { getProfileContext, getSkillsContext } from "$ctx";
-  import { Item as SkyblockItem } from "$lib/components/item";
   import { Chip } from "$lib/components/misc";
   import { SectionSubtitle } from "$lib/components/sections";
-  import { AdditionStat } from "$lib/components/stats";
+  import { AdditionStat, SkillGear } from "$lib/components/stats";
   import Garden from "$lib/sections/stats/farming/garden.svelte";
-  import { formatNumber, renderLore } from "$lib/shared/helper";
-  import { animateObfuscatedText } from "$lib/shared/mc-text/obfuscated";
+  import { formatNumber } from "$lib/shared/helper";
   import CollapsibleCustomTrigger from "$src/lib/components/CollapsibleCustomTrigger.svelte";
   import EmptyStat from "$src/lib/components/EmptyStat.svelte";
   import ScrollAreaItems from "$src/lib/components/ScrollAreaItems.svelte";
@@ -20,8 +18,6 @@
   const openSections = true as const;
   const data = $derived(getSkillsContext().skills);
   const farming = $derived(data?.farming);
-  const farmingTools = $derived(farming?.tools);
-  const highestPriorityFarmingTool = $derived(farmingTools?.highest_priority_tool);
   const profileCtx = $derived(getProfileContext().current);
   const { username, profile_cute_name } = $derived(profileCtx!);
 </script>
@@ -80,24 +76,8 @@
       </div>
     {/if}
     <div class="border p-4 rounded-xl">
-      <SectionSubtitle>Farming Tools</SectionSubtitle>
-      {#if farmingTools && farmingTools.tools && farmingTools.tools.length > 0}
-        <div class="space-y-2">
-          {#if highestPriorityFarmingTool && highestPriorityFarmingTool.display_name}
-            <p class="space-x-0.5 leading-6 font-bold text-foreground/60 capitalize" {@attach animateObfuscatedText}>
-              <span>Active Tool:</span>
-              {@html renderLore(highestPriorityFarmingTool.display_name)}
-            </p>
-          {/if}
-        </div>
-        <ScrollAreaItems>
-          {#each farmingTools.tools as tool, index (index)}
-            <SkyblockItem piece={tool} />
-          {/each}
-        </ScrollAreaItems>
-      {:else}
-        <EmptyStat title="Farming Tools" description="This player doesn't have any farming tools" icon={WheatIcon} class="mt-2" />
-      {/if}
+      <SectionSubtitle>Farming Gear</SectionSubtitle>
+      <SkillGear gear={farming.gear} skill="farming" />
     </div>
 
     {#if farming.contests}

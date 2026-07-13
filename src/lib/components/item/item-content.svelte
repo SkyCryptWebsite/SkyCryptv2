@@ -20,7 +20,7 @@
   let resolvedTexturePack = $state<string>();
   const preferences = getPreferences();
 
-  const skyblockItem = $derived({ ...piece, texture_pack: resolvedTexturePack ?? piece.texture_pack });
+  const skyblockItem = $derived({ ...piece, texture_pack: resolvedTexturePack });
   const itemName = $derived(piece?.display_name);
   const itemNameHtml = $derived(itemName ? renderLore(itemName) : "");
   const isMulticolor = $derived((itemNameHtml?.match(/<\/span>/g) || [])?.length > 1);

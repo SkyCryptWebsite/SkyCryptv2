@@ -3,9 +3,7 @@
   import { Item } from "$lib/components/item";
   import { Chip } from "$lib/components/misc";
   import { SectionSubtitle } from "$lib/components/sections";
-  import { AdditionStat } from "$lib/components/stats";
-  import { renderLore } from "$lib/shared/helper";
-  import { animateObfuscatedText } from "$lib/shared/mc-text/obfuscated";
+  import { AdditionStat, SkillGear } from "$lib/components/stats";
   import { cn } from "$lib/shared/utils";
   import EmptyStat from "$src/lib/components/EmptyStat.svelte";
   import ScrollAreaItems from "$src/lib/components/ScrollAreaItems.svelte";
@@ -17,8 +15,6 @@
 
   const data = $derived(getSkillsContext().skills);
   const foraging = $derived(data?.foraging);
-  const foragingTools = $derived(foraging?.tools);
-  const highestPriorityForagingTool = $derived(foragingTools?.highest_priority_tool);
 </script>
 
 {#if foraging}
@@ -73,25 +69,8 @@
     </div>
 
     <div class="border p-4 rounded-xl">
-      <SectionSubtitle>Foraging Tools</SectionSubtitle>
-      {#if foragingTools && foragingTools.tools && foragingTools.tools.length > 0}
-        <div class="space-y-2">
-          {#if highestPriorityForagingTool && highestPriorityForagingTool.display_name}
-            <p class="space-x-0.5 leading-6 font-bold text-foreground/60 capitalize" {@attach animateObfuscatedText}>
-              <span>Active Tool:</span>
-              {@html renderLore(highestPriorityForagingTool.display_name)}
-            </p>
-          {/if}
-        </div>
-
-        <ScrollAreaItems>
-          {#each foragingTools.tools as tool, index (index)}
-            <Item piece={tool} />
-          {/each}
-        </ScrollAreaItems>
-      {:else}
-        <EmptyStat title="Foraging Tools" description="This player doesn't have any foraging tools" icon={AxeIcon} class="mt-2" />
-      {/if}
+      <SectionSubtitle>Foraging Gear</SectionSubtitle>
+      <SkillGear gear={foraging.gear} skill="foraging" />
     </div>
 
     <div class="border p-4 rounded-xl">

@@ -8,7 +8,7 @@
 import * as zod from "zod";
 
 /**
- * Returns the combined SkyCrypt payload for a player's SkyBlock profile, including gear, accessories, pets, skills, dungeons, slayers, collections, minions, bestiary, and other profile sections.
+ * Returns the combined SkyCrypt payload for a player's SkyBlock profile, including gear, saved loadouts, accessories, pets, skills, dungeons, slayers, collections, minions, bestiary, and other profile sections.
  * Resource pack preferences supplied by cookie can affect rendered item texture URLs in the response.
  * @summary Get combined profile data
  */
@@ -39,7 +39,6 @@ export const GetCombinedProfileStatsResponse = zod.object({
                 name: zod.string().optional()
               })
               .optional(),
-            texture_pack: zod.string().optional(),
             texture_path: zod.string().optional(),
             wiki: zod.string().optional()
           })
@@ -88,7 +87,6 @@ export const GetCombinedProfileStatsResponse = zod.object({
                 name: zod.string().optional()
               })
               .optional(),
-            texture_pack: zod.string().optional(),
             texture_path: zod.string().optional(),
             wiki: zod.string().optional()
           })
@@ -119,7 +117,6 @@ export const GetCombinedProfileStatsResponse = zod.object({
                 name: zod.string().optional()
               })
               .optional(),
-            texture_pack: zod.string().optional(),
             texture_path: zod.string().optional(),
             wiki: zod.string().optional()
           })
@@ -418,7 +415,6 @@ export const GetCombinedProfileStatsResponse = zod.object({
                     name: zod.string().optional()
                   })
                   .optional(),
-                texture_pack: zod.string().optional(),
                 texture_path: zod.string().optional(),
                 wiki: zod.string().optional()
               })
@@ -450,7 +446,6 @@ export const GetCombinedProfileStatsResponse = zod.object({
                     name: zod.string().optional()
                   })
                   .optional(),
-                texture_pack: zod.string().optional(),
                 texture_path: zod.string().optional(),
                 wiki: zod.string().optional()
               })
@@ -458,6 +453,32 @@ export const GetCombinedProfileStatsResponse = zod.object({
             .optional(),
           stats: zod.record(zod.string(), zod.number()).optional()
         })
+        .optional(),
+      equipmentWardrobe: zod
+        .array(
+          zod.array(
+            zod.object({
+              Count: zod.number().optional(),
+              containsItems: zod.array(zod.unknown()).optional(),
+              displayInline: zod.boolean().optional(),
+              display_name: zod.string().optional(),
+              isInactive: zod.boolean().optional(),
+              lore: zod.array(zod.string()).optional(),
+              rarity: zod.string().optional(),
+              recombobulated: zod.boolean().optional(),
+              shiny: zod.boolean().optional(),
+              source: zod.string().optional(),
+              sourceTab: zod
+                .object({
+                  icon: zod.string().optional(),
+                  name: zod.string().optional()
+                })
+                .optional(),
+              texture_path: zod.string().optional(),
+              wiki: zod.string().optional()
+            })
+          )
+        )
         .optional(),
       wardrobe: zod
         .array(
@@ -479,7 +500,6 @@ export const GetCombinedProfileStatsResponse = zod.object({
                   name: zod.string().optional()
                 })
                 .optional(),
-              texture_pack: zod.string().optional(),
               texture_path: zod.string().optional(),
               wiki: zod.string().optional()
             })
@@ -506,7 +526,6 @@ export const GetCombinedProfileStatsResponse = zod.object({
                   name: zod.string().optional()
                 })
                 .optional(),
-              texture_pack: zod.string().optional(),
               texture_path: zod.string().optional(),
               wiki: zod.string().optional()
             })
@@ -530,7 +549,6 @@ export const GetCombinedProfileStatsResponse = zod.object({
                     name: zod.string().optional()
                   })
                   .optional(),
-                texture_pack: zod.string().optional(),
                 texture_path: zod.string().optional(),
                 wiki: zod.string().optional()
               })
@@ -539,6 +557,84 @@ export const GetCombinedProfileStatsResponse = zod.object({
         })
         .optional()
     })
+    .optional(),
+  loadouts: zod
+    .array(
+      zod.object({
+        accessories: zod
+          .object({
+            powerStone: zod.string().optional(),
+            tuningPoints: zod.record(zod.string(), zod.number()).optional(),
+            tuningPointsSlot: zod.number().optional()
+          })
+          .optional(),
+        armor: zod
+          .array(
+            zod.object({
+              Count: zod.number().optional(),
+              containsItems: zod.array(zod.unknown()).optional(),
+              displayInline: zod.boolean().optional(),
+              display_name: zod.string().optional(),
+              isInactive: zod.boolean().optional(),
+              lore: zod.array(zod.string()).optional(),
+              rarity: zod.string().optional(),
+              recombobulated: zod.boolean().optional(),
+              shiny: zod.boolean().optional(),
+              source: zod.string().optional(),
+              sourceTab: zod
+                .object({
+                  icon: zod.string().optional(),
+                  name: zod.string().optional()
+                })
+                .optional(),
+              texture_path: zod.string().optional(),
+              wiki: zod.string().optional()
+            })
+          )
+          .optional(),
+        equipment: zod
+          .array(
+            zod.object({
+              Count: zod.number().optional(),
+              containsItems: zod.array(zod.unknown()).optional(),
+              displayInline: zod.boolean().optional(),
+              display_name: zod.string().optional(),
+              isInactive: zod.boolean().optional(),
+              lore: zod.array(zod.string()).optional(),
+              rarity: zod.string().optional(),
+              recombobulated: zod.boolean().optional(),
+              shiny: zod.boolean().optional(),
+              source: zod.string().optional(),
+              sourceTab: zod
+                .object({
+                  icon: zod.string().optional(),
+                  name: zod.string().optional()
+                })
+                .optional(),
+              texture_path: zod.string().optional(),
+              wiki: zod.string().optional()
+            })
+          )
+          .optional(),
+        foragingCoreSelectedSlot: zod.number().optional(),
+        id: zod.number().optional(),
+        miningCoreSelectedSlot: zod.number().optional(),
+        name: zod.string().optional(),
+        pet: zod
+          .object({
+            active: zod.boolean().optional(),
+            display_name: zod.string().optional(),
+            level: zod.number().optional(),
+            lore: zod.array(zod.string()).optional(),
+            maxLevel: zod.number().optional(),
+            rarity: zod.string().optional(),
+            stats: zod.record(zod.string(), zod.number()).optional(),
+            texture_path: zod.string().optional(),
+            type: zod.string().optional()
+          })
+          .optional()
+      })
+    )
     .optional(),
   minions: zod
     .object({
@@ -770,7 +866,6 @@ export const GetCombinedProfileStatsResponse = zod.object({
                     name: zod.string().optional()
                   })
                   .optional(),
-                texture_pack: zod.string().optional(),
                 texture_path: zod.string().optional(),
                 wiki: zod.string().optional()
               })
@@ -814,7 +909,6 @@ export const GetCombinedProfileStatsResponse = zod.object({
                     name: zod.string().optional()
                   })
                   .optional(),
-                texture_pack: zod.string().optional(),
                 texture_path: zod.string().optional(),
                 wiki: zod.string().optional()
               })
@@ -912,40 +1006,221 @@ export const GetCombinedProfileStatsResponse = zod.object({
             .optional(),
           contestsAttended: zod.number().optional(),
           copper: zod.number().optional(),
-          medals: zod
-            .record(
-              zod.string(),
-              zod.object({
-                amount: zod.number().optional(),
-                total: zod.number().optional()
-              })
-            )
-            .optional(),
-          pelts: zod.number().optional(),
-          tools: zod
+          gear: zod
             .object({
-              highest_priority_tool: zod
+              armor: zod
                 .object({
-                  Count: zod.number().optional(),
-                  containsItems: zod.array(zod.unknown()).optional(),
-                  displayInline: zod.boolean().optional(),
-                  display_name: zod.string().optional(),
-                  isInactive: zod.boolean().optional(),
-                  lore: zod.array(zod.string()).optional(),
-                  rarity: zod.string().optional(),
-                  recombobulated: zod.boolean().optional(),
-                  shiny: zod.boolean().optional(),
-                  source: zod.string().optional(),
-                  sourceTab: zod
+                  game_stage: zod.string().optional(),
+                  pieces: zod
                     .object({
-                      icon: zod.string().optional(),
-                      name: zod.string().optional()
+                      boots: zod
+                        .object({
+                          Count: zod.number().optional(),
+                          containsItems: zod.array(zod.unknown()).optional(),
+                          displayInline: zod.boolean().optional(),
+                          display_name: zod.string().optional(),
+                          isInactive: zod.boolean().optional(),
+                          lore: zod.array(zod.string()).optional(),
+                          rarity: zod.string().optional(),
+                          recombobulated: zod.boolean().optional(),
+                          shiny: zod.boolean().optional(),
+                          source: zod.string().optional(),
+                          sourceTab: zod
+                            .object({
+                              icon: zod.string().optional(),
+                              name: zod.string().optional()
+                            })
+                            .optional(),
+                          texture_path: zod.string().optional(),
+                          wiki: zod.string().optional()
+                        })
+                        .optional(),
+                      chestplate: zod
+                        .object({
+                          Count: zod.number().optional(),
+                          containsItems: zod.array(zod.unknown()).optional(),
+                          displayInline: zod.boolean().optional(),
+                          display_name: zod.string().optional(),
+                          isInactive: zod.boolean().optional(),
+                          lore: zod.array(zod.string()).optional(),
+                          rarity: zod.string().optional(),
+                          recombobulated: zod.boolean().optional(),
+                          shiny: zod.boolean().optional(),
+                          source: zod.string().optional(),
+                          sourceTab: zod
+                            .object({
+                              icon: zod.string().optional(),
+                              name: zod.string().optional()
+                            })
+                            .optional(),
+                          texture_path: zod.string().optional(),
+                          wiki: zod.string().optional()
+                        })
+                        .optional(),
+                      helmet: zod
+                        .object({
+                          Count: zod.number().optional(),
+                          containsItems: zod.array(zod.unknown()).optional(),
+                          displayInline: zod.boolean().optional(),
+                          display_name: zod.string().optional(),
+                          isInactive: zod.boolean().optional(),
+                          lore: zod.array(zod.string()).optional(),
+                          rarity: zod.string().optional(),
+                          recombobulated: zod.boolean().optional(),
+                          shiny: zod.boolean().optional(),
+                          source: zod.string().optional(),
+                          sourceTab: zod
+                            .object({
+                              icon: zod.string().optional(),
+                              name: zod.string().optional()
+                            })
+                            .optional(),
+                          texture_path: zod.string().optional(),
+                          wiki: zod.string().optional()
+                        })
+                        .optional(),
+                      leggings: zod
+                        .object({
+                          Count: zod.number().optional(),
+                          containsItems: zod.array(zod.unknown()).optional(),
+                          displayInline: zod.boolean().optional(),
+                          display_name: zod.string().optional(),
+                          isInactive: zod.boolean().optional(),
+                          lore: zod.array(zod.string()).optional(),
+                          rarity: zod.string().optional(),
+                          recombobulated: zod.boolean().optional(),
+                          shiny: zod.boolean().optional(),
+                          source: zod.string().optional(),
+                          sourceTab: zod
+                            .object({
+                              icon: zod.string().optional(),
+                              name: zod.string().optional()
+                            })
+                            .optional(),
+                          texture_path: zod.string().optional(),
+                          wiki: zod.string().optional()
+                        })
+                        .optional()
                     })
                     .optional(),
-                  texture_pack: zod.string().optional(),
-                  texture_path: zod.string().optional(),
-                  wiki: zod.string().optional()
+                  set_id: zod.string().optional()
                 })
+                .optional(),
+              equipment: zod
+                .object({
+                  belt: zod
+                    .object({
+                      Count: zod.number().optional(),
+                      containsItems: zod.array(zod.unknown()).optional(),
+                      displayInline: zod.boolean().optional(),
+                      display_name: zod.string().optional(),
+                      isInactive: zod.boolean().optional(),
+                      lore: zod.array(zod.string()).optional(),
+                      rarity: zod.string().optional(),
+                      recombobulated: zod.boolean().optional(),
+                      shiny: zod.boolean().optional(),
+                      source: zod.string().optional(),
+                      sourceTab: zod
+                        .object({
+                          icon: zod.string().optional(),
+                          name: zod.string().optional()
+                        })
+                        .optional(),
+                      texture_path: zod.string().optional(),
+                      wiki: zod.string().optional()
+                    })
+                    .optional(),
+                  cloak: zod
+                    .object({
+                      Count: zod.number().optional(),
+                      containsItems: zod.array(zod.unknown()).optional(),
+                      displayInline: zod.boolean().optional(),
+                      display_name: zod.string().optional(),
+                      isInactive: zod.boolean().optional(),
+                      lore: zod.array(zod.string()).optional(),
+                      rarity: zod.string().optional(),
+                      recombobulated: zod.boolean().optional(),
+                      shiny: zod.boolean().optional(),
+                      source: zod.string().optional(),
+                      sourceTab: zod
+                        .object({
+                          icon: zod.string().optional(),
+                          name: zod.string().optional()
+                        })
+                        .optional(),
+                      texture_path: zod.string().optional(),
+                      wiki: zod.string().optional()
+                    })
+                    .optional(),
+                  gloves: zod
+                    .object({
+                      Count: zod.number().optional(),
+                      containsItems: zod.array(zod.unknown()).optional(),
+                      displayInline: zod.boolean().optional(),
+                      display_name: zod.string().optional(),
+                      isInactive: zod.boolean().optional(),
+                      lore: zod.array(zod.string()).optional(),
+                      rarity: zod.string().optional(),
+                      recombobulated: zod.boolean().optional(),
+                      shiny: zod.boolean().optional(),
+                      source: zod.string().optional(),
+                      sourceTab: zod
+                        .object({
+                          icon: zod.string().optional(),
+                          name: zod.string().optional()
+                        })
+                        .optional(),
+                      texture_path: zod.string().optional(),
+                      wiki: zod.string().optional()
+                    })
+                    .optional(),
+                  necklace: zod
+                    .object({
+                      Count: zod.number().optional(),
+                      containsItems: zod.array(zod.unknown()).optional(),
+                      displayInline: zod.boolean().optional(),
+                      display_name: zod.string().optional(),
+                      isInactive: zod.boolean().optional(),
+                      lore: zod.array(zod.string()).optional(),
+                      rarity: zod.string().optional(),
+                      recombobulated: zod.boolean().optional(),
+                      shiny: zod.boolean().optional(),
+                      source: zod.string().optional(),
+                      sourceTab: zod
+                        .object({
+                          icon: zod.string().optional(),
+                          name: zod.string().optional()
+                        })
+                        .optional(),
+                      texture_path: zod.string().optional(),
+                      wiki: zod.string().optional()
+                    })
+                    .optional()
+                })
+                .optional(),
+              misc: zod
+                .array(
+                  zod.object({
+                    Count: zod.number().optional(),
+                    containsItems: zod.array(zod.unknown()).optional(),
+                    displayInline: zod.boolean().optional(),
+                    display_name: zod.string().optional(),
+                    isInactive: zod.boolean().optional(),
+                    lore: zod.array(zod.string()).optional(),
+                    rarity: zod.string().optional(),
+                    recombobulated: zod.boolean().optional(),
+                    shiny: zod.boolean().optional(),
+                    source: zod.string().optional(),
+                    sourceTab: zod
+                      .object({
+                        icon: zod.string().optional(),
+                        name: zod.string().optional()
+                      })
+                      .optional(),
+                    texture_path: zod.string().optional(),
+                    wiki: zod.string().optional()
+                  })
+                )
                 .optional(),
               tools: zod
                 .array(
@@ -966,7 +1241,6 @@ export const GetCombinedProfileStatsResponse = zod.object({
                         name: zod.string().optional()
                       })
                       .optional(),
-                    texture_pack: zod.string().optional(),
                     texture_path: zod.string().optional(),
                     wiki: zod.string().optional()
                   })
@@ -974,11 +1248,263 @@ export const GetCombinedProfileStatsResponse = zod.object({
                 .optional()
             })
             .optional(),
+          medals: zod
+            .record(
+              zod.string(),
+              zod.object({
+                amount: zod.number().optional(),
+                total: zod.number().optional()
+              })
+            )
+            .optional(),
+          pelts: zod.number().optional(),
           uniqueGolds: zod.number().optional()
         })
         .optional(),
       fishing: zod
         .object({
+          gear: zod
+            .object({
+              armor: zod
+                .object({
+                  game_stage: zod.string().optional(),
+                  pieces: zod
+                    .object({
+                      boots: zod
+                        .object({
+                          Count: zod.number().optional(),
+                          containsItems: zod.array(zod.unknown()).optional(),
+                          displayInline: zod.boolean().optional(),
+                          display_name: zod.string().optional(),
+                          isInactive: zod.boolean().optional(),
+                          lore: zod.array(zod.string()).optional(),
+                          rarity: zod.string().optional(),
+                          recombobulated: zod.boolean().optional(),
+                          shiny: zod.boolean().optional(),
+                          source: zod.string().optional(),
+                          sourceTab: zod
+                            .object({
+                              icon: zod.string().optional(),
+                              name: zod.string().optional()
+                            })
+                            .optional(),
+                          texture_path: zod.string().optional(),
+                          wiki: zod.string().optional()
+                        })
+                        .optional(),
+                      chestplate: zod
+                        .object({
+                          Count: zod.number().optional(),
+                          containsItems: zod.array(zod.unknown()).optional(),
+                          displayInline: zod.boolean().optional(),
+                          display_name: zod.string().optional(),
+                          isInactive: zod.boolean().optional(),
+                          lore: zod.array(zod.string()).optional(),
+                          rarity: zod.string().optional(),
+                          recombobulated: zod.boolean().optional(),
+                          shiny: zod.boolean().optional(),
+                          source: zod.string().optional(),
+                          sourceTab: zod
+                            .object({
+                              icon: zod.string().optional(),
+                              name: zod.string().optional()
+                            })
+                            .optional(),
+                          texture_path: zod.string().optional(),
+                          wiki: zod.string().optional()
+                        })
+                        .optional(),
+                      helmet: zod
+                        .object({
+                          Count: zod.number().optional(),
+                          containsItems: zod.array(zod.unknown()).optional(),
+                          displayInline: zod.boolean().optional(),
+                          display_name: zod.string().optional(),
+                          isInactive: zod.boolean().optional(),
+                          lore: zod.array(zod.string()).optional(),
+                          rarity: zod.string().optional(),
+                          recombobulated: zod.boolean().optional(),
+                          shiny: zod.boolean().optional(),
+                          source: zod.string().optional(),
+                          sourceTab: zod
+                            .object({
+                              icon: zod.string().optional(),
+                              name: zod.string().optional()
+                            })
+                            .optional(),
+                          texture_path: zod.string().optional(),
+                          wiki: zod.string().optional()
+                        })
+                        .optional(),
+                      leggings: zod
+                        .object({
+                          Count: zod.number().optional(),
+                          containsItems: zod.array(zod.unknown()).optional(),
+                          displayInline: zod.boolean().optional(),
+                          display_name: zod.string().optional(),
+                          isInactive: zod.boolean().optional(),
+                          lore: zod.array(zod.string()).optional(),
+                          rarity: zod.string().optional(),
+                          recombobulated: zod.boolean().optional(),
+                          shiny: zod.boolean().optional(),
+                          source: zod.string().optional(),
+                          sourceTab: zod
+                            .object({
+                              icon: zod.string().optional(),
+                              name: zod.string().optional()
+                            })
+                            .optional(),
+                          texture_path: zod.string().optional(),
+                          wiki: zod.string().optional()
+                        })
+                        .optional()
+                    })
+                    .optional(),
+                  set_id: zod.string().optional()
+                })
+                .optional(),
+              equipment: zod
+                .object({
+                  belt: zod
+                    .object({
+                      Count: zod.number().optional(),
+                      containsItems: zod.array(zod.unknown()).optional(),
+                      displayInline: zod.boolean().optional(),
+                      display_name: zod.string().optional(),
+                      isInactive: zod.boolean().optional(),
+                      lore: zod.array(zod.string()).optional(),
+                      rarity: zod.string().optional(),
+                      recombobulated: zod.boolean().optional(),
+                      shiny: zod.boolean().optional(),
+                      source: zod.string().optional(),
+                      sourceTab: zod
+                        .object({
+                          icon: zod.string().optional(),
+                          name: zod.string().optional()
+                        })
+                        .optional(),
+                      texture_path: zod.string().optional(),
+                      wiki: zod.string().optional()
+                    })
+                    .optional(),
+                  cloak: zod
+                    .object({
+                      Count: zod.number().optional(),
+                      containsItems: zod.array(zod.unknown()).optional(),
+                      displayInline: zod.boolean().optional(),
+                      display_name: zod.string().optional(),
+                      isInactive: zod.boolean().optional(),
+                      lore: zod.array(zod.string()).optional(),
+                      rarity: zod.string().optional(),
+                      recombobulated: zod.boolean().optional(),
+                      shiny: zod.boolean().optional(),
+                      source: zod.string().optional(),
+                      sourceTab: zod
+                        .object({
+                          icon: zod.string().optional(),
+                          name: zod.string().optional()
+                        })
+                        .optional(),
+                      texture_path: zod.string().optional(),
+                      wiki: zod.string().optional()
+                    })
+                    .optional(),
+                  gloves: zod
+                    .object({
+                      Count: zod.number().optional(),
+                      containsItems: zod.array(zod.unknown()).optional(),
+                      displayInline: zod.boolean().optional(),
+                      display_name: zod.string().optional(),
+                      isInactive: zod.boolean().optional(),
+                      lore: zod.array(zod.string()).optional(),
+                      rarity: zod.string().optional(),
+                      recombobulated: zod.boolean().optional(),
+                      shiny: zod.boolean().optional(),
+                      source: zod.string().optional(),
+                      sourceTab: zod
+                        .object({
+                          icon: zod.string().optional(),
+                          name: zod.string().optional()
+                        })
+                        .optional(),
+                      texture_path: zod.string().optional(),
+                      wiki: zod.string().optional()
+                    })
+                    .optional(),
+                  necklace: zod
+                    .object({
+                      Count: zod.number().optional(),
+                      containsItems: zod.array(zod.unknown()).optional(),
+                      displayInline: zod.boolean().optional(),
+                      display_name: zod.string().optional(),
+                      isInactive: zod.boolean().optional(),
+                      lore: zod.array(zod.string()).optional(),
+                      rarity: zod.string().optional(),
+                      recombobulated: zod.boolean().optional(),
+                      shiny: zod.boolean().optional(),
+                      source: zod.string().optional(),
+                      sourceTab: zod
+                        .object({
+                          icon: zod.string().optional(),
+                          name: zod.string().optional()
+                        })
+                        .optional(),
+                      texture_path: zod.string().optional(),
+                      wiki: zod.string().optional()
+                    })
+                    .optional()
+                })
+                .optional(),
+              misc: zod
+                .array(
+                  zod.object({
+                    Count: zod.number().optional(),
+                    containsItems: zod.array(zod.unknown()).optional(),
+                    displayInline: zod.boolean().optional(),
+                    display_name: zod.string().optional(),
+                    isInactive: zod.boolean().optional(),
+                    lore: zod.array(zod.string()).optional(),
+                    rarity: zod.string().optional(),
+                    recombobulated: zod.boolean().optional(),
+                    shiny: zod.boolean().optional(),
+                    source: zod.string().optional(),
+                    sourceTab: zod
+                      .object({
+                        icon: zod.string().optional(),
+                        name: zod.string().optional()
+                      })
+                      .optional(),
+                    texture_path: zod.string().optional(),
+                    wiki: zod.string().optional()
+                  })
+                )
+                .optional(),
+              tools: zod
+                .array(
+                  zod.object({
+                    Count: zod.number().optional(),
+                    containsItems: zod.array(zod.unknown()).optional(),
+                    displayInline: zod.boolean().optional(),
+                    display_name: zod.string().optional(),
+                    isInactive: zod.boolean().optional(),
+                    lore: zod.array(zod.string()).optional(),
+                    rarity: zod.string().optional(),
+                    recombobulated: zod.boolean().optional(),
+                    shiny: zod.boolean().optional(),
+                    source: zod.string().optional(),
+                    sourceTab: zod
+                      .object({
+                        icon: zod.string().optional(),
+                        name: zod.string().optional()
+                      })
+                      .optional(),
+                    texture_path: zod.string().optional(),
+                    wiki: zod.string().optional()
+                  })
+                )
+                .optional()
+            })
+            .optional(),
           itemsFished: zod.number().optional(),
           lavaSeaCreatures: zod
             .array(
@@ -993,58 +1519,6 @@ export const GetCombinedProfileStatsResponse = zod.object({
           seaCreaturesFished: zod.number().optional(),
           shredderBait: zod.number().optional(),
           shredderFished: zod.number().optional(),
-          tools: zod
-            .object({
-              highest_priority_tool: zod
-                .object({
-                  Count: zod.number().optional(),
-                  containsItems: zod.array(zod.unknown()).optional(),
-                  displayInline: zod.boolean().optional(),
-                  display_name: zod.string().optional(),
-                  isInactive: zod.boolean().optional(),
-                  lore: zod.array(zod.string()).optional(),
-                  rarity: zod.string().optional(),
-                  recombobulated: zod.boolean().optional(),
-                  shiny: zod.boolean().optional(),
-                  source: zod.string().optional(),
-                  sourceTab: zod
-                    .object({
-                      icon: zod.string().optional(),
-                      name: zod.string().optional()
-                    })
-                    .optional(),
-                  texture_pack: zod.string().optional(),
-                  texture_path: zod.string().optional(),
-                  wiki: zod.string().optional()
-                })
-                .optional(),
-              tools: zod
-                .array(
-                  zod.object({
-                    Count: zod.number().optional(),
-                    containsItems: zod.array(zod.unknown()).optional(),
-                    displayInline: zod.boolean().optional(),
-                    display_name: zod.string().optional(),
-                    isInactive: zod.boolean().optional(),
-                    lore: zod.array(zod.string()).optional(),
-                    rarity: zod.string().optional(),
-                    recombobulated: zod.boolean().optional(),
-                    shiny: zod.boolean().optional(),
-                    source: zod.string().optional(),
-                    sourceTab: zod
-                      .object({
-                        icon: zod.string().optional(),
-                        name: zod.string().optional()
-                      })
-                      .optional(),
-                    texture_pack: zod.string().optional(),
-                    texture_path: zod.string().optional(),
-                    wiki: zod.string().optional()
-                  })
-                )
-                .optional()
-            })
-            .optional(),
           treasure: zod.number().optional(),
           treasureLarge: zod.number().optional(),
           trophyFish: zod
@@ -1121,6 +1595,248 @@ export const GetCombinedProfileStatsResponse = zod.object({
               xp: zod.number().optional(),
               xpCurrent: zod.number().optional(),
               xpForNext: zod.number().optional()
+            })
+            .optional(),
+          gear: zod
+            .object({
+              armor: zod
+                .object({
+                  game_stage: zod.string().optional(),
+                  pieces: zod
+                    .object({
+                      boots: zod
+                        .object({
+                          Count: zod.number().optional(),
+                          containsItems: zod.array(zod.unknown()).optional(),
+                          displayInline: zod.boolean().optional(),
+                          display_name: zod.string().optional(),
+                          isInactive: zod.boolean().optional(),
+                          lore: zod.array(zod.string()).optional(),
+                          rarity: zod.string().optional(),
+                          recombobulated: zod.boolean().optional(),
+                          shiny: zod.boolean().optional(),
+                          source: zod.string().optional(),
+                          sourceTab: zod
+                            .object({
+                              icon: zod.string().optional(),
+                              name: zod.string().optional()
+                            })
+                            .optional(),
+                          texture_path: zod.string().optional(),
+                          wiki: zod.string().optional()
+                        })
+                        .optional(),
+                      chestplate: zod
+                        .object({
+                          Count: zod.number().optional(),
+                          containsItems: zod.array(zod.unknown()).optional(),
+                          displayInline: zod.boolean().optional(),
+                          display_name: zod.string().optional(),
+                          isInactive: zod.boolean().optional(),
+                          lore: zod.array(zod.string()).optional(),
+                          rarity: zod.string().optional(),
+                          recombobulated: zod.boolean().optional(),
+                          shiny: zod.boolean().optional(),
+                          source: zod.string().optional(),
+                          sourceTab: zod
+                            .object({
+                              icon: zod.string().optional(),
+                              name: zod.string().optional()
+                            })
+                            .optional(),
+                          texture_path: zod.string().optional(),
+                          wiki: zod.string().optional()
+                        })
+                        .optional(),
+                      helmet: zod
+                        .object({
+                          Count: zod.number().optional(),
+                          containsItems: zod.array(zod.unknown()).optional(),
+                          displayInline: zod.boolean().optional(),
+                          display_name: zod.string().optional(),
+                          isInactive: zod.boolean().optional(),
+                          lore: zod.array(zod.string()).optional(),
+                          rarity: zod.string().optional(),
+                          recombobulated: zod.boolean().optional(),
+                          shiny: zod.boolean().optional(),
+                          source: zod.string().optional(),
+                          sourceTab: zod
+                            .object({
+                              icon: zod.string().optional(),
+                              name: zod.string().optional()
+                            })
+                            .optional(),
+                          texture_path: zod.string().optional(),
+                          wiki: zod.string().optional()
+                        })
+                        .optional(),
+                      leggings: zod
+                        .object({
+                          Count: zod.number().optional(),
+                          containsItems: zod.array(zod.unknown()).optional(),
+                          displayInline: zod.boolean().optional(),
+                          display_name: zod.string().optional(),
+                          isInactive: zod.boolean().optional(),
+                          lore: zod.array(zod.string()).optional(),
+                          rarity: zod.string().optional(),
+                          recombobulated: zod.boolean().optional(),
+                          shiny: zod.boolean().optional(),
+                          source: zod.string().optional(),
+                          sourceTab: zod
+                            .object({
+                              icon: zod.string().optional(),
+                              name: zod.string().optional()
+                            })
+                            .optional(),
+                          texture_path: zod.string().optional(),
+                          wiki: zod.string().optional()
+                        })
+                        .optional()
+                    })
+                    .optional(),
+                  set_id: zod.string().optional()
+                })
+                .optional(),
+              equipment: zod
+                .object({
+                  belt: zod
+                    .object({
+                      Count: zod.number().optional(),
+                      containsItems: zod.array(zod.unknown()).optional(),
+                      displayInline: zod.boolean().optional(),
+                      display_name: zod.string().optional(),
+                      isInactive: zod.boolean().optional(),
+                      lore: zod.array(zod.string()).optional(),
+                      rarity: zod.string().optional(),
+                      recombobulated: zod.boolean().optional(),
+                      shiny: zod.boolean().optional(),
+                      source: zod.string().optional(),
+                      sourceTab: zod
+                        .object({
+                          icon: zod.string().optional(),
+                          name: zod.string().optional()
+                        })
+                        .optional(),
+                      texture_path: zod.string().optional(),
+                      wiki: zod.string().optional()
+                    })
+                    .optional(),
+                  cloak: zod
+                    .object({
+                      Count: zod.number().optional(),
+                      containsItems: zod.array(zod.unknown()).optional(),
+                      displayInline: zod.boolean().optional(),
+                      display_name: zod.string().optional(),
+                      isInactive: zod.boolean().optional(),
+                      lore: zod.array(zod.string()).optional(),
+                      rarity: zod.string().optional(),
+                      recombobulated: zod.boolean().optional(),
+                      shiny: zod.boolean().optional(),
+                      source: zod.string().optional(),
+                      sourceTab: zod
+                        .object({
+                          icon: zod.string().optional(),
+                          name: zod.string().optional()
+                        })
+                        .optional(),
+                      texture_path: zod.string().optional(),
+                      wiki: zod.string().optional()
+                    })
+                    .optional(),
+                  gloves: zod
+                    .object({
+                      Count: zod.number().optional(),
+                      containsItems: zod.array(zod.unknown()).optional(),
+                      displayInline: zod.boolean().optional(),
+                      display_name: zod.string().optional(),
+                      isInactive: zod.boolean().optional(),
+                      lore: zod.array(zod.string()).optional(),
+                      rarity: zod.string().optional(),
+                      recombobulated: zod.boolean().optional(),
+                      shiny: zod.boolean().optional(),
+                      source: zod.string().optional(),
+                      sourceTab: zod
+                        .object({
+                          icon: zod.string().optional(),
+                          name: zod.string().optional()
+                        })
+                        .optional(),
+                      texture_path: zod.string().optional(),
+                      wiki: zod.string().optional()
+                    })
+                    .optional(),
+                  necklace: zod
+                    .object({
+                      Count: zod.number().optional(),
+                      containsItems: zod.array(zod.unknown()).optional(),
+                      displayInline: zod.boolean().optional(),
+                      display_name: zod.string().optional(),
+                      isInactive: zod.boolean().optional(),
+                      lore: zod.array(zod.string()).optional(),
+                      rarity: zod.string().optional(),
+                      recombobulated: zod.boolean().optional(),
+                      shiny: zod.boolean().optional(),
+                      source: zod.string().optional(),
+                      sourceTab: zod
+                        .object({
+                          icon: zod.string().optional(),
+                          name: zod.string().optional()
+                        })
+                        .optional(),
+                      texture_path: zod.string().optional(),
+                      wiki: zod.string().optional()
+                    })
+                    .optional()
+                })
+                .optional(),
+              misc: zod
+                .array(
+                  zod.object({
+                    Count: zod.number().optional(),
+                    containsItems: zod.array(zod.unknown()).optional(),
+                    displayInline: zod.boolean().optional(),
+                    display_name: zod.string().optional(),
+                    isInactive: zod.boolean().optional(),
+                    lore: zod.array(zod.string()).optional(),
+                    rarity: zod.string().optional(),
+                    recombobulated: zod.boolean().optional(),
+                    shiny: zod.boolean().optional(),
+                    source: zod.string().optional(),
+                    sourceTab: zod
+                      .object({
+                        icon: zod.string().optional(),
+                        name: zod.string().optional()
+                      })
+                      .optional(),
+                    texture_path: zod.string().optional(),
+                    wiki: zod.string().optional()
+                  })
+                )
+                .optional(),
+              tools: zod
+                .array(
+                  zod.object({
+                    Count: zod.number().optional(),
+                    containsItems: zod.array(zod.unknown()).optional(),
+                    displayInline: zod.boolean().optional(),
+                    display_name: zod.string().optional(),
+                    isInactive: zod.boolean().optional(),
+                    lore: zod.array(zod.string()).optional(),
+                    rarity: zod.string().optional(),
+                    recombobulated: zod.boolean().optional(),
+                    shiny: zod.boolean().optional(),
+                    source: zod.string().optional(),
+                    sourceTab: zod
+                      .object({
+                        icon: zod.string().optional(),
+                        name: zod.string().optional()
+                      })
+                      .optional(),
+                    texture_path: zod.string().optional(),
+                    wiki: zod.string().optional()
+                  })
+                )
+                .optional()
             })
             .optional(),
           hinaChapter: zod
@@ -1285,58 +2001,6 @@ export const GetCombinedProfileStatsResponse = zod.object({
               total: zod.number().optional()
             })
             .optional(),
-          tools: zod
-            .object({
-              highest_priority_tool: zod
-                .object({
-                  Count: zod.number().optional(),
-                  containsItems: zod.array(zod.unknown()).optional(),
-                  displayInline: zod.boolean().optional(),
-                  display_name: zod.string().optional(),
-                  isInactive: zod.boolean().optional(),
-                  lore: zod.array(zod.string()).optional(),
-                  rarity: zod.string().optional(),
-                  recombobulated: zod.boolean().optional(),
-                  shiny: zod.boolean().optional(),
-                  source: zod.string().optional(),
-                  sourceTab: zod
-                    .object({
-                      icon: zod.string().optional(),
-                      name: zod.string().optional()
-                    })
-                    .optional(),
-                  texture_pack: zod.string().optional(),
-                  texture_path: zod.string().optional(),
-                  wiki: zod.string().optional()
-                })
-                .optional(),
-              tools: zod
-                .array(
-                  zod.object({
-                    Count: zod.number().optional(),
-                    containsItems: zod.array(zod.unknown()).optional(),
-                    displayInline: zod.boolean().optional(),
-                    display_name: zod.string().optional(),
-                    isInactive: zod.boolean().optional(),
-                    lore: zod.array(zod.string()).optional(),
-                    rarity: zod.string().optional(),
-                    recombobulated: zod.boolean().optional(),
-                    shiny: zod.boolean().optional(),
-                    source: zod.string().optional(),
-                    sourceTab: zod
-                      .object({
-                        icon: zod.string().optional(),
-                        name: zod.string().optional()
-                      })
-                      .optional(),
-                    texture_pack: zod.string().optional(),
-                    texture_path: zod.string().optional(),
-                    wiki: zod.string().optional()
-                  })
-                )
-                .optional()
-            })
-            .optional(),
           treeGift: zod
             .record(
               zod.string(),
@@ -1414,6 +2078,248 @@ export const GetCombinedProfileStatsResponse = zod.object({
                 startingTime: zod.number().optional()
               })
             )
+            .optional(),
+          gear: zod
+            .object({
+              armor: zod
+                .object({
+                  game_stage: zod.string().optional(),
+                  pieces: zod
+                    .object({
+                      boots: zod
+                        .object({
+                          Count: zod.number().optional(),
+                          containsItems: zod.array(zod.unknown()).optional(),
+                          displayInline: zod.boolean().optional(),
+                          display_name: zod.string().optional(),
+                          isInactive: zod.boolean().optional(),
+                          lore: zod.array(zod.string()).optional(),
+                          rarity: zod.string().optional(),
+                          recombobulated: zod.boolean().optional(),
+                          shiny: zod.boolean().optional(),
+                          source: zod.string().optional(),
+                          sourceTab: zod
+                            .object({
+                              icon: zod.string().optional(),
+                              name: zod.string().optional()
+                            })
+                            .optional(),
+                          texture_path: zod.string().optional(),
+                          wiki: zod.string().optional()
+                        })
+                        .optional(),
+                      chestplate: zod
+                        .object({
+                          Count: zod.number().optional(),
+                          containsItems: zod.array(zod.unknown()).optional(),
+                          displayInline: zod.boolean().optional(),
+                          display_name: zod.string().optional(),
+                          isInactive: zod.boolean().optional(),
+                          lore: zod.array(zod.string()).optional(),
+                          rarity: zod.string().optional(),
+                          recombobulated: zod.boolean().optional(),
+                          shiny: zod.boolean().optional(),
+                          source: zod.string().optional(),
+                          sourceTab: zod
+                            .object({
+                              icon: zod.string().optional(),
+                              name: zod.string().optional()
+                            })
+                            .optional(),
+                          texture_path: zod.string().optional(),
+                          wiki: zod.string().optional()
+                        })
+                        .optional(),
+                      helmet: zod
+                        .object({
+                          Count: zod.number().optional(),
+                          containsItems: zod.array(zod.unknown()).optional(),
+                          displayInline: zod.boolean().optional(),
+                          display_name: zod.string().optional(),
+                          isInactive: zod.boolean().optional(),
+                          lore: zod.array(zod.string()).optional(),
+                          rarity: zod.string().optional(),
+                          recombobulated: zod.boolean().optional(),
+                          shiny: zod.boolean().optional(),
+                          source: zod.string().optional(),
+                          sourceTab: zod
+                            .object({
+                              icon: zod.string().optional(),
+                              name: zod.string().optional()
+                            })
+                            .optional(),
+                          texture_path: zod.string().optional(),
+                          wiki: zod.string().optional()
+                        })
+                        .optional(),
+                      leggings: zod
+                        .object({
+                          Count: zod.number().optional(),
+                          containsItems: zod.array(zod.unknown()).optional(),
+                          displayInline: zod.boolean().optional(),
+                          display_name: zod.string().optional(),
+                          isInactive: zod.boolean().optional(),
+                          lore: zod.array(zod.string()).optional(),
+                          rarity: zod.string().optional(),
+                          recombobulated: zod.boolean().optional(),
+                          shiny: zod.boolean().optional(),
+                          source: zod.string().optional(),
+                          sourceTab: zod
+                            .object({
+                              icon: zod.string().optional(),
+                              name: zod.string().optional()
+                            })
+                            .optional(),
+                          texture_path: zod.string().optional(),
+                          wiki: zod.string().optional()
+                        })
+                        .optional()
+                    })
+                    .optional(),
+                  set_id: zod.string().optional()
+                })
+                .optional(),
+              equipment: zod
+                .object({
+                  belt: zod
+                    .object({
+                      Count: zod.number().optional(),
+                      containsItems: zod.array(zod.unknown()).optional(),
+                      displayInline: zod.boolean().optional(),
+                      display_name: zod.string().optional(),
+                      isInactive: zod.boolean().optional(),
+                      lore: zod.array(zod.string()).optional(),
+                      rarity: zod.string().optional(),
+                      recombobulated: zod.boolean().optional(),
+                      shiny: zod.boolean().optional(),
+                      source: zod.string().optional(),
+                      sourceTab: zod
+                        .object({
+                          icon: zod.string().optional(),
+                          name: zod.string().optional()
+                        })
+                        .optional(),
+                      texture_path: zod.string().optional(),
+                      wiki: zod.string().optional()
+                    })
+                    .optional(),
+                  cloak: zod
+                    .object({
+                      Count: zod.number().optional(),
+                      containsItems: zod.array(zod.unknown()).optional(),
+                      displayInline: zod.boolean().optional(),
+                      display_name: zod.string().optional(),
+                      isInactive: zod.boolean().optional(),
+                      lore: zod.array(zod.string()).optional(),
+                      rarity: zod.string().optional(),
+                      recombobulated: zod.boolean().optional(),
+                      shiny: zod.boolean().optional(),
+                      source: zod.string().optional(),
+                      sourceTab: zod
+                        .object({
+                          icon: zod.string().optional(),
+                          name: zod.string().optional()
+                        })
+                        .optional(),
+                      texture_path: zod.string().optional(),
+                      wiki: zod.string().optional()
+                    })
+                    .optional(),
+                  gloves: zod
+                    .object({
+                      Count: zod.number().optional(),
+                      containsItems: zod.array(zod.unknown()).optional(),
+                      displayInline: zod.boolean().optional(),
+                      display_name: zod.string().optional(),
+                      isInactive: zod.boolean().optional(),
+                      lore: zod.array(zod.string()).optional(),
+                      rarity: zod.string().optional(),
+                      recombobulated: zod.boolean().optional(),
+                      shiny: zod.boolean().optional(),
+                      source: zod.string().optional(),
+                      sourceTab: zod
+                        .object({
+                          icon: zod.string().optional(),
+                          name: zod.string().optional()
+                        })
+                        .optional(),
+                      texture_path: zod.string().optional(),
+                      wiki: zod.string().optional()
+                    })
+                    .optional(),
+                  necklace: zod
+                    .object({
+                      Count: zod.number().optional(),
+                      containsItems: zod.array(zod.unknown()).optional(),
+                      displayInline: zod.boolean().optional(),
+                      display_name: zod.string().optional(),
+                      isInactive: zod.boolean().optional(),
+                      lore: zod.array(zod.string()).optional(),
+                      rarity: zod.string().optional(),
+                      recombobulated: zod.boolean().optional(),
+                      shiny: zod.boolean().optional(),
+                      source: zod.string().optional(),
+                      sourceTab: zod
+                        .object({
+                          icon: zod.string().optional(),
+                          name: zod.string().optional()
+                        })
+                        .optional(),
+                      texture_path: zod.string().optional(),
+                      wiki: zod.string().optional()
+                    })
+                    .optional()
+                })
+                .optional(),
+              misc: zod
+                .array(
+                  zod.object({
+                    Count: zod.number().optional(),
+                    containsItems: zod.array(zod.unknown()).optional(),
+                    displayInline: zod.boolean().optional(),
+                    display_name: zod.string().optional(),
+                    isInactive: zod.boolean().optional(),
+                    lore: zod.array(zod.string()).optional(),
+                    rarity: zod.string().optional(),
+                    recombobulated: zod.boolean().optional(),
+                    shiny: zod.boolean().optional(),
+                    source: zod.string().optional(),
+                    sourceTab: zod
+                      .object({
+                        icon: zod.string().optional(),
+                        name: zod.string().optional()
+                      })
+                      .optional(),
+                    texture_path: zod.string().optional(),
+                    wiki: zod.string().optional()
+                  })
+                )
+                .optional(),
+              tools: zod
+                .array(
+                  zod.object({
+                    Count: zod.number().optional(),
+                    containsItems: zod.array(zod.unknown()).optional(),
+                    displayInline: zod.boolean().optional(),
+                    display_name: zod.string().optional(),
+                    isInactive: zod.boolean().optional(),
+                    lore: zod.array(zod.string()).optional(),
+                    rarity: zod.string().optional(),
+                    recombobulated: zod.boolean().optional(),
+                    shiny: zod.boolean().optional(),
+                    source: zod.string().optional(),
+                    sourceTab: zod
+                      .object({
+                        icon: zod.string().optional(),
+                        name: zod.string().optional()
+                      })
+                      .optional(),
+                    texture_path: zod.string().optional(),
+                    wiki: zod.string().optional()
+                  })
+                )
+                .optional()
+            })
             .optional(),
           glaciteTunnels: zod
             .object({
@@ -1651,58 +2557,6 @@ export const GetCombinedProfileStatsResponse = zod.object({
               available: zod.number().optional(),
               spent: zod.number().optional(),
               total: zod.number().optional()
-            })
-            .optional(),
-          tools: zod
-            .object({
-              highest_priority_tool: zod
-                .object({
-                  Count: zod.number().optional(),
-                  containsItems: zod.array(zod.unknown()).optional(),
-                  displayInline: zod.boolean().optional(),
-                  display_name: zod.string().optional(),
-                  isInactive: zod.boolean().optional(),
-                  lore: zod.array(zod.string()).optional(),
-                  rarity: zod.string().optional(),
-                  recombobulated: zod.boolean().optional(),
-                  shiny: zod.boolean().optional(),
-                  source: zod.string().optional(),
-                  sourceTab: zod
-                    .object({
-                      icon: zod.string().optional(),
-                      name: zod.string().optional()
-                    })
-                    .optional(),
-                  texture_pack: zod.string().optional(),
-                  texture_path: zod.string().optional(),
-                  wiki: zod.string().optional()
-                })
-                .optional(),
-              tools: zod
-                .array(
-                  zod.object({
-                    Count: zod.number().optional(),
-                    containsItems: zod.array(zod.unknown()).optional(),
-                    displayInline: zod.boolean().optional(),
-                    display_name: zod.string().optional(),
-                    isInactive: zod.boolean().optional(),
-                    lore: zod.array(zod.string()).optional(),
-                    rarity: zod.string().optional(),
-                    recombobulated: zod.boolean().optional(),
-                    shiny: zod.boolean().optional(),
-                    source: zod.string().optional(),
-                    sourceTab: zod
-                      .object({
-                        icon: zod.string().optional(),
-                        name: zod.string().optional()
-                      })
-                      .optional(),
-                    texture_pack: zod.string().optional(),
-                    texture_path: zod.string().optional(),
-                    wiki: zod.string().optional()
-                  })
-                )
-                .optional()
             })
             .optional()
         })
@@ -2164,7 +3018,6 @@ export const SearchProfileInventoryResponseItem = zod.object({
       name: zod.string().optional()
     })
     .optional(),
-  texture_pack: zod.string().optional(),
   texture_path: zod.string().optional(),
   wiki: zod.string().optional()
 });
@@ -2200,7 +3053,6 @@ export const GetProfileInventoryResponseItem = zod.object({
             name: zod.string().optional()
           })
           .optional(),
-        texture_pack: zod.string().optional(),
         texture_path: zod.string().optional(),
         wiki: zod.string().optional()
       })
@@ -2222,6 +3074,19 @@ export const RenderItemImageParams = zod.object({
 });
 
 export const RenderItemImageResponse = zod.file();
+
+/**
+ * Returns the final texture URL and the resource pack that supplied it.
+ * @summary Resolve an item texture
+ */
+export const ResolveItemImageParams = zod.object({
+  itemId: zod.string().describe("SkyBlock item ID or Minecraft item identifier")
+});
+
+export const ResolveItemImageResponse = zod.object({
+  texture: zod.string().optional(),
+  texture_pack: zod.string().optional()
+});
 
 /**
  * Renders a dyed leather armor piece as PNG bytes for the requested armor piece and color.
@@ -2313,13 +3178,13 @@ export const RenderPotionImageParams = zod.object({
 export const RenderPotionImageResponse = zod.file();
 
 /**
- * Returns toggleable resource packs available to SkyCrypt clients.
+ * Returns toggleable resource packs sorted by descending priority for the recommended default order.
+ * The enabledPacks cookie controls per-request rendering order and does not change this response order.
  * The vanilla resource pack is intentionally omitted because it is the default and cannot be disabled.
  * @summary List resource packs
  */
 export const ListResourcePacksResponseItem = zod.object({
   author: zod.string().optional(),
-  disabled: zod.boolean().optional(),
   icon: zod.string().optional(),
   id: zod.string().optional(),
   name: zod.string().optional(),

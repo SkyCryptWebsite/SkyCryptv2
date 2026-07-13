@@ -3,10 +3,8 @@
   import { Item } from "$lib/components/item";
   import { Chip, ScrollItems } from "$lib/components/misc";
   import { SectionSubtitle } from "$lib/components/sections";
-  import { AdditionStat } from "$lib/components/stats";
+  import { AdditionStat, SkillGear } from "$lib/components/stats";
   import Items from "$lib/layouts/stats/Items.svelte";
-  import { renderLore } from "$lib/shared/helper";
-  import { animateObfuscatedText } from "$lib/shared/mc-text/obfuscated";
   import { cn } from "$lib/shared/utils";
   import EmptyStat from "$src/lib/components/EmptyStat.svelte";
   import ScrollAreaItems from "$src/lib/components/ScrollAreaItems.svelte";
@@ -24,29 +22,13 @@
 
   const data = $derived(getSkillsContext().skills);
   const mining = $derived(data?.mining);
-  const miningTools = $derived(mining?.tools);
-  const highestPriorityMiningTool = $derived(miningTools?.highest_priority_tool);
 </script>
 
 <div class="space-y-4 contents">
   {#if mining}
     <div class="border p-4 rounded-xl">
-      <SectionSubtitle>Mining Tools</SectionSubtitle>
-      {#if miningTools && miningTools.tools && miningTools.tools.length > 0}
-        {#if highestPriorityMiningTool && highestPriorityMiningTool.display_name}
-          <p class="space-x-0.5 leading-6 font-bold text-foreground/60 capitalize" {@attach animateObfuscatedText}>
-            <span>Active Tool:</span>
-            {@html renderLore(highestPriorityMiningTool.display_name)}
-          </p>
-        {/if}
-        <ScrollAreaItems>
-          {#each miningTools.tools as tool, index (index)}
-            <Item piece={tool} />
-          {/each}
-        </ScrollAreaItems>
-      {:else}
-        <EmptyStat title="Mining Tools" description="This player doesn't have any mining tools" icon={PickaxeIcon} class="mt-2" />
-      {/if}
+      <SectionSubtitle>Mining Gear</SectionSubtitle>
+      <SkillGear gear={mining.gear} skill="mining" />
     </div>
 
     <div class="border p-4 rounded-xl">

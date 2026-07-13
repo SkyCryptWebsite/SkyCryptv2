@@ -1,9 +1,8 @@
 <script lang="ts">
   import { getSkillsContext } from "$ctx";
-  import { Item } from "$lib/components/item";
   import { Chip } from "$lib/components/misc";
   import { SectionSubtitle } from "$lib/components/sections";
-  import { AdditionStat } from "$lib/components/stats";
+  import { AdditionStat, SkillGear } from "$lib/components/stats";
   import { renderLore, titleCase } from "$lib/shared/helper";
   import { animateObfuscatedText } from "$lib/shared/mc-text/obfuscated";
   import CollapsibleCustomTrigger from "$src/lib/components/CollapsibleCustomTrigger.svelte";
@@ -43,8 +42,6 @@
 
   const data = $derived(getSkillsContext().skills);
   const fishing = $derived(data?.fishing);
-  const fishingTools = $derived(fishing?.tools);
-  const highestPriorityFishingTool = $derived(fishingTools?.highest_priority_tool);
 </script>
 
 {#if fishing}
@@ -62,25 +59,8 @@
     </div>
 
     <div class="border p-4 rounded-xl">
-      <SectionSubtitle>Fishing Rods</SectionSubtitle>
-      {#if fishingTools && fishingTools.tools && fishingTools.tools.length > 0}
-        <div class="space-y-2">
-          {#if highestPriorityFishingTool && highestPriorityFishingTool.display_name}
-            <p class="space-x-0.5 leading-6 font-bold text-foreground/60 capitalize" {@attach animateObfuscatedText}>
-              <span>Active Rod:</span>
-              {@html renderLore(highestPriorityFishingTool.display_name)}
-            </p>
-          {/if}
-        </div>
-
-        <ScrollAreaItems>
-          {#each fishingTools.tools as tool, index (index)}
-            <Item piece={tool} />
-          {/each}
-        </ScrollAreaItems>
-      {:else}
-        <EmptyStat title="Fishing Tools" description="This player doesn't have any fishing tools" icon={FishingHookIcon} class="mt-2" />
-      {/if}
+      <SectionSubtitle>Fishing Gear</SectionSubtitle>
+      <SkillGear gear={fishing.gear} skill="fishing" />
     </div>
 
     {#if fishing.waterSeaCreatures}

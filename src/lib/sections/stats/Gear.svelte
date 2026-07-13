@@ -1,10 +1,10 @@
 <script lang="ts">
   import { getCombinedContext } from "$ctx";
   import EmptyStat from "$lib/components/EmptyStat.svelte";
-  import { EmptyEquipment, Item } from "$lib/components/item";
+  import { EmptyItemSlot, Item } from "$lib/components/item";
   import { Wardrobe } from "$lib/components/misc";
   import { Section } from "$lib/components/sections";
-  import { Bonus } from "$lib/components/stats";
+  import { Bonus, Loadouts } from "$lib/components/stats";
   import { getRarityClass, renderLore } from "$lib/shared/helper";
   import { animateObfuscatedText } from "$lib/shared/mc-text/obfuscated";
   import { cn } from "$lib/shared/utils";
@@ -20,10 +20,17 @@
   const armor = $derived(gear?.armor);
   const equipment = $derived(gear?.equipment);
   const wardrobe = $derived(gear?.wardrobe);
+  const equipmentWardrobe = $derived(gear?.equipmentWardrobe);
   const weapons = $derived(gear?.weapons);
+  const loadouts = $derived(getCombinedContext().current?.loadouts ?? []);
+  const armorSlots = ["helmet", "chestplate", "leggings", "boots"] as const;
   const firstWardrobeItems = $derived.by(() => {
     if (wardrobe?.length === 0) return [];
     return wardrobe?.map((wardrobeItems) => wardrobeItems.find((piece) => piece));
+  });
+  const firstEquipmentWardrobeItems = $derived.by(() => {
+    if (equipmentWardrobe?.length === 0) return [];
+    return equipmentWardrobe?.map((wardrobeItems) => wardrobeItems.find((piece) => piece));
   });
 </script>
 
@@ -52,7 +59,7 @@
             {#if piece && piece.display_name}
               <Item {piece} />
             {:else}
-              <EmptyEquipment {index} />
+              <EmptyItemSlot slot={armorSlots[index] ?? "helmet"} />
             {/if}
           {/each}
         </ScrollAreaItems>
@@ -80,6 +87,13 @@
     </div>
   {/if}
 
+  {#if loadouts.length > 0}
+    <div class="border rounded-xl p-4 space-y-4">
+      <SectionSubtitle>Loadouts</SectionSubtitle>
+      <Loadouts {loadouts} />
+    </div>
+  {/if}
+
   {#if wardrobe && wardrobe.length > 0}
     <div class="border rounded-xl p-4">
       <SectionSubtitle>Wardrobe</SectionSubtitle>
@@ -89,6 +103,24 @@
             {#each firstWardrobeItems as _, i (i)}
               <div class="min-h-18 min-w-18">
                 <Wardrobe wardrobeItems={wardrobe[i]} />
+              </div>
+            {/each}
+            <div class="pointer-events-none sticky h-82 -right-2 z-10 -ml-42 w-36 self-stretch bg-linear-to-l from-background/80 to-transparent blur-xs scroll-fade-x md:-ml-39"></div>
+          </div>
+        </ScrollAreaItems>
+      </div>
+    </div>
+  {/if}
+
+  {#if equipmentWardrobe && equipmentWardrobe.length > 0}
+    <div class="border rounded-xl p-4">
+      <SectionSubtitle>Equipment Wardrobe</SectionSubtitle>
+      <div class="max-w-full">
+        <ScrollAreaItems class="relative w-full" viewportClasses="scroll-fade-track-x min-h-86" orientation="horizontal">
+          <div class="relative flex flex-row gap-6 md:gap-3">
+            {#each firstEquipmentWardrobeItems as _, i (i)}
+              <div class="min-h-18 min-w-18">
+                <Wardrobe wardrobeItems={equipmentWardrobe[i]} kind="equipment" />
               </div>
             {/each}
             <div class="pointer-events-none sticky h-82 -right-2 z-10 -ml-42 w-36 self-stretch bg-linear-to-l from-background/80 to-transparent blur-xs scroll-fade-x md:-ml-39"></div>

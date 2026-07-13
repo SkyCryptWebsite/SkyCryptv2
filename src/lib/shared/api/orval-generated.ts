@@ -25,7 +25,6 @@ export interface ModelsStrippedItem {
   shiny?: boolean;
   source?: string;
   sourceTab?: ModelsSourceTab;
-  texture_pack?: string;
   texture_path?: string;
   wiki?: string;
 }
@@ -309,8 +308,42 @@ export interface ModelsWeaponsResult {
 export interface ModelsGear {
   armor?: ModelsArmorResult;
   equipment?: ModelsEquipmentResult;
+  equipmentWardrobe?: ModelsStrippedItem[][];
   wardrobe?: ModelsStrippedItem[][];
   weapons?: ModelsWeaponsResult;
+}
+
+export type ModelsLoadoutAccessoriesTuningPoints = { [key: string]: number };
+
+export interface ModelsLoadoutAccessories {
+  powerStone?: string;
+  tuningPoints?: ModelsLoadoutAccessoriesTuningPoints;
+  tuningPointsSlot?: number;
+}
+
+export type ModelsStrippedPetStats = { [key: string]: number };
+
+export interface ModelsStrippedPet {
+  active?: boolean;
+  display_name?: string;
+  level?: number;
+  lore?: string[];
+  maxLevel?: number;
+  rarity?: string;
+  stats?: ModelsStrippedPetStats;
+  texture_path?: string;
+  type?: string;
+}
+
+export interface ModelsResolvedLoadout {
+  accessories?: ModelsLoadoutAccessories;
+  armor?: ModelsStrippedItem[];
+  equipment?: ModelsStrippedItem[];
+  foragingCoreSelectedSlot?: number;
+  id?: number;
+  miningCoreSelectedSlot?: number;
+  name?: string;
+  pet?: ModelsStrippedPet;
 }
 
 export interface ModelsMinion {
@@ -475,20 +508,6 @@ export interface ModelsMiscOutput {
   uncategorized?: ModelsMiscOutputUncategorized;
 }
 
-export type ModelsStrippedPetStats = { [key: string]: number };
-
-export interface ModelsStrippedPet {
-  active?: boolean;
-  display_name?: string;
-  level?: number;
-  lore?: string[];
-  maxLevel?: number;
-  rarity?: string;
-  stats?: ModelsStrippedPetStats;
-  texture_path?: string;
-  type?: string;
-}
-
 export interface ModelsPetScoreReward {
   bonus?: number;
   score?: number;
@@ -602,14 +621,36 @@ export interface ModelsContest {
   texture?: string;
 }
 
+export interface ModelsSkillArmorPieces {
+  boots?: ModelsStrippedItem;
+  chestplate?: ModelsStrippedItem;
+  helmet?: ModelsStrippedItem;
+  leggings?: ModelsStrippedItem;
+}
+
+export interface ModelsSkillArmorSet {
+  game_stage?: string;
+  pieces?: ModelsSkillArmorPieces;
+  set_id?: string;
+}
+
+export interface ModelsSkillEquipment {
+  belt?: ModelsStrippedItem;
+  cloak?: ModelsStrippedItem;
+  gloves?: ModelsStrippedItem;
+  necklace?: ModelsStrippedItem;
+}
+
+export interface ModelsSkillGear {
+  armor?: ModelsSkillArmorSet;
+  equipment?: ModelsSkillEquipment;
+  misc?: ModelsStrippedItem[];
+  tools?: ModelsStrippedItem[];
+}
+
 export interface ModelsMedal {
   amount?: number;
   total?: number;
-}
-
-export interface ModelsSkillToolsResult {
-  highest_priority_tool?: ModelsStrippedItem;
-  tools?: ModelsStrippedItem[];
 }
 
 export type ModelsFarmingOutputContests = { [key: string]: ModelsContest };
@@ -620,9 +661,9 @@ export interface ModelsFarmingOutput {
   contests?: ModelsFarmingOutputContests;
   contestsAttended?: number;
   copper?: number;
+  gear?: ModelsSkillGear;
   medals?: ModelsFarmingOutputMedals;
   pelts?: number;
-  tools?: ModelsSkillToolsResult;
   uniqueGolds?: number;
 }
 
@@ -663,12 +704,12 @@ export interface ModelsTrophyFishOutput {
 }
 
 export interface ModelsFishingOuput {
+  gear?: ModelsSkillGear;
   itemsFished?: number;
   lavaSeaCreatures?: ModelsKill[];
   seaCreaturesFished?: number;
   shredderBait?: number;
   shredderFished?: number;
-  tools?: ModelsSkillToolsResult;
   treasure?: number;
   treasureLarge?: number;
   trophyFish?: ModelsTrophyFishOutput;
@@ -838,12 +879,12 @@ export interface ModelsForagingOutput {
   cotf?: ModelsCenterOfTheForest;
   fishFamily?: ModelsFishFamily;
   foragingLevel?: ModelsSkill;
+  gear?: ModelsSkillGear;
   hinaChapter?: ModelsHinaChapter;
   hotf?: ModelsProcessedItem[];
   level?: ModelsSkill;
   selectedAxeAbility?: string;
   tokens?: ModelsHotfTokens;
-  tools?: ModelsSkillToolsResult;
   treeGift?: ModelsForagingOutputTreeGift;
   whispers?: ModelsWhispers;
 }
@@ -934,6 +975,7 @@ export interface ModelsMiningOutput {
   commissions?: ModelsCommissions;
   crystalHollows?: ModelsCrystalHollows;
   forge?: ModelsForgeOutput[];
+  gear?: ModelsSkillGear;
   glaciteTunnels?: ModelsGlaciteTunnels;
   hotm?: ModelsProcessedItem[];
   level?: ModelsSkill;
@@ -942,7 +984,6 @@ export interface ModelsMiningOutput {
   powder?: ModelsPowderOutput;
   selectedPickaxeAbility?: string;
   tokens?: ModelsHotmTokens;
-  tools?: ModelsSkillToolsResult;
 }
 
 export interface ModelsSkillsOutput {
@@ -988,6 +1029,7 @@ export interface ModelsCombinedOutput {
   crimsonIsle?: ModelsCrimsonIsleOutput;
   dungeons?: ModelsDungeonsOutput;
   gear?: ModelsGear;
+  loadouts?: ModelsResolvedLoadout[];
   minions?: ModelsMinionsOutput;
   misc?: ModelsMiscOutput;
   pets?: ModelsOutputPets;
@@ -1195,7 +1237,6 @@ export interface ModelsProfilesStats {
 
 export interface ModelsResourcePackConfig {
   author?: string;
-  disabled?: boolean;
   icon?: string;
   id?: string;
   name?: string;
@@ -1264,6 +1305,11 @@ export interface ModelsStatsOutput {
   uuid?: string;
 }
 
+export interface RoutesItemTextureResolution {
+  texture?: string;
+  texture_pack?: string;
+}
+
 export interface SkycrypttypesItem {
   Count?: number;
   Damage?: number;
@@ -1302,7 +1348,7 @@ export const getGetCombinedProfileStatsUrl = (uuid: string, profileId: string) =
 };
 
 /**
- * Returns the combined SkyCrypt payload for a player's SkyBlock profile, including gear, accessories, pets, skills, dungeons, slayers, collections, minions, bestiary, and other profile sections.
+ * Returns the combined SkyCrypt payload for a player's SkyBlock profile, including gear, saved loadouts, accessories, pets, skills, dungeons, slayers, collections, minions, bestiary, and other profile sections.
  * Resource pack preferences supplied by cookie can affect rendered item texture URLs in the response.
  * @summary Get combined profile data
  */
@@ -1650,6 +1696,45 @@ export const renderItemImage = async (itemId: string, options?: RequestInit): Pr
   });
 };
 
+export type resolveItemImageResponse200 = {
+  data: RoutesItemTextureResolution;
+  status: 200;
+};
+
+export type resolveItemImageResponse400 = {
+  data: ModelsProcessingError;
+  status: 400;
+};
+
+export type resolveItemImageResponse500 = {
+  data: ModelsProcessingError;
+  status: 500;
+};
+
+export type resolveItemImageResponseSuccess = resolveItemImageResponse200 & {
+  headers: Headers;
+};
+export type resolveItemImageResponseError = (resolveItemImageResponse400 | resolveItemImageResponse500) & {
+  headers: Headers;
+};
+
+export type resolveItemImageResponse = resolveItemImageResponseSuccess | resolveItemImageResponseError;
+
+export const getResolveItemImageUrl = (itemId: string) => {
+  return `/api/item/${itemId}/resolve`;
+};
+
+/**
+ * Returns the final texture URL and the resource pack that supplied it.
+ * @summary Resolve an item texture
+ */
+export const resolveItemImage = async (itemId: string, options?: RequestInit): Promise<resolveItemImageResponse> => {
+  return customFetch<resolveItemImageResponse>(getResolveItemImageUrl(itemId), {
+    ...options,
+    method: "GET"
+  });
+};
+
 export type renderLeatherArmorImageResponse200ApplicationJson = {
   data: unknown;
   status: 200;
@@ -1847,7 +1932,8 @@ export const getListResourcePacksUrl = () => {
 };
 
 /**
- * Returns toggleable resource packs available to SkyCrypt clients.
+ * Returns toggleable resource packs sorted by descending priority for the recommended default order.
+ * The enabledPacks cookie controls per-request rendering order and does not change this response order.
  * The vanilla resource pack is intentionally omitted because it is the default and cannot be disabled.
  * @summary List resource packs
  */

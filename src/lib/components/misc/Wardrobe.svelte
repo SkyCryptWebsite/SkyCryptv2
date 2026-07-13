@@ -1,16 +1,18 @@
 <script lang="ts">
-  import { EmptyEquipment, Item } from "$lib/components/item";
+  import type { EmptyItemSlotType } from "$lib/components/item/EmptyItemSlot.svelte";
+  import GearSlotColumn from "$lib/components/item/GearSlotColumn.svelte";
   import type { ModelsStrippedItem } from "$lib/shared/api/orval-generated";
 
-  const { wardrobeItems }: { wardrobeItems: ModelsStrippedItem[] } = $props();
+  type Props = {
+    wardrobeItems: ModelsStrippedItem[];
+    kind?: "armor" | "equipment";
+  };
+
+  let { wardrobeItems, kind = "armor" }: Props = $props();
+
+  const armorSlots = ["helmet", "chestplate", "leggings", "boots"] as const satisfies EmptyItemSlotType[];
+  const equipmentSlots = ["necklace", "cloak", "belt", "gloves"] as const satisfies EmptyItemSlotType[];
+  const emptySlots = $derived(kind === "armor" ? armorSlots : equipmentSlots);
 </script>
 
-<div class="mt-2 flex flex-col gap-2">
-  {#each wardrobeItems as piece, index (index)}
-    {#if piece && piece.display_name}
-      <Item {piece} />
-    {:else}
-      <EmptyEquipment {index} />
-    {/if}
-  {/each}
-</div>
+<GearSlotColumn items={wardrobeItems} {emptySlots} class="mt-2" />
