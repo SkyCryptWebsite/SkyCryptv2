@@ -26,7 +26,7 @@
 
 <div class="space-y-4 contents">
   {#if mining}
-    <div class="border p-4 rounded-xl">
+    <div class="border p-4 rounded-xl space-y-4">
       <SectionSubtitle>Mining Gear</SectionSubtitle>
       <SkillGear gear={mining.gear} skill="mining" />
     </div>

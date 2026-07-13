@@ -12,7 +12,6 @@
   import * as Collapsible from "$ui/collapsible";
   import { Separator } from "$ui/separator";
   import FishIcon from "@lucide/svelte/icons/fish";
-  import FishingHookIcon from "@lucide/svelte/icons/fishing-hook";
   import Image from "@lucide/svelte/icons/image";
   import { Avatar } from "bits-ui";
   import { format } from "numerable";
@@ -58,7 +57,7 @@
       </div>
     </div>
 
-    <div class="border p-4 rounded-xl">
+    <div class="border p-4 rounded-xl space-y-4">
       <SectionSubtitle>Fishing Gear</SectionSubtitle>
       <SkillGear gear={fishing.gear} skill="fishing" />
     </div>

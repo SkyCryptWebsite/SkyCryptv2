@@ -75,7 +75,7 @@
         </div>
       </div>
     {/if}
-    <div class="border p-4 rounded-xl">
+    <div class="border p-4 rounded-xl space-y-4">
       <SectionSubtitle>Farming Gear</SectionSubtitle>
       <SkillGear gear={farming.gear} skill="farming" />
     </div>

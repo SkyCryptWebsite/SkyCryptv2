@@ -68,7 +68,7 @@
       {/if}
     </div>
 
-    <div class="border p-4 rounded-xl">
+    <div class="border p-4 rounded-xl space-y-4">
       <SectionSubtitle>Foraging Gear</SectionSubtitle>
       <SkillGear gear={foraging.gear} skill="foraging" />
     </div>

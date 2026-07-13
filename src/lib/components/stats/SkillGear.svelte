@@ -30,7 +30,7 @@
 </script>
 
 <div class="max-w-full overflow-x-auto pb-2">
-  <div class="flex w-max min-w-full items-start justify-center gap-4 px-1">
+  <div class="flex w-max min-w-full items-start justify-start gap-4 px-1">
     <GearSlotColumn label="Armor" items={armor} emptySlots={armorSlots} />
     <GearSlotColumn label="Equip." items={equipment} emptySlots={equipmentSlots} />
     <GearSlotColumn label="Tools" items={tools} emptySlots={toolEmptySlots} />
