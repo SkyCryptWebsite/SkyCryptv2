@@ -13,7 +13,7 @@
   import Stats from "$lib/layouts/stats/Stats.svelte";
   import Sections from "$lib/sections/Sections.svelte";
   import type { ModelsStatsOutput } from "$lib/shared/api/orval-generated";
-  import { getCombined } from "$lib/shared/api/skycrypt-api.remote";
+  import { getCombinedProfileStats } from "$lib/shared/api/skycrypt-api.remote";
   import * as Dialog from "$ui/dialog";
   import * as Drawer from "$ui/drawer";
   import Image from "@lucide/svelte/icons/image";
@@ -48,7 +48,7 @@
   const combinedClass = new CombinedContext();
   setProfileContext(profileClass);
   setCombinedContext(combinedClass);
-  const combined = $derived(ctx.uuid && ctx.profile_id ? await getCombined({ uuid: ctx.uuid, profileId: ctx.profile_id }) : null);
+  const combined = $derived(ctx.uuid && ctx.profile_id ? await getCombinedProfileStats({ uuid: ctx.uuid, profileId: ctx.profile_id }) : null);
 
   function rewriteURL() {
     if (!(ctx as ModelsStatsOutput)) return;

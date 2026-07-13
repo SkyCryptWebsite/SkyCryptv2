@@ -7,7 +7,7 @@
   import PostCard from "$lib/components/newsroom/PostCard.svelte";
   import { Notice } from "$lib/components/notices";
   import { listPosts } from "$lib/shared/api/cms-api.remote";
-  import { searchUser } from "$lib/shared/api/skycrypt-api.remote";
+  import { resolveUuidByUsername } from "$lib/shared/api/skycrypt-api.remote";
   import { getContributors } from "$routes/contributors.remote";
   import { Button } from "$ui/button";
   import * as ButtonGroup from "$ui/button-group";
@@ -98,7 +98,7 @@
     submittedSearchError = undefined;
 
     try {
-      const response = await searchUser({ username });
+      const response = await resolveUuidByUsername({ username });
       await goto(resolve("/stats/[ign]", { ign: response.username ?? "" }));
     } catch (err) {
       submittedSearchError = getErrorMessage(err);

@@ -10,7 +10,7 @@
   import { IsHover } from "$lib/hooks/is-hover.svelte";
   import { IsMobile } from "$lib/hooks/is-mobile.svelte";
   import { listLatestPostsForNotifications } from "$lib/shared/api/cms-api.remote";
-  import { getPacks } from "$lib/shared/api/skycrypt-api.remote";
+  import { listResourcePacks } from "$lib/shared/api/skycrypt-api.remote";
   import { parseThemeFromURL } from "$lib/shared/themes/sharing";
   import * as Drawer from "$ui/drawer";
   import { Separator } from "$ui/separator";
@@ -183,7 +183,7 @@
   });
 
   $effect(() => {
-    const query = getPacks();
+    const query = listResourcePacks();
     if (query.current) packs.packs = query.current;
   });
 

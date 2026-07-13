@@ -1,7 +1,7 @@
 <script lang="ts">
   import { env } from "$env/dynamic/public";
   import { PUBLIC_COMMIT_HASH } from "$env/static/public";
-  import { getBackendSource } from "$lib/shared/api/skycrypt-api.remote";
+  import { getSourceInfo } from "$lib/shared/api/skycrypt-api.remote";
   import { Spinner } from "$ui/spinner";
   import ExternalLink from "@lucide/svelte/icons/external-link";
   import { Button } from "bits-ui";
@@ -36,7 +36,7 @@
       Loading backend version information
     </div>
   {/snippet}
-  {const backend = await getBackendSource()}
+  {const backend = await getSourceInfo()}
   {#if backend?.commit}
     <p>
       Currently running backend version

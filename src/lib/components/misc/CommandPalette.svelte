@@ -2,7 +2,7 @@
   import { goto } from "$app/navigation";
   import { resolve } from "$app/paths";
   import { getInternalState } from "$ctx";
-  import { searchUser } from "$lib/shared/api/skycrypt-api.remote";
+  import { resolveUuidByUsername } from "$lib/shared/api/skycrypt-api.remote";
   import { schema } from "$routes/schema";
   import * as Command from "$ui/command";
   import { Spinner } from "$ui/spinner";
@@ -68,7 +68,7 @@
     submittedSearchError = undefined;
 
     try {
-      const response = await searchUser({ username });
+      const response = await resolveUuidByUsername({ username });
       await goto(resolve("/stats/[ign]", { ign: response.username ?? "" }));
     } catch (err) {
       submittedSearchError = getErrorMessage(err);

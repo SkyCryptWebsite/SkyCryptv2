@@ -2,7 +2,7 @@
   import { getProfileContext } from "$ctx";
   import { Notice } from "$lib/components/notices";
   import { Stat } from "$lib/components/stats";
-  import { getAdditionalStats } from "$lib/shared/api/skycrypt-api.remote";
+  import { getPlayerStats } from "$lib/shared/api/skycrypt-api.remote";
   import { buttonVariants } from "$ui/button";
   import * as Collapsible from "$ui/collapsible";
   import { Spinner } from "$ui/spinner";
@@ -13,7 +13,7 @@
   const profile = $derived(getProfileContext().current);
   const profileUUID = $derived(profile?.uuid);
   const profileId = $derived(profile?.profile_id);
-  const statsQuery = $derived(openState && profileUUID && profileId ? getAdditionalStats({ uuid: profileUUID, profileId }) : null);
+  const statsQuery = $derived(openState && profileUUID && profileId ? getPlayerStats({ uuid: profileUUID, profileId }) : null);
 </script>
 
 <div class="stats flex flex-col">

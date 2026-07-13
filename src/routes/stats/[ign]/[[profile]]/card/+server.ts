@@ -4,8 +4,8 @@ import appStyles from "$routes/layout.css?inline";
 import { DefaultCard } from "$src/lib/components/cards";
 import ErrorCard from "$src/lib/components/cards/default/ErrorCard.svelte";
 import { parseSettingsFromParams } from "$src/lib/components/cards/default/schema";
-import { getApiUuidUsername, type ModelsPlayerResolve } from "$src/lib/shared/api/orval-generated";
-import { getCombined, getNetworth, getProfileStats } from "$src/lib/shared/api/skycrypt-api.remote";
+import { resolveUuidByUsername, type ModelsPlayerResolve } from "$src/lib/shared/api/orval-generated";
+import { getCombinedProfileStats, getProfileNetworth, getProfileStats, getSelectedProfileStats } from "$src/lib/shared/api/skycrypt-api.remote";
 import { html as toReactNode } from "satori-html";
 import { render } from "svelte/server";
 import { Renderer, type Font, type ImageSource } from "takumi-js/node";
@@ -24,35 +24,12 @@ export const GET: RequestHandler = async ({ params, request, url }) => {
   const settings = parseSettingsFromParams(url.searchParams);
 
   try {
-    const user = (await getApiUuidUsername(ign)).data as ModelsPlayerResolve;
-    // allSettled (not Promise.all) so a losing-side rejection is never orphaned:
-    // Promise.all rejects on the first failure but leaves the others running, and
-    // their later rejection becomes an unhandled rejection that crashes Node 24.
-    const [
-      // prettier-ignore
-      profileResult,
-      networthResult,
-      combinedResult
-    ] = await Promise.allSettled([
-      // prettier-ignore
-      getProfileStats({ uuid: user.uuid ?? ign, profileId: profile ?? "" }),
-      getNetworth({ uuid: user.uuid ?? ign, profileId: profile ?? "" }),
-      getCombined({ uuid: user.uuid ?? ign, profileId: profile ?? "" })
-    ]);
-
-    if (profileResult.status === "rejected") throw profileResult.reason;
-    if (networthResult.status === "rejected") throw networthResult.reason;
-    if (combinedResult.status === "rejected") throw combinedResult.reason;
-
-    const profileData = profileResult.value;
-    const networthData = networthResult.value;
-    const combinedData = combinedResult.value;
+    const user = (await resolveUuidByUsername(ign)).data as ModelsPlayerResolve;
+    const cardData = profile ? await fetchProfileCardData(user.uuid ?? ign, profile) : await fetchSelectedProfileCardData(user.uuid ?? ign);
 
     const { body: renderedHTML } = render(DefaultCard, {
       props: {
-        profile: profileData,
-        networth: networthData,
-        dungeons: combinedData.dungeons,
+        ...cardData,
         settings
       }
     });
@@ -106,6 +83,41 @@ export const GET: RequestHandler = async ({ params, request, url }) => {
     }
   }
 };
+
+async function fetchProfileCardData(uuid: string, profileId: string) {
+  // allSettled (not Promise.all) so a losing-side rejection is never orphaned:
+  // Promise.all rejects on the first failure but leaves the others running, and
+  // their later rejection becomes an unhandled rejection that crashes Node 24.
+  const [profileResult, networthResult, combinedResult] = await Promise.allSettled([getProfileStats({ uuid, profileId }), getProfileNetworth({ uuid, profileId }), getCombinedProfileStats({ uuid, profileId })]);
+
+  if (profileResult.status === "rejected") throw profileResult.reason;
+  if (networthResult.status === "rejected") throw networthResult.reason;
+  if (combinedResult.status === "rejected") throw combinedResult.reason;
+
+  return {
+    profile: profileResult.value,
+    networth: networthResult.value,
+    dungeons: combinedResult.value.dungeons
+  };
+}
+
+async function fetchSelectedProfileCardData(uuid: string) {
+  const profile = await getSelectedProfileStats({ uuid });
+  const profileId = profile.profile_id;
+
+  if (!profileId) throw new Error("Selected profile is missing a profile ID");
+
+  const [networthResult, combinedResult] = await Promise.allSettled([getProfileNetworth({ uuid, profileId }), getCombinedProfileStats({ uuid, profileId })]);
+
+  if (networthResult.status === "rejected") throw networthResult.reason;
+  if (combinedResult.status === "rejected") throw combinedResult.reason;
+
+  return {
+    profile,
+    networth: networthResult.value,
+    dungeons: combinedResult.value.dungeons
+  };
+}
 
 async function initializeAssets() {
   if (building) return { fonts: [], images: [] };

@@ -4,7 +4,7 @@
   import { SectionBoundary, SectionSubtitle } from "$lib/components/sections";
   import { AdditionStat, GardenPlotGrid } from "$lib/components/stats";
   import { type ModelsGarden } from "$lib/shared/api/orval-generated";
-  import { getGarden } from "$lib/shared/api/skycrypt-api.remote";
+  import { getGardenStats } from "$lib/shared/api/skycrypt-api.remote";
   import { formatNumber, getRarityClass } from "$lib/shared/helper";
   import { cn } from "$lib/shared/utils";
   import CollapsibleCustomTrigger from "$src/lib/components/CollapsibleCustomTrigger.svelte";
@@ -33,7 +33,7 @@
     {#if gardenLocked}
       <EmptyStat title="Locked" description="This player does not have the Garden unlocked" icon={LockIcon} class="mb-2" />
     {:else if sectionOpen}
-      <SectionBoundary query={() => getGarden({ uuid: profile?.uuid ?? "", profileId: profileId! })}>
+      <SectionBoundary query={() => getGardenStats({ uuid: profile?.uuid ?? "", profileId: profileId! })}>
         {#snippet children(garden)}
           {#if garden}
             {const hasMaxed = $derived(garden.level?.maxed ?? false)}

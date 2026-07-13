@@ -1,7 +1,7 @@
 <script lang="ts">
   import { SectionBoundary } from "$lib/components/sections";
   import { type ModelsStrippedItem } from "$lib/shared/api/orval-generated";
-  import { searchInventorySection } from "$lib/shared/api/skycrypt-api.remote";
+  import { searchProfileInventory } from "$lib/shared/api/skycrypt-api.remote";
   import EmptyStat from "$src/lib/components/EmptyStat.svelte";
   import { Input } from "$ui/input";
   import SearchIcon from "@lucide/svelte/icons/search";
@@ -26,7 +26,7 @@
   <EmptyStat title="Try searching for something" description="Anything your heart desires" icon={SearchIcon} class="mt-4" />
 {:else}
   {#key debouncedSearch.current}
-    <SectionBoundary query={() => searchInventorySection({ uuid, profileId, searchParam: debouncedSearch.current! })}>
+    <SectionBoundary query={() => searchProfileInventory({ uuid, profileId, searchParam: debouncedSearch.current! })}>
       {#snippet children(items: ModelsStrippedItem[])}
         {#if !items || items.length === 0}
           <EmptyStat title="No items found" description="Hmm... couldn't find anything for your query" icon={SearchX} class="mt-4" />

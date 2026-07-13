@@ -5,7 +5,7 @@
   import { ScrollItems } from "$lib/components/misc";
   import { Section } from "$lib/components/sections";
   import { type ModelsInventory, type ModelsStrippedItem } from "$lib/shared/api/orval-generated";
-  import { getInventories } from "$lib/shared/api/skycrypt-api.remote";
+  import { getProfileInventory } from "$lib/shared/api/skycrypt-api.remote";
   import { renderLore } from "$lib/shared/helper";
   import { animateObfuscatedText } from "$lib/shared/mc-text/obfuscated";
   import { cn } from "$lib/shared/utils";
@@ -47,7 +47,7 @@
 
 <Section id="Inventory" {order} class="min-h-150">
   <svelte:boundary>
-    {const inventories = $derived<ModelsInventory[]>(uuid && profileId ? await getInventories({ uuid, profileId }) : [])}
+    {const inventories = $derived<ModelsInventory[]>(uuid && profileId ? await getProfileInventory({ uuid, profileId }) : [])}
     {const selectedInventory = $derived(openTab ? inventories.find((inventory) => inventory.name === openTab) : undefined)}
     {const selectedTabName = $derived(selectedInventory?.name ?? inventories[0]?.name ?? "")}
     {const currentInventory = $derived(selectedInventory ?? inventories[0])}

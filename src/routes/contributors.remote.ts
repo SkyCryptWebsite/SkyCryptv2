@@ -1,6 +1,6 @@
 import { prerender } from "$app/server";
 import type { ModelsPlayerResolve } from "$lib/shared/api/orval-generated";
-import { getUsernamePrerendered } from "$lib/shared/api/skycrypt-api.remote";
+import { resolveUsernameByUuid } from "$lib/shared/api/skycrypt-api.remote";
 import { Role } from "./enums";
 
 export interface Contributor extends ModelsPlayerResolve {
@@ -12,7 +12,7 @@ export interface Contributor extends ModelsPlayerResolve {
 export const getContributors = prerender(async () => {
   const getUsernames = async (uuid: string): Promise<ModelsPlayerResolve> => {
     try {
-      return await getUsernamePrerendered({ uuid });
+      return await resolveUsernameByUuid({ uuid });
     } catch (error) {
       console.error("Something went wrong fetching contributor username for UUID:", uuid, error);
       return {

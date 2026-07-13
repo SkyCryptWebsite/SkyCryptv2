@@ -7,7 +7,7 @@
   import TooltipSetup from "$lib/components/tooltip/TooltipSetup.svelte";
   import Main from "$lib/layouts/stats/Main.svelte";
   import type { SectionName } from "$lib/sections/types";
-  import { getProfileStats } from "$lib/shared/api/skycrypt-api.remote";
+  import { getProfileStats, getSelectedProfileStats } from "$lib/shared/api/skycrypt-api.remote";
   import LoaderCircle from "@lucide/svelte/icons/loader-circle";
   import { type PageServerData } from "./$types";
 
@@ -15,7 +15,7 @@
 
   const preferences = getPreferences();
   const internalState = getInternalState();
-  const profile = $derived(await getProfileStats({ uuid: page.params.ign || "", profileId: page.params.profile || "" }));
+  const profile = $derived(page.params.profile ? await getProfileStats({ uuid: page.params.ign || "", profileId: page.params.profile }) : await getSelectedProfileStats({ uuid: page.params.ign || "" }));
 
   $effect.pre(() => {
     const hash = page.url.hash;

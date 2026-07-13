@@ -1,7 +1,7 @@
 <script lang="ts">
   import { getHoverContext, getProfileContext } from "$ctx";
   import { AdditionStat, NetworthCard } from "$lib/components/stats";
-  import { getNetworth } from "$lib/shared/api/skycrypt-api.remote";
+  import { getProfileNetworth } from "$lib/shared/api/skycrypt-api.remote";
   import { calculatePercentage, formatNumber } from "$lib/shared/helper";
   import { Button } from "$ui/button";
   import { Label } from "$ui/label";
@@ -97,7 +97,7 @@
       {/if}
     {/if}
     <svelte:boundary>
-      {const networth = $derived(profileUUID != null && profileId != null ? await getNetworth({ uuid: profileUUID, profileId }) : null)}
+      {const networth = $derived(profileUUID != null && profileId != null ? await getProfileNetworth({ uuid: profileUUID, profileId }) : null)}
       {#snippet pending()}
         <div class="my-0 flex items-center gap-1 font-bold text-foreground/60">
           Networth:
