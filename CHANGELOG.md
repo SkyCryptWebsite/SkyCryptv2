@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.9.0-beta.6
+
+### Patch Changes
+
+- Show structured skill gear, equipment wardrobes, and saved loadouts from the SkyCrypt API. _[`bded902`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/bded902e0f96c80dec70fc6f6c7a7097183b5740) [@DarthGigi](https://github.com/DarthGigi)_
+
 ## 3.9.0-beta.5
 
 ### Patch Changes
