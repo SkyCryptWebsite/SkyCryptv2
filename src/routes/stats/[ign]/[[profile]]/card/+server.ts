@@ -137,13 +137,13 @@ async function fetchSelectedProfileCardData(uuid: string) {
 async function initializeAssets() {
   if (building) return { fonts: [], images: [] };
   const [
-    // prettier-ignore
+    // oxfmt-ignore
     montserratNormalBuffer,
     minecraftFontBuffer,
     skycryptLogo,
     skycryptBackground
   ] = await Promise.all([
-    // prettier-ignore
+    // oxfmt-ignore
     fetch(`${baseUrl}/fonts/montserrat/montserrat-normal.woff2`).then((res) => res.arrayBuffer()),
     fetch(`${baseUrl}/fonts/minecraft/MinecraftSevenv2-Regular.woff2`).then((res) => res.arrayBuffer()),
     fetch(`${baseUrl}/favicon.png`).then((res) => res.arrayBuffer()),

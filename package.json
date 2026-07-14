@@ -37,7 +37,7 @@
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
     "auth:schema": "auth generate --config src/lib/server/auth.ts --output src/lib/server/db/schema/auth.schema.ts --yes",
-    "update:shadcn": "pnpm dlx shadcn-svelte@latest update -a && prettier --write ./src/lib/components/ui && prettier --write ./src/lib/shared/utils.ts"
+    "update:shadcn": "pnpm dlx shadcn-svelte@latest update -a && oxfmt --write ./src/lib/components/ui && oxfmt --write ./src/lib/shared/utils.ts"
   },
   "dependencies": {
     "@payloadcms/richtext-lexical": "^3.86.0",
