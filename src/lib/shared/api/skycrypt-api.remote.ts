@@ -34,18 +34,14 @@ import {
 import { APIEndpointName } from "$types";
 import { error, isHttpError } from "@sveltejs/kit";
 
-/**
- * Type helper to extract the success data type from an API response
- * Excludes ModelsProcessingError from the union type
- */
+/** Type helper to extract the success data type from an API response Excludes ModelsProcessingError from the union type */
 type ExtractSuccessData<TResponse> = TResponse extends { data: infer TData }
   ? Exclude<TData, ModelsProcessingError>
   : never;
 
 /**
- * Generic helper function to handle API fetching with consistent error handling
- * Reduces boilerplate for API section fetching
- * Automatically infers the return type from the API response, excluding error types
+ * Generic helper function to handle API fetching with consistent error handling Reduces boilerplate for API section
+ * fetching Automatically infers the return type from the API response, excluding error types
  *
  * @param sectionName - Name of the section being fetched (used for logging)
  * @param apiFetcher - Function that calls the API endpoint

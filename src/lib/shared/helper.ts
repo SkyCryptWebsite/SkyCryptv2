@@ -25,6 +25,7 @@ export function formatNumber(n: number, digits = 2) {
 
 /**
  * Converts a string to title case
+ *
  * @param {string} string
  * @returns {string}
  */
@@ -39,9 +40,10 @@ export function titleCase(string: string): string {
 
 /**
  * Returns the tailwind css color class for a rarity
- * @param {string} rarity the rarity of the item
- * @param {"bg" | "text"} type the type of color to get
- * @returns {string} the tailwind css color class
+ *
+ * @param {string} rarity The rarity of the item
+ * @param {"bg" | "text"} type The type of color to get
+ * @returns {string} The tailwind css color class
  */
 export function getRarityClass(rarity: string, type: "bg" | "text" | "raw", important?: true): string {
   const rarityColor = RARITY_COLORS[rarity.toLowerCase() as keyof typeof RARITY_COLORS];
@@ -66,8 +68,9 @@ export function getRarityClass(rarity: string, type: "bg" | "text" | "raw", impo
 
 /**
  * Convert Minecraft lore to HTML
- * @param {string} text minecraft lore with color and formatting codes
- * @param {boolean} formatTime whether to format timestamps in the lore
+ *
+ * @param {string} text Minecraft lore with color and formatting codes
+ * @param {boolean} formatTime Whether to format timestamps in the lore
  * @returns {string} HTML
  */
 export function renderLore(
@@ -115,6 +118,7 @@ export function renderLore(
 
 /**
  * Removes Minecraft formatting codes from a string
+ *
  * @param {string} string
  * @returns {string}
  */
@@ -140,6 +144,7 @@ export function uniqBy<T>(arr: T[], key: string): T[] {
 
 /**
  * Validates a URL and returns the path to the stats page
+ *
  * @param {string} url
  * @returns {string} The path to the stats page
  */

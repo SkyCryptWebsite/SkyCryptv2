@@ -3,9 +3,8 @@ type CanvasFactory = () => Pick<HTMLCanvasElement, "getContext">;
 const strictWebGLContextOptions = { failIfMajorPerformanceCaveat: true } as const;
 
 /**
- * Checks whether the browser can provide a WebGL context without a major
- * performance caveat. This is a capability proxy for graphics acceleration;
- * browsers do not expose a definitive hardware-acceleration setting.
+ * Checks whether the browser can provide a WebGL context without a major performance caveat. This is a capability proxy
+ * for graphics acceleration; browsers do not expose a definitive hardware-acceleration setting.
  */
 export function isGraphicsAccelerationAvailable(
   createCanvas: CanvasFactory = () => document.createElement("canvas")

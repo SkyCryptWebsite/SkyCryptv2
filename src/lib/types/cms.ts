@@ -14,12 +14,10 @@ export type { Media, PostBodyItem, PostType };
 /**
  * Allowed post categories, in display order.
  *
- * This is the one value we can't derive from the generated schema: the runtime enum
- * only exists as a const in `cms-generated.ts`, and importing that value here would
- * pull the server-only mutator ($env/dynamic/private) into the browser bundle. So the
- * list is hand-written but kept honest against the schema — `satisfies` rejects entries
- * that aren't a {@link PostType}, and the assertion below fails to compile if the CMS
- * adds a type that's missing here.
+ * This is the one value we can't derive from the generated schema: the runtime enum only exists as a const in
+ * `cms-generated.ts`, and importing that value here would pull the server-only mutator ($env/dynamic/private) into the
+ * browser bundle. So the list is hand-written but kept honest against the schema — `satisfies` rejects entries that
+ * aren't a {@link PostType}, and the assertion below fails to compile if the CMS adds a type that's missing here.
  */
 export const POST_TYPES = [
   "announcement",
@@ -46,9 +44,9 @@ export type BlockImage = Extract<PostBodyItem, { blockType: "image" }>;
 export type BlockRichText = Extract<PostBodyItem, { blockType: "richText" }>;
 
 /**
- * A post as consumed by the UI. Identical to the generated `Post`, but with the
- * relationship fields narrowed to their populated shape — every query runs with
- * `depth >= 1`, so `heroImage`/`author` are always resolved objects, never IDs.
+ * A post as consumed by the UI. Identical to the generated `Post`, but with the relationship fields narrowed to their
+ * populated shape — every query runs with `depth >= 1`, so `heroImage`/`author` are always resolved objects, never
+ * IDs.
  */
 export type Post = Omit<CmsPost, "heroImage" | "author"> & {
   heroImage?: Media | null;

@@ -6,10 +6,9 @@ import { error } from "@sveltejs/kit";
 import z from "zod";
 
 /**
- * Payload REST filters with bracket-notation query params (`where[x][equals]=y`) and
- * supports comma-separated multi-sort — neither of which orval's URL serializer can
- * express through the typed `where`/`sort` params. We pass them as flat string keys
- * instead; this bridges that plain record to the generated `ListPostsParams` shape.
+ * Payload REST filters with bracket-notation query params (`where[x][equals]=y`) and supports comma-separated
+ * multi-sort — neither of which orval's URL serializer can express through the typed `where`/`sort` params. We pass
+ * them as flat string keys instead; this bridges that plain record to the generated `ListPostsParams` shape.
  */
 const asListParams = (params: Record<string, string | number | boolean>): ListPostsParams =>
   params as unknown as ListPostsParams;

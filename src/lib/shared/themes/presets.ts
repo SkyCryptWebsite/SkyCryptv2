@@ -1,6 +1,6 @@
 /**
- * Minecraft color palettes extracted from layout.css utilities
- * Each palette maps §0–§f color codes to OKLCH color values
+ * Minecraft color palettes extracted from layout.css utilities Each palette maps §0–§f color codes to OKLCH color
+ * values
  */
 
 export const MC_PALETTES = {
@@ -83,6 +83,7 @@ export const paletteNames = ["nice-dark", "nice-light", "true-colors", "april-fo
 
 /**
  * Get palette colors with optional overrides
+ *
  * @param palette - The palette name
  * @param overrides - Optional record of color code overrides
  * @returns Record of 16 MC color codes to OKLCH values

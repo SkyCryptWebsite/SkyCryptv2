@@ -1,23 +1,25 @@
 /**
- * Base color code regex
- * This regex matches Minecraft formatting codes.
- * It captures the § character followed by a hexadecimal digit or formatting letter.
+ * Base color code regex This regex matches Minecraft formatting codes. It captures the § character followed by a
+ * hexadecimal digit or formatting letter.
+ *
+ * @example
+ *   const regex = /([§][0-9a-fA-FklmnorKLMNOR])/g;
+ *   const str = "§aGreen §lBold";
+ *   const matches = str.match(regex); // ["§a", "§l"]
+ *
  * @returns {RegExp} The regex to match Minecraft's formatting codes.
  * @see {@link https://minecraft.wiki/w/Formatting_codes}
- * @example
- * const regex = /([§][0-9a-fA-FklmnorKLMNOR])/g;
- * const str = "§aGreen §lBold";
- * const matches = str.match(regex); // ["§a", "§l"]
  */
 export const BASE_FORMATTING_CODE_REGEX: RegExp = /([§][0-9a-fA-FklmnorKLMNOR])/g;
 
 /**
- * Replace all HTML special characters with HTML entities
- * Prevents HTML injection by safely encoding special characters
+ * Replace all HTML special characters with HTML entities Prevents HTML injection by safely encoding special characters
+ *
+ * @example
+ *   htmlStringFormatting("Hello <world> & 'everyone'"); // "Hello &lt;world&gt; &amp; &#39;everyone&#39;"
+ *
  * @param text The text to format.
  * @returns The formatted HTML string with special characters replaced.
- * @example
- * htmlStringFormatting("Hello <world> & 'everyone'"); // "Hello &lt;world&gt; &amp; &#39;everyone&#39;"
  */
 export function htmlStringFormatting(text: string): string {
   if (!text || typeof text !== "string") {
@@ -46,13 +48,14 @@ export function htmlStringFormatting(text: string): string {
 }
 
 /**
+ * Generate a random number within a specified range. This function generates a random integer between the specified
+ * minimum and maximum values, inclusive.
  *
- * Generate a random number within a specified range.
- * This function generates a random integer between the specified minimum and maximum values, inclusive.
+ * @example
+ *   randomRange(1, 10); // Returns a random integer between 1 and 10, inclusive.
+ *
  * @param {number} min - The minimum value of the range.
  * @param {number} max - The maximum value of the range.
- * @example
- * randomRange(1, 10); // Returns a random integer between 1 and 10, inclusive.
  */
 export function randomRange(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;

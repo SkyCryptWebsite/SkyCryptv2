@@ -5,13 +5,11 @@ import { BASE_FORMATTING_CODE_REGEX, htmlStringFormatting } from "$lib/shared/mc
 /**
  * Convert Minecraft text to html.
  *
- * This function parses Minecraft-style formatting codes (like §a, §l, §r) and converts them
- * to HTML with appropriate CSS classes and inline styles. It handles:
- * - Color codes (§a-§f, §0-§9) - converted to CSS color values
- * - Formatting codes (§l bold, §o italic, §n underline, etc.) - converted to CSS classes
- * - Reset codes (§r resets all, §f resets formatting only)
- * - Special rainbow enchantment animation for max-level enchants with blue color
- * - Animation delays for the rainbow effect based on the index parameter
+ * This function parses Minecraft-style formatting codes (like §a, §l, §r) and converts them to HTML with appropriate
+ * CSS classes and inline styles. It handles: - Color codes (§a-§f, §0-§9) - converted to CSS color values - Formatting
+ * codes (§l bold, §o italic, §n underline, etc.) - converted to CSS classes - Reset codes (§r resets all, §f resets
+ * formatting only) - Special rainbow enchantment animation for max-level enchants with blue color - Animation delays
+ * for the rainbow effect based on the index parameter
  *
  * @param mcString The Minecraft text string to convert. (e.g. "§aHello §bWorld")
  * @param breakLine Whether to add a line break at the end of the string.
