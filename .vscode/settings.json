@@ -1,5 +1,5 @@
 {
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.defaultFormatter": "oxc.oxc-vscode",
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "always",
@@ -31,7 +31,7 @@
   ],
   "js/ts.updateImportsOnFileMove.enabled": "prompt",
   "eslint.validate": ["javascript", "typescript", "svelte"],
-  "prettier.documentSelectors": ["**/*.svelte"],
+  "oxc.fmt.configPath": ".oxfmtrc.json",
   "github.copilot.chat.commitMessageGeneration.instructions": [
     {
       "file": ".github/commit-message.instructions.md"

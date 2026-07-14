@@ -14,7 +14,7 @@ Use Node 24 and pnpm 11; other package managers are unsupported.
 - `pnpm build`: create a production build.
 - `pnpm preview`: serve the production build locally.
 - `pnpm check`: run Svelte and TypeScript diagnostics.
-- `pnpm lint`: run Prettier, ESLint, and correctness checks.
+- `pnpm lint`: run oxfmt, ESLint, and correctness checks.
 - `pnpm test`: run Vitest once.
 - `pnpm test:coverage`: run tests with V8 coverage.
 - `pnpm test:e2e`: run Playwright end-to-end tests.
@@ -22,7 +22,7 @@ Use Node 24 and pnpm 11; other package managers are unsupported.
 
 ## Coding Style & Naming Conventions
 
-Prettier enforces two-space indentation, double quotes, no trailing commas, and ordered Tailwind classes. Keep TypeScript strict and prefer aliases such as `$lib`, `$ctx`, and `$types`. Use Svelte 5 runes (`$state`, `$derived`, `$props`) and snippets instead of legacy reactive declarations, `export let`, or slots. Name Svelte components in PascalCase, utilities in camelCase, and route files using SvelteKit conventions. Prefer Tailwind v4 utilities and the shared `cn()` helper.
+oxfmt enforces two-space indentation, double quotes, no trailing commas, and ordered Tailwind classes. Keep TypeScript strict and prefer aliases such as `$lib`, `$ctx`, and `$types`. Use Svelte 5 runes (`$state`, `$derived`, `$props`) and snippets instead of legacy reactive declarations, `export let`, or slots. Name Svelte components in PascalCase, utilities in camelCase, and route files using SvelteKit conventions. Prefer Tailwind v4 utilities and the shared `cn()` helper.
 
 ## Testing Guidelines
 

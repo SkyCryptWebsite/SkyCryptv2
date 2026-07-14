@@ -58,7 +58,7 @@ Please ensure that you don't accidentally commit the changes you made to the `.v
 When you are ready to submit your changes, please create a pull request (PR) on GitHub. Make sure to check the following:
 
 - **Use Conventional Commits**: Follow the [Conventional Commits](https://www.conventionalcommits.org/) specification for your commit messages.
-- Your code is well formatted and follows the project's coding style. Run `pnpm lint` to check for linting errors. If there are any `prettier` errors, run `pnpm format` to fix them automatically. If there are any `eslint` or `svelte-check` errors, fix them manually.
+- Your code is well formatted and follows the project's coding style. Run `pnpm lint` to check for linting errors. If there are any `oxfmt` errors, run `pnpm format` to fix them automatically. If there are any `eslint` or `svelte-check` errors, fix them manually.
 - Your code builds successfully. Run `pnpm build` to check.
 - Your PR has a clear title and description explaining the changes you made.
 - Your PR includes changesets if necessary. If your PR includes changes that should be reflected in the changelog, please include a changeset. You can do this by running `pnpm changeset` and following the prompts.

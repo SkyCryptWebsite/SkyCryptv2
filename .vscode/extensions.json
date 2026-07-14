@@ -1,4 +1,4 @@
 {
-  "recommendations": ["edwinhuish.better-comments-next", "bradlc.vscode-tailwindcss", "dbaeumer.vscode-eslint", "esbenp.prettier-vscode", "svelte.svelte-vscode"],
-  "unwantedRecommendations": ["aaron-bond.better-comments"]
+  "recommendations": ["edwinhuish.better-comments-next", "bradlc.vscode-tailwindcss", "dbaeumer.vscode-eslint", "oxc.oxc-vscode", "svelte.svelte-vscode"],
+  "unwantedRecommendations": ["aaron-bond.better-comments", "esbenp.prettier-vscode"]
 }

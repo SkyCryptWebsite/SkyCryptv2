@@ -15,7 +15,7 @@ export default defineConfig({
       }
     },
     hooks: {
-      afterAllFilesWrite: "prettier --write ./src/lib/shared/api/orval-generated.ts"
+      afterAllFilesWrite: "oxfmt ./src/lib/shared/api/orval-generated.ts"
     }
   },
   skycryptZod: {
@@ -27,7 +27,7 @@ export default defineConfig({
       fileExtension: ".zod.ts"
     },
     hooks: {
-      afterAllFilesWrite: "prettier --write ./src/lib/shared/api/orval-generated-zod.ts"
+      afterAllFilesWrite: "oxfmt ./src/lib/shared/api/orval-generated-zod.ts"
     }
   },
   cms: {
@@ -44,7 +44,7 @@ export default defineConfig({
       }
     },
     hooks: {
-      afterAllFilesWrite: "prettier --write ./src/lib/shared/api/cms-generated.ts"
+      afterAllFilesWrite: "oxfmt ./src/lib/shared/api/cms-generated.ts"
     }
   }
 });
