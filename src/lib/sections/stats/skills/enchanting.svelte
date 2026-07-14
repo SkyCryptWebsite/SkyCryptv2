@@ -19,15 +19,16 @@
   {#if enchanting.unlocked === false}
     <EmptyStat title="Locked" description="This player hasn't unlocked Enchanting yet" icon={LockIcon} />
   {:else}
-    <Collapsible.Root open={true} class="border p-2 rounded-xl">
+    <Collapsible.Root open={true} class="rounded-xl border p-2">
       <CollapsibleCustomTrigger>Experiments</CollapsibleCustomTrigger>
       <Collapsible.Content>
         {#if enchanting && enchanting.data}
           {const enchantingStats = Object.entries(enchanting.data)}
           <ScrollAreaItems>
             {#each enchantingStats as [_key, enchating], index (index)}
-              <div class="flex min-w-80 flex-col items-center gap-2 border rounded-xl bg-background/50">
-                <div class="flex w-full items-center justify-center border-b border-primary py-2 text-center font-semibold">
+              <div class="flex min-w-80 flex-col items-center gap-2 rounded-xl border bg-background/50">
+                <div
+                  class="flex w-full items-center justify-center border-b border-primary py-2 text-center font-semibold">
                   {enchating.name}
                 </div>
                 {#if enchating.stats}
@@ -36,10 +37,20 @@
                       <AdditionStat text="Bonus Clicks" data={enchating.stats.bonusClicks} />
                     {/if}
                     {#if enchating.stats.lastAttempt}
-                      <AdditionStat text="Last Attempt" data={formatDistanceToNowStrict(enchating.stats.lastAttempt, { addSuffix: true, in: tz(Intl.DateTimeFormat().resolvedOptions().timeZone) })} />
+                      <AdditionStat
+                        text="Last Attempt"
+                        data={formatDistanceToNowStrict(enchating.stats.lastAttempt, {
+                          addSuffix: true,
+                          in: tz(Intl.DateTimeFormat().resolvedOptions().timeZone)
+                        })} />
                     {/if}
                     {#if enchating.stats.lastClaimed}
-                      <AdditionStat text="Last Claimed" data={formatDistanceToNowStrict(enchating.stats.lastClaimed, { addSuffix: true, in: tz(Intl.DateTimeFormat().resolvedOptions().timeZone) })} />
+                      <AdditionStat
+                        text="Last Claimed"
+                        data={formatDistanceToNowStrict(enchating.stats.lastClaimed, {
+                          addSuffix: true,
+                          in: tz(Intl.DateTimeFormat().resolvedOptions().timeZone)
+                        })} />
                     {/if}
                   </div>
                 {/if}
@@ -71,11 +82,18 @@
             {/each}
           </ScrollAreaItems>
         {:else}
-          <EmptyStat title="No Data" description="This player doesn't have anything related to experiments" icon={SparklesIcon} />
+          <EmptyStat
+            title="No Data"
+            description="This player doesn't have anything related to experiments"
+            icon={SparklesIcon} />
         {/if}
       </Collapsible.Content>
     </Collapsible.Root>
   {/if}
 {:else}
-  <EmptyStat title="No Data" description="This player doesn't have anything related to enchanting" icon={SparklesIcon} class="mt-2" />
+  <EmptyStat
+    title="No Data"
+    description="This player doesn't have anything related to enchanting"
+    icon={SparklesIcon}
+    class="mt-2" />
 {/if}

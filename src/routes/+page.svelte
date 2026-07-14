@@ -40,7 +40,13 @@
   function getErrorMessage(err: unknown) {
     const httpError = err as { body?: unknown };
 
-    if (isHttpError(err) && typeof httpError.body === "object" && httpError.body !== null && "message" in httpError.body && typeof httpError.body.message === "string") {
+    if (
+      isHttpError(err) &&
+      typeof httpError.body === "object" &&
+      httpError.body !== null &&
+      "message" in httpError.body &&
+      typeof httpError.body.message === "string"
+    ) {
       return httpError.body.message;
     }
 
@@ -112,13 +118,17 @@
   });
 </script>
 
-<main class="@container mx-auto flex max-w-272 overscroll-y-contain flex-col justify-center gap-4 mt-4 pr-[max(1.25rem+env(safe-area-inset-right))] pb-[max(1.25rem+env(safe-area-inset-bottom))] pl-[max(1.25rem+env(safe-area-inset-left))]">
-  <div class="flex w-full flex-col justify-center-safe items-center-safe gap-4 rounded-xl p-4 text-3xl glass glass-brightness-150 dark:glass-brightness-50 glass-contrast-60 dark:glass-contrast-100 border">
+<main
+  class="@container mx-auto mt-4 flex max-w-272 flex-col justify-center gap-4 overscroll-y-contain pr-[max(1.25rem+env(safe-area-inset-right))] pb-[max(1.25rem+env(safe-area-inset-bottom))] pl-[max(1.25rem+env(safe-area-inset-left))]">
+  <div
+    class="flex w-full flex-col items-center-safe justify-center-safe gap-4 rounded-xl border glass p-4 text-3xl glass-brightness-150 glass-contrast-60 dark:glass-brightness-50 dark:glass-contrast-100">
     <div class="flex flex-col justify-center gap-2">
-      <div class="flex flex-col gap-4 items-center-safe justify-center-safe">
+      <div class="flex flex-col items-center-safe justify-center-safe gap-4">
         <div>
-          <h1 class="text-3xl font-bold text-center">SkyCrypt</h1>
-          <h2 class="text-xl font-semibold text-muted-foreground text-center">A beautiful site for sharing your SkyBlock profile 🍣</h2>
+          <h1 class="text-center text-3xl font-bold">SkyCrypt</h1>
+          <h2 class="text-center text-xl font-semibold text-muted-foreground">
+            A beautiful site for sharing your SkyBlock profile 🍣
+          </h2>
         </div>
         <div>
           <ButtonGroup.Root>
@@ -128,7 +138,7 @@
               required
               autofocus
               placeholder="Enter username"
-              class="font-medium md:text-lg bg-primary/50 border-primary/80 placeholder:text-primary-foreground focus-visible:ring-primary/50 focus-visible:border-primary/80"
+              class="border-primary/80 bg-primary/50 font-medium placeholder:text-primary-foreground focus-visible:border-primary/80 focus-visible:ring-primary/50 md:text-lg"
               bind:value={searchQuery}
               onchange={() => void submitSearch()}
               onkeydown={(e) => {
@@ -138,7 +148,11 @@
                 }
               }} />
 
-            <Button variant="outline" disabled={searchQuery != null && searchQuery.length > 0 && !searchQueryValidated.success} onclick={() => void submitSearch()} class="border-primary/80 focus-visible:ring-primary/50 focus-visible:border-primary/80">
+            <Button
+              variant="outline"
+              disabled={searchQuery != null && searchQuery.length > 0 && !searchQueryValidated.success}
+              onclick={() => void submitSearch()}
+              class="border-primary/80 focus-visible:border-primary/80 focus-visible:ring-primary/50">
               {#if submittedSearchLoading}
                 <Spinner class="size-4" />
               {:else}
@@ -168,7 +182,8 @@
 
   <svelte:boundary>
     {#snippet pending()}
-      <section class="glass glass-brightness-150 flex flex-col gap-4 p-4 rounded-xl dark:glass-brightness-50 glass-contrast-60 dark:glass-contrast-100">
+      <section
+        class="flex flex-col gap-4 rounded-xl glass p-4 glass-brightness-150 glass-contrast-60 dark:glass-brightness-50 dark:glass-contrast-100">
         <Skeleton class="h-6 w-1/5 rounded" />
         <Skeleton class="h-6 w-2/5 rounded" />
         <div class="grid grid-cols-1 gap-5 @md:grid-cols-2 @xl:grid-cols-3">
@@ -191,7 +206,9 @@
     {const newsroom = await listPosts({ page: 1, limit: 3 })}
     {#if newsroom.docs.length > 0}
       <section class="flex flex-col gap-4">
-        <Item.Root variant="outline" class="glass glass-brightness-150 dark:glass-brightness-50 glass-contrast-60 dark:glass-contrast-100">
+        <Item.Root
+          variant="outline"
+          class="glass glass-brightness-150 glass-contrast-60 dark:glass-brightness-50 dark:glass-contrast-100">
           <Item.Media variant="icon">
             <NewspaperIcon class="size-6" />
           </Item.Media>
@@ -218,10 +235,16 @@
   <Tooltip.Provider delayDuration={75} skipDelayDuration={75}>
     <div class="grid grid-cols-1 gap-5 @xl:grid-cols-2 @5xl:grid-cols-3">
       {#if favorites.current.length === 0}
-        <ContributorCard user={{ id: "0", username: "No favorites set!", quote: "Why don't you set a favorite?" }} options={{ tip: true }} {iconMapper} />
+        <ContributorCard
+          user={{ id: "0", username: "No favorites set!", quote: "Why don't you set a favorite?" }}
+          options={{ tip: true }}
+          {iconMapper} />
       {:else}
         {#each favorites.current.toReversed() as favorite, index (index)}
-          <ContributorCard user={{ id: favorite.uuid, username: favorite.ign, role: Role.FAVORITE, displayName: favorite.displayName }} options={{ favorite: true }} {iconMapper} />
+          <ContributorCard
+            user={{ id: favorite.uuid, username: favorite.ign, role: Role.FAVORITE, displayName: favorite.displayName }}
+            options={{ favorite: true }}
+            {iconMapper} />
         {/each}
       {/if}
 

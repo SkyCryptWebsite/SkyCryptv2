@@ -5,6 +5,8 @@ export const load = (async ({ params }) => {
   const { ign: paramPlayer, profile: paramProfile = null } = params;
 
   return {
-    embed: paramProfile ? await getProfileEmbed({ uuid: paramPlayer, profileId: paramProfile }) : await getSelectedProfileEmbed({ uuid: paramPlayer })
+    embed: paramProfile
+      ? await getProfileEmbed({ uuid: paramPlayer, profileId: paramProfile })
+      : await getSelectedProfileEmbed({ uuid: paramPlayer })
   };
 }) satisfies PageServerLoad;

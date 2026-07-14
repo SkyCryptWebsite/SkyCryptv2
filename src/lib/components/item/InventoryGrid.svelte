@@ -5,7 +5,17 @@
   import PackageSearchIcon from "@lucide/svelte/icons/package-search";
   import type { Snippet } from "svelte";
 
-  let { inventoryId, gap, itemSnippet, items = [] }: { inventoryId: string; gap: number; itemSnippet: Snippet<[ModelsStrippedItem]>; items?: ModelsStrippedItem[] } = $props();
+  let {
+    inventoryId,
+    gap,
+    itemSnippet,
+    items = []
+  }: {
+    inventoryId: string;
+    gap: number;
+    itemSnippet: Snippet<[ModelsStrippedItem]>;
+    items?: ModelsStrippedItem[];
+  } = $props();
 </script>
 
 {#snippet content(items: ModelsStrippedItem[] | undefined)}
@@ -18,8 +28,13 @@
           {/if}
         {/if}
         {#if item.texture_path}
-          <div class="relative flex aspect-square items-center size-full overflow-clip border justify-center rounded-xl bg-foreground/5">
-            {@render itemSnippet(inventoryId === "inventory" ? ({ ...item, rarity: item.rarity ?? "uncommon" } as ModelsStrippedItem) : item)}
+          <div
+            class="relative flex aspect-square size-full items-center justify-center overflow-clip rounded-xl border bg-foreground/5">
+            {@render itemSnippet(
+              inventoryId === "inventory"
+                ? ({ ...item, rarity: item.rarity ?? "uncommon" } as ModelsStrippedItem)
+                : item
+            )}
           </div>
         {:else}
           <div class="aspect-square rounded-xl border bg-foreground/5"></div>
@@ -27,7 +42,11 @@
       {/each}
     </div>
   {:else}
-    <EmptyStat title="No items found" description="No items found in {inventoryId.replaceAll('_', ' ')}" icon={PackageSearchIcon} class="mt-2" />
+    <EmptyStat
+      title="No items found"
+      description="No items found in {inventoryId.replaceAll('_', ' ')}"
+      icon={PackageSearchIcon}
+      class="mt-2" />
   {/if}
 {/snippet}
 

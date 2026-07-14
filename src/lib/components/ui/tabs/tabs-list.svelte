@@ -18,8 +18,8 @@
 </script>
 
 <script lang="ts">
-  import { Tabs as TabsPrimitive } from "bits-ui";
   import { cn } from "$utils.js";
+  import { Tabs as TabsPrimitive } from "bits-ui";
 
   let {
     ref = $bindable(null),
@@ -31,4 +31,9 @@
   } = $props();
 </script>
 
-<TabsPrimitive.List bind:ref data-slot="tabs-list" data-variant={variant} class={cn(tabsListVariants({ variant }), className)} {...restProps} />
+<TabsPrimitive.List
+  bind:ref
+  data-slot="tabs-list"
+  data-variant={variant}
+  class={cn(tabsListVariants({ variant }), className)}
+  {...restProps} />

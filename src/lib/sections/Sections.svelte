@@ -46,7 +46,11 @@
               {@render loadingState()}
             {/snippet}
             {#snippet failed(err, reset)}
-              <Notice type="error" title={`Failed to load section ${internalState.tabValue}`} error={err instanceof Error ? err.message : String(err)} retry={reset}>
+              <Notice
+                type="error"
+                title={`Failed to load section ${internalState.tabValue}`}
+                error={err instanceof Error ? err.message : String(err)}
+                retry={reset}>
                 <p class="text-foreground/80">This section may not be available or there was an error loading it.</p>
               </Notice>
             {/snippet}
@@ -64,7 +68,7 @@
 {/key}
 
 {#snippet loadingState()}
-  <div class="rounded-xl p-6 border">
+  <div class="rounded-xl border p-6">
     <div class="flex items-center gap-2">
       <Spinner />
       <span class="font-semibold">Loading {titleCase(internalState.tabValue)}</span>

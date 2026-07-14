@@ -10,7 +10,7 @@
 </script>
 
 {#if misc && misc.mythological_event != null}
-  <div class="border p-4 rounded-xl space-y-2">
+  <div class="space-y-2 rounded-xl border p-4">
     <SectionSubtitle>Mythological Event</SectionSubtitle>
     <div class="space-y-0.5">
       {#if misc.mythological_event.kills}
@@ -23,7 +23,8 @@
           {#each Object.entries(misc.mythological_event.burrows_dug_next) as [tier, count], index (index)}
             {#if tier !== "total"}
               <Label class="gap-1 capitalize">
-                <span style="color: var(--§{RARITY_COLORS[tier.toLowerCase()]})">{tier.replaceAll("_", " ").toLowerCase()}:</span>
+                <span style="color: var(--§{RARITY_COLORS[tier.toLowerCase()]})"
+                  >{tier.replaceAll("_", " ").toLowerCase()}:</span>
                 <span class="font-bold">{format(count)}</span>
               </Label>
             {/if}
@@ -32,12 +33,16 @@
       {/if}
 
       {#if misc.mythological_event.burrows_dug_combat?.total}
-        <AdditionStat text="Dug Monsters" data={format(misc.mythological_event.burrows_dug_combat.total)} asterisk={true}>
+        <AdditionStat
+          text="Dug Monsters"
+          data={format(misc.mythological_event.burrows_dug_combat.total)}
+          asterisk={true}>
           <Label>Rarities used:</Label>
           {#each Object.entries(misc.mythological_event.burrows_dug_combat) as [tier, count], index (index)}
             {#if tier !== "total"}
               <Label class="gap-1 capitalize">
-                <span style="color: var(--§{RARITY_COLORS[tier.toLowerCase()]})">{tier.replaceAll("_", " ").toLowerCase()}:</span>
+                <span style="color: var(--§{RARITY_COLORS[tier.toLowerCase()]})"
+                  >{tier.replaceAll("_", " ").toLowerCase()}:</span>
                 <span class="font-bold">{format(count)}</span>
               </Label>
             {/if}
@@ -46,12 +51,16 @@
       {/if}
 
       {#if misc.mythological_event.burrows_dug_treasure?.total}
-        <AdditionStat text="Dug Treasure" data={format(misc.mythological_event.burrows_dug_treasure.total)} asterisk={true}>
+        <AdditionStat
+          text="Dug Treasure"
+          data={format(misc.mythological_event.burrows_dug_treasure.total)}
+          asterisk={true}>
           <Label>Rarities used:</Label>
           {#each Object.entries(misc.mythological_event.burrows_dug_treasure) as [tier, count], index (index)}
             {#if tier !== "total"}
               <Label class="gap-1 capitalize">
-                <span style="color: var(--§{RARITY_COLORS[tier.toLowerCase()]})">{tier.replaceAll("_", " ").toLowerCase()}:</span>
+                <span style="color: var(--§{RARITY_COLORS[tier.toLowerCase()]})"
+                  >{tier.replaceAll("_", " ").toLowerCase()}:</span>
                 <span class="font-bold">{format(count)}</span>
               </Label>
             {/if}
@@ -60,12 +69,16 @@
       {/if}
 
       {#if misc.mythological_event.burrows_chains_complete?.total}
-        <AdditionStat text="Chains Completed" data={format(misc.mythological_event.burrows_chains_complete.total)} asterisk={true}>
+        <AdditionStat
+          text="Chains Completed"
+          data={format(misc.mythological_event.burrows_chains_complete.total)}
+          asterisk={true}>
           <Label>Rarities used:</Label>
           {#each Object.entries(misc.mythological_event.burrows_chains_complete) as [tier, count], index (index)}
             {#if tier !== "total"}
               <Label class="gap-1 capitalize">
-                <span style="color: var(--§{RARITY_COLORS[tier.toLowerCase()]})">{tier.replaceAll("_", " ").toLowerCase()}:</span>
+                <span style="color: var(--§{RARITY_COLORS[tier.toLowerCase()]})"
+                  >{tier.replaceAll("_", " ").toLowerCase()}:</span>
                 <span class="font-bold">{format(count)}</span>
               </Label>
             {/if}

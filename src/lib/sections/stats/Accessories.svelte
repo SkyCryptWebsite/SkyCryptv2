@@ -35,23 +35,33 @@
 <Section id="Accessories" {order}>
   {#if accessories}
     {#if accessories.magicalPower?.total}
-      <div class="space-y-4 contents">
-        <div class="border rounded-xl p-4">
+      <div class="contents space-y-4">
+        <div class="rounded-xl border p-4">
           {#if accessories.unique != null && accessories.total != null}
-            <AdditionStat text="Unique Accessories" data={`${accessories.unique} / ${accessories.total} (${calculatePercentage(accessories.unique, accessories.total)}%)`} maxed={accessories.unique === accessories.total} />
+            <AdditionStat
+              text="Unique Accessories"
+              data={`${accessories.unique} / ${accessories.total} (${calculatePercentage(accessories.unique, accessories.total)}%)`}
+              maxed={accessories.unique === accessories.total} />
           {/if}
           {#if accessories.recombobulated != null && accessories.totalRecombobulated != null}
-            <AdditionStat text="Recombobulated" data={`${accessories.recombobulated} / ${accessories.totalRecombobulated}`} maxed={accessories.recombobulated === accessories.totalRecombobulated} />
+            <AdditionStat
+              text="Recombobulated"
+              data={`${accessories.recombobulated} / ${accessories.totalRecombobulated}`}
+              maxed={accessories.recombobulated === accessories.totalRecombobulated} />
           {/if}
           {#if accessories.selectedPower}
             <AdditionStat text="Selected Power" data={helper.titleCase(accessories.selectedPower)} />
           {/if}
           {#if accessories.magicalPower}
-            <AdditionStat text="Magical Power" data={accessories.magicalPower.total ?? 0} asterisk={true} maxed={accessories.unique === accessories.total}>
+            <AdditionStat
+              text="Magical Power"
+              data={accessories.magicalPower.total ?? 0}
+              asterisk={true}
+              maxed={accessories.unique === accessories.total}>
               <div class="max-w-xs space-y-2 font-bold">
                 <div>
                   <Label class="font-bold">Accessories Breakdown</Label>
-                  <p class="font-medium text-foreground/80 text-xs italic">From your accessory bag.</p>
+                  <p class="text-xs font-medium text-foreground/80 italic">From your accessory bag.</p>
                 </div>
                 {#if accessories.magicalPower.rarities}
                   {const rarities = accessories.magicalPower.rarities}
@@ -61,7 +71,12 @@
                         <li>
                           <span class="text-minecraft-6!">{mp} MP </span>
                           ×
-                          <span class="capitalize text-(--rarityColor)!" style="--rarityColor: var(--§{RARITY_COLORS[rarity]})"> {rarities[rarity]?.amount ?? 0} {rarity.replaceAll("_", " ")}. </span>
+                          <span
+                            class="text-(--rarityColor)! capitalize"
+                            style="--rarityColor: var(--§{RARITY_COLORS[rarity]})">
+                            {rarities[rarity]?.amount ?? 0}
+                            {rarity.replaceAll("_", " ")}.
+                          </span>
                           =
                           <span class="text-minecraft-6!"> {rarities[rarity]?.magicalPower ?? 0} MP</span>
                         </li>
@@ -74,14 +89,18 @@
                   <ul class="font-bold [&>li]:text-foreground/85 [&>li>span]:text-foreground">
                     {#if accessories.magicalPower.abiphone != null && accessories.magicalPower.abiphone > 0}
                       <li>
-                        <span class="text-(--rarityColor)!" style="--rarityColor: var(--§{RARITY_COLORS['rare']})">Abicase: </span>
+                        <span class="text-(--rarityColor)!" style="--rarityColor: var(--§{RARITY_COLORS['rare']})"
+                          >Abicase:
+                        </span>
                         =
                         <span class="text-minecraft-6!"> +{accessories.magicalPower.abiphone} MP</span>
                       </li>
                     {/if}
                     {#if accessories.magicalPower.riftPrism != null && accessories.magicalPower.riftPrism > 0}
                       <li>
-                        <span class="text-(--rarityColor)!" style="--rarityColor: var(--§{RARITY_COLORS['rare']})">Rift Prism: </span>
+                        <span class="text-(--rarityColor)!" style="--rarityColor: var(--§{RARITY_COLORS['rare']})"
+                          >Rift Prism:
+                        </span>
                         =
                         <span class="text-minecraft-6!"> +{accessories.magicalPower.riftPrism} MP</span>
                       </li>
@@ -89,9 +108,14 @@
                     {#if accessories.magicalPower.hegemony}
                       {#if accessories.magicalPower.hegemony.amount != null && accessories.magicalPower.hegemony.amount > 0 && accessories.magicalPower.hegemony.rarity}
                         <li>
-                          <span class="text-(--rarityColor)!" style="--rarityColor: var(--§{RARITY_COLORS[accessories.magicalPower.hegemony.rarity]}">Hegemony Artifact: </span>
+                          <span
+                            class="text-(--rarityColor)!"
+                            style="--rarityColor: var(--§{RARITY_COLORS[accessories.magicalPower.hegemony.rarity]}"
+                            >Hegemony Artifact:
+                          </span>
                           =
-                          <span class="text-minecraft-6!"> +{accessories.magicalPower.hegemony.amount.toString()} MP</span>
+                          <span class="text-minecraft-6!">
+                            +{accessories.magicalPower.hegemony.amount.toString()} MP</span>
                         </li>
                       {/if}
                     {/if}
@@ -109,7 +133,7 @@
         </div>
 
         {#if accessories.accessories && accessories.accessories.length > 0}
-          <div class="border rounded-xl p-4">
+          <div class="rounded-xl border p-4">
             <SectionSubtitle>Active Accessories</SectionSubtitle>
 
             {#if accessories.enrichments != null}
@@ -148,7 +172,7 @@
           </div>
 
           {#if accessories.accessories.length > 0 && accessories.accessories.find((accessory) => accessory.isInactive)}
-            <div class="border p-4 rounded-xl">
+            <div class="rounded-xl border p-4">
               <SectionSubtitle>Inactive Accessories</SectionSubtitle>
               <ScrollAreaItems>
                 {#each accessories.accessories as accessory, index (index)}
@@ -164,12 +188,12 @@
         {/if}
 
         {#if (accessories.missing && accessories.missing.length > 0) || (accessories.upgrades && accessories.upgrades.length > 0)}
-          <Collapsible.Root class="border p-2 rounded-xl">
+          <Collapsible.Root class="rounded-xl border p-2">
             <CollapsibleCustomTrigger>Missing Accessories</CollapsibleCustomTrigger>
 
             <Collapsible.Content>
               {#if accessories.missing && accessories.missing.length > 0}
-                <div class="px-4 space-y-4">
+                <div class="space-y-4 px-4">
                   <ScrollAreaItems>
                     {#each accessories.missing as accessory, index (index)}
                       <div class="grayscale-80 hover:grayscale-0">
@@ -181,7 +205,7 @@
               {/if}
               <Separator />
               {#if accessories.upgrades && accessories.upgrades.length > 0}
-                <div class="px-4 space-y-4 my-4">
+                <div class="my-4 space-y-4 px-4">
                   <SectionSubtitle>Missing Accessory Upgrades</SectionSubtitle>
                   <ScrollAreaItems>
                     {#each accessories.upgrades as accessory, index (index)}

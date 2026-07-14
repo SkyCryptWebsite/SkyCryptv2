@@ -24,15 +24,37 @@ const httpsUrlSchema = z
     message: "URL must use HTTPS protocol"
   });
 
-const minecraftOverrideKeySchema = z.enum(["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"]);
-const minecraftOverridesSchema = z.record(z.string(), cssColorSchema).refine((data) => Object.keys(data).every((key) => minecraftOverrideKeySchema.safeParse(key).success), {
-  message: "Override keys must be single hex characters (0-9, a-f)"
-});
+const minecraftOverrideKeySchema = z.enum([
+  "0",
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7",
+  "8",
+  "9",
+  "a",
+  "b",
+  "c",
+  "d",
+  "e",
+  "f"
+]);
+const minecraftOverridesSchema = z
+  .record(z.string(), cssColorSchema)
+  .refine((data) => Object.keys(data).every((key) => minecraftOverrideKeySchema.safeParse(key).success), {
+    message: "Override keys must be single hex characters (0-9, a-f)"
+  });
 const themeIdSchema = z
   .string()
   .min(1, "Theme ID is required")
   .max(64, "Theme ID must be 64 characters or fewer")
-  .regex(/^[a-z0-9][a-z0-9_-]*$/, "Theme ID must start with a lowercase letter or number and contain only lowercase letters, numbers, underscores, and dashes");
+  .regex(
+    /^[a-z0-9][a-z0-9_-]*$/,
+    "Theme ID must start with a lowercase letter or number and contain only lowercase letters, numbers, underscores, and dashes"
+  );
 
 export const shadcnThemeVarsSchema = z.object({
   radius: cssLengthSchema.optional(),

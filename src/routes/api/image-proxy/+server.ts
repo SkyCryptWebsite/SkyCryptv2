@@ -24,7 +24,14 @@ export const GET: RequestHandler = async ({ request }) => {
     // Security: Prevent SSRF (Server-Side Request Forgery)
     // Block attempts to access localhost or private networks
     const hostname = targetUrl.hostname.toLowerCase();
-    if (hostname === "localhost" || hostname === "127.0.0.1" || hostname === "::1" || hostname.startsWith("192.168.") || hostname.startsWith("10.") || hostname.endsWith(".local")) {
+    if (
+      hostname === "localhost" ||
+      hostname === "127.0.0.1" ||
+      hostname === "::1" ||
+      hostname.startsWith("192.168.") ||
+      hostname.startsWith("10.") ||
+      hostname.endsWith(".local")
+    ) {
       return new Response("Forbidden: Invalid image host", { status: 403 });
     }
 

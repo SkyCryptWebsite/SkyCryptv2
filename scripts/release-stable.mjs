@@ -34,11 +34,18 @@ function getReleaseBody(version, tag) {
   const releases = JSON.parse(output("gh release list --limit 100 --json tagName,isDraft,isPrerelease,publishedAt"));
   const previousRelease = selectPreviousRelease(releases, { prerelease: false, currentTag: tag });
 
-  return buildReleaseBody({ changelogSection: extractReleaseSection(changelog, version), currentTag: tag, previousRelease });
+  return buildReleaseBody({
+    changelogSection: extractReleaseSection(changelog, version),
+    currentTag: tag,
+    previousRelease
+  });
 }
 
 function createRelease(tag, body) {
-  execFileSync("gh", ["release", "create", tag, "--title", tag, "--notes-file", "-"], { input: body, stdio: ["pipe", "inherit", "inherit"] });
+  execFileSync("gh", ["release", "create", tag, "--title", tag, "--notes-file", "-"], {
+    input: body,
+    stdio: ["pipe", "inherit", "inherit"]
+  });
 }
 
 run("git fetch origin prod dev");
@@ -71,14 +78,22 @@ try {
   run('git commit -m "chore: version packages (stable) [skip ci]"');
   run("git push origin HEAD:changeset-release/prod --force");
 
-  let pullNumber = outputOptional("gh pr list --state open --head changeset-release/prod --base prod --json number --jq '.[0].number'");
+  let pullNumber = outputOptional(
+    "gh pr list --state open --head changeset-release/prod --base prod --json number --jq '.[0].number'"
+  );
 
   if (!pullNumber) {
-    run('gh pr create --title "Version Packages (Stable)" --body "Automatically promotes the current beta release line on prod to a stable release." --base prod --head changeset-release/prod');
-    pullNumber = output("gh pr list --state open --head changeset-release/prod --base prod --json number --jq '.[0].number'");
+    run(
+      'gh pr create --title "Version Packages (Stable)" --body "Automatically promotes the current beta release line on prod to a stable release." --base prod --head changeset-release/prod'
+    );
+    pullNumber = output(
+      "gh pr list --state open --head changeset-release/prod --base prod --json number --jq '.[0].number'"
+    );
   }
 
-  const mergeState = outputOptional(`gh pr view ${pullNumber} --json state,mergedAt --jq '.state + "|" + (.mergedAt // "")'`);
+  const mergeState = outputOptional(
+    `gh pr view ${pullNumber} --json state,mergedAt --jq '.state + "|" + (.mergedAt // "")'`
+  );
 
   if (!mergeState.startsWith("MERGED|")) {
     run(`gh pr merge ${pullNumber} --merge --delete-branch`);

@@ -42,7 +42,7 @@
 </script>
 
 <article data-slot="loadout-card" class={cn("space-y-4 rounded-xl border bg-background/20 p-4", className)}>
-  <h4 class="text-balance font-semibold">{name}</h4>
+  <h4 class="font-semibold text-balance">{name}</h4>
 
   <div class="flex items-start gap-4 overflow-x-auto pb-1">
     <GearSlotColumn label="Armor" items={armor} emptySlots={armorSlots} />

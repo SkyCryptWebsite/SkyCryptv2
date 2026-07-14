@@ -18,7 +18,9 @@
   let { href, text, img }: Props = $props();
 </script>
 
-<Item.Root variant="outline" class="[a]:hover:scale-95 delay-75 w-fit standard:[a]:hover:bg-inherit [a]:transition-[scale] duration-300 ease-out">
+<Item.Root
+  variant="outline"
+  class="w-fit delay-75 duration-300 ease-out [a]:transition-[scale] [a]:hover:scale-95 standard:[a]:hover:bg-inherit">
   {#snippet child({ props })}
     <!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
     <a {href} target="_blank" {...props}>

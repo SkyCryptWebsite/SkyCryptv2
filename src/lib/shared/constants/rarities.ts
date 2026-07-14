@@ -1,4 +1,16 @@
-export const RARITIES = ["common", "uncommon", "rare", "epic", "legendary", "mythic", "divine", "supreme", "special", "very_special", "admin"];
+export const RARITIES = [
+  "common",
+  "uncommon",
+  "rare",
+  "epic",
+  "legendary",
+  "mythic",
+  "divine",
+  "supreme",
+  "special",
+  "very_special",
+  "admin"
+];
 
 export const RARITY_COLORS = {
   common: "f",

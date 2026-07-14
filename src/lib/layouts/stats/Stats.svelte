@@ -13,17 +13,24 @@
   const profile = $derived(getProfileContext().current);
   const profileUUID = $derived(profile?.uuid);
   const profileId = $derived(profile?.profile_id);
-  const statsQuery = $derived(openState && profileUUID && profileId ? getPlayerStats({ uuid: profileUUID, profileId }) : null);
+  const statsQuery = $derived(
+    openState && profileUUID && profileId ? getPlayerStats({ uuid: profileUUID, profileId }) : null
+  );
 </script>
 
 <div class="stats flex flex-col">
   <Collapsible.Root bind:open={openState}>
     {#key profile}
-      <Collapsible.Content forceMount={true} class="columns-[12.5rem] *:motion-preset-focus *:motion-preset-slide-down *:motion-delay-[calc(sibling-index()*0.01s)]">
+      <Collapsible.Content
+        forceMount={true}
+        class="columns-[12.5rem] *:motion-preset-focus *:motion-preset-slide-down *:motion-delay-[calc(sibling-index()*0.01s)]">
         {#snippet child({ props, open })}
           {#if open}
             {#if statsQuery?.error}
-              <Notice title="An unexpected error has occurred" type="error" error={statsQuery.error instanceof Error ? statsQuery.error.message : String(statsQuery.error)} />
+              <Notice
+                title="An unexpected error has occurred"
+                type="error"
+                error={statsQuery.error instanceof Error ? statsQuery.error.message : String(statsQuery.error)} />
             {/if}
             {#if statsQuery?.current?.stats}
               <div {...props} transition:slide|global={{ duration: 300, easing: cubicOut, axis: "y" }}>
@@ -38,7 +45,11 @@
         {/snippet}
       </Collapsible.Content>
     {/key}
-    <Collapsible.Trigger class={buttonVariants({ variant: "outline", class: "data-[state=open]:mt-3.5 w-full hover:bg-muted/5 bg-foreground/5 font-semibold" })}>
+    <Collapsible.Trigger
+      class={buttonVariants({
+        variant: "outline",
+        class: "w-full bg-foreground/5 font-semibold hover:bg-muted/5 data-[state=open]:mt-3.5"
+      })}>
       {#if statsQuery?.loading}
         <Spinner />
       {:else}

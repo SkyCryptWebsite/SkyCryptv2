@@ -10,7 +10,7 @@
 </script>
 
 {#if misc && misc.auctions != null}
-  <div class="border p-4 rounded-xl space-y-2">
+  <div class="space-y-2 rounded-xl border p-4">
     <SectionSubtitle>Auctions Sold</SectionSubtitle>
     <div class="space-y-0.5">
       <AdditionStat text="Fees" data={format(misc.auctions.fees)} />
@@ -21,7 +21,8 @@
             {#each Object.entries(misc.auctions.total_sold) as [rarity, amount], index (index)}
               {#if rarity !== "total"}
                 <Label class="gap-1 capitalize">
-                  <span style="color: var(--§{RARITY_COLORS[rarity.toLowerCase()]})">{rarity.replaceAll("_", " ").toLowerCase()}:</span>
+                  <span style="color: var(--§{RARITY_COLORS[rarity.toLowerCase()]})"
+                    >{rarity.replaceAll("_", " ").toLowerCase()}:</span>
                   <span class="font-bold">{format(amount)}</span>
                 </Label>
               {/if}
@@ -32,7 +33,7 @@
     </div>
   </div>
 
-  <div class="border p-4 rounded-xl space-y-2">
+  <div class="space-y-2 rounded-xl border p-4">
     <SectionSubtitle>Auctions Bought</SectionSubtitle>
     <div class="space-y-0.5">
       <AdditionStat text="Bids" data={format(misc.auctions.bids)} />
@@ -45,7 +46,8 @@
             {#each Object.entries(misc.auctions.total_bought) as [rarity, amount], index (index)}
               {#if rarity !== "total"}
                 <Label class="gap-1 capitalize">
-                  <span style="color: var(--§{RARITY_COLORS[rarity.toLowerCase()]})">{rarity.replaceAll("_", " ").toLowerCase()}:</span>
+                  <span style="color: var(--§{RARITY_COLORS[rarity.toLowerCase()]})"
+                    >{rarity.replaceAll("_", " ").toLowerCase()}:</span>
                   <span class="font-bold">{format(amount)}</span>
                 </Label>
               {/if}

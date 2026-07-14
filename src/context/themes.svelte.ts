@@ -1,6 +1,14 @@
 import { browser } from "$app/environment";
 import { loadOldStorageKey } from "$ctx/utils";
-import { DEFAULT_THEME, legacyThemeV4Schema, mergeThemeWithDefaults, migrateThemeV4ToV5, ThemeEngine, themeV5Schema, type ThemeV5 } from "$lib/shared/themes";
+import {
+  DEFAULT_THEME,
+  legacyThemeV4Schema,
+  mergeThemeWithDefaults,
+  migrateThemeV4ToV5,
+  ThemeEngine,
+  themeV5Schema,
+  type ThemeV5
+} from "$lib/shared/themes";
 import { FIRST_PARTY_THEMES } from "$lib/shared/themes/first-party";
 import * as devalue from "devalue";
 import { setTheme, theme as activeModeWatcherTheme, themeStorageKey } from "mode-watcher";

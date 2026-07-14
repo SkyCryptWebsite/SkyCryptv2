@@ -15,7 +15,10 @@ const constantTimeEqual = (a: string, b: string): boolean => {
 function renderRichTextBlocks(post: Post): Post {
   return {
     ...post,
-    body: post.body?.map((block) => (block.blockType === "richText" ? { ...block, html: richTextToHtml(block.content) } : block)) ?? post.body
+    body:
+      post.body?.map((block) =>
+        block.blockType === "richText" ? { ...block, html: richTextToHtml(block.content) } : block
+      ) ?? post.body
   };
 }
 

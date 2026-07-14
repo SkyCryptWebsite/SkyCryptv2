@@ -37,10 +37,19 @@
   // background unrendered. The CSS pattern is the one shown in the takumi
   // docs ("The image key can be used in any `src` field or `background-image`,
   // `mask-image` CSS property.") and is robust against further layout changes.
-  const mainStyle = $derived(["background-image: url(skycrypt-background)", "background-size: cover", "background-position: center", settings?.border && settings?.borderColor ? `border: 2px solid ${settings.borderColor}` : null].filter(Boolean).join("; "));
+  const mainStyle = $derived(
+    [
+      "background-image: url(skycrypt-background)",
+      "background-size: cover",
+      "background-position: center",
+      settings?.border && settings?.borderColor ? `border: 2px solid ${settings.borderColor}` : null
+    ]
+      .filter(Boolean)
+      .join("; ")
+  );
 </script>
 
-<main class="relative dark h-85 w-375 overflow-hidden rounded-xl" style={mainStyle}>
+<main class="dark relative h-85 w-375 overflow-hidden rounded-xl" style={mainStyle}>
   <div class="flex h-full w-full items-start justify-start">
     <Player showMinecraftName={settings?.showMinecraftName ?? false} />
     <div
@@ -53,7 +62,9 @@ backdrop-brightness-50">
   </div>
 
   <footer>
-    <div class="absolute bottom-4 left-4 flex items-center justify-center gap-2 text-base font-bold text-white" data-sveltekit-preload-data="hover">
+    <div
+      class="absolute bottom-4 left-4 flex items-center justify-center gap-2 text-base font-bold text-white"
+      data-sveltekit-preload-data="hover">
       <img src="skycrypt-logo" alt="SkyCrypt" class="pointer-events-none size-6 select-none" />
       <span>SkyCrypt</span>
     </div>

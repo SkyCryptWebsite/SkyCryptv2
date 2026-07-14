@@ -19,8 +19,10 @@
   const normalize = (value?: string | null) => value?.trim().toLocaleLowerCase() ?? "";
   const getFamilyText = (shard?: ModelsAttributeShard) => shard?.family?.filter(Boolean).join(", ") ?? "";
   const getShardRarity = (shard?: ModelsAttributeShard) => normalize(shard?.rarity) || "common";
-  const isMaxed = (shard?: ModelsAttributeShard) => (shard?.maxSyphon ?? 0) > 0 && (shard?.syphoned ?? 0) >= (shard?.maxSyphon ?? 0);
-  const hasProgress = (shard?: ModelsAttributeShard) => (shard?.owned ?? 0) > 0 || (shard?.syphoned ?? 0) > 0 || shard?.capturedTimestamp != null;
+  const isMaxed = (shard?: ModelsAttributeShard) =>
+    (shard?.maxSyphon ?? 0) > 0 && (shard?.syphoned ?? 0) >= (shard?.maxSyphon ?? 0);
+  const hasProgress = (shard?: ModelsAttributeShard) =>
+    (shard?.owned ?? 0) > 0 || (shard?.syphoned ?? 0) > 0 || shard?.capturedTimestamp != null;
 
   const summary = $derived.by(() => {
     const shards = allShards;
@@ -58,7 +60,9 @@
   const shardTabs = $derived.by(() => {
     const presentRarities = new Set(allShards.map((shard) => getShardRarity(shard)));
     const orderedRarities = RARITIES.filter((rarity) => presentRarities.has(rarity));
-    const extraRarities = [...presentRarities].filter((rarity) => !RARITIES.includes(rarity)).sort((a, b) => a.localeCompare(b));
+    const extraRarities = [...presentRarities]
+      .filter((rarity) => !RARITIES.includes(rarity))
+      .sort((a, b) => a.localeCompare(b));
 
     return [...orderedRarities, ...extraRarities].map((rarity) => ({
       value: rarity,
@@ -72,17 +76,29 @@
 
 {#if hunting}
   <div class="contents space-y-4">
-    <div class="border p-4 rounded-xl">
+    <div class="rounded-xl border p-4">
       <div class="space-y-0.5">
-        <AdditionStat text="Unlocked" data={`${summary.unlocked} / ${summary.maxUnlocked ?? "?"}`} maxed={summary.maxUnlocked != null && summary.unlocked >= summary.maxUnlocked} />
-        <AdditionStat text="Syphoned" data={`${summary.syphoned} / ${summary.maxSyphoned ?? "?"}`} maxed={summary.maxSyphoned != null && summary.syphoned >= summary.maxSyphoned} />
+        <AdditionStat
+          text="Unlocked"
+          data={`${summary.unlocked} / ${summary.maxUnlocked ?? "?"}`}
+          maxed={summary.maxUnlocked != null && summary.unlocked >= summary.maxUnlocked} />
+        <AdditionStat
+          text="Syphoned"
+          data={`${summary.syphoned} / ${summary.maxSyphoned ?? "?"}`}
+          maxed={summary.maxSyphoned != null && summary.syphoned >= summary.maxSyphoned} />
         <AdditionStat text="Maxed Shards" data={summary.maxed} />
         <AdditionStat text="Shards Listed" data={summary.totalListed} />
       </div>
     </div>
 
     {#if hunting.shards}
-      <SearchTabs tabs={shardTabs} placeholder="Search shards, abilities, or families" searchKeys={(shard) => [shard.name, shard.abilityName, getFamilyText(shard)]} itemKey={(shard, index) => shard.shardId ?? `${shard.name}-${index}`} emptyTitle="No items found" noResultsLabel="No shards match your search.">
+      <SearchTabs
+        tabs={shardTabs}
+        placeholder="Search shards, abilities, or families"
+        searchKeys={(shard) => [shard.name, shard.abilityName, getFamilyText(shard)]}
+        itemKey={(shard, index) => shard.shardId ?? `${shard.name}-${index}`}
+        emptyTitle="No items found"
+        noResultsLabel="No shards match your search.">
         {#snippet item(shard)}
           {const hasMaxed = isMaxed(shard)}
           {const familyText = getFamilyText(shard)}
@@ -118,7 +134,10 @@
                   {#if shard.capturedTimestamp}
                     <div>
                       <span class="opacity-60">Captured:</span>
-                      <span>{formatDate(shard.capturedTimestamp, "dd MMMM yyyy 'at' HH:mm", { in: tz(Intl.DateTimeFormat().resolvedOptions().timeZone) })}</span>
+                      <span
+                        >{formatDate(shard.capturedTimestamp, "dd MMMM yyyy 'at' HH:mm", {
+                          in: tz(Intl.DateTimeFormat().resolvedOptions().timeZone)
+                        })}</span>
                     </div>
                   {/if}
                 </div>

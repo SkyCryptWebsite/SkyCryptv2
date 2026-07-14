@@ -9,7 +9,7 @@
 </script>
 
 {#if misc && misc.claimed_items != null}
-  <div class="border p-4 rounded-xl space-y-2">
+  <div class="space-y-2 rounded-xl border p-4">
     <SectionSubtitle>Claimed Items</SectionSubtitle>
     <div class="space-y-0.5">
       {#each Object.entries(misc.claimed_items) as [item, time], index (index)}
@@ -21,7 +21,9 @@
               in: tz(Intl.DateTimeFormat().resolvedOptions().timeZone)
             })}
             asterisk={true}>
-            {formatDate(time, "'Claimed on' dd MMMM yyyy 'at' HH:mm", { in: tz(Intl.DateTimeFormat().resolvedOptions().timeZone) })}
+            {formatDate(time, "'Claimed on' dd MMMM yyyy 'at' HH:mm", {
+              in: tz(Intl.DateTimeFormat().resolvedOptions().timeZone)
+            })}
           </AdditionStat>
         {/if}
       {/each}

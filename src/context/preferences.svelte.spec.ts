@@ -9,7 +9,9 @@ describe("PreferencesContext Tests", () => {
     localStorage.clear();
     delete document.documentElement.dataset.performance;
     delete document.documentElement.dataset.rainbow;
-    vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockImplementation((() => ({}) as WebGL2RenderingContext) as unknown as typeof HTMLCanvasElement.prototype.getContext);
+    vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockImplementation(
+      (() => ({}) as WebGL2RenderingContext) as unknown as typeof HTMLCanvasElement.prototype.getContext
+    );
   });
 
   afterEach(() => {

@@ -1,6 +1,6 @@
+import path from "node:path";
 import { db } from "$src/lib/server/db";
 import { migrate } from "drizzle-orm/postgres-js/migrator";
-import path from "node:path";
 
 export async function runMigrations() {
   console.info("[migrate] Starting migrations...");

@@ -18,7 +18,8 @@
         {#if index === apiSettings.length - 1 && index > 0}
           &nbsp;and
         {/if}
-        <span class="inline-block whitespace-nowrap capitalize">{key.replaceAll("_", " ")}</span>{#if index < apiSettings.length - 1},{/if}
+        <span class="inline-block whitespace-nowrap capitalize">{key.replaceAll("_", " ")}</span
+        >{#if index < apiSettings.length - 1},{/if}
       {/each}
       {apiSettings.length === 1 ? "is" : "are"} not available for {profile?.username} due to limited API access.
     </p>
@@ -34,7 +35,19 @@
 </div>
 
 {#snippet video()}
-  <video preload="metadata" poster="/img/enable-api-thumbnail.avif" muted loop disablepictureinpicture disableremoteplayback controlslist="nodownload noremoteplayback noplaybackrate" controls autoplay playsinline class="data-[is-hover=false]:rounded-t-lg data-[is-hover=true]:rounded-none" data-is-hover={isHover.current}>
+  <video
+    preload="metadata"
+    poster="/img/enable-api-thumbnail.avif"
+    muted
+    loop
+    disablepictureinpicture
+    disableremoteplayback
+    controlslist="nodownload noremoteplayback noplaybackrate"
+    controls
+    autoplay
+    playsinline
+    class="data-[is-hover=false]:rounded-t-lg data-[is-hover=true]:rounded-none"
+    data-is-hover={isHover.current}>
     <!-- Best quality (AV1 in WebM) -->
     <source src="/video/enable-api-av1.webm" type="video/webm; codecs=av01" />
 
@@ -54,7 +67,7 @@
 {#snippet modal()}
   <Dialog.Root>
     <Dialog.Trigger class="text-primary underline">See here</Dialog.Trigger>
-    <Dialog.Content class="w-full sm:max-w-5xl overflow-clip p-0">
+    <Dialog.Content class="w-full overflow-clip p-0 sm:max-w-5xl">
       {@render video()}
     </Dialog.Content>
   </Dialog.Root>
@@ -64,7 +77,7 @@
   <Drawer.Root shouldScaleBackground={true} setBackgroundColorOnScale={false}>
     <Drawer.Trigger class="text-primary underline">See here</Drawer.Trigger>
 
-    <Drawer.Content class="before:glass before:glass-bg-popover [&>div:first-child]:mb-4 before:bg-transparent">
+    <Drawer.Content class="before:glass before:bg-transparent before:glass-bg-popover [&>div:first-child]:mb-4">
       {@render video()}
     </Drawer.Content>
   </Drawer.Root>

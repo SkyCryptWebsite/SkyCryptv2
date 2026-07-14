@@ -1,7 +1,7 @@
 <script lang="ts">
   import { getMiscContext } from "$ctx";
-  import ScrollAreaItems from "$lib/components/ScrollAreaItems.svelte";
   import { Chip } from "$lib/components/misc";
+  import ScrollAreaItems from "$lib/components/ScrollAreaItems.svelte";
   import { SectionSubtitle } from "$lib/components/sections";
   import { cn } from "$lib/shared/utils";
   import { IsMobile } from "$src/lib/hooks/is-mobile.svelte";
@@ -28,9 +28,12 @@
 {/if}
 
 {#snippet chips(title: string, data: ChipData[])}
-  <div class="border p-4 rounded-xl space-y-2">
+  <div class="space-y-2 rounded-xl border p-4">
     <SectionSubtitle>{title}</SectionSubtitle>
-    <ScrollAreaItems class="relative w-full" viewportClasses="max-h-160 pr-2" orientation={isMobile.current ? "horizontal" : "vertical"}>
+    <ScrollAreaItems
+      class="relative w-full"
+      viewportClasses="max-h-160 pr-2"
+      orientation={isMobile.current ? "horizontal" : "vertical"}>
       {#each data as item, index (index)}
         {const hasUnlocked = item.amount}
         {const hasMaxed = item.maxAmount != null && item.amount === item.maxAmount}

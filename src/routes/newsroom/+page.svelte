@@ -48,8 +48,10 @@
     imageAlt: "SkyCrypt Newsroom"
   }} />
 
-<main class="@container mx-auto flex max-w-272 flex-col gap-6 pt-5 pr-[max(1.25rem,env(safe-area-inset-right))] pb-[max(1.25rem,env(safe-area-inset-bottom))] pl-[max(1.25rem,env(safe-area-inset-left))]">
-  <div class="flex flex-col gap-4 rounded-xl p-4 glass border glass-brightness-150 dark:glass-brightness-50 glass-contrast-60 dark:glass-contrast-100 @md:flex-row @md:items-center @md:justify-between">
+<main
+  class="@container mx-auto flex max-w-272 flex-col gap-6 pt-5 pr-[max(1.25rem,env(safe-area-inset-right))] pb-[max(1.25rem,env(safe-area-inset-bottom))] pl-[max(1.25rem,env(safe-area-inset-left))]">
+  <div
+    class="flex flex-col gap-4 rounded-xl border glass p-4 glass-brightness-150 glass-contrast-60 @md:flex-row @md:items-center @md:justify-between dark:glass-brightness-50 dark:glass-contrast-100">
     <header class="flex flex-col gap-1">
       <h1 class="text-3xl leading-tight font-bold text-foreground">Newsroom</h1>
       <p class="text-sm text-foreground/70">Latest announcements and updates from the SkyCrypt team.</p>
@@ -71,7 +73,13 @@
   </div>
 
   {#if data.docs.length === 0}
-    <EmptyStat class="glass" icon={SearchXIcon} title="No posts found" description={data.type ? `No ${POST_TYPE_LABELS[data.type].toLowerCase()} posts in this category.` : "Check back soon for announcements and updates."} />
+    <EmptyStat
+      class="glass"
+      icon={SearchXIcon}
+      title="No posts found"
+      description={data.type
+        ? `No ${POST_TYPE_LABELS[data.type].toLowerCase()} posts in this category.`
+        : "Check back soon for announcements and updates."} />
   {:else}
     <div class="grid grid-cols-1 gap-4 @md:grid-cols-2 @4xl:grid-cols-3">
       {#each data.docs as post (post.id)}
@@ -80,7 +88,8 @@
     </div>
 
     {#if data.totalPages > 1}
-      <div class="flex items-center justify-end rounded-xl border p-4 glass glass-brightness-150 dark:glass-brightness-50 glass-contrast-60 dark:glass-contrast-100">
+      <div
+        class="flex items-center justify-end rounded-xl border glass p-4 glass-brightness-150 glass-contrast-60 dark:glass-brightness-50 dark:glass-contrast-100">
         <Pagination page={data.page} totalPages={data.totalPages} {baseHref} />
       </div>
     {/if}

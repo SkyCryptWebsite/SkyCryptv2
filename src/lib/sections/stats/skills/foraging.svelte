@@ -18,10 +18,13 @@
 </script>
 
 {#if foraging}
-  <div class="space-y-4 contents">
-    <div class="space-y-0.5 border p-4 rounded-xl">
+  <div class="contents space-y-4">
+    <div class="space-y-0.5 rounded-xl border p-4">
       {#if foraging.whispers}
-        <AdditionStat text="Whispers" data={format((foraging.whispers.available ?? 0) + (foraging.whispers.spent ?? 0))} asterisk={true}>
+        <AdditionStat
+          text="Whispers"
+          data={format((foraging.whispers.available ?? 0) + (foraging.whispers.spent ?? 0))}
+          asterisk={true}>
           <ul>
             {#each Object.entries(foraging.whispers) as [type, amount], index (index)}
               {#if amount != null}
@@ -35,13 +38,19 @@
         </AdditionStat>
       {/if}
       {#if foraging.hinaChapter}
-        <AdditionStat text="Hina's Chapters" data="{foraging.hinaChapter.tier}/{foraging.hinaChapter.maxTier}" maxed={foraging.hinaChapter.tier === foraging.hinaChapter.maxTier} />
+        <AdditionStat
+          text="Hina's Chapters"
+          data="{foraging.hinaChapter.tier}/{foraging.hinaChapter.maxTier}"
+          maxed={foraging.hinaChapter.tier === foraging.hinaChapter.maxTier} />
       {/if}
       {#if foraging.fishFamily}
-        <AdditionStat text="Fish Family" data="{foraging.fishFamily.collected}/{foraging.fishFamily.total}" maxed={(foraging.fishFamily.collected ?? 0) >= (foraging.fishFamily.total ?? 0)} />
+        <AdditionStat
+          text="Fish Family"
+          data="{foraging.fishFamily.collected}/{foraging.fishFamily.total}"
+          maxed={(foraging.fishFamily.collected ?? 0) >= (foraging.fishFamily.total ?? 0)} />
       {/if}
     </div>
-    <div class="border p-4 rounded-xl">
+    <div class="rounded-xl border p-4">
       <SectionSubtitle>Tree Gifts</SectionSubtitle>
       {#if foraging.treeGift}
         <ScrollAreaItems>
@@ -52,7 +61,8 @@
               <Chip class={cn("h-fit w-fit", { "opacity-50": !hasUnlocked })} image={{ src: data.texture ?? "" }}>
                 <div class="flex flex-col">
                   <div class="font-bold whitespace-nowrap">
-                    <span class={cn("capitalize", { "text-accent-4": hasMaxed })}>{name.replaceAll("_", " ").toLowerCase()}</span>
+                    <span class={cn("capitalize", { "text-accent-4": hasMaxed })}
+                      >{name.replaceAll("_", " ").toLowerCase()}</span>
                     <div class="text-sm">
                       <span class={cn({ "text-accent-4": hasMaxed })}>Level:</span>
                       <span class={cn({ "text-accent-4": hasMaxed })}>{format(data.milestone)}</span>
@@ -64,26 +74,39 @@
           {/each}
         </ScrollAreaItems>
       {:else}
-        <EmptyStat title="Tree Gifts" description="This player doesn't have any tree gifts" icon={TreePalmIcon} class="mt-2" />
+        <EmptyStat
+          title="Tree Gifts"
+          description="This player doesn't have any tree gifts"
+          icon={TreePalmIcon}
+          class="mt-2" />
       {/if}
     </div>
 
-    <div class="border p-4 rounded-xl space-y-4">
+    <div class="space-y-4 rounded-xl border p-4">
       <SectionSubtitle>Foraging Gear</SectionSubtitle>
       <SkillGear gear={foraging.gear} skill="foraging" />
     </div>
 
-    <div class="border p-4 rounded-xl">
+    <div class="rounded-xl border p-4">
       <SectionSubtitle>Heart of the Forest</SectionSubtitle>
       <div class="space-y-0.5">
         {#if foraging.level?.level != null}
-          <AdditionStat text="Tier" data={foraging.level.level.toString()} maxed={foraging.level.level === foraging.level.maxLevel} />
+          <AdditionStat
+            text="Tier"
+            data={foraging.level.level.toString()}
+            maxed={foraging.level.level === foraging.level.maxLevel} />
         {/if}
         {#if foraging.tokens}
-          <AdditionStat text="Tokens Of The Forest" data={`${foraging.tokens.spent}/${foraging.tokens.total}`} maxed={foraging.tokens.spent === foraging.tokens.total} />
+          <AdditionStat
+            text="Tokens Of The Forest"
+            data={`${foraging.tokens.spent}/${foraging.tokens.total}`}
+            maxed={foraging.tokens.spent === foraging.tokens.total} />
         {/if}
         {#if foraging.cotf}
-          <AdditionStat text="Center Of The Forest" data={`${foraging.cotf.level}/${foraging.cotf.maxLevel}`} maxed={foraging.cotf.level === foraging.cotf.maxLevel} />
+          <AdditionStat
+            text="Center Of The Forest"
+            data={`${foraging.cotf.level}/${foraging.cotf.maxLevel}`}
+            maxed={foraging.cotf.level === foraging.cotf.maxLevel} />
         {/if}
         {#if foraging.selectedAxeAbility}
           <AdditionStat text="Axe Ability" data={foraging.selectedAxeAbility} />
@@ -94,14 +117,20 @@
     {#if foraging.hotf && foraging.hotf.length > 0}
       <ScrollAreaItems border={true} class="w-full">
         <div class="@container-normal relative mx-auto">
-          <div class="grid grid-cols-[repeat(9,minmax(1.875rem,4.875rem))] place-content-center gap-1 @md:gap-1.5 @xl:gap-2">
+          <div
+            class="grid grid-cols-[repeat(9,minmax(1.875rem,4.875rem))] place-content-center gap-1 @md:gap-1.5 @xl:gap-2">
             {#each foraging.hotf as item, index (index)}
               {#if item.display_name}
-                <div class="flex aspect-square items-center border justify-center rounded-xl bg-foreground/5" in:fade|global={{ duration: 300, delay: 5 * (index + 1), easing: cubicOut }}>
+                <div
+                  class="flex aspect-square items-center justify-center rounded-xl border bg-foreground/5"
+                  in:fade|global={{ duration: 300, delay: 5 * (index + 1), easing: cubicOut }}>
                   <Item piece={item} isInventory={true} />
                 </div>
               {:else}
-                <div class="aspect-square rounded-xl border bg-foreground/5" in:fade|global={{ duration: 300, delay: 5 * (index + 1), easing: cubicOut }}></div>
+                <div
+                  class="aspect-square rounded-xl border bg-foreground/5"
+                  in:fade|global={{ duration: 300, delay: 5 * (index + 1), easing: cubicOut }}>
+                </div>
               {/if}
             {/each}
           </div>

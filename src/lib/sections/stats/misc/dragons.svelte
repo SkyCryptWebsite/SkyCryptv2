@@ -11,7 +11,7 @@
 </script>
 
 {#if misc && dragons}
-  <div class="border p-4 rounded-xl space-y-2">
+  <div class="space-y-2 rounded-xl border p-4">
     <SectionSubtitle>Dragons</SectionSubtitle>
     <div class="space-y-0.5">
       {#if dragons.most_damage?.best}

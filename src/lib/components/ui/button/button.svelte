@@ -8,10 +8,14 @@
     variants: {
       variant: {
         default: "bg-primary text-primary-foreground hover:bg-primary/80",
-        outline: "border-border bg-background hover:bg-muted hover:text-foreground dark:hover:bg-input/30 aria-expanded:bg-muted aria-expanded:text-foreground dark:bg-transparent",
-        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80 aria-expanded:bg-secondary aria-expanded:text-secondary-foreground",
-        ghost: "hover:bg-muted hover:text-foreground dark:hover:bg-muted/50 aria-expanded:bg-muted aria-expanded:text-foreground",
-        destructive: "bg-destructive/10 hover:bg-destructive/20 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/20 text-destructive focus-visible:border-destructive/40 dark:hover:bg-destructive/30",
+        outline:
+          "border-border bg-background hover:bg-muted hover:text-foreground dark:hover:bg-input/30 aria-expanded:bg-muted aria-expanded:text-foreground dark:bg-transparent",
+        secondary:
+          "bg-secondary text-secondary-foreground hover:bg-secondary/80 aria-expanded:bg-secondary aria-expanded:text-secondary-foreground",
+        ghost:
+          "hover:bg-muted hover:text-foreground dark:hover:bg-muted/50 aria-expanded:bg-muted aria-expanded:text-foreground",
+        destructive:
+          "bg-destructive/10 hover:bg-destructive/20 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/20 text-destructive focus-visible:border-destructive/40 dark:hover:bg-destructive/30",
         link: "text-primary underline-offset-4 hover:underline"
       },
       size: {
@@ -42,15 +46,39 @@
 </script>
 
 <script lang="ts">
-  let { class: className, variant = "default", size = "default", ref = $bindable(null), href = undefined, type = "button", disabled, children, ...restProps }: ButtonProps = $props();
+  let {
+    class: className,
+    variant = "default",
+    size = "default",
+    ref = $bindable(null),
+    href = undefined,
+    type = "button",
+    disabled,
+    children,
+    ...restProps
+  }: ButtonProps = $props();
 </script>
 
 {#if href}
-  <a bind:this={ref} data-slot="button" class={cn(buttonVariants({ variant, size }), className)} href={disabled ? undefined : href} aria-disabled={disabled} role={disabled ? "link" : undefined} tabindex={disabled ? -1 : undefined} {...restProps}>
+  <a
+    bind:this={ref}
+    data-slot="button"
+    class={cn(buttonVariants({ variant, size }), className)}
+    href={disabled ? undefined : href}
+    aria-disabled={disabled}
+    role={disabled ? "link" : undefined}
+    tabindex={disabled ? -1 : undefined}
+    {...restProps}>
     {@render children?.()}
   </a>
 {:else}
-  <button bind:this={ref} data-slot="button" class={cn(buttonVariants({ variant, size }), className)} {type} {disabled} {...restProps}>
+  <button
+    bind:this={ref}
+    data-slot="button"
+    class={cn(buttonVariants({ variant, size }), className)}
+    {type}
+    {disabled}
+    {...restProps}>
     {@render children?.()}
   </button>
 {/if}

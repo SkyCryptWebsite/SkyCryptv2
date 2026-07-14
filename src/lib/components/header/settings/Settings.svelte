@@ -54,12 +54,16 @@
 
 {#snippet settings()}
   <Tabs.Root bind:value={internalState.settingsTab}>
-    <Tabs.List class="bg-transparent border h-auto! w-full justify-between">
+    <Tabs.List class="h-auto! w-full justify-between border bg-transparent">
       {#each tabsList as tab (tab.value)}
         {const isActive = $derived(tab.value === internalState.settingsTab)}
-        <Tabs.Trigger value={tab.value} class="capitalize data-[state=active]:bg-transparent! h-auto!">
+        <Tabs.Trigger value={tab.value} class="h-auto! capitalize data-[state=active]:bg-transparent!">
           {#if isActive}
-            <div class="absolute inset-0 rounded-full bg-primary/40" in:send={{ key: "active-tab" }} out:receive={{ key: "active-tab" }}></div>
+            <div
+              class="absolute inset-0 rounded-full bg-primary/40"
+              in:send={{ key: "active-tab" }}
+              out:receive={{ key: "active-tab" }}>
+            </div>
           {/if}
           <div class="relative z-10 flex items-center-safe justify-center-safe">
             <tab.icon class="size-5" />
@@ -78,7 +82,9 @@
 {#snippet settingsButton(props: SettingsProps)}
   <Button {...props} variant="outline">
     <p class="hidden md:block">Settings</p>
-    <Cog class="size-4 transition-all duration-300 ease-out data-[is-open=true]:rotate-45" data-is-open={internalState.settingsOpen} />
+    <Cog
+      class="size-4 transition-all duration-300 ease-out data-[is-open=true]:rotate-45"
+      data-is-open={internalState.settingsOpen} />
   </Button>
 {/snippet}
 
@@ -90,7 +96,7 @@
       {/snippet}
     </Dialog.Trigger>
 
-    <Dialog.Content class="glass standard:glass *:data-[slot='dialog-close']:hidden glass-bg-popover">
+    <Dialog.Content class="glass glass-bg-popover *:data-[slot='dialog-close']:hidden standard:glass">
       {@render settings()}
     </Dialog.Content>
   </Dialog.Root>
@@ -102,7 +108,7 @@
       {/snippet}
     </Drawer.Trigger>
 
-    <Drawer.Content class="before:glass before:glass-bg-popover [&>div:first-child]:mb-4 before:bg-transparent">
+    <Drawer.Content class="before:glass before:bg-transparent before:glass-bg-popover [&>div:first-child]:mb-4">
       {@render settings()}
     </Drawer.Content>
   </Drawer.Root>

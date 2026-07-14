@@ -34,11 +34,18 @@ function getReleaseBody(version, tag) {
   const releases = JSON.parse(output("gh release list --limit 100 --json tagName,isDraft,isPrerelease,publishedAt"));
   const previousRelease = selectPreviousRelease(releases, { prerelease: true, currentTag: tag });
 
-  return buildReleaseBody({ changelogSection: extractReleaseSection(changelog, version), currentTag: tag, previousRelease });
+  return buildReleaseBody({
+    changelogSection: extractReleaseSection(changelog, version),
+    currentTag: tag,
+    previousRelease
+  });
 }
 
 function createRelease(tag, body) {
-  execFileSync("gh", ["release", "create", tag, "--title", tag, "--notes-file", "-", "--prerelease"], { input: body, stdio: ["pipe", "inherit", "inherit"] });
+  execFileSync("gh", ["release", "create", tag, "--title", tag, "--notes-file", "-", "--prerelease"], {
+    input: body,
+    stdio: ["pipe", "inherit", "inherit"]
+  });
 }
 
 run("git fetch origin dev");

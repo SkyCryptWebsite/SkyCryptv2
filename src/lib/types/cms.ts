@@ -1,4 +1,11 @@
-import type { Media, Post as CmsPost, PostBodyItem, PostListResponseResponse, PostType, User } from "$lib/shared/api/cms-generated";
+import type {
+  Media,
+  Post as CmsPost,
+  PostBodyItem,
+  PostListResponseResponse,
+  PostType,
+  User
+} from "$lib/shared/api/cms-generated";
 
 // Type-only re-exports: `cms-generated.ts` pulls in a server-only mutator ($env/dynamic/private),
 // so this barrel must never create a runtime import of it (it's consumed by browser components).
@@ -14,9 +21,18 @@ export type { Media, PostBodyItem, PostType };
  * that aren't a {@link PostType}, and the assertion below fails to compile if the CMS
  * adds a type that's missing here.
  */
-export const POST_TYPES = ["announcement", "news", "update", "changelog", "guide", "event"] as const satisfies readonly PostType[];
+export const POST_TYPES = [
+  "announcement",
+  "news",
+  "update",
+  "changelog",
+  "guide",
+  "event"
+] as const satisfies readonly PostType[];
 
-const _postTypesAreExhaustive: Exclude<PostType, (typeof POST_TYPES)[number]> extends never ? true : ["POST_TYPES is missing a PostType:", Exclude<PostType, (typeof POST_TYPES)[number]>] = true;
+const _postTypesAreExhaustive: Exclude<PostType, (typeof POST_TYPES)[number]> extends never
+  ? true
+  : ["POST_TYPES is missing a PostType:", Exclude<PostType, (typeof POST_TYPES)[number]>] = true;
 
 /** Payload `users` doc — the public-facing author of a post. */
 export type Author = User;

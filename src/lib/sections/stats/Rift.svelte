@@ -27,19 +27,19 @@
 <Section id="Rift" {order}>
   {#if rift}
     <div class="contents space-y-4">
-      <div class="border p-4 rounded-xl">
+      <div class="rounded-xl border p-4">
         <AdditionStat text="Visits" data={format(rift.visits)} />
         {#if rift.motes}
           <AdditionStat text="Motes" data={format(rift.motes.purse)} asterisk={true}>
             <div class="max-w-xs space-y-2">
-              <div class="rounded-xl space-y-1">
+              <div class="space-y-1 rounded-xl">
                 <Label class="gap-1">
                   Lifetime Motes:
                   <span class="font-bold">
                     {format(rift.motes.lifetime)}
                   </span>
                 </Label>
-                <p class="font-medium italic text-xs text-muted-foreground">Total Motes earned in Rift.</p>
+                <p class="text-xs font-medium text-muted-foreground italic">Total Motes earned in Rift.</p>
               </div>
               <Separator />
               <div class="space-y-1">
@@ -49,13 +49,19 @@
                     {rift.motes.orbs}
                   </span>
                 </Label>
-                <p class="font-medium italic text-xs text-muted-foreground">Amount of Mote Orbs player has picked up inside of the Rift.</p>
+                <p class="text-xs font-medium text-muted-foreground italic">
+                  Amount of Mote Orbs player has picked up inside of the Rift.
+                </p>
               </div>
             </div>
           </AdditionStat>
         {/if}
         {#if rift.enigma}
-          <AdditionStat text="Enigma Souls" data="{rift.enigma.souls} / {rift.enigma.totalSouls}" maxed={rift.enigma.souls === rift.enigma.totalSouls} asterisk={true}>
+          <AdditionStat
+            text="Enigma Souls"
+            data="{rift.enigma.souls} / {rift.enigma.totalSouls}"
+            maxed={rift.enigma.souls === rift.enigma.totalSouls}
+            asterisk={true}>
             <div class="max-w-xs space-y-1">
               <Label class="gap-1">
                 Progress:
@@ -63,15 +69,18 @@
                   {(((rift.enigma.souls ?? 0) / (rift.enigma.totalSouls ?? 0)) * 100).toFixed(2)}%
                 </span>
               </Label>
-              <p class="font-medium text-xs italic text-muted-foreground">Percentage of Enigma Souls found.</p>
+              <p class="text-xs font-medium text-muted-foreground italic">Percentage of Enigma Souls found.</p>
             </div>
           </AdditionStat>
         {/if}
         {#if rift.castle}
-          <AdditionStat text="McGrubber's Burgers" data="{rift.castle.grubberStacks} / {rift.castle.maxBurgers}" maxed={rift.castle.grubberStacks === rift.castle.maxBurgers} />
+          <AdditionStat
+            text="McGrubber's Burgers"
+            data="{rift.castle.grubberStacks} / {rift.castle.maxBurgers}"
+            maxed={rift.castle.grubberStacks === rift.castle.maxBurgers} />
         {/if}
       </div>
-      <div class="border p-4 rounded-xl">
+      <div class="rounded-xl border p-4">
         <SectionSubtitle>Armor</SectionSubtitle>
 
         {#if armor}
@@ -85,12 +94,16 @@
               {/each}
             </ScrollAreaItems>
           {:else}
-            <EmptyStat title="No Armor" description="This player has no Rift armor equipped" icon={ShirtIcon} class="mt-2" />
+            <EmptyStat
+              title="No Armor"
+              description="This player has no Rift armor equipped"
+              icon={ShirtIcon}
+              class="mt-2" />
           {/if}
         {/if}
       </div>
 
-      <div class="border p-4 rounded-xl">
+      <div class="rounded-xl border p-4">
         <SectionSubtitle>Equipment</SectionSubtitle>
 
         {#if equipment}
@@ -104,15 +117,22 @@
               {/each}
             </ScrollAreaItems>
           {:else}
-            <EmptyStat title="No Equipment" description="This player has no Rift equipment equipped" icon={ShieldIcon} class="mt-2" />
+            <EmptyStat
+              title="No Equipment"
+              description="This player has no Rift equipment equipped"
+              icon={ShieldIcon}
+              class="mt-2" />
           {/if}
         {/if}
       </div>
 
-      <div class="border p-4 rounded-xl">
+      <div class="rounded-xl border p-4">
         <SectionSubtitle>Porthals</SectionSubtitle>
         {#if rift.porhtal}
-          <AdditionStat text="Porthals Unlocked" data={rift.porhtal.porhtalsFound ?? 0} maxed={rift.porhtal.porhtalsFound === 7} />
+          <AdditionStat
+            text="Porthals Unlocked"
+            data={rift.porhtal.porhtalsFound ?? 0}
+            maxed={rift.porhtal.porhtalsFound === 7} />
         {/if}
 
         {#if rift.porhtal}
@@ -131,17 +151,23 @@
         {/if}
       </div>
 
-      <div class="border p-4 rounded-xl">
+      <div class="rounded-xl border p-4">
         <SectionSubtitle>Timecharms</SectionSubtitle>
         {#if rift.timecharms}
-          <AdditionStat text="Timecharms Obtained" data={rift.timecharms.timecharmsFound ?? 0} maxed={rift.timecharms.timecharmsFound === 8} />
+          <AdditionStat
+            text="Timecharms Obtained"
+            data={rift.timecharms.timecharmsFound ?? 0}
+            maxed={rift.timecharms.timecharmsFound === 8} />
         {/if}
         {#if rift.timecharms}
           <ScrollAreaItems>
             {#each rift.timecharms.timecharms as timecharm, index (index)}
               {const hasUnlocked = timecharm.unlocked}
 
-              <Chip image={{ src: timecharm.texture ?? "" }} class={cn("h-fit w-fit", { "opacity-50": !hasUnlocked }, "whitespace-nowrap")} tooltip={hasUnlocked ? tooltip : undefined}>
+              <Chip
+                image={{ src: timecharm.texture ?? "" }}
+                class={cn("h-fit w-fit", { "opacity-50": !hasUnlocked }, "whitespace-nowrap")}
+                tooltip={hasUnlocked ? tooltip : undefined}>
                 <div class="flex flex-col">
                   <div class="font-bold whitespace-nowrap">
                     <span class="opacity-60">{timecharm.name}</span>
@@ -167,7 +193,9 @@
                     <span class="opacity-85">Obtained:</span>
                     <span class="text-foreground">
                       {#if hasUnlocked && timecharm.unlockedAt != null}
-                        {formatDate(timecharm.unlockedAt, "dd MMMM yyyy 'at' HH:mm", { in: tz(Intl.DateTimeFormat().resolvedOptions().timeZone) })}
+                        {formatDate(timecharm.unlockedAt, "dd MMMM yyyy 'at' HH:mm", {
+                          in: tz(Intl.DateTimeFormat().resolvedOptions().timeZone)
+                        })}
                       {/if}
                     </span>
                   </div>
@@ -179,6 +207,9 @@
       </div>
     </div>
   {:else}
-    <EmptyStat title="No Data" description="This player doesn't have anything related to the Rift" icon={SparklesIcon} />
+    <EmptyStat
+      title="No Data"
+      description="This player doesn't have anything related to the Rift"
+      icon={SparklesIcon} />
   {/if}
 </Section>

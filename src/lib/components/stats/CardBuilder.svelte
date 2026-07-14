@@ -93,21 +93,28 @@
 </script>
 
 {#snippet triggerButton(props: TriggerProps)}
-  <Button {...props} class="font-semibold text-base">
+  <Button {...props} class="text-base font-semibold">
     <IdCardIcon class="size-4" />
     Card
   </Button>
 {/snippet}
 
 {#snippet presetCards()}
-  <Collapsible.Root class="border p-2 rounded-xl" open={true}>
+  <Collapsible.Root class="rounded-xl border p-2" open={true}>
     <Collapsible.Trigger class="group flex w-full cursor-pointer items-center gap-1 py-1">
       <ChevronDown class="size-4 transition-transform duration-200 ease-out group-data-[state=open]:-rotate-180" />
       <Label>Preset</Label>
     </Collapsible.Trigger>
-    <Collapsible.Content class="gap-2 pt-1 flex flex-nowrap overflow-auto">
+    <Collapsible.Content class="flex flex-nowrap gap-2 overflow-auto pt-1">
       {#each cardPresets as preset (preset.id)}
-        <Button onclick={() => selectPreset(preset.id)} class={cn("h-full fle flex-col gap-1.5 rounded-xl border-2 p-2 transition-all", selectedPreset.id === preset.id ? "border-primary bg-primary/10" : "border-foreground/10 bg-foreground/5 hover:border-foreground/20 hover:bg-foreground/10")}>
+        <Button
+          onclick={() => selectPreset(preset.id)}
+          class={cn(
+            "fle h-full flex-col gap-1.5 rounded-xl border-2 p-2 transition-all",
+            selectedPreset.id === preset.id
+              ? "border-primary bg-primary/10"
+              : "border-foreground/10 bg-foreground/5 hover:border-foreground/20 hover:bg-foreground/10"
+          )}>
           <div class="flex h-10 w-28 items-stretch gap-1 rounded bg-foreground/5 p-1">
             <div class="w-1/4 rounded-xl bg-foreground/15"></div>
             <div class="flex flex-1 flex-col justify-between gap-px">
@@ -148,7 +155,7 @@
 
 {#snippet optionGroups()}
   {#each selectedPreset.schema as group (group.groupName)}
-    <Collapsible.Root class="border p-2 rounded-xl">
+    <Collapsible.Root class="rounded-xl border p-2">
       <Collapsible.Trigger class="group flex w-full cursor-pointer items-center gap-1 py-1">
         <ChevronDown class="size-4 transition-transform duration-200 ease-out group-data-[state=open]:-rotate-180" />
         <Label>{group.groupName}</Label>
@@ -162,7 +169,10 @@
                   <Item.Title>{option.label}</Item.Title>
                 </Item.Content>
                 <Item.Actions>
-                  <Switch id={option.key} checked={settings[option.key] as boolean} onCheckedChange={(checked) => updateSetting(option.key, checked)}></Switch>
+                  <Switch
+                    id={option.key}
+                    checked={settings[option.key] as boolean}
+                    onCheckedChange={(checked) => updateSetting(option.key, checked)}></Switch>
                 </Item.Actions>
               </Item.Root>
             </Label>
@@ -173,7 +183,12 @@
                   <Item.Title>{option.label}</Item.Title>
                 </Item.Content>
                 <Item.Actions>
-                  <input type="color" id={option.key} value={settings[option.key] as string} oninput={(e) => updateSetting(option.key, e.currentTarget.value)} class="size-8 cursor-pointer rounded-xl border border-foreground/10 bg-transparent" />
+                  <input
+                    type="color"
+                    id={option.key}
+                    value={settings[option.key] as string}
+                    oninput={(e) => updateSetting(option.key, e.currentTarget.value)}
+                    class="size-8 cursor-pointer rounded-xl border border-foreground/10 bg-transparent" />
                 </Item.Actions>
               </Item.Root>
             </Label>
@@ -184,7 +199,12 @@
                   <Item.Title>{option.label}</Item.Title>
                 </Item.Content>
                 <Item.Actions>
-                  <input type="text" id={option.key} value={settings[option.key] as string} oninput={(e) => updateSetting(option.key, e.currentTarget.value)} class="w-full max-w-40 rounded-xl border border-foreground/10 bg-foreground/5 px-2 py-1 text-sm text-foreground focus:border-primary focus:outline-none" />
+                  <input
+                    type="text"
+                    id={option.key}
+                    value={settings[option.key] as string}
+                    oninput={(e) => updateSetting(option.key, e.currentTarget.value)}
+                    class="w-full max-w-40 rounded-xl border border-foreground/10 bg-foreground/5 px-2 py-1 text-sm text-foreground focus:border-primary focus:outline-none" />
                 </Item.Actions>
               </Item.Root>
             </Label>
@@ -195,7 +215,12 @@
                   <Item.Title>{option.label}</Item.Title>
                 </Item.Content>
                 <Item.Actions>
-                  <input type="number" id={option.key} value={settings[option.key] as number} oninput={(e) => updateSetting(option.key, Number(e.currentTarget.value))} class="w-full max-w-24 rounded-xl border border-foreground/10 bg-foreground/5 px-2 py-1 text-sm text-foreground focus:border-primary focus:outline-none" />
+                  <input
+                    type="number"
+                    id={option.key}
+                    value={settings[option.key] as number}
+                    oninput={(e) => updateSetting(option.key, Number(e.currentTarget.value))}
+                    class="w-full max-w-24 rounded-xl border border-foreground/10 bg-foreground/5 px-2 py-1 text-sm text-foreground focus:border-primary focus:outline-none" />
                 </Item.Actions>
               </Item.Root>
             </Label>
@@ -226,20 +251,33 @@
           <CodeXmlIcon class="size-3" />
           BBCode
         </Button>
-        <Button variant="outline" class="text-xs" href={resolve("/stats/[ign]/[[profile]]/card", { ign: page.params.ign ?? "", profile: page.params.profile ?? "" })} target="_blank" rel="noopener noreferrer" title="Open Image in New Tab">
+        <Button
+          variant="outline"
+          class="text-xs"
+          href={resolve("/stats/[ign]/[[profile]]/card", {
+            ign: page.params.ign ?? "",
+            profile: page.params.profile ?? ""
+          })}
+          target="_blank"
+          rel="noopener noreferrer"
+          title="Open Image in New Tab">
           <ExternalLinkIcon class="size-3" />
           Image
         </Button>
       </div>
     </div>
-    <Avatar.Root class="relative bg-transparent after:border-none size-full shrink overflow-hidden rounded-xl" bind:loadingStatus>
+    <Avatar.Root
+      class="relative size-full shrink overflow-hidden rounded-xl bg-transparent after:border-none"
+      bind:loadingStatus>
       {#if isImagePending}
         <div class="absolute inset-0 z-10 flex items-center justify-center">
           <LoaderCircleIcon class="size-8 animate-spin text-foreground/40" />
         </div>
       {/if}
-      <Avatar.Image src={debouncedUrl.current} class="object-contain aspect-auto rounded-none" />
-      <Avatar.Fallback class="flex aspect-75/17 rounded-xl w-full items-center justify-center text-sm text-foreground/40">Card Preview</Avatar.Fallback>
+      <Avatar.Image src={debouncedUrl.current} class="aspect-auto rounded-none object-contain" />
+      <Avatar.Fallback
+        class="flex aspect-75/17 w-full items-center justify-center rounded-xl text-sm text-foreground/40"
+        >Card Preview</Avatar.Fallback>
     </Avatar.Root>
   </div>
 {/snippet}
@@ -252,10 +290,12 @@
       {/snippet}
     </Dialog.Trigger>
     <Dialog.Portal>
-      <Dialog.Content class="sm:max-w-2xl bg-transparent glass glass-bg-popover" showCloseButton={false}>
+      <Dialog.Content class="glass bg-transparent glass-bg-popover sm:max-w-2xl" showCloseButton={false}>
         <Dialog.Header>
           <Dialog.Title>Generate your SkyCrypt card</Dialog.Title>
-          <Dialog.Description>Choose from various presets and options to create the perfect card for sharing on social media, forums, or with friends!</Dialog.Description>
+          <Dialog.Description
+            >Choose from various presets and options to create the perfect card for sharing on social media, forums, or
+            with friends!</Dialog.Description>
         </Dialog.Header>
         <div class="flex flex-col gap-4 overflow-y-auto">
           {@render presetCards()}
@@ -274,7 +314,7 @@
       {/snippet}
     </Drawer.Trigger>
     <Drawer.Content class="px-6 py-4 before:bg-background/80">
-      <div class="flex flex-col gap-4 mt-4">
+      <div class="mt-4 flex flex-col gap-4">
         {@render presetCards()}
         {@render optionGroups()}
         {@render imagePreview()}

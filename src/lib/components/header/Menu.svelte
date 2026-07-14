@@ -30,13 +30,13 @@
 </script>
 
 {#snippet ListItem({ title, content, href, class: className, icon: IconComponent, ...restProps }: ListItemProps)}
-  <NavigationMenu.Link {href} class={cn("hover:bg-background/50 hover:scale-95", className)} {...restProps}>
+  <NavigationMenu.Link {href} class={cn("hover:scale-95 hover:bg-background/50", className)} {...restProps}>
     <div class="flex flex-col gap-1">
       <div class="flex items-center-safe gap-1">
         <IconComponent class="size-5" />
-        <div class="text-sm text-left leading-none font-medium">{title}</div>
+        <div class="text-left text-sm leading-none font-medium">{title}</div>
       </div>
-      <p class="text-muted-foreground line-clamp-2 text-sm leading-snug">
+      <p class="line-clamp-2 text-sm leading-snug text-muted-foreground">
         {content}
       </p>
     </div>
@@ -46,8 +46,9 @@
 <NavigationMenu.Root viewport={isMobile.current}>
   <NavigationMenu.List class="gap-4">
     <NavigationMenu.Item class="hidden md:block">
-      <NavigationMenu.Trigger class={buttonVariants({ variant: "outline", class: "data-open:focus:bg-transparent" })}>Home</NavigationMenu.Trigger>
-      <NavigationMenu.Content class="standard:bg-transparent! glass glass-bg-popover">
+      <NavigationMenu.Trigger class={buttonVariants({ variant: "outline", class: "data-open:focus:bg-transparent" })}
+        >Home</NavigationMenu.Trigger>
+      <NavigationMenu.Content class="glass glass-bg-popover standard:bg-transparent!">
         <div class="sm:w-100 md:w-125">
           {@render ListItem({
             href: "/newsroom",
@@ -71,11 +72,14 @@
       </NavigationMenu.Content>
     </NavigationMenu.Item>
 
-    <NavigationMenu.Item class={buttonVariants({ variant: "outline", class: "data-open:focus:bg-transparent" })} onpointerdown={() => (internalState.openCommand = true)}>
+    <NavigationMenu.Item
+      class={buttonVariants({ variant: "outline", class: "data-open:focus:bg-transparent" })}
+      onpointerdown={() => (internalState.openCommand = true)}>
       <div class="flex items-center-safe gap-1">
         Search
         {#if isHover.current}
-          <Kbd.Root class="hidden md:block light:bg-foreground/30 dark:bg-background/30 size-fit min-w-auto py-0.5">{preferences.keybind}</Kbd.Root>
+          <Kbd.Root class="hidden size-fit min-w-auto py-0.5 md:block dark:bg-background/30 light:bg-foreground/30"
+            >{preferences.keybind}</Kbd.Root>
         {:else}
           <SearchIcon class="size-4" />
         {/if}
@@ -83,9 +87,10 @@
     </NavigationMenu.Item>
 
     <NavigationMenu.Item class="hidden md:block">
-      <NavigationMenu.Trigger class={buttonVariants({ variant: "outline", class: "data-open:focus:bg-transparent" })}>About</NavigationMenu.Trigger>
-      <NavigationMenu.Content class="standard:bg-transparent! glass glass-bg-popover gap-0">
-        <div class="sm:w-md md:w-lg leading-normal space-y-4 p-4">
+      <NavigationMenu.Trigger class={buttonVariants({ variant: "outline", class: "data-open:focus:bg-transparent" })}
+        >About</NavigationMenu.Trigger>
+      <NavigationMenu.Content class="gap-0 glass glass-bg-popover standard:bg-transparent!">
+        <div class="space-y-4 p-4 leading-normal sm:w-md md:w-lg">
           <Info />
         </div>
       </NavigationMenu.Content>

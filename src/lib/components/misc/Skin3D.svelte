@@ -27,7 +27,9 @@
     if (loadedUuid === uuid) return;
     canvasIsLoading = true;
 
-    const capeData = await ky(`https://mowojang.seraph.si/session/minecraft/profile/${uuid}`).json<{ properties: { name: string; value: string; signature?: string }[] }>();
+    const capeData = await ky(`https://mowojang.seraph.si/session/minecraft/profile/${uuid}`).json<{
+      properties: { name: string; value: string; signature?: string }[];
+    }>();
     const texturesProperty = capeData.properties.find((prop) => prop.name === "textures");
 
     if (!texturesProperty) {
@@ -90,4 +92,10 @@
 
 <svelte:window onresize={updateViewerSize} />
 
-<canvas bind:this={minecraftAvatar} class={cn("size-full transform-gpu overflow-hidden opacity-0 data-[loading=false]:motion-preset-focus data-[loading=false]:motion-preset-slide-right data-[loading=false]:opacity-100", className)} data-loading={canvasIsLoading}></canvas>
+<canvas
+  bind:this={minecraftAvatar}
+  class={cn(
+    "size-full transform-gpu overflow-hidden opacity-0 data-[loading=false]:motion-preset-focus data-[loading=false]:motion-preset-slide-right data-[loading=false]:opacity-100",
+    className
+  )}
+  data-loading={canvasIsLoading}></canvas>

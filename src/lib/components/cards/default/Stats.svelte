@@ -34,7 +34,10 @@
       <AdditionStat text="Joined" data={formatDistanceToNowStrict(profile.joined, { addSuffix: true })} />
     {/if}
     {#if profile.fairySouls && showFairySouls}
-      <AdditionStat text="Fairy Souls" data={`${profile.fairySouls.found} / ${profile.fairySouls.total}`} maxed={(profile.fairySouls.found ?? 0) >= (profile.fairySouls.total ?? 0)} />
+      <AdditionStat
+        text="Fairy Souls"
+        data={`${profile.fairySouls.found} / ${profile.fairySouls.total}`}
+        maxed={(profile.fairySouls.found ?? 0) >= (profile.fairySouls.total ?? 0)} />
     {/if}
   {/if}
 </div>

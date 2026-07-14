@@ -2,8 +2,7 @@
   "editor.defaultFormatter": "oxc.oxc-vscode",
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "always",
-    "source.organizeImports": "explicit"
+    "source.fixAll.eslint": "always"
   },
   "files.associations": {
     "*.css": "tailwindcss",

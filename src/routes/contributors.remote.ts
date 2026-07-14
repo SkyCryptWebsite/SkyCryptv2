@@ -26,7 +26,11 @@ export const getContributors = prerender(async () => {
   const contributors = async () => {
     const ids = [
       { id: "dec987bbfa734d63bb9d566139232f81", quote: "btw i use arch", role: Role.MAINTAINER },
-      { id: "91f57dfc7f5845c9a4920f6c16640038", quote: "A useless human being that delivers nothing to society", role: Role.MAINTAINER },
+      {
+        id: "91f57dfc7f5845c9a4920f6c16640038",
+        quote: "A useless human being that delivers nothing to society",
+        role: Role.MAINTAINER
+      },
       { id: "b44d2d5272dc49c28185b2d6a158d80a", quote: "nyaaaa~ :3", role: Role.MAINTAINER },
       { id: "f5667ad6b4b3434ba58f2ed2396f62f2", quote: '"lazy dev" &nbsp (ﾉ´･ω･)ﾉ ﾐ ┸━┸', role: Role.MAINTAINER },
       { id: "20d6334b7f9541ebbf7f860205ebf846", quote: "bob", role: Role.MAINTAINER },

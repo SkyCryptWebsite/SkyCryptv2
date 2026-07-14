@@ -25,10 +25,18 @@ export function extractReleaseSection(changelog, version) {
 }
 
 export function selectPreviousRelease(releases, { prerelease, currentTag }) {
-  return releases.filter((release) => !release.isDraft && release.tagName !== currentTag && (prerelease || !release.isPrerelease)).sort((left, right) => new Date(right.publishedAt).getTime() - new Date(left.publishedAt).getTime())[0];
+  return releases
+    .filter((release) => !release.isDraft && release.tagName !== currentTag && (prerelease || !release.isPrerelease))
+    .sort((left, right) => new Date(right.publishedAt).getTime() - new Date(left.publishedAt).getTime())[0];
 }
 
-export function buildReleaseBody({ changelogSection, currentTag, previousRelease, repository = process.env.GITHUB_REPOSITORY || DEFAULT_REPOSITORY, serverUrl = process.env.GITHUB_SERVER_URL || DEFAULT_GITHUB_SERVER_URL }) {
+export function buildReleaseBody({
+  changelogSection,
+  currentTag,
+  previousRelease,
+  repository = process.env.GITHUB_REPOSITORY || DEFAULT_REPOSITORY,
+  serverUrl = process.env.GITHUB_SERVER_URL || DEFAULT_GITHUB_SERVER_URL
+}) {
   const body = changelogSection.trim();
 
   if (!body) {

@@ -1943,7 +1943,9 @@ export const GetCombinedProfileStatsResponse = zod.object({
                         wood_singularity_count: zod.number().optional()
                       })
                       .optional()
-                      .describe('HideFlags       int             `nbt:\"HideFlags\" json:\"HideFlags,omitempty\"`\nUnbreakable     int             `nbt:\"Unbreakable\" json:\"Unbreakable,omitempty\"`\nEnchantments    []Enchantment   `nbt:\"ench\" json:\"ench,omitempty\"`'),
+                      .describe(
+                        'HideFlags       int             `nbt:\"HideFlags\" json:\"HideFlags,omitempty\"`\nUnbreakable     int             `nbt:\"Unbreakable\" json:\"Unbreakable,omitempty\"`\nEnchantments    []Enchantment   `nbt:\"ench\" json:\"ench,omitempty\"`'
+                      ),
                     ItemModel: zod.string().optional(),
                     SkullOwner: zod
                       .object({
@@ -2454,7 +2456,9 @@ export const GetCombinedProfileStatsResponse = zod.object({
                         wood_singularity_count: zod.number().optional()
                       })
                       .optional()
-                      .describe('HideFlags       int             `nbt:\"HideFlags\" json:\"HideFlags,omitempty\"`\nUnbreakable     int             `nbt:\"Unbreakable\" json:\"Unbreakable,omitempty\"`\nEnchantments    []Enchantment   `nbt:\"ench\" json:\"ench,omitempty\"`'),
+                      .describe(
+                        'HideFlags       int             `nbt:\"HideFlags\" json:\"HideFlags,omitempty\"`\nUnbreakable     int             `nbt:\"Unbreakable\" json:\"Unbreakable,omitempty\"`\nEnchantments    []Enchantment   `nbt:\"ench\" json:\"ench,omitempty\"`'
+                      ),
                     ItemModel: zod.string().optional(),
                     SkullOwner: zod
                       .object({
@@ -2922,7 +2926,9 @@ export const GetGardenStatsResponse = zod.object({
                     wood_singularity_count: zod.number().optional()
                   })
                   .optional()
-                  .describe('HideFlags       int             `nbt:\"HideFlags\" json:\"HideFlags,omitempty\"`\nUnbreakable     int             `nbt:\"Unbreakable\" json:\"Unbreakable,omitempty\"`\nEnchantments    []Enchantment   `nbt:\"ench\" json:\"ench,omitempty\"`'),
+                  .describe(
+                    'HideFlags       int             `nbt:\"HideFlags\" json:\"HideFlags,omitempty\"`\nUnbreakable     int             `nbt:\"Unbreakable\" json:\"Unbreakable,omitempty\"`\nEnchantments    []Enchantment   `nbt:\"ench\" json:\"ench,omitempty\"`'
+                  ),
                 ItemModel: zod.string().optional(),
                 SkullOwner: zod
                   .object({
@@ -3449,7 +3455,11 @@ export const resolveUuidByUsernamePathUsernameMin = 3;
 export const resolveUuidByUsernamePathUsernameMax = 16;
 
 export const ResolveUuidByUsernameParams = zod.object({
-  username: zod.string().min(resolveUuidByUsernamePathUsernameMin).max(resolveUuidByUsernamePathUsernameMax).describe("Minecraft username")
+  username: zod
+    .string()
+    .min(resolveUuidByUsernamePathUsernameMin)
+    .max(resolveUuidByUsernamePathUsernameMax)
+    .describe("Minecraft username")
 });
 
 export const ResolveUuidByUsernameResponse = zod.object({

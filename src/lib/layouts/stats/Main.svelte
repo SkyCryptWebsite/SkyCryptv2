@@ -3,7 +3,17 @@
   import { replaceState } from "$app/navigation";
   import { resolve } from "$app/paths";
   import { page } from "$app/state";
-  import { CombinedContext, getHoverContext, getInternalState, getPreferences, getProfileContext, getRecentSearches, ProfileContext, setCombinedContext, setProfileContext } from "$ctx";
+  import {
+    CombinedContext,
+    getHoverContext,
+    getInternalState,
+    getPreferences,
+    getProfileContext,
+    getRecentSearches,
+    ProfileContext,
+    setCombinedContext,
+    setProfileContext
+  } from "$ctx";
   import { ContainedItemsGrid, ItemContent } from "$lib/components/item";
   import { Navbar } from "$lib/components/misc";
   import Skin3D from "$lib/components/misc/Skin3D.svelte";
@@ -48,7 +58,9 @@
   const combinedClass = new CombinedContext();
   setProfileContext(profileClass);
   setCombinedContext(combinedClass);
-  const combined = $derived(ctx.uuid && ctx.profile_id ? await getCombinedProfileStats({ uuid: ctx.uuid, profileId: ctx.profile_id }) : null);
+  const combined = $derived(
+    ctx.uuid && ctx.profile_id ? await getCombinedProfileStats({ uuid: ctx.uuid, profileId: ctx.profile_id }) : null
+  );
 
   function rewriteURL() {
     if (!(ctx as ModelsStatsOutput)) return;
@@ -88,7 +100,9 @@
 
     untrack(() => {
       // Find existing search by username/IGN and update with UUID
-      const existingIndex = recentSearches.current.findIndex((search) => search.ign.toLowerCase() === username.toLowerCase());
+      const existingIndex = recentSearches.current.findIndex(
+        (search) => search.ign.toLowerCase() === username.toLowerCase()
+      );
 
       if (existingIndex !== -1) {
         // Update existing search with UUID and update IGN in case it changed casing
@@ -206,7 +220,11 @@
       <Avatar.Root class="flex size-full items-center justify-center">
         {#snippet child({ props })}
           <div transition:fade={{ duration: 300, easing: cubicOut }} {...props}>
-            <Avatar.Image loading="lazy" src="https://nmsr.nickac.dev/fullbody/{profile.uuid}?no=shadow" alt="{profile.username}'s avatar" class="max-h-128 object-cover" />
+            <Avatar.Image
+              loading="lazy"
+              src="https://nmsr.nickac.dev/fullbody/{profile.uuid}?no=shadow"
+              alt="{profile.username}'s avatar"
+              class="max-h-128 object-cover" />
             <Avatar.Fallback>
               <Image class="size-24 object-cover text-foreground" />
             </Avatar.Fallback>
@@ -218,7 +236,7 @@
     {/if}
   </div>
 
-  <div class="fixed top-12 right-0 min-h-dvh w-full dark:bg-background/50 @[75rem]/parent:w-[70%]"></div>
+  <div class="fixed top-12 right-0 min-h-dvh w-full @[75rem]/parent:w-[70%] dark:bg-background/50"></div>
   <main data-vaul-drawer-wrapper class="@container relative mx-auto @[75rem]/parent:ml-[30%]">
     {#if getProfileContext().current}
       <div class="space-y-5 p-4 @[75rem]/parent:p-8">
@@ -237,7 +255,9 @@
 
 {#if isHover.current}
   <Dialog.Root bind:open={internalState.showItem}>
-    <Dialog.Content class="standard:bg-transparent flex flex-col w-auto glass glass-bg-popover gap-0 p-0 max-h-[calc(96%-3rem)]! max-w-[calc(100vw-2.5rem)]! data-[mctooltip=true]:ring-0 overflow-hidden font-skyblock-icons select-text data-[mctooltip=true]:rounded-sm *:data-[slot='dialog-close']:hidden" data-mctooltip={preferences.mctooltip}>
+    <Dialog.Content
+      class="flex max-h-[calc(96%-3rem)]! w-auto max-w-[calc(100vw-2.5rem)]! flex-col gap-0 overflow-hidden glass p-0 font-skyblock-icons select-text glass-bg-popover data-[mctooltip=true]:rounded-sm data-[mctooltip=true]:ring-0 *:data-[slot='dialog-close']:hidden standard:bg-transparent"
+      data-mctooltip={preferences.mctooltip}>
       <ItemContent piece={internalState.itemContent!} />
     </Dialog.Content>
   </Dialog.Root>
@@ -248,15 +268,19 @@
         internalState.itemContentSpecial = undefined;
       }
     }}>
-    <Dialog.Content class="max-h-[calc(96%-3rem)]! flex flex-col p-0 max-w-[calc(100vw-2.5rem)]! w-auto standard:bg-transparent overflow-hidden *:data-[slot='dialog-close']:hidden glass glass-bg-popover font-skyblock-icons select-text">
+    <Dialog.Content
+      class="flex max-h-[calc(96%-3rem)]! w-auto max-w-[calc(100vw-2.5rem)]! flex-col overflow-hidden glass p-0 font-skyblock-icons select-text glass-bg-popover *:data-[slot='dialog-close']:hidden standard:bg-transparent">
       {#if internalState.itemContentSpecial?.containsItems}
-        <ContainedItemsGrid items={internalState.itemContentSpecial.containsItems} onclose={() => (internalState.itemContentSpecial = undefined)} />
+        <ContainedItemsGrid
+          items={internalState.itemContentSpecial.containsItems}
+          onclose={() => (internalState.itemContentSpecial = undefined)} />
       {/if}
     </Dialog.Content>
   </Dialog.Root>
 {:else}
   <Drawer.Root bind:open={internalState.showItem} shouldScaleBackground={true} setBackgroundColorOnScale={false}>
-    <Drawer.Content class="before:glass before:glass-bg-popover p-2 [&>div:first-child]:hidden! before:p-0 before:bg-transparent">
+    <Drawer.Content
+      class="p-2 before:glass before:bg-transparent before:p-0 before:glass-bg-popover [&>div:first-child]:hidden!">
       <ItemContent piece={internalState.itemContent!} isDrawer={true} />
     </Drawer.Content>
   </Drawer.Root>
@@ -269,9 +293,11 @@
         internalState.itemContentSpecial = undefined;
       }
     }}>
-    <Drawer.Content class="before:glass before:glass-bg-popover [&>div:first-child]:my-4 before:bg-transparent">
+    <Drawer.Content class="before:glass before:bg-transparent before:glass-bg-popover [&>div:first-child]:my-4">
       {#if internalState.itemContentSpecial?.containsItems}
-        <ContainedItemsGrid items={internalState.itemContentSpecial.containsItems} onclose={() => (internalState.itemContentSpecial = undefined)} />
+        <ContainedItemsGrid
+          items={internalState.itemContentSpecial.containsItems}
+          onclose={() => (internalState.itemContentSpecial = undefined)} />
       {/if}
     </Drawer.Content>
   </Drawer.Root>

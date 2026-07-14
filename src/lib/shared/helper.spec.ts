@@ -1,5 +1,13 @@
 import { RARITY_COLORS } from "$lib/shared/constants/rarities";
-import { calculatePercentage, formatNumber, getRarityClass, removeFormatting, titleCase, uniqBy, validateURL } from "$lib/shared/helper";
+import {
+  calculatePercentage,
+  formatNumber,
+  getRarityClass,
+  removeFormatting,
+  titleCase,
+  uniqBy,
+  validateURL
+} from "$lib/shared/helper";
 import { describe, it, vi } from "vitest";
 
 describe.concurrent("formatNumber", () => {

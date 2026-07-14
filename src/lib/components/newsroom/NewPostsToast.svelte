@@ -18,8 +18,20 @@
   const { posts, newestUnseen, closeToast = () => {} }: Props = $props();
   const notifications = getNewsroomNotifications();
 
-  const dateFormatter = $derived(new Intl.DateTimeFormat(clientLocale.current, { year: "numeric", month: "long", day: "numeric" }));
-  const thumb = $derived(newestUnseen.heroImage?.sizes?.card ?? newestUnseen.heroImage?.sizes?.thumbnail ?? (newestUnseen.heroImage ? { url: newestUnseen.heroImage.url, width: newestUnseen.heroImage.width, height: newestUnseen.heroImage.height } : null));
+  const dateFormatter = $derived(
+    new Intl.DateTimeFormat(clientLocale.current, { year: "numeric", month: "long", day: "numeric" })
+  );
+  const thumb = $derived(
+    newestUnseen.heroImage?.sizes?.card ??
+      newestUnseen.heroImage?.sizes?.thumbnail ??
+      (newestUnseen.heroImage
+        ? {
+            url: newestUnseen.heroImage.url,
+            width: newestUnseen.heroImage.width,
+            height: newestUnseen.heroImage.height
+          }
+        : null)
+  );
   const publishedDate = $derived(formatDate(newestUnseen.publishedAt));
   const visibleTags = $derived(newestUnseen.tags?.slice(0, 3) ?? []);
   const overflowTags = $derived((newestUnseen.tags?.length ?? 0) - visibleTags.length);
@@ -39,15 +51,26 @@
   }
 </script>
 
-<section role="status" aria-live="polite" class="flex w-full max-w-sm flex-col gap-3 px-4 py-3 text-foreground shadow-lg shadow-black/10 @container-normal @sm:max-w-md">
-  <div class="flex flex-col min-w-0 items-start gap-3">
+<section
+  role="status"
+  aria-live="polite"
+  class="@container-normal flex w-full max-w-sm flex-col gap-3 px-4 py-3 text-foreground shadow-lg shadow-black/10 @sm:max-w-md">
+  <div class="flex min-w-0 flex-col items-start gap-3">
     {#if thumb && newestUnseen.heroImage}
-      <Avatar.Root class="relative aspect-video w-full max-w-sm mx-auto shrink-0 overflow-hidden rounded-xl border">
-        <Avatar.Image src={thumb.url} alt={newestUnseen.heroImage.alt ?? ""} width={thumb.width} height={thumb.height} loading="lazy" class="size-full object-cover" />
-        <Avatar.Fallback class="flex size-full items-center justify-center bg-foretext-foreground/10">
+      <Avatar.Root class="relative mx-auto aspect-video w-full max-w-sm shrink-0 overflow-hidden rounded-xl border">
+        <Avatar.Image
+          src={thumb.url}
+          alt={newestUnseen.heroImage.alt ?? ""}
+          width={thumb.width}
+          height={thumb.height}
+          loading="lazy"
+          class="size-full object-cover" />
+        <Avatar.Fallback class="bg-foretext-foreground/10 flex size-full items-center justify-center">
           <ImageIcon class="size-5" aria-label="Image failed to load" />
         </Avatar.Fallback>
-        <div class="pointer-events-none absolute inset-0 bg-linear-to-t from-background/70 via-background/10 to-transparent group-hover:opacity-0 transition-opacity duration-300 ease-out"></div>
+        <div
+          class="pointer-events-none absolute inset-0 bg-linear-to-t from-background/70 via-background/10 to-transparent transition-opacity duration-300 ease-out group-hover:opacity-0">
+        </div>
       </Avatar.Root>
     {:else}
       <div class="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/15 text-primary">
@@ -65,12 +88,14 @@
     </div>
 
     <div class="min-w-0 flex-1 space-y-1">
-      <p class="text-lg lg:text-xl leading-tight font-bold text-foreground">{newestUnseen.title}</p>
+      <p class="text-lg leading-tight font-bold text-foreground lg:text-xl">{newestUnseen.title}</p>
       {#if newestUnseen.excerpt}
         <p class="line-clamp-3 text-sm leading-relaxed text-foreground/80">{newestUnseen.excerpt}</p>
       {/if}
       {#if publishedDate}
-        <time datetime={newestUnseen.publishedAt ?? undefined} class="shrink-0 text-xs font-medium text-muted-foreground">{publishedDate}</time>
+        <time
+          datetime={newestUnseen.publishedAt ?? undefined}
+          class="shrink-0 text-xs font-medium text-muted-foreground">{publishedDate}</time>
       {/if}
     </div>
   </div>

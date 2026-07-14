@@ -139,7 +139,9 @@ describe("Theme Engine", () => {
 
       expect(rule).toContain(':root[data-theme="test-theme"].dark');
       expect(rule).toContain(':root[data-theme="test-theme"].light');
-      expect(rule.indexOf(':root[data-theme="test-theme"].dark')).toBeLessThan(rule.indexOf(':root[data-theme="test-theme"].light'));
+      expect(rule.indexOf(':root[data-theme="test-theme"].dark')).toBeLessThan(
+        rule.indexOf(':root[data-theme="test-theme"].light')
+      );
       expect(rule).toContain("  --primary: oklch(0.5 0.1 100);");
       expect(rule).toContain("  --primary: oklch(0.7 0.1 100);");
       expect(rule).toContain("  --accent-3: oklch(0.6 0.1 80);");

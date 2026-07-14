@@ -1,9 +1,9 @@
 <script lang="ts">
+  import * as Dialog from "$ui/dialog/index.js";
+  import { cn, type WithoutChildrenOrChild } from "$utils.js";
   import type { Command as CommandPrimitive, Dialog as DialogPrimitive } from "bits-ui";
   import type { Snippet } from "svelte";
   import Command from "./command.svelte";
-  import * as Dialog from "$ui/dialog/index.js";
-  import { cn, type WithoutChildrenOrChild } from "$utils.js";
 
   let {
     open = $bindable(false),
@@ -32,7 +32,10 @@
     <Dialog.Title>{title}</Dialog.Title>
     <Dialog.Description>{description}</Dialog.Description>
   </Dialog.Header>
-  <Dialog.Content class={cn("rounded-4xl! p-0 top-1/3 translate-y-0 overflow-hidden p-0", className)} {showCloseButton} {portalProps}>
+  <Dialog.Content
+    class={cn("top-1/3 translate-y-0 overflow-hidden rounded-4xl! p-0 p-0", className)}
+    {showCloseButton}
+    {portalProps}>
     <Command {...restProps} bind:value bind:ref {children} />
   </Dialog.Content>
 </Dialog.Root>

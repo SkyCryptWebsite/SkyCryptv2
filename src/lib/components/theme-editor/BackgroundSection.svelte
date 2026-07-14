@@ -32,7 +32,13 @@
       <Label for="page-bg-url" class="text-xs font-semibold text-foreground/80">Image URL</Label>
     </div>
     <p class="text-[10px] text-muted-foreground">Must start with https://</p>
-    <Input id="page-bg-url" type="url" value={workingTheme.modes[editingMode].extras?.pageBackground?.url ?? ""} oninput={(e) => setPageBackground(e.currentTarget.value)} placeholder="https://imgur.com/..." pattern="^https://.*" />
+    <Input
+      id="page-bg-url"
+      type="url"
+      value={workingTheme.modes[editingMode].extras?.pageBackground?.url ?? ""}
+      oninput={(e) => setPageBackground(e.currentTarget.value)}
+      placeholder="https://imgur.com/..."
+      pattern="^https://.*" />
   </div>
 
   <div class="flex flex-col gap-1.5">
@@ -40,7 +46,15 @@
       <Sparkles class="size-4 text-muted-foreground" />
       <Label for="enchanted-glint-url" class="text-xs font-semibold text-foreground/80">Glint Texture URL</Label>
     </div>
-    <p class="text-[10px] text-muted-foreground">Custom enchanted glint texture. Must start with https://. Leave empty for default.</p>
-    <Input id="enchanted-glint-url" type="url" value={workingTheme.modes[editingMode].extras?.enchantedGlint ?? ""} oninput={(e) => setEnchantedGlint(e.currentTarget.value)} placeholder="https://example.com/glint.png" pattern="^https://.*" />
+    <p class="text-[10px] text-muted-foreground">
+      Custom enchanted glint texture. Must start with https://. Leave empty for default.
+    </p>
+    <Input
+      id="enchanted-glint-url"
+      type="url"
+      value={workingTheme.modes[editingMode].extras?.enchantedGlint ?? ""}
+      oninput={(e) => setEnchantedGlint(e.currentTarget.value)}
+      placeholder="https://example.com/glint.png"
+      pattern="^https://.*" />
   </div>
 </div>

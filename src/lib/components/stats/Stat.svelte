@@ -25,12 +25,13 @@
 </script>
 
 <Tooltip.Trigger
-  class={cn("p-0 gap-2 flex-nowrap", STATS_DATA[stat].color, className)}
+  class={cn("flex-nowrap gap-2 p-0", STATS_DATA[stat].color, className)}
   onpointerdown={() => (open = !open)}
   onclick={() => (internalState.content = tooltipContent)}
   tether={genericTooltipTether}
   payload={{
-    class: "z-50 [&>div]:leading-7 performance:bg-popover space-y-2 rounded-xl [&>span]:invisible bg-transparent glass border glass-bg-popover p-4 text-sm",
+    class:
+      "z-50 space-y-2 rounded-xl border glass bg-transparent p-4 text-sm glass-bg-popover performance:bg-popover [&>div]:leading-7 [&>span]:invisible",
     side: "top",
     sideOffset: 4,
     align: "center",
@@ -55,24 +56,27 @@
 </Tooltip.Trigger>
 
 {#snippet tooltipContent()}
-  <div class={cn("text-base w-fit pb-1 flex items-center-safe gap-2 font-bold whitespace-nowrap", STATS_DATA[stat].color)}>
+  <div
+    class={cn("flex w-fit items-center-safe gap-2 pb-1 text-base font-bold whitespace-nowrap", STATS_DATA[stat].color)}>
     <span class={statIconClass}>{STATS_DATA[stat].symbol}</span>
     <span class="capitalize">{stat.replace(/_/g, " ")}</span>
   </div>
 
-  <Label class="font-bold capitalize {STATS_DATA[stat].color}">Base {stat.replaceAll("_", " ")}: <span class="text-foreground">{format(statData.base)}</span></Label>
+  <Label class="font-bold capitalize {STATS_DATA[stat].color}"
+    >Base {stat.replaceAll("_", " ")}: <span class="text-foreground">{format(statData.base)}</span></Label>
   <p>Base value every player has at the beginning of their SkyBlock adventure!</p>
 
   {#if statData.total}
     <Separator />
 
-    <Label class="font-bold capitalize {STATS_DATA[stat].color}">Bonus {stat.replaceAll("_", " ")}: <span class="text-foreground">{format(statData.total)}</span></Label>
+    <Label class="font-bold capitalize {STATS_DATA[stat].color}"
+      >Bonus {stat.replaceAll("_", " ")}: <span class="text-foreground">{format(statData.total)}</span></Label>
     <p>Bonus value obtained from:</p>
 
-    <ul class="flex flex-col list-disc list-inside">
+    <ul class="flex list-inside list-disc flex-col">
       {#each Object.entries(statData) as [key, value], index (index)}
         {#if !["total", "base"].includes(key)}
-          <li class="capitalize relative">
+          <li class="relative capitalize">
             <span class="absolute inset-0 left-3">
               {key.replaceAll("_", " ")}
               <span class="font-bold">+{format(value)}</span>

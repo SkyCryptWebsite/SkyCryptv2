@@ -741,7 +741,8 @@ export type PostQueryOperationsSlug = {
   contains?: string;
 };
 
-export type PostQueryOperationsTypeEquals = (typeof PostQueryOperationsTypeEquals)[keyof typeof PostQueryOperationsTypeEquals];
+export type PostQueryOperationsTypeEquals =
+  (typeof PostQueryOperationsTypeEquals)[keyof typeof PostQueryOperationsTypeEquals];
 
 export const PostQueryOperationsTypeEquals = {
   announcement: "announcement",
@@ -752,7 +753,8 @@ export const PostQueryOperationsTypeEquals = {
   event: "event"
 } as const;
 
-export type PostQueryOperationsTypeNotEquals = (typeof PostQueryOperationsTypeNotEquals)[keyof typeof PostQueryOperationsTypeNotEquals];
+export type PostQueryOperationsTypeNotEquals =
+  (typeof PostQueryOperationsTypeNotEquals)[keyof typeof PostQueryOperationsTypeNotEquals];
 
 export const PostQueryOperationsTypeNotEquals = {
   announcement: "announcement",
@@ -819,14 +821,16 @@ export type PostQueryOperationsCreatedAt = {
   less_than_equal?: string;
 };
 
-export type _PostQueryOperationsStatusEquals = (typeof _PostQueryOperationsStatusEquals)[keyof typeof _PostQueryOperationsStatusEquals];
+export type _PostQueryOperationsStatusEquals =
+  (typeof _PostQueryOperationsStatusEquals)[keyof typeof _PostQueryOperationsStatusEquals];
 
 export const _PostQueryOperationsStatusEquals = {
   draft: "draft",
   published: "published"
 } as const;
 
-export type _PostQueryOperationsStatusNotEquals = (typeof _PostQueryOperationsStatusNotEquals)[keyof typeof _PostQueryOperationsStatusNotEquals];
+export type _PostQueryOperationsStatusNotEquals =
+  (typeof _PostQueryOperationsStatusNotEquals)[keyof typeof _PostQueryOperationsStatusNotEquals];
 
 export const _PostQueryOperationsStatusNotEquals = {
   draft: "draft",
@@ -881,14 +885,16 @@ export interface PayloadKvQueryOperationsAnd {
   and: (PayloadKvQueryOperations | PayloadKvQueryOperationsAnd | PayloadKvQueryOperationsOr)[];
 }
 
-export type PayloadJobQueryOperationsTaskSlugEquals = (typeof PayloadJobQueryOperationsTaskSlugEquals)[keyof typeof PayloadJobQueryOperationsTaskSlugEquals];
+export type PayloadJobQueryOperationsTaskSlugEquals =
+  (typeof PayloadJobQueryOperationsTaskSlugEquals)[keyof typeof PayloadJobQueryOperationsTaskSlugEquals];
 
 export const PayloadJobQueryOperationsTaskSlugEquals = {
   inline: "inline",
   schedulePublish: "schedulePublish"
 } as const;
 
-export type PayloadJobQueryOperationsTaskSlugNotEquals = (typeof PayloadJobQueryOperationsTaskSlugNotEquals)[keyof typeof PayloadJobQueryOperationsTaskSlugNotEquals];
+export type PayloadJobQueryOperationsTaskSlugNotEquals =
+  (typeof PayloadJobQueryOperationsTaskSlugNotEquals)[keyof typeof PayloadJobQueryOperationsTaskSlugNotEquals];
 
 export const PayloadJobQueryOperationsTaskSlugNotEquals = {
   inline: "inline",
@@ -1006,11 +1012,19 @@ export interface PayloadLockedDocumentQueryOperations {
 }
 
 export interface PayloadLockedDocumentQueryOperationsOr {
-  or: (PayloadLockedDocumentQueryOperations | PayloadLockedDocumentQueryOperationsAnd | PayloadLockedDocumentQueryOperationsOr)[];
+  or: (
+    | PayloadLockedDocumentQueryOperations
+    | PayloadLockedDocumentQueryOperationsAnd
+    | PayloadLockedDocumentQueryOperationsOr
+  )[];
 }
 
 export interface PayloadLockedDocumentQueryOperationsAnd {
-  and: (PayloadLockedDocumentQueryOperations | PayloadLockedDocumentQueryOperationsAnd | PayloadLockedDocumentQueryOperationsOr)[];
+  and: (
+    | PayloadLockedDocumentQueryOperations
+    | PayloadLockedDocumentQueryOperationsAnd
+    | PayloadLockedDocumentQueryOperationsOr
+  )[];
 }
 
 export type PayloadPreferenceQueryOperationsKey = {
@@ -1410,7 +1424,8 @@ export type UserRequestBodyBodySessionsItem = {
   expiresAt: string;
 };
 
-export type UserRequestBodyBodyCollection = (typeof UserRequestBodyBodyCollection)[keyof typeof UserRequestBodyBodyCollection];
+export type UserRequestBodyBodyCollection =
+  (typeof UserRequestBodyBodyCollection)[keyof typeof UserRequestBodyBodyCollection];
 
 export const UserRequestBodyBodyCollection = {
   users: "users"
@@ -1461,7 +1476,8 @@ export type UserPatchRequestBodyBodySessionsItem = {
   expiresAt: string;
 };
 
-export type UserPatchRequestBodyBodyCollection = (typeof UserPatchRequestBodyBodyCollection)[keyof typeof UserPatchRequestBodyBodyCollection];
+export type UserPatchRequestBodyBodyCollection =
+  (typeof UserPatchRequestBodyBodyCollection)[keyof typeof UserPatchRequestBodyBodyCollection];
 
 export const UserPatchRequestBodyBodyCollection = {
   users: "users"
@@ -1702,7 +1718,9 @@ export type PostRequestBodyBodyBodyItem =
 /**
  * @nullable
  */
-export type _PostRequestBodyBodyStatus = (typeof _PostRequestBodyBodyStatus)[keyof typeof _PostRequestBodyBodyStatus] | null;
+export type _PostRequestBodyBodyStatus =
+  | (typeof _PostRequestBodyBodyStatus)[keyof typeof _PostRequestBodyBodyStatus]
+  | null;
 
 export const _PostRequestBodyBodyStatus = {
   draft: "draft",
@@ -1737,7 +1755,8 @@ export type PostRequestBodyBody = {
   _status?: _PostRequestBodyBodyStatus;
 };
 
-export type PostPatchRequestBodyBodyType = (typeof PostPatchRequestBodyBodyType)[keyof typeof PostPatchRequestBodyBodyType];
+export type PostPatchRequestBodyBodyType =
+  (typeof PostPatchRequestBodyBodyType)[keyof typeof PostPatchRequestBodyBodyType];
 
 export const PostPatchRequestBodyBodyType = {
   announcement: "announcement",
@@ -1786,7 +1805,9 @@ export type PostPatchRequestBodyBodyBodyItem =
 /**
  * @nullable
  */
-export type _PostPatchRequestBodyBodyStatus = (typeof _PostPatchRequestBodyBodyStatus)[keyof typeof _PostPatchRequestBodyBodyStatus] | null;
+export type _PostPatchRequestBodyBodyStatus =
+  | (typeof _PostPatchRequestBodyBodyStatus)[keyof typeof _PostPatchRequestBodyBodyStatus]
+  | null;
 
 export const _PostPatchRequestBodyBodyStatus = {
   draft: "draft",
@@ -1835,7 +1856,13 @@ export type PayloadKvRequestBodyBody = {
 /**
  * @nullable
  */
-export type PayloadKvPatchRequestBodyBodyData = { [key: string]: unknown } | unknown[] | string | number | boolean | null;
+export type PayloadKvPatchRequestBodyBodyData =
+  | { [key: string]: unknown }
+  | unknown[]
+  | string
+  | number
+  | boolean
+  | null;
 
 export type PayloadKvPatchRequestBodyBody = {
   key?: string;
@@ -1852,7 +1879,13 @@ export type PayloadJobRequestBodyBodyInput = { [key: string]: unknown } | unknow
 /**
  * @nullable
  */
-export type PayloadJobRequestBodyBodyTaskStatus = { [key: string]: unknown } | unknown[] | string | number | boolean | null;
+export type PayloadJobRequestBodyBodyTaskStatus =
+  | { [key: string]: unknown }
+  | unknown[]
+  | string
+  | number
+  | boolean
+  | null;
 
 /**
  * If hasError is true, this is the error that caused it
@@ -1860,7 +1893,8 @@ export type PayloadJobRequestBodyBodyTaskStatus = { [key: string]: unknown } | u
  */
 export type PayloadJobRequestBodyBodyError = { [key: string]: unknown } | unknown[] | string | number | boolean | null;
 
-export type PayloadJobRequestBodyBodyLogItemTaskSlug = (typeof PayloadJobRequestBodyBodyLogItemTaskSlug)[keyof typeof PayloadJobRequestBodyBodyLogItemTaskSlug];
+export type PayloadJobRequestBodyBodyLogItemTaskSlug =
+  (typeof PayloadJobRequestBodyBodyLogItemTaskSlug)[keyof typeof PayloadJobRequestBodyBodyLogItemTaskSlug];
 
 export const PayloadJobRequestBodyBodyLogItemTaskSlug = {
   inline: "inline",
@@ -1870,14 +1904,27 @@ export const PayloadJobRequestBodyBodyLogItemTaskSlug = {
 /**
  * @nullable
  */
-export type PayloadJobRequestBodyBodyLogItemInput = { [key: string]: unknown } | unknown[] | string | number | boolean | null;
+export type PayloadJobRequestBodyBodyLogItemInput =
+  | { [key: string]: unknown }
+  | unknown[]
+  | string
+  | number
+  | boolean
+  | null;
 
 /**
  * @nullable
  */
-export type PayloadJobRequestBodyBodyLogItemOutput = { [key: string]: unknown } | unknown[] | string | number | boolean | null;
+export type PayloadJobRequestBodyBodyLogItemOutput =
+  | { [key: string]: unknown }
+  | unknown[]
+  | string
+  | number
+  | boolean
+  | null;
 
-export type PayloadJobRequestBodyBodyLogItemState = (typeof PayloadJobRequestBodyBodyLogItemState)[keyof typeof PayloadJobRequestBodyBodyLogItemState];
+export type PayloadJobRequestBodyBodyLogItemState =
+  (typeof PayloadJobRequestBodyBodyLogItemState)[keyof typeof PayloadJobRequestBodyBodyLogItemState];
 
 export const PayloadJobRequestBodyBodyLogItemState = {
   failed: "failed",
@@ -1887,7 +1934,13 @@ export const PayloadJobRequestBodyBodyLogItemState = {
 /**
  * @nullable
  */
-export type PayloadJobRequestBodyBodyLogItemError = { [key: string]: unknown } | unknown[] | string | number | boolean | null;
+export type PayloadJobRequestBodyBodyLogItemError =
+  | { [key: string]: unknown }
+  | unknown[]
+  | string
+  | number
+  | boolean
+  | null;
 
 export type PayloadJobRequestBodyBodyLogItem = {
   executedAt: string;
@@ -1908,7 +1961,9 @@ export type PayloadJobRequestBodyBodyLogItem = {
 /**
  * @nullable
  */
-export type PayloadJobRequestBodyBodyTaskSlug = (typeof PayloadJobRequestBodyBodyTaskSlug)[keyof typeof PayloadJobRequestBodyBodyTaskSlug] | null;
+export type PayloadJobRequestBodyBodyTaskSlug =
+  | (typeof PayloadJobRequestBodyBodyTaskSlug)[keyof typeof PayloadJobRequestBodyBodyTaskSlug]
+  | null;
 
 export const PayloadJobRequestBodyBodyTaskSlug = {
   inline: "inline",
@@ -1956,20 +2011,39 @@ export type PayloadJobRequestBodyBody = {
  * Input data provided to the job
  * @nullable
  */
-export type PayloadJobPatchRequestBodyBodyInput = { [key: string]: unknown } | unknown[] | string | number | boolean | null;
+export type PayloadJobPatchRequestBodyBodyInput =
+  | { [key: string]: unknown }
+  | unknown[]
+  | string
+  | number
+  | boolean
+  | null;
 
 /**
  * @nullable
  */
-export type PayloadJobPatchRequestBodyBodyTaskStatus = { [key: string]: unknown } | unknown[] | string | number | boolean | null;
+export type PayloadJobPatchRequestBodyBodyTaskStatus =
+  | { [key: string]: unknown }
+  | unknown[]
+  | string
+  | number
+  | boolean
+  | null;
 
 /**
  * If hasError is true, this is the error that caused it
  * @nullable
  */
-export type PayloadJobPatchRequestBodyBodyError = { [key: string]: unknown } | unknown[] | string | number | boolean | null;
+export type PayloadJobPatchRequestBodyBodyError =
+  | { [key: string]: unknown }
+  | unknown[]
+  | string
+  | number
+  | boolean
+  | null;
 
-export type PayloadJobPatchRequestBodyBodyLogItemTaskSlug = (typeof PayloadJobPatchRequestBodyBodyLogItemTaskSlug)[keyof typeof PayloadJobPatchRequestBodyBodyLogItemTaskSlug];
+export type PayloadJobPatchRequestBodyBodyLogItemTaskSlug =
+  (typeof PayloadJobPatchRequestBodyBodyLogItemTaskSlug)[keyof typeof PayloadJobPatchRequestBodyBodyLogItemTaskSlug];
 
 export const PayloadJobPatchRequestBodyBodyLogItemTaskSlug = {
   inline: "inline",
@@ -1979,14 +2053,27 @@ export const PayloadJobPatchRequestBodyBodyLogItemTaskSlug = {
 /**
  * @nullable
  */
-export type PayloadJobPatchRequestBodyBodyLogItemInput = { [key: string]: unknown } | unknown[] | string | number | boolean | null;
+export type PayloadJobPatchRequestBodyBodyLogItemInput =
+  | { [key: string]: unknown }
+  | unknown[]
+  | string
+  | number
+  | boolean
+  | null;
 
 /**
  * @nullable
  */
-export type PayloadJobPatchRequestBodyBodyLogItemOutput = { [key: string]: unknown } | unknown[] | string | number | boolean | null;
+export type PayloadJobPatchRequestBodyBodyLogItemOutput =
+  | { [key: string]: unknown }
+  | unknown[]
+  | string
+  | number
+  | boolean
+  | null;
 
-export type PayloadJobPatchRequestBodyBodyLogItemState = (typeof PayloadJobPatchRequestBodyBodyLogItemState)[keyof typeof PayloadJobPatchRequestBodyBodyLogItemState];
+export type PayloadJobPatchRequestBodyBodyLogItemState =
+  (typeof PayloadJobPatchRequestBodyBodyLogItemState)[keyof typeof PayloadJobPatchRequestBodyBodyLogItemState];
 
 export const PayloadJobPatchRequestBodyBodyLogItemState = {
   failed: "failed",
@@ -1996,7 +2083,13 @@ export const PayloadJobPatchRequestBodyBodyLogItemState = {
 /**
  * @nullable
  */
-export type PayloadJobPatchRequestBodyBodyLogItemError = { [key: string]: unknown } | unknown[] | string | number | boolean | null;
+export type PayloadJobPatchRequestBodyBodyLogItemError =
+  | { [key: string]: unknown }
+  | unknown[]
+  | string
+  | number
+  | boolean
+  | null;
 
 export type PayloadJobPatchRequestBodyBodyLogItem = {
   executedAt: string;
@@ -2017,7 +2110,9 @@ export type PayloadJobPatchRequestBodyBodyLogItem = {
 /**
  * @nullable
  */
-export type PayloadJobPatchRequestBodyBodyTaskSlug = (typeof PayloadJobPatchRequestBodyBodyTaskSlug)[keyof typeof PayloadJobPatchRequestBodyBodyTaskSlug] | null;
+export type PayloadJobPatchRequestBodyBodyTaskSlug =
+  | (typeof PayloadJobPatchRequestBodyBodyTaskSlug)[keyof typeof PayloadJobPatchRequestBodyBodyTaskSlug]
+  | null;
 
 export const PayloadJobPatchRequestBodyBodyTaskSlug = {
   inline: "inline",
@@ -2082,7 +2177,13 @@ export type PayloadLockedDocumentPatchRequestBodyBody = {
 /**
  * @nullable
  */
-export type PayloadPreferenceRequestBodyBodyValue = { [key: string]: unknown } | unknown[] | string | number | boolean | null;
+export type PayloadPreferenceRequestBodyBodyValue =
+  | { [key: string]: unknown }
+  | unknown[]
+  | string
+  | number
+  | boolean
+  | null;
 
 export type PayloadPreferenceRequestBodyBody = {
   /** ID of the users */
@@ -2096,7 +2197,13 @@ export type PayloadPreferenceRequestBodyBody = {
 /**
  * @nullable
  */
-export type PayloadPreferencePatchRequestBodyBodyValue = { [key: string]: unknown } | unknown[] | string | number | boolean | null;
+export type PayloadPreferencePatchRequestBodyBodyValue =
+  | { [key: string]: unknown }
+  | unknown[]
+  | string
+  | number
+  | boolean
+  | null;
 
 export type PayloadPreferencePatchRequestBodyBody = {
   /** ID of the users */
@@ -2306,7 +2413,11 @@ export type ListPayloadKvsParams = {
   locale?: string;
   "fallback-locale"?: string;
   sort?: ListPayloadKvsSort;
-  where?: { [key: string]: unknown } & (PayloadKvQueryOperations | PayloadKvQueryOperationsAnd | PayloadKvQueryOperationsOr);
+  where?: { [key: string]: unknown } & (
+    | PayloadKvQueryOperations
+    | PayloadKvQueryOperationsAnd
+    | PayloadKvQueryOperationsOr
+  );
 };
 
 export type ListPayloadKvsSort = (typeof ListPayloadKvsSort)[keyof typeof ListPayloadKvsSort];
@@ -2346,7 +2457,11 @@ export type ListPayloadJobsParams = {
   locale?: string;
   "fallback-locale"?: string;
   sort?: ListPayloadJobsSort;
-  where?: { [key: string]: unknown } & (PayloadJobQueryOperations | PayloadJobQueryOperationsAnd | PayloadJobQueryOperationsOr);
+  where?: { [key: string]: unknown } & (
+    | PayloadJobQueryOperations
+    | PayloadJobQueryOperationsAnd
+    | PayloadJobQueryOperationsOr
+  );
 };
 
 export type ListPayloadJobsSort = (typeof ListPayloadJobsSort)[keyof typeof ListPayloadJobsSort];
@@ -2392,10 +2507,15 @@ export type ListPayloadLockedDocumentsParams = {
   locale?: string;
   "fallback-locale"?: string;
   sort?: ListPayloadLockedDocumentsSort;
-  where?: { [key: string]: unknown } & (PayloadLockedDocumentQueryOperations | PayloadLockedDocumentQueryOperationsAnd | PayloadLockedDocumentQueryOperationsOr);
+  where?: { [key: string]: unknown } & (
+    | PayloadLockedDocumentQueryOperations
+    | PayloadLockedDocumentQueryOperationsAnd
+    | PayloadLockedDocumentQueryOperationsOr
+  );
 };
 
-export type ListPayloadLockedDocumentsSort = (typeof ListPayloadLockedDocumentsSort)[keyof typeof ListPayloadLockedDocumentsSort];
+export type ListPayloadLockedDocumentsSort =
+  (typeof ListPayloadLockedDocumentsSort)[keyof typeof ListPayloadLockedDocumentsSort];
 
 export const ListPayloadLockedDocumentsSort = {
   globalSlug: "globalSlug",
@@ -2436,7 +2556,11 @@ export type ListPayloadPreferencesParams = {
   locale?: string;
   "fallback-locale"?: string;
   sort?: ListPayloadPreferencesSort;
-  where?: { [key: string]: unknown } & (PayloadPreferenceQueryOperations | PayloadPreferenceQueryOperationsAnd | PayloadPreferenceQueryOperationsOr);
+  where?: { [key: string]: unknown } & (
+    | PayloadPreferenceQueryOperations
+    | PayloadPreferenceQueryOperationsAnd
+    | PayloadPreferenceQueryOperationsOr
+  );
 };
 
 export type ListPayloadPreferencesSort = (typeof ListPayloadPreferencesSort)[keyof typeof ListPayloadPreferencesSort];
@@ -2480,7 +2604,11 @@ export type ListPayloadMigrationsParams = {
   locale?: string;
   "fallback-locale"?: string;
   sort?: ListPayloadMigrationsSort;
-  where?: { [key: string]: unknown } & (PayloadMigrationQueryOperations | PayloadMigrationQueryOperationsAnd | PayloadMigrationQueryOperationsOr);
+  where?: { [key: string]: unknown } & (
+    | PayloadMigrationQueryOperations
+    | PayloadMigrationQueryOperationsAnd
+    | PayloadMigrationQueryOperationsOr
+  );
 };
 
 export type ListPayloadMigrationsSort = (typeof ListPayloadMigrationsSort)[keyof typeof ListPayloadMigrationsSort];
@@ -2527,6 +2655,7 @@ export type listUsersResponse200 = {
 export type listUsersResponseSuccess = listUsersResponse200 & {
   headers: Headers;
 };
+
 export type listUsersResponse = listUsersResponseSuccess;
 
 export const getListUsersUrl = (params?: ListUsersParams) => {
@@ -2561,6 +2690,7 @@ export type createUserResponse201 = {
 export type createUserResponseSuccess = createUserResponse201 & {
   headers: Headers;
 };
+
 export type createUserResponse = createUserResponseSuccess;
 
 export const getCreateUserUrl = (params?: CreateUserParams) => {
@@ -2580,7 +2710,11 @@ export const getCreateUserUrl = (params?: CreateUserParams) => {
 /**
  * @summary Create a new User
  */
-export const createUser = async (userRequestBodyBody?: UserRequestBodyBody, params?: CreateUserParams, options?: RequestInit): Promise<createUserResponse> => {
+export const createUser = async (
+  userRequestBodyBody?: UserRequestBodyBody,
+  params?: CreateUserParams,
+  options?: RequestInit
+): Promise<createUserResponse> => {
   return cmsFetch<createUserResponse>(getCreateUserUrl(params), {
     ...options,
     method: "POST",
@@ -2621,7 +2755,11 @@ export const getFindUserByIdUrl = (id: string, params?: FindUserByIdParams) => {
 /**
  * @summary Find a User by ID
  */
-export const findUserById = async (id: string, params?: FindUserByIdParams, options?: RequestInit): Promise<findUserByIdResponse> => {
+export const findUserById = async (
+  id: string,
+  params?: FindUserByIdParams,
+  options?: RequestInit
+): Promise<findUserByIdResponse> => {
   return cmsFetch<findUserByIdResponse>(getFindUserByIdUrl(id, params), {
     ...options,
     method: "GET"
@@ -2660,7 +2798,12 @@ export const getUpdateUserUrl = (id: string, params?: UpdateUserParams) => {
 /**
  * @summary Update a User
  */
-export const updateUser = async (id: string, userPatchRequestBodyBody?: UserPatchRequestBodyBody, params?: UpdateUserParams, options?: RequestInit): Promise<updateUserResponse> => {
+export const updateUser = async (
+  id: string,
+  userPatchRequestBodyBody?: UserPatchRequestBodyBody,
+  params?: UpdateUserParams,
+  options?: RequestInit
+): Promise<updateUserResponse> => {
   return cmsFetch<updateUserResponse>(getUpdateUserUrl(id, params), {
     ...options,
     method: "PATCH",
@@ -2701,7 +2844,11 @@ export const getDeleteUserUrl = (id: string, params?: DeleteUserParams) => {
 /**
  * @summary Delete a User
  */
-export const deleteUser = async (id: string, params?: DeleteUserParams, options?: RequestInit): Promise<deleteUserResponse> => {
+export const deleteUser = async (
+  id: string,
+  params?: DeleteUserParams,
+  options?: RequestInit
+): Promise<deleteUserResponse> => {
   return cmsFetch<deleteUserResponse>(getDeleteUserUrl(id, params), {
     ...options,
     method: "DELETE"
@@ -2716,6 +2863,7 @@ export type listMediaResponse200 = {
 export type listMediaResponseSuccess = listMediaResponse200 & {
   headers: Headers;
 };
+
 export type listMediaResponse = listMediaResponseSuccess;
 
 export const getListMediaUrl = (params?: ListMediaParams) => {
@@ -2750,6 +2898,7 @@ export type createMediaResponse201 = {
 export type createMediaResponseSuccess = createMediaResponse201 & {
   headers: Headers;
 };
+
 export type createMediaResponse = createMediaResponseSuccess;
 
 export const getCreateMediaUrl = (params?: CreateMediaParams) => {
@@ -2769,7 +2918,11 @@ export const getCreateMediaUrl = (params?: CreateMediaParams) => {
 /**
  * @summary Create a new Media
  */
-export const createMedia = async (mediaRequestBodyBody?: MediaRequestBodyBody, params?: CreateMediaParams, options?: RequestInit): Promise<createMediaResponse> => {
+export const createMedia = async (
+  mediaRequestBodyBody?: MediaRequestBodyBody,
+  params?: CreateMediaParams,
+  options?: RequestInit
+): Promise<createMediaResponse> => {
   return cmsFetch<createMediaResponse>(getCreateMediaUrl(params), {
     ...options,
     method: "POST",
@@ -2810,7 +2963,11 @@ export const getFindMediaByIdUrl = (id: string, params?: FindMediaByIdParams) =>
 /**
  * @summary Find a Media by ID
  */
-export const findMediaById = async (id: string, params?: FindMediaByIdParams, options?: RequestInit): Promise<findMediaByIdResponse> => {
+export const findMediaById = async (
+  id: string,
+  params?: FindMediaByIdParams,
+  options?: RequestInit
+): Promise<findMediaByIdResponse> => {
   return cmsFetch<findMediaByIdResponse>(getFindMediaByIdUrl(id, params), {
     ...options,
     method: "GET"
@@ -2849,7 +3006,12 @@ export const getUpdateMediaUrl = (id: string, params?: UpdateMediaParams) => {
 /**
  * @summary Update a Media
  */
-export const updateMedia = async (id: string, mediaPatchRequestBodyBody?: MediaPatchRequestBodyBody, params?: UpdateMediaParams, options?: RequestInit): Promise<updateMediaResponse> => {
+export const updateMedia = async (
+  id: string,
+  mediaPatchRequestBodyBody?: MediaPatchRequestBodyBody,
+  params?: UpdateMediaParams,
+  options?: RequestInit
+): Promise<updateMediaResponse> => {
   return cmsFetch<updateMediaResponse>(getUpdateMediaUrl(id, params), {
     ...options,
     method: "PATCH",
@@ -2890,7 +3052,11 @@ export const getDeleteMediaUrl = (id: string, params?: DeleteMediaParams) => {
 /**
  * @summary Delete a Media
  */
-export const deleteMedia = async (id: string, params?: DeleteMediaParams, options?: RequestInit): Promise<deleteMediaResponse> => {
+export const deleteMedia = async (
+  id: string,
+  params?: DeleteMediaParams,
+  options?: RequestInit
+): Promise<deleteMediaResponse> => {
   return cmsFetch<deleteMediaResponse>(getDeleteMediaUrl(id, params), {
     ...options,
     method: "DELETE"
@@ -2905,6 +3071,7 @@ export type listPostsResponse200 = {
 export type listPostsResponseSuccess = listPostsResponse200 & {
   headers: Headers;
 };
+
 export type listPostsResponse = listPostsResponseSuccess;
 
 export const getListPostsUrl = (params?: ListPostsParams) => {
@@ -2939,6 +3106,7 @@ export type createPostResponse201 = {
 export type createPostResponseSuccess = createPostResponse201 & {
   headers: Headers;
 };
+
 export type createPostResponse = createPostResponseSuccess;
 
 export const getCreatePostUrl = (params?: CreatePostParams) => {
@@ -2958,7 +3126,11 @@ export const getCreatePostUrl = (params?: CreatePostParams) => {
 /**
  * @summary Create a new Post
  */
-export const createPost = async (postRequestBodyBody?: PostRequestBodyBody, params?: CreatePostParams, options?: RequestInit): Promise<createPostResponse> => {
+export const createPost = async (
+  postRequestBodyBody?: PostRequestBodyBody,
+  params?: CreatePostParams,
+  options?: RequestInit
+): Promise<createPostResponse> => {
   return cmsFetch<createPostResponse>(getCreatePostUrl(params), {
     ...options,
     method: "POST",
@@ -2999,7 +3171,11 @@ export const getFindPostByIdUrl = (id: string, params?: FindPostByIdParams) => {
 /**
  * @summary Find a Post by ID
  */
-export const findPostById = async (id: string, params?: FindPostByIdParams, options?: RequestInit): Promise<findPostByIdResponse> => {
+export const findPostById = async (
+  id: string,
+  params?: FindPostByIdParams,
+  options?: RequestInit
+): Promise<findPostByIdResponse> => {
   return cmsFetch<findPostByIdResponse>(getFindPostByIdUrl(id, params), {
     ...options,
     method: "GET"
@@ -3038,7 +3214,12 @@ export const getUpdatePostUrl = (id: string, params?: UpdatePostParams) => {
 /**
  * @summary Update a Post
  */
-export const updatePost = async (id: string, postPatchRequestBodyBody?: PostPatchRequestBodyBody, params?: UpdatePostParams, options?: RequestInit): Promise<updatePostResponse> => {
+export const updatePost = async (
+  id: string,
+  postPatchRequestBodyBody?: PostPatchRequestBodyBody,
+  params?: UpdatePostParams,
+  options?: RequestInit
+): Promise<updatePostResponse> => {
   return cmsFetch<updatePostResponse>(getUpdatePostUrl(id, params), {
     ...options,
     method: "PATCH",
@@ -3079,7 +3260,11 @@ export const getDeletePostUrl = (id: string, params?: DeletePostParams) => {
 /**
  * @summary Delete a Post
  */
-export const deletePost = async (id: string, params?: DeletePostParams, options?: RequestInit): Promise<deletePostResponse> => {
+export const deletePost = async (
+  id: string,
+  params?: DeletePostParams,
+  options?: RequestInit
+): Promise<deletePostResponse> => {
   return cmsFetch<deletePostResponse>(getDeletePostUrl(id, params), {
     ...options,
     method: "DELETE"
@@ -3094,6 +3279,7 @@ export type listPayloadKvsResponse200 = {
 export type listPayloadKvsResponseSuccess = listPayloadKvsResponse200 & {
   headers: Headers;
 };
+
 export type listPayloadKvsResponse = listPayloadKvsResponseSuccess;
 
 export const getListPayloadKvsUrl = (params?: ListPayloadKvsParams) => {
@@ -3113,7 +3299,10 @@ export const getListPayloadKvsUrl = (params?: ListPayloadKvsParams) => {
 /**
  * @summary Retrieve a list of Payload Kvs
  */
-export const listPayloadKvs = async (params?: ListPayloadKvsParams, options?: RequestInit): Promise<listPayloadKvsResponse> => {
+export const listPayloadKvs = async (
+  params?: ListPayloadKvsParams,
+  options?: RequestInit
+): Promise<listPayloadKvsResponse> => {
   return cmsFetch<listPayloadKvsResponse>(getListPayloadKvsUrl(params), {
     ...options,
     method: "GET"
@@ -3128,6 +3317,7 @@ export type createPayloadKvResponse201 = {
 export type createPayloadKvResponseSuccess = createPayloadKvResponse201 & {
   headers: Headers;
 };
+
 export type createPayloadKvResponse = createPayloadKvResponseSuccess;
 
 export const getCreatePayloadKvUrl = (params?: CreatePayloadKvParams) => {
@@ -3147,7 +3337,11 @@ export const getCreatePayloadKvUrl = (params?: CreatePayloadKvParams) => {
 /**
  * @summary Create a new Payload Kv
  */
-export const createPayloadKv = async (payloadKvRequestBodyBody?: PayloadKvRequestBodyBody, params?: CreatePayloadKvParams, options?: RequestInit): Promise<createPayloadKvResponse> => {
+export const createPayloadKv = async (
+  payloadKvRequestBodyBody?: PayloadKvRequestBodyBody,
+  params?: CreatePayloadKvParams,
+  options?: RequestInit
+): Promise<createPayloadKvResponse> => {
   return cmsFetch<createPayloadKvResponse>(getCreatePayloadKvUrl(params), {
     ...options,
     method: "POST",
@@ -3188,7 +3382,11 @@ export const getFindPayloadKvByIdUrl = (id: string, params?: FindPayloadKvByIdPa
 /**
  * @summary Find a Payload Kv by ID
  */
-export const findPayloadKvById = async (id: string, params?: FindPayloadKvByIdParams, options?: RequestInit): Promise<findPayloadKvByIdResponse> => {
+export const findPayloadKvById = async (
+  id: string,
+  params?: FindPayloadKvByIdParams,
+  options?: RequestInit
+): Promise<findPayloadKvByIdResponse> => {
   return cmsFetch<findPayloadKvByIdResponse>(getFindPayloadKvByIdUrl(id, params), {
     ...options,
     method: "GET"
@@ -3227,7 +3425,12 @@ export const getUpdatePayloadKvUrl = (id: string, params?: UpdatePayloadKvParams
 /**
  * @summary Update a Payload Kv
  */
-export const updatePayloadKv = async (id: string, payloadKvPatchRequestBodyBody?: PayloadKvPatchRequestBodyBody, params?: UpdatePayloadKvParams, options?: RequestInit): Promise<updatePayloadKvResponse> => {
+export const updatePayloadKv = async (
+  id: string,
+  payloadKvPatchRequestBodyBody?: PayloadKvPatchRequestBodyBody,
+  params?: UpdatePayloadKvParams,
+  options?: RequestInit
+): Promise<updatePayloadKvResponse> => {
   return cmsFetch<updatePayloadKvResponse>(getUpdatePayloadKvUrl(id, params), {
     ...options,
     method: "PATCH",
@@ -3268,7 +3471,11 @@ export const getDeletePayloadKvUrl = (id: string, params?: DeletePayloadKvParams
 /**
  * @summary Delete a Payload Kv
  */
-export const deletePayloadKv = async (id: string, params?: DeletePayloadKvParams, options?: RequestInit): Promise<deletePayloadKvResponse> => {
+export const deletePayloadKv = async (
+  id: string,
+  params?: DeletePayloadKvParams,
+  options?: RequestInit
+): Promise<deletePayloadKvResponse> => {
   return cmsFetch<deletePayloadKvResponse>(getDeletePayloadKvUrl(id, params), {
     ...options,
     method: "DELETE"
@@ -3283,6 +3490,7 @@ export type listPayloadJobsResponse200 = {
 export type listPayloadJobsResponseSuccess = listPayloadJobsResponse200 & {
   headers: Headers;
 };
+
 export type listPayloadJobsResponse = listPayloadJobsResponseSuccess;
 
 export const getListPayloadJobsUrl = (params?: ListPayloadJobsParams) => {
@@ -3302,7 +3510,10 @@ export const getListPayloadJobsUrl = (params?: ListPayloadJobsParams) => {
 /**
  * @summary Retrieve a list of Payload Jobs
  */
-export const listPayloadJobs = async (params?: ListPayloadJobsParams, options?: RequestInit): Promise<listPayloadJobsResponse> => {
+export const listPayloadJobs = async (
+  params?: ListPayloadJobsParams,
+  options?: RequestInit
+): Promise<listPayloadJobsResponse> => {
   return cmsFetch<listPayloadJobsResponse>(getListPayloadJobsUrl(params), {
     ...options,
     method: "GET"
@@ -3317,6 +3528,7 @@ export type createPayloadJobResponse201 = {
 export type createPayloadJobResponseSuccess = createPayloadJobResponse201 & {
   headers: Headers;
 };
+
 export type createPayloadJobResponse = createPayloadJobResponseSuccess;
 
 export const getCreatePayloadJobUrl = (params?: CreatePayloadJobParams) => {
@@ -3336,7 +3548,11 @@ export const getCreatePayloadJobUrl = (params?: CreatePayloadJobParams) => {
 /**
  * @summary Create a new Payload Job
  */
-export const createPayloadJob = async (payloadJobRequestBodyBody?: PayloadJobRequestBodyBody, params?: CreatePayloadJobParams, options?: RequestInit): Promise<createPayloadJobResponse> => {
+export const createPayloadJob = async (
+  payloadJobRequestBodyBody?: PayloadJobRequestBodyBody,
+  params?: CreatePayloadJobParams,
+  options?: RequestInit
+): Promise<createPayloadJobResponse> => {
   return cmsFetch<createPayloadJobResponse>(getCreatePayloadJobUrl(params), {
     ...options,
     method: "POST",
@@ -3377,7 +3593,11 @@ export const getFindPayloadJobByIdUrl = (id: string, params?: FindPayloadJobById
 /**
  * @summary Find a Payload Job by ID
  */
-export const findPayloadJobById = async (id: string, params?: FindPayloadJobByIdParams, options?: RequestInit): Promise<findPayloadJobByIdResponse> => {
+export const findPayloadJobById = async (
+  id: string,
+  params?: FindPayloadJobByIdParams,
+  options?: RequestInit
+): Promise<findPayloadJobByIdResponse> => {
   return cmsFetch<findPayloadJobByIdResponse>(getFindPayloadJobByIdUrl(id, params), {
     ...options,
     method: "GET"
@@ -3416,7 +3636,12 @@ export const getUpdatePayloadJobUrl = (id: string, params?: UpdatePayloadJobPara
 /**
  * @summary Update a Payload Job
  */
-export const updatePayloadJob = async (id: string, payloadJobPatchRequestBodyBody?: PayloadJobPatchRequestBodyBody, params?: UpdatePayloadJobParams, options?: RequestInit): Promise<updatePayloadJobResponse> => {
+export const updatePayloadJob = async (
+  id: string,
+  payloadJobPatchRequestBodyBody?: PayloadJobPatchRequestBodyBody,
+  params?: UpdatePayloadJobParams,
+  options?: RequestInit
+): Promise<updatePayloadJobResponse> => {
   return cmsFetch<updatePayloadJobResponse>(getUpdatePayloadJobUrl(id, params), {
     ...options,
     method: "PATCH",
@@ -3457,7 +3682,11 @@ export const getDeletePayloadJobUrl = (id: string, params?: DeletePayloadJobPara
 /**
  * @summary Delete a Payload Job
  */
-export const deletePayloadJob = async (id: string, params?: DeletePayloadJobParams, options?: RequestInit): Promise<deletePayloadJobResponse> => {
+export const deletePayloadJob = async (
+  id: string,
+  params?: DeletePayloadJobParams,
+  options?: RequestInit
+): Promise<deletePayloadJobResponse> => {
   return cmsFetch<deletePayloadJobResponse>(getDeletePayloadJobUrl(id, params), {
     ...options,
     method: "DELETE"
@@ -3472,6 +3701,7 @@ export type listPayloadLockedDocumentsResponse200 = {
 export type listPayloadLockedDocumentsResponseSuccess = listPayloadLockedDocumentsResponse200 & {
   headers: Headers;
 };
+
 export type listPayloadLockedDocumentsResponse = listPayloadLockedDocumentsResponseSuccess;
 
 export const getListPayloadLockedDocumentsUrl = (params?: ListPayloadLockedDocumentsParams) => {
@@ -3485,13 +3715,18 @@ export const getListPayloadLockedDocumentsUrl = (params?: ListPayloadLockedDocum
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/payload-locked-documents?${stringifiedParams}` : `/api/payload-locked-documents`;
+  return stringifiedParams.length > 0
+    ? `/api/payload-locked-documents?${stringifiedParams}`
+    : `/api/payload-locked-documents`;
 };
 
 /**
  * @summary Retrieve a list of Payload Locked Documents
  */
-export const listPayloadLockedDocuments = async (params?: ListPayloadLockedDocumentsParams, options?: RequestInit): Promise<listPayloadLockedDocumentsResponse> => {
+export const listPayloadLockedDocuments = async (
+  params?: ListPayloadLockedDocumentsParams,
+  options?: RequestInit
+): Promise<listPayloadLockedDocumentsResponse> => {
   return cmsFetch<listPayloadLockedDocumentsResponse>(getListPayloadLockedDocumentsUrl(params), {
     ...options,
     method: "GET"
@@ -3506,6 +3741,7 @@ export type createPayloadLockedDocumentResponse201 = {
 export type createPayloadLockedDocumentResponseSuccess = createPayloadLockedDocumentResponse201 & {
   headers: Headers;
 };
+
 export type createPayloadLockedDocumentResponse = createPayloadLockedDocumentResponseSuccess;
 
 export const getCreatePayloadLockedDocumentUrl = (params?: CreatePayloadLockedDocumentParams) => {
@@ -3519,13 +3755,19 @@ export const getCreatePayloadLockedDocumentUrl = (params?: CreatePayloadLockedDo
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/payload-locked-documents?${stringifiedParams}` : `/api/payload-locked-documents`;
+  return stringifiedParams.length > 0
+    ? `/api/payload-locked-documents?${stringifiedParams}`
+    : `/api/payload-locked-documents`;
 };
 
 /**
  * @summary Create a new Payload Locked Document
  */
-export const createPayloadLockedDocument = async (payloadLockedDocumentRequestBodyBody?: PayloadLockedDocumentRequestBodyBody, params?: CreatePayloadLockedDocumentParams, options?: RequestInit): Promise<createPayloadLockedDocumentResponse> => {
+export const createPayloadLockedDocument = async (
+  payloadLockedDocumentRequestBodyBody?: PayloadLockedDocumentRequestBodyBody,
+  params?: CreatePayloadLockedDocumentParams,
+  options?: RequestInit
+): Promise<createPayloadLockedDocumentResponse> => {
   return cmsFetch<createPayloadLockedDocumentResponse>(getCreatePayloadLockedDocumentUrl(params), {
     ...options,
     method: "POST",
@@ -3551,7 +3793,9 @@ export type findPayloadLockedDocumentByIdResponseError = findPayloadLockedDocume
   headers: Headers;
 };
 
-export type findPayloadLockedDocumentByIdResponse = findPayloadLockedDocumentByIdResponseSuccess | findPayloadLockedDocumentByIdResponseError;
+export type findPayloadLockedDocumentByIdResponse =
+  | findPayloadLockedDocumentByIdResponseSuccess
+  | findPayloadLockedDocumentByIdResponseError;
 
 export const getFindPayloadLockedDocumentByIdUrl = (id: string, params?: FindPayloadLockedDocumentByIdParams) => {
   const normalizedParams = new URLSearchParams();
@@ -3560,13 +3804,19 @@ export const getFindPayloadLockedDocumentByIdUrl = (id: string, params?: FindPay
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/payload-locked-documents/${id}?${stringifiedParams}` : `/api/payload-locked-documents/${id}`;
+  return stringifiedParams.length > 0
+    ? `/api/payload-locked-documents/${id}?${stringifiedParams}`
+    : `/api/payload-locked-documents/${id}`;
 };
 
 /**
  * @summary Find a Payload Locked Document by ID
  */
-export const findPayloadLockedDocumentById = async (id: string, params?: FindPayloadLockedDocumentByIdParams, options?: RequestInit): Promise<findPayloadLockedDocumentByIdResponse> => {
+export const findPayloadLockedDocumentById = async (
+  id: string,
+  params?: FindPayloadLockedDocumentByIdParams,
+  options?: RequestInit
+): Promise<findPayloadLockedDocumentByIdResponse> => {
   return cmsFetch<findPayloadLockedDocumentByIdResponse>(getFindPayloadLockedDocumentByIdUrl(id, params), {
     ...options,
     method: "GET"
@@ -3590,7 +3840,9 @@ export type updatePayloadLockedDocumentResponseError = updatePayloadLockedDocume
   headers: Headers;
 };
 
-export type updatePayloadLockedDocumentResponse = updatePayloadLockedDocumentResponseSuccess | updatePayloadLockedDocumentResponseError;
+export type updatePayloadLockedDocumentResponse =
+  | updatePayloadLockedDocumentResponseSuccess
+  | updatePayloadLockedDocumentResponseError;
 
 export const getUpdatePayloadLockedDocumentUrl = (id: string, params?: UpdatePayloadLockedDocumentParams) => {
   const normalizedParams = new URLSearchParams();
@@ -3599,13 +3851,20 @@ export const getUpdatePayloadLockedDocumentUrl = (id: string, params?: UpdatePay
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/payload-locked-documents/${id}?${stringifiedParams}` : `/api/payload-locked-documents/${id}`;
+  return stringifiedParams.length > 0
+    ? `/api/payload-locked-documents/${id}?${stringifiedParams}`
+    : `/api/payload-locked-documents/${id}`;
 };
 
 /**
  * @summary Update a Payload Locked Document
  */
-export const updatePayloadLockedDocument = async (id: string, payloadLockedDocumentPatchRequestBodyBody?: PayloadLockedDocumentPatchRequestBodyBody, params?: UpdatePayloadLockedDocumentParams, options?: RequestInit): Promise<updatePayloadLockedDocumentResponse> => {
+export const updatePayloadLockedDocument = async (
+  id: string,
+  payloadLockedDocumentPatchRequestBodyBody?: PayloadLockedDocumentPatchRequestBodyBody,
+  params?: UpdatePayloadLockedDocumentParams,
+  options?: RequestInit
+): Promise<updatePayloadLockedDocumentResponse> => {
   return cmsFetch<updatePayloadLockedDocumentResponse>(getUpdatePayloadLockedDocumentUrl(id, params), {
     ...options,
     method: "PATCH",
@@ -3631,7 +3890,9 @@ export type deletePayloadLockedDocumentResponseError = deletePayloadLockedDocume
   headers: Headers;
 };
 
-export type deletePayloadLockedDocumentResponse = deletePayloadLockedDocumentResponseSuccess | deletePayloadLockedDocumentResponseError;
+export type deletePayloadLockedDocumentResponse =
+  | deletePayloadLockedDocumentResponseSuccess
+  | deletePayloadLockedDocumentResponseError;
 
 export const getDeletePayloadLockedDocumentUrl = (id: string, params?: DeletePayloadLockedDocumentParams) => {
   const normalizedParams = new URLSearchParams();
@@ -3640,13 +3901,19 @@ export const getDeletePayloadLockedDocumentUrl = (id: string, params?: DeletePay
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/payload-locked-documents/${id}?${stringifiedParams}` : `/api/payload-locked-documents/${id}`;
+  return stringifiedParams.length > 0
+    ? `/api/payload-locked-documents/${id}?${stringifiedParams}`
+    : `/api/payload-locked-documents/${id}`;
 };
 
 /**
  * @summary Delete a Payload Locked Document
  */
-export const deletePayloadLockedDocument = async (id: string, params?: DeletePayloadLockedDocumentParams, options?: RequestInit): Promise<deletePayloadLockedDocumentResponse> => {
+export const deletePayloadLockedDocument = async (
+  id: string,
+  params?: DeletePayloadLockedDocumentParams,
+  options?: RequestInit
+): Promise<deletePayloadLockedDocumentResponse> => {
   return cmsFetch<deletePayloadLockedDocumentResponse>(getDeletePayloadLockedDocumentUrl(id, params), {
     ...options,
     method: "DELETE"
@@ -3661,6 +3928,7 @@ export type listPayloadPreferencesResponse200 = {
 export type listPayloadPreferencesResponseSuccess = listPayloadPreferencesResponse200 & {
   headers: Headers;
 };
+
 export type listPayloadPreferencesResponse = listPayloadPreferencesResponseSuccess;
 
 export const getListPayloadPreferencesUrl = (params?: ListPayloadPreferencesParams) => {
@@ -3680,7 +3948,10 @@ export const getListPayloadPreferencesUrl = (params?: ListPayloadPreferencesPara
 /**
  * @summary Retrieve a list of Payload Preferences
  */
-export const listPayloadPreferences = async (params?: ListPayloadPreferencesParams, options?: RequestInit): Promise<listPayloadPreferencesResponse> => {
+export const listPayloadPreferences = async (
+  params?: ListPayloadPreferencesParams,
+  options?: RequestInit
+): Promise<listPayloadPreferencesResponse> => {
   return cmsFetch<listPayloadPreferencesResponse>(getListPayloadPreferencesUrl(params), {
     ...options,
     method: "GET"
@@ -3695,6 +3966,7 @@ export type createPayloadPreferenceResponse201 = {
 export type createPayloadPreferenceResponseSuccess = createPayloadPreferenceResponse201 & {
   headers: Headers;
 };
+
 export type createPayloadPreferenceResponse = createPayloadPreferenceResponseSuccess;
 
 export const getCreatePayloadPreferenceUrl = (params?: CreatePayloadPreferenceParams) => {
@@ -3714,7 +3986,11 @@ export const getCreatePayloadPreferenceUrl = (params?: CreatePayloadPreferencePa
 /**
  * @summary Create a new Payload Preference
  */
-export const createPayloadPreference = async (payloadPreferenceRequestBodyBody?: PayloadPreferenceRequestBodyBody, params?: CreatePayloadPreferenceParams, options?: RequestInit): Promise<createPayloadPreferenceResponse> => {
+export const createPayloadPreference = async (
+  payloadPreferenceRequestBodyBody?: PayloadPreferenceRequestBodyBody,
+  params?: CreatePayloadPreferenceParams,
+  options?: RequestInit
+): Promise<createPayloadPreferenceResponse> => {
   return cmsFetch<createPayloadPreferenceResponse>(getCreatePayloadPreferenceUrl(params), {
     ...options,
     method: "POST",
@@ -3740,7 +4016,9 @@ export type findPayloadPreferenceByIdResponseError = findPayloadPreferenceByIdRe
   headers: Headers;
 };
 
-export type findPayloadPreferenceByIdResponse = findPayloadPreferenceByIdResponseSuccess | findPayloadPreferenceByIdResponseError;
+export type findPayloadPreferenceByIdResponse =
+  | findPayloadPreferenceByIdResponseSuccess
+  | findPayloadPreferenceByIdResponseError;
 
 export const getFindPayloadPreferenceByIdUrl = (id: string, params?: FindPayloadPreferenceByIdParams) => {
   const normalizedParams = new URLSearchParams();
@@ -3749,13 +4027,19 @@ export const getFindPayloadPreferenceByIdUrl = (id: string, params?: FindPayload
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/payload-preferences/${id}?${stringifiedParams}` : `/api/payload-preferences/${id}`;
+  return stringifiedParams.length > 0
+    ? `/api/payload-preferences/${id}?${stringifiedParams}`
+    : `/api/payload-preferences/${id}`;
 };
 
 /**
  * @summary Find a Payload Preference by ID
  */
-export const findPayloadPreferenceById = async (id: string, params?: FindPayloadPreferenceByIdParams, options?: RequestInit): Promise<findPayloadPreferenceByIdResponse> => {
+export const findPayloadPreferenceById = async (
+  id: string,
+  params?: FindPayloadPreferenceByIdParams,
+  options?: RequestInit
+): Promise<findPayloadPreferenceByIdResponse> => {
   return cmsFetch<findPayloadPreferenceByIdResponse>(getFindPayloadPreferenceByIdUrl(id, params), {
     ...options,
     method: "GET"
@@ -3779,7 +4063,9 @@ export type updatePayloadPreferenceResponseError = updatePayloadPreferenceRespon
   headers: Headers;
 };
 
-export type updatePayloadPreferenceResponse = updatePayloadPreferenceResponseSuccess | updatePayloadPreferenceResponseError;
+export type updatePayloadPreferenceResponse =
+  | updatePayloadPreferenceResponseSuccess
+  | updatePayloadPreferenceResponseError;
 
 export const getUpdatePayloadPreferenceUrl = (id: string, params?: UpdatePayloadPreferenceParams) => {
   const normalizedParams = new URLSearchParams();
@@ -3788,13 +4074,20 @@ export const getUpdatePayloadPreferenceUrl = (id: string, params?: UpdatePayload
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/payload-preferences/${id}?${stringifiedParams}` : `/api/payload-preferences/${id}`;
+  return stringifiedParams.length > 0
+    ? `/api/payload-preferences/${id}?${stringifiedParams}`
+    : `/api/payload-preferences/${id}`;
 };
 
 /**
  * @summary Update a Payload Preference
  */
-export const updatePayloadPreference = async (id: string, payloadPreferencePatchRequestBodyBody?: PayloadPreferencePatchRequestBodyBody, params?: UpdatePayloadPreferenceParams, options?: RequestInit): Promise<updatePayloadPreferenceResponse> => {
+export const updatePayloadPreference = async (
+  id: string,
+  payloadPreferencePatchRequestBodyBody?: PayloadPreferencePatchRequestBodyBody,
+  params?: UpdatePayloadPreferenceParams,
+  options?: RequestInit
+): Promise<updatePayloadPreferenceResponse> => {
   return cmsFetch<updatePayloadPreferenceResponse>(getUpdatePayloadPreferenceUrl(id, params), {
     ...options,
     method: "PATCH",
@@ -3820,7 +4113,9 @@ export type deletePayloadPreferenceResponseError = deletePayloadPreferenceRespon
   headers: Headers;
 };
 
-export type deletePayloadPreferenceResponse = deletePayloadPreferenceResponseSuccess | deletePayloadPreferenceResponseError;
+export type deletePayloadPreferenceResponse =
+  | deletePayloadPreferenceResponseSuccess
+  | deletePayloadPreferenceResponseError;
 
 export const getDeletePayloadPreferenceUrl = (id: string, params?: DeletePayloadPreferenceParams) => {
   const normalizedParams = new URLSearchParams();
@@ -3829,13 +4124,19 @@ export const getDeletePayloadPreferenceUrl = (id: string, params?: DeletePayload
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/payload-preferences/${id}?${stringifiedParams}` : `/api/payload-preferences/${id}`;
+  return stringifiedParams.length > 0
+    ? `/api/payload-preferences/${id}?${stringifiedParams}`
+    : `/api/payload-preferences/${id}`;
 };
 
 /**
  * @summary Delete a Payload Preference
  */
-export const deletePayloadPreference = async (id: string, params?: DeletePayloadPreferenceParams, options?: RequestInit): Promise<deletePayloadPreferenceResponse> => {
+export const deletePayloadPreference = async (
+  id: string,
+  params?: DeletePayloadPreferenceParams,
+  options?: RequestInit
+): Promise<deletePayloadPreferenceResponse> => {
   return cmsFetch<deletePayloadPreferenceResponse>(getDeletePayloadPreferenceUrl(id, params), {
     ...options,
     method: "DELETE"
@@ -3850,6 +4151,7 @@ export type listPayloadMigrationsResponse200 = {
 export type listPayloadMigrationsResponseSuccess = listPayloadMigrationsResponse200 & {
   headers: Headers;
 };
+
 export type listPayloadMigrationsResponse = listPayloadMigrationsResponseSuccess;
 
 export const getListPayloadMigrationsUrl = (params?: ListPayloadMigrationsParams) => {
@@ -3869,7 +4171,10 @@ export const getListPayloadMigrationsUrl = (params?: ListPayloadMigrationsParams
 /**
  * @summary Retrieve a list of Payload Migrations
  */
-export const listPayloadMigrations = async (params?: ListPayloadMigrationsParams, options?: RequestInit): Promise<listPayloadMigrationsResponse> => {
+export const listPayloadMigrations = async (
+  params?: ListPayloadMigrationsParams,
+  options?: RequestInit
+): Promise<listPayloadMigrationsResponse> => {
   return cmsFetch<listPayloadMigrationsResponse>(getListPayloadMigrationsUrl(params), {
     ...options,
     method: "GET"
@@ -3884,6 +4189,7 @@ export type createPayloadMigrationResponse201 = {
 export type createPayloadMigrationResponseSuccess = createPayloadMigrationResponse201 & {
   headers: Headers;
 };
+
 export type createPayloadMigrationResponse = createPayloadMigrationResponseSuccess;
 
 export const getCreatePayloadMigrationUrl = (params?: CreatePayloadMigrationParams) => {
@@ -3903,7 +4209,11 @@ export const getCreatePayloadMigrationUrl = (params?: CreatePayloadMigrationPara
 /**
  * @summary Create a new Payload Migration
  */
-export const createPayloadMigration = async (payloadMigrationRequestBodyBody?: PayloadMigrationRequestBodyBody, params?: CreatePayloadMigrationParams, options?: RequestInit): Promise<createPayloadMigrationResponse> => {
+export const createPayloadMigration = async (
+  payloadMigrationRequestBodyBody?: PayloadMigrationRequestBodyBody,
+  params?: CreatePayloadMigrationParams,
+  options?: RequestInit
+): Promise<createPayloadMigrationResponse> => {
   return cmsFetch<createPayloadMigrationResponse>(getCreatePayloadMigrationUrl(params), {
     ...options,
     method: "POST",
@@ -3929,7 +4239,9 @@ export type findPayloadMigrationByIdResponseError = findPayloadMigrationByIdResp
   headers: Headers;
 };
 
-export type findPayloadMigrationByIdResponse = findPayloadMigrationByIdResponseSuccess | findPayloadMigrationByIdResponseError;
+export type findPayloadMigrationByIdResponse =
+  | findPayloadMigrationByIdResponseSuccess
+  | findPayloadMigrationByIdResponseError;
 
 export const getFindPayloadMigrationByIdUrl = (id: string, params?: FindPayloadMigrationByIdParams) => {
   const normalizedParams = new URLSearchParams();
@@ -3938,13 +4250,19 @@ export const getFindPayloadMigrationByIdUrl = (id: string, params?: FindPayloadM
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/payload-migrations/${id}?${stringifiedParams}` : `/api/payload-migrations/${id}`;
+  return stringifiedParams.length > 0
+    ? `/api/payload-migrations/${id}?${stringifiedParams}`
+    : `/api/payload-migrations/${id}`;
 };
 
 /**
  * @summary Find a Payload Migration by ID
  */
-export const findPayloadMigrationById = async (id: string, params?: FindPayloadMigrationByIdParams, options?: RequestInit): Promise<findPayloadMigrationByIdResponse> => {
+export const findPayloadMigrationById = async (
+  id: string,
+  params?: FindPayloadMigrationByIdParams,
+  options?: RequestInit
+): Promise<findPayloadMigrationByIdResponse> => {
   return cmsFetch<findPayloadMigrationByIdResponse>(getFindPayloadMigrationByIdUrl(id, params), {
     ...options,
     method: "GET"
@@ -3968,7 +4286,9 @@ export type updatePayloadMigrationResponseError = updatePayloadMigrationResponse
   headers: Headers;
 };
 
-export type updatePayloadMigrationResponse = updatePayloadMigrationResponseSuccess | updatePayloadMigrationResponseError;
+export type updatePayloadMigrationResponse =
+  | updatePayloadMigrationResponseSuccess
+  | updatePayloadMigrationResponseError;
 
 export const getUpdatePayloadMigrationUrl = (id: string, params?: UpdatePayloadMigrationParams) => {
   const normalizedParams = new URLSearchParams();
@@ -3977,13 +4297,20 @@ export const getUpdatePayloadMigrationUrl = (id: string, params?: UpdatePayloadM
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/payload-migrations/${id}?${stringifiedParams}` : `/api/payload-migrations/${id}`;
+  return stringifiedParams.length > 0
+    ? `/api/payload-migrations/${id}?${stringifiedParams}`
+    : `/api/payload-migrations/${id}`;
 };
 
 /**
  * @summary Update a Payload Migration
  */
-export const updatePayloadMigration = async (id: string, payloadMigrationPatchRequestBodyBody?: PayloadMigrationPatchRequestBodyBody, params?: UpdatePayloadMigrationParams, options?: RequestInit): Promise<updatePayloadMigrationResponse> => {
+export const updatePayloadMigration = async (
+  id: string,
+  payloadMigrationPatchRequestBodyBody?: PayloadMigrationPatchRequestBodyBody,
+  params?: UpdatePayloadMigrationParams,
+  options?: RequestInit
+): Promise<updatePayloadMigrationResponse> => {
   return cmsFetch<updatePayloadMigrationResponse>(getUpdatePayloadMigrationUrl(id, params), {
     ...options,
     method: "PATCH",
@@ -4009,7 +4336,9 @@ export type deletePayloadMigrationResponseError = deletePayloadMigrationResponse
   headers: Headers;
 };
 
-export type deletePayloadMigrationResponse = deletePayloadMigrationResponseSuccess | deletePayloadMigrationResponseError;
+export type deletePayloadMigrationResponse =
+  | deletePayloadMigrationResponseSuccess
+  | deletePayloadMigrationResponseError;
 
 export const getDeletePayloadMigrationUrl = (id: string, params?: DeletePayloadMigrationParams) => {
   const normalizedParams = new URLSearchParams();
@@ -4018,13 +4347,19 @@ export const getDeletePayloadMigrationUrl = (id: string, params?: DeletePayloadM
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/payload-migrations/${id}?${stringifiedParams}` : `/api/payload-migrations/${id}`;
+  return stringifiedParams.length > 0
+    ? `/api/payload-migrations/${id}?${stringifiedParams}`
+    : `/api/payload-migrations/${id}`;
 };
 
 /**
  * @summary Delete a Payload Migration
  */
-export const deletePayloadMigration = async (id: string, params?: DeletePayloadMigrationParams, options?: RequestInit): Promise<deletePayloadMigrationResponse> => {
+export const deletePayloadMigration = async (
+  id: string,
+  params?: DeletePayloadMigrationParams,
+  options?: RequestInit
+): Promise<deletePayloadMigrationResponse> => {
   return cmsFetch<deletePayloadMigrationResponse>(getDeletePayloadMigrationUrl(id, params), {
     ...options,
     method: "DELETE"

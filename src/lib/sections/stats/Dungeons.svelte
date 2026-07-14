@@ -17,11 +17,11 @@
 
 <Section id="Dungeons" {order}>
   {#if dungeons}
-    <div class="space-y-4 contents">
+    <div class="contents space-y-4">
       {#if dungeons.level && dungeons.level.xp === 0}
         <EmptyStat title="Locked" description="This player hasn't unlocked Dungeons yet" icon={LockIcon} />
       {:else if dungeons}
-        <div class="flex border flex-col flex-wrap justify-start gap-x-4 gap-y-2 p-4 rounded-xl sm:flex-row">
+        <div class="flex flex-col flex-wrap justify-start gap-x-4 gap-y-2 rounded-xl border p-4 sm:flex-row">
           {#if dungeons.level}
             <Skillbar skill="Catacombs" skillData={dungeons.level} />
           {/if}
@@ -37,11 +37,16 @@
               <AdditionStat text="Selected Class" data={dungeons.classes.selectedClass} />
             {/if}
             {#if dungeons.classes.classAverage != null}
-              <AdditionStat text="Class Average" data={format(dungeons.classes.classAverage)} asterisk={true} maxed={dungeons.classes.classAverage >= 50}>
+              <AdditionStat
+                text="Class Average"
+                data={format(dungeons.classes.classAverage)}
+                asterisk={true}
+                maxed={dungeons.classes.classAverage >= 50}>
                 <div class="max-w-xs space-y-2">
                   {#if dungeons.classes.totalClassExp != null}
                     <div>
-                      <Label class="font-bold">Total Class XP: {format(dungeons.classes.totalClassExp.toFixed(2))}</Label>
+                      <Label class="font-bold"
+                        >Total Class XP: {format(dungeons.classes.totalClassExp.toFixed(2))}</Label>
                       <p class="text-xs text-foreground/80 italic">Total Class XP gained in Catacombs.</p>
                     </div>
                   {/if}
@@ -52,14 +57,20 @@
 
                   {#if dungeons.classes.classAverageWithProgress != null}
                     <div>
-                      <Label class="font-bold">Average Level: {format(dungeons.classes.classAverageWithProgress.toFixed(2))}</Label>
-                      <p class="text-xs text-foreground/80 italic">Average class level, includes progress to next level.</p>
+                      <Label class="font-bold"
+                        >Average Level: {format(dungeons.classes.classAverageWithProgress.toFixed(2))}</Label>
+                      <p class="text-xs text-foreground/80 italic">
+                        Average class level, includes progress to next level.
+                      </p>
                     </div>
                   {/if}
                   <Separator />
                   <div>
-                    <Label class="font-bold">Average Level without progress: {format(dungeons.classes.classAverage.toFixed(2))}</Label>
-                    <p class="text-xs text-foreground/80 italic">Average class level without including partial level progress.</p>
+                    <Label class="font-bold"
+                      >Average Level without progress: {format(dungeons.classes.classAverage.toFixed(2))}</Label>
+                    <p class="text-xs text-foreground/80 italic">
+                      Average class level without including partial level progress.
+                    </p>
                   </div>
                 </div>
               </AdditionStat>
@@ -67,22 +78,31 @@
           {/if}
           {#if dungeons.stats}
             {#if dungeons.stats.highestFloorBeatenNormal != null}
-              <AdditionStat text="Highest Floor Beaten (Normal)" data={format(dungeons.stats.highestFloorBeatenNormal)} maxed={dungeons.stats.highestFloorBeatenNormal === 7} />
+              <AdditionStat
+                text="Highest Floor Beaten (Normal)"
+                data={format(dungeons.stats.highestFloorBeatenNormal)}
+                maxed={dungeons.stats.highestFloorBeatenNormal === 7} />
             {/if}
             {#if dungeons.stats.highestFloorBeatenMaster != null}
-              <AdditionStat text="Highest Floor Beaten (Master)" data={format(dungeons.stats.highestFloorBeatenMaster)} maxed={dungeons.stats.highestFloorBeatenMaster === 7} />
+              <AdditionStat
+                text="Highest Floor Beaten (Master)"
+                data={format(dungeons.stats.highestFloorBeatenMaster)}
+                maxed={dungeons.stats.highestFloorBeatenMaster === 7} />
             {/if}
-            <AdditionStat text="Secrets Found" data={format(dungeons.stats?.secrets?.found ?? 0)} subData="({format((dungeons.stats?.secrets?.secretsPerRun ?? 0).toFixed(2))} S/R)" />
+            <AdditionStat
+              text="Secrets Found"
+              data={format(dungeons.stats?.secrets?.found ?? 0)}
+              subData="({format((dungeons.stats?.secrets?.secretsPerRun ?? 0).toFixed(2))} S/R)" />
           {/if}
         </div>
-        <Section id="Catacombs" class="border p-4 rounded-xl">
+        <Section id="Catacombs" class="rounded-xl border p-4">
           {#snippet subtitle()}
             <SectionSubtitle>Catacombs</SectionSubtitle>
           {/snippet}
           <DungeonCataCard catacombs={dungeons.catacombs} />
         </Section>
 
-        <Section id="Master_Catacombs" class="border p-4 rounded-xl">
+        <Section id="Master_Catacombs" class="rounded-xl border p-4">
           {#snippet subtitle()}
             <SectionSubtitle>Master Catacombs</SectionSubtitle>
           {/snippet}

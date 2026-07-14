@@ -13,7 +13,13 @@
   {#snippet children({ payload })}
     {#if payload?.showTooltip !== false}
       <Tooltip.Portal>
-        <Tooltip.Content forceMount class={cn(payload?.class)} sideOffset={payload?.sideOffset} side={payload?.side} align={payload?.align} customAnchor={payload?.customAnchor}>
+        <Tooltip.Content
+          forceMount
+          class={cn(payload?.class)}
+          sideOffset={payload?.sideOffset}
+          side={payload?.side}
+          align={payload?.align}
+          customAnchor={payload?.customAnchor}>
           {#snippet child({ wrapperProps, props, open })}
             {#if open}
               <div {...wrapperProps}>
@@ -36,11 +42,23 @@
 </Tooltip.Root>
 
 <!-- Item Tooltip -->
-<Tooltip.Root disableHoverableContent={true} ignoreNonKeyboardFocus={true} delayDuration={300} tether={itemTooltipTether} disabled={!isHover.current}>
+<Tooltip.Root
+  disableHoverableContent={true}
+  ignoreNonKeyboardFocus={true}
+  delayDuration={300}
+  tether={itemTooltipTether}
+  disabled={!isHover.current}>
   {#snippet children({ payload })}
     {#if payload?.inViewport?.current}
       <Tooltip.Portal>
-        <Tooltip.Content forceMount={payload.inViewport.current} class="group/itemtooltip data-[mctooltip=false]:glass data-[mctooltip=true]:bg-transparent z-50 data-[mctooltip=false]:border flex max-h-[calc(96vh-3rem)] flex-col overflow-clip font-skyblock-icons select-text data-[mctooltip=false]:rounded-xl data-[mctooltip=true]:rounded-xs data-[mctooltip=false]:glass-bg-popover" side="right" align="center" collisionPadding={8} data-mctooltip={preferences.mctooltip} alignOffset={8}>
+        <Tooltip.Content
+          forceMount={payload.inViewport.current}
+          class="group/itemtooltip z-50 flex max-h-[calc(96vh-3rem)] flex-col overflow-clip font-skyblock-icons select-text data-[mctooltip=false]:rounded-xl data-[mctooltip=false]:border data-[mctooltip=false]:glass data-[mctooltip=false]:glass-bg-popover data-[mctooltip=true]:rounded-xs data-[mctooltip=true]:bg-transparent"
+          side="right"
+          align="center"
+          collisionPadding={8}
+          data-mctooltip={preferences.mctooltip}
+          alignOffset={8}>
           {#snippet child({ wrapperProps, props, open })}
             {#if open}
               <div {...wrapperProps}>

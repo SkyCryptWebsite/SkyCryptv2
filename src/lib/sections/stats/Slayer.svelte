@@ -21,7 +21,7 @@
     {#if slayer.totalSlayerExp === 0}
       <EmptyStat title="No Slayers" description="This player hasn't unlocked Slayers yet" icon={SkullIcon} />
     {:else}
-      <div class="space-y-4 border rounded-xl p-4">
+      <div class="space-y-4 rounded-xl border p-4">
         <div>
           <AdditionStat text="Total Slayer XP" data={format(slayer.totalSlayerExp)} />
           {#if slayer.stats}
@@ -33,11 +33,16 @@
           <ScrollAreaItems>
             {#each Object.entries(slayer.data) as [key, value], index (index)}
               {#if value.level && value.level.xp != null && value.level.xp > 0}
-                <div class="relative flex min-w-xs flex-col items-center gap-1 space-y-5 overflow-hidden rounded-xl bg-background/50 border">
-                  <div class="flex w-full items-center justify-center gap-1.5 border-b-2 border-primary py-2 text-center font-semibold uppercase">
-                    <Avatar.Root class="after:border-none rounded-none">
-                      <Avatar.Image loading="lazy" src={value.texture} class="size-8 rounded-2xl object-contain [image-rendering:pixelated]" />
-                      <Avatar.Fallback class="bg-transparent rounded-none">
+                <div
+                  class="relative flex min-w-xs flex-col items-center gap-1 space-y-5 overflow-hidden rounded-xl border bg-background/50">
+                  <div
+                    class="flex w-full items-center justify-center gap-1.5 border-b-2 border-primary py-2 text-center font-semibold uppercase">
+                    <Avatar.Root class="rounded-none after:border-none">
+                      <Avatar.Image
+                        loading="lazy"
+                        src={value.texture}
+                        class="size-8 rounded-2xl object-contain [image-rendering:pixelated]" />
+                      <Avatar.Fallback class="rounded-none bg-transparent">
                         <Image class="size-8" />
                       </Avatar.Fallback>
                     </Avatar.Root>
@@ -66,9 +71,13 @@
                       {key} Level {value.level.level}
                     </p>
 
-                    <div class="relative group" data-maxed={value.level.maxed}>
-                      <Progress value={value.level.xp} max={value.level.xpForNext} class="h-4 w-full overflow-hidden rounded-none bg-foreground/30 [&>div]:group-data-[maxed=false]:bg-primary [&>div]:rounded-none [&>div]:group-data-[maxed=true]:bg-accent-3" />
-                      <div class="w-full flex z-10 inset-0 flex-nowrap text-xs absolute items-center-safe gap-0.5 justify-center-safe">
+                    <div class="group relative" data-maxed={value.level.maxed}>
+                      <Progress
+                        value={value.level.xp}
+                        max={value.level.xpForNext}
+                        class="h-4 w-full overflow-hidden rounded-none bg-foreground/30 [&>div]:rounded-none [&>div]:group-data-[maxed=false]:bg-primary [&>div]:group-data-[maxed=true]:bg-accent-3" />
+                      <div
+                        class="absolute inset-0 z-10 flex w-full flex-nowrap items-center-safe justify-center-safe gap-0.5 text-xs">
                         <span class="font-bold">
                           {#if value.level.maxed}
                             {formatNumber(value.level.xp)}

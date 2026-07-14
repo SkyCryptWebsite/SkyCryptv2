@@ -121,7 +121,9 @@
 
       const partial = partialThemeV5Schema.safeParse(parsed);
       if (partial.success && (partial.data.schema === 5 || partial.data.schema === undefined)) {
-        workingTheme = ensureEditorDefaults(mergeThemeWithDefaults({ ...partial.data, metadata: { ...workingTheme.metadata, ...partial.data.metadata } }));
+        workingTheme = ensureEditorDefaults(
+          mergeThemeWithDefaults({ ...partial.data, metadata: { ...workingTheme.metadata, ...partial.data.metadata } })
+        );
         jsonError = null;
         return;
       }
@@ -223,7 +225,7 @@
 <div class="flex h-full w-full flex-col">
   <ThemeActions {workingTheme} onReset={handleReset} onSave={handleSave} {handleNameChange} {handleAuthorChange} />
 
-  <div class="flex-1 mt-4 space-y-4">
+  <div class="mt-4 flex-1 space-y-4">
     <Separator />
     <div class="flex flex-col gap-2">
       <Label for="fork-select">Start From</Label>
@@ -241,7 +243,7 @@
     </div>
 
     <Tabs.Root value="visual" onValueChange={onTabChange} class="w-full">
-      <Tabs.List class="w-full bg-transparent border">
+      <Tabs.List class="w-full border bg-transparent">
         <Tabs.Trigger value="visual">Visual</Tabs.Trigger>
         <Tabs.Trigger value="code">Code (JSON)</Tabs.Trigger>
       </Tabs.List>
@@ -261,11 +263,19 @@
           </Item.Content>
           <Item.Actions>
             <div class="flex items-center gap-1">
-              <Button type="button" size="sm" variant={editingMode === "dark" ? "default" : "outline"} onclick={() => setEditingMode("dark")}>
+              <Button
+                type="button"
+                size="sm"
+                variant={editingMode === "dark" ? "default" : "outline"}
+                onclick={() => setEditingMode("dark")}>
                 <Moon class="size-4" />
                 Dark
               </Button>
-              <Button type="button" size="sm" variant={editingMode === "light" ? "default" : "outline"} onclick={() => setEditingMode("light")}>
+              <Button
+                type="button"
+                size="sm"
+                variant={editingMode === "light" ? "default" : "outline"}
+                onclick={() => setEditingMode("light")}>
                 <Sun class="size-4" />
                 Light
               </Button>
@@ -274,7 +284,11 @@
         </Item.Root>
 
         <div class="flex flex-wrap gap-2">
-          <Button type="button" variant="secondary" size="sm" onclick={() => copyModeTo(editingMode === "dark" ? "light" : "dark")}>
+          <Button
+            type="button"
+            variant="secondary"
+            size="sm"
+            onclick={() => copyModeTo(editingMode === "dark" ? "light" : "dark")}>
             <ArrowLeftRight class="size-4" />
             Copy {editingMode === "dark" ? "dark to light" : "light to dark"}
           </Button>

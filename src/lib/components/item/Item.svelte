@@ -40,7 +40,12 @@
 </script>
 
 <Tooltip.Trigger
-  class={cn("overflow-clip nice-colors-dark", isInventory ? "p-0" : `relative p-2 ${bgColor}`, { "rounded-xl": !isInventory }, "standard:transition-all standard:duration-150 standard:ease-out standard:hover:scale-110 standard:active:scale-110")}
+  class={cn(
+    "overflow-clip nice-colors-dark",
+    isInventory ? "p-0" : `relative p-2 ${bgColor}`,
+    { "rounded-xl": !isInventory },
+    "standard:transition-all standard:duration-150 standard:ease-out standard:hover:scale-110 standard:active:scale-110"
+  )}
   bind:ref={targetNode}
   onclick={() => {
     if (skyblockItem.containsItems && !skyblockItem.displayInline) {
@@ -56,7 +61,16 @@
     <div {...props}>
       {#if hasBeenInViewport}
         <Avatar.Root bind:loadingStatus class={cn("after:border-none", isInventory ? "size-6 sm:size-14" : "size-14")}>
-          <ResolvedItemImage loading="lazy" src={piece.texture_path} alt={piece.display_name} class={cn("pointer-events-none aspect-square select-none [image-rendering:pixelated] data-[enchanted=true]:enchanted", isInventory ? "size-6 sm:size-14" : "size-14")} {enchanted} onresolved={(resolution) => (resolvedTexturePack = resolution.texture_pack)} />
+          <ResolvedItemImage
+            loading="lazy"
+            src={piece.texture_path}
+            alt={piece.display_name}
+            class={cn(
+              "pointer-events-none aspect-square select-none [image-rendering:pixelated] data-[enchanted=true]:enchanted",
+              isInventory ? "size-6 sm:size-14" : "size-14"
+            )}
+            {enchanted}
+            onresolved={(resolution) => (resolvedTexturePack = resolution.texture_pack)} />
           {#if loadingStatus === "loading"}
             {@render loadingState()}
           {:else}
@@ -70,14 +84,18 @@
       {/if}
 
       {#if recombobulated && !isInventory}
-        <div class="absolute -top-3 -right-3 z-10 size-6 rotate-45 bg-(--color)" style="--color: var(--§{RARITY_COLORS[RARITIES[RARITIES.indexOf(piece.rarity ?? 'common') - 1]]})"></div>
+        <div
+          class="absolute -top-3 -right-3 z-10 size-6 rotate-45 bg-(--color)"
+          style="--color: var(--§{RARITY_COLORS[RARITIES[RARITIES.indexOf(piece.rarity ?? 'common') - 1]]})">
+        </div>
       {/if}
     </div>
   {/snippet}
 </Tooltip.Trigger>
 
 {#if showNumbers}
-  <div class="absolute right-0.5 bottom-0.5 text-xs font-semibold text-foreground text-shadow-[.1em_.1em_.1em_#000] sm:text-base">
+  <div
+    class="absolute right-0.5 bottom-0.5 text-xs font-semibold text-foreground text-shadow-[.1em_.1em_.1em_#000] sm:text-base">
     {formatNumber(skyblockItem.Count ?? 0)}
   </div>
 {/if}

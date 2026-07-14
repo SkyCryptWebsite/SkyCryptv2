@@ -15,7 +15,13 @@
     children?: Snippet;
   }
 
-  let { component: TestComponent, componentProps = {}, hoverEnabled = true, withTooltipProvider = false, children }: Props = $props();
+  let {
+    component: TestComponent,
+    componentProps = {},
+    hoverEnabled = true,
+    withTooltipProvider = false,
+    children
+  }: Props = $props();
 
   // svelte-ignore state_referenced_locally
   const mockHover = new MockIsHover(hoverEnabled);

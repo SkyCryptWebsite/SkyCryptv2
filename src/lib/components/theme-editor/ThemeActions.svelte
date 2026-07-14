@@ -43,11 +43,23 @@
   <div class="grid grid-cols-2 gap-4">
     <div class="flex flex-col gap-2">
       <Label for="theme-name">Theme Name</Label>
-      <Input id="theme-name" type="text" value={workingTheme.metadata.name} placeholder="My Cool Theme" autocomplete="off" oninput={(e) => handleNameChange(e.currentTarget.value)} />
+      <Input
+        id="theme-name"
+        type="text"
+        value={workingTheme.metadata.name}
+        placeholder="My Cool Theme"
+        autocomplete="off"
+        oninput={(e) => handleNameChange(e.currentTarget.value)} />
     </div>
     <div class="flex flex-col gap-2">
       <Label for="theme-author">Author</Label>
-      <Input id="theme-author" type="text" value={workingTheme.metadata.author} placeholder="Your Name" autocomplete="off" oninput={(e) => handleAuthorChange(e.currentTarget.value)} />
+      <Input
+        id="theme-author"
+        type="text"
+        value={workingTheme.metadata.author}
+        placeholder="Your Name"
+        autocomplete="off"
+        oninput={(e) => handleAuthorChange(e.currentTarget.value)} />
     </div>
   </div>
 

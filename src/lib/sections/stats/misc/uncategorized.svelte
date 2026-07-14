@@ -8,11 +8,14 @@
 </script>
 
 {#if misc && misc.uncategorized != null && Object.values(misc.uncategorized).filter((value) => value).length > 0}
-  <div class="border p-4 rounded-xl space-y-2">
+  <div class="space-y-2 rounded-xl border p-4">
     <SectionSubtitle>Uncategorized</SectionSubtitle>
     <div class="space-y-0.5">
       <AdditionStat text="Soulflow" data={format(misc.uncategorized.soulflow as number, "0.00a")} />
-      <AdditionStat text="Bank Cooldown" data={misc.uncategorized.personal_bank as number} maxed={misc.uncategorized.personal_bank === "None"} />
+      <AdditionStat
+        text="Bank Cooldown"
+        data={misc.uncategorized.personal_bank as number}
+        maxed={misc.uncategorized.personal_bank === "None"} />
     </div>
   </div>
 {/if}

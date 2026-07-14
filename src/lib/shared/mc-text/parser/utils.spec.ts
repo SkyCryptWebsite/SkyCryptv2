@@ -35,7 +35,9 @@ describe.concurrent("htmlStringFormatting() - HTML entity escaping", () => {
   });
 
   it("handles combined entities and special characters", ({ expect }) => {
-    expect(htmlStringFormatting('<script>alert("xss")</script>')).toBe("&lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;");
+    expect(htmlStringFormatting('<script>alert("xss")</script>')).toBe(
+      "&lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;"
+    );
   });
 
   it("handles newlines with HTML entities", ({ expect }) => {
@@ -96,7 +98,9 @@ describe.concurrent("htmlStringFormatting() - HTML entity escaping", () => {
   });
 
   it("handles complex real-world Minecraft text", ({ expect }) => {
-    expect(htmlStringFormatting("§aGreen §lBold & <script>")).toBe("§aGreen\u00A0§lBold\u00A0&amp;\u00A0&lt;script&gt;");
+    expect(htmlStringFormatting("§aGreen §lBold & <script>")).toBe(
+      "§aGreen\u00A0§lBold\u00A0&amp;\u00A0&lt;script&gt;"
+    );
   });
 
   it("handles strikethrough with spaces", ({ expect }) => {

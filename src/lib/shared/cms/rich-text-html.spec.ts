@@ -76,7 +76,9 @@ describe.concurrent("richTextToHtml()", () => {
       root([
         {
           type: "list",
-          children: [{ type: "listitem", children: [text("One")], direction: "ltr", format: "", indent: 0, value: 1, version: 1 }],
+          children: [
+            { type: "listitem", children: [text("One")], direction: "ltr", format: "", indent: 0, value: 1, version: 1 }
+          ],
           direction: "ltr",
           format: "",
           indent: 0,
@@ -87,7 +89,9 @@ describe.concurrent("richTextToHtml()", () => {
         },
         {
           type: "list",
-          children: [{ type: "listitem", children: [text("Two")], direction: "ltr", format: "", indent: 0, value: 1, version: 1 }],
+          children: [
+            { type: "listitem", children: [text("Two")], direction: "ltr", format: "", indent: 0, value: 1, version: 1 }
+          ],
           direction: "ltr",
           format: "",
           indent: 0,
@@ -109,8 +113,26 @@ describe.concurrent("richTextToHtml()", () => {
         {
           type: "list",
           children: [
-            { type: "listitem", checked: true, children: [text("Done")], direction: "ltr", format: "", indent: 0, value: 1, version: 1 },
-            { type: "listitem", checked: false, children: [text("Todo")], direction: "ltr", format: "", indent: 0, value: 2, version: 1 }
+            {
+              type: "listitem",
+              checked: true,
+              children: [text("Done")],
+              direction: "ltr",
+              format: "",
+              indent: 0,
+              value: 1,
+              version: 1
+            },
+            {
+              type: "listitem",
+              checked: false,
+              children: [text("Todo")],
+              direction: "ltr",
+              format: "",
+              indent: 0,
+              value: 2,
+              version: 1
+            }
           ],
           direction: "ltr",
           format: "",
@@ -131,7 +153,21 @@ describe.concurrent("richTextToHtml()", () => {
   });
 
   it("renders new-tab links by default", ({ expect }) => {
-    const result = richTextToHtml(root([paragraph([{ type: "link", fields: { url: "https://example.com" }, children: [text("Example")], direction: "ltr", format: "", indent: 0, version: 1 }])]));
+    const result = richTextToHtml(
+      root([
+        paragraph([
+          {
+            type: "link",
+            fields: { url: "https://example.com" },
+            children: [text("Example")],
+            direction: "ltr",
+            format: "",
+            indent: 0,
+            version: 1
+          }
+        ])
+      ])
+    );
 
     expect(result).toContain('href="https://example.com"');
     expect(result).toContain('target="_blank" rel="noopener noreferrer"');
@@ -139,14 +175,42 @@ describe.concurrent("richTextToHtml()", () => {
   });
 
   it("renders same-tab links when newTab is false", ({ expect }) => {
-    const result = richTextToHtml(root([paragraph([{ type: "link", fields: { newTab: false, url: "/newsroom" }, children: [text("Newsroom")], direction: "ltr", format: "", indent: 0, version: 1 }])]));
+    const result = richTextToHtml(
+      root([
+        paragraph([
+          {
+            type: "link",
+            fields: { newTab: false, url: "/newsroom" },
+            children: [text("Newsroom")],
+            direction: "ltr",
+            format: "",
+            indent: 0,
+            version: 1
+          }
+        ])
+      ])
+    );
 
     expect(result).toContain('href="/newsroom"');
     expect(result).not.toContain('target="_blank"');
   });
 
   it("neutralizes dangerous link protocols", ({ expect }) => {
-    const result = richTextToHtml(root([paragraph([{ type: "link", fields: { url: "javascript:alert(1)" }, children: [text("Bad")], direction: "ltr", format: "", indent: 0, version: 1 }])]));
+    const result = richTextToHtml(
+      root([
+        paragraph([
+          {
+            type: "link",
+            fields: { url: "javascript:alert(1)" },
+            children: [text("Bad")],
+            direction: "ltr",
+            format: "",
+            indent: 0,
+            version: 1
+          }
+        ])
+      ])
+    );
 
     expect(result).toContain('href="#"');
     expect(result).not.toContain("javascript:alert");
@@ -180,14 +244,33 @@ describe.concurrent("richTextToHtml()", () => {
   });
 
   it("renders upload nodes using media url fallback", ({ expect }) => {
-    const result = richTextToHtml(root([{ type: "upload", fields: {}, relationTo: "media", value: { id: "media-1", alt: "Full image", url: "/full.png", width: 1600, height: 900 }, version: 1 }]));
+    const result = richTextToHtml(
+      root([
+        {
+          type: "upload",
+          fields: {},
+          relationTo: "media",
+          value: { id: "media-1", alt: "Full image", url: "/full.png", width: 1600, height: 900 },
+          version: 1
+        }
+      ])
+    );
 
     expect(result).toContain('src="/full.png"');
     expect(result).toContain('alt="Full image"');
   });
 
   it("renders user relationships with mcUuid as stats links", ({ expect }) => {
-    const result = richTextToHtml(root([{ type: "relationship", relationTo: "users", value: { displayName: "Gigi", mcUuid: "uuid-1", name: "gigi" }, version: 1 }]));
+    const result = richTextToHtml(
+      root([
+        {
+          type: "relationship",
+          relationTo: "users",
+          value: { displayName: "Gigi", mcUuid: "uuid-1", name: "gigi" },
+          version: 1
+        }
+      ])
+    );
 
     expect(result).toContain('href="/stats/uuid-1"');
     expect(result).toContain('data-sveltekit-preload-data="hover"');
@@ -196,13 +279,17 @@ describe.concurrent("richTextToHtml()", () => {
   });
 
   it("renders user relationships without mcUuid as text", ({ expect }) => {
-    const result = richTextToHtml(root([{ type: "relationship", relationTo: "users", value: { displayName: "Gigi", name: "gigi" }, version: 1 }]));
+    const result = richTextToHtml(
+      root([{ type: "relationship", relationTo: "users", value: { displayName: "Gigi", name: "gigi" }, version: 1 }])
+    );
 
     expect(result).toContain('<span class="font-semibold">Gigi</span>');
   });
 
   it("skips unsupported relationships", ({ expect }) => {
-    const result = richTextToHtml(root([{ type: "relationship", relationTo: "posts", value: { title: "Post" }, version: 1 }]));
+    const result = richTextToHtml(
+      root([{ type: "relationship", relationTo: "posts", value: { title: "Post" }, version: 1 }])
+    );
 
     expect(result).toBe("");
   });

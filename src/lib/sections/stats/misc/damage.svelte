@@ -8,7 +8,7 @@
 </script>
 
 {#if misc && misc.damage != null}
-  <div class="border p-4 rounded-xl space-y-2">
+  <div class="space-y-2 rounded-xl border p-4">
     <SectionSubtitle>Damage</SectionSubtitle>
     <div class="space-y-0.5">
       {#each Object.entries(misc.damage) as [text, data], index (index)}

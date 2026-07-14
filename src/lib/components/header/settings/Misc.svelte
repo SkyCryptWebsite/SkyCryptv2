@@ -60,9 +60,19 @@
 
   <ScrollArea class="h-fit" type="always" viewportClasses="max-h-96" scrollbarYClasses="py-2">
     <div class="flex flex-col gap-4 pr-3">
-      <SettingToggleRow id="performance" title="Performance Mode" description={preferences.performanceModeForced ? "Locked on because hardware graphics acceleration is unavailable. Enable it in your browser settings and reload SkyCrypt to use Standard Mode." : "Disables blur, transparency and backdrop effects for better performance on low-end devices."} checked={preferences.performanceMode} disabled={preferences.performanceModeForced} onCheckedChange={() => (preferences.performanceMode = !preferences.performanceMode)}>
+      <SettingToggleRow
+        id="performance"
+        title="Performance Mode"
+        description={preferences.performanceModeForced
+          ? "Locked on because hardware graphics acceleration is unavailable. Enable it in your browser settings and reload SkyCrypt to use Standard Mode."
+          : "Disables blur, transparency and backdrop effects for better performance on low-end devices."}
+        checked={preferences.performanceMode}
+        disabled={preferences.performanceModeForced}
+        onCheckedChange={() => (preferences.performanceMode = !preferences.performanceMode)}>
         {#snippet icon()}
-          <Fan class="size-5 shrink-0 will-change-transform data-[performance=false]:animate-spin-slow data-[performance=true]:animate-spin" data-performance={preferences.performanceMode} />
+          <Fan
+            class="size-5 shrink-0 will-change-transform data-[performance=false]:animate-spin-slow data-[performance=true]:animate-spin"
+            data-performance={preferences.performanceMode} />
         {/snippet}
         <Tooltip.Provider delayDuration={0}>
           <Tooltip.Root>
@@ -70,16 +80,28 @@
               <CircleQuestionMark class="size-4 h-lh text-muted-foreground" />
             </Tooltip.Trigger>
 
-            <Tooltip.Content class="performance:bg-popover [&>div:last-child]:hidden rounded-xl bg-transparent glass border text-foreground glass-bg-popover p-4 text-sm">
+            <Tooltip.Content
+              class="rounded-xl border glass bg-transparent p-4 text-sm text-foreground glass-bg-popover performance:bg-popover [&>div:last-child]:hidden">
               <div class="space-y-2">
                 {#if preferences.performanceModeForced}
                   <p>Performance Mode is locked on because SkyCrypt could not access hardware graphics acceleration.</p>
                 {:else}
-                  <p>You might not need this! We've noticed that often the reason for low performance is due to Graphics Acceleration being disabled in the browser settings.</p>
-                  <p>Graphics Acceleration gives the browsers access to your GPU for rendering, which can significantly improve performance; especially with opacity and blur effects.</p>
+                  <p>
+                    You might not need this! We've noticed that often the reason for low performance is due to Graphics
+                    Acceleration being disabled in the browser settings.
+                  </p>
+                  <p>
+                    Graphics Acceleration gives the browsers access to your GPU for rendering, which can significantly
+                    improve performance; especially with opacity and blur effects.
+                  </p>
                 {/if}
                 <p>
-                  Enable <a href="https://www.google.com/search?q=enable+graphics+acceleration+in+%5Bbrowser%5D" target="_blank" rel="noopener noreferrer" class="text-primary underline">Graphics Acceleration</a> in your browser settings first, and if you still experience performance issues, then consider enabling Performance Mode.
+                  Enable <a
+                    href="https://www.google.com/search?q=enable+graphics+acceleration+in+%5Bbrowser%5D"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="text-primary underline">Graphics Acceleration</a> in your browser settings first, and if you still
+                  experience performance issues, then consider enabling Performance Mode.
                 </p>
               </div>
             </Tooltip.Content>
@@ -87,19 +109,35 @@
         </Tooltip.Provider>
       </SettingToggleRow>
 
-      <SettingToggleRow id="glint" title="Show Glint" description="Show the enchantment glint effect on enchanted items." checked={preferences.showGlint} onCheckedChange={() => (preferences.showGlint = !preferences.showGlint)}>
+      <SettingToggleRow
+        id="glint"
+        title="Show Glint"
+        description="Show the enchantment glint effect on enchanted items."
+        checked={preferences.showGlint}
+        onCheckedChange={() => (preferences.showGlint = !preferences.showGlint)}>
         {#snippet icon()}
           <Sparkle class="size-5 shrink-0" />
         {/snippet}
       </SettingToggleRow>
 
-      <SettingToggleRow id="mctooltip" title="Minecraft Styled Tooltips" description="Enable Minecraft styled tooltips for items." checked={preferences.mctooltip} onCheckedChange={() => (preferences.mctooltip = !preferences.mctooltip)}>
+      <SettingToggleRow
+        id="mctooltip"
+        title="Minecraft Styled Tooltips"
+        description="Enable Minecraft styled tooltips for items."
+        checked={preferences.mctooltip}
+        onCheckedChange={() => (preferences.mctooltip = !preferences.mctooltip)}>
         {#snippet icon()}
           <Pickaxe class="size-5 shrink-0" />
         {/snippet}
       </SettingToggleRow>
 
-      <SettingToggleRow id="rainbow" title="Rainbow Colors" titleClass="group-data-[rainbow=true]/html:chroma-gradient" description="Enable rainbow colors animation for maxed enchants on items." checked={preferences.rainbowEnchantments} onCheckedChange={() => (preferences.rainbowEnchantments = !preferences.rainbowEnchantments)}>
+      <SettingToggleRow
+        id="rainbow"
+        title="Rainbow Colors"
+        titleClass="group-data-[rainbow=true]/html:chroma-gradient"
+        description="Enable rainbow colors animation for maxed enchants on items."
+        checked={preferences.rainbowEnchantments}
+        onCheckedChange={() => (preferences.rainbowEnchantments = !preferences.rainbowEnchantments)}>
         {#snippet icon()}
           <Rainbow class="size-5 shrink-0" />
         {/snippet}

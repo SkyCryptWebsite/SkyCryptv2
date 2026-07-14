@@ -1,7 +1,7 @@
+import type { ModelsStrippedItem } from "$lib/shared/api/orval-generated";
 import { describe, it } from "vitest";
 import { render } from "vitest-browser-svelte";
 import WithContext from "../../../test-utils/WithContext.svelte";
-import type { ModelsStrippedItem } from "$lib/shared/api/orval-generated";
 import SkillGear from "./SkillGear.svelte";
 
 const item = (name: string): ModelsStrippedItem => ({ display_name: name, texture_path: "" });

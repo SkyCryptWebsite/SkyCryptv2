@@ -75,7 +75,11 @@
 </Tabs.Content>
 
 {#snippet sectionRowContent(section: SectionItem, sortable: SortableItem | null = null, flipEnabled = false)}
-  <div {@attach sortable?.attach} class="relative flex items-center gap-2 rounded-xl p-2 border font-semibold data-[dragging=true]:animate-pulse data-[dragging=true]:opacity-30 data-[flip=true]:will-change-transform" data-dragging={sortable?.isDropTarget} data-flip={flipEnabled}>
+  <div
+    {@attach sortable?.attach}
+    class="relative flex items-center gap-2 rounded-xl border p-2 font-semibold data-[dragging=true]:animate-pulse data-[dragging=true]:opacity-30 data-[flip=true]:will-change-transform"
+    data-dragging={sortable?.isDropTarget}
+    data-flip={flipEnabled}>
     <GripVertical class="size-4 shrink-0 text-muted-foreground" />
     {section.name.replaceAll("_", " ")}
   </div>

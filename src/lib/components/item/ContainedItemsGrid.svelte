@@ -22,11 +22,14 @@
           {/if}
         {/if}
         {#if containedItem.texture_path}
-          <div class="flex aspect-square items-center justify-center rounded-xl border overflow-clip bg-foreground/5" onclick={onclose} role="none">
+          <div
+            class="flex aspect-square items-center justify-center overflow-clip rounded-xl border bg-foreground/5"
+            onclick={onclose}
+            role="none">
             <Item piece={containedItem} isInventory={true} showRecombobulated={false} showCount={true} />
           </div>
         {:else}
-          <div class="aspect-square rounded-xl border size-full bg-foreground/5"></div>
+          <div class="aspect-square size-full rounded-xl border bg-foreground/5"></div>
         {/if}
       {/each}
     {/if}

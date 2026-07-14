@@ -8,7 +8,7 @@
 
 <svelte:boundary>
   {#snippet pending()}
-    <Spinner class="mt-4 mx-auto size-6" />
+    <Spinner class="mx-auto mt-4 size-6" />
   {/snippet}
   {#snippet failed(err, retry)}
     <Notice title="An unexpected error has occurred" type="error" error={err} {retry} />

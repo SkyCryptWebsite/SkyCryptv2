@@ -27,8 +27,8 @@
 
 <script lang="ts">
   import { cn, type WithElementRef } from "$utils.js";
-  import type { HTMLAttributes } from "svelte/elements";
   import type { Snippet } from "svelte";
+  import type { HTMLAttributes } from "svelte/elements";
 
   let {
     ref = $bindable(null),

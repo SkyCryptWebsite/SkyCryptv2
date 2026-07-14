@@ -32,7 +32,9 @@ const releases = [
 
 describe("extractReleaseSection", () => {
   it("extracts an exact version section without its heading", () => {
-    expect(extractReleaseSection(changelog, "3.9.0-beta.4")).toBe("### Patch Changes\n\n- Preserve [a link](https://example.com) and contributor attribution.");
+    expect(extractReleaseSection(changelog, "3.9.0-beta.4")).toBe(
+      "### Patch Changes\n\n- Preserve [a link](https://example.com) and contributor attribution."
+    );
     expect(extractReleaseSection(changelog, "3.9.0")).toBe("### Minor Changes\n\n- Publish the stable release.");
     expect(extractReleaseSection(changelog, "3.8.0")).toBe("### Patch Changes\n\n- Earlier release.");
   });
@@ -45,12 +47,16 @@ describe("extractReleaseSection", () => {
 
 describe("selectPreviousRelease", () => {
   it("uses the latest published release for a beta", () => {
-    expect(selectPreviousRelease(releases, { prerelease: true, currentTag: "v3.9.0-beta.5" })?.tagName).toBe("v3.9.0-beta.4");
+    expect(selectPreviousRelease(releases, { prerelease: true, currentTag: "v3.9.0-beta.5" })?.tagName).toBe(
+      "v3.9.0-beta.4"
+    );
   });
 
   it("uses the prior stable release for the first beta in a release line", () => {
     const stableReleases = releases.filter((release) => !release.isPrerelease);
-    expect(selectPreviousRelease(stableReleases, { prerelease: true, currentTag: "v4.0.0-beta.0" })?.tagName).toBe("v3.9.0");
+    expect(selectPreviousRelease(stableReleases, { prerelease: true, currentTag: "v4.0.0-beta.0" })?.tagName).toBe(
+      "v3.9.0"
+    );
   });
 
   it("ignores newer prereleases and drafts for a stable release", () => {
@@ -58,7 +64,9 @@ describe("selectPreviousRelease", () => {
   });
 
   it("ignores the current tag", () => {
-    expect(selectPreviousRelease(releases, { prerelease: true, currentTag: "v3.9.0-beta.4" })?.tagName).toBe("v3.9.0-beta.3");
+    expect(selectPreviousRelease(releases, { prerelease: true, currentTag: "v3.9.0-beta.4" })?.tagName).toBe(
+      "v3.9.0-beta.3"
+    );
   });
 });
 
@@ -72,10 +80,14 @@ describe("buildReleaseBody", () => {
         repository: "SkyCryptWebsite/SkyCrypt-Frontend",
         serverUrl: "https://github.com/"
       })
-    ).toBe("### Patch Changes\n\n- Curated change.\n\n**Full Changelog**: https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/compare/v3.9.0-beta.4...v3.9.0-beta.5");
+    ).toBe(
+      "### Patch Changes\n\n- Curated change.\n\n**Full Changelog**: https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/compare/v3.9.0-beta.4...v3.9.0-beta.5"
+    );
   });
 
   it("omits the comparison footer without a previous release", () => {
-    expect(buildReleaseBody({ changelogSection: "### Patch Changes\n\n- First release.", currentTag: "v1.0.0" })).toBe("### Patch Changes\n\n- First release.");
+    expect(buildReleaseBody({ changelogSection: "### Patch Changes\n\n- First release.", currentTag: "v1.0.0" })).toBe(
+      "### Patch Changes\n\n- First release."
+    );
   });
 });

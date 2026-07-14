@@ -22,5 +22,9 @@ test("/sitemap.xml exposes only complete public URLs", async ({ request }) => {
   expect(paths).not.toContain("/dashboard");
   expect(paths).not.toContain("/sitemap.xml");
   expect(paths.some((path) => path === "/api" || path.startsWith("/api/"))).toBe(false);
-  expect(locations.some((location) => location.includes("[ign]") || location.includes("[[profile]]") || location.includes("[slug]"))).toBe(false);
+  expect(
+    locations.some(
+      (location) => location.includes("[ign]") || location.includes("[[profile]]") || location.includes("[slug]")
+    )
+  ).toBe(false);
 });

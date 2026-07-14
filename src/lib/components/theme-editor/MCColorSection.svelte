@@ -24,7 +24,9 @@
     };
   }
 
-  let minecraft: MinecraftExtras = $derived(workingTheme.modes[editingMode].extras?.minecraft ?? { palette: "nice-light" });
+  let minecraft: MinecraftExtras = $derived(
+    workingTheme.modes[editingMode].extras?.minecraft ?? { palette: "nice-light" }
+  );
 
   function getEffectiveColor(code: McCode) {
     if (minecraft.overrides?.[code]) return minecraft.overrides[code];
@@ -47,7 +49,8 @@
 
 <div class="flex flex-col gap-6">
   <div class="flex flex-col gap-2">
-    <Label for="mc-palette" class="text-sm font-bold tracking-wider text-muted-foreground uppercase">Palette Preset</Label>
+    <Label for="mc-palette" class="text-sm font-bold tracking-wider text-muted-foreground uppercase"
+      >Palette Preset</Label>
 
     <Select.Root type="single" value={minecraft.palette} onValueChange={setPalette}>
       <Select.Trigger id="mc-palette" class="w-full">
@@ -68,7 +71,12 @@
       {@const effectiveColor = getEffectiveColor(code)}
       <div class="flex flex-col gap-1.5">
         <Label for="mc-{code}" class="text-xs font-bold text-foreground/80">§{code}</Label>
-        <Input id="mc-{code}" type="color" value={oklchToHex(effectiveColor)} oninput={(e) => setOverride(code, hexToOklch(e.currentTarget.value))} class="p-0" />
+        <Input
+          id="mc-{code}"
+          type="color"
+          value={oklchToHex(effectiveColor)}
+          oninput={(e) => setOverride(code, hexToOklch(e.currentTarget.value))}
+          class="p-0" />
       </div>
     {/each}
   </div>

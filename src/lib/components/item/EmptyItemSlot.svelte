@@ -35,6 +35,13 @@
   const label = $derived(`Empty ${slot} slot`);
 </script>
 
-<div data-slot="empty-item-slot" data-empty-slot={slot} aria-label={label} class={cn("flex size-18 items-center justify-center rounded-xl bg-background/30 p-2", className)}>
-  <div class="size-14 bg-contain bg-center bg-no-repeat [image-rendering:pixelated]" style:background-image={`url("${image}")`}></div>
+<div
+  data-slot="empty-item-slot"
+  data-empty-slot={slot}
+  aria-label={label}
+  class={cn("flex size-18 items-center justify-center rounded-xl bg-background/30 p-2", className)}>
+  <div
+    class="size-14 bg-contain bg-center bg-no-repeat [image-rendering:pixelated]"
+    style:background-image={`url("${image}")`}>
+  </div>
 </div>

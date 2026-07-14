@@ -21,7 +21,19 @@
     children?: Snippet;
   };
 
-  let { text, data, subData = undefined, asterisk = false, maxed = false, dataMaxed = false, textRarityColor = undefined, dataRarityColor = undefined, subDataRarityColor = undefined, class: className = undefined, children }: Props = $props();
+  let {
+    text,
+    data,
+    subData = undefined,
+    asterisk = false,
+    maxed = false,
+    dataMaxed = false,
+    textRarityColor = undefined,
+    dataRarityColor = undefined,
+    subDataRarityColor = undefined,
+    class: className = undefined,
+    children
+  }: Props = $props();
 
   let asteriskRef = $state<HTMLElement | null>(null);
 
@@ -30,12 +42,13 @@
 
 {#if asterisk}
   <Tooltip.Trigger
-    class={cn("p-0 gap-2 w-fit data-[is-tooltip=false]:cursor-default", { "text-accent-2": maxed }, className)}
+    class={cn("w-fit gap-2 p-0 data-[is-tooltip=false]:cursor-default", { "text-accent-2": maxed }, className)}
     data-is-tooltip={asterisk}
     onclick={() => (internalState.content = children)}
     tether={genericTooltipTether}
     payload={{
-      class: "z-50 performance:bg-popover space-y-2 rounded-xl bg-transparent glass border glass-bg-popover p-4 text-sm",
+      class:
+        "z-50 space-y-2 rounded-xl border glass bg-transparent p-4 text-sm glass-bg-popover performance:bg-popover",
       sideOffset: 8,
       side: "top",
       align: "center",
@@ -50,14 +63,22 @@
     {/snippet}
   </Tooltip.Trigger>
 {:else}
-  <Item.Root class={cn(`p-0 gap-2 w-fit data-[is-tooltip=false]:cursor-default`, { "text-accent-2": maxed }, className)}>
+  <Item.Root
+    class={cn(`w-fit gap-2 p-0 data-[is-tooltip=false]:cursor-default`, { "text-accent-2": maxed }, className)}>
     {@render additionalStatLabel()}
   </Item.Root>
 {/if}
 
 {#snippet additionalStatLabel()}
-  <Item.Content class="flex text-base font-bold text-muted-foreground items-center flex-row w-fit">
-    <div class={!asterisk ? cn("my-0 flex items-center gap-1 font-bold text-muted-foreground data-[is-tooltip=false]:cursor-default", { "text-accent-2": maxed }, className) : "contents"}>
+  <Item.Content class="flex w-fit flex-row items-center text-base font-bold text-muted-foreground">
+    <div
+      class={!asterisk
+        ? cn(
+            "my-0 flex items-center gap-1 font-bold text-muted-foreground data-[is-tooltip=false]:cursor-default",
+            { "text-accent-2": maxed },
+            className
+          )
+        : "contents"}>
       <div style={textRarityColor ? `color: var(--§${RARITY_COLORS[textRarityColor]})` : ""} class="capitalize">
         {text}:
       </div>
@@ -68,7 +89,10 @@
         </span>
 
         {#if subData}
-          <span class="text-foreground/80" style={subDataRarityColor ? `color: var(--§${RARITY_COLORS[subDataRarityColor]})` : ""}> {subData}</span>
+          <span
+            class="text-foreground/80"
+            style={subDataRarityColor ? `color: var(--§${RARITY_COLORS[subDataRarityColor]})` : ""}>
+            {subData}</span>
         {/if}
       </span>
 

@@ -12,7 +12,16 @@
     border?: boolean;
   };
 
-  let { children, class: className, orientation = "vertical", viewportClasses, border = false, ref = $bindable(null), type = "auto", ...restProps }: Props = $props();
+  let {
+    children,
+    class: className,
+    orientation = "vertical",
+    viewportClasses,
+    border = false,
+    ref = $bindable(null),
+    type = "auto",
+    ...restProps
+  }: Props = $props();
 
   let viewportRef = $state<ScrollAreaRootProps["ref"]>(null);
 
@@ -44,10 +53,32 @@
   });
 </script>
 
-<ScrollArea bind:ref bind:viewportRef class={cn("h-fit data-[orientation=vertical]/scroll:w-fit data-[orientation=horizontal]/scroll:max-w-full group/scroll", { "rounded-xl border": border }, className)} {type} {orientation} scrollbarYClasses="py-2" scrollbarXClasses="px-2" viewportClasses={cn("group-data-[orientation=horizontal]/scroll:w-full group-data-[orientation=horizontal]/scroll:scroll-fade-track-x group-data-[orientation=vertical]/scroll:scroll-fade-track-y rounded-xl group-data-[orientation=vertical]/scroll:h-full group-data-[orientation=vertical]/scroll:max-h-144", viewportClasses)} data-orientation={orientation} {...restProps}>
-  <div class="relative flex group-data-[orientation=vertical]/scroll:flex-wrap group-data-[orientation=horizontal]/scroll:w-max group-data-[orientation=horizontal]/scroll:flex-nowrap gap-4 p-4">
+<ScrollArea
+  bind:ref
+  bind:viewportRef
+  class={cn(
+    "data-[orientation=vertical]/scroll:w-fit data-[orientation=horizontal]/scroll:max-w-full group/scroll h-fit",
+    { "rounded-xl border": border },
+    className
+  )}
+  {type}
+  {orientation}
+  scrollbarYClasses="py-2"
+  scrollbarXClasses="px-2"
+  viewportClasses={cn(
+    "rounded-xl group-data-[orientation=horizontal]/scroll:w-full group-data-[orientation=horizontal]/scroll:scroll-fade-track-x group-data-[orientation=vertical]/scroll:h-full group-data-[orientation=vertical]/scroll:max-h-144 group-data-[orientation=vertical]/scroll:scroll-fade-track-y",
+    viewportClasses
+  )}
+  data-orientation={orientation}
+  {...restProps}>
+  <div
+    class="relative flex gap-4 p-4 group-data-[orientation=horizontal]/scroll:w-max group-data-[orientation=horizontal]/scroll:flex-nowrap group-data-[orientation=vertical]/scroll:flex-wrap">
     {@render children?.()}
-    <div class="pointer-events-none sticky group-data-[orientation=vertical]/scroll:hidden -right-1 z-10 -ml-40 w-36 self-stretch bg-linear-to-l from-background/80 to-transparent blur-xs scroll-fade-x"></div>
+    <div
+      class="pointer-events-none sticky -right-1 z-10 -ml-40 w-36 self-stretch bg-linear-to-l from-background/80 to-transparent scroll-fade-x blur-xs group-data-[orientation=vertical]/scroll:hidden">
+    </div>
   </div>
-  <div class="pointer-events-none sticky -bottom-1 z-10 group-data-[orientation=horizontal]/scroll:hidden -mt-36 h-36 w-full bg-linear-to-t from-background/80 to-transparent blur-xs scroll-fade-y"></div>
+  <div
+    class="pointer-events-none sticky -bottom-1 z-10 -mt-36 h-36 w-full bg-linear-to-t from-background/80 to-transparent scroll-fade-y blur-xs group-data-[orientation=horizontal]/scroll:hidden">
+  </div>
 </ScrollArea>

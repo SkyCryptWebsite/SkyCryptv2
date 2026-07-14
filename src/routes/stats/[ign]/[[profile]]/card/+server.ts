@@ -1,16 +1,21 @@
 import { building, dev } from "$app/environment";
 import { env } from "$env/dynamic/public";
-import appStyles from "$routes/layout.css?inline";
 import { DefaultCard } from "$src/lib/components/cards";
 import ErrorCard from "$src/lib/components/cards/default/ErrorCard.svelte";
 import { parseSettingsFromParams } from "$src/lib/components/cards/default/schema";
 import { resolveUuidByUsername, type ModelsPlayerResolve } from "$src/lib/shared/api/orval-generated";
-import { getCombinedProfileStats, getProfileNetworth, getProfileStats, getSelectedProfileStats } from "$src/lib/shared/api/skycrypt-api.remote";
+import {
+  getCombinedProfileStats,
+  getProfileNetworth,
+  getProfileStats,
+  getSelectedProfileStats
+} from "$src/lib/shared/api/skycrypt-api.remote";
 import { html as toReactNode } from "satori-html";
 import { render } from "svelte/server";
 import { Renderer, type Font, type ImageSource } from "takumi-js/node";
 import { ImageResponse } from "takumi-js/response";
 import type { RequestHandler } from "./$types";
+import appStyles from "$routes/layout.css?inline";
 
 const { PUBLIC_ORIGIN: baseUrl } = env;
 
@@ -25,7 +30,9 @@ export const GET: RequestHandler = async ({ params, request, url }) => {
 
   try {
     const user = (await resolveUuidByUsername(ign)).data as ModelsPlayerResolve;
-    const cardData = profile ? await fetchProfileCardData(user.uuid ?? ign, profile) : await fetchSelectedProfileCardData(user.uuid ?? ign);
+    const cardData = profile
+      ? await fetchProfileCardData(user.uuid ?? ign, profile)
+      : await fetchSelectedProfileCardData(user.uuid ?? ign);
 
     const { body: renderedHTML } = render(DefaultCard, {
       props: {
@@ -43,7 +50,8 @@ export const GET: RequestHandler = async ({ params, request, url }) => {
       format: "webp",
       headers: {
         ...request.headers,
-        "cache-control": dev || isSameOrigin ? "no-cache, no-store, must-revalidate" : "public, max-age=86400, immutable"
+        "cache-control":
+          dev || isSameOrigin ? "no-cache, no-store, must-revalidate" : "public, max-age=86400, immutable"
       },
       stylesheets: [appStyles],
       emoji: "twemoji",
@@ -88,7 +96,11 @@ async function fetchProfileCardData(uuid: string, profileId: string) {
   // allSettled (not Promise.all) so a losing-side rejection is never orphaned:
   // Promise.all rejects on the first failure but leaves the others running, and
   // their later rejection becomes an unhandled rejection that crashes Node 24.
-  const [profileResult, networthResult, combinedResult] = await Promise.allSettled([getProfileStats({ uuid, profileId }), getProfileNetworth({ uuid, profileId }), getCombinedProfileStats({ uuid, profileId })]);
+  const [profileResult, networthResult, combinedResult] = await Promise.allSettled([
+    getProfileStats({ uuid, profileId }),
+    getProfileNetworth({ uuid, profileId }),
+    getCombinedProfileStats({ uuid, profileId })
+  ]);
 
   if (profileResult.status === "rejected") throw profileResult.reason;
   if (networthResult.status === "rejected") throw networthResult.reason;
@@ -107,7 +119,10 @@ async function fetchSelectedProfileCardData(uuid: string) {
 
   if (!profileId) throw new Error("Selected profile is missing a profile ID");
 
-  const [networthResult, combinedResult] = await Promise.allSettled([getProfileNetworth({ uuid, profileId }), getCombinedProfileStats({ uuid, profileId })]);
+  const [networthResult, combinedResult] = await Promise.allSettled([
+    getProfileNetworth({ uuid, profileId }),
+    getCombinedProfileStats({ uuid, profileId })
+  ]);
 
   if (networthResult.status === "rejected") throw networthResult.reason;
   if (combinedResult.status === "rejected") throw combinedResult.reason;

@@ -27,13 +27,21 @@
 <Section id="Collections" {order}>
   {#if collections}
     <div class="contents space-y-4">
-      <div class="border p-4 rounded-xl">
+      <div class="rounded-xl border p-4">
         <div class="space-y-0.5">
-          <AdditionStat text="Maxed Collections" data="{collections.maxedCollections} / {collections.totalCollections}" maxed={collections.maxedCollections === collections.totalCollections} />
+          <AdditionStat
+            text="Maxed Collections"
+            data="{collections.maxedCollections} / {collections.totalCollections}"
+            maxed={collections.maxedCollections === collections.totalCollections} />
         </div>
       </div>
 
-      <SearchTabs tabs={categoryTabs} placeholder="Search collections" searchKeys={(item) => [item.name]} itemKey={(item, index) => item.id ?? item.name ?? index} noResultsLabel="No collections match your search.">
+      <SearchTabs
+        tabs={categoryTabs}
+        placeholder="Search collections"
+        searchKeys={(item) => [item.name]}
+        itemKey={(item, index) => item.id ?? item.name ?? index}
+        noResultsLabel="No collections match your search.">
         {#snippet tabHeader(value)}
           {const data = collections.categories?.[value]}
           {#if data}

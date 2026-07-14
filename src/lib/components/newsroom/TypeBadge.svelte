@@ -27,6 +27,6 @@
   const { type, class: className }: { type: PostType; class?: string } = $props();
 </script>
 
-<Badge variant="default" class={cn("text-xs uppercase tracking-wide", TYPE_STYLES[type], className)}>
+<Badge variant="default" class={cn("text-xs tracking-wide uppercase", TYPE_STYLES[type], className)}>
   {POST_TYPE_LABELS[type]}
 </Badge>

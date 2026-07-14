@@ -45,7 +45,7 @@
 
 {#if fishing}
   <div class="contents space-y-4">
-    <div class="border p-4 rounded-xl">
+    <div class="rounded-xl border p-4">
       <div class="space-y-0.5">
         <AdditionStat text="Items Fished" data={format(fishing.itemsFished)} />
         <AdditionStat text="Treasures Fished" data={format(fishing.treasure)} />
@@ -57,7 +57,7 @@
       </div>
     </div>
 
-    <div class="border p-4 rounded-xl space-y-4">
+    <div class="space-y-4 rounded-xl border p-4">
       <SectionSubtitle>Fishing Gear</SectionSubtitle>
       <SkillGear gear={fishing.gear} skill="fishing" />
     </div>
@@ -75,7 +75,7 @@
     {/if}
 
     {#if fishing.trophyFish != null && (fishing.trophyFish.totalCaught ?? 0) > 0}
-      <Collapsible.Root open={openSections} class="border p-2 rounded-xl">
+      <Collapsible.Root open={openSections} class="rounded-xl border p-2">
         <CollapsibleCustomTrigger>Trophy Fish</CollapsibleCustomTrigger>
         <Collapsible.Content>
           <div class="space-y-0.5">
@@ -109,7 +109,16 @@
                 <Chip class="px-4 whitespace-nowrap" image={{ src: trophyFish.texture ?? "" }}>
                   <div class="flex flex-col">
                     <div class="flex flex-col gap-0.5">
-                      <h4 class="font-bold {highestTierColor}">{trophyFish.name} <span class="font-medium text-foreground/70">x{format((trophyFish.bronze ?? 0) + (trophyFish.silver ?? 0) + (trophyFish.gold ?? 0) + (trophyFish.diamond ?? 0))}</span></h4>
+                      <h4 class="font-bold {highestTierColor}">
+                        {trophyFish.name}
+                        <span class="font-medium text-foreground/70"
+                          >x{format(
+                            (trophyFish.bronze ?? 0) +
+                              (trophyFish.silver ?? 0) +
+                              (trophyFish.gold ?? 0) +
+                              (trophyFish.diamond ?? 0)
+                          )}</span>
+                      </h4>
                     </div>
                     <div class="grid grid-cols-2 grid-rows-2">
                       <div class="flex items-center gap-1">
@@ -146,11 +155,15 @@
     {/if}
   </div>
 {:else}
-  <EmptyStat title="No Data" description="This player doesn't have anything related to fishing" icon={FishIcon} class="mt-2" />
+  <EmptyStat
+    title="No Data"
+    description="This player doesn't have anything related to fishing"
+    icon={FishIcon}
+    class="mt-2" />
 {/if}
 
 {#snippet creaturesDisplay(title: string, creaturesList: ModelsKill[])}
-  <Collapsible.Root open={openSections} class="border p-2 rounded-xl">
+  <Collapsible.Root open={openSections} class="rounded-xl border p-2">
     <CollapsibleCustomTrigger>{title}</CollapsibleCustomTrigger>
 
     <Collapsible.Content>

@@ -51,7 +51,8 @@
 
   const ogImages = $derived(heroSrc ? [{ url: heroSrc, width: heroWidth, height: heroHeight, alt: heroAlt }] : []);
 
-  const containerClass = "rounded-xl border glass glass-brightness-150 glass-contrast-60 dark:glass-brightness-50 dark:glass-contrast-100";
+  const containerClass =
+    "rounded-xl border glass glass-brightness-150 glass-contrast-60 dark:glass-brightness-50 dark:glass-contrast-100";
 
   const markCurrentPostSeen = () => {
     if (!data.preview) notifications.markPostSeen(data.post);
@@ -90,12 +91,22 @@
   </Button>
 
   {#if data.preview}
-    <div role="status" class="rounded-xl bg-destructive border px-4 py-2.5 text-center text-sm font-bold tracking-wide text-foreground">Draft preview - not visible to public</div>
+    <div
+      role="status"
+      class="rounded-xl border bg-destructive px-4 py-2.5 text-center text-sm font-bold tracking-wide text-foreground">
+      Draft preview - not visible to public
+    </div>
   {/if}
 
   {#if heroSrc}
     <div class="aspect-video overflow-hidden rounded-xl border">
-      <img src={heroSrc} alt={heroAlt} width={heroWidth} height={heroHeight} loading="lazy" class="size-full object-cover" />
+      <img
+        src={heroSrc}
+        alt={heroAlt}
+        width={heroWidth}
+        height={heroHeight}
+        loading="lazy"
+        class="size-full object-cover" />
     </div>
   {/if}
 
@@ -103,7 +114,9 @@
     <div class="flex items-center gap-2">
       <TypeBadge type={post.type} />
       {#if !post.featured}
-        <Badge variant="default" class="bg-accent-2/15 border border-accent-2/15 text-accent-2 uppercase font-semibold tracking-wide">
+        <Badge
+          variant="default"
+          class="border border-accent-2/15 bg-accent-2/15 font-semibold tracking-wide text-accent-2 uppercase">
           <Star class="size-3 fill-accent-2" />
           Featured
         </Badge>
@@ -113,9 +126,15 @@
     <div class="flex items-center gap-4 text-sm">
       <Avatar.Root class="size-10 shrink-0">
         {#if author.mcUuid}
-          <Avatar.Image loading="lazy" src="https://nmsr.nickac.dev/face/{author.mcUuid}" alt={displayName} class="size-10 [image-rendering:pixelated]" />
+          <Avatar.Image
+            loading="lazy"
+            src="https://nmsr.nickac.dev/face/{author.mcUuid}"
+            alt={displayName}
+            class="size-10 [image-rendering:pixelated]" />
         {/if}
-        <Avatar.Fallback class="flex size-10 items-center justify-center bg-foreground/10 text-sm font-semibold text-muted-foreground uppercase">{initials}</Avatar.Fallback>
+        <Avatar.Fallback
+          class="flex size-10 items-center justify-center bg-foreground/10 text-sm font-semibold text-muted-foreground uppercase"
+          >{initials}</Avatar.Fallback>
       </Avatar.Root>
       <div class="flex flex-col leading-tight">
         <span class="font-semibold text-foreground">{displayName}</span>

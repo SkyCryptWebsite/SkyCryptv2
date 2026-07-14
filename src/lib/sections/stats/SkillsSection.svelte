@@ -48,7 +48,10 @@
     { name: TabNamesEnum.Hunting, component: Hunting, available: !!skills?.hunting, icon: CrosshairIcon }
   ]) satisfies SkillTab[];
 
-  const selectedTabState = new PersistedState<TabNames | null>("skillsActiveTab", null, { storage: "session", syncTabs: false });
+  const selectedTabState = new PersistedState<TabNames | null>("skillsActiveTab", null, {
+    storage: "session",
+    syncTabs: false
+  });
   const availableTabNames = $derived(skillTabs.filter((tab) => tab.available).map((tab) => tab.name as TabNames));
   const tabValue = $derived.by(() => {
     if (selectedTabState.current && availableTabNames.includes(selectedTabState.current)) {
@@ -80,15 +83,22 @@
   {#if skills}
     <Tabs.Root bind:value={() => tabValue?.toString(), (v) => (selectedTabState.current = v as TabNames)} class="gap-4">
       <ScrollItems>
-        <Tabs.List class="relative h-auto! mx-auto bg-transparent flex w-fit border items-center justify-center gap-1 overflow-clip rounded-full text-base">
+        <Tabs.List
+          class="relative mx-auto flex h-auto! w-fit items-center justify-center gap-1 overflow-clip rounded-full border bg-transparent text-base">
           {#each skillTabs as tab (tab.name)}
             {#if tab.available}
               {const isActive = $derived(tabValue === tab.name)}
-              <Tabs.Trigger value={tab.name} class="relative data-[state=active]:bg-transparent! h-auto isolate px-4 py-2 font-semibold text-white">
+              <Tabs.Trigger
+                value={tab.name}
+                class="relative isolate h-auto px-4 py-2 font-semibold text-white data-[state=active]:bg-transparent!">
                 {#if isActive}
-                  <div class="absolute inset-0 rounded-full bg-primary/40" in:send={{ key: "active-tab" }} out:receive={{ key: "active-tab" }}></div>
+                  <div
+                    class="absolute inset-0 rounded-full bg-primary/40"
+                    in:send={{ key: "active-tab" }}
+                    out:receive={{ key: "active-tab" }}>
+                  </div>
                 {/if}
-                <div class="relative z-10 flex flex-col text-base items-center justify-center">
+                <div class="relative z-10 flex flex-col items-center justify-center text-base">
                   <tab.icon class="size-6" />
                   <span class="capitalize">{tab.name}</span>
                 </div>

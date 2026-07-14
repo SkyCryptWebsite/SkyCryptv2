@@ -9,7 +9,11 @@ export const RUNTIME_THEMES_STYLE_ID = "skycrypt-runtime-themes";
 export const PREVIEW_THEME_ID = "__skycrypt-preview";
 
 const FIRST_PARTY_IMAGE_HOSTS = new Set(["sky.shiiyu.moe", "cupcake.shiiyu.moe"]);
-const LOCAL_FIRST_PARTY_IMAGE_PATHS = new Set(["/img/bg.avif", "/img/enchanted-glint.avif", "/img/enchanted-glint-legacy.avif"]);
+const LOCAL_FIRST_PARTY_IMAGE_PATHS = new Set([
+  "/img/bg.avif",
+  "/img/enchanted-glint.avif",
+  "/img/enchanted-glint-legacy.avif"
+]);
 const REMOVED_FIRST_PARTY_THEME_IMAGE_PREFIX = "/img/themes/";
 const runtimeThemeRules = new Map<string, string>();
 let previewThemeRule: string | null = null;
@@ -80,7 +84,9 @@ function updateRuntimeStyleElement(): void {
   const style = getRuntimeStyleElement();
   if (!style) return;
 
-  const rules = [...runtimeThemeRules.entries()].sort(([left], [right]) => left.localeCompare(right)).map(([, rule]) => rule);
+  const rules = [...runtimeThemeRules.entries()]
+    .sort(([left], [right]) => left.localeCompare(right))
+    .map(([, rule]) => rule);
 
   if (previewThemeRule) {
     rules.push(previewThemeRule);
@@ -182,6 +188,9 @@ export class ThemeEngine {
     const resolvedTheme = mergeThemeWithDefaults(result.data);
     const id = idOverride ?? resolvedTheme.metadata.id;
 
-    return [modeToCssRule(id, "dark", resolvedTheme.modes.dark), modeToCssRule(id, "light", resolvedTheme.modes.light)].join("\n\n");
+    return [
+      modeToCssRule(id, "dark", resolvedTheme.modes.dark),
+      modeToCssRule(id, "light", resolvedTheme.modes.light)
+    ].join("\n\n");
   }
 }

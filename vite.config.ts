@@ -40,7 +40,14 @@ export default defineConfig({
         "$utils.js": "./src/lib/shared/utils.ts"
       },
       csrf: {
-        trustedOrigins: ["https://cupcake.shiiyu.moe", "https://sky.shiiyu.moe", "http://localhost:5173", "http://localhost:4173", "http://localhost:3000", "http://localhost:8080"]
+        trustedOrigins: [
+          "https://cupcake.shiiyu.moe",
+          "https://sky.shiiyu.moe",
+          "http://localhost:5173",
+          "http://localhost:4173",
+          "http://localhost:3000",
+          "http://localhost:8080"
+        ]
       },
       csp: {
         mode: "auto",
@@ -48,8 +55,28 @@ export default defineConfig({
           "script-src": ["self", "unsafe-inline"],
           "worker-src": ["self", "blob:"],
           "style-src": ["self", "unsafe-inline", "https://fonts.googleapis.com"],
-          "img-src": ["self", "data:", "https://textures.minecraft.net", "http://localhost:8080", "https://cupcake.shiiyu.moe", "https://sky.shiiyu.moe", "https://nmsr.nickac.dev", "https://cms.shiiyu.moe", "http://localhost:3000", "https://eliteskyblock.com"],
-          "connect-src": ["self", "https://mowojang.matdoes.dev", "https://mowojang.seraph.si", "http://localhost:8080", "https://cupcake.shiiyu.moe", "https://sky.shiiyu.moe", "https://cms.shiiyu.moe", "http://localhost:3000"],
+          "img-src": [
+            "self",
+            "data:",
+            "https://textures.minecraft.net",
+            "http://localhost:8080",
+            "https://cupcake.shiiyu.moe",
+            "https://sky.shiiyu.moe",
+            "https://nmsr.nickac.dev",
+            "https://cms.shiiyu.moe",
+            "http://localhost:3000",
+            "https://eliteskyblock.com"
+          ],
+          "connect-src": [
+            "self",
+            "https://mowojang.matdoes.dev",
+            "https://mowojang.seraph.si",
+            "http://localhost:8080",
+            "https://cupcake.shiiyu.moe",
+            "https://sky.shiiyu.moe",
+            "https://cms.shiiyu.moe",
+            "http://localhost:3000"
+          ],
           "font-src": ["self", "https://fonts.gstatic.com"],
           "frame-ancestors": ["self", "https://cms.shiiyu.moe", "http://localhost:3000"],
           "frame-src": ["self"]

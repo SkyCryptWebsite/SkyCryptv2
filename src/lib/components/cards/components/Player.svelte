@@ -21,5 +21,8 @@
       </p>
     </div>
   {/if}
-  <img src="https://nmsr.nickac.dev/fullbody/{profile?.uuid}?no=shadow" alt={profile?.username} class="relative h-full object-cover" />
+  <img
+    src="https://nmsr.nickac.dev/fullbody/{profile?.uuid}?no=shadow"
+    alt={profile?.username}
+    class="relative h-full object-cover" />
 </div>

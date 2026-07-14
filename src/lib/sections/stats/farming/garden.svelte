@@ -26,19 +26,27 @@
   let sectionOpen: boolean = $derived(currentTabContext.current === TabNamesEnum.Farming);
 </script>
 
-<Collapsible.Root bind:open={sectionOpen} class="border p-2 mt-4 rounded-xl">
+<Collapsible.Root bind:open={sectionOpen} class="mt-4 rounded-xl border p-2">
   <CollapsibleCustomTrigger>Garden</CollapsibleCustomTrigger>
 
   <Collapsible.Content>
     {#if gardenLocked}
-      <EmptyStat title="Locked" description="This player does not have the Garden unlocked" icon={LockIcon} class="mb-2" />
+      <EmptyStat
+        title="Locked"
+        description="This player does not have the Garden unlocked"
+        icon={LockIcon}
+        class="mb-2" />
     {:else if sectionOpen}
       <SectionBoundary query={() => getGardenStats({ uuid: profile?.uuid ?? "", profileId: profileId! })}>
         {#snippet children(garden)}
           {#if garden}
             {const hasMaxed = $derived(garden.level?.maxed ?? false)}
 
-            <AdditionStat text="Level" data="{garden.level?.level} / {garden.level?.maxLevel}" maxed={hasMaxed} asterisk={true}>
+            <AdditionStat
+              text="Level"
+              data="{garden.level?.level} / {garden.level?.maxLevel}"
+              maxed={hasMaxed}
+              asterisk={true}>
               <Label>
                 XP:
                 <span class="text-bold">
@@ -46,16 +54,24 @@
                 </span>
               </Label>
               <Separator />
-              <div class="relative group space-y-2" data-maxed={hasMaxed}>
+              <div class="group relative space-y-2" data-maxed={hasMaxed}>
                 <Label>Progress to next level:</Label>
                 <div>
-                  <span class="font-bold">{formatNumber(garden.level?.xpCurrent ?? 0)} / {formatNumber(garden.level?.xpForNext ?? 0)}</span>
+                  <span class="font-bold"
+                    >{formatNumber(garden.level?.xpCurrent ?? 0)} / {formatNumber(garden.level?.xpForNext ?? 0)}</span>
                   XP
                 </div>
-                <Progress value={garden.level?.xpCurrent} max={hasMaxed ? garden.level?.xpCurrent : garden.level?.xpForNext} class="h-4 w-full overflow-hidden rounded-full bg-foreground/30 [&>div]:rounded-full [&>div]:group-data-[maxed=false]:bg-primary [&>div]:group-data-[maxed=true]:bg-accent-3" />
+                <Progress
+                  value={garden.level?.xpCurrent}
+                  max={hasMaxed ? garden.level?.xpCurrent : garden.level?.xpForNext}
+                  class="h-4 w-full overflow-hidden rounded-full bg-foreground/30 [&>div]:rounded-full [&>div]:group-data-[maxed=false]:bg-primary [&>div]:group-data-[maxed=true]:bg-accent-3" />
               </div>
             </AdditionStat>
-            <AdditionStat text="Composter" data={Object.values(garden.composter ?? {}).join(" / ")} asterisk={true} maxed={Object.values(garden.composter ?? {}).every((value) => value === 25)}>
+            <AdditionStat
+              text="Composter"
+              data={Object.values(garden.composter ?? {}).join(" / ")}
+              asterisk={true}
+              maxed={Object.values(garden.composter ?? {}).every((value) => value === 25)}>
               {#each Object.entries(garden.composter ?? {}) as [key, value], index (index)}
                 <Label>
                   <span class="capitalize">{key.replaceAll("_", " ")}:</span>
@@ -85,7 +101,10 @@
                 </Label>
               {/each}
             </AdditionStat>
-            <AdditionStat text="DNA Analysis Milestone" data="{garden.dnaAnalysisMilestone?.level} / {garden.dnaAnalysisMilestone?.maxLevel}" maxed={garden.dnaAnalysisMilestone?.level === garden.dnaAnalysisMilestone?.maxLevel} />
+            <AdditionStat
+              text="DNA Analysis Milestone"
+              data="{garden.dnaAnalysisMilestone?.level} / {garden.dnaAnalysisMilestone?.maxLevel}"
+              maxed={garden.dnaAnalysisMilestone?.level === garden.dnaAnalysisMilestone?.maxLevel} />
 
             {#if garden.gardenUpgrades}
               <Separator class="my-4" />
@@ -94,7 +113,9 @@
                 <ScrollAreaItems>
                   {#each garden.gardenUpgrades as gardenUpgrade, index (index)}
                     {const hasUnlocked = gardenUpgrade.level}
-                    <Chip class={cn("h-fit w-fit", { "opacity-50": !hasUnlocked })} image={{ src: gardenUpgrade.texture ?? "" }}>
+                    <Chip
+                      class={cn("h-fit w-fit", { "opacity-50": !hasUnlocked })}
+                      image={{ src: gardenUpgrade.texture ?? "" }}>
                       <div class="flex flex-col">
                         <div class="font-bold whitespace-nowrap">
                           <span class="capitalize opacity-60">{gardenUpgrade.name}</span>
@@ -118,10 +139,13 @@
                   {#each garden.gardenChips as gardenChip, index (index)}
                     {const hasUnlocked = gardenChip.amount}
                     {const hasMaxed = (gardenChip.amount ?? 0) >= (gardenChip.maxLevel ?? 0)}
-                    <Chip class={cn("h-fit w-fit", { "opacity-50": !hasUnlocked })} image={{ src: gardenChip.texture ?? "" }}>
+                    <Chip
+                      class={cn("h-fit w-fit", { "opacity-50": !hasUnlocked })}
+                      image={{ src: gardenChip.texture ?? "" }}>
                       <div class="flex flex-col">
                         <div class="font-bold whitespace-nowrap">
-                          <span class={cn("capitalize", hasMaxed ? "text-accent-2" : "opacity-60")}>{gardenChip.name}</span>
+                          <span class={cn("capitalize", hasMaxed ? "text-accent-2" : "opacity-60")}
+                            >{gardenChip.name}</span>
                           <div class={cn("text-sm", hasMaxed ? "text-accent-4" : "text-foreground")}>
                             <span class="opacity-60">Level:</span>
                             {format(gardenChip.amount)}/{gardenChip.maxLevel}
@@ -143,10 +167,13 @@
                   {#each garden.mutations as mutation, index (index)}
                     {const hasUnlocked = mutation.unlocked}
                     {const hasMaxed = mutation.max}
-                    <Chip class={cn("h-fit w-fit", { "opacity-50": !hasUnlocked })} image={{ src: mutation.texture ?? "" }}>
+                    <Chip
+                      class={cn("h-fit w-fit", { "opacity-50": !hasUnlocked })}
+                      image={{ src: mutation.texture ?? "" }}>
                       <div class="flex flex-col">
                         <div class="font-bold whitespace-nowrap">
-                          <span class={cn("capitalize", hasMaxed ? "text-accent-2" : "opacity-60")}>{mutation.name}</span>
+                          <span class={cn("capitalize", hasMaxed ? "text-accent-2" : "opacity-60")}
+                            >{mutation.name}</span>
                         </div>
                       </div>
                     </Chip>
@@ -185,7 +212,10 @@
       {#if allMaxed}
         <span class="text-accent-4">Max!</span>
       {:else}
-        <span class="text-foreground/80">({Object.values(garden.cropUpgrades).filter((upgrade) => upgrade.level?.maxed).length} / {Object.values(garden.cropUpgrades).length} max)</span>
+        <span class="text-foreground/80"
+          >({Object.values(garden.cropUpgrades).filter((upgrade) => upgrade.level?.maxed).length} / {Object.values(
+            garden.cropUpgrades
+          ).length} max)</span>
       {/if}
     </div>
     <ScrollAreaItems>
@@ -213,13 +243,18 @@
       {#if allMaxed}
         <span class="text-accent-4">Max!</span>
       {:else if garden.cropUpgrades}
-        <span class="text-foreground/80">({Object.values(garden.cropMilestones).filter((upgrade) => upgrade.level?.maxed).length} / {Object.values(garden.cropUpgrades).length} max)</span>
+        <span class="text-foreground/80"
+          >({Object.values(garden.cropMilestones).filter((upgrade) => upgrade.level?.maxed).length} / {Object.values(
+            garden.cropUpgrades
+          ).length} max)</span>
       {/if}
     </div>
     <ScrollAreaItems>
       {#each garden.cropMilestones as milestone, index (index)}
         {const hasMaxed = milestone.level?.maxed}
-        <Chip image={{ src: milestone.texture ?? "" }} class={cn("h-fit w-fit flex-col overflow-clip pb-0", { "opacity-50": !milestone.level?.xp })}>
+        <Chip
+          image={{ src: milestone.texture ?? "" }}
+          class={cn("h-fit w-fit flex-col overflow-clip pb-0", { "opacity-50": !milestone.level?.xp })}>
           <div class="flex flex-col">
             <div class="font-bold whitespace-nowrap">
               <span class={cn(hasMaxed ? "text-accent-2" : "opacity-60")}>{milestone.name}</span>
@@ -228,9 +263,13 @@
           </div>
 
           {#snippet progress()}
-            <div class="relative group w-full" data-maxed={hasMaxed}>
-              <Progress value={milestone.level?.xpCurrent} max={hasMaxed ? milestone.level?.xpCurrent : milestone.level?.xpForNext} class="h-4 w-full overflow-hidden rounded-none bg-foreground/30 [&>div]:rounded-none [&>div]:group-data-[maxed=false]:bg-primary [&>div]:group-data-[maxed=true]:bg-accent-3" />
-              <div class="absolute inset-0 font-bold bottom-0 text-xs text-nowrap w-full flex flex-nowrap items-center-safe gap-0.5 justify-center-safe">
+            <div class="group relative w-full" data-maxed={hasMaxed}>
+              <Progress
+                value={milestone.level?.xpCurrent}
+                max={hasMaxed ? milestone.level?.xpCurrent : milestone.level?.xpForNext}
+                class="h-4 w-full overflow-hidden rounded-none bg-foreground/30 [&>div]:rounded-none [&>div]:group-data-[maxed=false]:bg-primary [&>div]:group-data-[maxed=true]:bg-accent-3" />
+              <div
+                class="absolute inset-0 bottom-0 flex w-full flex-nowrap items-center-safe justify-center-safe gap-0.5 text-xs font-bold text-nowrap">
                 {formatNumber(milestone.level?.xpCurrent ?? 0)} / {formatNumber(milestone.level?.xpForNext ?? 0)} XP
               </div>
             </div>

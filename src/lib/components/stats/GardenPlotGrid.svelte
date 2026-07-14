@@ -36,9 +36,10 @@
   {/if}
 </div>
 {#if plot}
-  <ScrollAreaItems border={true} class="w-full mt-4">
+  <ScrollAreaItems border={true} class="mt-4 w-full">
     <div class="@container-normal relative mx-auto">
-      <div class="grid grid-cols-[repeat(5,minmax(1.875rem,4.875rem))] place-content-center gap-1 @md:gap-1.5 @xl:gap-2">
+      <div
+        class="grid grid-cols-[repeat(5,minmax(1.875rem,4.875rem))] place-content-center gap-1 @md:gap-1.5 @xl:gap-2">
         {#each plot.layout as plotItem, index (index)}
           {#snippet tooltipContent()}
             {#if plotItem.display_name}
@@ -48,7 +49,8 @@
 
           <Tooltip.Root disableCloseOnTriggerClick={false}>
             <Tooltip.Trigger onclick={() => (internalState.content = tooltipContent)}>
-              <Avatar.Root class="flex aspect-square border items-center h-auto w-14 size-auto after:border-none justify-center rounded-xl bg-foreground/5 p-1">
+              <Avatar.Root
+                class="flex aspect-square size-auto h-auto w-14 items-center justify-center rounded-xl border bg-foreground/5 p-1 after:border-none">
                 <Avatar.Image src={plotItem.texture_path} class="h-auto w-14 select-none [image-rendering:pixelated]" />
                 <Avatar.Fallback>
                   <Image class="size-full" />
@@ -57,7 +59,12 @@
             </Tooltip.Trigger>
 
             {#if isHover.current}
-              <Tooltip.Content class="z-50 performance:bg-popover rounded-xl bg-transparent glass border glass-bg-popover p-4 text-sm" sideOffset={8} side="top" align="center" arrowClasses="hidden">
+              <Tooltip.Content
+                class="z-50 rounded-xl border glass bg-transparent p-4 text-sm glass-bg-popover performance:bg-popover"
+                sideOffset={8}
+                side="top"
+                align="center"
+                arrowClasses="hidden">
                 {@render tooltipContent()}
               </Tooltip.Content>
             {/if}

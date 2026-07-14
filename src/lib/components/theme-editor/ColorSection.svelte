@@ -21,7 +21,18 @@
     },
     {
       name: "Actions",
-      keys: ["primary", "primaryForeground", "secondary", "secondaryForeground", "accent", "accentForeground", "accent2", "accent3", "accent4", "destructive"]
+      keys: [
+        "primary",
+        "primaryForeground",
+        "secondary",
+        "secondaryForeground",
+        "accent",
+        "accentForeground",
+        "accent2",
+        "accent3",
+        "accent4",
+        "destructive"
+      ]
     },
     {
       name: "Charts",
@@ -29,7 +40,16 @@
     },
     {
       name: "Sidebar",
-      keys: ["sidebar", "sidebarForeground", "sidebarPrimary", "sidebarPrimaryForeground", "sidebarAccent", "sidebarAccentForeground", "sidebarBorder", "sidebarRing"]
+      keys: [
+        "sidebar",
+        "sidebarForeground",
+        "sidebarPrimary",
+        "sidebarPrimaryForeground",
+        "sidebarAccent",
+        "sidebarAccentForeground",
+        "sidebarBorder",
+        "sidebarRing"
+      ]
     }
   ];
 
@@ -70,6 +90,9 @@
 
   <div class="flex flex-col gap-1.5">
     <Label for="theme-radius" class="text-xs font-semibold text-foreground/80">Base Corner Radius</Label>
-    <Input id="theme-radius" value={workingTheme.modes[editingMode].cssVars.radius ?? readComputedThemeCssVars().radius ?? "0.625rem"} oninput={(e) => (workingTheme.modes[editingMode].cssVars.radius = e.currentTarget.value)} />
+    <Input
+      id="theme-radius"
+      value={workingTheme.modes[editingMode].cssVars.radius ?? readComputedThemeCssVars().radius ?? "0.625rem"}
+      oninput={(e) => (workingTheme.modes[editingMode].cssVars.radius = e.currentTarget.value)} />
   </div>
 </div>

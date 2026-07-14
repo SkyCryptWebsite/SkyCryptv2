@@ -70,7 +70,12 @@ export function getRarityClass(rarity: string, type: "bg" | "text" | "raw", impo
  * @param {boolean} formatTime whether to format timestamps in the lore
  * @returns {string} HTML
  */
-export function renderLore(text: string, formatTime: boolean = true, index?: number, options?: { breakSpaces?: boolean; breakDashes?: boolean }): string {
+export function renderLore(
+  text: string,
+  formatTime: boolean = true,
+  index?: number,
+  options?: { breakSpaces?: boolean; breakDashes?: boolean }
+): string {
   let lore = mcTextToHTML({ mcString: text, index });
 
   const breakSpaces = options?.breakSpaces ?? true;
@@ -160,7 +165,11 @@ export function validateURL(url: string): boolean {
         return false;
       }
     }
-    if (urlSegments[0].match(/^([0-9a-fA-F]{8})-?([0-9a-fA-F]{4})-?([0-9a-fA-F]{4})-?([0-9a-fA-F]{4})-?([0-9a-fA-F]{12})$/)) {
+    if (
+      urlSegments[0].match(
+        /^([0-9a-fA-F]{8})-?([0-9a-fA-F]{4})-?([0-9a-fA-F]{4})-?([0-9a-fA-F]{4})-?([0-9a-fA-F]{12})$/
+      )
+    ) {
       urlSegments[0] = urlSegments[0].replaceAll("-", "");
     } else if (urlSegments[0].match(/^[\w ]{1,16}$/)) {
       urlSegments[0] = urlSegments[0].replace(" ", "_");

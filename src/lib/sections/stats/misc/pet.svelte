@@ -12,22 +12,33 @@
 </script>
 
 {#if misc && misc.pet_milestones != null}
-  <div class="border p-4 rounded-xl space-y-2">
+  <div class="space-y-2 rounded-xl border p-4">
     <SectionSubtitle>Pet Milestones</SectionSubtitle>
     <div class="space-y-0.5">
-      <AdditionStat text="Sea Creatures Killed" data={format(misc.pet_milestones.sea_creatures_killed.total)} asterisk={true}>
+      <AdditionStat
+        text="Sea Creatures Killed"
+        data={format(misc.pet_milestones.sea_creatures_killed.total)}
+        asterisk={true}>
         <div class="space-y-1">
           {#if misc.pet_milestones.sea_creatures_killed.rarity}
             <Label class="gap-1">
               Pet:
-              <span class="font-bold" style="color: var(--§{RARITY_COLORS[misc.pet_milestones.sea_creatures_killed.rarity]})">{titleCase(misc.pet_milestones.sea_creatures_killed.rarity)}</span>
+              <span
+                class="font-bold"
+                style="color: var(--§{RARITY_COLORS[misc.pet_milestones.sea_creatures_killed.rarity]})"
+                >{titleCase(misc.pet_milestones.sea_creatures_killed.rarity)}</span>
             </Label>
           {/if}
           {#if misc.pet_milestones.sea_creatures_killed.progress !== null}
             <Label class="gap-1">
               Progress:
-              <span class={cn("font-bold", { "text-accent-2": misc.pet_milestones.sea_creatures_killed.progress === 100.0 })}>
-                {misc.pet_milestones.sea_creatures_killed.progress === 100.0 ? "Maxed!" : `${misc.pet_milestones.sea_creatures_killed.progress}%`}
+              <span
+                class={cn("font-bold", {
+                  "text-accent-2": misc.pet_milestones.sea_creatures_killed.progress === 100.0
+                })}>
+                {misc.pet_milestones.sea_creatures_killed.progress === 100.0
+                  ? "Maxed!"
+                  : `${misc.pet_milestones.sea_creatures_killed.progress}%`}
               </span>
             </Label>
           {/if}
@@ -40,7 +51,8 @@
             {#if misc.pet_milestones.ores_mined.rarity}
               <Label class="gap-1">
                 Pet:
-                <span class="font-bold" style="color: var(--§{RARITY_COLORS[misc.pet_milestones.ores_mined.rarity]})">{titleCase(misc.pet_milestones.ores_mined.rarity)}</span>
+                <span class="font-bold" style="color: var(--§{RARITY_COLORS[misc.pet_milestones.ores_mined.rarity]})"
+                  >{titleCase(misc.pet_milestones.ores_mined.rarity)}</span>
               </Label>
             {/if}
 
@@ -48,7 +60,9 @@
               <Label class="gap-1">
                 Progress:
                 <span class={cn("font-bold", { "text-accent-2": misc.pet_milestones.ores_mined.progress === 100.0 })}>
-                  {misc.pet_milestones.ores_mined.progress === 100.0 ? "Maxed!" : `${misc.pet_milestones.ores_mined.progress}%`}
+                  {misc.pet_milestones.ores_mined.progress === 100.0
+                    ? "Maxed!"
+                    : `${misc.pet_milestones.ores_mined.progress}%`}
                 </span>
               </Label>
             {/if}

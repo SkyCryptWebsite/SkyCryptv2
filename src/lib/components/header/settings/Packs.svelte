@@ -11,7 +11,9 @@
 
   const disabledPacks = getDisabledPacks();
   const initialPackConfig = disabledPacks.current;
-  const hasPackConfigChanged = $derived(JSON.stringify(disabledPacks.current.toSorted()) !== JSON.stringify(initialPackConfig.toSorted()));
+  const hasPackConfigChanged = $derived(
+    JSON.stringify(disabledPacks.current.toSorted()) !== JSON.stringify(initialPackConfig.toSorted())
+  );
   const packsContext = $derived(getPacksContext());
   const packs = $derived(packsContext.packs);
 </script>
@@ -36,12 +38,22 @@
           <Label for={pack.id} class="flex items-center justify-between gap-4 rounded-xl border p-2">
             <div class="flex items-center gap-2">
               <Avatar.Root class="shrink-0 select-none">
-                <Avatar.Image loading="lazy" src={pack.icon} alt={pack.name} class="pointer-events-none aspect-square size-10 h-full rounded-xl select-none [image-rendering:pixelated]" />
-                <Avatar.Fallback class="flex items-center rounded-xl text-center uppercase">{pack.name?.slice(0, 2)}</Avatar.Fallback>
+                <Avatar.Image
+                  loading="lazy"
+                  src={pack.icon}
+                  alt={pack.name}
+                  class="pointer-events-none aspect-square size-10 h-full rounded-xl select-none [image-rendering:pixelated]" />
+                <Avatar.Fallback class="flex items-center rounded-xl text-center uppercase"
+                  >{pack.name?.slice(0, 2)}</Avatar.Fallback>
               </Avatar.Root>
               <div class="flex flex-col">
                 <h4>
-                  <Button href={pack.url} variant="link" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline p-0 m-0 h-auto">{pack.name}</Button>
+                  <Button
+                    href={pack.url}
+                    variant="link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="m-0 h-auto p-0 text-primary hover:underline">{pack.name}</Button>
                   <small>{pack.version}</small>
                 </h4>
                 <p class="overflow-hidden font-normal text-ellipsis whitespace-nowrap text-muted-foreground">
@@ -51,7 +63,13 @@
               </div>
             </div>
             {#if pack.id}
-              <Switch id={pack.id} checked={!disabledPacks.current.includes(pack.id)} onCheckedChange={() => (disabledPacks.current = !disabledPacks.current.includes(pack.id ?? "") ? [...new Set([...disabledPacks.current, pack.id ?? ""])] : disabledPacks.current.filter((id) => id !== (pack.id ?? "")))} />
+              <Switch
+                id={pack.id}
+                checked={!disabledPacks.current.includes(pack.id)}
+                onCheckedChange={() =>
+                  (disabledPacks.current = !disabledPacks.current.includes(pack.id ?? "")
+                    ? [...new Set([...disabledPacks.current, pack.id ?? ""])]
+                    : disabledPacks.current.filter((id) => id !== (pack.id ?? "")))} />
             {/if}
           </Label>
         {/each}

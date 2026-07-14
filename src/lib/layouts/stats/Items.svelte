@@ -15,7 +15,7 @@
   let { subtitle, class: className, parentClass, text, children, info }: Props = $props();
 </script>
 
-<div class={cn("space-y-2 my-2", parentClass)}>
+<div class={cn("my-2 space-y-2", parentClass)}>
   {#if subtitle}
     <SectionSubtitle>{subtitle}</SectionSubtitle>
   {/if}

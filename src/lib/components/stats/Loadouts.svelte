@@ -15,12 +15,17 @@
 </script>
 
 <div>
-  <ScrollArea class="h-144 max-h-[calc(100dvh-12rem)]" type="auto" viewportClasses="scroll-fade-track-y rounded-xl pr-4">
+  <ScrollArea
+    class="h-144 max-h-[calc(100dvh-12rem)]"
+    type="auto"
+    viewportClasses="rounded-xl pr-4 scroll-fade-track-y">
     <div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
       {#each loadouts as loadout, index (loadoutKey(loadout, index))}
         <LoadoutCard {loadout} {index} />
       {/each}
     </div>
-    <div class="pointer-events-none sticky -bottom-1 z-10 -mt-36 h-36 w-full bg-linear-to-t from-background/80 to-transparent blur-xs scroll-fade-y"></div>
+    <div
+      class="pointer-events-none sticky -bottom-1 z-10 -mt-36 h-36 w-full bg-linear-to-t from-background/80 to-transparent scroll-fade-y blur-xs">
+    </div>
   </ScrollArea>
 </div>

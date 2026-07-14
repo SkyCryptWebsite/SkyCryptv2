@@ -23,24 +23,30 @@
 </script>
 
 {#if farming}
-  <div class="space-y-4 contents">
-    <Item.Root variant="outline" class="[a]:hover:bg-foreground/10 w-fit rounded-full mx-auto hover:scale-95 [a]:transition-[scale,background-color] ease-out duration-150">
+  <div class="contents space-y-4">
+    <Item.Root
+      variant="outline"
+      class="mx-auto w-fit rounded-full duration-150 ease-out hover:scale-95 [a]:transition-[scale,background-color] [a]:hover:bg-foreground/10">
       {#snippet child({ props })}
         <a href="https://eliteskyblock.com/@{username}/{profile_cute_name}" target="_blank" {...props}>
           <Item.Media>
             <Avatar.Root class="after:rounded-none after:border-none">
               <Avatar.Image src="https://eliteskyblock.com/favicon.webp" alt="Elite" class="rounded-none" />
-              <Avatar.Fallback class="bg-transparent border">EL</Avatar.Fallback>
+              <Avatar.Fallback class="border bg-transparent">EL</Avatar.Fallback>
             </Avatar.Root>
           </Item.Media>
           <Item.Content>
-            <Item.Title class="gap-1">For more in-depth Farming stats, check out <span class="underline text-primary inline-flex items-start gap-0.5 flex-nowrap">Elite <ExternalLinkIcon class="size-3" /></span></Item.Title>
+            <Item.Title class="gap-1"
+              >For more in-depth Farming stats, check out <span
+                class="inline-flex flex-nowrap items-start gap-0.5 text-primary underline"
+                >Elite <ExternalLinkIcon class="size-3" /></span
+              ></Item.Title>
           </Item.Content>
         </a>
       {/snippet}
     </Item.Root>
     {#if farming.pelts || farming.contestsAttended || farming.uniqueGolds}
-      <div class="border p-4 rounded-xl">
+      <div class="rounded-xl border p-4">
         <div class="space-y-0.5">
           {#if farming.pelts}
             <AdditionStat text="Pelts" data={farming.pelts.toString()} />
@@ -49,14 +55,17 @@
             <AdditionStat text="Contests Attended" data={farming.contestsAttended.toString()} />
           {/if}
           {#if farming.uniqueGolds}
-            <AdditionStat text="Unique Golds" data={farming.uniqueGolds.toString()} maxed={farming.uniqueGolds === 10} />
+            <AdditionStat
+              text="Unique Golds"
+              data={farming.uniqueGolds.toString()}
+              maxed={farming.uniqueGolds === 10} />
           {/if}
         </div>
       </div>
     {/if}
 
     {#if farming.medals}
-      <div class="border p-4 rounded-xl">
+      <div class="rounded-xl border p-4">
         <div class="space-y-0.5">
           {#each Object.entries(farming.medals) as [medal, medalData], index (index)}
             {#if medalData.total}
@@ -75,23 +84,27 @@
         </div>
       </div>
     {/if}
-    <div class="border p-4 rounded-xl space-y-4">
+    <div class="space-y-4 rounded-xl border p-4">
       <SectionSubtitle>Farming Gear</SectionSubtitle>
       <SkillGear gear={farming.gear} skill="farming" />
     </div>
 
     {#if farming.contests}
       {#if Object.entries(farming.contests).find(([_, cropData]) => (cropData.amount ?? 0) > 0)}
-        <Collapsible.Root open={openSections} class="border p-2 rounded-xl">
+        <Collapsible.Root open={openSections} class="rounded-xl border p-2">
           <CollapsibleCustomTrigger>Farming Crops</CollapsibleCustomTrigger>
           <Collapsible.Content>
             {const crops = $derived(Object.entries(farming.contests))}
 
             <ScrollAreaItems>
               {#each crops as [_, cropData], index (index)}
-                <Chip image={{ src: cropData.texture ?? "" }} animationOptions={{ animate: true, amountOfItems: crops.length, index: index }}>
+                <Chip
+                  image={{ src: cropData.texture ?? "" }}
+                  animationOptions={{ animate: true, amountOfItems: crops.length, index: index }}>
                   <div class="flex flex-col gap-0.5 whitespace-nowrap">
-                    <h4 class="text-lg font-semibold data-[maxed=true]:text-accent-2" data-maxed={cropData.maxed}>{cropData.name}</h4>
+                    <h4 class="text-lg font-semibold data-[maxed=true]:text-accent-2" data-maxed={cropData.maxed}>
+                      {cropData.name}
+                    </h4>
                     {#if cropData.collected != null}
                       <AdditionStat text="Personal Best" data={formatNumber(cropData.collected)} />
                     {/if}

@@ -1,6 +1,12 @@
 import type { IsHover } from "$lib/hooks/is-hover.svelte";
 import type { IsMobile } from "$lib/hooks/is-mobile.svelte";
-import type { ModelsCombinedOutput, ModelsMiscOutput, ModelsResourcePackConfig, ModelsSkillsOutput, ModelsStatsOutput } from "$lib/shared/api/orval-generated";
+import type {
+  ModelsCombinedOutput,
+  ModelsMiscOutput,
+  ModelsResourcePackConfig,
+  ModelsSkillsOutput,
+  ModelsStatsOutput
+} from "$lib/shared/api/orval-generated";
 import { createContext } from "svelte";
 
 export class ProfileContext {

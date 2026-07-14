@@ -19,21 +19,27 @@
   {#if isle}
     <div class="contents space-y-4">
       {#if isle.factions}
-        <div class="border p-4 rounded-xl">
+        <div class="rounded-xl border p-4">
           {#if isle.factions.selectedFaction}
             <AdditionStat text="Selected Faction" class="capitalize" data={isle.factions.selectedFaction} />
           {/if}
           {#if isle.factions.magesReputation != null}
-            <AdditionStat text="Mage Reputation" data={format(isle.factions.magesReputation)} maxed={isle.factions.magesReputation >= 12000} />
+            <AdditionStat
+              text="Mage Reputation"
+              data={format(isle.factions.magesReputation)}
+              maxed={isle.factions.magesReputation >= 12000} />
           {/if}
           {#if isle.factions.barbariansReputation != null}
-            <AdditionStat text="Barbarian Reputation" data={format(isle.factions.barbariansReputation)} maxed={isle.factions.barbariansReputation >= 12000} />
+            <AdditionStat
+              text="Barbarian Reputation"
+              data={format(isle.factions.barbariansReputation)}
+              maxed={isle.factions.barbariansReputation >= 12000} />
           {/if}
         </div>
       {/if}
 
       {#if isle.kuudra && isle.kuudra.totalKills}
-        <div class="border p-4 rounded-xl">
+        <div class="rounded-xl border p-4">
           <SectionSubtitle class="my-0">Kuudra Completions</SectionSubtitle>
           <AdditionStat text="Total Completions" data={isle.kuudra.totalKills} />
 
@@ -55,9 +61,12 @@
       {/if}
 
       {#if isle.dojo && isle.dojo.totalPoints}
-        <div class="border p-4 rounded-xl">
+        <div class="rounded-xl border p-4">
           <SectionSubtitle class="my-0">Dojo Completions</SectionSubtitle>
-          <AdditionStat text="Total Points" data={format(isle.dojo.totalPoints)} maxed={isle.dojo.totalPoints >= 7000} />
+          <AdditionStat
+            text="Total Points"
+            data={format(isle.dojo.totalPoints)}
+            maxed={isle.dojo.totalPoints >= 7000} />
 
           <ScrollAreaItems>
             {#each isle.dojo.challenges as challenge, index (index)}
@@ -92,6 +101,9 @@
       {/if}
     </div>
   {:else}
-    <EmptyStat title="No Data" description="This player doesn't have anything related to the Crimson Isle" icon={SwordsIcon} />
+    <EmptyStat
+      title="No Data"
+      description="This player doesn't have anything related to the Crimson Isle"
+      icon={SwordsIcon} />
   {/if}
 </Section>

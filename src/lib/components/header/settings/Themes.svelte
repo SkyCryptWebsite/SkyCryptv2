@@ -64,7 +64,15 @@
     const defaultCssVars = readDefaultThemeCssVars();
     const modeName: ThemeModeName = mode.current === "light" ? "light" : "dark";
     const vars = theme.modes[modeName].cssVars;
-    return vars.sidebarPrimary ?? vars.chart2 ?? vars.primary ?? defaultCssVars.sidebarPrimary ?? defaultCssVars.chart2 ?? defaultCssVars.primary ?? "oklch(0.627 0.194 149.214)";
+    return (
+      vars.sidebarPrimary ??
+      vars.chart2 ??
+      vars.primary ??
+      defaultCssVars.sidebarPrimary ??
+      defaultCssVars.chart2 ??
+      defaultCssVars.primary ??
+      "oklch(0.627 0.194 149.214)"
+    );
   }
 
   function getThemeIconKey(theme: ThemeV5): string {
@@ -97,8 +105,13 @@
             <Label for={theme.metadata.id} class="flex items-center justify-between gap-4 rounded-xl border p-2">
               <div class="flex items-center gap-2">
                 <Avatar.Root class="shrink-0 select-none">
-                  <Avatar.Image loading="lazy" src={iconDataUrl} alt={theme.metadata.name} class="pointer-events-none aspect-square size-10 h-full rounded-xl select-none"></Avatar.Image>
-                  <Avatar.Fallback class="flex items-center rounded-xl text-center font-semibold uppercase">{theme.metadata.name.slice(0, 2)}</Avatar.Fallback>
+                  <Avatar.Image
+                    loading="lazy"
+                    src={iconDataUrl}
+                    alt={theme.metadata.name}
+                    class="pointer-events-none aspect-square size-10 h-full rounded-xl select-none"></Avatar.Image>
+                  <Avatar.Fallback class="flex items-center rounded-xl text-center font-semibold uppercase"
+                    >{theme.metadata.name.slice(0, 2)}</Avatar.Fallback>
                 </Avatar.Root>
                 <div class="flex flex-col">
                   <h4 class="font-semibold text-foreground/90">{theme.metadata.name}</h4>
@@ -108,7 +121,10 @@
                   </p>
                 </div>
               </div>
-              <RadioGroup.Item id={theme.metadata.id} value={theme.metadata.id} class="group inline-flex h-6 min-h-6 w-10 shrink-0 cursor-pointer items-center rounded-full px-0 transition-colors ease-out">
+              <RadioGroup.Item
+                id={theme.metadata.id}
+                value={theme.metadata.id}
+                class="group inline-flex h-6 min-h-6 w-10 shrink-0 cursor-pointer items-center rounded-full px-0 transition-colors ease-out">
                 <Check class="size-6 text-primary group-data-[state=unchecked]:invisible" />
               </RadioGroup.Item>
             </Label>
@@ -126,7 +142,9 @@
       </div>
 
       {#if themeContext.userThemes.length === 0}
-        <p class="text-muted-foreground italic">No custom themes yet. Create your own theme or import one from the community!</p>
+        <p class="text-muted-foreground italic">
+          No custom themes yet. Create your own theme or import one from the community!
+        </p>
       {:else}
         {#each themeContext.userThemes as theme (theme.metadata.id)}
           {#key getThemeIconKey(theme)}
@@ -135,8 +153,13 @@
               <Label for={theme.metadata.id} class="flex items-center justify-between gap-2 rounded-xl border p-2">
                 <div class="flex items-center gap-2">
                   <Avatar.Root class="shrink-0 select-none">
-                    <Avatar.Image loading="lazy" src={iconDataUrl} alt={theme.metadata.name} class="pointer-events-none aspect-square size-10 h-full rounded-xl select-none"></Avatar.Image>
-                    <Avatar.Fallback class="flex items-center rounded-xl text-center font-semibold uppercase">{theme.metadata.name.slice(0, 2)}</Avatar.Fallback>
+                    <Avatar.Image
+                      loading="lazy"
+                      src={iconDataUrl}
+                      alt={theme.metadata.name}
+                      class="pointer-events-none aspect-square size-10 h-full rounded-xl select-none"></Avatar.Image>
+                    <Avatar.Fallback class="flex items-center rounded-xl text-center font-semibold uppercase"
+                      >{theme.metadata.name.slice(0, 2)}</Avatar.Fallback>
                   </Avatar.Root>
                   <div class="flex flex-col">
                     <h4 class="font-semibold">{theme.metadata.name}</h4>
@@ -148,19 +171,34 @@
                 </div>
 
                 <div class="flex items-center gap-1">
-                  <RadioGroup.Item id={theme.metadata.id} value={theme.metadata.id} class="group inline-flex h-6 min-h-6 w-10 shrink-0 cursor-pointer items-center rounded-full px-0 transition-colors ease-out">
+                  <RadioGroup.Item
+                    id={theme.metadata.id}
+                    value={theme.metadata.id}
+                    class="group inline-flex h-6 min-h-6 w-10 shrink-0 cursor-pointer items-center rounded-full px-0 transition-colors ease-out">
                     <Check class="size-6 text-primary group-data-[state=unchecked]:invisible" />
                   </RadioGroup.Item>
 
-                  <Button title="Edit theme" variant="secondary" onclick={() => openThemeEditor(theme.metadata.id)} aria-label="Edit theme">
+                  <Button
+                    title="Edit theme"
+                    variant="secondary"
+                    onclick={() => openThemeEditor(theme.metadata.id)}
+                    aria-label="Edit theme">
                     <Edit class="size-4" />
                   </Button>
 
-                  <Button title="Share theme" variant="secondary" onclick={() => shareTheme(theme.metadata.id)} aria-label="Share theme">
+                  <Button
+                    title="Share theme"
+                    variant="secondary"
+                    onclick={() => shareTheme(theme.metadata.id)}
+                    aria-label="Share theme">
                     <Link2 class="size-4" />
                   </Button>
 
-                  <Button title="Delete theme" variant="destructive" onclick={() => confirmDelete(theme.metadata.id)} aria-label="Delete theme">
+                  <Button
+                    title="Delete theme"
+                    variant="destructive"
+                    onclick={() => confirmDelete(theme.metadata.id)}
+                    aria-label="Delete theme">
                     <Trash2 class="size-4" />
                   </Button>
                 </div>
@@ -174,10 +212,11 @@
 </Tabs.Content>
 
 <AlertDialog.Root bind:open={deleteDialogOpen}>
-  <AlertDialog.Content class="glass standard:glass *:data-[slot='dialog-close']:hidden glass-bg-popover">
+  <AlertDialog.Content class="glass glass-bg-popover *:data-[slot='dialog-close']:hidden standard:glass">
     <AlertDialog.Header>
       <AlertDialog.Title>Delete Theme?</AlertDialog.Title>
-      <AlertDialog.Description>This action cannot be undone. The theme will be permanently removed from your library.</AlertDialog.Description>
+      <AlertDialog.Description
+        >This action cannot be undone. The theme will be permanently removed from your library.</AlertDialog.Description>
     </AlertDialog.Header>
     <AlertDialog.Footer>
       <AlertDialog.Action variant="destructive" onclick={handleDelete}>Delete</AlertDialog.Action>

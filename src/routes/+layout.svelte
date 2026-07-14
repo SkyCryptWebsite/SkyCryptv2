@@ -2,7 +2,19 @@
   import { browser, dev } from "$app/environment";
   import { beforeNavigate, replaceState } from "$app/navigation";
   import { page, updated } from "$app/state";
-  import { initDisabledPacks, initFavorites, initInternalState, initNewsroomNotifications, initPreferences, initRecentSearches, initTheme, PacksContext, setHoverContext, setMobileContext, setPacksContext } from "$ctx";
+  import {
+    initDisabledPacks,
+    initFavorites,
+    initInternalState,
+    initNewsroomNotifications,
+    initPreferences,
+    initRecentSearches,
+    initTheme,
+    PacksContext,
+    setHoverContext,
+    setMobileContext,
+    setPacksContext
+  } from "$ctx";
   import Header from "$lib/components/header/Header.svelte";
   import { CommandPalette, JsonLd, PerformanceMode } from "$lib/components/misc";
   import NewPostsNotifier from "$lib/components/newsroom/NewPostsNotifier.svelte";
@@ -116,7 +128,8 @@
     if (preferences.performanceModeForced) {
       toast.warning("Performance Mode Locked", {
         id: "performance-mode-locked",
-        description: "SkyCrypt could not access hardware graphics acceleration, so Performance Mode has been locked on. Enable graphics acceleration in your browser settings and reload SkyCrypt to restore Standard Mode.",
+        description:
+          "SkyCrypt could not access hardware graphics acceleration, so Performance Mode has been locked on. Enable graphics acceleration in your browser settings and reload SkyCrypt to restore Standard Mode.",
         duration: 10000,
         closeButton: false
       });
@@ -190,7 +203,13 @@
   let innerWidth = $state(0);
 </script>
 
-<ModeWatcher defaultMode="dark" defaultTheme="default" themeStorageKey="skycryptActiveTheme" darkClassNames={["dark"]} lightClassNames={["light"]} themeColors={{ dark: "#282828", light: "#dbdbdb" }} />
+<ModeWatcher
+  defaultMode="dark"
+  defaultTheme="default"
+  themeStorageKey="skycryptActiveTheme"
+  darkClassNames={["dark"]}
+  lightClassNames={["light"]}
+  themeColors={{ dark: "#282828", light: "#dbdbdb" }} />
 
 <svelte:document onkeydown={handleKeydown} />
 
@@ -254,11 +273,21 @@
   <PerformanceMode />
 {/if}
 
-<div class="pointer-events-none fixed inset-0 group z-[-1] isolate h-dvh w-screen" data-isSkinHidden={innerWidth < 1210} data-isStatsPage={page.url.pathname.startsWith("/stats") && !page.error}>
-  <div class="size-full relative z-10 group-data-[isSkinHidden=true]:group-data-[isStatsPage=true]:blur-lg [background-image:var(--bg-url)] bg-cover bg-scroll bg-center bg-no-repeat bg-background"></div>
+<div
+  class="group pointer-events-none fixed inset-0 isolate z-[-1] h-dvh w-screen"
+  data-isSkinHidden={innerWidth < 1210}
+  data-isStatsPage={page.url.pathname.startsWith("/stats") && !page.error}>
+  <div
+    class="relative z-10 size-full bg-background [background-image:var(--bg-url)] bg-cover bg-scroll bg-center bg-no-repeat group-data-[isSkinHidden=true]:group-data-[isStatsPage=true]:blur-lg">
+  </div>
 
-  <div class="absolute inset-0 size-full z-20 group-data-[skinHidden=true]:hidden group-data-[isStatsPage=false]:hidden [background-image:var(--bg-url)] blur-lg bg-cover bg-scroll bg-center bg-no-repeat" style="--percent: 30%; clip-path: polygon(var(--percent) 0%, 100% 0%, 100% 100%, var(--percent) 100%);"></div>
-  <Separator class="absolute inset-0 h-screen top-12 left-[calc(30%-1px)] z-50 group-data-[isSkinHidden=true]:hidden group-data-[isStatsPage=false]:hidden" orientation="vertical" />
+  <div
+    class="absolute inset-0 z-20 size-full [background-image:var(--bg-url)] bg-cover bg-scroll bg-center bg-no-repeat blur-lg group-data-[isStatsPage=false]:hidden group-data-[skinHidden=true]:hidden"
+    style="--percent: 30%; clip-path: polygon(var(--percent) 0%, 100% 0%, 100% 100%, var(--percent) 100%);">
+  </div>
+  <Separator
+    class="absolute inset-0 top-12 left-[calc(30%-1px)] z-50 h-screen group-data-[isSkinHidden=true]:hidden group-data-[isStatsPage=false]:hidden"
+    orientation="vertical" />
 </div>
 
 <Header />
@@ -279,7 +308,13 @@
 
 {#if !isMobile.current}
   <Sheet.Root bind:open={internalState.themeEditorOpen}>
-    <Sheet.Content side="left" class="h-[calc(100%-3rem)]! *:data-dialog-close:bg-transparent *:data-dialog-close:border *:data-dialog-close:border-border top-12! overflow-y-auto p-4 glass-bg-popover w-[30%]! glass standard:bg-transparent! max-w-none!" showOverlay={false} escapeKeydownBehavior="ignore" interactOutsideBehavior="ignore" preventScroll={false}>
+    <Sheet.Content
+      side="left"
+      class="top-12! h-[calc(100%-3rem)]! w-[30%]! max-w-none! overflow-y-auto glass p-4 glass-bg-popover *:data-dialog-close:border *:data-dialog-close:border-border *:data-dialog-close:bg-transparent standard:bg-transparent!"
+      showOverlay={false}
+      escapeKeydownBehavior="ignore"
+      interactOutsideBehavior="ignore"
+      preventScroll={false}>
       <ThemeEditor />
     </Sheet.Content>
   </Sheet.Root>
@@ -287,7 +322,7 @@
 
 {#if isMobile.current}
   <Drawer.Root bind:open={internalState.themeEditorOpen} shouldScaleBackground={true}>
-    <Drawer.Content class="before:glass before:glass-bg-popover [&>div:first-child]:my-4 before:bg-transparent">
+    <Drawer.Content class="before:glass before:bg-transparent before:glass-bg-popover [&>div:first-child]:my-4">
       <div class="overflow-auto p-4">
         <ThemeEditor />
       </div>
@@ -303,7 +338,7 @@
     onOpenChange={(open) => {
       if (!open) internalState.content = undefined;
     }}>
-    <Drawer.Content class="before:glass before:glass-bg-popover before:bg-transparent">
+    <Drawer.Content class="before:glass before:bg-transparent before:glass-bg-popover">
       <div class="mx-auto w-full overflow-auto p-6">
         {@render internalState.content?.()}
       </div>

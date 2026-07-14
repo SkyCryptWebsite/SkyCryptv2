@@ -8,7 +8,7 @@
 </script>
 
 {#if misc && misc.gifts != null}
-  <div class="border p-4 rounded-xl space-y-2">
+  <div class="space-y-2 rounded-xl border p-4">
     <SectionSubtitle>Gifts</SectionSubtitle>
     <div class="space-y-0.5">
       {#each Object.entries(misc.gifts) as [text, data], index (index)}

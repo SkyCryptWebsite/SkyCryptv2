@@ -64,7 +64,8 @@
       keywords: ["performance", "mode", "toggle", "settings"],
       iconProps: {
         "data-performance": () => preferences.performanceMode,
-        class: "size-4 will-change-transform data-[performance=false]:animate-spin-slow data-[performance=true]:animate-spin"
+        class:
+          "size-4 will-change-transform data-[performance=false]:animate-spin-slow data-[performance=true]:animate-spin"
       }
     },
     {
@@ -103,13 +104,20 @@
       <div class="rounded-xl bg-primary/80 p-1">
         {#if item.type === "toggle" && item.iconProps}
           {const Icon = item.icon}
-          {const props = Object.fromEntries(Object.entries(item.iconProps).map(([key, value]) => [key, typeof value === "function" ? (value as () => unknown)() : value]))}
+          {const props = Object.fromEntries(
+            Object.entries(item.iconProps).map(([key, value]) => [
+              key,
+              typeof value === "function" ? (value as () => unknown)() : value
+            ])
+          )}
           <Icon {...props} />
         {:else}
           <item.icon class="size-4" />
         {/if}
       </div>
-      {item.type === "toggle" && item.preferenceKey === "performanceMode" && preferences.performanceModeForced ? "Performance Mode Locked" : item.label}
+      {item.type === "toggle" && item.preferenceKey === "performanceMode" && preferences.performanceModeForced
+        ? "Performance Mode Locked"
+        : item.label}
     </Command.Item>
   {/each}
 </Command.Group>

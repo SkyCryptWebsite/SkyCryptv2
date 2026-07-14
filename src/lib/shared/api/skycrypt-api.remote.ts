@@ -1,6 +1,36 @@
 import { prerender, query } from "$app/server";
-import { getCombinedProfileStats as getCombinedProfileStatsRequest, getGardenStats as getGardenStatsRequest, getPlayerStats as getPlayerStatsRequest, getProfileEmbed as getProfileEmbedRequest, getProfileInventory as getProfileInventoryRequest, getProfileNetworth as getProfileNetworthRequest, getProfileStats as getProfileStatsRequest, getSelectedProfileEmbed as getSelectedProfileEmbedRequest, getSelectedProfileStats as getSelectedProfileStatsRequest, getSourceInfo as getSourceInfoRequest, listResourcePacks as listResourcePacksRequest, resolveUsernameByUuid as resolveUsernameByUuidRequest, resolveUuidByUsername as resolveUuidByUsernameRequest, searchProfileInventory as searchProfileInventoryRequest, type ModelsProcessingError, type ModelsSourceInfo } from "$lib/shared/api/orval-generated";
-import { GetCombinedProfileStatsParams, GetGardenStatsParams, GetPlayerStatsParams, GetProfileEmbedParams, GetProfileInventoryParams, GetProfileNetworthParams, GetProfileStatsParams, GetSelectedProfileEmbedParams, GetSelectedProfileStatsParams, ResolveUsernameByUuidParams, ResolveUuidByUsernameParams, SearchProfileInventoryParams } from "$lib/shared/api/orval-generated-zod";
+import {
+  getCombinedProfileStats as getCombinedProfileStatsRequest,
+  getGardenStats as getGardenStatsRequest,
+  getPlayerStats as getPlayerStatsRequest,
+  getProfileEmbed as getProfileEmbedRequest,
+  getProfileInventory as getProfileInventoryRequest,
+  getProfileNetworth as getProfileNetworthRequest,
+  getProfileStats as getProfileStatsRequest,
+  getSelectedProfileEmbed as getSelectedProfileEmbedRequest,
+  getSelectedProfileStats as getSelectedProfileStatsRequest,
+  getSourceInfo as getSourceInfoRequest,
+  listResourcePacks as listResourcePacksRequest,
+  resolveUsernameByUuid as resolveUsernameByUuidRequest,
+  resolveUuidByUsername as resolveUuidByUsernameRequest,
+  searchProfileInventory as searchProfileInventoryRequest,
+  type ModelsProcessingError,
+  type ModelsSourceInfo
+} from "$lib/shared/api/orval-generated";
+import {
+  GetCombinedProfileStatsParams,
+  GetGardenStatsParams,
+  GetPlayerStatsParams,
+  GetProfileEmbedParams,
+  GetProfileInventoryParams,
+  GetProfileNetworthParams,
+  GetProfileStatsParams,
+  GetSelectedProfileEmbedParams,
+  GetSelectedProfileStatsParams,
+  ResolveUsernameByUuidParams,
+  ResolveUuidByUsernameParams,
+  SearchProfileInventoryParams
+} from "$lib/shared/api/orval-generated-zod";
 import { APIEndpointName } from "$types";
 import { error, isHttpError } from "@sveltejs/kit";
 
@@ -8,7 +38,9 @@ import { error, isHttpError } from "@sveltejs/kit";
  * Type helper to extract the success data type from an API response
  * Excludes ModelsProcessingError from the union type
  */
-type ExtractSuccessData<TResponse> = TResponse extends { data: infer TData } ? Exclude<TData, ModelsProcessingError> : never;
+type ExtractSuccessData<TResponse> = TResponse extends { data: infer TData }
+  ? Exclude<TData, ModelsProcessingError>
+  : never;
 
 /**
  * Generic helper function to handle API fetching with consistent error handling
@@ -20,7 +52,10 @@ type ExtractSuccessData<TResponse> = TResponse extends { data: infer TData } ? E
  * @returns The success data type, excluding ModelsProcessingError
  * @throws SvelteKit error if the API returns an error or the request fails
  */
-async function fetchSection<TResponse extends { data: unknown; status: number }>(sectionName: APIEndpointName, apiFetcher: () => Promise<TResponse>): Promise<ExtractSuccessData<TResponse>> {
+async function fetchSection<TResponse extends { data: unknown; status: number }>(
+  sectionName: APIEndpointName,
+  apiFetcher: () => Promise<TResponse>
+): Promise<ExtractSuccessData<TResponse>> {
   try {
     const { data, status } = await apiFetcher();
     // Check if the API returned a processing error

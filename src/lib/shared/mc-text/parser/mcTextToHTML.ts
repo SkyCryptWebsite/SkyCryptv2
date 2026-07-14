@@ -41,7 +41,9 @@ export default function mcTextToHTML(...args: [{ mcString: string; breakLine?: b
   let shouldRainbowEnchantedCheck = false;
   let isPostResetObfuscated = false;
 
-  const isResetOnlyState = (): boolean => classList.length === resetClasses.length && classList.every((className, classIndex) => className === resetClasses[classIndex]);
+  const isResetOnlyState = (): boolean =>
+    classList.length === resetClasses.length &&
+    classList.every((className, classIndex) => className === resetClasses[classIndex]);
 
   codeSplit.forEach((item: string, index: number) => {
     const mcTextStringToLowerCase = item.toLowerCase();
@@ -79,7 +81,8 @@ export default function mcTextToHTML(...args: [{ mcString: string; breakLine?: b
         isPostResetObfuscated = false;
       } else {
         const resetOnlyState = isResetOnlyState();
-        isPostResetObfuscated = resetOnlyState && mcTextStringToLowerCase === "§k" && !colorVar && Boolean(lastColorVar);
+        isPostResetObfuscated =
+          resetOnlyState && mcTextStringToLowerCase === "§k" && !colorVar && Boolean(lastColorVar);
         if (resetOnlyState) {
           classList = [];
         }
@@ -89,7 +92,11 @@ export default function mcTextToHTML(...args: [{ mcString: string; breakLine?: b
     }
     // Current item is actual text content, not a formatting code
     else {
-      const shouldUseLastColorAfterResetForObfuscated = !colorVar && classList.includes("obfuscated") && Boolean(lastColorVar) && (classList.includes("text-inherit") || isPostResetObfuscated);
+      const shouldUseLastColorAfterResetForObfuscated =
+        !colorVar &&
+        classList.includes("obfuscated") &&
+        Boolean(lastColorVar) &&
+        (classList.includes("text-inherit") || isPostResetObfuscated);
       const effectiveColorVar = shouldUseLastColorAfterResetForObfuscated ? lastColorVar : colorVar;
       // Escape HTML characters to prevent XSS attacks and display properly
       const textContent: string = item !== "" ? htmlStringFormatting(item) : item;

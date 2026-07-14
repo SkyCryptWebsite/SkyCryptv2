@@ -32,7 +32,13 @@
   });
 </script>
 
-<div class={cn("space-y-5 rounded-xl p-6 data-[type=error]:text-red-200 data-[type=info]:text-blue-200 data-[type=warning]:text-yellow-200 @[75rem]/parent:p-8", "standard:backdrop-blur-lg standard:data-[type=error]:bg-red-700/5 standard:data-[type=info]:bg-blue-700/5 standard:data-[type=warning]:bg-yellow-700/5 performance:data-[type=error]:bg-red-800 performance:data-[type=info]:bg-blue-800 performance:data-[type=warning]:bg-yellow-800", className)} data-type={type}>
+<div
+  class={cn(
+    "space-y-5 rounded-xl p-6 data-[type=error]:text-red-200 data-[type=info]:text-blue-200 data-[type=warning]:text-yellow-200 @[75rem]/parent:p-8",
+    "performance:data-[type=error]:bg-red-800 performance:data-[type=info]:bg-blue-800 performance:data-[type=warning]:bg-yellow-800 standard:backdrop-blur-lg standard:data-[type=error]:bg-red-700/5 standard:data-[type=info]:bg-blue-700/5 standard:data-[type=warning]:bg-yellow-700/5",
+    className
+  )}
+  data-type={type}>
   <div class="justify-starts flex items-center gap-2">
     {#if type === "error"}
       <CircleX class="size-8" />
@@ -69,11 +75,18 @@
       <p class="text-center">An unknown error has occurred.</p>
     {/if}
 
-    <p class="text-center">If applicable, please report this error on our <Button.Root target="_blank" href={PUBLIC_DISCORD_INVITE} class="underline">Discord</Button.Root></p>
+    <p class="text-center">
+      If applicable, please report this error on our <Button.Root
+        target="_blank"
+        href={PUBLIC_DISCORD_INVITE}
+        class="underline">Discord</Button.Root>
+    </p>
 
     {#if retry}
       <div class="flex justify-center">
-        <Button.Root onclick={retry} class="group/retry flex items-center gap-1 rounded-full bg-red-700 px-4 py-2 text-white">
+        <Button.Root
+          onclick={retry}
+          class="group/retry flex items-center gap-1 rounded-full bg-red-700 px-4 py-2 text-white">
           Retry
           <RotateCcw class="h-hl size-4 transition-all duration-150 group-hover/retry:-rotate-90" />
         </Button.Root>

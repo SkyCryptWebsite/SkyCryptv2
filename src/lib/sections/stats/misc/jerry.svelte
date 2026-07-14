@@ -8,7 +8,7 @@
 </script>
 
 {#if misc && misc.season_of_jerry != null}
-  <div class="border p-4 rounded-xl space-y-2">
+  <div class="space-y-2 rounded-xl border p-4">
     <SectionSubtitle>Season of Jerry</SectionSubtitle>
     <div class="space-y-0.5">
       {#each Object.entries(misc.season_of_jerry) as [text, data], index (index)}

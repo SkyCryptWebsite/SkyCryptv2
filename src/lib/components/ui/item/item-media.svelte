@@ -7,7 +7,8 @@
       variant: {
         default: "bg-transparent",
         icon: "[&_svg:not([class*='size-'])]:size-4",
-        image: "size-10 overflow-hidden rounded-xl group-data-[size=sm]/item:size-8 group-data-[size=xs]/item:size-6 group-data-[size=xs]/item:rounded-lg [&_img]:size-full [&_img]:object-cover"
+        image:
+          "size-10 overflow-hidden rounded-xl group-data-[size=sm]/item:size-8 group-data-[size=xs]/item:size-6 group-data-[size=xs]/item:rounded-lg [&_img]:size-full [&_img]:object-cover"
       }
     },
     defaultVariants: {
@@ -22,9 +23,20 @@
   import { cn, type WithElementRef } from "$utils.js";
   import type { HTMLAttributes } from "svelte/elements";
 
-  let { ref = $bindable(null), class: className, children, variant = "default", ...restProps }: WithElementRef<HTMLAttributes<HTMLDivElement>> & { variant?: ItemMediaVariant } = $props();
+  let {
+    ref = $bindable(null),
+    class: className,
+    children,
+    variant = "default",
+    ...restProps
+  }: WithElementRef<HTMLAttributes<HTMLDivElement>> & { variant?: ItemMediaVariant } = $props();
 </script>
 
-<div bind:this={ref} data-slot="item-media" data-variant={variant} class={cn(itemMediaVariants({ variant }), className)} {...restProps}>
+<div
+  bind:this={ref}
+  data-slot="item-media"
+  data-variant={variant}
+  class={cn(itemMediaVariants({ variant }), className)}
+  {...restProps}>
   {@render children?.()}
 </div>

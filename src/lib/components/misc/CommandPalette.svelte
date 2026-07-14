@@ -25,7 +25,13 @@
   function getErrorMessage(err: unknown) {
     const httpError = err as { body?: unknown };
 
-    if (isHttpError(err) && typeof httpError.body === "object" && httpError.body !== null && "message" in httpError.body && typeof httpError.body.message === "string") {
+    if (
+      isHttpError(err) &&
+      typeof httpError.body === "object" &&
+      httpError.body !== null &&
+      "message" in httpError.body &&
+      typeof httpError.body.message === "string"
+    ) {
       return httpError.body.message;
     }
 
@@ -89,8 +95,16 @@
   }
 </script>
 
-<Command.Dialog class="*:data-[slot='command']:bg-transparent bg-transparent glass" bind:open={() => internalState.openCommand, setCommandOpen} bind:value={commandValue} filter={customFilter}>
-  <Command.Input placeholder="Type a command or search..." bind:value={searchQuery} onkeydown={handleKeydown} disabled={submittedSearchLoading} />
+<Command.Dialog
+  class="glass bg-transparent *:data-[slot='command']:bg-transparent"
+  bind:open={() => internalState.openCommand, setCommandOpen}
+  bind:value={commandValue}
+  filter={customFilter}>
+  <Command.Input
+    placeholder="Type a command or search..."
+    bind:value={searchQuery}
+    onkeydown={handleKeydown}
+    disabled={submittedSearchLoading} />
 
   <Command.List class="">
     {#if submittedSearchError}

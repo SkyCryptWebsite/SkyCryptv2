@@ -20,9 +20,9 @@
 </script>
 
 <script lang="ts">
+  import { Button } from "$ui/button/index.js";
   import { cn } from "$utils.js";
   import type { ComponentProps } from "svelte";
-  import { Button } from "$ui/button/index.js";
 
   let {
     ref = $bindable(null),
@@ -37,6 +37,12 @@
   } = $props();
 </script>
 
-<Button bind:ref {type} data-size={size} {variant} class={cn(inputGroupButtonVariants({ size }), className)} {...restProps}>
+<Button
+  bind:ref
+  {type}
+  data-size={size}
+  {variant}
+  class={cn(inputGroupButtonVariants({ size }), className)}
+  {...restProps}>
   {@render children?.()}
 </Button>

@@ -12,11 +12,19 @@
   const routeIgn = $derived(page.params.ign);
   const routeProfile = $derived(page.params.profile);
   const profileIdentifier = $derived(routeIgn || embedData.username || embedData.uuid || "unknown");
-  const canonicalPath = $derived(routeProfile ? `/stats/${encodeURIComponent(profileIdentifier)}/${encodeURIComponent(routeProfile)}` : `/stats/${encodeURIComponent(profileIdentifier)}`);
+  const canonicalPath = $derived(
+    routeProfile
+      ? `/stats/${encodeURIComponent(profileIdentifier)}/${encodeURIComponent(routeProfile)}`
+      : `/stats/${encodeURIComponent(profileIdentifier)}`
+  );
   const canonicalUrl = $derived(`https://sky.shiiyu.moe${canonicalPath}`);
-  const profileDescription = $derived(isStatsPage && !isValidEmbed ? getShortDescription(embedData) : getLongDescription(embedData));
+  const profileDescription = $derived(
+    isStatsPage && !isValidEmbed ? getShortDescription(embedData) : getLongDescription(embedData)
+  );
   const profileImage = $derived(`https://nmsr.nickac.dev/bust/${embedData.uuid}?y=-20`);
-  const themeColor = $derived(embedData.rank?.plusColor || embedData.rank?.rankColor || (mode.current === "light" ? "#dbdbdb" : "#282828"));
+  const themeColor = $derived(
+    embedData.rank?.plusColor || embedData.rank?.rankColor || (mode.current === "light" ? "#dbdbdb" : "#282828")
+  );
 
   const breadcrumbJsonLd = $derived({
     "@type": "BreadcrumbList",
@@ -62,7 +70,13 @@
 
 <svelte:head>
   {#if embedData.uuid}
-    <link rel="icon" href={isStatsPage ? `https://nmsr.nickac.dev/face/${embedData.uuid}` : `https://nmsr.nickac.dev/bust/${embedData.uuid}?y=-20`} sizes="32x32" type="image/png" />
+    <link
+      rel="icon"
+      href={isStatsPage
+        ? `https://nmsr.nickac.dev/face/${embedData.uuid}`
+        : `https://nmsr.nickac.dev/bust/${embedData.uuid}?y=-20`}
+      sizes="32x32"
+      type="image/png" />
   {/if}
 </svelte:head>
 

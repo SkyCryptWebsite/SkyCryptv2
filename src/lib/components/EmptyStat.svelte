@@ -13,9 +13,9 @@
   const { title, description, icon: IconComponent, class: classList }: Props = $props();
 </script>
 
-<Empty.Root class={cn("border rounded-xl", classList)}>
+<Empty.Root class={cn("rounded-xl border", classList)}>
   <Empty.Header>
-    <Empty.Media variant="icon" class="bg-transparent border">
+    <Empty.Media variant="icon" class="border bg-transparent">
       <IconComponent />
     </Empty.Media>
     <Empty.Title>{title}</Empty.Title>

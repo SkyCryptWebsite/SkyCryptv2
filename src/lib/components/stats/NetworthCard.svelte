@@ -23,7 +23,8 @@
       <p class="text-xs text-foreground/80 italic">{title} calculations by SkyHelper.</p>
     </div>
     <Separator />
-    <ul class="space-y-1 [&>li]:text-foreground [&>li]:capitalize [&>li>span]:text-foreground [&>li>span]:font-bold [&>li>span]:normal-case">
+    <ul
+      class="space-y-1 [&>li]:text-foreground [&>li]:capitalize [&>li>span]:font-bold [&>li>span]:text-foreground [&>li>span]:normal-case">
       {#each Object.entries(networth.types ?? {}) as [key, value], index (index)}
         <li>
           {key.replace(/_/g, " ")}:

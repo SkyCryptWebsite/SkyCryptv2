@@ -22,8 +22,18 @@
 
   let { gear, skill }: Props = $props();
 
-  const armor = $derived([gear?.armor?.pieces?.helmet, gear?.armor?.pieces?.chestplate, gear?.armor?.pieces?.leggings, gear?.armor?.pieces?.boots]);
-  const equipment = $derived([gear?.equipment?.necklace, gear?.equipment?.cloak, gear?.equipment?.belt, gear?.equipment?.gloves]);
+  const armor = $derived([
+    gear?.armor?.pieces?.helmet,
+    gear?.armor?.pieces?.chestplate,
+    gear?.armor?.pieces?.leggings,
+    gear?.armor?.pieces?.boots
+  ]);
+  const equipment = $derived([
+    gear?.equipment?.necklace,
+    gear?.equipment?.cloak,
+    gear?.equipment?.belt,
+    gear?.equipment?.gloves
+  ]);
   const tools = $derived(gear?.tools?.slice(0, 4) ?? []);
   const misc = $derived(gear?.misc?.slice(0, 2) ?? []);
   const toolEmptySlots = $derived(Array.from({ length: 4 }, () => toolSlots[skill]));

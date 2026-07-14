@@ -145,14 +145,27 @@
   });
 </script>
 
-<ScrollAreaPrimitive type="scroll" class="navbar group sticky! top-[calc(3rem+env(safe-area-inset-top,0))] z-30 overflow-clip" data-pinned={internalState.navbarPinned} bind:ref={navbarElement} orientation="horizontal">
+<ScrollAreaPrimitive
+  type="scroll"
+  class="navbar group sticky! top-[calc(3rem+env(safe-area-inset-top,0))] z-30 overflow-clip"
+  data-pinned={internalState.navbarPinned}
+  bind:ref={navbarElement}
+  orientation="horizontal">
   {#snippet viewportChildren()}
     <div class="mx-6 my-2 flex! flex-nowrap items-center gap-2 font-semibold whitespace-nowrap text-foreground/80">
       {#each filteredSectionOrderPreferences as section, index (index)}
         {const isActive = $derived(internalState.tabValue === section.name)}
-        <Button class="relative rounded-xl isolate text-inherit font-semibold motion-preset-focus motion-preset-slide-right px-2 py-3 motion-delay-[calc(sibling-index()*0.05s)] bg-transparent hover:bg-transparent text-base data-[active=true]:text-foreground " data-id={section.name} data-active={isActive} onclick={() => handleSectionClick(section.name)}>
+        <Button
+          class="relative isolate motion-preset-focus motion-preset-slide-right rounded-xl bg-transparent px-2 py-3 text-base font-semibold text-inherit motion-delay-[calc(sibling-index()*0.05s)] hover:bg-transparent data-[active=true]:text-foreground "
+          data-id={section.name}
+          data-active={isActive}
+          onclick={() => handleSectionClick(section.name)}>
           {#if isActive}
-            <div class="absolute inset-0 rounded-full bg-primary" in:send={{ key: "active-tab" }} out:receive={{ key: "active-tab" }}></div>
+            <div
+              class="absolute inset-0 rounded-full bg-primary"
+              in:send={{ key: "active-tab" }}
+              out:receive={{ key: "active-tab" }}>
+            </div>
           {/if}
           <span class="relative">
             {section.name?.replaceAll("_", " ")}
@@ -163,7 +176,9 @@
     <Separator class="bg-primary" orientation="horizontal" />
   {/snippet}
 
-  <ScrollArea.Scrollbar orientation="horizontal" class="z-10 flex h-0.5 w-full origin-center translate-y-[-0.44rem] touch-none transition-all duration-300 ease-out select-none group-hover:h-2 group-hover:-translate-y-1">
+  <ScrollArea.Scrollbar
+    orientation="horizontal"
+    class="z-10 flex h-0.5 w-full origin-center translate-y-[-0.44rem] touch-none transition-all duration-300 ease-out select-none group-hover:h-2 group-hover:-translate-y-1">
     <ScrollArea.Thumb class="rounded-full bg-primary" />
   </ScrollArea.Scrollbar>
 </ScrollAreaPrimitive>
@@ -173,7 +188,9 @@
 
   <div class="flex items-center justify-between">
     {#if previousSection}
-      <Button class="flex items-center justify-between text-lg" onclick={() => handleSectionClick(previousSection.name ?? filteredSectionOrderPreferences[0].name)}>
+      <Button
+        class="flex items-center justify-between text-lg"
+        onclick={() => handleSectionClick(previousSection.name ?? filteredSectionOrderPreferences[0].name)}>
         <ArrowBigLeft class="fill-foreground" />
         {previousSection.name.replaceAll("_", " ")}
       </Button>
@@ -181,7 +198,12 @@
       <div></div>
     {/if}
     {#if nextSection}
-      <Button class="flex items-center justify-between text-lg" onclick={() => handleSectionClick(nextSection.name ?? filteredSectionOrderPreferences[filteredSectionOrderPreferences.length - 1].name)}>
+      <Button
+        class="flex items-center justify-between text-lg"
+        onclick={() =>
+          handleSectionClick(
+            nextSection.name ?? filteredSectionOrderPreferences[filteredSectionOrderPreferences.length - 1].name
+          )}>
         {nextSection.name.replaceAll("_", " ")}
         <ArrowBigRight class="fill-foreground" />
       </Button>

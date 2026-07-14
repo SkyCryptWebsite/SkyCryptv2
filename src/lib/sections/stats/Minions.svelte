@@ -32,38 +32,66 @@
 
 <Section id="Minions" {order}>
   <div class="contents space-y-4">
-    <Item.Root variant="outline" class="[a]:hover:bg-foreground/10 w-fit rounded-full mx-auto hover:scale-95 [a]:transition-[scale,background-color] ease-out duration-150">
+    <Item.Root
+      variant="outline"
+      class="mx-auto w-fit rounded-full duration-150 ease-out hover:scale-95 [a]:transition-[scale,background-color] [a]:hover:bg-foreground/10">
       {#snippet child({ props })}
         <a href="https://minionah.com/" target="_blank" {...props}>
           <Item.Media>
             <Avatar.Root class="after:rounded-none after:border-none">
               <Avatar.Image src="/img/icons/minionah.avif" alt="MinionAH" class="rounded-none" />
-              <Avatar.Fallback class="bg-transparent border">MI</Avatar.Fallback>
+              <Avatar.Fallback class="border bg-transparent">MI</Avatar.Fallback>
             </Avatar.Root>
           </Item.Media>
           <Item.Content>
-            <Item.Title class="gap-1">Looking for a place to trade minions? Check out <span class="underline text-primary inline-flex items-start gap-0.5 flex-nowrap">MinionAH <ExternalLinkIcon class="size-3" /></span></Item.Title>
+            <Item.Title class="gap-1"
+              >Looking for a place to trade minions? Check out <span
+                class="inline-flex flex-nowrap items-start gap-0.5 text-primary underline"
+                >MinionAH <ExternalLinkIcon class="size-3" /></span
+              ></Item.Title>
           </Item.Content>
         </a>
       {/snippet}
     </Item.Root>
     {#if minions}
-      <div class="border p-4 rounded-xl">
+      <div class="rounded-xl border p-4">
         <div class="space-y-0.5">
           {#if minions.maxedTiers != null && minions.totalTiers != null}
-            <AdditionStat text="Unique Minions" data="{minions.maxedTiers} / {minions.totalTiers} ({calculatePercentage(minions.maxedTiers, minions.totalTiers, 0)}%)" maxed={minions.maxedTiers === minions.totalTiers} />
+            <AdditionStat
+              text="Unique Minions"
+              data="{minions.maxedTiers} / {minions.totalTiers} ({calculatePercentage(
+                minions.maxedTiers,
+                minions.totalTiers,
+                0
+              )}%)"
+              maxed={minions.maxedTiers === minions.totalTiers} />
           {/if}
           {#if minions.minionsSlots}
-            <AdditionStat text="Minion Slots" data={minions.minionsSlots.current ?? 0} subData="({minions.minionsSlots.next} to next slot)" maxed={minions.maxedTiers === minions.totalTiers} />
-            <AdditionStat text="Bonus Minion Slots" data="{minions.minionsSlots.bonusSlots} / 5" maxed={minions.minionsSlots.bonusSlots === 5} />
+            <AdditionStat
+              text="Minion Slots"
+              data={minions.minionsSlots.current ?? 0}
+              subData="({minions.minionsSlots.next} to next slot)"
+              maxed={minions.maxedTiers === minions.totalTiers} />
+            <AdditionStat
+              text="Bonus Minion Slots"
+              data="{minions.minionsSlots.bonusSlots} / 5"
+              maxed={minions.minionsSlots.bonusSlots === 5} />
           {/if}
           {#if minions.maxedMinions != null && minions.totalMinions != null}
-            <AdditionStat text="Maxed Minions" data="{minions.maxedMinions} / {minions.totalMinions}" maxed={minions.maxedMinions === minions.totalMinions} />
+            <AdditionStat
+              text="Maxed Minions"
+              data="{minions.maxedMinions} / {minions.totalMinions}"
+              maxed={minions.maxedMinions === minions.totalMinions} />
           {/if}
         </div>
       </div>
 
-      <SearchTabs tabs={categoryTabs} placeholder="Search minions" searchKeys={(minion) => [minion.name]} itemKey={(minion, index) => minion.name ?? index} noResultsLabel="No minions match your search.">
+      <SearchTabs
+        tabs={categoryTabs}
+        placeholder="Search minions"
+        searchKeys={(minion) => [minion.name]}
+        itemKey={(minion, index) => minion.name ?? index}
+        noResultsLabel="No minions match your search.">
         {#snippet tabHeader(value)}
           {const data = minions.minions?.[value]}
           {#if data}

@@ -6,6 +6,9 @@
   "trailingComma": "none",
   "bracketSameLine": true,
   "printWidth": 120,
+  "sortImports": {
+    "newlinesBetween": false
+  },
   "sortTailwindcss": {
     "stylesheet": "src/routes/layout.css",
     "functions": ["cn", "clsx", "payload"],
@@ -13,5 +16,15 @@
     "preserveWhitespace": false
   },
   "svelte": {},
-  "ignorePatterns": ["package-lock.json", "pnpm-lock.yaml", "yarn.lock", "bun.lock", "bun.lockb", "/static/", ".changeset/", "/drizzle/", "/src/routes/typeset.css"]
+  "ignorePatterns": [
+    "package-lock.json",
+    "pnpm-lock.yaml",
+    "yarn.lock",
+    "bun.lock",
+    "bun.lockb",
+    "/static/",
+    ".changeset/",
+    "/drizzle/",
+    "/src/routes/typeset.css"
+  ]
 }

@@ -3,11 +3,11 @@
   "version": "3.9.0-beta.5",
   "private": true,
   "license": "AGPL-3.0-only",
-  "type": "module",
   "repository": {
     "type": "git",
     "url": "https://github.com/SkyCryptWebsite/SkyCrypt-Frontend.git"
   },
+  "type": "module",
   "scripts": {
     "dev": "vite dev",
     "build": "vite build",
@@ -38,6 +38,13 @@
     "db:studio": "drizzle-kit studio",
     "auth:schema": "auth generate --config src/lib/server/auth.ts --output src/lib/server/db/schema/auth.schema.ts --yes",
     "update:shadcn": "pnpm dlx shadcn-svelte@latest update -a && prettier --write ./src/lib/components/ui && prettier --write ./src/lib/shared/utils.ts"
+  },
+  "dependencies": {
+    "@payloadcms/richtext-lexical": "^3.86.0",
+    "@sentry/sveltekit": "^10.65.0",
+    "culori": "^4.0.2",
+    "simple-git-hooks": "^2.13.1",
+    "takumi-js": "^2.1.1"
   },
   "devDependencies": {
     "@better-auth/api-key": "^1.6.23",
@@ -123,22 +130,15 @@
     "vitest-browser-svelte": "^3.0.0",
     "zod": "^4.4.3"
   },
-  "dependencies": {
-    "@payloadcms/richtext-lexical": "^3.86.0",
-    "@sentry/sveltekit": "^10.65.0",
-    "culori": "^4.0.2",
-    "simple-git-hooks": "^2.13.1",
-    "takumi-js": "^2.1.1"
-  },
-  "engines": {
-    "node": "^24",
-    "pnpm": "^11",
-    "deno": "forbidden, use node instead",
-    "npm": "forbidden, use pnpm instead",
-    "yarn": "forbidden, use pnpm instead",
-    "bun": "forbidden, use pnpm instead"
-  },
   "simple-git-hooks": {
     "commit-msg": "pnpm exec commitlint --edit $1"
+  },
+  "engines": {
+    "bun": "forbidden, use pnpm instead",
+    "deno": "forbidden, use node instead",
+    "node": "^24",
+    "npm": "forbidden, use pnpm instead",
+    "pnpm": "^11",
+    "yarn": "forbidden, use pnpm instead"
   }
 }

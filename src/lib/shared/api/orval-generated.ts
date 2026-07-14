@@ -1337,11 +1337,16 @@ export type getCombinedProfileStatsResponse500 = {
 export type getCombinedProfileStatsResponseSuccess = getCombinedProfileStatsResponse200 & {
   headers: Headers;
 };
-export type getCombinedProfileStatsResponseError = (getCombinedProfileStatsResponse401 | getCombinedProfileStatsResponse500) & {
+export type getCombinedProfileStatsResponseError = (
+  | getCombinedProfileStatsResponse401
+  | getCombinedProfileStatsResponse500
+) & {
   headers: Headers;
 };
 
-export type getCombinedProfileStatsResponse = getCombinedProfileStatsResponseSuccess | getCombinedProfileStatsResponseError;
+export type getCombinedProfileStatsResponse =
+  | getCombinedProfileStatsResponseSuccess
+  | getCombinedProfileStatsResponseError;
 
 export const getGetCombinedProfileStatsUrl = (uuid: string, profileId: string) => {
   return `/api/combined/${uuid}/${profileId}`;
@@ -1352,7 +1357,11 @@ export const getGetCombinedProfileStatsUrl = (uuid: string, profileId: string) =
  * Resource pack preferences supplied by cookie can affect rendered item texture URLs in the response.
  * @summary Get combined profile data
  */
-export const getCombinedProfileStats = async (uuid: string, profileId: string, options?: RequestInit): Promise<getCombinedProfileStatsResponse> => {
+export const getCombinedProfileStats = async (
+  uuid: string,
+  profileId: string,
+  options?: RequestInit
+): Promise<getCombinedProfileStatsResponse> => {
   return customFetch<getCombinedProfileStatsResponse>(getGetCombinedProfileStatsUrl(uuid, profileId), {
     ...options,
     method: "GET"
@@ -1382,11 +1391,17 @@ export type getSelectedProfileEmbedResponse500 = {
 export type getSelectedProfileEmbedResponseSuccess = getSelectedProfileEmbedResponse200 & {
   headers: Headers;
 };
-export type getSelectedProfileEmbedResponseError = (getSelectedProfileEmbedResponse400 | getSelectedProfileEmbedResponse401 | getSelectedProfileEmbedResponse500) & {
+export type getSelectedProfileEmbedResponseError = (
+  | getSelectedProfileEmbedResponse400
+  | getSelectedProfileEmbedResponse401
+  | getSelectedProfileEmbedResponse500
+) & {
   headers: Headers;
 };
 
-export type getSelectedProfileEmbedResponse = getSelectedProfileEmbedResponseSuccess | getSelectedProfileEmbedResponseError;
+export type getSelectedProfileEmbedResponse =
+  | getSelectedProfileEmbedResponseSuccess
+  | getSelectedProfileEmbedResponseError;
 
 export const getGetSelectedProfileEmbedUrl = (uuid: string) => {
   return `/api/embed/${uuid}`;
@@ -1397,7 +1412,10 @@ export const getGetSelectedProfileEmbedUrl = (uuid: string) => {
  * If Hypixel does not mark a selected profile, the first available profile is used.
  * @summary Get selected profile embed data
  */
-export const getSelectedProfileEmbed = async (uuid: string, options?: RequestInit): Promise<getSelectedProfileEmbedResponse> => {
+export const getSelectedProfileEmbed = async (
+  uuid: string,
+  options?: RequestInit
+): Promise<getSelectedProfileEmbedResponse> => {
   return customFetch<getSelectedProfileEmbedResponse>(getGetSelectedProfileEmbedUrl(uuid), {
     ...options,
     method: "GET"
@@ -1427,7 +1445,11 @@ export type getProfileEmbedResponse500 = {
 export type getProfileEmbedResponseSuccess = getProfileEmbedResponse200 & {
   headers: Headers;
 };
-export type getProfileEmbedResponseError = (getProfileEmbedResponse400 | getProfileEmbedResponse401 | getProfileEmbedResponse500) & {
+export type getProfileEmbedResponseError = (
+  | getProfileEmbedResponse400
+  | getProfileEmbedResponse401
+  | getProfileEmbedResponse500
+) & {
   headers: Headers;
 };
 
@@ -1442,7 +1464,11 @@ export const getGetProfileEmbedUrl = (uuid: string, profileId: string) => {
  * The player identifier can be a Minecraft UUID or username. The profile identifier can be a Hypixel profile UUID or profile cute name.
  * @summary Get profile embed data
  */
-export const getProfileEmbed = async (uuid: string, profileId: string, options?: RequestInit): Promise<getProfileEmbedResponse> => {
+export const getProfileEmbed = async (
+  uuid: string,
+  profileId: string,
+  options?: RequestInit
+): Promise<getProfileEmbedResponse> => {
   return customFetch<getProfileEmbedResponse>(getGetProfileEmbedUrl(uuid, profileId), {
     ...options,
     method: "GET"
@@ -1515,7 +1541,11 @@ export const getGetGardenStatsUrl = (uuid: string, profileId: string) => {
  * Returns Garden progression, visitors, crop milestones, composter data, plots, upgrades, and related Garden state for a specific SkyBlock profile.
  * @summary Get garden stats
  */
-export const getGardenStats = async (uuid: string, profileId: string, options?: RequestInit): Promise<getGardenStatsResponse> => {
+export const getGardenStats = async (
+  uuid: string,
+  profileId: string,
+  options?: RequestInit
+): Promise<getGardenStatsResponse> => {
   return customFetch<getGardenStatsResponse>(getGetGardenStatsUrl(uuid, profileId), {
     ...options,
     method: "GET"
@@ -1542,7 +1572,10 @@ export type renderHeadImageResponse500 = {
   status: 500;
 };
 
-export type renderHeadImageResponseSuccess = (renderHeadImageResponse200ApplicationJson | renderHeadImageResponse200ImagePng) & {
+export type renderHeadImageResponseSuccess = (
+  | renderHeadImageResponse200ApplicationJson
+  | renderHeadImageResponse200ImagePng
+) & {
   headers: Headers;
 };
 export type renderHeadImageResponseError = (renderHeadImageResponse400 | renderHeadImageResponse500) & {
@@ -1584,11 +1617,16 @@ export type searchProfileInventoryResponse500 = {
 export type searchProfileInventoryResponseSuccess = searchProfileInventoryResponse200 & {
   headers: Headers;
 };
-export type searchProfileInventoryResponseError = (searchProfileInventoryResponse401 | searchProfileInventoryResponse500) & {
+export type searchProfileInventoryResponseError = (
+  | searchProfileInventoryResponse401
+  | searchProfileInventoryResponse500
+) & {
   headers: Headers;
 };
 
-export type searchProfileInventoryResponse = searchProfileInventoryResponseSuccess | searchProfileInventoryResponseError;
+export type searchProfileInventoryResponse =
+  | searchProfileInventoryResponseSuccess
+  | searchProfileInventoryResponseError;
 
 export const getSearchProfileInventoryUrl = (uuid: string, profileId: string, searchParam: string) => {
   return `/api/inventory/search/${uuid}/${profileId}/${searchParam}`;
@@ -1599,7 +1637,12 @@ export const getSearchProfileInventoryUrl = (uuid: string, profileId: string, se
  * Call GET /api/inventory/{uuid}/{profileId} first to refresh the short-lived cache for the same player, profile, and resource pack preferences. At most 45 matching items are returned.
  * @summary Search cached profile inventory
  */
-export const searchProfileInventory = async (uuid: string, profileId: string, searchParam: string, options?: RequestInit): Promise<searchProfileInventoryResponse> => {
+export const searchProfileInventory = async (
+  uuid: string,
+  profileId: string,
+  searchParam: string,
+  options?: RequestInit
+): Promise<searchProfileInventoryResponse> => {
   return customFetch<searchProfileInventoryResponse>(getSearchProfileInventoryUrl(uuid, profileId, searchParam), {
     ...options,
     method: "GET"
@@ -1639,7 +1682,11 @@ export const getGetProfileInventoryUrl = (uuid: string, profileId: string) => {
  * This endpoint refreshes the short-lived cache used by the inventory search endpoint. Resource pack preferences supplied by cookie can affect rendered item texture URLs in the response.
  * @summary Get profile inventory
  */
-export const getProfileInventory = async (uuid: string, profileId: string, options?: RequestInit): Promise<getProfileInventoryResponse> => {
+export const getProfileInventory = async (
+  uuid: string,
+  profileId: string,
+  options?: RequestInit
+): Promise<getProfileInventoryResponse> => {
   return customFetch<getProfileInventoryResponse>(getGetProfileInventoryUrl(uuid, profileId), {
     ...options,
     method: "GET"
@@ -1671,10 +1718,17 @@ export type renderItemImageResponse500 = {
   status: 500;
 };
 
-export type renderItemImageResponseSuccess = (renderItemImageResponse200ApplicationJson | renderItemImageResponse200ImagePng) & {
+export type renderItemImageResponseSuccess = (
+  | renderItemImageResponse200ApplicationJson
+  | renderItemImageResponse200ImagePng
+) & {
   headers: Headers;
 };
-export type renderItemImageResponseError = (renderItemImageResponse302 | renderItemImageResponse400 | renderItemImageResponse500) & {
+export type renderItemImageResponseError = (
+  | renderItemImageResponse302
+  | renderItemImageResponse400
+  | renderItemImageResponse500
+) & {
   headers: Headers;
 };
 
@@ -1755,14 +1809,22 @@ export type renderLeatherArmorImageResponse500 = {
   status: 500;
 };
 
-export type renderLeatherArmorImageResponseSuccess = (renderLeatherArmorImageResponse200ApplicationJson | renderLeatherArmorImageResponse200ImagePng) & {
+export type renderLeatherArmorImageResponseSuccess = (
+  | renderLeatherArmorImageResponse200ApplicationJson
+  | renderLeatherArmorImageResponse200ImagePng
+) & {
   headers: Headers;
 };
-export type renderLeatherArmorImageResponseError = (renderLeatherArmorImageResponse400 | renderLeatherArmorImageResponse500) & {
+export type renderLeatherArmorImageResponseError = (
+  | renderLeatherArmorImageResponse400
+  | renderLeatherArmorImageResponse500
+) & {
   headers: Headers;
 };
 
-export type renderLeatherArmorImageResponse = renderLeatherArmorImageResponseSuccess | renderLeatherArmorImageResponseError;
+export type renderLeatherArmorImageResponse =
+  | renderLeatherArmorImageResponseSuccess
+  | renderLeatherArmorImageResponseError;
 
 export const getRenderLeatherArmorImageUrl = (type: string, color: string) => {
   return `/api/leather/${type}/${color}`;
@@ -1772,7 +1834,11 @@ export const getRenderLeatherArmorImageUrl = (type: string, color: string) => {
  * Renders a dyed leather armor piece as PNG bytes for the requested armor piece and color.
  * @summary Render leather armor
  */
-export const renderLeatherArmorImage = async (type: string, color: string, options?: RequestInit): Promise<renderLeatherArmorImageResponse> => {
+export const renderLeatherArmorImage = async (
+  type: string,
+  color: string,
+  options?: RequestInit
+): Promise<renderLeatherArmorImageResponse> => {
   return customFetch<renderLeatherArmorImageResponse>(getRenderLeatherArmorImageUrl(type, color), {
     ...options,
     method: "GET"
@@ -1802,7 +1868,11 @@ export type getProfileNetworthResponse500 = {
 export type getProfileNetworthResponseSuccess = getProfileNetworthResponse200 & {
   headers: Headers;
 };
-export type getProfileNetworthResponseError = (getProfileNetworthResponse400 | getProfileNetworthResponse401 | getProfileNetworthResponse500) & {
+export type getProfileNetworthResponseError = (
+  | getProfileNetworthResponse400
+  | getProfileNetworthResponse401
+  | getProfileNetworthResponse500
+) & {
   headers: Headers;
 };
 
@@ -1817,7 +1887,11 @@ export const getGetProfileNetworthUrl = (uuid: string, profileId: string) => {
  * The player identifier can be a Minecraft UUID or username. The profile identifier can be a Hypixel profile UUID or profile cute name.
  * @summary Get profile networth
  */
-export const getProfileNetworth = async (uuid: string, profileId: string, options?: RequestInit): Promise<getProfileNetworthResponse> => {
+export const getProfileNetworth = async (
+  uuid: string,
+  profileId: string,
+  options?: RequestInit
+): Promise<getProfileNetworthResponse> => {
   return customFetch<getProfileNetworthResponse>(getGetProfileNetworthUrl(uuid, profileId), {
     ...options,
     method: "GET"
@@ -1857,7 +1931,11 @@ export const getGetPlayerStatsUrl = (uuid: string, profileId: string) => {
  * The player identifier can be a Minecraft UUID or username. The profile identifier can be a Hypixel profile UUID or profile cute name.
  * @summary Get raw player stats
  */
-export const getPlayerStats = async (uuid: string, profileId: string, options?: RequestInit): Promise<getPlayerStatsResponse> => {
+export const getPlayerStats = async (
+  uuid: string,
+  profileId: string,
+  options?: RequestInit
+): Promise<getPlayerStatsResponse> => {
   return customFetch<getPlayerStatsResponse>(getGetPlayerStatsUrl(uuid, profileId), {
     ...options,
     method: "GET"
@@ -1884,7 +1962,10 @@ export type renderPotionImageResponse500 = {
   status: 500;
 };
 
-export type renderPotionImageResponseSuccess = (renderPotionImageResponse200ApplicationJson | renderPotionImageResponse200ImagePng) & {
+export type renderPotionImageResponseSuccess = (
+  | renderPotionImageResponse200ApplicationJson
+  | renderPotionImageResponse200ImagePng
+) & {
   headers: Headers;
 };
 export type renderPotionImageResponseError = (renderPotionImageResponse400 | renderPotionImageResponse500) & {
@@ -1901,7 +1982,11 @@ export const getRenderPotionImageUrl = (type: string, color: string) => {
  * Renders a potion image for the requested potion type and color.
  * @summary Render a potion
  */
-export const renderPotionImage = async (type: string, color: string, options?: RequestInit): Promise<renderPotionImageResponse> => {
+export const renderPotionImage = async (
+  type: string,
+  color: string,
+  options?: RequestInit
+): Promise<renderPotionImageResponse> => {
   return customFetch<renderPotionImageResponse>(getRenderPotionImageUrl(type, color), {
     ...options,
     method: "GET"
@@ -1952,6 +2037,7 @@ export type getSourceInfoResponse200 = {
 export type getSourceInfoResponseSuccess = getSourceInfoResponse200 & {
   headers: Headers;
 };
+
 export type getSourceInfoResponse = getSourceInfoResponseSuccess;
 
 export const getGetSourceInfoUrl = () => {
@@ -1987,11 +2073,16 @@ export type getSelectedProfileStatsResponse500 = {
 export type getSelectedProfileStatsResponseSuccess = getSelectedProfileStatsResponse200 & {
   headers: Headers;
 };
-export type getSelectedProfileStatsResponseError = (getSelectedProfileStatsResponse401 | getSelectedProfileStatsResponse500) & {
+export type getSelectedProfileStatsResponseError = (
+  | getSelectedProfileStatsResponse401
+  | getSelectedProfileStatsResponse500
+) & {
   headers: Headers;
 };
 
-export type getSelectedProfileStatsResponse = getSelectedProfileStatsResponseSuccess | getSelectedProfileStatsResponseError;
+export type getSelectedProfileStatsResponse =
+  | getSelectedProfileStatsResponseSuccess
+  | getSelectedProfileStatsResponseError;
 
 export const getGetSelectedProfileStatsUrl = (uuid: string) => {
   return `/api/stats/${uuid}`;
@@ -2002,7 +2093,10 @@ export const getGetSelectedProfileStatsUrl = (uuid: string) => {
  * If Hypixel does not mark a selected profile, the first available profile is used.
  * @summary Get selected profile stats
  */
-export const getSelectedProfileStats = async (uuid: string, options?: RequestInit): Promise<getSelectedProfileStatsResponse> => {
+export const getSelectedProfileStats = async (
+  uuid: string,
+  options?: RequestInit
+): Promise<getSelectedProfileStatsResponse> => {
   return customFetch<getSelectedProfileStatsResponse>(getGetSelectedProfileStatsUrl(uuid), {
     ...options,
     method: "GET"
@@ -2042,7 +2136,11 @@ export const getGetProfileStatsUrl = (uuid: string, profileId: string) => {
  * The player identifier can be a Minecraft UUID or username. The profile identifier can be a Hypixel profile UUID or profile cute name.
  * @summary Get profile stats
  */
-export const getProfileStats = async (uuid: string, profileId: string, options?: RequestInit): Promise<getProfileStatsResponse> => {
+export const getProfileStats = async (
+  uuid: string,
+  profileId: string,
+  options?: RequestInit
+): Promise<getProfileStatsResponse> => {
   return customFetch<getProfileStatsResponse>(getGetProfileStatsUrl(uuid, profileId), {
     ...options,
     method: "GET"
@@ -2076,7 +2174,10 @@ export const getResolveUsernameByUuidUrl = (uuid: string) => {
  * Resolves a Minecraft UUID to the current username and display name known to SkyCrypt.
  * @summary Resolve username by UUID
  */
-export const resolveUsernameByUuid = async (uuid: string, options?: RequestInit): Promise<resolveUsernameByUuidResponse> => {
+export const resolveUsernameByUuid = async (
+  uuid: string,
+  options?: RequestInit
+): Promise<resolveUsernameByUuidResponse> => {
   return customFetch<resolveUsernameByUuidResponse>(getResolveUsernameByUuidUrl(uuid), {
     ...options,
     method: "GET"
@@ -2101,7 +2202,10 @@ export type resolveUuidByUsernameResponse401 = {
 export type resolveUuidByUsernameResponseSuccess = resolveUuidByUsernameResponse200 & {
   headers: Headers;
 };
-export type resolveUuidByUsernameResponseError = (resolveUuidByUsernameResponse400 | resolveUuidByUsernameResponse401) & {
+export type resolveUuidByUsernameResponseError = (
+  | resolveUuidByUsernameResponse400
+  | resolveUuidByUsernameResponse401
+) & {
   headers: Headers;
 };
 
@@ -2115,7 +2219,10 @@ export const getResolveUuidByUsernameUrl = (username: string) => {
  * Resolves a Minecraft username to its UUID and returns the normalized player identity payload.
  * @summary Resolve UUID by username
  */
-export const resolveUuidByUsername = async (username: string, options?: RequestInit): Promise<resolveUuidByUsernameResponse> => {
+export const resolveUuidByUsername = async (
+  username: string,
+  options?: RequestInit
+): Promise<resolveUuidByUsernameResponse> => {
   return customFetch<resolveUuidByUsernameResponse>(getResolveUuidByUsernameUrl(username), {
     ...options,
     method: "GET"

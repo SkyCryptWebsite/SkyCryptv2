@@ -31,7 +31,7 @@
     </div>
   {/if}
   {#if showSectionTitle}
-    <Separator class="my-4 data-[orientation=horizontal]:h-1 w-full bg-primary" />
+    <Separator class="my-4 w-full bg-primary data-[orientation=horizontal]:h-1" />
   {/if}
 
   {@render children?.()}

@@ -38,7 +38,10 @@
   function handleTabChange(value: string) {
     openTab = value;
 
-    if (internalState.itemContentSpecial && (value === "Search" || value === "Backpack" || value === "Museum" || value === "Sacks")) {
+    if (
+      internalState.itemContentSpecial &&
+      (value === "Search" || value === "Backpack" || value === "Museum" || value === "Sacks")
+    ) {
       console.warn("Item content special should not be set for search, backpack, sacks, or museum tabs.");
       internalState.itemContentSpecial = undefined;
     }
@@ -47,44 +50,65 @@
 
 <Section id="Inventory" {order} class="min-h-150">
   <svelte:boundary>
-    {const inventories = $derived<ModelsInventory[]>(uuid && profileId ? await getProfileInventory({ uuid, profileId }) : [])}
-    {const selectedInventory = $derived(openTab ? inventories.find((inventory) => inventory.name === openTab) : undefined)}
+    {const inventories = $derived<ModelsInventory[]>(
+      uuid && profileId ? await getProfileInventory({ uuid, profileId }) : []
+    )}
+    {const selectedInventory = $derived(
+      openTab ? inventories.find((inventory) => inventory.name === openTab) : undefined
+    )}
     {const selectedTabName = $derived(selectedInventory?.name ?? inventories[0]?.name ?? "")}
     {const currentInventory = $derived(selectedInventory ?? inventories[0])}
-    {const usesNestedInventoryView = $derived(selectedTabName === "Backpack" || selectedTabName === "Museum" || selectedTabName === "Sacks")}
+    {const usesNestedInventoryView = $derived(
+      selectedTabName === "Backpack" || selectedTabName === "Museum" || selectedTabName === "Sacks"
+    )}
     {#snippet pending()}
-      <div class="p-4 rounded-xl border flex items-center-safe gap-1">
+      <div class="flex items-center-safe gap-1 rounded-xl border p-4">
         <Spinner />
         <span>Loading Inventory Data</span>
       </div>
     {/snippet}
     {#snippet failed(err, reset)}
-      <Notice type="error" title="Failed to load inventory data" error={err instanceof Error ? err.message : String(err)} retry={reset} />
+      <Notice
+        type="error"
+        title="Failed to load inventory data"
+        error={err instanceof Error ? err.message : String(err)}
+        retry={reset} />
     {/snippet}
     {#if inventories.length && currentInventory}
-      <Tabs.Root bind:value={() => selectedTabName, handleTabChange} class="group/tabs relative mb-0 flex flex-col rounded-xl border md:flex-row" orientation={tabsOrientation}>
+      <Tabs.Root
+        bind:value={() => selectedTabName, handleTabChange}
+        class="group/tabs relative mb-0 flex flex-col rounded-xl border md:flex-row"
+        orientation={tabsOrientation}>
         {#if isMobile.current}
           <ScrollItems>
-            <Tabs.List class="relative mx-auto flex h-auto! w-fit items-center justify-center gap-1 overflow-clip rounded-xl p-2 bg-transparent text-base">
+            <Tabs.List
+              class="relative mx-auto flex h-auto! w-fit items-center justify-center gap-1 overflow-clip rounded-xl bg-transparent p-2 text-base">
               {@render inventoryTabItems(inventories, selectedTabName)}
             </Tabs.List>
           </ScrollItems>
           <Separator orientation="horizontal" />
         {:else}
-          <div class="@container-scroll flex h-fit relative w-full md:sticky md:top-1/4 md:w-fit">
-            <Tabs.List class="bg-transparent rounded-xl @stuck-top:bg-background/50 h-fit transition-colors duration-150">
-              <ScrollArea class="h-144" orientation="vertical" type="auto" viewportClasses="scroll-fade-track-y rounded-xl rounded-br-none">
+          <div class="@container-scroll relative flex h-fit w-full md:sticky md:top-1/4 md:w-fit">
+            <Tabs.List
+              class="h-fit rounded-xl bg-transparent transition-colors duration-150 @stuck-top:bg-background/50">
+              <ScrollArea
+                class="h-144"
+                orientation="vertical"
+                type="auto"
+                viewportClasses="rounded-xl rounded-br-none scroll-fade-track-y">
                 <div class="flex flex-col gap-3 px-4 py-4">
                   {@render inventoryTabItems(inventories, selectedTabName)}
                 </div>
-                <div class="pointer-events-none sticky -bottom-1 z-10 -mt-36 h-36 w-full bg-linear-to-t from-background/80 to-transparent blur-xs scroll-fade-y"></div>
+                <div
+                  class="pointer-events-none sticky -bottom-1 z-10 -mt-36 h-36 w-full bg-linear-to-t from-background/80 to-transparent scroll-fade-y blur-xs">
+                </div>
               </ScrollArea>
             </Tabs.List>
             <Separator orientation="vertical" class="h-144!" />
           </div>
         {/if}
 
-        <Tabs.Content class="mx-auto sm:my-4 sm:py-4 w-full p-2 sm:p-0 md:my-0 md:px-4" value={selectedTabName}>
+        <Tabs.Content class="mx-auto w-full p-2 sm:my-4 sm:p-0 sm:py-4 md:my-0 md:px-4" value={selectedTabName}>
           {#if selectedTabName === "Search"}
             {#if uuid && profileId}
               <InventorySearch bind:search={searchValue} {uuid} {profileId} {itemSnippet} />
@@ -92,7 +116,11 @@
           {:else if usesNestedInventoryView}
             {@render multipleInventorySection(currentInventory?.items ?? [], currentInventory)}
           {:else}
-            <InventoryGrid inventoryId={selectedTabName} gap={currentInventory.separatorAfter ?? 45} {itemSnippet} items={currentInventory.items ?? []} />
+            <InventoryGrid
+              inventoryId={selectedTabName}
+              gap={currentInventory.separatorAfter ?? 45}
+              {itemSnippet}
+              items={currentInventory.items ?? []} />
           {/if}
         </Tabs.Content>
       </Tabs.Root>
@@ -102,12 +130,22 @@
 
 {#snippet inventoryTabItems(inventories: ModelsInventory[], selectedTabName: string)}
   {#each inventories as tabItem (tabItem.name)}
-    <Tabs.Trigger value={tabItem.name || ""} class={cn("relative flex items-center-safe gap-2 p-2 data-[state=active]:bg-transparent! isolate capitalize whitespace-nowrap", !isMobile.current && "group-data-vertical/tabs:rounded-full group-data-vertical/tabs:border-border")} data-active={selectedTabName === tabItem.name}>
+    <Tabs.Trigger
+      value={tabItem.name || ""}
+      class={cn(
+        "relative isolate flex items-center-safe gap-2 p-2 whitespace-nowrap capitalize data-[state=active]:bg-transparent!",
+        !isMobile.current && "group-data-vertical/tabs:rounded-full group-data-vertical/tabs:border-border"
+      )}
+      data-active={selectedTabName === tabItem.name}>
       {#if selectedTabName === tabItem.name}
-        <div class="absolute inset-0 rounded-full bg-primary opacity-40" in:send={{ key: "active-tab" }} out:receive={{ key: "active-tab" }}></div>
+        <div
+          class="absolute inset-0 rounded-full bg-primary opacity-40"
+          in:send={{ key: "active-tab" }}
+          out:receive={{ key: "active-tab" }}>
+        </div>
       {/if}
       <Avatar.Root class="size-8 after:rounded-none after:border-none">
-        <Avatar.Image loading="lazy" src={tabItem.texture} class="size-8 object-contain rounded-none" />
+        <Avatar.Image loading="lazy" src={tabItem.texture} class="size-8 rounded-none object-contain" />
         <Avatar.Fallback class="bg-transparent">
           <Image class="size-8" />
         </Avatar.Fallback>
@@ -131,14 +169,16 @@
 
 {#snippet multipleInventorySection(items: ModelsStrippedItem[], currentInventory: ModelsInventory)}
   <Tabs.Root value={currentInventory?.name}>
-    <Tabs.List class="grid grid-cols-[repeat(9,minmax(1.875rem,4.875rem))] place-content-center gap-1 @md:gap-1.5 @xl:gap-2">
+    <Tabs.List
+      class="grid grid-cols-[repeat(9,minmax(1.875rem,4.875rem))] place-content-center gap-1 @md:gap-1.5 @xl:gap-2">
       {#if items?.length}
         {#each items as item, index (index)}
           <Tabs.Trigger value={item.texture_path ? index.toString() : "undefined"} class="group">
             {#snippet child({ props })}
               <div {...props}>
                 {#if item.texture_path}
-                  <div class="relative flex aspect-square items-center justify-center rounded-xl border overflow-clip group-data-[state=active]:bg-foreground/10 group-data-[state=inactive]:bg-foreground/5">
+                  <div
+                    class="relative flex aspect-square items-center justify-center overflow-clip rounded-xl border group-data-[state=active]:bg-foreground/10 group-data-[state=inactive]:bg-foreground/5">
                     {@render itemSnippet(item)}
                   </div>
                 {:else}
@@ -155,7 +195,7 @@
       {#each items as item, index (index)}
         <Tabs.Content value={index.toString()}>
           <div class="grid place-content-center gap-1 @md:gap-1.5 @xl:gap-2" {@attach animateObfuscatedText}>
-            <div class="rounded-xl my-4 border bg-background/50 p-4">
+            <div class="my-4 rounded-xl border bg-background/50 p-4">
               {#if item?.lore}
                 {#each item?.lore as lore, index (index)}
                   {@html renderLore(lore)}
@@ -163,7 +203,8 @@
               {/if}
             </div>
           </div>
-          <div class="grid grid-cols-[repeat(9,minmax(1.875rem,4.875rem))] place-content-center gap-1 @md:gap-1.5 @xl:gap-2">
+          <div
+            class="grid grid-cols-[repeat(9,minmax(1.875rem,4.875rem))] place-content-center gap-1 @md:gap-1.5 @xl:gap-2">
             {@render gap()}
             {#if item?.containsItems}
               {#each item.containsItems as containedItem, index2 (index2)}
@@ -174,7 +215,8 @@
                 {/if}
                 <Tabs.Content value={index.toString()}>
                   {#if containedItem.texture_path}
-                    <div class="relative flex aspect-square items-center justify-center rounded-xl border overflow-clip bg-foreground/5">
+                    <div
+                      class="relative flex aspect-square items-center justify-center overflow-clip rounded-xl border bg-foreground/5">
                       {@render itemSnippet(containedItem)}
                     </div>
                   {:else}

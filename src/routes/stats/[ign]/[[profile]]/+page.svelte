@@ -15,7 +15,11 @@
 
   const preferences = getPreferences();
   const internalState = getInternalState();
-  const profile = $derived(page.params.profile ? await getProfileStats({ uuid: page.params.ign || "", profileId: page.params.profile }) : await getSelectedProfileStats({ uuid: page.params.ign || "" }));
+  const profile = $derived(
+    page.params.profile
+      ? await getProfileStats({ uuid: page.params.ign || "", profileId: page.params.profile })
+      : await getSelectedProfileStats({ uuid: page.params.ign || "" })
+  );
 
   $effect.pre(() => {
     const hash = page.url.hash;
@@ -46,7 +50,7 @@
   <svelte:boundary>
     {#snippet pending()}
       <div class="flex h-screen items-center justify-center">
-        <div class="rounded-xl bg-foreground/5 p-6 glass">
+        <div class="rounded-xl glass bg-foreground/5 p-6">
           <div class="flex items-center gap-2">
             <LoaderCircle class="size-5 animate-spin text-muted-foreground" />
             <span class="font-semibold text-foreground/80">Loading profile...</span>

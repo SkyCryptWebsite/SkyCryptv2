@@ -2,9 +2,21 @@
   import { cn, type WithElementRef } from "$utils.js";
   import type { HTMLAttributes } from "svelte/elements";
 
-  let { ref = $bindable(null), class: className, children, ...restProps }: WithElementRef<HTMLAttributes<HTMLParagraphElement>> = $props();
+  let {
+    ref = $bindable(null),
+    class: className,
+    children,
+    ...restProps
+  }: WithElementRef<HTMLAttributes<HTMLParagraphElement>> = $props();
 </script>
 
-<p bind:this={ref} data-slot="item-description" class={cn("text-muted-foreground text-left text-sm [&>a:hover]:text-primary line-clamp-2 font-normal [&>a]:underline [&>a]:underline-offset-4", className)} {...restProps}>
+<p
+  bind:this={ref}
+  data-slot="item-description"
+  class={cn(
+    "line-clamp-2 text-left text-sm font-normal text-muted-foreground [&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary",
+    className
+  )}
+  {...restProps}>
   {@render children?.()}
 </p>

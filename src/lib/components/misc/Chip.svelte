@@ -36,7 +36,15 @@
     tooltipContent?: string;
   };
 
-  let { animationOptions = { animate: false }, image, class: classNames, children: propsChildren, progress, tooltip, tooltipContent }: Props = $props();
+  let {
+    animationOptions = { animate: false },
+    image,
+    class: classNames,
+    children: propsChildren,
+    progress,
+    tooltip,
+    tooltipContent
+  }: Props = $props();
 
   let targetNode = $state<HTMLDivElement>()!;
   let hasBeenInViewport = $state(false);
@@ -58,7 +66,8 @@
   onclick={() => (internalState.content = tooltip)}
   tether={genericTooltipTether}
   payload={{
-    class: "z-50 performance:bg-popover space-y-2 max-w-md rounded-xl bg-transparent glass border glass-bg-popover p-4 break-normal text-sm wrap-break-word whitespace-normal!",
+    class:
+      "z-50 max-w-md space-y-2 rounded-xl border glass bg-transparent p-4 text-sm break-normal wrap-break-word whitespace-normal! glass-bg-popover performance:bg-popover",
     sideOffset: 6,
     side: "top",
     align: "center",
@@ -67,12 +76,27 @@
     showTooltip: tooltip != undefined || tooltipContent != undefined
   }}>
   {#snippet child({ props })}
-    <div {...props} bind:this={targetNode} in:fade={{ duration: animationOptions.animate ? 300 : 0, delay: animationOptions.animate ? 25 * (animationOptions.index + 1) : 0, easing: cubicOut }} out:fade={{ duration: animationOptions.animate ? 300 : 0, delay: animationOptions.animate ? 25 * (animationOptions.amountOfItems - animationOptions.index) : 0, easing: cubicOut }}>
+    <div
+      {...props}
+      bind:this={targetNode}
+      in:fade={{
+        duration: animationOptions.animate ? 300 : 0,
+        delay: animationOptions.animate ? 25 * (animationOptions.index + 1) : 0,
+        easing: cubicOut
+      }}
+      out:fade={{
+        duration: animationOptions.animate ? 300 : 0,
+        delay: animationOptions.animate ? 25 * (animationOptions.amountOfItems - animationOptions.index) : 0,
+        easing: cubicOut
+      }}>
       <div class="flex items-center gap-2 px-2">
         {#if image}
           {#if hasBeenInViewport}
-            <Avatar.Root class="aspect-square size-12 after:border-none rounded-none">
-              <Avatar.Image loading="lazy" src={image.src} class={cn("size-full rounded-none object-contain [image-rendering:pixelated]", image.class)} />
+            <Avatar.Root class="aspect-square size-12 rounded-none after:border-none">
+              <Avatar.Image
+                loading="lazy"
+                src={image.src}
+                class={cn("size-full rounded-none object-contain [image-rendering:pixelated]", image.class)} />
               <Avatar.Fallback>
                 <Image class="size-full" />
               </Avatar.Fallback>

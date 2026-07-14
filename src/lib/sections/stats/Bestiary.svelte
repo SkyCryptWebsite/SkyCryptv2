@@ -27,16 +27,34 @@
 <Section id="Bestiary" {order}>
   {#if bestiary}
     <div class="contents space-y-4">
-      <div class="border p-4 rounded-xl">
+      <div class="rounded-xl border p-4">
         <div class="space-y-0.5">
-          <AdditionStat text="Bestiary Level" data="{bestiary.level} / {bestiary.maxLevel}" maxed={bestiary.level === bestiary.maxLevel} />
-          <AdditionStat text="Families Unlocked" data="{bestiary.familiesUnlocked} / {bestiary.totalFamilies}" maxed={bestiary.familiesUnlocked === bestiary.totalFamilies} />
-          <AdditionStat text="Families Completed" data="{bestiary.familiesCompleted} / {bestiary.totalFamilies}" maxed={bestiary.familiesCompleted === bestiary.totalFamilies} />
-          <AdditionStat text="Families Tiers" data="{bestiary.familyTiers} / {bestiary.maxFamilyTiers}" maxed={bestiary.familyTiers === bestiary.maxFamilyTiers} />
+          <AdditionStat
+            text="Bestiary Level"
+            data="{bestiary.level} / {bestiary.maxLevel}"
+            maxed={bestiary.level === bestiary.maxLevel} />
+          <AdditionStat
+            text="Families Unlocked"
+            data="{bestiary.familiesUnlocked} / {bestiary.totalFamilies}"
+            maxed={bestiary.familiesUnlocked === bestiary.totalFamilies} />
+          <AdditionStat
+            text="Families Completed"
+            data="{bestiary.familiesCompleted} / {bestiary.totalFamilies}"
+            maxed={bestiary.familiesCompleted === bestiary.totalFamilies} />
+          <AdditionStat
+            text="Families Tiers"
+            data="{bestiary.familyTiers} / {bestiary.maxFamilyTiers}"
+            maxed={bestiary.familyTiers === bestiary.maxFamilyTiers} />
         </div>
       </div>
 
-      <SearchTabs tabs={categoryTabs} orientation="vertical" placeholder="Search mobs" searchKeys={(mob) => [mob.name]} itemKey={(mob, index) => mob.name ?? index} noResultsLabel="No mobs match your search.">
+      <SearchTabs
+        tabs={categoryTabs}
+        orientation="vertical"
+        placeholder="Search mobs"
+        searchKeys={(mob) => [mob.name]}
+        itemKey={(mob, index) => mob.name ?? index}
+        noResultsLabel="No mobs match your search.">
         {#snippet tabHeader(value)}
           {const data = bestiary.categories?.[value]}
           {#if data}

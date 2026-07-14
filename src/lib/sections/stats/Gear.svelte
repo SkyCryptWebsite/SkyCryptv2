@@ -34,9 +34,9 @@
   });
 </script>
 
-<Section id="Gear" {order} class="space-y-4 contents">
+<Section id="Gear" {order} class="contents space-y-4">
   {#if armor && armor.armor}
-    <div class="border rounded-xl p-4">
+    <div class="rounded-xl border p-4">
       <SectionSubtitle>Armor</SectionSubtitle>
       {#if armor && armor.armor}
         {#if armor.armor.length > 0 && !armor.armor.every((piece) => !piece.display_name)}
@@ -70,7 +70,7 @@
   {/if}
 
   {#if equipment}
-    <div class="border rounded-xl p-4">
+    <div class="rounded-xl border p-4">
       <SectionSubtitle>Equipment</SectionSubtitle>
       {#if equipment.stats}
         <Bonus stats={equipment.stats} />
@@ -82,30 +82,39 @@
           {/each}
         </ScrollAreaItems>
       {:else}
-        <EmptyStat title="No Equipment" description="This player has no equipment equipped" icon={ShieldIcon} class="mt-2" />
+        <EmptyStat
+          title="No Equipment"
+          description="This player has no equipment equipped"
+          icon={ShieldIcon}
+          class="mt-2" />
       {/if}
     </div>
   {/if}
 
   {#if loadouts.length > 0}
-    <div class="border rounded-xl p-4 space-y-4">
+    <div class="space-y-4 rounded-xl border p-4">
       <SectionSubtitle>Loadouts</SectionSubtitle>
       <Loadouts {loadouts} />
     </div>
   {/if}
 
   {#if wardrobe && wardrobe.length > 0}
-    <div class="border rounded-xl p-4">
+    <div class="rounded-xl border p-4">
       <SectionSubtitle>Wardrobe</SectionSubtitle>
       <div class="max-w-full">
-        <ScrollAreaItems class="relative w-full" viewportClasses="scroll-fade-track-x min-h-86" orientation="horizontal">
+        <ScrollAreaItems
+          class="relative w-full"
+          viewportClasses="min-h-86 scroll-fade-track-x"
+          orientation="horizontal">
           <div class="relative flex flex-row gap-6 md:gap-3">
             {#each firstWardrobeItems as _, i (i)}
               <div class="min-h-18 min-w-18">
                 <Wardrobe wardrobeItems={wardrobe[i]} />
               </div>
             {/each}
-            <div class="pointer-events-none sticky h-82 -right-2 z-10 -ml-42 w-36 self-stretch bg-linear-to-l from-background/80 to-transparent blur-xs scroll-fade-x md:-ml-39"></div>
+            <div
+              class="pointer-events-none sticky -right-2 z-10 -ml-42 h-82 w-36 self-stretch bg-linear-to-l from-background/80 to-transparent scroll-fade-x blur-xs md:-ml-39">
+            </div>
           </div>
         </ScrollAreaItems>
       </div>
@@ -113,17 +122,22 @@
   {/if}
 
   {#if equipmentWardrobe && equipmentWardrobe.length > 0}
-    <div class="border rounded-xl p-4">
+    <div class="rounded-xl border p-4">
       <SectionSubtitle>Equipment Wardrobe</SectionSubtitle>
       <div class="max-w-full">
-        <ScrollAreaItems class="relative w-full" viewportClasses="scroll-fade-track-x min-h-86" orientation="horizontal">
+        <ScrollAreaItems
+          class="relative w-full"
+          viewportClasses="min-h-86 scroll-fade-track-x"
+          orientation="horizontal">
           <div class="relative flex flex-row gap-6 md:gap-3">
             {#each firstEquipmentWardrobeItems as _, i (i)}
               <div class="min-h-18 min-w-18">
                 <Wardrobe wardrobeItems={equipmentWardrobe[i]} kind="equipment" />
               </div>
             {/each}
-            <div class="pointer-events-none sticky h-82 -right-2 z-10 -ml-42 w-36 self-stretch bg-linear-to-l from-background/80 to-transparent blur-xs scroll-fade-x md:-ml-39"></div>
+            <div
+              class="pointer-events-none sticky -right-2 z-10 -ml-42 h-82 w-36 self-stretch bg-linear-to-l from-background/80 to-transparent scroll-fade-x blur-xs md:-ml-39">
+            </div>
           </div>
         </ScrollAreaItems>
       </div>
@@ -131,7 +145,7 @@
   {/if}
 
   {#if weapons}
-    <div class="border rounded-xl p-4">
+    <div class="rounded-xl border p-4">
       <SectionSubtitle>Weapons</SectionSubtitle>
 
       {#if weapons.weapons && weapons.weapons.length}
