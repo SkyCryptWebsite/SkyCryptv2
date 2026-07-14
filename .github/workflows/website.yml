@@ -23,7 +23,7 @@ jobs:
       server_api_url: ${{ steps.decision.outputs.server_api_url }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Decide whether to deploy
         id: decision
@@ -63,7 +63,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v4
@@ -97,7 +97,7 @@ jobs:
 
     steps:
       - name: Git checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Assign short SHA
         run: echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
