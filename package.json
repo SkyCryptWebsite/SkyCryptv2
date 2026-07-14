@@ -44,7 +44,7 @@
     "@sentry/sveltekit": "^10.65.0",
     "culori": "^4.0.2",
     "simple-git-hooks": "^2.13.1",
-    "takumi-js": "^2.1.1"
+    "takumi-js": "^2.1.2"
   },
   "devDependencies": {
     "@better-auth/api-key": "^1.6.23",
