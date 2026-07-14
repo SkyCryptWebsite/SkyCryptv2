@@ -11,7 +11,6 @@
   "git.autofetch": true,
   "svelte.enable-ts-plugin": true,
   "svelte.plugin.svelte.defaultScriptLanguage": "ts",
-
   "tailwindCSS.emmetCompletions": true,
   "tailwindCSS.colorDecorators": true,
   "tailwindCSS.experimental.configFile": "./src/routes/layout.css",

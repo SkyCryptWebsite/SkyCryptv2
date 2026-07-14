@@ -22,7 +22,11 @@ describe.concurrent("SkillGear", () => {
 
     const columns = Array.from(container.querySelectorAll('[data-slot="gear-slot-column"]'));
     expect(columns).toHaveLength(4);
-    expect(columns.map((column) => column.querySelectorAll('[data-slot="gear-slot-item"], [data-slot="empty-item-slot"]').length)).toEqual([4, 4, 4, 2]);
+    expect(
+      columns.map(
+        (column) => column.querySelectorAll('[data-slot="gear-slot-item"], [data-slot="empty-item-slot"]').length
+      )
+    ).toEqual([4, 4, 4, 2]);
     expect(columns[2].querySelectorAll('[data-slot="gear-slot-item"]')).toHaveLength(4);
     expect(columns[3].querySelectorAll('[data-slot="gear-slot-item"]')).toHaveLength(2);
   });
