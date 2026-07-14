@@ -9,6 +9,7 @@
   "sortImports": {
     "newlinesBetween": false
   },
+  "jsdoc": true,
   "sortTailwindcss": {
     "stylesheet": "src/routes/layout.css",
     "functions": ["cn", "clsx", "payload"],
