@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { devices, expect, test } from "@playwright/test";
 
 test.describe("Profile Page", () => {
   test("should load profile page", async ({ page }) => {
@@ -39,5 +39,36 @@ test.describe("Profile Page", () => {
 
     await homeLink.click();
     await page.waitForURL("/", { timeout: 5000 });
+  });
+});
+
+test.describe("Mobile Profile Page", () => {
+  test.use({
+    viewport: devices["iPhone 12"].viewport,
+    userAgent: devices["iPhone 12"].userAgent,
+    deviceScaleFactor: devices["iPhone 12"].deviceScaleFactor,
+    isMobile: devices["iPhone 12"].isMobile,
+    hasTouch: devices["iPhone 12"].hasTouch
+  });
+
+  test("should show item drawer on touch devices", async ({ page }) => {
+    await page.goto("/stats/DarthGigi/Banana#Gear");
+
+    const dismissNewsroom = page.getByRole("button", { name: "Dismiss newsroom notifications" });
+    await dismissNewsroom.click({ timeout: 1000 }).catch(() => undefined);
+
+    const item = page
+      .locator("main [data-tooltip-trigger]")
+      .filter({ has: page.locator("img[alt]") })
+      .first();
+    await expect(item).toBeVisible({ timeout: 30000 });
+    await item.click();
+
+    const drawer = page.locator('[data-slot="drawer-content"]').filter({ has: page.locator("[data-mctooltip]") });
+
+    await expect(drawer).toBeVisible();
+    await expect(drawer).toHaveCSS("position", "fixed");
+    await expect(drawer).toBeInViewport();
+    await expect(drawer.locator("[data-mctooltip]")).toBeVisible();
   });
 });
