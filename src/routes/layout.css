@@ -11,6 +11,7 @@
 @custom-variant light (&:is(.light *));
 @custom-variant performance (&:where([data-performance="true"], [data-performance="true"] *));
 @custom-variant standard (&:where([data-performance="false"], [data-performance="false"] *));
+@custom-variant interact (&:is(:hover, :focus-visible));
 
 @plugin "tailwindcss-motion";
 
