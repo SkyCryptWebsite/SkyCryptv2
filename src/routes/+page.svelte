@@ -130,37 +130,36 @@
             A beautiful site for sharing your SkyBlock profile 🍣
           </h2>
         </div>
-        <div>
-          <ButtonGroup.Root>
-            <Input
-              id="search"
-              type="search"
-              required
-              autofocus
-              placeholder="Enter username"
-              class="border-primary/80 bg-primary/50 font-medium placeholder:text-primary-foreground focus-visible:border-primary/80 focus-visible:ring-primary/50 md:text-lg"
-              bind:value={searchQuery}
-              onchange={() => void submitSearch()}
-              onkeydown={(e) => {
-                if (e.key.toLowerCase() === "enter" || e.key.toLowerCase() === "search") {
-                  e.preventDefault();
-                  void submitSearch();
-                }
-              }} />
 
-            <Button
-              variant="outline"
-              disabled={searchQuery != null && searchQuery.length > 0 && !searchQueryValidated.success}
-              onclick={() => void submitSearch()}
-              class="border-primary/80 focus-visible:border-primary/80 focus-visible:ring-primary/50">
-              {#if submittedSearchLoading}
-                <Spinner class="size-4" />
-              {:else}
-                <SearchIcon class="size-4" />
-              {/if}
-            </Button>
-          </ButtonGroup.Root>
-        </div>
+        <ButtonGroup.Root class="h-16 w-full">
+          <Input
+            id="search"
+            type="search"
+            required
+            autofocus
+            placeholder="Enter username"
+            class="h-full w-full grow font-medium placeholder:text-primary-foreground md:text-lg"
+            bind:value={searchQuery}
+            onchange={() => void submitSearch()}
+            onkeydown={(e) => {
+              if (e.key.toLowerCase() === "enter" || e.key.toLowerCase() === "search") {
+                e.preventDefault();
+                void submitSearch();
+              }
+            }} />
+
+          <Button
+            variant="outline"
+            disabled={searchQuery != null && searchQuery.length > 0 && !searchQueryValidated.success}
+            onclick={() => void submitSearch()}
+            class="h-full">
+            {#if submittedSearchLoading}
+              <Spinner class="size-4" />
+            {:else}
+              <SearchIcon class="size-4" />
+            {/if}
+          </Button>
+        </ButtonGroup.Root>
 
         {#if !searchQueryValidated.success && searchQuery != null && searchQuery.length > 0}
           <div class="text-center text-sm font-semibold text-destructive">
