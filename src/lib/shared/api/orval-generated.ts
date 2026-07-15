@@ -2034,8 +2034,9 @@ export const getListResourcePacksUrl = () => {
 
 /**
  * Returns toggleable resource packs sorted by descending priority for the recommended default order. The enabledPacks
- * cookie controls per-request rendering order and does not change this response order. The vanilla resource pack is
- * intentionally omitted because it is the default and cannot be disabled.
+ * cookie controls per-request rendering from highest to lowest priority and does not change this response order. A
+ * missing preference uses the default order, while an explicit empty array uses vanilla textures only. The vanilla
+ * resource pack is intentionally omitted because it is the default and cannot be disabled.
  *
  * @summary List resource packs
  */
