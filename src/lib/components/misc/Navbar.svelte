@@ -53,35 +53,37 @@
 
   function handleSectionClick(sectionName: SectionName) {
     internalState.tabValue = sectionName;
-    scrollToTab({ smooth: true });
-    page.url.hash = sectionName;
-    pushState("", page.state);
+    scrollToTab({ sectionName, smooth: true });
+    // eslint-disable-next-line svelte/no-navigation-without-resolve
+    pushState(`#${sectionName}`, page.state);
   }
 
   function scrollToTab({
+    sectionName,
     element,
     smooth = true,
     options,
     retries = 5
   }: {
+    sectionName: SectionName;
     element?: HTMLElement | null;
     smooth?: boolean;
     options?: ScrollIntoViewOptions;
     retries?: number;
-  } = {}) {
+  }) {
     const scrollOptions = options ?? {
       behavior: smooth ? "smooth" : "auto",
       block: "center",
       inline: "center"
     };
 
-    const link = element ?? document.querySelector<HTMLAnchorElement>(`button[data-id="${internalState.tabValue}"]`);
+    const link = element ?? document.querySelector<HTMLAnchorElement>(`button[data-id="${sectionName}"]`);
 
     if (link == null) {
       // Button may not be in the DOM yet — bits-ui's ScrollArea.Viewport sometimes mounts children
       // a frame later than its root. Retry on rAF, bounded.
       if (retries > 0) {
-        requestAnimationFrame(() => scrollToTab({ smooth, options, retries: retries - 1 }));
+        requestAnimationFrame(() => scrollToTab({ sectionName, smooth, options, retries: retries - 1 }));
       }
       return;
     }
@@ -134,14 +136,22 @@
   // Depends on filteredSectionOrderPreferences so it re-runs once the tab buttons populate,
   // since the target button is rendered from that list and may not exist on the initial mount tick.
   $effect(() => {
-    if (!navbarElement || !internalState.tabValue) return;
-    if (!filteredSectionOrderPreferences.some((s) => s.name === internalState.tabValue)) return;
+    const sectionName = internalState.tabValue;
+    if (!navbarElement || !sectionName) return;
+    if (!filteredSectionOrderPreferences.some((s) => s.name === sectionName)) return;
 
-    tick().then(() => {
-      scrollToTab({ smooth: true });
+    let cancelled = false;
+
+    void tick().then(() => {
+      if (cancelled) return;
+      scrollToTab({ sectionName, smooth: true });
       // eslint-disable-next-line svelte/no-navigation-without-resolve
-      replaceState("#" + internalState.tabValue, page.state);
+      replaceState(`#${sectionName}`, page.state);
     });
+
+    return () => {
+      cancelled = true;
+    };
   });
 </script>
 

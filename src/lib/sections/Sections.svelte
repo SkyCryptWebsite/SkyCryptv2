@@ -4,12 +4,10 @@
   import type { SectionName } from "$lib/sections/types";
   import { titleCase } from "$lib/shared/helper";
   import { Spinner } from "$ui/spinner";
-  import { Tabs } from "bits-ui";
 
   const preferences = getPreferences();
   const internalState = getInternalState();
   const combinedCtx = getCombinedContext();
-  const shouldWaitForCombined = $derived(internalState.tabValue !== "Inventory");
 
   const COMPONENTS = {
     Gear: () => import("$lib/sections/stats/Gear.svelte"),
@@ -33,45 +31,47 @@
 </script>
 
 {#key internalState.tabValue}
-  {#if internalState.tabValue in COMPONENTS}
-    <Tabs.Root value={internalState.tabValue} class="contents" data-section={internalState.tabValue}>
-      <Tabs.Content value={internalState.tabValue} class="section mt-4">
-        {#if shouldWaitForCombined && !combinedCtx.current}
-          {@render loadingState()}
-          Not boundary
-        {:else}
-          <svelte:boundary>
-            {const { default: Component } = await COMPONENTS[internalState.tabValue]()}
-            {#snippet pending()}
-              {@render loadingState()}
-            {/snippet}
-            {#snippet failed(err, reset)}
-              <Notice
-                type="error"
-                title={`Failed to load section ${internalState.tabValue}`}
-                error={err instanceof Error ? err.message : String(err)}
-                retry={reset}>
-                <p class="text-foreground/80">This section may not be available or there was an error loading it.</p>
-              </Notice>
-            {/snippet}
+  {const sectionName = internalState.tabValue}
+  {#if sectionName in COMPONENTS}
+    <svelte:boundary>
+      {#snippet pending()}
+        {@render loadingState(sectionName)}
+      {/snippet}
+      {#snippet failed(err, reset)}
+        {@render sectionError(sectionName, err, reset)}
+      {/snippet}
 
-            <Component order={findIndex(internalState.tabValue)} />
-          </svelte:boundary>
+      <div class="section mt-4" data-section={sectionName} role="tabpanel">
+        {#if sectionName !== "Inventory" && !combinedCtx.current}
+          {@render loadingState(sectionName)}
+        {:else}
+          {const { default: Component } = await COMPONENTS[sectionName]()}
+          <Component order={findIndex(sectionName)} />
         {/if}
-      </Tabs.Content>
-    </Tabs.Root>
+      </div>
+    </svelte:boundary>
   {:else}
-    <Notice type="error" title={`Invalid Section: ${internalState.tabValue}`}>
+    <Notice type="error" title={`Invalid Section: ${sectionName}`}>
       <p class="text-foreground/80">This section does not exist or is not implemented.</p>
     </Notice>
   {/if}
 {/key}
 
-{#snippet loadingState()}
+{#snippet loadingState(sectionName: SectionName)}
   <div class="rounded-xl border p-6">
     <div class="flex items-center gap-2">
       <Spinner />
-      <span class="font-semibold">Loading {titleCase(internalState.tabValue)}</span>
+      <span class="font-semibold">Loading {titleCase(sectionName)}</span>
     </div>
   </div>
+{/snippet}
+
+{#snippet sectionError(sectionName: SectionName, err: unknown, retry: () => void)}
+  <Notice
+    type="error"
+    title={`Failed to load section ${sectionName}`}
+    error={err instanceof Error ? err.message : String(err)}
+    {retry}>
+    <p class="text-foreground/80">This section may not be available or there was an error loading it.</p>
+  </Notice>
 {/snippet}

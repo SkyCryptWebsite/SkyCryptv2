@@ -1,4 +1,68 @@
-import { devices, expect, test } from "@playwright/test";
+import { devices, expect, test, type Page } from "@playwright/test";
+
+const inventoryRemotePattern = /\/_app\/remote\/.*\/getProfileInventory(?:\?|$)/;
+
+async function expectRapidInventorySwitchToStayResponsive(page: Page) {
+  const runtimeErrors: string[] = [];
+  let inventoryRequestSeen = false;
+  let finishInventoryRequest!: () => void;
+  const inventoryRequestFinished = new Promise<void>((resolve) => {
+    finishInventoryRequest = resolve;
+  });
+
+  page.on("pageerror", (error) => runtimeErrors.push(error.message));
+  page.on("console", (message) => {
+    if (
+      message.type() === "error" &&
+      /Batch has scheduled roots|invariant_violation|derived_inert|Unhandled promise rejection/i.test(message.text())
+    ) {
+      runtimeErrors.push(message.text());
+    }
+  });
+
+  await page.route(inventoryRemotePattern, async (route) => {
+    inventoryRequestSeen = true;
+
+    try {
+      const response = await route.fetch();
+      await new Promise((resolve) => setTimeout(resolve, 1200));
+      await route.fulfill({ response });
+    } finally {
+      finishInventoryRequest();
+    }
+  });
+
+  await page.goto("/stats/Technoblade/Watermelon#Gear");
+
+  const dismissNewsroom = page.getByRole("button", { name: "Dismiss newsroom notifications" });
+  await dismissNewsroom.click({ timeout: 1000 }).catch(() => undefined);
+  await page.evaluate(async () => {
+    await Promise.all((await caches.keys()).map((cacheName) => caches.delete(cacheName)));
+  });
+
+  const inventoryButton = page.locator('button[data-id="Inventory"]');
+  const petsButton = page.locator('button[data-id="Pets"]');
+  await expect(inventoryButton).toBeVisible({ timeout: 30000 });
+
+  await inventoryButton.click();
+  await expect.poll(() => inventoryRequestSeen).toBe(true);
+  await expect(page).toHaveURL(/#Inventory$/);
+  await expect(page.getByText("Loading Inventory Data")).toBeVisible();
+
+  await petsButton.click();
+  await expect(page.locator('[data-section="Pets"]')).toBeVisible({ timeout: 2000 });
+  await expect(page).toHaveURL(/#Pets$/);
+
+  await inventoryRequestFinished;
+  await expect(page.locator('[data-section="Pets"]')).toBeVisible();
+  expect(runtimeErrors).toEqual([]);
+
+  await inventoryButton.click();
+  await expect(page.locator('[data-section="Inventory"]')).toBeVisible({ timeout: 2000 });
+  await expect(page.getByRole("tab", { name: "Inventory", exact: true })).toBeVisible({ timeout: 5000 });
+  await expect(page).toHaveURL(/#Inventory$/);
+  expect(runtimeErrors).toEqual([]);
+}
 
 test.describe("Profile Page", () => {
   test("should load profile page", async ({ page }) => {
@@ -40,6 +104,10 @@ test.describe("Profile Page", () => {
     await homeLink.click();
     await page.waitForURL("/", { timeout: 5000 });
   });
+
+  test("should switch away from inventory while it is loading", async ({ page }) => {
+    await expectRapidInventorySwitchToStayResponsive(page);
+  });
 });
 
 test.describe("Mobile Profile Page", () => {
@@ -70,5 +138,9 @@ test.describe("Mobile Profile Page", () => {
     await expect(drawer).toHaveCSS("position", "fixed");
     await expect(drawer).toBeInViewport();
     await expect(drawer.locator("[data-mctooltip]")).toBeVisible();
+  });
+
+  test("should switch away from inventory while it is loading", async ({ page }) => {
+    await expectRapidInventorySwitchToStayResponsive(page);
   });
 });
