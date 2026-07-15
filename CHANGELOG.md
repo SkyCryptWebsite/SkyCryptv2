@@ -1,5 +1,12 @@
 # Changelog
 
+## 3.9.0-beta.7
+
+### Patch Changes
+
+- Restore mobile drawer visibility by keeping drawer content anchored to the viewport. _[`3badaae`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/3badaae1d68bb78b333a5b6208dae829e86e7924) [@DarthGigi](https://github.com/DarthGigi)_
+- Add ordered resource-pack preferences with drag-and-drop priority, legacy migration, and vanilla-only support. _[`2bc34e9`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/2bc34e9ad6bd3b6d9e381ce985437de516a0c44f) [@DarthGigi](https://github.com/DarthGigi)_
+
 ## 3.9.0-beta.6
 
 ### Patch Changes
