@@ -52,9 +52,9 @@
   --font-sans:
     "Montserrat Variable", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
     "Segoe UI Symbol", "Noto Color Emoji";
-  --font-skyblock-icons: "SkyBlockIcons", var(--font-sans);
+  --font-skyblock-icons: "Hypixel SkyBlock Glyphs", "SkyBlockIcons", var(--font-sans);
   --font-unifontex: "UnifontEX", var(--font-sans);
-  --font-minecraft: "Minecraft", var(--font-unifontex), var(--font-sans);
+  --font-minecraft: "Hypixel SkyBlock Glyphs", "Minecraft", var(--font-unifontex), var(--font-sans);
   --font-heading: var(--font-sans);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -118,6 +118,13 @@
 }
 
 @layer base {
+  @font-face {
+    font-family: "Hypixel SkyBlock Glyphs";
+    font-style: normal;
+    font-display: swap;
+    src: url("/fonts/hypixel-glyphs/hypixel-glyphs.ttf") format("truetype");
+  }
+
   @font-face {
     font-family: "SkyBlockIcons";
     font-style: normal;
