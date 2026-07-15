@@ -203,7 +203,7 @@
                   </ScrollAreaItems>
                 </div>
               {/if}
-              <Separator />
+              <Separator class="mt-4" />
               {#if accessories.upgrades && accessories.upgrades.length > 0}
                 <div class="my-4 space-y-4 pl-4">
                   <SectionSubtitle>Missing Accessory Upgrades</SectionSubtitle>
