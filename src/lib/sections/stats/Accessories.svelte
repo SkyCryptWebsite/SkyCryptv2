@@ -193,7 +193,7 @@
 
             <Collapsible.Content>
               {#if accessories.missing && accessories.missing.length > 0}
-                <div class="space-y-4 px-4">
+                <div class="space-y-4 pl-4">
                   <ScrollAreaItems>
                     {#each accessories.missing as accessory, index (index)}
                       <div class="grayscale-80 hover:grayscale-0">
@@ -205,7 +205,7 @@
               {/if}
               <Separator />
               {#if accessories.upgrades && accessories.upgrades.length > 0}
-                <div class="my-4 space-y-4 px-4">
+                <div class="my-4 space-y-4 pl-4">
                   <SectionSubtitle>Missing Accessory Upgrades</SectionSubtitle>
                   <ScrollAreaItems>
                     {#each accessories.upgrades as accessory, index (index)}
