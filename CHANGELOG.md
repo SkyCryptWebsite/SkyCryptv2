@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.9.0-beta.8
+
+### Patch Changes
+
+- Prevent rapid section navigation from hanging the page while inventory data is loading. _[`2e54f53`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/2e54f533f7dfbf56a7d56c5cbd0444c698f38e34) [@DarthGigi](https://github.com/DarthGigi)_
+
 ## 3.9.0-beta.7
 
 ### Patch Changes
