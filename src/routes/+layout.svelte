@@ -3,7 +3,7 @@
   import { beforeNavigate, replaceState } from "$app/navigation";
   import { page, updated } from "$app/state";
   import {
-    initDisabledPacks,
+    initEnabledPacks,
     initFavorites,
     initInternalState,
     initNewsroomNotifications,
@@ -46,6 +46,7 @@
   const { ign } = $derived(page.params);
   const showNewsroomToast = $derived(page.url.pathname !== "/" && !page.url.pathname.startsWith("/newsroom"));
   const preferences = initPreferences();
+  const enabledPacks = initEnabledPacks();
   const themeContext = initTheme();
   const internalState = initInternalState();
   const position = writable<ToasterProps["position"]>("bottom-right");
@@ -112,7 +113,6 @@
     }
   }
 
-  initDisabledPacks();
   initFavorites();
   initNewsroomNotifications();
   initRecentSearches();
@@ -197,7 +197,10 @@
 
   $effect(() => {
     const query = listResourcePacks();
-    if (query.current) packs.packs = query.current;
+    if (query.current) {
+      packs.packs = query.current;
+      enabledPacks.configure(query.current);
+    }
   });
 
   let innerWidth = $state(0);

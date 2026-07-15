@@ -1,23 +1,11 @@
+import { readEnabledPacksCookie, serializePackIds } from "$lib/shared/resource-packs";
+
 export type ResolvedItemTexture = {
   texture: string;
   texture_pack?: string;
 };
 
 const resolutionCache = new Map<string, Promise<ResolvedItemTexture>>();
-
-function enabledPacksCookie(): string {
-  if (typeof document === "undefined") return "";
-  const cookie = document.cookie
-    .split(";")
-    .map((part) => part.trim())
-    .find((part) => part.startsWith("enabledPacks="));
-  const value = cookie?.slice("enabledPacks=".length) ?? "";
-  try {
-    return decodeURIComponent(value);
-  } catch {
-    return value;
-  }
-}
 
 function resolverUrl(textureUrl: string, enabledPacks: string): string | null {
   const url = new URL(textureUrl, window.location.origin);
@@ -29,7 +17,8 @@ function resolverUrl(textureUrl: string, enabledPacks: string): string | null {
 }
 
 export function resolveItemTexture(textureUrl: string): Promise<ResolvedItemTexture> {
-  const enabledPacks = enabledPacksCookie();
+  const enabledPacksCookie = readEnabledPacksCookie();
+  const enabledPacks = enabledPacksCookie === null ? "" : serializePackIds(enabledPacksCookie);
   const cacheKey = `${textureUrl}|${enabledPacks}`;
   const cached = resolutionCache.get(cacheKey);
   if (cached) return cached;
