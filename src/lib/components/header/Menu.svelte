@@ -54,7 +54,8 @@
             href: "/newsroom",
             title: "Newsroom",
             content: "Latest announcements and updates from the SkyCrypt team.",
-            icon: NewspaperIcon
+            icon: NewspaperIcon,
+            class: "[&_svg]:text-primary"
           })}
           {@render ListItem({
             href: PUBLIC_DISCORD_INVITE,
