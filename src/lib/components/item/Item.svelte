@@ -44,7 +44,7 @@
     "overflow-clip nice-colors-dark",
     isInventory ? "p-0" : `relative p-2 ${bgColor}`,
     { "rounded-xl": !isInventory },
-    "standard:transition-all standard:duration-150 standard:ease-out standard:hover:scale-110 standard:active:scale-110"
+    "standard:transition-all standard:duration-150 standard:ease-out standard:active:scale-95 standard:interact:scale-95"
   )}
   bind:ref={targetNode}
   onclick={() => {

@@ -72,7 +72,7 @@
   data-orientation={orientation}
   {...restProps}>
   <div
-    class="relative flex gap-2 py-4 group-data-[orientation=horizontal]/scroll:w-max group-data-[orientation=horizontal]/scroll:flex-nowrap group-data-[orientation=vertical]/scroll:flex-wrap sm:gap-4">
+    class="relative flex gap-2 pt-4 group-data-[orientation=horizontal]/scroll:w-max group-data-[orientation=horizontal]/scroll:flex-nowrap group-data-[orientation=vertical]/scroll:flex-wrap sm:gap-4">
     {@render children?.()}
     <div
       class="pointer-events-none sticky -right-1 z-10 -ml-40 w-36 self-stretch bg-linear-to-l from-background/80 to-transparent scroll-fade-x blur-xs group-data-[orientation=vertical]/scroll:hidden">

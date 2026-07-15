@@ -20,7 +20,7 @@
 
 <Item.Root
   variant="outline"
-  class="w-fit delay-75 duration-300 ease-out [a]:transition-[scale] [a]:hover:scale-95 standard:[a]:hover:bg-inherit">
+  class="w-fit delay-75 duration-300 ease-out [a]:transition-[scale] [a]:interact:scale-95 standard:[a]:interact:bg-inherit">
   {#snippet child({ props })}
     <!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
     <a {href} target="_blank" {...props}>

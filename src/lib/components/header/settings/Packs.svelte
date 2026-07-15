@@ -141,7 +141,7 @@
         <button
           {@attach sortable.attachHandle}
           type="button"
-          class="flex size-10 shrink-0 cursor-grab touch-none items-center justify-center rounded-lg text-muted-foreground transition-[background-color,color,scale] duration-150 ease-out outline-none hover:bg-muted hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/30 active:scale-[0.96] active:cursor-grabbing"
+          class="flex size-10 shrink-0 cursor-grab touch-none items-center justify-center rounded-lg text-muted-foreground transition-[background-color,color,scale] duration-150 ease-out outline-none hover:bg-muted hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/30 active:scale-95 active:cursor-grabbing"
           aria-label="Reorder {pack.name ?? pack.id}">
           <GripVertical class="size-4" />
         </button>
@@ -152,7 +152,7 @@
           loading="lazy"
           src={pack.icon}
           alt={pack.name}
-          class="pointer-events-none aspect-square size-10 h-full rounded-lg outline outline-1 -outline-offset-1 outline-black/10 select-none [image-rendering:pixelated] dark:outline-white/10" />
+          class="pointer-events-none aspect-square size-10 h-full rounded-lg outline -outline-offset-1 outline-black/10 select-none [image-rendering:pixelated] dark:outline-white/10" />
         <Avatar.Fallback class="flex size-10 items-center rounded-lg text-center uppercase"
           >{pack.name?.slice(0, 2)}</Avatar.Fallback>
       </Avatar.Root>

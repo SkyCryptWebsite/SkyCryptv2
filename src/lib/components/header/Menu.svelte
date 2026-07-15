@@ -30,7 +30,7 @@
 </script>
 
 {#snippet ListItem({ title, content, href, class: className, icon: IconComponent, ...restProps }: ListItemProps)}
-  <NavigationMenu.Link {href} class={cn("hover:scale-95 hover:bg-background/50", className)} {...restProps}>
+  <NavigationMenu.Link {href} class={cn("interact:scale-95 interact:bg-background/50", className)} {...restProps}>
     <div class="flex flex-col gap-1">
       <div class="flex items-center-safe gap-1">
         <IconComponent class="size-5" />

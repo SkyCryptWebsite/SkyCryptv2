@@ -62,7 +62,7 @@
   <Popover.Root bind:open={ignOpen}>
     <Popover.Trigger
       disabled={(profile?.members?.length || 1) <= 1}
-      class="inline-flex items-center rounded-full bg-foreground/10 py-2 pr-4 pl-2 align-middle text-xl font-semibold whitespace-nowrap transition-[scale,background-color] duration-300 ease-out not-disabled:hover:scale-95 not-disabled:hover:bg-foreground/20 data-[state=open]:scale-95 data-[state=open]:bg-foreground/20 sm:text-3xl"
+      class="inline-flex items-center rounded-full bg-foreground/10 py-2 pr-4 pl-2 align-middle text-xl font-semibold whitespace-nowrap transition-[scale,background-color] duration-300 ease-out data-[state=open]:scale-95 data-[state=open]:bg-foreground/20 sm:text-3xl not-disabled:interact:scale-95 not-disabled:interact:bg-foreground/20"
       bind:ref={ignRef}>
       {#if profile != null && profile.rank?.rankColor}
         <div
@@ -98,7 +98,7 @@
             variant="outline"
             size="sm"
             data-removed={member.removed}
-            class="group flex-nowrap bg-foreground/5 [a]:transition-[scale,background-color] [a]:duration-300 [a]:ease-out [a]:hover:scale-95 [a]:hover:bg-foreground/10">
+            class="group flex-nowrap bg-foreground/5 [a]:transition-[scale,background-color] [a]:duration-300 [a]:ease-out [a]:hover:bg-foreground/10 [a]:interact:scale-95">
             {#snippet child({ props })}
               <a
                 href={resolve("/stats/[ign]/[[profile]]", {
@@ -140,7 +140,7 @@
   </Popover.Root>
   <span>on</span>
   <div
-    class="relative inline-flex items-center gap-2 rounded-full bg-foreground/10 px-2 py-1 align-middle text-xl font-semibold transition-[scale,background-color] duration-300 ease-out data-[disabled=false]:hover:scale-95 data-[disabled=false]:hover:bg-foreground/20 data-[disabled=false]:data-[open=true]:scale-95 data-[disabled=false]:data-[open=true]:bg-foreground/20 data-[warning=true]:border-2 data-[warning=true]:border-yellow-500/20 sm:text-3xl"
+    class="relative inline-flex items-center gap-2 rounded-full bg-foreground/10 px-2 py-1 align-middle text-xl font-semibold transition-[scale,background-color] duration-300 ease-out data-[disabled=false]:data-[open=true]:scale-95 data-[disabled=false]:data-[open=true]:bg-foreground/20 data-[warning=true]:border-2 data-[warning=true]:border-yellow-500/20 sm:text-3xl data-[disabled=false]:interact:scale-95 data-[disabled=false]:interact:bg-foreground/20"
     data-open={profileOpen || noticeOpen}
     data-warning={apiSettings.length > 0}
     bind:this={noticeRef}
@@ -176,7 +176,7 @@
             <Item.Root
               variant="outline"
               size="sm"
-              class="flex-nowrap bg-foreground/5 [a]:transition-[scale,background-color] [a]:duration-300 [a]:ease-out [a]:hover:scale-95 [a]:hover:bg-foreground/10">
+              class="flex-nowrap bg-foreground/5 [a]:transition-[scale,background-color] [a]:duration-300 [a]:ease-out [a]:hover:bg-foreground/10 [a]:interact:scale-95">
               {#snippet child({ props })}
                 <a
                   href={resolve("/stats/[ign]/[[profile]]", {

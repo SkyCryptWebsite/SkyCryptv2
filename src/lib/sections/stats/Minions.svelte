@@ -34,7 +34,7 @@
   <div class="contents space-y-4">
     <Item.Root
       variant="outline"
-      class="mx-auto w-fit rounded-full duration-150 ease-out hover:scale-95 [a]:transition-[scale,background-color] [a]:hover:bg-foreground/10">
+      class="hover:interact-95 mx-auto w-fit rounded-full duration-150 ease-out [a]:transition-[scale,background-color] [a]:hover:bg-foreground/10">
       {#snippet child({ props })}
         <a href="https://minionah.com/" target="_blank" {...props}>
           <Item.Media>

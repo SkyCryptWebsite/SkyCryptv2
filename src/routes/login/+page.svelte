@@ -31,7 +31,7 @@
       <Button.Root
         type="submit"
         disabled={!!signInSocial.pending}
-        class="flex h-12 items-center justify-center gap-3 rounded-3xl bg-[#5865F2] px-6 text-base font-bold text-white uppercase transition-all duration-150 ease-out text-shadow-[0_0_3px_oklch(0%_0_0/50%)] hover:scale-[1.015] hover:bg-[#4752C4] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#5865F2] disabled:opacity-50 disabled:hover:scale-100">
+        class="flex h-12 items-center justify-center gap-3 rounded-3xl bg-[#5865F2] px-6 text-base font-bold text-white uppercase transition-all duration-150 ease-out text-shadow-[0_0_3px_oklch(0%_0_0/50%)] hover:bg-[#4752C4] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#5865F2] disabled:opacity-50 interact:scale-[1.015] disabled:interact:scale-100">
         {#if signInSocial.pending}
           <LoaderCircle class="size-5 animate-spin" aria-hidden="true" />
           <span>Redirecting…</span>

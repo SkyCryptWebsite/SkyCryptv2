@@ -42,7 +42,7 @@
   href="/newsroom/{post.slug}"
   data-sveltekit-preload-data="hover"
   class={cn(
-    "group relative flex h-full w-full min-w-0 flex-col overflow-hidden rounded-xl border text-left transition-[scale] delay-75 duration-300 ease-out hover:scale-95 focus-visible:scale-95 data-[featured=true]:border-accent-2/50",
+    "group relative flex h-full w-full min-w-0 flex-col overflow-hidden rounded-xl border text-left transition-[scale] delay-75 duration-300 ease-out data-[featured=true]:border-accent-2/50 interact:scale-95",
     { glass }
   )}
   data-featured={post.featured}>
