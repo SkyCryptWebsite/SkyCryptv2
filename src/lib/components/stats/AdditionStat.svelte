@@ -64,7 +64,11 @@
   </Tooltip.Trigger>
 {:else}
   <Item.Root
-    class={cn(`w-fit gap-2 p-0 data-[is-tooltip=false]:cursor-default`, { "text-accent-2": maxed }, className)}>
+    class={cn(
+      "w-fit gap-2 p-0 data-[is-tooltip=false]:cursor-default",
+      { "text-accent-2": maxed || dataMaxed },
+      className
+    )}>
     {@render additionalStatLabel()}
   </Item.Root>
 {/if}
@@ -75,11 +79,13 @@
       class={!asterisk
         ? cn(
             "my-0 flex items-center gap-1 font-bold text-muted-foreground data-[is-tooltip=false]:cursor-default",
-            { "text-accent-2": maxed },
+            { "text-accent-2": maxed || dataMaxed },
             className
           )
         : "contents"}>
-      <div style={textRarityColor ? `color: var(--§${RARITY_COLORS[textRarityColor]})` : ""} class="capitalize">
+      <div
+        style={textRarityColor ? `color: var(--§${RARITY_COLORS[textRarityColor]})` : ""}
+        class={cn("capitalize", { "text-accent-2": maxed || dataMaxed })}>
         {text}:
       </div>
 
