@@ -127,10 +127,10 @@
       </div>
 
       <div class="rounded-xl border p-4">
-        <SectionSubtitle>Porthals</SectionSubtitle>
+        <SectionSubtitle>Porhtals</SectionSubtitle>
         {#if rift.porhtal}
           <AdditionStat
-            text="Porthals Unlocked"
+            text="Porhtals Unlocked"
             data={rift.porhtal.porhtalsFound ?? 0}
             maxed={rift.porhtal.porhtalsFound === 7} />
         {/if}

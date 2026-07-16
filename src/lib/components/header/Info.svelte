@@ -56,7 +56,7 @@
             class="text-primary"
             rel="noreferrer"
             href="{backend.repository}/commit/{backend.commit}"
-            target="_blank">{backend.commit}</Button.Root>
+            target="_blank">{backend.commit.slice(0, 7)}</Button.Root>
         {:else}
           {backend.commit}
         {/if}
