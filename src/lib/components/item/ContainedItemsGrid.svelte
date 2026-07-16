@@ -23,7 +23,7 @@
         {/if}
         {#if containedItem.texture_path}
           <div
-            class="flex aspect-square items-center justify-center overflow-clip rounded-xl border bg-foreground/5"
+            class="relative flex aspect-square items-center justify-center overflow-clip rounded-xl border bg-foreground/5"
             onclick={onclose}
             role="none">
             <Item piece={containedItem} isInventory={true} showRecombobulated={false} showCount={true} />
