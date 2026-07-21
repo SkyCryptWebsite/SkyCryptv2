@@ -20,7 +20,7 @@
   let resolvedTexturePack = $state<string>();
   const preferences = getPreferences();
 
-  const skyblockItem = $derived({ ...piece, texture_pack: resolvedTexturePack });
+  const skyblockItem = $derived({ ...piece, texture_pack: resolvedTexturePack ?? piece.texture_pack });
   const itemName = $derived(piece?.display_name);
   const itemNameHtml = $derived(itemName ? renderLore(itemName) : "");
   const isMulticolor = $derived((itemNameHtml?.match(/<\/span>/g) || [])?.length > 1);
@@ -57,6 +57,7 @@
           alt={piece?.display_name}
           class="h-auto w-8 flex-none shrink-0 overflow-hidden [image-rendering:pixelated] data-[enchanted=true]:enchanted"
           {enchanted}
+          texturePack={piece?.texture_pack}
           onresolved={(resolution) => (resolvedTexturePack = resolution.texture_pack)} />
         <Avatar.Fallback>
           <Image class="size-8" />

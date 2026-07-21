@@ -23,6 +23,7 @@ export interface ModelsStrippedItem {
   shiny?: boolean;
   source?: string;
   sourceTab?: ModelsSourceTab;
+  texture_pack?: string;
   texture_path?: string;
   wiki?: string;
 }

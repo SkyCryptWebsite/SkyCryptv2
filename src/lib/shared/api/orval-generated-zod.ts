@@ -39,6 +39,7 @@ export const GetCombinedProfileStatsResponse = zod.object({
                 name: zod.string().optional()
               })
               .optional(),
+            texture_pack: zod.string().optional(),
             texture_path: zod.string().optional(),
             wiki: zod.string().optional()
           })
@@ -87,6 +88,7 @@ export const GetCombinedProfileStatsResponse = zod.object({
                 name: zod.string().optional()
               })
               .optional(),
+            texture_pack: zod.string().optional(),
             texture_path: zod.string().optional(),
             wiki: zod.string().optional()
           })
@@ -117,6 +119,7 @@ export const GetCombinedProfileStatsResponse = zod.object({
                 name: zod.string().optional()
               })
               .optional(),
+            texture_pack: zod.string().optional(),
             texture_path: zod.string().optional(),
             wiki: zod.string().optional()
           })
@@ -415,6 +418,7 @@ export const GetCombinedProfileStatsResponse = zod.object({
                     name: zod.string().optional()
                   })
                   .optional(),
+                texture_pack: zod.string().optional(),
                 texture_path: zod.string().optional(),
                 wiki: zod.string().optional()
               })
@@ -446,6 +450,7 @@ export const GetCombinedProfileStatsResponse = zod.object({
                     name: zod.string().optional()
                   })
                   .optional(),
+                texture_pack: zod.string().optional(),
                 texture_path: zod.string().optional(),
                 wiki: zod.string().optional()
               })
@@ -474,6 +479,7 @@ export const GetCombinedProfileStatsResponse = zod.object({
                   name: zod.string().optional()
                 })
                 .optional(),
+              texture_pack: zod.string().optional(),
               texture_path: zod.string().optional(),
               wiki: zod.string().optional()
             })
@@ -500,6 +506,7 @@ export const GetCombinedProfileStatsResponse = zod.object({
                   name: zod.string().optional()
                 })
                 .optional(),
+              texture_pack: zod.string().optional(),
               texture_path: zod.string().optional(),
               wiki: zod.string().optional()
             })
@@ -526,6 +533,7 @@ export const GetCombinedProfileStatsResponse = zod.object({
                   name: zod.string().optional()
                 })
                 .optional(),
+              texture_pack: zod.string().optional(),
               texture_path: zod.string().optional(),
               wiki: zod.string().optional()
             })
@@ -549,6 +557,7 @@ export const GetCombinedProfileStatsResponse = zod.object({
                     name: zod.string().optional()
                   })
                   .optional(),
+                texture_pack: zod.string().optional(),
                 texture_path: zod.string().optional(),
                 wiki: zod.string().optional()
               })
@@ -587,6 +596,7 @@ export const GetCombinedProfileStatsResponse = zod.object({
                   name: zod.string().optional()
                 })
                 .optional(),
+              texture_pack: zod.string().optional(),
               texture_path: zod.string().optional(),
               wiki: zod.string().optional()
             })
@@ -611,6 +621,7 @@ export const GetCombinedProfileStatsResponse = zod.object({
                   name: zod.string().optional()
                 })
                 .optional(),
+              texture_pack: zod.string().optional(),
               texture_path: zod.string().optional(),
               wiki: zod.string().optional()
             })
@@ -866,6 +877,7 @@ export const GetCombinedProfileStatsResponse = zod.object({
                     name: zod.string().optional()
                   })
                   .optional(),
+                texture_pack: zod.string().optional(),
                 texture_path: zod.string().optional(),
                 wiki: zod.string().optional()
               })
@@ -909,6 +921,7 @@ export const GetCombinedProfileStatsResponse = zod.object({
                     name: zod.string().optional()
                   })
                   .optional(),
+                texture_pack: zod.string().optional(),
                 texture_path: zod.string().optional(),
                 wiki: zod.string().optional()
               })
@@ -1031,6 +1044,7 @@ export const GetCombinedProfileStatsResponse = zod.object({
                               name: zod.string().optional()
                             })
                             .optional(),
+                          texture_pack: zod.string().optional(),
                           texture_path: zod.string().optional(),
                           wiki: zod.string().optional()
                         })
@@ -1053,6 +1067,7 @@ export const GetCombinedProfileStatsResponse = zod.object({
                               name: zod.string().optional()
                             })
                             .optional(),
+                          texture_pack: zod.string().optional(),
                           texture_path: zod.string().optional(),
                           wiki: zod.string().optional()
                         })
@@ -1075,6 +1090,7 @@ export const GetCombinedProfileStatsResponse = zod.object({
                               name: zod.string().optional()
                             })
                             .optional(),
+                          texture_pack: zod.string().optional(),
                           texture_path: zod.string().optional(),
                           wiki: zod.string().optional()
                         })
@@ -1097,6 +1113,7 @@ export const GetCombinedProfileStatsResponse = zod.object({
                               name: zod.string().optional()
                             })
                             .optional(),
+                          texture_pack: zod.string().optional(),
                           texture_path: zod.string().optional(),
                           wiki: zod.string().optional()
                         })
@@ -1126,6 +1143,7 @@ export const GetCombinedProfileStatsResponse = zod.object({
                           name: zod.string().optional()
                         })
                         .optional(),
+                      texture_pack: zod.string().optional(),
                       texture_path: zod.string().optional(),
                       wiki: zod.string().optional()
                     })
@@ -1148,6 +1166,7 @@ export const GetCombinedProfileStatsResponse = zod.object({
                           name: zod.string().optional()
                         })
                         .optional(),
+                      texture_pack: zod.string().optional(),
                       texture_path: zod.string().optional(),
                       wiki: zod.string().optional()
                     })
@@ -1170,6 +1189,7 @@ export const GetCombinedProfileStatsResponse = zod.object({
                           name: zod.string().optional()
                         })
                         .optional(),
+                      texture_pack: zod.string().optional(),
                       texture_path: zod.string().optional(),
                       wiki: zod.string().optional()
                     })
@@ -1192,6 +1212,7 @@ export const GetCombinedProfileStatsResponse = zod.object({
                           name: zod.string().optional()
                         })
                         .optional(),
+                      texture_pack: zod.string().optional(),
                       texture_path: zod.string().optional(),
                       wiki: zod.string().optional()
                     })
@@ -1217,6 +1238,7 @@ export const GetCombinedProfileStatsResponse = zod.object({
                         name: zod.string().optional()
                       })
                       .optional(),
+                    texture_pack: zod.string().optional(),
                     texture_path: zod.string().optional(),
                     wiki: zod.string().optional()
                   })
@@ -1241,6 +1263,7 @@ export const GetCombinedProfileStatsResponse = zod.object({
                         name: zod.string().optional()
                       })
                       .optional(),
+                    texture_pack: zod.string().optional(),
                     texture_path: zod.string().optional(),
                     wiki: zod.string().optional()
                   })
@@ -1288,6 +1311,7 @@ export const GetCombinedProfileStatsResponse = zod.object({
                               name: zod.string().optional()
                             })
                             .optional(),
+                          texture_pack: zod.string().optional(),
                           texture_path: zod.string().optional(),
                           wiki: zod.string().optional()
                         })
@@ -1310,6 +1334,7 @@ export const GetCombinedProfileStatsResponse = zod.object({
                               name: zod.string().optional()
                             })
                             .optional(),
+                          texture_pack: zod.string().optional(),
                           texture_path: zod.string().optional(),
                           wiki: zod.string().optional()
                         })
@@ -1332,6 +1357,7 @@ export const GetCombinedProfileStatsResponse = zod.object({
                               name: zod.string().optional()
                             })
                             .optional(),
+                          texture_pack: zod.string().optional(),
                           texture_path: zod.string().optional(),
                           wiki: zod.string().optional()
                         })
@@ -1354,6 +1380,7 @@ export const GetCombinedProfileStatsResponse = zod.object({
                               name: zod.string().optional()
                             })
                             .optional(),
+                          texture_pack: zod.string().optional(),
                           texture_path: zod.string().optional(),
                           wiki: zod.string().optional()
                         })
@@ -1383,6 +1410,7 @@ export const GetCombinedProfileStatsResponse = zod.object({
                           name: zod.string().optional()
                         })
                         .optional(),
+                      texture_pack: zod.string().optional(),
                       texture_path: zod.string().optional(),
                       wiki: zod.string().optional()
                     })
@@ -1405,6 +1433,7 @@ export const GetCombinedProfileStatsResponse = zod.object({
                           name: zod.string().optional()
                         })
                         .optional(),
+                      texture_pack: zod.string().optional(),
                       texture_path: zod.string().optional(),
                       wiki: zod.string().optional()
                     })
@@ -1427,6 +1456,7 @@ export const GetCombinedProfileStatsResponse = zod.object({
                           name: zod.string().optional()
                         })
                         .optional(),
+                      texture_pack: zod.string().optional(),
                       texture_path: zod.string().optional(),
                       wiki: zod.string().optional()
                     })
@@ -1449,6 +1479,7 @@ export const GetCombinedProfileStatsResponse = zod.object({
                           name: zod.string().optional()
                         })
                         .optional(),
+                      texture_pack: zod.string().optional(),
                       texture_path: zod.string().optional(),
                       wiki: zod.string().optional()
                     })
@@ -1474,6 +1505,7 @@ export const GetCombinedProfileStatsResponse = zod.object({
                         name: zod.string().optional()
                       })
                       .optional(),
+                    texture_pack: zod.string().optional(),
                     texture_path: zod.string().optional(),
                     wiki: zod.string().optional()
                   })
@@ -1498,6 +1530,7 @@ export const GetCombinedProfileStatsResponse = zod.object({
                         name: zod.string().optional()
                       })
                       .optional(),
+                    texture_pack: zod.string().optional(),
                     texture_path: zod.string().optional(),
                     wiki: zod.string().optional()
                   })
@@ -1622,6 +1655,7 @@ export const GetCombinedProfileStatsResponse = zod.object({
                               name: zod.string().optional()
                             })
                             .optional(),
+                          texture_pack: zod.string().optional(),
                           texture_path: zod.string().optional(),
                           wiki: zod.string().optional()
                         })
@@ -1644,6 +1678,7 @@ export const GetCombinedProfileStatsResponse = zod.object({
                               name: zod.string().optional()
                             })
                             .optional(),
+                          texture_pack: zod.string().optional(),
                           texture_path: zod.string().optional(),
                           wiki: zod.string().optional()
                         })
@@ -1666,6 +1701,7 @@ export const GetCombinedProfileStatsResponse = zod.object({
                               name: zod.string().optional()
                             })
                             .optional(),
+                          texture_pack: zod.string().optional(),
                           texture_path: zod.string().optional(),
                           wiki: zod.string().optional()
                         })
@@ -1688,6 +1724,7 @@ export const GetCombinedProfileStatsResponse = zod.object({
                               name: zod.string().optional()
                             })
                             .optional(),
+                          texture_pack: zod.string().optional(),
                           texture_path: zod.string().optional(),
                           wiki: zod.string().optional()
                         })
@@ -1717,6 +1754,7 @@ export const GetCombinedProfileStatsResponse = zod.object({
                           name: zod.string().optional()
                         })
                         .optional(),
+                      texture_pack: zod.string().optional(),
                       texture_path: zod.string().optional(),
                       wiki: zod.string().optional()
                     })
@@ -1739,6 +1777,7 @@ export const GetCombinedProfileStatsResponse = zod.object({
                           name: zod.string().optional()
                         })
                         .optional(),
+                      texture_pack: zod.string().optional(),
                       texture_path: zod.string().optional(),
                       wiki: zod.string().optional()
                     })
@@ -1761,6 +1800,7 @@ export const GetCombinedProfileStatsResponse = zod.object({
                           name: zod.string().optional()
                         })
                         .optional(),
+                      texture_pack: zod.string().optional(),
                       texture_path: zod.string().optional(),
                       wiki: zod.string().optional()
                     })
@@ -1783,6 +1823,7 @@ export const GetCombinedProfileStatsResponse = zod.object({
                           name: zod.string().optional()
                         })
                         .optional(),
+                      texture_pack: zod.string().optional(),
                       texture_path: zod.string().optional(),
                       wiki: zod.string().optional()
                     })
@@ -1808,6 +1849,7 @@ export const GetCombinedProfileStatsResponse = zod.object({
                         name: zod.string().optional()
                       })
                       .optional(),
+                    texture_pack: zod.string().optional(),
                     texture_path: zod.string().optional(),
                     wiki: zod.string().optional()
                   })
@@ -1832,6 +1874,7 @@ export const GetCombinedProfileStatsResponse = zod.object({
                         name: zod.string().optional()
                       })
                       .optional(),
+                    texture_pack: zod.string().optional(),
                     texture_path: zod.string().optional(),
                     wiki: zod.string().optional()
                   })
@@ -2106,6 +2149,7 @@ export const GetCombinedProfileStatsResponse = zod.object({
                               name: zod.string().optional()
                             })
                             .optional(),
+                          texture_pack: zod.string().optional(),
                           texture_path: zod.string().optional(),
                           wiki: zod.string().optional()
                         })
@@ -2128,6 +2172,7 @@ export const GetCombinedProfileStatsResponse = zod.object({
                               name: zod.string().optional()
                             })
                             .optional(),
+                          texture_pack: zod.string().optional(),
                           texture_path: zod.string().optional(),
                           wiki: zod.string().optional()
                         })
@@ -2150,6 +2195,7 @@ export const GetCombinedProfileStatsResponse = zod.object({
                               name: zod.string().optional()
                             })
                             .optional(),
+                          texture_pack: zod.string().optional(),
                           texture_path: zod.string().optional(),
                           wiki: zod.string().optional()
                         })
@@ -2172,6 +2218,7 @@ export const GetCombinedProfileStatsResponse = zod.object({
                               name: zod.string().optional()
                             })
                             .optional(),
+                          texture_pack: zod.string().optional(),
                           texture_path: zod.string().optional(),
                           wiki: zod.string().optional()
                         })
@@ -2201,6 +2248,7 @@ export const GetCombinedProfileStatsResponse = zod.object({
                           name: zod.string().optional()
                         })
                         .optional(),
+                      texture_pack: zod.string().optional(),
                       texture_path: zod.string().optional(),
                       wiki: zod.string().optional()
                     })
@@ -2223,6 +2271,7 @@ export const GetCombinedProfileStatsResponse = zod.object({
                           name: zod.string().optional()
                         })
                         .optional(),
+                      texture_pack: zod.string().optional(),
                       texture_path: zod.string().optional(),
                       wiki: zod.string().optional()
                     })
@@ -2245,6 +2294,7 @@ export const GetCombinedProfileStatsResponse = zod.object({
                           name: zod.string().optional()
                         })
                         .optional(),
+                      texture_pack: zod.string().optional(),
                       texture_path: zod.string().optional(),
                       wiki: zod.string().optional()
                     })
@@ -2267,6 +2317,7 @@ export const GetCombinedProfileStatsResponse = zod.object({
                           name: zod.string().optional()
                         })
                         .optional(),
+                      texture_pack: zod.string().optional(),
                       texture_path: zod.string().optional(),
                       wiki: zod.string().optional()
                     })
@@ -2292,6 +2343,7 @@ export const GetCombinedProfileStatsResponse = zod.object({
                         name: zod.string().optional()
                       })
                       .optional(),
+                    texture_pack: zod.string().optional(),
                     texture_path: zod.string().optional(),
                     wiki: zod.string().optional()
                   })
@@ -2316,6 +2368,7 @@ export const GetCombinedProfileStatsResponse = zod.object({
                         name: zod.string().optional()
                       })
                       .optional(),
+                    texture_pack: zod.string().optional(),
                     texture_path: zod.string().optional(),
                     wiki: zod.string().optional()
                   })
@@ -3033,6 +3086,7 @@ export const SearchProfileInventoryResponseItem = zod.object({
       name: zod.string().optional()
     })
     .optional(),
+  texture_pack: zod.string().optional(),
   texture_path: zod.string().optional(),
   wiki: zod.string().optional()
 });
@@ -3070,6 +3124,7 @@ export const GetProfileInventoryResponseItem = zod.object({
             name: zod.string().optional()
           })
           .optional(),
+        texture_pack: zod.string().optional(),
         texture_path: zod.string().optional(),
         wiki: zod.string().optional()
       })
