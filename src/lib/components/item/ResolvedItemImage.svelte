@@ -9,10 +9,11 @@
     class?: string;
     loading?: "eager" | "lazy";
     enchanted?: boolean;
+    texturePack?: string;
     onresolved?: (resolution: ResolvedItemTexture) => void;
   };
 
-  let { src = "", alt = "", class: className, loading = "lazy", enchanted, onresolved }: Props = $props();
+  let { src = "", alt = "", class: className, loading = "lazy", enchanted, texturePack, onresolved }: Props = $props();
   let resolvedSrc = $state("");
 
   $effect(() => {
@@ -21,7 +22,7 @@
     if (!textureUrl) return;
 
     const signal = getAbortSignal();
-    resolveItemTexture(textureUrl).then((resolution) => {
+    resolveItemTexture(textureUrl, texturePack).then((resolution) => {
       if (signal.aborted) return;
       resolvedSrc = resolution.texture;
       onresolved?.(resolution);

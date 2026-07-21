@@ -26,7 +26,7 @@
   const internalState = getInternalState();
 
   const inViewport = new IsInViewport(() => targetNode, { rootMargin: "200px 0px", threshold: 0 });
-  const skyblockItem = $derived({ ...piece, texture_pack: resolvedTexturePack });
+  const skyblockItem = $derived({ ...piece, texture_pack: resolvedTexturePack ?? piece.texture_pack });
   const bgColor = $derived(getRarityClass(piece.rarity ?? ("common".toLowerCase() as string), "bg"));
   const recombobulated = $derived(showRecombobulated && (skyblockItem.recombobulated ?? false));
   const enchanted = $derived(skyblockItem?.texture_path?.includes("/api/leather/") ? false : skyblockItem.shiny);
@@ -70,6 +70,7 @@
               isInventory ? "size-6 sm:size-14" : "size-14"
             )}
             {enchanted}
+            texturePack={piece.texture_pack}
             onresolved={(resolution) => (resolvedTexturePack = resolution.texture_pack)} />
           {#if loadingStatus === "loading"}
             {@render loadingState()}

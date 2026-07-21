@@ -16,22 +16,25 @@ function resolverUrl(textureUrl: string, enabledPacks: string): string | null {
   return url.toString();
 }
 
-export function resolveItemTexture(textureUrl: string): Promise<ResolvedItemTexture> {
+export function resolveItemTexture(textureUrl: string, texturePack?: string): Promise<ResolvedItemTexture> {
   const enabledPacksCookie = readEnabledPacksCookie();
   const enabledPacks = enabledPacksCookie === null ? "" : serializePackIds(enabledPacksCookie);
-  const cacheKey = `${textureUrl}|${enabledPacks}`;
+  const cacheKey = `${textureUrl}|${enabledPacks}|${texturePack ?? ""}`;
   const cached = resolutionCache.get(cacheKey);
   if (cached) return cached;
 
-  const url = resolverUrl(textureUrl, enabledPacks);
-  if (!url) return Promise.resolve({ texture: textureUrl });
+  const fallback: ResolvedItemTexture = { texture: textureUrl };
+  if (texturePack) fallback.texture_pack = texturePack;
 
-  const resolution = fetch(url)
-    .then(async (response) => {
-      if (!response.ok) throw new Error(`Failed to resolve item texture: ${response.status}`);
-      return (await response.json()) as ResolvedItemTexture;
-    })
-    .catch(() => ({ texture: textureUrl }));
+  const resolver = texturePack ? null : resolverUrl(textureUrl, enabledPacks);
+  const resolution = resolver
+    ? fetch(resolver)
+        .then(async (response) => {
+          if (!response.ok) throw new Error(`Failed to resolve item texture: ${response.status}`);
+          return (await response.json()) as ResolvedItemTexture;
+        })
+        .catch(() => fallback)
+    : Promise.resolve(fallback);
 
   resolutionCache.set(cacheKey, resolution);
   return resolution;
