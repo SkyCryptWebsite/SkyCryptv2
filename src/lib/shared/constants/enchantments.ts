@@ -84,7 +84,7 @@ export const MAX_ENCHANTS = new Set([
   "Respiration IV",
   "Respite V",
   "Scavenger VI",
-  "Scuba V",
+  "Scuba VI",
   "Sharpness VII",
   "Silk Touch I",
   "Small Brain V",
