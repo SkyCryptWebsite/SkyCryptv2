@@ -54,7 +54,7 @@
     {#each catacombs as catacomb, index (index)}
       {#if catacomb.stats}
         {#if catacomb.stats.tier_completions != null && catacomb.stats.tier_completions > 0}
-          <div class="flex w-xs flex-col self-start rounded-xl border bg-background/50">
+          <div class="flex w-sm flex-col self-start rounded-xl border bg-background/50">
             <div class="flex w-full items-center justify-center gap-1.5 py-2 text-center font-semibold uppercase">
               <Avatar.Root class="after:rounded-none after:border-none">
                 <Avatar.Image
