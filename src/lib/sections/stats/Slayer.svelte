@@ -32,9 +32,14 @@
         {#if slayer.data}
           <ScrollAreaItems>
             {#each Object.entries(slayer.data) as [key, value], index (index)}
+              {const isMaxed = value.level?.maxed ?? false}
+              {let isHovered = $state(false)}
               {#if value.level && value.level.xp != null && value.level.xp > 0}
                 <div
-                  class="relative flex min-w-xs flex-col items-center gap-1 space-y-5 overflow-hidden rounded-xl border bg-background/50">
+                  class="relative flex min-w-xs flex-col items-center gap-1 space-y-5 overflow-hidden rounded-xl border bg-background/50"
+                  onpointerenter={() => (isHovered = true)}
+                  onpointerleave={() => (isHovered = false)}
+                  role="none">
                   <div
                     class="flex w-full items-center justify-center gap-1.5 border-b-2 border-primary py-2 text-center font-semibold uppercase">
                     <Avatar.Root class="rounded-none after:border-none">
@@ -79,10 +84,16 @@
                       <div
                         class="absolute inset-0 z-10 flex w-full flex-nowrap items-center-safe justify-center-safe gap-0.5 text-xs">
                         <span class="font-bold">
-                          {#if value.level.maxed}
-                            {formatNumber(value.level.xp)}
-                          {:else}
-                            {formatNumber(value.level.xp)} / {formatNumber(value.level.xpForNext ?? 0)}
+                          {#if isHovered && !isMaxed}
+                            {format(value.level.xp, "0,0")} / {format(value.level.xpForNext)}
+                          {:else if !isMaxed}
+                            {formatNumber(value.level.xp ?? 0)} / {formatNumber(value.level.xpForNext ?? 0)}
+                          {/if}
+
+                          {#if isHovered && isMaxed}
+                            {format(value.level.xp, "0,0")}
+                          {:else if isMaxed}
+                            {formatNumber(value.level.xp ?? 0)}
                           {/if}
                         </span>
                         XP
