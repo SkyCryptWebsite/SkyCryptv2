@@ -5,97 +5,144 @@
   import * as skinview3d from "skinview3d";
   import { onDestroy } from "svelte";
 
+  interface Props {
+    class?: string;
+    showStaticSkin: () => void;
+  }
+
+  interface ProfileResponse {
+    properties: { name: string; value: string; signature?: string }[];
+  }
+
+  let { class: className, showStaticSkin }: Props = $props();
+
   const ctx = $derived(getProfileContext().current);
   const uuid = $derived(ctx?.uuid);
 
-  let { class: className, showStaticSkin }: { class: string | undefined; showStaticSkin: () => void } = $props();
-  let viewer = $state<skinview3d.SkinViewer>();
   let minecraftAvatar = $state<HTMLCanvasElement>();
   let canvasIsLoading = $state<boolean>(true);
-  let loadedUuid = "";
 
-  const FIXED_WIDTH = 500;
-  const FIXED_HEIGHT = 1000;
+  let viewer: skinview3d.SkinViewer | undefined;
+  let loadedUuid = "";
+  let resizeObserver: ResizeObserver | undefined;
+  let resizeAnimationFrameId: number | null = null;
 
   function updateViewerSize() {
-    if (minecraftAvatar && minecraftAvatar.parentElement && viewer) {
-      viewer.setSize(minecraftAvatar.parentElement.clientWidth, window.innerHeight);
+    if (!viewer || !minecraftAvatar?.parentElement) return;
+    const { clientWidth, clientHeight } = minecraftAvatar.parentElement;
+    if (clientWidth > 0 && clientHeight > 0) {
+      viewer.setSize(clientWidth, clientHeight);
     }
   }
 
-  const updateSkinViewer = async (uuid: string) => {
-    if (loadedUuid === uuid) return;
+  function throttledUpdateViewerSize() {
+    if (resizeAnimationFrameId !== null) return;
+    resizeAnimationFrameId = requestAnimationFrame(() => {
+      updateViewerSize();
+      resizeAnimationFrameId = null;
+    });
+  }
+
+  function sanitizeUrl(url?: string): string | undefined {
+    return url ? url.replace(/^http:/, "https:") : undefined;
+  }
+
+  const updateSkinViewer = async (targetUuid: string) => {
+    if (loadedUuid === targetUuid || !minecraftAvatar) return;
     canvasIsLoading = true;
 
-    const capeData = await ky(`https://mowojang.seraph.si/session/minecraft/profile/${uuid}`).json<{
-      properties: { name: string; value: string; signature?: string }[];
-    }>();
-    const texturesProperty = capeData.properties.find((prop) => prop.name === "textures");
+    try {
+      const capeData = await ky(
+        `https://mowojang.seraph.si/session/minecraft/profile/${targetUuid}`
+      ).json<ProfileResponse>();
 
-    if (!texturesProperty) {
+      const texturesProperty = capeData.properties.find((prop) => prop.name === "textures");
+
+      if (!texturesProperty?.value) {
+        throw new Error("No texture properties found");
+      }
+
+      const texturesJson = JSON.parse(atob(texturesProperty.value));
+      const skinUrl = sanitizeUrl(texturesJson.textures?.SKIN?.url);
+      const capeUrl = sanitizeUrl(texturesJson.textures?.CAPE?.url);
+
+      if (!skinUrl) {
+        throw new Error("No skin URL present in texture payload");
+      }
+
+      if (!viewer) {
+        const parent = minecraftAvatar.parentElement;
+        viewer = new skinview3d.SkinViewer({
+          canvas: minecraftAvatar,
+          width: parent?.clientWidth || 300,
+          height: parent?.clientHeight || 600,
+          animation: new skinview3d.IdleAnimation(),
+          preserveDrawingBuffer: true
+        });
+
+        viewer.camera.position.set(-18, -3, 78);
+        viewer.controls.enableZoom = false;
+        viewer.controls.enablePan = true;
+        viewer.controls.enableRotate = true;
+        viewer.canvas.removeAttribute("tabindex");
+      }
+
+      await viewer.loadSkin(skinUrl);
+
+      if (capeUrl) {
+        await viewer.loadCape(capeUrl);
+      } else {
+        viewer.resetCape();
+      }
+
+      loadedUuid = targetUuid;
+      canvasIsLoading = false;
+
+      requestAnimationFrame(updateViewerSize);
+    } catch (e) {
+      console.error("Error loading skin viewer:", e);
       canvasIsLoading = false;
       showStaticSkin();
-      return;
     }
-
-    // Decode the Base64 value
-    const decodedValue = atob(texturesProperty.value);
-    const texturesJson = JSON.parse(decodedValue);
-    const skin = texturesJson.textures.SKIN;
-    if (skin?.url) skin.url = skin.url.replace(/^http:/, "https:");
-
-    const cape = texturesJson.textures.CAPE;
-    if (cape?.url) cape.url = cape.url.replace(/^http:/, "https:");
-    const hasCape = cape !== undefined;
-
-    if (!viewer) {
-      viewer = new skinview3d.SkinViewer({
-        canvas: minecraftAvatar,
-        width: FIXED_WIDTH,
-        height: FIXED_HEIGHT,
-        animation: new skinview3d.IdleAnimation(),
-        preserveDrawingBuffer: true
-      });
-    }
-
-    await viewer.loadSkin(skin.url);
-    if (hasCape) {
-      await viewer.loadCape(cape.url);
-    } else {
-      viewer.resetCape();
-    }
-
-    viewer.camera.position.set(-18, -3, 78);
-    viewer.controls.enableZoom = false;
-    viewer.controls.enablePan = true;
-    viewer.controls.enableRotate = true;
-    viewer.canvas.removeAttribute("tabindex");
-
-    canvasIsLoading = false;
   };
 
-  $effect.pre(() => {
-    try {
-      if (uuid) updateSkinViewer(uuid);
-    } catch (e) {
-      showStaticSkin();
-      console.error("Error loading skin viewer:", e);
+  $effect(() => {
+    if (uuid) {
+      updateSkinViewer(uuid);
     }
-    updateViewerSize();
-    return () => viewer?.dispose();
+  });
+
+  $effect(() => {
+    const parent = minecraftAvatar?.parentElement;
+    if (!parent) return;
+
+    resizeObserver = new ResizeObserver(throttledUpdateViewerSize);
+    resizeObserver.observe(parent);
+
+    return () => {
+      resizeObserver?.disconnect();
+      if (resizeAnimationFrameId !== null) {
+        cancelAnimationFrame(resizeAnimationFrameId);
+        resizeAnimationFrameId = null;
+      }
+    };
   });
 
   onDestroy(() => {
+    if (resizeAnimationFrameId !== null) {
+      cancelAnimationFrame(resizeAnimationFrameId);
+    }
+    resizeObserver?.disconnect();
     viewer?.dispose();
+    viewer = undefined;
   });
 </script>
 
-<svelte:window onresize={updateViewerSize} />
-
-<canvas
-  bind:this={minecraftAvatar}
+<div
   class={cn(
-    "size-full transform-gpu overflow-hidden opacity-0 data-[loading=false]:motion-preset-focus data-[loading=false]:motion-preset-slide-right data-[loading=false]:opacity-100",
+    "relative size-full overflow-hidden opacity-0 data-[loading=false]:motion-preset-focus data-[loading=false]:motion-preset-slide-right data-[loading=false]:opacity-100",
     className
   )}
-  data-loading={canvasIsLoading}></canvas>
+  data-loading={canvasIsLoading}>
+  <canvas bind:this={minecraftAvatar} class="block size-full"></canvas>
+</div>
