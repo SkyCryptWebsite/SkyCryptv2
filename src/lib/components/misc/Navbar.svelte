@@ -165,8 +165,9 @@
     <div class="mx-6 my-2 flex! flex-nowrap items-center gap-2 font-semibold whitespace-nowrap text-foreground/80">
       {#each filteredSectionOrderPreferences as section, index (index)}
         {const isActive = $derived(internalState.tabValue === section.name)}
+
         <Button
-          class="relative isolate motion-preset-focus motion-preset-slide-right rounded-xl bg-transparent px-2 py-3 text-base font-semibold text-inherit motion-delay-[calc(sibling-index()*0.05s)] hover:bg-transparent data-[active=true]:text-foreground "
+          class="relative isolate motion-preset-focus motion-preset-slide-right rounded-full bg-transparent px-2 py-3 text-base font-semibold text-inherit motion-delay-[calc(sibling-index()*0.05s)] hover:bg-foreground/20 data-[active=true]:bg-foreground/20 data-[active=true]:text-foreground "
           data-id={section.name}
           data-active={isActive}
           onclick={() => handleSectionClick(section.name)}>
@@ -177,6 +178,7 @@
               out:receive={{ key: "active-tab" }}>
             </div>
           {/if}
+
           <span class="relative">
             {section.name?.replaceAll("_", " ")}
           </span>
