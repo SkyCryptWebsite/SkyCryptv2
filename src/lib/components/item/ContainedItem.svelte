@@ -23,4 +23,9 @@
       <Image class={cn(isInventory ? "size-8" : "size-14")} />
     </Avatar.Fallback>
   </Avatar.Root>
+  {#if (piece.Count ?? 0) > 1}
+    <span class="absolute right-0 bottom-0 text-xs text-foreground">
+      {piece.Count}
+    </span>
+  {/if}
 </div>
