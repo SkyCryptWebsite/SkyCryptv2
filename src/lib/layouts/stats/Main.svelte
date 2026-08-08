@@ -5,12 +5,14 @@
   import { page } from "$app/state";
   import {
     CombinedContext,
+    AllStatsContext,
     getHoverContext,
     getInternalState,
     getPreferences,
     getProfileContext,
     getRecentSearches,
     ProfileContext,
+    setAllStatsContext,
     setCombinedContext,
     setProfileContext
   } from "$ctx";
@@ -23,7 +25,7 @@
   import Stats from "$lib/layouts/stats/Stats.svelte";
   import Sections from "$lib/sections/Sections.svelte";
   import type { ModelsStatsOutput } from "$lib/shared/api/orval-generated";
-  import { getCombinedProfileStats } from "$lib/shared/api/skycrypt-api.remote";
+  import { getAllStats, getCombinedProfileStats } from "$lib/shared/api/skycrypt-api.remote";
   import * as Dialog from "$ui/dialog";
   import * as Drawer from "$ui/drawer";
   import Image from "@lucide/svelte/icons/image";
@@ -55,9 +57,12 @@
 
   // Initialize the profile context
   const profileClass = new ProfileContext();
+  const allStatsClass = new AllStatsContext();
   const combinedClass = new CombinedContext();
   setProfileContext(profileClass);
+  setAllStatsContext(allStatsClass);
   setCombinedContext(combinedClass);
+  allStatsClass.current = await getAllStats();
   const combined = $derived(
     ctx.uuid && ctx.profile_id ? await getCombinedProfileStats({ uuid: ctx.uuid, profileId: ctx.profile_id }) : null
   );

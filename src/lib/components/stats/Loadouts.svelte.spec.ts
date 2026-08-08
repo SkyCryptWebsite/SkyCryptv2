@@ -1,5 +1,6 @@
 import { describe, it } from "vitest";
 import { render } from "vitest-browser-svelte";
+import WithContext from "../../../test-utils/WithContext.svelte";
 import Loadouts from "./Loadouts.svelte";
 
 const loadouts = [
@@ -16,7 +17,11 @@ const loadouts = [
 
 describe.concurrent("Loadouts", () => {
   it("renders loadouts as horizontal cards", async ({ expect }) => {
-    const { container } = await render(Loadouts, { loadouts });
+    const { container } = await render(WithContext, {
+      component: Loadouts,
+      componentProps: { loadouts },
+      withTooltipProvider: true
+    });
 
     expect(container.textContent).toContain("Mining Setup");
     expect(container.textContent).toContain("None");

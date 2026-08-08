@@ -1,6 +1,7 @@
 <script lang="ts">
-  import { setHoverContext } from "$ctx";
+  import { AllStatsContext, setAllStatsContext, setHoverContext } from "$ctx";
   import { initInternalState } from "$ctx/internal.svelte";
+  import type { ModelsStatData } from "$lib/shared/api/orval-generated";
   import { Tooltip } from "bits-ui";
   import type { Component, Snippet } from "svelte";
   import { MockIsHover } from "./test-wrapper.svelte";
@@ -12,6 +13,7 @@
     componentProps?: Record<string, any>;
     hoverEnabled?: boolean;
     withTooltipProvider?: boolean;
+    allStats?: ModelsStatData[];
     children?: Snippet;
   }
 
@@ -20,6 +22,7 @@
     componentProps = {},
     hoverEnabled = true,
     withTooltipProvider = false,
+    allStats = [],
     children
   }: Props = $props();
 
@@ -27,6 +30,10 @@
   const mockHover = new MockIsHover(hoverEnabled);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setHoverContext(mockHover as any);
+  const mockAllStats = new AllStatsContext();
+  // svelte-ignore state_referenced_locally
+  mockAllStats.current = allStats;
+  setAllStatsContext(mockAllStats);
   initInternalState();
 </script>
 

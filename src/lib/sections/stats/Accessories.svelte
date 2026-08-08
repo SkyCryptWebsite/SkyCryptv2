@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getCombinedContext } from "$ctx";
+  import { getAllStatsContext, getCombinedContext } from "$ctx";
   import { Item } from "$lib/components/item";
   import { Section, SectionSubtitle } from "$lib/components/sections";
   import { AdditionStat, Bonus } from "$lib/components/stats";
@@ -10,7 +10,6 @@
   import CollapsibleCustomTrigger from "$src/lib/components/CollapsibleCustomTrigger.svelte";
   import EmptyStat from "$src/lib/components/EmptyStat.svelte";
   import ScrollAreaItems from "$src/lib/components/ScrollAreaItems.svelte";
-  import { getAllStats } from "$src/lib/shared/api/skycrypt-api.remote";
   import * as Collapsible from "$ui/collapsible";
   import { Separator } from "$ui/separator";
   import GemIcon from "@lucide/svelte/icons/gem";
@@ -18,7 +17,7 @@
   let { order }: { order: number } = $props();
 
   const accessories = $derived(getCombinedContext().current?.accessories);
-  const allStats = await getAllStats();
+  const allStats = $derived(getAllStatsContext().current);
 
   // MP awarded per accessory of each rarity, in display order. Colors come from RARITY_COLORS.
   const MP_PER_RARITY = [

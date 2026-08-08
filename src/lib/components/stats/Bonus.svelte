@@ -1,6 +1,6 @@
 <script lang="ts">
+  import { getAllStatsContext } from "$ctx";
   import { cn } from "$lib/shared/utils";
-  import { getAllStats } from "$src/lib/shared/api/skycrypt-api.remote";
   import type { ItemStats } from "$types";
   import { format } from "numerable";
 
@@ -13,7 +13,7 @@
   let { stats, title = "Bonus:", class: classNames }: Props = $props();
 
   const statsData = $derived(Object.entries(stats));
-  const allStats = await getAllStats();
+  const allStats = $derived(getAllStatsContext().current);
 </script>
 
 {#if statsData.length > 0}
