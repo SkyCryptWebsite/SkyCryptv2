@@ -13,8 +13,8 @@
     onresolved?: (resolution: ResolvedItemTexture) => void;
   };
 
-  let { src = "", alt = "", class: className, loading = "lazy", enchanted, texturePack, onresolved }: Props = $props();
-  let resolvedSrc = $state("");
+  let { src, alt = "", class: className, loading = "lazy", enchanted, texturePack, onresolved }: Props = $props();
+  let resolvedSrc = $state<string | undefined>(undefined);
 
   $effect(() => {
     const textureUrl = src;
