@@ -13,7 +13,8 @@
 </script>
 
 {#if internalState.itemContentSpecial}
-  <div class="grid grid-cols-[repeat(9,minmax(1.875rem,4.875rem))] place-content-center gap-1 @md:gap-1.5 @xl:gap-2">
+  <div
+    class="grid grid-cols-[repeat(9,minmax(1.875rem,4.875rem))] place-content-center gap-1 p-4 @md:gap-1.5 @xl:gap-2">
     {#if items && items.length !== 0}
       {#each items as containedItem, index (index)}
         {#if index > 0}
