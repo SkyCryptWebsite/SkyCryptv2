@@ -290,7 +290,7 @@
       {/snippet}
     </Dialog.Trigger>
     <Dialog.Portal>
-      <Dialog.Content class="glass bg-transparent glass-bg-popover sm:max-w-2xl" showCloseButton={false}>
+      <Dialog.Content class="glass glass-bg-popover sm:max-w-2xl standard:bg-transparent" showCloseButton={false}>
         <Dialog.Header>
           <Dialog.Title>Generate your SkyCrypt card</Dialog.Title>
           <Dialog.Description
