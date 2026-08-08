@@ -96,7 +96,7 @@
 </script>
 
 <Command.Dialog
-  class="glass bg-transparent *:data-[slot='command']:bg-transparent"
+  class="glass *:data-[slot='command']:bg-transparent standard:bg-transparent"
   bind:open={() => internalState.openCommand, setCommandOpen}
   bind:value={commandValue}
   filter={customFilter}>
