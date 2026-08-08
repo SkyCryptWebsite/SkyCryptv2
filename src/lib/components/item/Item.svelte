@@ -8,6 +8,7 @@
   import ImageOff from "@lucide/svelte/icons/image-off";
   import { Avatar, Tooltip, type AvatarImageLoadingStatus } from "bits-ui";
   import { IsInViewport } from "runed";
+  import { untrack } from "svelte";
   import ResolvedItemImage from "./ResolvedItemImage.svelte";
 
   type Props = {
@@ -31,9 +32,10 @@
   const recombobulated = $derived(showRecombobulated && (skyblockItem.recombobulated ?? false));
   const enchanted = $derived(skyblockItem?.texture_path?.includes("/api/leather/") ? false : skyblockItem.shiny);
   const showNumbers = $derived(showCount && (skyblockItem.Count ?? 0) > 1);
+  const tooltipPayload = $derived({ skyblockItem, inViewport });
 
   $effect(() => {
-    if (inViewport.current && !hasBeenInViewport) {
+    if (inViewport.current && !untrack(() => hasBeenInViewport)) {
       hasBeenInViewport = true;
     }
   });
@@ -56,7 +58,7 @@
     internalState.showItem = !skyblockItem.displayInline;
   }}
   tether={itemTooltipTether}
-  payload={{ skyblockItem, inViewport }}>
+  payload={tooltipPayload}>
   {#snippet child({ props })}
     <div {...props}>
       {#if hasBeenInViewport}
