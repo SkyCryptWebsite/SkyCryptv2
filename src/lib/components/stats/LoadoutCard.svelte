@@ -3,15 +3,15 @@
   import EmptyItemSlot from "$lib/components/item/EmptyItemSlot.svelte";
   import GearSlotColumn from "$lib/components/item/GearSlotColumn.svelte";
   import Item from "$lib/components/item/Item.svelte";
-  import type { ModelsResolvedLoadout } from "$lib/shared/api/orval-generated";
+  import type { ModelsResolvedLoadout, ModelsStatData } from "$lib/shared/api/orval-generated";
   import { titleCase } from "$lib/shared/helper";
   import { cn } from "$lib/shared/utils";
-  import { getAllStats } from "$src/lib/shared/api/skycrypt-api.remote";
   import { Separator } from "$ui/separator";
 
   type Props = {
     loadout: ModelsResolvedLoadout;
     index: number;
+    allStats: ModelsStatData[];
     class?: string;
   };
 
@@ -22,7 +22,7 @@
     walk_speed: "speed"
   } as const;
 
-  let { loadout, index, class: className }: Props = $props();
+  let { loadout, index, allStats, class: className }: Props = $props();
 
   const name = $derived(loadout.name?.trim() || `Loadout ${index + 1}`);
   const armor = $derived(loadout.armor ?? []);
@@ -30,8 +30,6 @@
   const pet = $derived(loadout.pet);
   const tuningPoints = $derived(Object.entries(loadout.accessories?.tuningPoints ?? {}));
   const powerStone = $derived(loadout.accessories?.powerStone ? titleCase(loadout.accessories.powerStone) : "None");
-  const allStats = await getAllStats();
-
   function selectedSlot(value: number | undefined): string {
     return value ? value.toString() : "None";
   }

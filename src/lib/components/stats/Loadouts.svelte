@@ -1,13 +1,14 @@
 <script lang="ts">
-  import type { ModelsResolvedLoadout } from "$lib/shared/api/orval-generated";
+  import type { ModelsResolvedLoadout, ModelsStatData } from "$lib/shared/api/orval-generated";
   import { ScrollArea } from "$ui/scroll-area";
   import LoadoutCard from "./LoadoutCard.svelte";
 
   type Props = {
     loadouts: ModelsResolvedLoadout[];
+    allStats?: ModelsStatData[];
   };
 
-  let { loadouts }: Props = $props();
+  let { loadouts, allStats = [] }: Props = $props();
 
   function loadoutKey(loadout: ModelsResolvedLoadout | undefined, index: number): string {
     return `${loadout?.id ?? "loadout"}-${index}`;
@@ -21,7 +22,7 @@
     viewportClasses="rounded-xl pr-4 scroll-fade-track-y">
     <div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
       {#each loadouts as loadout, index (loadoutKey(loadout, index))}
-        <LoadoutCard {loadout} {index} />
+        <LoadoutCard {loadout} {index} {allStats} />
       {/each}
     </div>
     <div
