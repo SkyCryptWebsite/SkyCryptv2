@@ -29,10 +29,5 @@
   ],
   "js/ts.updateImportsOnFileMove.enabled": "prompt",
   "eslint.validate": ["javascript", "typescript", "svelte"],
-  "oxc.fmt.configPath": ".oxfmtrc.json",
-  "github.copilot.chat.commitMessageGeneration.instructions": [
-    {
-      "file": ".github/commit-message.instructions.md"
-    }
-  ]
+  "oxc.fmt.configPath": ".oxfmtrc.json"
 }
