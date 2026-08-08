@@ -10,7 +10,6 @@
   import { cn } from "$lib/shared/utils";
   import ScrollAreaItems from "$src/lib/components/ScrollAreaItems.svelte";
   import SectionSubtitle from "$src/lib/components/sections/SectionSubtitle.svelte";
-  import { getAllStats } from "$src/lib/shared/api/skycrypt-api.remote";
   import ShieldIcon from "@lucide/svelte/icons/shield";
   import ShirtIcon from "@lucide/svelte/icons/shirt";
   import SwordIcon from "@lucide/svelte/icons/sword";
@@ -24,7 +23,6 @@
   const equipmentWardrobe = $derived(gear?.equipmentWardrobe);
   const weapons = $derived(gear?.weapons);
   const loadouts = $derived(getCombinedContext().current?.loadouts ?? []);
-  const allStats = await getAllStats();
   const armorSlots = ["helmet", "chestplate", "leggings", "boots"] as const;
   const firstWardrobeItems = $derived.by(() => {
     if (wardrobe?.length === 0) return [];
@@ -96,7 +94,7 @@
   {#if loadouts.length > 0}
     <div class="space-y-4 rounded-xl border p-4">
       <SectionSubtitle>Loadouts</SectionSubtitle>
-      <Loadouts {loadouts} {allStats} />
+      <Loadouts {loadouts} />
     </div>
   {/if}
 
