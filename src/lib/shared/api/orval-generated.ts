@@ -1220,6 +1220,27 @@ export interface ModelsPlayerResolve {
   uuid?: string;
 }
 
+export interface ModelsStatsInfo {
+  [key: string]: number;
+}
+
+export interface ModelsPlayerStat {
+  cap?: number;
+  category: string;
+  color: string;
+  description: string;
+  disabledOnPrivateIsland?: boolean;
+  id: string;
+  name: string;
+  nameLore: string;
+  nameShort: string;
+  nameTiny: string;
+  percent?: boolean;
+  statsInfo: ModelsStatsInfo;
+  suffix: string;
+  symbol: string;
+}
+
 export interface ModelsProcessingError {
   error?: string;
   message?: string;
@@ -1262,14 +1283,24 @@ export interface ModelsSourceInfo {
   source?: string;
 }
 
-export interface ModelsStatsInfo {
-  [key: string]: number;
+export interface ModelsStatData {
+  cap?: number;
+  category?: string;
+  color?: string;
+  description?: string;
+  disabledOnPrivateIsland?: boolean;
+  id?: string;
+  name?: string;
+  nameLore?: string;
+  nameShort?: string;
+  nameTiny?: string;
+  percent?: boolean;
+  suffix?: string;
+  symbol?: string;
 }
 
-export type ModelsStatsStats = { [key: string]: ModelsStatsInfo };
-
 export interface ModelsStats {
-  stats?: ModelsStatsStats;
+  stats: ModelsPlayerStat[];
 }
 
 export type ModelsStatsOutputApiSettings = { [key: string]: boolean };
@@ -1363,6 +1394,75 @@ export const getCombinedProfileStats = async (
   options?: Parameters<typeof customFetch>[1]
 ): Promise<getCombinedProfileStatsResponse> => {
   return customFetch<getCombinedProfileStatsResponse>(getGetCombinedProfileStatsUrl(uuid, profileId), {
+    ...options,
+    method: "GET"
+  });
+};
+
+export type listResourcePacksResponse200 = {
+  data: ModelsResourcePackConfig[];
+  status: 200;
+};
+
+export type listResourcePacksResponse500 = {
+  data: ModelsProcessingError;
+  status: 500;
+};
+
+export type listResourcePacksResponseSuccess = listResourcePacksResponse200 & {
+  headers: Headers;
+};
+export type listResourcePacksResponseError = listResourcePacksResponse500 & {
+  headers: Headers;
+};
+
+export type listResourcePacksResponse = listResourcePacksResponseSuccess | listResourcePacksResponseError;
+
+export const getListResourcePacksUrl = () => {
+  return `/api/constants/packs`;
+};
+
+/**
+ * Returns toggleable resource packs sorted by descending priority for the recommended default order. The enabledPacks
+ * cookie controls per-request rendering from highest to lowest priority and does not change this response order. A
+ * missing preference uses the default order, while an explicit empty array uses vanilla textures only. The vanilla
+ * resource pack is intentionally omitted because it is the default and cannot be disabled.
+ *
+ * @summary List resource packs
+ */
+export const listResourcePacks = async (
+  options?: Parameters<typeof customFetch>[1]
+): Promise<listResourcePacksResponse> => {
+  return customFetch<listResourcePacksResponse>(getListResourcePacksUrl(), {
+    ...options,
+    method: "GET"
+  });
+};
+
+export type getStatsConstantsResponse200 = {
+  data: ModelsStatData[];
+  status: 200;
+};
+
+export type getStatsConstantsResponseSuccess = getStatsConstantsResponse200 & {
+  headers: Headers;
+};
+
+export type getStatsConstantsResponse = getStatsConstantsResponseSuccess;
+
+export const getGetStatsConstantsUrl = () => {
+  return `/api/constants/stats`;
+};
+
+/**
+ * Returns player stats constants.
+ *
+ * @summary List player stats constants
+ */
+export const getStatsConstants = async (
+  options?: Parameters<typeof customFetch>[1]
+): Promise<getStatsConstantsResponse> => {
+  return customFetch<getStatsConstantsResponse>(getGetStatsConstantsUrl(), {
     ...options,
     method: "GET"
   });
@@ -1558,30 +1658,22 @@ export const getGardenStats = async (
   });
 };
 
-export type renderHeadImageResponse200ApplicationJson = {
-  data: unknown;
-  status: 200;
-};
-
-export type renderHeadImageResponse200ImagePng = {
+export type renderHeadImageResponse200 = {
   data: Blob;
   status: 200;
 };
 
 export type renderHeadImageResponse400 = {
-  data: ModelsProcessingError;
+  data: Blob;
   status: 400;
 };
 
 export type renderHeadImageResponse500 = {
-  data: string;
+  data: Blob;
   status: 500;
 };
 
-export type renderHeadImageResponseSuccess = (
-  | renderHeadImageResponse200ApplicationJson
-  | renderHeadImageResponse200ImagePng
-) & {
+export type renderHeadImageResponseSuccess = renderHeadImageResponse200 & {
   headers: Headers;
 };
 export type renderHeadImageResponseError = (renderHeadImageResponse400 | renderHeadImageResponse500) & {
@@ -1707,35 +1799,27 @@ export const getProfileInventory = async (
   });
 };
 
-export type renderItemImageResponse200ApplicationJson = {
-  data: unknown;
-  status: 200;
-};
-
-export type renderItemImageResponse200ImagePng = {
+export type renderItemImageResponse200 = {
   data: Blob;
   status: 200;
 };
 
 export type renderItemImageResponse302 = {
-  data: string;
+  data: Blob;
   status: 302;
 };
 
 export type renderItemImageResponse400 = {
-  data: ModelsProcessingError;
+  data: Blob;
   status: 400;
 };
 
 export type renderItemImageResponse500 = {
-  data: ModelsProcessingError;
+  data: Blob;
   status: 500;
 };
 
-export type renderItemImageResponseSuccess = (
-  | renderItemImageResponse200ApplicationJson
-  | renderItemImageResponse200ImagePng
-) & {
+export type renderItemImageResponseSuccess = renderItemImageResponse200 & {
   headers: Headers;
 };
 export type renderItemImageResponseError = (
@@ -1811,30 +1895,22 @@ export const resolveItemImage = async (
   });
 };
 
-export type renderLeatherArmorImageResponse200ApplicationJson = {
-  data: unknown;
-  status: 200;
-};
-
-export type renderLeatherArmorImageResponse200ImagePng = {
+export type renderLeatherArmorImageResponse200 = {
   data: Blob;
   status: 200;
 };
 
 export type renderLeatherArmorImageResponse400 = {
-  data: ModelsProcessingError;
+  data: Blob;
   status: 400;
 };
 
 export type renderLeatherArmorImageResponse500 = {
-  data: ModelsProcessingError;
+  data: Blob;
   status: 500;
 };
 
-export type renderLeatherArmorImageResponseSuccess = (
-  | renderLeatherArmorImageResponse200ApplicationJson
-  | renderLeatherArmorImageResponse200ImagePng
-) & {
+export type renderLeatherArmorImageResponseSuccess = renderLeatherArmorImageResponse200 & {
   headers: Headers;
 };
 export type renderLeatherArmorImageResponseError = (
@@ -1967,30 +2043,22 @@ export const getPlayerStats = async (
   });
 };
 
-export type renderPotionImageResponse200ApplicationJson = {
-  data: unknown;
-  status: 200;
-};
-
-export type renderPotionImageResponse200ImagePng = {
+export type renderPotionImageResponse200 = {
   data: Blob;
   status: 200;
 };
 
 export type renderPotionImageResponse400 = {
-  data: ModelsProcessingError;
+  data: Blob;
   status: 400;
 };
 
 export type renderPotionImageResponse500 = {
-  data: ModelsProcessingError;
+  data: Blob;
   status: 500;
 };
 
-export type renderPotionImageResponseSuccess = (
-  | renderPotionImageResponse200ApplicationJson
-  | renderPotionImageResponse200ImagePng
-) & {
+export type renderPotionImageResponseSuccess = renderPotionImageResponse200 & {
   headers: Headers;
 };
 export type renderPotionImageResponseError = (renderPotionImageResponse400 | renderPotionImageResponse500) & {
@@ -2014,46 +2082,6 @@ export const renderPotionImage = async (
   options?: Parameters<typeof customFetch>[1]
 ): Promise<renderPotionImageResponse> => {
   return customFetch<renderPotionImageResponse>(getRenderPotionImageUrl(type, color), {
-    ...options,
-    method: "GET"
-  });
-};
-
-export type listResourcePacksResponse200 = {
-  data: ModelsResourcePackConfig[];
-  status: 200;
-};
-
-export type listResourcePacksResponse500 = {
-  data: ModelsProcessingError;
-  status: 500;
-};
-
-export type listResourcePacksResponseSuccess = listResourcePacksResponse200 & {
-  headers: Headers;
-};
-export type listResourcePacksResponseError = listResourcePacksResponse500 & {
-  headers: Headers;
-};
-
-export type listResourcePacksResponse = listResourcePacksResponseSuccess | listResourcePacksResponseError;
-
-export const getListResourcePacksUrl = () => {
-  return `/api/resourcepacks`;
-};
-
-/**
- * Returns toggleable resource packs sorted by descending priority for the recommended default order. The enabledPacks
- * cookie controls per-request rendering from highest to lowest priority and does not change this response order. A
- * missing preference uses the default order, while an explicit empty array uses vanilla textures only. The vanilla
- * resource pack is intentionally omitted because it is the default and cannot be disabled.
- *
- * @summary List resource packs
- */
-export const listResourcePacks = async (
-  options?: Parameters<typeof customFetch>[1]
-): Promise<listResourcePacksResponse> => {
-  return customFetch<listResourcePacksResponse>(getListResourcePacksUrl(), {
     ...options,
     method: "GET"
   });

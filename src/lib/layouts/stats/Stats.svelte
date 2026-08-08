@@ -4,12 +4,14 @@
   import { Stat } from "$lib/components/stats";
   import { getPlayerStats } from "$lib/shared/api/skycrypt-api.remote";
   import { buttonVariants } from "$ui/button";
+  import { Button } from "$ui/button";
   import * as Collapsible from "$ui/collapsible";
   import { Spinner } from "$ui/spinner";
   import { cubicOut } from "svelte/easing";
   import { slide } from "svelte/transition";
 
   let openState = $state(false);
+  let showAllStats = $state(false);
   const profile = $derived(getProfileContext().current);
   const profileUUID = $derived(profile?.uuid);
   const profileId = $derived(profile?.profile_id);
@@ -34,27 +36,41 @@
             {/if}
             {#if statsQuery?.current?.stats}
               <div {...props} transition:slide|global={{ duration: 300, easing: cubicOut, axis: "y" }}>
-                {#each Object.entries(statsQuery.current.stats) as [statName, statData], index (index)}
-                  {#if statData.total > 0}
-                    <Stat stat={statName} {statData} />
-                  {/if}
-                {/each}
+                {#key showAllStats}
+                  {#each statsQuery.current.stats as stat, index (index)}
+                    {#if stat.statsInfo && (showAllStats || stat.statsInfo.total > 0)}
+                      <Stat data={stat} />
+                    {/if}
+                  {/each}
+                {/key}
               </div>
             {/if}
           {/if}
         {/snippet}
       </Collapsible.Content>
     {/key}
-    <Collapsible.Trigger
-      class={buttonVariants({
-        variant: "outline",
-        class: "w-full bg-foreground/5 font-semibold hover:bg-muted/5 data-[state=open]:mt-3.5"
-      })}>
-      {#if statsQuery?.loading}
-        <Spinner />
-      {:else}
-        {openState ? "Hide Stats" : "Show Stats"}
+    <div class="flex w-full items-center-safe justify-center-safe gap-2">
+      {#key openState}
+        <Collapsible.Trigger
+          class={buttonVariants({
+            variant: "outline",
+            class: "flex-1 motion-preset-focus bg-foreground/5 font-semibold hover:bg-muted/5 data-[state=open]:mt-3.5"
+          })}>
+          {#if statsQuery?.loading}
+            <Spinner />
+          {:else}
+            {openState ? "Hide Stats" : "Show Stats"}
+          {/if}
+        </Collapsible.Trigger>
+      {/key}
+      {#if openState}
+        <Button
+          variant="outline"
+          class="mt-3.5 flex-1 motion-preset-focus bg-foreground/5 font-semibold hover:bg-muted/5"
+          onclick={() => (showAllStats = !showAllStats)}>
+          {showAllStats ? "Hide Stats With Zero Values" : "Show All Stats"}
+        </Button>
       {/if}
-    </Collapsible.Trigger>
+    </div>
   </Collapsible.Root>
 </div>

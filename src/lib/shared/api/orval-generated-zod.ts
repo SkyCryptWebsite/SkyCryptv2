@@ -2648,6 +2648,47 @@ export const GetCombinedProfileStatsResponse = zod.object({
 });
 
 /**
+ * Returns toggleable resource packs sorted by descending priority for the recommended default order. The enabledPacks
+ * cookie controls per-request rendering from highest to lowest priority and does not change this response order. A
+ * missing preference uses the default order, while an explicit empty array uses vanilla textures only. The vanilla
+ * resource pack is intentionally omitted because it is the default and cannot be disabled.
+ *
+ * @summary List resource packs
+ */
+export const ListResourcePacksResponseItem = zod.object({
+  author: zod.string().optional(),
+  icon: zod.string().optional(),
+  id: zod.string().optional(),
+  name: zod.string().optional(),
+  priority: zod.int().optional(),
+  url: zod.string().optional(),
+  version: zod.string().optional()
+});
+export const ListResourcePacksResponse = zod.array(ListResourcePacksResponseItem);
+
+/**
+ * Returns player stats constants.
+ *
+ * @summary List player stats constants
+ */
+export const GetStatsConstantsResponseItem = zod.object({
+  cap: zod.int().optional(),
+  category: zod.string().optional(),
+  color: zod.string().optional(),
+  description: zod.string().optional(),
+  disabledOnPrivateIsland: zod.boolean().optional(),
+  id: zod.string().optional(),
+  name: zod.string().optional(),
+  nameLore: zod.string().optional(),
+  nameShort: zod.string().optional(),
+  nameTiny: zod.string().optional(),
+  percent: zod.boolean().optional(),
+  suffix: zod.string().optional(),
+  symbol: zod.string().optional()
+});
+export const GetStatsConstantsResponse = zod.array(GetStatsConstantsResponseItem);
+
+/**
  * Returns compact profile data intended for embeds and previews for a player's selected SkyBlock profile. If Hypixel
  * does not mark a selected profile, the first available profile is used.
  *
@@ -3054,7 +3095,7 @@ export const RenderHeadImageParams = zod.object({
   textureId: zod.string().describe("Minecraft skin texture identifier")
 });
 
-export const RenderHeadImageResponse = zod.file();
+export const RenderHeadImageResponse = zod.unknown();
 
 /**
  * Searches cached inventory tabs for items whose display name or lore contains the search parameter. Call GET
@@ -3146,7 +3187,7 @@ export const RenderItemImageParams = zod.object({
   itemId: zod.string().describe("SkyBlock item ID or Minecraft item identifier")
 });
 
-export const RenderItemImageResponse = zod.file();
+export const RenderItemImageResponse = zod.unknown();
 
 /**
  * Returns the final texture URL and the resource pack that supplied it.
@@ -3172,7 +3213,7 @@ export const RenderLeatherArmorImageParams = zod.object({
   color: zod.string().describe("Armor color value")
 });
 
-export const RenderLeatherArmorImageResponse = zod.file();
+export const RenderLeatherArmorImageResponse = zod.unknown();
 
 /**
  * Calculates normal and non-cosmetic networth for a player's SkyBlock profile. The player identifier can be a Minecraft
@@ -3240,7 +3281,24 @@ export const GetPlayerStatsParams = zod.object({
 });
 
 export const GetPlayerStatsResponse = zod.object({
-  stats: zod.record(zod.string(), zod.record(zod.string(), zod.int())).optional()
+  stats: zod.array(
+    zod.object({
+      cap: zod.int().optional(),
+      category: zod.string(),
+      color: zod.string(),
+      description: zod.string(),
+      disabledOnPrivateIsland: zod.boolean().optional(),
+      id: zod.string(),
+      name: zod.string(),
+      nameLore: zod.string(),
+      nameShort: zod.string(),
+      nameTiny: zod.string(),
+      percent: zod.boolean().optional(),
+      statsInfo: zod.record(zod.string(), zod.int()),
+      suffix: zod.string(),
+      symbol: zod.string()
+    })
+  )
 });
 
 /**
@@ -3253,26 +3311,7 @@ export const RenderPotionImageParams = zod.object({
   color: zod.string().describe("Potion color value")
 });
 
-export const RenderPotionImageResponse = zod.file();
-
-/**
- * Returns toggleable resource packs sorted by descending priority for the recommended default order. The enabledPacks
- * cookie controls per-request rendering from highest to lowest priority and does not change this response order. A
- * missing preference uses the default order, while an explicit empty array uses vanilla textures only. The vanilla
- * resource pack is intentionally omitted because it is the default and cannot be disabled.
- *
- * @summary List resource packs
- */
-export const ListResourcePacksResponseItem = zod.object({
-  author: zod.string().optional(),
-  icon: zod.string().optional(),
-  id: zod.string().optional(),
-  name: zod.string().optional(),
-  priority: zod.int().optional(),
-  url: zod.string().optional(),
-  version: zod.string().optional()
-});
-export const ListResourcePacksResponse = zod.array(ListResourcePacksResponseItem);
+export const RenderPotionImageResponse = zod.unknown();
 
 /**
  * Returns repository, license, commit, and notice information for the running SkyCrypt Backend service.

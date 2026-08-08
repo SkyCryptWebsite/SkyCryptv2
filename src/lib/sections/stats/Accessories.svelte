@@ -5,12 +5,12 @@
   import { AdditionStat, Bonus } from "$lib/components/stats";
   import { Label } from "$lib/components/ui/label";
   import { RARITY_COLORS } from "$lib/shared/constants/rarities";
-  import { STATS_DATA } from "$lib/shared/constants/stats";
   import * as helper from "$lib/shared/helper";
   import { calculatePercentage } from "$lib/shared/helper";
   import CollapsibleCustomTrigger from "$src/lib/components/CollapsibleCustomTrigger.svelte";
   import EmptyStat from "$src/lib/components/EmptyStat.svelte";
   import ScrollAreaItems from "$src/lib/components/ScrollAreaItems.svelte";
+  import { getAllStats } from "$src/lib/shared/api/skycrypt-api.remote";
   import * as Collapsible from "$ui/collapsible";
   import { Separator } from "$ui/separator";
   import GemIcon from "@lucide/svelte/icons/gem";
@@ -18,6 +18,7 @@
   let { order }: { order: number } = $props();
 
   const accessories = $derived(getCombinedContext().current?.accessories);
+  const allStats = await getAllStats();
 
   // MP awarded per accessory of each rarity, in display order. Colors come from RARITY_COLORS.
   const MP_PER_RARITY = [
@@ -140,10 +141,11 @@
               <p class="space-x-0.5 leading-6 font-bold text-muted-foreground capitalize">
                 <span>Enrichments: </span>
                 {#each Object.entries(accessories.enrichments) as [key, value], index (index)}
-                  {#if key !== "missing" && STATS_DATA[key.toLowerCase()]}
-                    <span class={STATS_DATA[key.toLowerCase()].color}>
+                  {const statData = allStats.find((stat) => stat.id === key.toLowerCase())}
+                  {#if key !== "missing" && statData}
+                    <span class="text-minecraft-{statData.color}">
                       {value}×
-                      {STATS_DATA[key.toLowerCase()].name}
+                      {statData.name}
                     </span>
                     {#if Object.entries(accessories.enrichments).length - 1 !== index || (Object.entries(accessories.enrichments).length - 1 === index && accessories.enrichments.missing > 0)}
                       //

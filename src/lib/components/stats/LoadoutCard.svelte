@@ -4,9 +4,9 @@
   import GearSlotColumn from "$lib/components/item/GearSlotColumn.svelte";
   import Item from "$lib/components/item/Item.svelte";
   import type { ModelsResolvedLoadout } from "$lib/shared/api/orval-generated";
-  import { STATS_DATA } from "$lib/shared/constants/stats";
   import { titleCase } from "$lib/shared/helper";
   import { cn } from "$lib/shared/utils";
+  import { getAllStats } from "$src/lib/shared/api/skycrypt-api.remote";
   import { Separator } from "$ui/separator";
 
   type Props = {
@@ -30,6 +30,7 @@
   const pet = $derived(loadout.pet);
   const tuningPoints = $derived(Object.entries(loadout.accessories?.tuningPoints ?? {}));
   const powerStone = $derived(loadout.accessories?.powerStone ? titleCase(loadout.accessories.powerStone) : "None");
+  const allStats = await getAllStats();
 
   function selectedSlot(value: number | undefined): string {
     return value ? value.toString() : "None";
@@ -37,7 +38,7 @@
 
   function tuningStat(stat: string) {
     const resolvedStat = tuningStatAliases[stat as keyof typeof tuningStatAliases] ?? stat;
-    return STATS_DATA[resolvedStat as keyof typeof STATS_DATA];
+    return allStats.find((s) => s.id === resolvedStat);
   }
 </script>
 
@@ -86,7 +87,11 @@
         {#each tuningPoints as [stat, amount] (stat)}
           {const statData = tuningStat(stat)}
           <div class="flex items-baseline justify-between gap-2 tabular-nums">
-            <dt class={cn("flex items-center gap-1", statData?.color ?? "text-muted-foreground")}>
+            <dt
+              class={cn(
+                "flex items-center gap-1",
+                statData?.color ? `text-minecraft-${statData.color}` : "text-muted-foreground"
+              )}>
               {#if statData}
                 <span class="font-skyblock-icons">{statData.symbol}</span>
                 {statData.nameTiny}

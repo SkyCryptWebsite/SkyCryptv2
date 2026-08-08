@@ -14,6 +14,7 @@ import {
   resolveUsernameByUuid as resolveUsernameByUuidRequest,
   resolveUuidByUsername as resolveUuidByUsernameRequest,
   searchProfileInventory as searchProfileInventoryRequest,
+  getStatsConstants as getStatsConstantsRequest,
   type ModelsProcessingError,
   type ModelsSourceInfo
 } from "$lib/shared/api/orval-generated";
@@ -133,6 +134,11 @@ export const resolveUsernameByUuid = prerender(ResolveUsernameByUuidParams, asyn
 /** Fetch resource packs */
 export const listResourcePacks = prerender(async () => {
   return fetchSection(APIEndpointName.RESOURCEPACK, () => listResourcePacksRequest());
+});
+
+/** Fetch stats list */
+export const getAllStats = prerender(async () => {
+  return fetchSection(APIEndpointName.STATS, () => getStatsConstantsRequest());
 });
 
 /** Fetch the source information for the currently running backend service. */
