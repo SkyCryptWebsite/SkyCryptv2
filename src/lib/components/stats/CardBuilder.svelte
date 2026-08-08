@@ -289,22 +289,22 @@
         {@render triggerButton(props)}
       {/snippet}
     </Dialog.Trigger>
-    <Dialog.Portal>
-      <Dialog.Content class="glass glass-bg-popover sm:max-w-2xl standard:bg-transparent" showCloseButton={false}>
-        <Dialog.Header>
-          <Dialog.Title>Generate your SkyCrypt card</Dialog.Title>
-          <Dialog.Description
-            >Choose from various presets and options to create the perfect card for sharing on social media, forums, or
-            with friends!</Dialog.Description>
-        </Dialog.Header>
-        <div class="flex flex-col gap-4 overflow-y-auto">
-          {@render presetCards()}
-          {@render optionGroups()}
-          {@render imagePreview()}
-          {@render resetButton()}
-        </div>
-      </Dialog.Content>
-    </Dialog.Portal>
+    <Dialog.Content
+      class="max-h-[calc(96%-3rem)]! overflow-x-clip overflow-y-scroll glass glass-bg-popover sm:max-w-2xl standard:bg-transparent"
+      showCloseButton={false}>
+      <Dialog.Header>
+        <Dialog.Title>Generate your SkyCrypt card</Dialog.Title>
+        <Dialog.Description
+          >Choose from various presets and options to create the perfect card for sharing on social media, forums, or
+          with friends!</Dialog.Description>
+      </Dialog.Header>
+      <div class="flex flex-col gap-4">
+        {@render presetCards()}
+        {@render optionGroups()}
+        {@render imagePreview()}
+        {@render resetButton()}
+      </div>
+    </Dialog.Content>
   </Dialog.Root>
 {:else}
   <Drawer.Root shouldScaleBackground={true} setBackgroundColorOnScale={false}>
