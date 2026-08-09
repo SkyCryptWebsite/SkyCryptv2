@@ -74,12 +74,12 @@
     </NavigationMenu.Item>
 
     <NavigationMenu.Item
-      class={buttonVariants({ variant: "outline", class: "data-open:focus:bg-transparent" })}
+      class={buttonVariants({ variant: "outline", class: "md:w-1/2 data-open:focus:bg-transparent" })}
       onpointerdown={() => (internalState.openCommand = true)}>
       <div class="flex items-center-safe gap-1">
         Search
         {#if isHover.current}
-          <Kbd.Root class="hidden size-fit min-w-auto py-0.5 md:block dark:bg-background/30 light:bg-foreground/30"
+          <Kbd.Root class="absolute right-4 hidden size-fit min-w-auto border bg-inherit py-0.5 md:block"
             >{preferences.keybind}</Kbd.Root>
         {:else}
           <SearchIcon class="size-4" />
