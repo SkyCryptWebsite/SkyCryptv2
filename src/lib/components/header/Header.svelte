@@ -7,12 +7,13 @@
   import { readComputedThemeCssVars } from "$lib/shared/themes/computed-css-vars";
   import type { ThemeModeName } from "$lib/shared/themes/schema";
   import Menu from "$src/lib/components/header/Menu.svelte";
-  import { Button as ShadcnButton } from "$ui/button";
+  import { buttonVariants } from "$ui/button";
+  import * as DropdownMenu from "$ui/dropdown-menu";
   import MoonIcon from "@lucide/svelte/icons/moon";
   import SunIcon from "@lucide/svelte/icons/sun";
   import SunMoonIcon from "@lucide/svelte/icons/sun-moon";
   import { Avatar, Button } from "bits-ui";
-  import { mode, resetMode, toggleMode, userPrefersMode } from "mode-watcher";
+  import { mode, resetMode, setMode, userPrefersMode } from "mode-watcher";
 
   const internalState = getInternalState();
   const theme = getThemeContext();
@@ -106,15 +107,23 @@
     <Menu />
 
     <div class="flex gap-1">
-      <ShadcnButton variant="outline" onclick={toggleMode} ondblclick={resetMode}>
-        {#if userPrefersMode.current === "system"}
-          <SunMoonIcon />
-        {:else if userPrefersMode.current === "dark"}
-          <MoonIcon />
-        {:else if userPrefersMode.current === "light"}
-          <SunIcon />
-        {/if}
-      </ShadcnButton>
+      <DropdownMenu.Root>
+        <DropdownMenu.Trigger class={buttonVariants({ variant: "outline" })}>
+          {#if userPrefersMode.current === "system"}
+            <SunMoonIcon />
+          {:else if userPrefersMode.current === "dark"}
+            <MoonIcon />
+          {:else if userPrefersMode.current === "light"}
+            <SunIcon />
+          {/if}
+        </DropdownMenu.Trigger>
+        <DropdownMenu.Content
+          class="before:backdrop-blur-none performance:bg-popover standard:before:backdrop-blur-2xl">
+          <DropdownMenu.Item onclick={() => setMode("dark")}>Dark</DropdownMenu.Item>
+          <DropdownMenu.Item onclick={() => setMode("light")}>Light</DropdownMenu.Item>
+          <DropdownMenu.Item onclick={() => resetMode()}>System</DropdownMenu.Item>
+        </DropdownMenu.Content>
+      </DropdownMenu.Root>
       <Settings />
     </div>
   </div>
