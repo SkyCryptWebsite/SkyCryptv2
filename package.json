@@ -42,6 +42,7 @@
   "dependencies": {
     "@payloadcms/richtext-lexical": "^3.87.1",
     "@sentry/sveltekit": "^10.69.0",
+    "@takumi-rs/core-linux-x64-gnu": "^2.5.11",
     "culori": "^4.0.2",
     "simple-git-hooks": "^2.13.1",
     "takumi-js": "^2.5.11"
@@ -104,7 +105,6 @@
     "postgres": "^3.4.9",
     "pretty-ms": "^9.3.0",
     "runed": "^0.37.1",
-    "satori-html": "^0.3.2",
     "shadcn-svelte": "^1.5.0",
     "skinview3d": "^3.4.2",
     "super-sitemap": "^2.0.6",

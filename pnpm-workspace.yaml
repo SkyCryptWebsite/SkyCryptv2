@@ -10,3 +10,6 @@ allowBuilds:
 updateConfig:
   ignoreDependencies:
     - typescript
+
+publicHoistPattern:
+  - "@takumi-rs/core-*"

@@ -10,7 +10,6 @@ import {
   getProfileStats,
   getSelectedProfileStats
 } from "$src/lib/shared/api/skycrypt-api.remote";
-import { html as toReactNode } from "satori-html";
 import { render } from "svelte/server";
 import { Renderer, type Font, type ImageSource } from "takumi-js/node";
 import { ImageResponse } from "takumi-js/response";
@@ -19,83 +18,98 @@ import appStyles from "$routes/layout.css?inline";
 
 const { PUBLIC_ORIGIN: baseUrl } = env;
 
-const { fonts, images } = await initializeAssets();
+// Create shared renderer with 64MB cache budget
+const renderer = new Renderer({ cacheMaxBytes: 64 * 1024 * 1024 });
 
-const renderer = new Renderer();
+// Initialize assets once and pre-register fonts onto the renderer
+const assetsPromise = setupAssetsAndRenderer();
 
 export const GET: RequestHandler = async ({ params, request, url }) => {
+  const start = performance.now();
   const { ign, profile } = params;
-
   const settings = parseSettingsFromParams(url.searchParams);
 
+  // Await shared assets (fonts are already registered on `renderer`)
+  const { images } = await assetsPromise;
+
+  const isSameOrigin = request.headers.get("sec-fetch-site") === "same-origin";
+  const cacheControl = dev || isSameOrigin ? "no-cache, no-store, must-revalidate" : "public, max-age=86400, immutable";
+
   try {
+    const fetchStart = performance.now();
     const user = (await resolveUuidByUsername(ign)).data as ModelsPlayerResolve;
     const cardData = profile
       ? await fetchProfileCardData(user.uuid ?? ign, profile)
       : await fetchSelectedProfileCardData(user.uuid ?? ign);
+    const fetchDuration = performance.now() - fetchStart;
 
-    const { body: renderedHTML } = render(DefaultCard, {
+    const componentRenderStart = performance.now();
+    const { body, head } = render(DefaultCard, {
       props: {
         ...cardData,
         settings
       }
     });
+    const componentRenderDuration = performance.now() - componentRenderStart;
 
-    const isSameOrigin = request.headers.get("sec-fetch-site") === "same-origin";
-
-    const imageResponse = new ImageResponse(toReactNode(renderedHTML), {
+    const renderStart = performance.now();
+    const imageResponse = new ImageResponse(`${head}${body}`, {
       width: 1500,
       height: 340,
       quality: 80,
       format: "webp",
       headers: {
-        ...request.headers,
-        "cache-control":
-          dev || isSameOrigin ? "no-cache, no-store, must-revalidate" : "public, max-age=86400, immutable"
+        "cache-control": cacheControl
       },
       stylesheets: [appStyles],
       emoji: "twemoji",
-      fonts,
+      signal: request.signal,
       images,
       renderer
     });
 
     await imageResponse.ready;
+    const renderDuration = performance.now() - renderStart;
+    const totalDuration = performance.now() - start;
+    console.info(
+      `[Card Gen] Total: ${totalDuration.toFixed(2)}ms | Fetch: ${fetchDuration.toFixed(2)}ms | Rasterize: ${renderDuration.toFixed(2)}ms | Component Render: ${componentRenderDuration.toFixed(2)}ms`
+    );
+
+    // Server-Timing header
+    imageResponse.headers.set(
+      "Server-Timing",
+      `fetch;dur=${fetchDuration}, render;dur=${renderDuration}, total;dur=${totalDuration}, component;dur=${componentRenderDuration}`
+    );
     return imageResponse;
   } catch (error) {
     console.error("Error generating image:", error);
     try {
-      const { body: errorHTML } = render(ErrorCard);
+      const { head, body } = render(ErrorCard);
 
-      const errorResponse = new ImageResponse(toReactNode(errorHTML), {
+      const errorResponse = new ImageResponse(`${head}${body}`, {
         width: 1500,
         height: 340,
         quality: 80,
         format: "webp",
         headers: {
-          ...request.headers,
           "cache-control": "no-cache, no-store, must-revalidate"
         },
         stylesheets: [appStyles],
         emoji: "twemoji",
-        fonts,
         images,
         renderer
       });
 
       await errorResponse.ready;
       return errorResponse;
-    } catch (error) {
-      console.error("Error generating error image:", error);
+    } catch (err) {
+      console.error("Error generating error image:", err);
       return new Response("Internal Server Error", { status: 500 });
     }
   }
 };
 
 async function fetchProfileCardData(uuid: string, profileId: string) {
-  // allSettled (not Promise.all) so a losing-side rejection is never orphaned:
-  // Promise.all rejects on the first failure but leaves the others running, and
-  // their later rejection becomes an unhandled rejection that crashes Node 24.
   const [profileResult, networthResult, combinedResult] = await Promise.allSettled([
     getProfileStats({ uuid, profileId }),
     getProfileNetworth({ uuid, profileId }),
@@ -134,16 +148,11 @@ async function fetchSelectedProfileCardData(uuid: string) {
   };
 }
 
-async function initializeAssets() {
+// Single initialization routine for fetching assets and registering fonts
+async function setupAssetsAndRenderer() {
   if (building) return { fonts: [], images: [] };
-  const [
-    // oxfmt-ignore
-    montserratNormalBuffer,
-    minecraftFontBuffer,
-    skycryptLogo,
-    skycryptBackground
-  ] = await Promise.all([
-    // oxfmt-ignore
+
+  const [montserratNormalBuffer, minecraftFontBuffer, skycryptLogo, skycryptBackground] = await Promise.all([
     fetch(`${baseUrl}/fonts/montserrat/montserrat-normal.woff2`).then((res) => res.arrayBuffer()),
     fetch(`${baseUrl}/fonts/minecraft/MinecraftSevenv2-Regular.woff2`).then((res) => res.arrayBuffer()),
     fetch(`${baseUrl}/favicon.png`).then((res) => res.arrayBuffer()),
@@ -151,26 +160,19 @@ async function initializeAssets() {
   ]);
 
   const fonts: Font[] = [
-    {
-      name: "Montserrat",
-      data: montserratNormalBuffer
-    },
-    {
-      name: "Minecraft",
-      data: minecraftFontBuffer
-    }
+    { name: "Montserrat", data: montserratNormalBuffer },
+    { name: "Minecraft", data: minecraftFontBuffer }
   ];
 
   const images: ImageSource[] = [
-    {
-      src: "skycrypt-logo",
-      data: skycryptLogo
-    },
-    {
-      src: "skycrypt-background",
-      data: skycryptBackground
-    }
+    { src: "skycrypt-logo", data: skycryptLogo },
+    { src: "skycrypt-background", data: skycryptBackground }
   ];
+
+  // Register fonts once on startup
+  for (const font of fonts) {
+    await renderer.registerFont(font);
+  }
 
   return { fonts, images };
 }
