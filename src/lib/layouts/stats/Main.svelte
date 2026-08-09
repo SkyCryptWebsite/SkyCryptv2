@@ -62,7 +62,7 @@
   setProfileContext(profileClass);
   setAllStatsContext(allStatsClass);
   setCombinedContext(combinedClass);
-  allStatsClass.current = await getAllStats();
+  const allStats = $derived(await getAllStats());
   const combined = $derived(
     ctx.uuid && ctx.profile_id ? await getCombinedProfileStats({ uuid: ctx.uuid, profileId: ctx.profile_id }) : null
   );
@@ -127,6 +127,10 @@
 
   $effect.pre(() => {
     combinedClass.current = combined ?? null;
+  });
+
+  $effect.pre(() => {
+    allStatsClass.current = allStats ?? [];
   });
 
   $effect(() => {
