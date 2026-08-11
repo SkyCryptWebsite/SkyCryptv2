@@ -3,15 +3,16 @@
   import type { EmptyItemSlotType } from "$lib/components/item/EmptyItemSlot.svelte";
   import EmptyItemSlot from "$lib/components/item/EmptyItemSlot.svelte";
   import GearSlotColumn from "$lib/components/item/GearSlotColumn.svelte";
-  import Item from "$lib/components/item/Item.svelte";
+  import SkyblockItem from "$lib/components/item/Item.svelte";
   import type { ModelsResolvedLoadout } from "$lib/shared/api/orval-generated";
   import { titleCase } from "$lib/shared/helper";
   import { cn } from "$lib/shared/utils";
+  import ScrollAreaItems from "$src/lib/components/ScrollAreaItems.svelte";
+  import * as Item from "$ui/item";
   import { Separator } from "$ui/separator";
 
   type Props = {
     loadout: ModelsResolvedLoadout;
-    index: number;
     class?: string;
   };
 
@@ -22,10 +23,9 @@
     walk_speed: "speed"
   } as const;
 
-  let { loadout, index, class: className }: Props = $props();
+  let { loadout, class: className }: Props = $props();
   const allStats = $derived(getAllStatsContext().current);
 
-  const name = $derived(loadout.name?.trim() || `Loadout ${index + 1}`);
   const armor = $derived(loadout.armor ?? []);
   const equipment = $derived(loadout.equipment ?? []);
   const pet = $derived(loadout.pet);
@@ -39,48 +39,71 @@
     const resolvedStat = tuningStatAliases[stat as keyof typeof tuningStatAliases] ?? stat;
     return allStats.find((s) => s.id === resolvedStat);
   }
+
+  const overview = $derived<{ label: string; value: string; icon: string; color: string }[]>([
+    {
+      label: "Power",
+      value: powerStone,
+      // Dev Note: Overbloom Icon
+      icon: "",
+      color: "text-minecraft-b"
+    },
+    {
+      label: "HotM",
+      value: selectedSlot(loadout.miningCoreSelectedSlot),
+      // Dev Note: Mining Fortune/Pickaxe Icon
+      icon: "",
+      color: "text-minecraft-6"
+    },
+    {
+      label: "HotF",
+      value: selectedSlot(loadout.foragingCoreSelectedSlot),
+      // Dev Note: Foraging Fortune/axe Icon
+      icon: "",
+      color: "text-minecraft-2"
+    }
+  ]);
 </script>
 
-<article data-slot="loadout-card" class={cn("space-y-4 rounded-xl border bg-background/20 p-4", className)}>
-  <h4 class="font-semibold text-balance">{name}</h4>
-
-  <div class="flex items-start gap-4 overflow-x-auto pb-1">
-    <GearSlotColumn label="Armor" items={armor} emptySlots={armorSlots} />
-    <GearSlotColumn label="Equip." items={equipment} emptySlots={equipmentSlots} />
-    <div class="flex shrink-0 flex-col gap-2">
-      <span class="text-center text-xs font-semibold tracking-wide text-muted-foreground uppercase">Pet</span>
-      {#if pet?.display_name}
-        <Item piece={pet} />
-      {:else}
-        <EmptyItemSlot slot="pet" />
-      {/if}
+<div
+  data-slot="loadout-card"
+  class={cn("w-full max-w-4xl space-y-4 overflow-clip rounded-xl border bg-background/20 p-4", className)}>
+  <ScrollAreaItems orientation="horizontal" viewportClasses="scroll-fade-track-x">
+    <div class="flex flex-col items-start gap-4 overflow-x-auto md:mx-auto md:w-fit md:flex-row">
+      <GearSlotColumn label="Armor" items={armor} emptySlots={armorSlots} slotContainerClass="flex-row" />
+      <Separator orientation="vertical" class="hidden h-25! md:block" />
+      <GearSlotColumn label="Equip." items={equipment} emptySlots={equipmentSlots} slotContainerClass="flex-row" />
+      <Separator orientation="vertical" class="hidden h-25! md:block" />
+      <div class="flex shrink-0 flex-col gap-2">
+        <span class="text-center text-xs font-semibold tracking-wide text-muted-foreground">Pet</span>
+        {#if pet?.display_name}
+          <SkyblockItem piece={pet} />
+        {:else}
+          <EmptyItemSlot slot="pet" />
+        {/if}
+      </div>
     </div>
-  </div>
+  </ScrollAreaItems>
 
-  <div class="flex flex-wrap items-center gap-2 border-t pt-3">
-    <div class="flex min-h-10 items-center gap-1.5 rounded-xl bg-foreground/5 px-3 text-sm">
-      <span class="font-skyblock-icons text-minecraft-b">✦</span>
-      <span class="text-minecraft-b">Power</span>
-      <span class="font-medium">{powerStone}</span>
-    </div>
+  <Separator />
 
-    <div class="flex min-h-10 items-center gap-1.5 rounded-xl bg-foreground/5 px-3 text-sm tabular-nums">
-      <span class="font-skyblock-icons text-minecraft-6">⸕</span>
-      <span class="text-minecraft-6">HotM</span>
-      <span class="font-medium">{selectedSlot(loadout.miningCoreSelectedSlot)}</span>
-    </div>
-
-    <div class="flex min-h-10 items-center gap-1.5 rounded-xl bg-foreground/5 px-3 text-sm tabular-nums">
-      <span class="font-skyblock-icons text-minecraft-2">☘</span>
-      <span class="text-minecraft-2">HotF</span>
-      <span class="font-medium">{selectedSlot(loadout.foragingCoreSelectedSlot)}</span>
-    </div>
+  <div class="flex flex-wrap items-center gap-2">
+    {#each overview as { label, value, icon, color } (label)}
+      <Item.Root variant="outline" class="w-fit">
+        <Item.Media variant="icon" class={cn("font-skyblock-icons", color)}>{icon}</Item.Media>
+        <Item.Content>
+          <Item.Title class={cn("text-sm", color)}>{label}</Item.Title>
+          <Item.Description>{value}</Item.Description>
+        </Item.Content>
+        <Item.Actions />
+      </Item.Root>
+    {/each}
   </div>
 
   <Separator />
 
   <div class="space-y-2">
-    <span class="text-xs font-semibold tracking-wide text-muted-foreground uppercase">Tuning Points</span>
+    <div class="text-xs font-semibold tracking-wide text-muted-foreground">Tuning Points</div>
     {#if tuningPoints.length > 0}
       <dl class="grid grid-cols-2 gap-x-4 gap-y-1 text-sm">
         {#each tuningPoints as [stat, amount] (stat)}
@@ -106,4 +129,4 @@
       <p class="text-sm text-muted-foreground">None</p>
     {/if}
   </div>
-</article>
+</div>
