@@ -32,6 +32,7 @@ export const load: PageServerLoad = async ({ params, url, setHeaders }) => {
     setHeaders({ "cache-control": "no-store" });
     try {
       const post = await getPostBySlugDraft({ slug: params.slug });
+      if (!post) error(404, "Not found");
       return { post: renderRichTextBlocks(post), preview: true };
     } catch (e) {
       if (isHttpError(e)) throw e;
@@ -43,6 +44,7 @@ export const load: PageServerLoad = async ({ params, url, setHeaders }) => {
   setHeaders({ "cache-control": "public, s-maxage=60, stale-while-revalidate=600" });
   try {
     const post = await getPostBySlug({ slug: params.slug });
+    if (!post) error(404, "Not found");
     return { post: renderRichTextBlocks(post), preview: false };
   } catch (e) {
     if (isHttpError(e)) throw e;

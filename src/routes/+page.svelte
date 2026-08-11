@@ -203,7 +203,7 @@
     {#snippet failed()}{/snippet}
 
     {const newsroom = await listPosts({ page: 1, limit: 3 })}
-    {#if newsroom.docs.length > 0}
+    {#if newsroom && newsroom.docs.length > 0}
       <section class="flex flex-col gap-4">
         <Item.Root
           variant="outline"
@@ -222,7 +222,7 @@
             </Button>
           </Item.Actions>
           <Item.Footer class="grid grid-cols-1 gap-5 @md:grid-cols-2 @xl:grid-cols-3">
-            {#each newsroom.docs as post (post.id)}
+            {#each newsroom?.docs as post (post.id)}
               <PostCard {post} />
             {/each}
           </Item.Footer>

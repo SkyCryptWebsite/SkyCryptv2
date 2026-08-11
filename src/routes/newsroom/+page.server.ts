@@ -20,7 +20,7 @@ export const load: PageServerLoad = async ({ url, setHeaders }) => {
 
   try {
     const result = await listPosts({ page, limit: POSTS_PER_PAGE, type });
-    if (result.totalPages > 0 && page > result.totalPages) error(404, "Page not found");
+    if (result && result.totalPages > 0 && page > result.totalPages) error(404, "Page not found");
     return { ...result, type };
   } catch (e) {
     if (isHttpError(e)) throw e;

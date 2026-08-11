@@ -21,8 +21,9 @@ export const GET: RequestHandler = async () => {
   }
 
   try {
-    const { docs: posts } = await listPosts({});
-    for (const post of posts) {
+    const posts = await listPosts({});
+    if (!posts) throw new Error("No posts found");
+    for (const post of posts.docs) {
       if (post.slug) {
         postSlugs.add(post.slug);
       }

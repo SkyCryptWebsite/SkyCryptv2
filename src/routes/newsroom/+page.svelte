@@ -68,11 +68,13 @@
           {/each}
         </Select.Content>
       </Select.Root>
-      <Pagination page={data.page} totalPages={data.totalPages} {baseHref} />
+      {#if data.page && data.totalPages && data.totalPages > 1}
+        <Pagination page={data.page} totalPages={data.totalPages} {baseHref} />
+      {/if}
     </div>
   </div>
 
-  {#if data.docs.length === 0}
+  {#if data.docs?.length === 0}
     <EmptyStat
       class="glass"
       icon={SearchXIcon}
@@ -87,7 +89,7 @@
       {/each}
     </div>
 
-    {#if data.totalPages > 1}
+    {#if data.page && data.totalPages && data.totalPages > 1}
       <div
         class="flex items-center justify-end rounded-xl border glass p-4 glass-brightness-150 glass-contrast-60 dark:glass-brightness-50 dark:glass-contrast-100">
         <Pagination page={data.page} totalPages={data.totalPages} {baseHref} />
