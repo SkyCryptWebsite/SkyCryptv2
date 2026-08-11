@@ -9,19 +9,20 @@
     emptySlots: EmptyItemSlotType[];
     label?: string;
     class?: string;
+    slotContainerClass?: string;
   };
 
-  let { items = [], emptySlots, label, class: className }: Props = $props();
+  let { items = [], emptySlots, label, class: className, slotContainerClass }: Props = $props();
 
   const slots = $derived(emptySlots.map((emptySlot, index) => ({ emptySlot, item: items[index] })));
 </script>
 
 <div data-slot="gear-slot-column" class={cn("flex shrink-0 flex-col gap-2", className)}>
   {#if label}
-    <span class="text-center text-xs font-semibold tracking-wide text-muted-foreground uppercase">{label}</span>
+    <span class="text-center text-xs font-semibold tracking-wide text-muted-foreground">{label}</span>
   {/if}
 
-  <div class="flex flex-col gap-2">
+  <div class={cn("flex flex-col gap-2", slotContainerClass)}>
     {#each slots as { emptySlot, item }, index (index)}
       {#if item?.display_name}
         <div data-slot="gear-slot-item">
