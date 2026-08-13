@@ -1,21 +1,4 @@
 {
   "mode": "pre",
-  "tag": "beta",
-  "initialVersions": {
-    "skycrypt-frontend": "3.8.0"
-  },
-  "changesets": [
-    "bright-acceleration-lock",
-    "bright-loadouts-gear",
-    "brown-clowns-dress",
-    "calm-mobile-drawers",
-    "calm-settings-scrollbars",
-    "clean-glass-utilities",
-    "fresh-themes-watch",
-    "fuzzy-sitemaps-upgrade",
-    "ordered-enabled-packs",
-    "quick-inventory-navigation",
-    "tidy-dual-themes",
-    "wise-cards-shine"
-  ]
+  "tag": "beta"
 }
