@@ -9,7 +9,7 @@
   import ArrowBigLeft from "@lucide/svelte/icons/arrow-big-left";
   import ArrowBigRight from "@lucide/svelte/icons/arrow-big-right";
   import { ScrollArea } from "bits-ui";
-  import { onDestroy, tick, type Snippet } from "svelte";
+  import { flushSync, onDestroy, tick, type Snippet } from "svelte";
   import { cubicOut } from "svelte/easing";
   import { crossfade } from "svelte/transition";
 
@@ -52,6 +52,7 @@
   });
 
   function handleSectionClick(sectionName: SectionName) {
+    flushSync();
     internalState.tabValue = sectionName;
     scrollToTab({ sectionName, smooth: true });
     // eslint-disable-next-line svelte/no-navigation-without-resolve

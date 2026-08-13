@@ -74,7 +74,10 @@
     if (!username) return;
 
     const current = page.url.pathname;
-    const wanted = `/stats/${username}/${profile_cute_name || ""}`;
+    const wanted = resolve("/stats/[ign]/[[profile]]", {
+      ign: username,
+      profile: profile_cute_name || ""
+    });
 
     // Update the URL to match the username and cute name
     if (current !== wanted) {

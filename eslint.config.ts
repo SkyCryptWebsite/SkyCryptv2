@@ -82,7 +82,8 @@ export default defineConfig(
             "profile",
             "profileEnd",
             "timeStamp",
-            "context"
+            "context",
+            "debug"
           ]
         }
       ]

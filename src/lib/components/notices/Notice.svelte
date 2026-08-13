@@ -27,7 +27,22 @@
   $effect(() => {
     if (fullError) {
       Sentry.captureException(fullError);
+
+      // 1. Group the error log so it stands out cleanly in DevTools
+      console.group(`[Notice Boundary Error]: ${title}`);
+
+      // 2. Log the raw error object (preserves interactive object inspection in DevTools)
       console.error(fullError);
+
+      // 3. If an Error object with a stack exists, log the stack trace directly
+      if (fullError instanceof Error && fullError.stack) {
+        // eslint-disable-next-line no-console
+        console.log("%cOriginal Stack Trace:", "color: #ff5555; font-weight: bold;");
+        // eslint-disable-next-line no-console
+        console.log(fullError.stack);
+      }
+
+      console.groupEnd();
     }
   });
 </script>

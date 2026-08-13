@@ -24,6 +24,8 @@
 
   let viewer: skinview3d.SkinViewer | undefined;
   let loadedUuid = "";
+  let updateRequest = 0;
+  let destroyed = false;
   let resizeObserver: ResizeObserver | undefined;
   let resizeAnimationFrameId: number | null = null;
 
@@ -48,6 +50,7 @@
   }
 
   const updateSkinViewer = async (targetUuid: string) => {
+    const requestId = ++updateRequest;
     if (loadedUuid === targetUuid || !minecraftAvatar) return;
     canvasIsLoading = true;
 
@@ -55,6 +58,8 @@
       const capeData = await ky(
         `https://mowojang.seraph.si/session/minecraft/profile/${targetUuid}`
       ).json<ProfileResponse>();
+
+      if (destroyed || requestId !== updateRequest || !minecraftAvatar) return;
 
       const texturesProperty = capeData.properties.find((prop) => prop.name === "textures");
 
@@ -89,6 +94,8 @@
 
       await viewer.loadSkin(skinUrl);
 
+      if (destroyed || requestId !== updateRequest || !minecraftAvatar) return;
+
       if (capeUrl) {
         await viewer.loadCape(capeUrl);
       } else {
@@ -100,6 +107,7 @@
 
       requestAnimationFrame(updateViewerSize);
     } catch (e) {
+      if (destroyed || requestId !== updateRequest) return;
       console.error("Error loading skin viewer:", e);
       canvasIsLoading = false;
       showStaticSkin();
@@ -129,6 +137,8 @@
   });
 
   onDestroy(() => {
+    destroyed = true;
+    updateRequest += 1;
     if (resizeAnimationFrameId !== null) {
       cancelAnimationFrame(resizeAnimationFrameId);
     }

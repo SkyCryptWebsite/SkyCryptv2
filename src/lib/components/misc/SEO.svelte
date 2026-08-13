@@ -10,7 +10,7 @@
   const isValidEmbed = $derived(!!embedData.username);
   const isStatsPage = $derived(page.url.pathname.includes("/stats/"));
   const routeIgn = $derived(page.params.ign);
-  const routeProfile = $derived(page.params.profile);
+  const routeProfile = $derived(page.params.profile || embedData.profile_cute_name);
   const profileIdentifier = $derived(routeIgn || embedData.username || embedData.uuid || "unknown");
   const canonicalPath = $derived(
     routeProfile
