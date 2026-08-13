@@ -138,7 +138,7 @@
             required
             autofocus
             placeholder="Enter username"
-            class="h-full w-full grow font-medium placeholder:text-primary-foreground md:text-lg"
+            class="h-full w-full grow font-medium md:text-lg"
             bind:value={searchQuery}
             onchange={() => void submitSearch()}
             onkeydown={(e) => {

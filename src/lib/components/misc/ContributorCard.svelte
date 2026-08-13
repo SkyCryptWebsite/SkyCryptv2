@@ -37,7 +37,7 @@
 
 <Item.Root
   variant="outline"
-  class={cn("glass glass-brightness-150 glass-contrast-60 dark:glass-brightness-50 dark:glass-contrast-100", {
+  class={cn("relative glass glass-brightness-150 glass-contrast-60 dark:glass-brightness-50 dark:glass-contrast-100", {
     "delay-75 duration-300 ease-out interact:scale-95 [a]:transition-[scale] standard:[a]:hover:bg-inherit":
       !options?.tip
   })}>

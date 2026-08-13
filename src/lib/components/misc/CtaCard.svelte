@@ -25,7 +25,7 @@
     <!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
     <a {href} target="_blank" {...props}>
       <Item.Media variant="image">
-        <img loading="lazy" src={img.src} alt={img.alt} />
+        <img loading="lazy" src={img.src} alt={img.alt} class="light:invert" />
       </Item.Media>
       <Item.Content>
         <Item.Title>SkyCrypt's {text.title}</Item.Title>
