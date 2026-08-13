@@ -42,10 +42,10 @@
   "dependencies": {
     "@payloadcms/richtext-lexical": "^3.88.0",
     "@sentry/sveltekit": "^10.70.0",
-    "@takumi-rs/core-linux-x64-gnu": "^2.7.1",
+    "@takumi-rs/core-linux-x64-gnu": "^2.7.2",
     "culori": "^4.0.2",
     "simple-git-hooks": "^2.13.1",
-    "takumi-js": "^2.7.1"
+    "takumi-js": "^2.7.2"
   },
   "devDependencies": {
     "@better-auth/api-key": "^1.6.27",
@@ -94,7 +94,7 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-svelte": "^3.22.0",
     "formsnap": "^2.0.1",
-    "globals": "^17.10.0",
+    "globals": "^17.11.0",
     "ky": "^2.0.2",
     "mode-watcher": "^1.1.0",
     "numerable": "^0.3.15",
@@ -108,7 +108,7 @@
     "shadcn-svelte": "^1.5.0",
     "skinview3d": "^3.4.2",
     "super-sitemap": "^2.0.6",
-    "svelte": "^5.56.8",
+    "svelte": "^5.56.9",
     "svelte-check": "^4.7.5",
     "svelte-persisted-store": "^0.12.0",
     "svelte-seo": "^2.0.0",
