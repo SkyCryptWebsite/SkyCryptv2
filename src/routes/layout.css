@@ -198,7 +198,7 @@
     --accent-3: oklch(69.69% 0.1423 76.74);
     --accent-4: oklch(82.84% 0.1548 78.27);
     --destructive: oklch(0.577 0.245 27.325);
-    --border: oklch(1 0 0 / 10%);
+    --border: oklch(0 0 0 / 10%);
     --input: oklch(0.922 0 0);
     --ring: oklch(0.708 0 0);
     --chart-1: oklch(0.871 0.15 154.449);
@@ -399,7 +399,7 @@
   backdrop-filter: var(--glass-mode-backdrop-filter);
 
   &:is(.light *) {
-    background-color: var(--glass-performance-bg);
+    background-color: var(--glass-performance-bg) !important;
     --glass-mode-backdrop-filter: none;
   }
 }
