@@ -65,7 +65,7 @@
   }
 
   async function submitSearch() {
-    if (!searchQueryValidated.success) return;
+    if (submittedSearchLoading || loading || !searchQueryValidated.success) return;
 
     const username = searchQuery.trim();
     if (!username) return;
@@ -84,7 +84,6 @@
   }
 
   function handleKeydown(e: KeyboardEvent) {
-    submittedSearchLoading = false;
     submittedSearchError = undefined;
     if (commandValue && commandValue !== "search") return;
     const k = e.key.toLowerCase();

@@ -133,13 +133,13 @@
     observerCleanup();
   });
 
-  // Effect to handle tab value changes and update URL.
   // Depends on filteredSectionOrderPreferences so it re-runs once the tab buttons populate,
   // since the target button is rendered from that list and may not exist on the initial mount tick.
   $effect(() => {
     const sectionName = internalState.tabValue;
     if (!navbarElement || !sectionName) return;
     if (!filteredSectionOrderPreferences.some((s) => s.name === sectionName)) return;
+    if (page.url.hash !== `#${sectionName}`) return;
 
     let cancelled = false;
 
