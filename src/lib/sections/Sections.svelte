@@ -66,11 +66,18 @@
         {#if sectionName !== "Inventory" && !combinedCtx.current}
           {@render loadingState(sectionName)}
         {:else}
-          {#await componentPromise}
-            {@render loadingState(sectionName)}
-          {:then { default: Component }}
+          <svelte:boundary>
+            {const { default: Component } = await componentPromise}
             <Component order={findIndex(sectionName)} />
-          {/await}
+
+            {#snippet pending()}
+              {@render loadingState(sectionName)}
+            {/snippet}
+
+            {#snippet failed(err, reset)}
+              {@render sectionError(sectionName, err, reset)}
+            {/snippet}
+          </svelte:boundary>
         {/if}
       </div>
     </svelte:boundary>

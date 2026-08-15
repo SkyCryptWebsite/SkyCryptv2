@@ -104,20 +104,18 @@
 
 {#key routeKey}
   <svelte:boundary>
+    {const profileView = await profileViewPromise}
+    <Main data={profileView.profile} allStats={profileView.allStats} combined={profileView.combined} />
+
     {#snippet pending()}
       {@render loading()}
     {/snippet}
+
     {#snippet failed(err, reset)}
       <div class="flex h-screen items-center justify-center">
         <Notice title="An unexpected error has occurred" type="error" error={err} retry={reset} />
       </div>
     {/snippet}
-
-    {#await profileViewPromise}
-      {@render loading()}
-    {:then profileView}
-      <Main data={profileView.profile} allStats={profileView.allStats} combined={profileView.combined} />
-    {/await}
   </svelte:boundary>
 {/key}
 
