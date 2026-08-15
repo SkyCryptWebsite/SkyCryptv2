@@ -1,3 +1,23 @@
+<script lang="ts" module>
+  // eslint-disable-next-line svelte/prefer-svelte-reactivity -- Module-scoped promise cache is deliberately non-reactive.
+  const componentPromises = new Map<string, Promise<unknown>>();
+
+  function loadSection<T>(sectionName: string, loader: () => Promise<T>) {
+    const cached = componentPromises.get(sectionName) as Promise<T> | undefined;
+    if (cached) return cached;
+
+    const promise = loader();
+    componentPromises.set(sectionName, promise);
+    void promise.catch(() => {
+      if (componentPromises.get(sectionName) === promise) {
+        componentPromises.delete(sectionName);
+      }
+    });
+
+    return promise;
+  }
+</script>
+
 <script lang="ts">
   import { getCombinedContext, getInternalState, getPreferences } from "$ctx";
   import { Notice } from "$lib/components/notices";
@@ -24,6 +44,7 @@
     Rift: () => import("$lib/sections/stats/Rift.svelte"),
     Misc: () => import("$lib/sections/stats/MiscSection.svelte")
   } satisfies Record<SectionName, () => Promise<{ default: unknown }>>;
+  const componentPromise = $derived(loadSection(internalState.tabValue, COMPONENTS[internalState.tabValue]));
 
   function findIndex(id: SectionName) {
     return preferences.sectionOrder.findIndex((section) => section.name === id);
@@ -45,8 +66,18 @@
         {#if sectionName !== "Inventory" && !combinedCtx.current}
           {@render loadingState(sectionName)}
         {:else}
-          {const { default: Component } = await COMPONENTS[sectionName]()}
-          <Component order={findIndex(sectionName)} />
+          <svelte:boundary>
+            {const { default: Component } = await componentPromise}
+            <Component order={findIndex(sectionName)} />
+
+            {#snippet pending()}
+              {@render loadingState(sectionName)}
+            {/snippet}
+
+            {#snippet failed(err, reset)}
+              {@render sectionError(sectionName, err, reset)}
+            {/snippet}
+          </svelte:boundary>
         {/if}
       </div>
     </svelte:boundary>

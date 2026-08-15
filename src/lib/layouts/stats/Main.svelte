@@ -1,8 +1,5 @@
 <script lang="ts">
   import { browser } from "$app/environment";
-  import { replaceState } from "$app/navigation";
-  import { resolve } from "$app/paths";
-  import { page } from "$app/state";
   import {
     CombinedContext,
     AllStatsContext,
@@ -24,18 +21,25 @@
   import Skills from "$lib/layouts/stats/Skills.svelte";
   import Stats from "$lib/layouts/stats/Stats.svelte";
   import Sections from "$lib/sections/Sections.svelte";
-  import type { ModelsStatsOutput } from "$lib/shared/api/orval-generated";
-  import { getAllStats, getCombinedProfileStats } from "$lib/shared/api/skycrypt-api.remote";
+  import type { ModelsCombinedOutput, ModelsStatData, ModelsStatsOutput } from "$lib/shared/api/orval-generated";
   import * as Dialog from "$ui/dialog";
   import * as Drawer from "$ui/drawer";
   import Image from "@lucide/svelte/icons/image";
   import { Avatar } from "bits-ui";
   import { Pane } from "paneforge";
-  import { onDestroy, tick, untrack } from "svelte";
+  import { untrack } from "svelte";
   import { cubicOut } from "svelte/easing";
   import { fade } from "svelte/transition";
 
-  const { data: ctx }: { data: ModelsStatsOutput } = $props();
+  const {
+    data: ctx,
+    allStats,
+    combined
+  }: {
+    data: ModelsStatsOutput;
+    allStats: ModelsStatData[];
+    combined: ModelsCombinedOutput | null;
+  } = $props();
 
   const isHover = getHoverContext();
   const preferences = getPreferences();
@@ -53,8 +57,6 @@
   let _defaultLeftPanel = $derived(Math.ceil((300 / innerWidth) * 100));
   let _defaultRightPanel = $derived(Math.ceil((700 / innerWidth) * 100));
 
-  const abortController = new AbortController();
-
   // Initialize the profile context
   const profileClass = new ProfileContext();
   const allStatsClass = new AllStatsContext();
@@ -62,44 +64,6 @@
   setProfileContext(profileClass);
   setAllStatsContext(allStatsClass);
   setCombinedContext(combinedClass);
-  const allStats = $derived(await getAllStats());
-  const combined = $derived(
-    ctx.uuid && ctx.profile_id ? await getCombinedProfileStats({ uuid: ctx.uuid, profileId: ctx.profile_id }) : null
-  );
-
-  function rewriteURL() {
-    if (!(ctx as ModelsStatsOutput)) return;
-
-    const { username, profile_cute_name } = ctx;
-    if (!username) return;
-
-    const current = page.url.pathname;
-    const wanted = resolve("/stats/[ign]/[[profile]]", {
-      ign: username,
-      profile: profile_cute_name || ""
-    });
-
-    // Update the URL to match the username and cute name
-    if (current !== wanted) {
-      // Only proceed if not aborted
-      if (!abortController.signal.aborted) {
-        tick()
-          .then(() => {
-            if (!abortController.signal.aborted) {
-              replaceState(
-                resolve("/stats/[ign]/[[profile]]", {
-                  ign: username,
-                  profile: profile_cute_name || ""
-                }),
-                page.state
-              );
-            }
-          })
-          .catch(() => {});
-      }
-    }
-  }
-
   $effect.pre(() => {
     if (!ctx) return;
 
@@ -134,14 +98,6 @@
 
   $effect.pre(() => {
     allStatsClass.current = allStats ?? [];
-  });
-
-  $effect(() => {
-    rewriteURL();
-  });
-
-  onDestroy(() => {
-    abortController.abort();
   });
 </script>
 
