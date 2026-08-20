@@ -75,6 +75,7 @@ export const MAX_ENCHANTS = new Set([
   "Prosperity V",
   "Protection VII",
   "Punch II",
+  "Pyroclasm VI",
   "Quantum V",
   "Quick Bite V",
   "Rainbow I",
