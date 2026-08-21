@@ -26,7 +26,10 @@ const headersHandler = (async ({ event, resolve }) => {
 
   // Security headers
   response.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
-  response.headers.set("Permissions-Policy", "accelerometer=(), autoplay=(), camera=(), encrypted-media=(), fullscreen=(), gyroscope=(), magnetometer=(), microphone=(), midi=(), payment=(), picture-in-picture=(), publickey-credentials-get=(), sync-xhr=(), usb=(), xr-spatial-tracking=(), geolocation=()");
+  response.headers.set(
+    "Permissions-Policy",
+    "accelerometer=(), autoplay=(), camera=(), encrypted-media=(), fullscreen=(), gyroscope=(), magnetometer=(), microphone=(), midi=(), payment=(), picture-in-picture=(), publickey-credentials-get=(), sync-xhr=(), usb=(), xr-spatial-tracking=(), geolocation=()"
+  );
   response.headers.set("X-Content-Type-Options", "nosniff");
   response.headers.set("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload");
 

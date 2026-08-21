@@ -1,21 +1,25 @@
 <script lang="ts">
+  import { resolve } from "$app/paths";
   import { page } from "$app/state";
-  import { getPreferences } from "$ctx";
-  import { cn } from "$lib/shared/utils";
-  import { Button } from "bits-ui";
-
-  const preferences = getPreferences();
+  import { env } from "$env/dynamic/public";
+  import { Button } from "$ui/button";
+  import * as Empty from "$ui/empty";
+  import CircleXIcon from "@lucide/svelte/icons/circle-x";
 </script>
 
-<main class="flex h-[60dvh] w-full flex-col items-center justify-center px-5">
-  <div class={cn("flex w-full max-w-md flex-col items-center justify-center gap-3 rounded-lg p-6 text-center", preferences.performanceMode ? "bg-background-grey" : "backdrop-blur-lg backdrop-brightness-150 backdrop-contrast-60 dark:backdrop-brightness-50 dark:backdrop-contrast-100")}>
-    <p class="text-3xl font-bold text-link">{page.status}</p>
-    <h1 class="text-xl font-semibold text-text">
-      {page.status === 404 ? "Post not found" : "Something went wrong"}
-    </h1>
-    {#if page.error?.message}
-      <p class="text-sm text-text/75">{page.error.message}</p>
-    {/if}
-    <Button.Root href="/newsroom" class="mx-auto mt-2 flex w-full max-w-fit items-center justify-center rounded-3xl bg-icon px-6 py-3 text-base font-bold text-white uppercase transition-all duration-150 ease-out text-shadow-[0_0_3px_oklch(0%_0_0/50%)] hover:scale-[1.015] dark:text-text">Back to newsroom</Button.Root>
-  </div>
+<main class="flex h-[calc(100vh-3rem)] w-full flex-col items-center justify-center">
+  <Empty.Root class="w-full max-w-md grow-0 border glass">
+    <Empty.Header class="rounded">
+      <Empty.Media variant="icon" class="border bg-inherit">
+        <CircleXIcon />
+      </Empty.Media>
+      <Empty.Title>Oops! Something went wrong</Empty.Title>
+      <Empty.Description>Try again or contact us if the problem persists.</Empty.Description>
+      <Empty.Description>{page.status}: {page.error?.message}</Empty.Description>
+    </Empty.Header>
+    <Empty.Content class="flex flex-row items-center-safe justify-center-safe gap-4">
+      <Button href={resolve("/newsroom")} variant="default">Back to the Newsroom</Button>
+      <Button href={env.PUBLIC_DISCORD_INVITE} variant="outline" target="_blank">Join our Discord</Button>
+    </Empty.Content>
+  </Empty.Root>
 </main>

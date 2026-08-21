@@ -1,160 +1,227 @@
 import { building, dev } from "$app/environment";
 import { env } from "$env/dynamic/public";
-import appStyles from "$src/app.css?inline";
 import { DefaultCard } from "$src/lib/components/cards";
 import ErrorCard from "$src/lib/components/cards/default/ErrorCard.svelte";
 import { parseSettingsFromParams } from "$src/lib/components/cards/default/schema";
-import { getApiUuidUsername, type ModelsPlayerResolve } from "$src/lib/shared/api/orval-generated";
-import { getCombined, getNetworth, getProfileStats } from "$src/lib/shared/api/skycrypt-api.remote";
-import { html as toReactNode } from "satori-html";
+import { resolveUuidByUsername, type ModelsPlayerResolve } from "$src/lib/shared/api/orval-generated";
+import {
+  getCombinedProfileStats,
+  getProfileNetworth,
+  getProfileStats,
+  getSelectedProfileStats
+} from "$src/lib/shared/api/skycrypt-api.remote";
 import { render } from "svelte/server";
 import { Renderer, type Font, type ImageSource } from "takumi-js/node";
 import { ImageResponse } from "takumi-js/response";
 import type { RequestHandler } from "./$types";
+import appStyles from "$routes/layout.css?inline";
 
 const { PUBLIC_ORIGIN: baseUrl } = env;
 
-const { fonts, persistentImages } = await initializeAssets();
+// Create shared renderer with 64MB cache budget
+const renderer = new Renderer({ cacheMaxBytes: 64 * 1024 * 1024 });
 
-const renderer = new Renderer({
-  fonts,
-  persistentImages
-});
+// Initialize assets once and pre-register fonts onto the renderer
+const assetsPromise = setupAssetsAndRenderer();
 
 export const GET: RequestHandler = async ({ params, request, url }) => {
+  const start = performance.now();
   const { ign, profile } = params;
-
   const settings = parseSettingsFromParams(url.searchParams);
 
+  // Await shared assets
+  const { images } = await assetsPromise;
+
+  const isSameOrigin = request.headers.get("sec-fetch-site") === "same-origin";
+  const cacheControl = dev || isSameOrigin ? "no-cache, no-store, must-revalidate" : "public, max-age=86400, immutable";
+
   try {
-    const user = (await getApiUuidUsername(ign)).data as ModelsPlayerResolve;
-    // allSettled (not Promise.all) so a losing-side rejection is never orphaned:
-    // Promise.all rejects on the first failure but leaves the others running, and
-    // their later rejection becomes an unhandled rejection that crashes Node 24.
-    const [
-      // prettier-ignore
-      profileResult,
-      networthResult,
-      combinedResult
-    ] = await Promise.allSettled([
-      // prettier-ignore
-      getProfileStats({ uuid: user.uuid ?? ign, profileId: profile ?? "" }),
-      getNetworth({ uuid: user.uuid ?? ign, profileId: profile ?? "" }),
-      getCombined({ uuid: user.uuid ?? ign, profileId: profile ?? "" })
-    ]);
+    const fetchStart = performance.now();
+    const user = (await resolveUuidByUsername(ign)).data as ModelsPlayerResolve;
+    const cardData = profile
+      ? await fetchProfileCardData(user.uuid ?? ign, profile)
+      : await fetchSelectedProfileCardData(user.uuid ?? ign);
+    const fetchDuration = performance.now() - fetchStart;
 
-    if (profileResult.status === "rejected") throw profileResult.reason;
-    if (networthResult.status === "rejected") throw networthResult.reason;
-    if (combinedResult.status === "rejected") throw combinedResult.reason;
-
-    const profileData = profileResult.value;
-    const networthData = networthResult.value;
-    const combinedData = combinedResult.value;
-
-    const { body: renderedHTML } = render(DefaultCard, {
+    const componentRenderStart = performance.now();
+    const { body, head } = render(DefaultCard, {
       props: {
-        profile: profileData,
-        networth: networthData,
-        dungeons: combinedData.dungeons,
+        ...cardData,
         settings
       }
     });
+    const html = `${head}${body}`;
+    const componentRenderDuration = performance.now() - componentRenderStart;
 
-    const isSameOrigin = request.headers.get("sec-fetch-site") === "same-origin";
+    // Diagnostic: Extract and log all dynamic image sources present in the HTML template
+    const imgMatches = Array.from(html.matchAll(/<img[^>]+src=["']([^"']+)["']/gi)).map((m) => m[1]);
+    if (imgMatches.length > 0) {
+      console.debug(`[Card Gen] HTML references ${imgMatches.length} dynamic images:`, imgMatches);
+    }
 
-    const imageResponse = new ImageResponse(toReactNode(renderedHTML), {
+    // 3. Measure Image Rasterization
+    const renderStart = performance.now();
+    const imageResponse = new ImageResponse(html, {
       width: 1500,
       height: 340,
       quality: 80,
       format: "webp",
       headers: {
-        ...request.headers,
-        "cache-control": dev || isSameOrigin ? "no-cache, no-store, must-revalidate" : "public, max-age=86400, immutable"
+        "cache-control": cacheControl
       },
       stylesheets: [appStyles],
       emoji: "twemoji",
+      signal: request.signal,
+      images,
       renderer
     });
 
-    const response = new Response(await imageResponse.arrayBuffer(), {
-      status: imageResponse.status,
-      statusText: imageResponse.statusText,
-      headers: imageResponse.headers
-    });
-    return response;
-  } catch (error) {
-    console.error("Error generating image:", error);
-    try {
-      const { body: errorHTML } = render(ErrorCard);
+    await imageResponse.ready;
+    const renderDuration = performance.now() - renderStart;
 
-      const errorResponse = new ImageResponse(toReactNode(errorHTML), {
+    const totalDuration = performance.now() - start;
+    console.debug(
+      `[Card Gen] Total: ${totalDuration.toFixed(2)}ms | Fetch: ${fetchDuration.toFixed(2)}ms | Component: ${componentRenderDuration.toFixed(2)}ms | Rasterize: ${renderDuration.toFixed(2)}ms`
+    );
+
+    // Server-Timing header
+    imageResponse.headers.set(
+      "Server-Timing",
+      `fetch;dur=${fetchDuration.toFixed(2)}, component;dur=${componentRenderDuration.toFixed(2)}, render;dur=${renderDuration.toFixed(2)}, total;dur=${totalDuration.toFixed(2)}`
+    );
+
+    return imageResponse;
+  } catch (error) {
+    console.error("[Card Gen Error] Primary generation failed:", error);
+    console.error("[Card Gen Diagnostics]", {
+      ign,
+      profile,
+      preRegisteredImages: images.map((img) => ({ src: img.src, byteLength: img.data.byteLength }))
+    });
+
+    try {
+      const { head, body } = render(ErrorCard);
+
+      const errorResponse = new ImageResponse(`${head}${body}`, {
         width: 1500,
         height: 340,
         quality: 80,
         format: "webp",
         headers: {
-          ...request.headers,
           "cache-control": "no-cache, no-store, must-revalidate"
         },
         stylesheets: [appStyles],
         emoji: "twemoji",
+        images,
         renderer
       });
 
-      return new Response(await errorResponse.arrayBuffer(), {
-        status: 200,
-        headers: errorResponse.headers
-      });
-    } catch (error) {
-      console.error("Error generating error image:", error);
+      await errorResponse.ready;
+      return errorResponse;
+    } catch (err) {
+      console.error("[Card Gen Error] ErrorCard generation also failed:", err);
       return new Response("Internal Server Error", { status: 500 });
     }
   }
 };
 
-async function initializeAssets() {
-  if (building) return { fonts: [], persistentImages: [] };
-  const [
-    // prettier-ignore
-    montserratNormalBuffer,
-    minecraftFontBuffer,
-    minecraftUpperFontBuffer,
-    skycryptLogo,
-    skycryptBackground
-  ] = await Promise.all([
-    // prettier-ignore
-    fetch(`${baseUrl}/fonts/montserrat/montserrat-normal.woff2`).then((res) => res.arrayBuffer()),
-    fetch(`${baseUrl}/fonts/minecraft/MinecraftSevenv2-Regular.woff2`).then((res) => res.arrayBuffer()),
-    fetch(`${baseUrl}/fonts/minecraft/MinecraftTenv2-Regular.woff2`).then((res) => res.arrayBuffer()),
-    fetch(`${baseUrl}/favicon.png`).then((res) => res.arrayBuffer()),
-    fetch(`${baseUrl}/img/bg.png`).then((res) => res.arrayBuffer())
+async function fetchProfileCardData(uuid: string, profileId: string) {
+  const [profileResult, networthResult, combinedResult] = await Promise.allSettled([
+    getProfileStats({ uuid, profileId }),
+    getProfileNetworth({ uuid, profileId }),
+    getCombinedProfileStats({ uuid, profileId })
   ]);
 
-  const fonts: Font[] = [
-    {
-      name: "Montserrat",
-      data: montserratNormalBuffer
-    },
-    {
-      name: "Minecraft",
-      data: minecraftFontBuffer
-    },
-    {
-      name: "Minecraft-Upper",
-      data: minecraftUpperFontBuffer
-    }
-  ];
+  if (profileResult.status === "rejected") throw profileResult.reason;
+  if (networthResult.status === "rejected") throw networthResult.reason;
+  if (combinedResult.status === "rejected") throw combinedResult.reason;
 
-  const persistentImages: ImageSource[] = [
-    {
-      src: "skycrypt-logo",
-      data: skycryptLogo
-    },
-    {
-      src: "skycrypt-background",
-      data: skycryptBackground
-    }
-  ];
+  return {
+    profile: profileResult.value,
+    networth: networthResult.value,
+    dungeons: combinedResult.value.dungeons
+  };
+}
 
-  return { fonts, persistentImages };
+async function fetchSelectedProfileCardData(uuid: string) {
+  const profile = await getSelectedProfileStats({ uuid });
+  const profileId = profile.profile_id;
+
+  if (!profileId) throw new Error("Selected profile is missing a profile ID");
+
+  const [networthResult, combinedResult] = await Promise.allSettled([
+    getProfileNetworth({ uuid, profileId }),
+    getCombinedProfileStats({ uuid, profileId })
+  ]);
+
+  if (networthResult.status === "rejected") throw networthResult.reason;
+  if (combinedResult.status === "rejected") throw combinedResult.reason;
+
+  return {
+    profile,
+    networth: networthResult.value,
+    dungeons: combinedResult.value.dungeons
+  };
+}
+
+/** Validates external asset buffers, checks HTTP status, and verifies that responses aren't HTML error/redirect pages. */
+async function fetchAssetBuffer(url: string, assetName: string): Promise<ArrayBuffer> {
+  const res = await fetch(url);
+  if (!res.ok) {
+    throw new Error(`[Asset Fetch Failed] ${assetName} (${url}) returned HTTP ${res.status}: ${res.statusText}`);
+  }
+
+  const buffer = await res.arrayBuffer();
+  if (buffer.byteLength === 0) {
+    throw new Error(`[Asset Fetch Empty] ${assetName} (${url}) returned an empty buffer.`);
+  }
+
+  const header = new Uint8Array(buffer.slice(0, 4));
+  const hexHeader = Array.from(header)
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join(" ");
+
+  console.debug(`[Asset Loaded] ${assetName} | Size: ${buffer.byteLength} bytes | Header: [${hexHeader}]`);
+
+  // Detect HTML error pages (e.g. '<!DO' or '<htm') returned with 200 OK
+  if (header[0] === 0x3c) {
+    const textPreview = new TextDecoder().decode(buffer.slice(0, 150));
+    throw new Error(`[Corrupt Asset] ${assetName} returned HTML instead of raw binary: ${textPreview}`);
+  }
+
+  return buffer;
+}
+
+// Single initialization routine for fetching assets and registering fonts
+async function setupAssetsAndRenderer() {
+  if (building) return { fonts: [], images: [] };
+
+  try {
+    const [montserratNormalBuffer, minecraftFontBuffer, skycryptLogo, skycryptBackground] = await Promise.all([
+      fetchAssetBuffer(`${baseUrl}/fonts/montserrat/montserrat-normal.woff2`, "Montserrat Font"),
+      fetchAssetBuffer(`${baseUrl}/fonts/minecraft/MinecraftSevenv2-Regular.woff2`, "Minecraft Font"),
+      fetchAssetBuffer(`${baseUrl}/favicon.png`, "Skycrypt Logo"),
+      fetchAssetBuffer(`${baseUrl}/img/bg.png`, "Skycrypt Background")
+    ]);
+
+    const fonts: Font[] = [
+      { name: "Montserrat", data: montserratNormalBuffer },
+      { name: "Minecraft", data: minecraftFontBuffer }
+    ];
+
+    const images: ImageSource[] = [
+      { src: "skycrypt-logo", data: skycryptLogo },
+      { src: "skycrypt-background", data: skycryptBackground }
+    ];
+
+    // Register fonts once on startup
+    for (const font of fonts) {
+      await renderer.registerFont(font);
+    }
+
+    return { fonts, images };
+  } catch (err) {
+    console.error("[Startup Asset Error] Failed to initialize assets and renderer:", err);
+    return { fonts: [], images: [] };
+  }
 }

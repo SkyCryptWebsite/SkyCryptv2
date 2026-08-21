@@ -16,6 +16,7 @@ interface InternalStateData {
   themeEditorId: string | null;
   settingsOpen: boolean;
   settingsTab: SettingsTab;
+  navbarPinned: boolean;
 }
 
 export class InternalStateContext {
@@ -29,7 +30,8 @@ export class InternalStateContext {
     themeEditorOpen: false,
     themeEditorId: null,
     settingsOpen: false,
-    settingsTab: SettingsTab.Packs
+    settingsTab: SettingsTab.Packs,
+    navbarPinned: false
   });
 
   get tabValue() {
@@ -110,6 +112,14 @@ export class InternalStateContext {
 
   set settingsTab(value: SettingsTab) {
     this.#data.settingsTab = value;
+  }
+
+  get navbarPinned() {
+    return this.#data.navbarPinned;
+  }
+
+  set navbarPinned(value: boolean) {
+    this.#data.navbarPinned = value;
   }
 }
 

@@ -69,7 +69,11 @@
       const timeSinceVisibilityChange = now - lastVisibilityChange;
 
       // Wait for initialization AND ensure tab has been active for at least 2 seconds
-      if (timeSinceStart > INITIALIZATION_DELAY && timeSinceVisibilityChange > 2000 && fpsHistory.length >= MIN_SAMPLES) {
+      if (
+        timeSinceStart > INITIALIZATION_DELAY &&
+        timeSinceVisibilityChange > 2000 &&
+        fpsHistory.length >= MIN_SAMPLES
+      ) {
         checkPerformance();
       }
     }
@@ -112,7 +116,8 @@
           preferences.performanceMode = true;
           toast.message("Performance Mode Enabled", {
             id: "performance-mode-enabled",
-            description: "Please note that the performance detection is not 100% accurate and may not always reflect your device's capabilities, be your own judge. You can always disable performance mode in settings.",
+            description:
+              "Please note that the performance detection is not 100% accurate and may not always reflect your device's capabilities, be your own judge. You can always disable performance mode in settings.",
             duration: 5000
           });
         }

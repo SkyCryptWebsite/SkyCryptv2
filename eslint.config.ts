@@ -1,10 +1,10 @@
+import path from "node:path";
 import js from "@eslint/js";
 import { loadConfig } from "@sveltejs/load-config";
 import prettier from "eslint-config-prettier";
 import svelte from "eslint-plugin-svelte";
 import { defineConfig, includeIgnoreFile } from "eslint/config";
 import globals from "globals";
-import path from "node:path";
 import ts from "typescript-eslint";
 
 const svelteConfig = await loadConfig(process.cwd());
@@ -60,8 +60,52 @@ export default defineConfig(
           ignoreRestSiblings: true
         }
       ],
-      "no-console": ["error", { allow: ["info", "warn", "dir", "timeLog", "assert", "clear", "count", "countReset", "group", "groupEnd", "table", "dirxml", "error", "groupCollapsed", "Console", "profile", "profileEnd", "timeStamp", "context"] }]
+      "no-console": [
+        "error",
+        {
+          allow: [
+            "info",
+            "warn",
+            "dir",
+            "timeLog",
+            "assert",
+            "clear",
+            "count",
+            "countReset",
+            "group",
+            "groupEnd",
+            "table",
+            "dirxml",
+            "error",
+            "groupCollapsed",
+            "Console",
+            "profile",
+            "profileEnd",
+            "timeStamp",
+            "context",
+            "debug"
+          ]
+        }
+      ]
     }
   },
-  { ignores: ["**/.DS_Store", "**/node_modules/", "**/build/", "**/.svelte-kit/", "**/package/", "**/.env", "**/.env.*", "**/pnpm-lock.yaml", "**/package-lock.json", "**/yarn.lock", "**/static/", "**/cache/", "**/api/*-generated-zod.ts", "**/api/cms-generated.ts"] }
+  {
+    ignores: [
+      "**/.DS_Store",
+      "**/node_modules/",
+      "**/build/",
+      "**/.svelte-kit/",
+      "**/package/",
+      "**/.env",
+      "**/.env.*",
+      "**/pnpm-lock.yaml",
+      "**/package-lock.json",
+      "**/yarn.lock",
+      "**/static/",
+      "**/cache/",
+      "**/api/*-generated-zod.ts",
+      "**/api/cms-generated.ts",
+      "**/components/ui/**"
+    ]
+  }
 );

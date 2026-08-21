@@ -1,36 +1,52 @@
 <script lang="ts">
-  import { getPreferences } from "$ctx";
+  import EmptyStat from "$lib/components/EmptyStat.svelte";
   import { type ModelsStrippedItem } from "$lib/shared/api/orval-generated";
-  import { shouldShine } from "$lib/shared/helper";
+  import { Separator } from "$ui/separator";
+  import PackageSearchIcon from "@lucide/svelte/icons/package-search";
   import type { Snippet } from "svelte";
 
-  const preferences = getPreferences();
-
-  let { inventoryId, gap, itemSnippet, items = [] }: { inventoryId: string; gap: number; itemSnippet: Snippet<[ModelsStrippedItem]>; items?: ModelsStrippedItem[] } = $props();
+  let {
+    inventoryId,
+    gap,
+    itemSnippet,
+    items = []
+  }: {
+    inventoryId: string;
+    gap: number;
+    itemSnippet: Snippet<[ModelsStrippedItem]>;
+    items?: ModelsStrippedItem[];
+  } = $props();
 </script>
 
 {#snippet content(items: ModelsStrippedItem[] | undefined)}
   {#if items?.length ?? 0 > 0}
-    <div class="grid grid-cols-[repeat(9,minmax(1.875rem,4.875rem))] place-content-center gap-1 pt-5 @md:gap-1.5 @xl:gap-2">
+    <div class="grid grid-cols-[repeat(9,minmax(1.875rem,4.875rem))] place-content-center gap-1 @md:gap-1.5 @xl:gap-2">
       {#each items as item, index (index)}
         {#if index > 0}
           {#if index % gap === 0}
-            <hr class="col-span-full h-4 border-0" />
+            <Separator class="col-span-full my-4" />
           {/if}
         {/if}
         {#if item.texture_path}
-          <div class="relative flex aspect-square items-center justify-center rounded-sm bg-text/4 data-[shine=true]:shine" data-shine={!preferences.performanceMode && shouldShine(item)}>
-            {@render itemSnippet(inventoryId === "inventory" ? ({ ...item, rarity: item.rarity ?? "uncommon" } as ModelsStrippedItem) : item)}
+          <div
+            class="relative flex aspect-square size-full items-center justify-center overflow-clip rounded-xl border bg-foreground/5">
+            {@render itemSnippet(
+              inventoryId === "inventory"
+                ? ({ ...item, rarity: item.rarity ?? "uncommon" } as ModelsStrippedItem)
+                : item
+            )}
           </div>
         {:else}
-          <div class="aspect-square rounded-sm bg-text/4"></div>
+          <div class="aspect-square rounded-xl border bg-foreground/5"></div>
         {/if}
       {/each}
     </div>
   {:else}
-    <p class="mt-2 space-x-0.5 text-center leading-6">
-      No items found in the {inventoryId.replaceAll("_", " ")}.
-    </p>
+    <EmptyStat
+      title="No items found"
+      description="No items found in {inventoryId.replaceAll('_', ' ')}"
+      icon={PackageSearchIcon}
+      class="mt-2" />
   {/if}
 {/snippet}
 

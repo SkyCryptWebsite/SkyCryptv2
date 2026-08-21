@@ -1,18 +1,21 @@
 <script lang="ts">
-  import { getInternalState, getTheme } from "$ctx";
+  import { getInternalState, getThemeContext } from "$ctx";
   import { DEFAULT_THEME } from "$lib/shared/themes/defaults";
-  import { ThemeEngine } from "$lib/shared/themes/engine";
-  import type { ColorBackground, StripesBackground } from "$lib/shared/themes/schema";
-  import { partialThemeV3Schema, type ThemeV3 } from "$lib/shared/themes/schema";
-  import { flyAndScale } from "$lib/shared/utils";
-  import Check from "@lucide/svelte/icons/check";
-  import ChevronsDown from "@lucide/svelte/icons/chevrons-down";
-  import ChevronsUp from "@lucide/svelte/icons/chevrons-up";
-  import ChevronsUpDown from "@lucide/svelte/icons/chevrons-up-down";
+  import { mergeThemeWithDefaults, PREVIEW_THEME_ID, ThemeEngine } from "$lib/shared/themes/engine";
+  import { partialThemeV5Schema, themeV5Schema, type ThemeModeName, type ThemeV5 } from "$lib/shared/themes/schema";
+  import { Button } from "$ui/button";
+  import * as Item from "$ui/item";
+  import { Label } from "$ui/label";
+  import * as Select from "$ui/select";
+  import { Separator } from "$ui/separator";
+  import * as Tabs from "$ui/tabs";
+  import { Textarea } from "$ui/textarea";
+  import ArrowLeftRight from "@lucide/svelte/icons/arrow-left-right";
   import Moon from "@lucide/svelte/icons/moon";
+  import RotateCcw from "@lucide/svelte/icons/rotate-ccw";
   import Sun from "@lucide/svelte/icons/sun";
-  import { Select, Switch, Tabs } from "bits-ui";
   import * as devalue from "devalue";
+  import { theme as activeModeWatcherTheme, mode, setMode, setTheme } from "mode-watcher";
   import { untrack } from "svelte";
   import { toast } from "svelte-sonner";
   import BackgroundSection from "./BackgroundSection.svelte";
@@ -21,115 +24,131 @@
   import ThemeActions from "./ThemeActions.svelte";
 
   const internalState = getInternalState();
-  const themeContext = getTheme();
+  const themeContext = getThemeContext();
+  const initialThemeId = resolveRestorableThemeId(activeModeWatcherTheme.current || "default");
+  const initialMode = mode.current ?? "dark";
+  let restoreThemeId = initialThemeId;
+  let restoreMode = initialMode;
+  let previewActive = false;
 
-  let workingTheme = $state<ThemeV3>(getInitialTheme());
+  function cloneTheme(theme: ThemeV5): ThemeV5 {
+    return devalue.parse(devalue.stringify(theme));
+  }
 
-  // JSON Editor state
-  let jsonString = $state(untrack(() => JSON.stringify(workingTheme, null, 2)));
-  let jsonError = $state<string | null>(null);
-
-  /**
-   * Ensure a theme has complete colors and backgrounds for editor binding.
-   * Fills missing properties from DEFAULT_THEME so all inputs have values.
-   */
-  function ensureEditorDefaults(theme: ThemeV3): ThemeV3 {
+  function ensureEditorDefaults(theme: ThemeV5): ThemeV5 {
     return {
       ...theme,
-      colors: { ...DEFAULT_THEME.colors, ...theme.colors },
-      backgrounds: {
-        skillbar: theme.backgrounds?.skillbar ?? DEFAULT_THEME.backgrounds!.skillbar!,
-        maxedbar: theme.backgrounds?.maxedbar ?? DEFAULT_THEME.backgrounds!.maxedbar!,
-        page: theme.backgrounds?.page ?? DEFAULT_THEME.backgrounds?.page
+      schema: 5,
+      modes: {
+        dark: {
+          cssVars: theme.modes.dark.cssVars ?? {},
+          extras: theme.modes.dark.extras
+        },
+        light: {
+          cssVars: theme.modes.light.cssVars ?? {},
+          extras: theme.modes.light.extras
+        }
       }
     };
   }
 
-  // Initial state: copy of active theme or default
-  function getInitialTheme(): ThemeV3 {
+  function resolveRestorableThemeId(id: string): string {
+    if (id === PREVIEW_THEME_ID) return "default";
+    return themeContext.allThemes.some((theme) => theme.metadata.id === id) ? id : "default";
+  }
+
+  function getInitialTheme(): ThemeV5 {
     if (internalState.themeEditorId) {
-      const existing = themeContext.allThemes.find((t) => t.metadata.id === internalState.themeEditorId);
+      const existing = themeContext.allThemes.find((theme) => theme.metadata.id === internalState.themeEditorId);
       if (existing) {
-        return ensureEditorDefaults(devalue.parse(devalue.stringify(existing)));
+        return ensureEditorDefaults(cloneTheme(existing));
       }
     }
-    // Fallback to active theme if valid, else default
-    if (themeContext.activeTheme) {
-      return ensureEditorDefaults(devalue.parse(devalue.stringify(themeContext.activeTheme)));
-    }
-    return ensureEditorDefaults(devalue.parse(devalue.stringify(DEFAULT_THEME)));
+
+    return ensureEditorDefaults(cloneTheme(themeContext.activeTheme ?? DEFAULT_THEME));
+  }
+
+  const initialEditorTheme = getInitialTheme();
+  let sourceTheme = $state<ThemeV5>(initialEditorTheme);
+  let workingTheme = $state<ThemeV5>(cloneTheme(initialEditorTheme));
+  let editingMode = $state<ThemeModeName>((mode.current ?? "dark") === "light" ? "light" : "dark");
+  let jsonString = $state(untrack(() => JSON.stringify(workingTheme, null, 2)));
+  let jsonError = $state<string | null>(null);
+
+  function restoreInitialTheme() {
+    ThemeEngine.clearPreview();
+    setTheme(restoreThemeId);
+    setMode(restoreMode);
   }
 
   function handleReset() {
-    if (themeContext.activeTheme) {
-      workingTheme = devalue.parse(devalue.stringify(themeContext.activeTheme));
-    } else {
-      workingTheme = devalue.parse(devalue.stringify(DEFAULT_THEME));
-    }
+    workingTheme = ensureEditorDefaults(cloneTheme(sourceTheme));
   }
 
   function handleSave() {
-    // Ensure ID is unique if it's new
-    if (themeContext.isFirstParty(workingTheme.metadata.id)) {
-      workingTheme.metadata.id = `custom-${Date.now()}`;
+    const themeToSave = cloneTheme(workingTheme);
+    if (themeContext.isFirstParty(themeToSave.metadata.id)) {
+      themeToSave.metadata.id = `custom-${Date.now()}`;
     }
-    themeContext.saveTheme(workingTheme);
-    themeContext.activeThemeId = workingTheme.metadata.id;
+
+    const result = themeV5Schema.safeParse(themeToSave);
+    if (!result.success) {
+      toast.error(result.error.issues[0]?.message ?? "Theme is invalid.");
+      return;
+    }
+
+    themeContext.saveTheme(result.data);
+    themeContext.activeThemeId = result.data.metadata.id;
+    restoreThemeId = result.data.metadata.id;
+    restoreMode = mode.current ?? editingMode;
+    sourceTheme = ensureEditorDefaults(cloneTheme(result.data));
+    workingTheme = ensureEditorDefaults(cloneTheme(result.data));
     toast.success("Theme saved!");
   }
 
   function handleJsonChange(e: Event) {
     const target = e.target as HTMLTextAreaElement;
     jsonString = target.value;
+
     try {
       const parsed = JSON.parse(jsonString);
-      const result = partialThemeV3Schema.safeParse(parsed);
-      if (result.success) {
-        // Merge with existing to keep it valid ThemeV3
-        workingTheme = { ...workingTheme, ...parsed };
+      const full = themeV5Schema.safeParse(parsed);
+      if (full.success) {
+        workingTheme = ensureEditorDefaults(full.data);
         jsonError = null;
-      } else {
-        jsonError = result.error.issues[0].message;
+        return;
       }
+
+      const partial = partialThemeV5Schema.safeParse(parsed);
+      if (partial.success && (partial.data.schema === 5 || partial.data.schema === undefined)) {
+        workingTheme = ensureEditorDefaults(
+          mergeThemeWithDefaults({ ...partial.data, metadata: { ...workingTheme.metadata, ...partial.data.metadata } })
+        );
+        jsonError = null;
+        return;
+      }
+
+      jsonError = partial.success ? "Theme JSON must use schema version 5." : partial.error.issues[0]?.message;
     } catch (err) {
       jsonError = (err as Error).message;
     }
   }
 
-  // Sync JSON when switching tabs to Code
   function onTabChange(value: string) {
     if (value === "code") {
-      jsonString = devalue.stringify(workingTheme);
+      jsonString = JSON.stringify(workingTheme, null, 2);
     }
   }
 
   function handleFork(themeId: string) {
-    const base = themeContext.allThemes.find((t) => t.metadata.id === themeId);
-    if (base) {
-      workingTheme = devalue.parse(devalue.stringify(base));
-      workingTheme.metadata.id = `custom-${Date.now()}`;
-      workingTheme.metadata.name = `${base.metadata.name} (Copy)`;
-      workingTheme.metadata.author = "You";
-    }
-  }
+    const base = themeContext.allThemes.find((theme) => theme.metadata.id === themeId);
+    if (!base) return;
 
-  function setBackgroundType(key: "skillbar" | "maxedbar", type: "color" | "stripes") {
-    if (!workingTheme.backgrounds) {
-      workingTheme.backgrounds = {};
-    }
-    if (type === "color") {
-      workingTheme.backgrounds[key] = {
-        type: "color",
-        color: "oklch(0.5 0.1 250)" // Default purple-ish
-      } as ColorBackground;
-    } else {
-      workingTheme.backgrounds[key] = {
-        type: "stripes",
-        angle: "45deg",
-        colors: ["oklch(0.5 0.1 250)", "oklch(0.4 0.1 250)"],
-        width: 10
-      } as StripesBackground;
-    }
+    sourceTheme = ensureEditorDefaults(cloneTheme(base));
+    workingTheme = ensureEditorDefaults(cloneTheme(base));
+    workingTheme.metadata.id = `custom-${Date.now()}`;
+    workingTheme.metadata.name = `${base.metadata.name} (Copy)`;
+    workingTheme.metadata.author = "You";
   }
 
   function handleNameChange(name: string) {
@@ -140,31 +159,65 @@
     workingTheme.metadata.author = author;
   }
 
-  // Live preview
+  function setEditingMode(nextMode: ThemeModeName) {
+    editingMode = nextMode;
+    setMode(nextMode);
+  }
+
+  function copyModeTo(targetMode: ThemeModeName) {
+    const sourceMode: ThemeModeName = targetMode === "dark" ? "light" : "dark";
+    workingTheme.modes[targetMode] = devalue.parse(devalue.stringify(workingTheme.modes[sourceMode]));
+    toast.success(`${sourceMode === "dark" ? "Dark" : "Light"} mode copied.`);
+  }
+
+  function resetCurrentMode() {
+    workingTheme.modes[editingMode] = cloneTheme(sourceTheme).modes[editingMode];
+    toast.success(`${editingMode === "dark" ? "Dark" : "Light"} mode reset.`);
+  }
+
   $effect(() => {
-    ThemeEngine.applyTheme(workingTheme);
-    return () => {
-      // On cleanup, revert to active theme or default
-      if (themeContext.activeTheme) {
-        ThemeEngine.applyTheme(themeContext.activeTheme);
-      } else {
-        ThemeEngine.applyTheme(DEFAULT_THEME);
-      }
-    };
+    if (!internalState.themeEditorOpen) return;
+
+    const result = themeV5Schema.safeParse(workingTheme);
+    if (result.success) {
+      untrack(() => {
+        ThemeEngine.previewTheme(result.data);
+      });
+    }
   });
 
-  // Cleanup on destroy/close
   $effect(() => {
-    if (!internalState.themeEditorOpen) {
-      // Apply the active theme again to clear preview state
-      if (themeContext.activeTheme) {
-        ThemeEngine.applyTheme(themeContext.activeTheme);
+    const isOpen = internalState.themeEditorOpen;
+    untrack(() => {
+      if (isOpen) {
+        if (!previewActive) {
+          const initialTheme = getInitialTheme();
+          sourceTheme = initialTheme;
+          workingTheme = cloneTheme(initialTheme);
+          jsonString = JSON.stringify(initialTheme, null, 2);
+          jsonError = null;
+          editingMode = (mode.current ?? initialMode) === "light" ? "light" : "dark";
+          previewActive = true;
+          ThemeEngine.activatePreviewTheme();
+        }
+        return;
       }
-    }
+
+      if (previewActive) {
+        previewActive = false;
+        restoreInitialTheme();
+      }
+    });
+  });
+
+  $effect(() => {
     return () => {
-      if (themeContext.activeTheme) {
-        ThemeEngine.applyTheme(themeContext.activeTheme);
-      }
+      untrack(() => {
+        if (previewActive) {
+          previewActive = false;
+          restoreInitialTheme();
+        }
+      });
     };
   });
 </script>
@@ -172,92 +225,94 @@
 <div class="flex h-full w-full flex-col">
   <ThemeActions {workingTheme} onReset={handleReset} onSave={handleSave} {handleNameChange} {handleAuthorChange} />
 
-  <div class="flex-1 overflow-y-auto">
-    <div class="p-4">
-      <div class="mb-4 flex flex-col gap-2">
-        <label for="fork-select" class="text-xs font-bold text-text/60 uppercase">Start From</label>
+  <div class="mt-4 flex-1 space-y-4">
+    <Separator />
+    <div class="flex flex-col gap-2">
+      <Label for="fork-select">Start From</Label>
 
-        <Select.Root type="single" onValueChange={(value) => handleFork(value)}>
-          <Select.Trigger id="fork-select" class="flex items-center justify-between rounded-lg bg-text/10 p-2 text-left">
-            <span>{workingTheme.metadata.name || "Select a theme..."}</span>
-            <ChevronsUpDown class="size-4 text-text/60" />
-          </Select.Trigger>
-          <Select.Portal>
-            <Select.Content forceMount class="focus-override z-50 max-h-(--bits-select-content-available-height) w-(--bits-select-anchor-width) min-w-(--bits-select-anchor-width) rounded-lg bg-background-lore px-1 py-3 outline-hidden select-none data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1" sideOffset={10}>
-              {#snippet child({ open, props, wrapperProps })}
-                {#if open}
-                  <div {...wrapperProps}>
-                    <div {...props} transition:flyAndScale>
-                      <Select.ScrollUpButton class="flex w-full items-center justify-center">
-                        <ChevronsUp class="size-3" />
-                      </Select.ScrollUpButton>
-
-                      <Select.Viewport class="p-1">
-                        {#each themeContext.allThemes as theme, index (index)}
-                          <Select.Item class="flex h-10 w-full items-center rounded-lg py-3 pr-1.5 pl-5 text-sm capitalize outline-hidden select-none data-disabled:opacity-50 data-highlighted:bg-background" label={theme.metadata.name} value={theme.metadata.id}>
-                            {#snippet children({ selected })}
-                              {theme.metadata.name}
-
-                              {#if selected}
-                                <div class="ml-auto">
-                                  <Check aria-label="check" />
-                                </div>
-                              {/if}
-                            {/snippet}
-                          </Select.Item>
-                        {/each}
-                        <Select.ScrollDownButton />
-                      </Select.Viewport>
-                      <Select.ScrollDownButton class="flex w-full items-center justify-center">
-                        <ChevronsDown class="size-3" />
-                      </Select.ScrollDownButton>
-                    </div>
-                  </div>
-                {/if}
-              {/snippet}
-            </Select.Content>
-          </Select.Portal>
-        </Select.Root>
-      </div>
-
-      <Tabs.Root value="visual" onValueChange={onTabChange} class="w-full">
-        <Tabs.List class="grid w-full grid-cols-2 rounded-lg bg-text/5 p-1">
-          <Tabs.Trigger value="visual" class="rounded-md py-2 text-sm font-medium transition-all data-[state=active]:bg-text/10 data-[state=active]:text-text data-[state=active]:shadow-sm">Visual</Tabs.Trigger>
-          <Tabs.Trigger value="code" class="rounded-md py-2 text-sm font-medium transition-all data-[state=active]:bg-text/10 data-[state=active]:text-text data-[state=active]:shadow-sm">Code (JSON)</Tabs.Trigger>
-        </Tabs.List>
-
-        <Tabs.Content value="visual" class="mt-4 flex flex-col gap-4">
-          <div class="flex items-center justify-between rounded-lg bg-text/5 p-4">
-            <div class="flex items-center gap-3">
-              {#if workingTheme.light}
-                <Sun class="size-5" />
-              {:else}
-                <Moon class="size-5" />
-              {/if}
-              <div class="flex flex-col">
-                <span class="text-sm font-bold text-text">{workingTheme.light ? "Light Mode" : "Dark Mode"}</span>
-                <span class="text-xs text-text/50">Toggle between light and dark base mode</span>
-              </div>
-            </div>
-            <Switch.Root bind:checked={workingTheme.light} class="inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent bg-text/20 transition-colors focus-visible:ring-2 focus-visible:ring-link focus-visible:ring-offset-2 focus-visible:outline-none data-[state=checked]:bg-link">
-              <Switch.Thumb class="pointer-events-none block size-5 rounded-full bg-text shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0" />
-            </Switch.Root>
-          </div>
-
-          <ColorSection bind:workingTheme />
-          <BackgroundSection bind:workingTheme {setBackgroundType} />
-          <MCColorSection bind:workingTheme />
-        </Tabs.Content>
-
-        <Tabs.Content value="code" class="mt-4 flex flex-col gap-2">
-          <textarea value={jsonString} oninput={handleJsonChange} class="h-125 w-full rounded-lg border border-text/10 bg-text/5 p-4 font-mono text-xs text-text focus:border-link focus:outline-none" spellcheck="false"></textarea>
-          {#if jsonError}
-            <div class="rounded-lg bg-red-500/10 p-3 text-xs text-red-400">
-              Error: {jsonError}
-            </div>
-          {/if}
-        </Tabs.Content>
-      </Tabs.Root>
+      <Select.Root type="single" onValueChange={(value) => handleFork(value)}>
+        <Select.Trigger id="fork-select" class="w-full">
+          <span>{workingTheme.metadata.name || "Select a theme..."}</span>
+        </Select.Trigger>
+        <Select.Content>
+          {#each themeContext.allThemes as theme (theme.metadata.id)}
+            <Select.Item label={theme.metadata.name} value={theme.metadata.id}></Select.Item>
+          {/each}
+        </Select.Content>
+      </Select.Root>
     </div>
+
+    <Tabs.Root value="visual" onValueChange={onTabChange} class="w-full">
+      <Tabs.List class="w-full border bg-transparent">
+        <Tabs.Trigger value="visual">Visual</Tabs.Trigger>
+        <Tabs.Trigger value="code">Code (JSON)</Tabs.Trigger>
+      </Tabs.List>
+
+      <Tabs.Content value="visual" class="flex flex-col gap-4">
+        <Item.Root variant="outline">
+          <Item.Media variant="icon">
+            {#if editingMode === "light"}
+              <Sun />
+            {:else}
+              <Moon />
+            {/if}
+          </Item.Media>
+          <Item.Content>
+            <Item.Title>{editingMode === "light" ? "Editing Light Mode" : "Editing Dark Mode"}</Item.Title>
+            <Item.Description>Switch branches without changing the selected theme</Item.Description>
+          </Item.Content>
+          <Item.Actions>
+            <div class="flex items-center gap-1">
+              <Button
+                type="button"
+                size="sm"
+                variant={editingMode === "dark" ? "default" : "outline"}
+                onclick={() => setEditingMode("dark")}>
+                <Moon class="size-4" />
+                Dark
+              </Button>
+              <Button
+                type="button"
+                size="sm"
+                variant={editingMode === "light" ? "default" : "outline"}
+                onclick={() => setEditingMode("light")}>
+                <Sun class="size-4" />
+                Light
+              </Button>
+            </div>
+          </Item.Actions>
+        </Item.Root>
+
+        <div class="flex flex-wrap gap-2">
+          <Button
+            type="button"
+            variant="secondary"
+            size="sm"
+            onclick={() => copyModeTo(editingMode === "dark" ? "light" : "dark")}>
+            <ArrowLeftRight class="size-4" />
+            Copy {editingMode === "dark" ? "dark to light" : "light to dark"}
+          </Button>
+          <Button type="button" variant="outline" size="sm" onclick={resetCurrentMode}>
+            <RotateCcw class="size-4" />
+            Reset {editingMode}
+          </Button>
+        </div>
+
+        <ColorSection bind:workingTheme {editingMode} />
+        <Separator />
+        <BackgroundSection bind:workingTheme {editingMode} />
+        <Separator />
+        <MCColorSection bind:workingTheme {editingMode} />
+      </Tabs.Content>
+
+      <Tabs.Content value="code" class="mt-4 flex flex-col gap-2">
+        <Textarea value={jsonString} oninput={handleJsonChange} class="h-125 font-mono text-xs" spellcheck="false" />
+        {#if jsonError}
+          <div class="rounded-xl bg-destructive/10 p-3 text-xs text-destructive">
+            Error: {jsonError}
+          </div>
+        {/if}
+      </Tabs.Content>
+    </Tabs.Root>
   </div>
 </div>

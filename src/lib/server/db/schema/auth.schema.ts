@@ -104,7 +104,11 @@ export const apikey = pgTable(
     permissions: text("permissions"),
     metadata: text("metadata")
   },
-  (table) => [index("apikey_configId_idx").on(table.configId), index("apikey_referenceId_idx").on(table.referenceId), index("apikey_key_idx").on(table.key)]
+  (table) => [
+    index("apikey_configId_idx").on(table.configId),
+    index("apikey_referenceId_idx").on(table.referenceId),
+    index("apikey_key_idx").on(table.key)
+  ]
 );
 
 export const userRelations = relations(user, ({ many }) => ({

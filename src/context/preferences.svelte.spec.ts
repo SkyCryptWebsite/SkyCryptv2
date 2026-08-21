@@ -1,16 +1,24 @@
 import { sections } from "$lib/sections/constants";
 import type { SectionID } from "$lib/sections/types";
 import { flushSync, untrack } from "svelte";
-import { afterEach, beforeEach, describe, it } from "vitest";
+import { afterEach, beforeEach, describe, it, vi } from "vitest";
 import { PreferencesContext } from "./preferences.svelte";
 
 describe("PreferencesContext Tests", () => {
   beforeEach(() => {
     localStorage.clear();
+    delete document.documentElement.dataset.performance;
+    delete document.documentElement.dataset.rainbow;
+    vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockImplementation(
+      (() => ({}) as WebGL2RenderingContext) as unknown as typeof HTMLCanvasElement.prototype.getContext
+    );
   });
 
   afterEach(() => {
     localStorage.clear();
+    delete document.documentElement.dataset.performance;
+    delete document.documentElement.dataset.rainbow;
+    vi.restoreAllMocks();
   });
 
   describe("Initialization", () => {
@@ -461,6 +469,150 @@ describe("PreferencesContext Tests", () => {
     });
   });
 
+  describe("performanceMode document.dataset", () => {
+    it("sets document.documentElement.dataset.performance to 'false' by default", ({ expect }) => {
+      const cleanup = $effect.root(() => {
+        const prefs = new PreferencesContext();
+
+        untrack(() => {
+          flushSync();
+
+          expect(prefs.performanceMode).toBe(false);
+          expect(document.documentElement.dataset.performance).toBe("false");
+        });
+      });
+
+      cleanup();
+    });
+
+    it("sets document.documentElement.dataset.performance to 'true' when enabled", ({ expect }) => {
+      const cleanup = $effect.root(() => {
+        const prefs = new PreferencesContext();
+
+        untrack(() => {
+          prefs.performanceMode = true;
+          flushSync();
+
+          expect(document.documentElement.dataset.performance).toBe("true");
+        });
+      });
+
+      cleanup();
+    });
+
+    it("updates document.dataset on toggle", ({ expect }) => {
+      const cleanup = $effect.root(() => {
+        const prefs = new PreferencesContext();
+
+        untrack(() => {
+          prefs.performanceMode = true;
+          flushSync();
+          const first = document.documentElement.dataset.performance;
+
+          prefs.performanceMode = false;
+          flushSync();
+          const second = document.documentElement.dataset.performance;
+
+          prefs.performanceMode = true;
+          flushSync();
+          const third = document.documentElement.dataset.performance;
+
+          expect(first).toBe("true");
+          expect(second).toBe("false");
+          expect(third).toBe("true");
+        });
+      });
+
+      cleanup();
+    });
+
+    it("applies performance setting on construction via $effect.pre", ({ expect }) => {
+      localStorage.setItem(
+        "skycryptPreferences",
+        JSON.stringify({
+          sectionOrder: sections,
+          performanceMode: true,
+          keybind: "/",
+          showGlint: true,
+          rainbowEnchantments: false,
+          mctooltip: false
+        })
+      );
+
+      const cleanup = $effect.root(() => {
+        const prefs = new PreferencesContext();
+
+        untrack(() => {
+          flushSync();
+          expect(document.documentElement.dataset.performance).toBe("true");
+          expect(prefs.performanceMode).toBe(true);
+        });
+      });
+
+      cleanup();
+    });
+  });
+
+  describe("graphics acceleration lock", () => {
+    it("forces Performance Mode without overwriting the saved preference", ({ expect }) => {
+      const cleanup = $effect.root(() => {
+        const prefs = new PreferencesContext();
+
+        untrack(() => {
+          prefs.setGraphicsAccelerationAvailable(true);
+          prefs.performanceMode = false;
+          prefs.setGraphicsAccelerationAvailable(false);
+          flushSync();
+
+          expect(prefs.graphicsAccelerationAvailable).toBe(false);
+          expect(prefs.performanceModeForced).toBe(true);
+          expect(prefs.performanceMode).toBe(true);
+          expect(document.documentElement.dataset.performance).toBe("true");
+          expect(JSON.parse(localStorage.getItem("skycryptPreferences")!).performanceMode).toBe(false);
+        });
+      });
+
+      cleanup();
+    });
+
+    it("ignores attempts to disable a forced Performance Mode", ({ expect }) => {
+      const cleanup = $effect.root(() => {
+        const prefs = new PreferencesContext();
+
+        untrack(() => {
+          prefs.setGraphicsAccelerationAvailable(false);
+          prefs.performanceMode = false;
+          flushSync();
+
+          expect(prefs.performanceMode).toBe(true);
+          expect(document.documentElement.dataset.performance).toBe("true");
+        });
+      });
+
+      cleanup();
+    });
+
+    it("restores the saved preference when acceleration becomes available", ({ expect }) => {
+      const cleanup = $effect.root(() => {
+        const prefs = new PreferencesContext();
+
+        untrack(() => {
+          prefs.setGraphicsAccelerationAvailable(true);
+          prefs.performanceMode = false;
+          prefs.setGraphicsAccelerationAvailable(false);
+          prefs.setGraphicsAccelerationAvailable(true);
+          flushSync();
+
+          expect(prefs.performanceModeForced).toBe(false);
+          expect(prefs.performanceMode).toBe(false);
+          expect(document.documentElement.dataset.performance).toBe("false");
+        });
+      });
+
+      cleanup();
+    });
+  });
+
   describe("Migration via loadOldSettings", () => {
     it("migrates sectionOrderPreferences from old storage key", ({ expect }) => {
       const oldOrder: SectionID[] = [sections[2], sections[1], sections[0]];
@@ -488,6 +640,7 @@ describe("PreferencesContext Tests", () => {
         untrack(() => {
           flushSync();
           expect(prefs.performanceMode).toBe(true);
+          expect(document.documentElement.dataset.performance).toBe("true");
           expect(localStorage.getItem("performanceMode")).toBeNull();
         });
       });
@@ -504,6 +657,7 @@ describe("PreferencesContext Tests", () => {
         untrack(() => {
           flushSync();
           expect(prefs.performanceMode).toBe(true);
+          expect(document.documentElement.dataset.performance).toBe("true");
           expect(localStorage.getItem("performanceMode")).toBeNull();
         });
       });

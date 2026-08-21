@@ -10,7 +10,18 @@ import { betterAuth } from "better-auth/minimal";
 import { admin, genericOAuth, patreon } from "better-auth/plugins";
 import { sveltekitCookies } from "better-auth/svelte-kit";
 
-const { BETTER_AUTH_SECRET, ORIGIN, DISCORD_CLIENT_ID, DISCORD_CLIENT_SECRET, ADDRESS_HEADER, MC_ID_CLIENT_ID, MC_ID_CLIENT_SECRET, PATREON_CLIENT_ID, PATREON_CLIENT_SECRET, DISCORD_WHITELIST } = envPrivate;
+const {
+  BETTER_AUTH_SECRET,
+  ORIGIN,
+  DISCORD_CLIENT_ID,
+  DISCORD_CLIENT_SECRET,
+  ADDRESS_HEADER,
+  MC_ID_CLIENT_ID,
+  MC_ID_CLIENT_SECRET,
+  PATREON_CLIENT_ID,
+  PATREON_CLIENT_SECRET,
+  DISCORD_WHITELIST
+} = envPrivate;
 const { PUBLIC_BASE_URL } = envPublic;
 
 const BUILD_TIME_AUTH_SECRET = "build-time-placeholder-secret-for-sveltekit-build";

@@ -30,29 +30,41 @@
     ...settings
   });
 
-  // The persistent image is referenced via background-image CSS rather than
+  // The per-render keyed image is referenced via background-image CSS rather than
   // an absolutely-positioned <img>: takumi-js 1.1.x reworked inline-formatting-
   // context detection (commit adc48da, "Treat absolute/floated children as
   // out-of-flow"), which left the previous <img class="absolute inset-0">
   // background unrendered. The CSS pattern is the one shown in the takumi
   // docs ("The image key can be used in any `src` field or `background-image`,
   // `mask-image` CSS property.") and is robust against further layout changes.
-  const mainStyle = $derived(["background-image: url(skycrypt-background)", "background-size: cover", "background-position: center", settings?.border && settings?.borderColor ? `border: 2px solid ${settings.borderColor}` : null].filter(Boolean).join("; "));
+  const mainStyle = $derived(
+    [
+      "background-image: url(skycrypt-background)",
+      "background-size: cover",
+      "background-position: center",
+      settings?.border && settings?.borderColor ? `border: 2px solid ${settings.borderColor}` : null
+    ]
+      .filter(Boolean)
+      .join("; ")
+  );
 </script>
 
-<main class="relative h-full overflow-hidden rounded-4xl" style={mainStyle}>
+<main class="dark relative h-85 w-375 overflow-hidden rounded-xl" style={mainStyle}>
   <div class="flex h-full w-full items-start justify-start">
     <Player showMinecraftName={settings?.showMinecraftName ?? false} />
     <div
-      class="relative z-50 flex h-full w-full flex-col gap-y-2 overflow-hidden rounded-4xl p-2 px-4 backdrop-blur-lg
+      class="relative z-50 flex h-full w-full flex-col gap-y-1.5 overflow-hidden rounded-xl p-2 px-4 backdrop-blur-lg
 backdrop-brightness-50">
       <Profile />
       <Skills />
       <Stats />
     </div>
   </div>
+
   <footer>
-    <div class="absolute top-2 left-2 flex items-center justify-center gap-2 text-base font-bold text-white" data-sveltekit-preload-data="hover">
+    <div
+      class="absolute bottom-4 left-4 flex items-center justify-center gap-2 text-base font-bold text-white"
+      data-sveltekit-preload-data="hover">
       <img src="skycrypt-logo" alt="SkyCrypt" class="pointer-events-none size-6 select-none" />
       <span>SkyCrypt</span>
     </div>

@@ -3,15 +3,13 @@ import { describe, it } from "vitest";
 /**
  * ThemeEditor Component Tests
  *
- * NOTE: These tests are currently skipped because ThemeEditor requires full context
- * initialization (ThemeContext + InternalStateContext) that is complex to set up in
- * isolated unit tests. These tests are better suited for E2E/integration testing with
- * Playwright where the full app context is available.
+ * NOTE: These tests are currently skipped because ThemeEditor requires full context initialization (ThemeContext +
+ * InternalStateContext) that is complex to set up in isolated unit tests. These tests are better suited for
+ * E2E/integration testing with Playwright where the full app context is available.
  *
- * The component functionality is already tested indirectly via:
- * - Schema tests (schema.spec.ts) - validates theme structure
- * - Engine tests (engine.spec.ts) - validates merge logic
- * - Presets tests (presets.spec.ts) - validates palette behavior
+ * The component functionality is already tested indirectly via: - Schema tests (schema.spec.ts) - validates theme
+ * structure - Engine tests (engine.spec.ts) - validates merge logic - Presets tests (presets.spec.ts) - validates
+ * palette behavior
  *
  * Future work: Convert these to Playwright E2E tests or create test harness for context setup.
  */

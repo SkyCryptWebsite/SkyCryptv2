@@ -1,104 +1,130 @@
 <script lang="ts">
-  import { getSkillsContext } from "$ctx";
-  import { Item } from "$lib/components/item";
-  import { Chip, ScrollItems } from "$lib/components/misc";
+  import { getProfileContext, getSkillsContext } from "$ctx";
+  import { Chip } from "$lib/components/misc";
   import { SectionSubtitle } from "$lib/components/sections";
-  import { AdditionStat } from "$lib/components/stats";
-  import Items from "$lib/layouts/stats/Items.svelte";
+  import { AdditionStat, SkillGear } from "$lib/components/stats";
   import Garden from "$lib/sections/stats/farming/garden.svelte";
-  import { formatNumber, renderLore } from "$lib/shared/helper";
-  import { animateObfuscatedText } from "$lib/shared/mc-text/obfuscated";
-  import ChevronDown from "@lucide/svelte/icons/chevron-down";
-  import { Collapsible } from "bits-ui";
+  import { formatNumber } from "$lib/shared/helper";
+  import CollapsibleCustomTrigger from "$src/lib/components/CollapsibleCustomTrigger.svelte";
+  import EmptyStat from "$src/lib/components/EmptyStat.svelte";
+  import ScrollAreaItems from "$src/lib/components/ScrollAreaItems.svelte";
+  import * as Avatar from "$ui/avatar";
+  import * as Collapsible from "$ui/collapsible";
+  import * as Item from "$ui/item";
+  import { Label } from "$ui/label";
+  import ExternalLinkIcon from "@lucide/svelte/icons/external-link";
+  import WheatIcon from "@lucide/svelte/icons/wheat";
 
   const openSections = true as const;
   const data = $derived(getSkillsContext().skills);
   const farming = $derived(data?.farming);
-  const farmingTools = $derived(farming?.tools);
-  const highestPriorityFarmingTool = $derived(farmingTools?.highest_priority_tool);
+  const profileCtx = $derived(getProfileContext().current);
+  const { username, profile_cute_name } = $derived(profileCtx!);
 </script>
 
-<SectionSubtitle>Farming</SectionSubtitle>
 {#if farming}
-  <div class="space-y-5">
-    <div class="space-y-0.5">
-      {#if farming.pelts}
-        <AdditionStat text="Pelts" data={farming.pelts.toString()} />
-      {/if}
-      {#if farming.contestsAttended}
-        <AdditionStat text="Contests Attended" data={farming.contestsAttended.toString()} />
-      {/if}
-      {#if farming.uniqueGolds}
-        <AdditionStat text="Unique Golds" data={farming.uniqueGolds.toString()} maxed={farming.uniqueGolds === 10} />
-      {/if}
-    </div>
-
-    {#if farming.medals}
-      <div class="space-y-0.5">
-        {#each Object.entries(farming.medals) as [medal, medalData], index (index)}
-          {#if medalData.total}
-            <AdditionStat text={medal} data={medalData.total?.toString()} asterisk={true}>
-              {#each Object.entries(medalData) as [key, value], index (index)}
-                <AdditionStat text={key} data={value.toString()} class="capitalize" />
-              {/each}
-            </AdditionStat>
+  <div class="contents space-y-4">
+    <Item.Root
+      variant="outline"
+      class="mx-auto w-fit rounded-full duration-150 ease-out interact:scale-95 [a]:transition-[scale,background-color] [a]:interact:bg-foreground/10">
+      {#snippet child({ props })}
+        <a
+          href="https://eliteskyblock.com/@{username}/{profile_cute_name}?utm_source=SkyCrypt&utm_campaign=Farming"
+          target="_blank"
+          {...props}>
+          <Item.Media>
+            <Avatar.Root class="after:rounded-none after:border-none">
+              <Avatar.Image src="https://eliteskyblock.com/favicon.webp" alt="Elite" class="rounded-none" />
+              <Avatar.Fallback class="border bg-transparent">EL</Avatar.Fallback>
+            </Avatar.Root>
+          </Item.Media>
+          <Item.Content>
+            <Item.Title class="gap-1"
+              >For more in-depth Farming stats, check out <span
+                class="inline-flex flex-nowrap items-start gap-0.5 text-primary underline"
+                >Elite <ExternalLinkIcon class="size-3" /></span
+              ></Item.Title>
+          </Item.Content>
+        </a>
+      {/snippet}
+    </Item.Root>
+    {#if farming.pelts || farming.contestsAttended || farming.uniqueGolds}
+      <div class="rounded-xl border p-4">
+        <div class="space-y-0.5">
+          {#if farming.pelts}
+            <AdditionStat text="Pelts" data={farming.pelts.toString()} />
           {/if}
-        {/each}
-      </div>
-    {/if}
-  </div>
-
-  <SectionSubtitle>Farming Tools</SectionSubtitle>
-  {#if farmingTools && farmingTools.tools && farmingTools.tools.length > 0}
-    <Items>
-      {#snippet text()}
-        <div class="space-y-2">
-          {#if highestPriorityFarmingTool && highestPriorityFarmingTool.display_name}
-            <p class="space-x-0.5 leading-6 font-bold text-text/60 capitalize" {@attach animateObfuscatedText}>
-              <span>Active Tool:</span>
-              {@html renderLore(highestPriorityFarmingTool.display_name)}
-            </p>
+          {#if farming.contestsAttended}
+            <AdditionStat text="Contests Attended" data={farming.contestsAttended.toString()} />
+          {/if}
+          {#if farming.uniqueGolds}
+            <AdditionStat
+              text="Unique Golds"
+              data={farming.uniqueGolds.toString()}
+              maxed={farming.uniqueGolds === 10} />
           {/if}
         </div>
-      {/snippet}
-      {#each farmingTools.tools as tool, index (index)}
-        <Item piece={tool} />
-      {/each}
-    </Items>
-  {:else}
-    <p class="space-x-0.5 leading-6">This player doesn't have any farming tools.</p>
-  {/if}
-
-  {#if farming.contests}
-    {#if Object.entries(farming.contests).find(([_, cropData]) => (cropData.amount ?? 0) > 0)}
-      <Collapsible.Root open={openSections} class="mt-5">
-        <Collapsible.Trigger class="group flex items-center gap-0.5">
-          <ChevronDown class="size-5 transition-all duration-300 ease-out group-data-[state=open]:-rotate-180" />
-          <SectionSubtitle class="my-0">Farming Crops</SectionSubtitle>
-        </Collapsible.Trigger>
-        <Collapsible.Content class="mt-4 flex flex-wrap gap-4">
-          {@const crops = Object.entries(farming.contests)}
-          <ScrollItems>
-            {#each crops as [_, cropData], index (index)}
-              <Chip image={{ src: cropData.texture ?? "" }} animationOptions={{ animate: true, amountOfItems: crops.length, index: index }}>
-                <div class="flex flex-col gap-0.5 whitespace-nowrap">
-                  <h4 class="text-lg font-semibold data-[maxed=true]:text-maxed" data-maxed={cropData.maxed}>{cropData.name}</h4>
-                  {#if cropData.collected != null}
-                    <AdditionStat text="Personal Best" data={formatNumber(cropData.collected)} />
-                  {/if}
-                  {#if cropData.amount != null}
-                    <AdditionStat text="Contests" data={cropData.amount.toString()} />
-                  {/if}
-                </div>
-              </Chip>
-            {/each}
-          </ScrollItems>
-        </Collapsible.Content>
-      </Collapsible.Root>
+      </div>
     {/if}
-  {/if}
+
+    {#if farming.medals}
+      <div class="rounded-xl border p-4">
+        <div class="space-y-0.5">
+          {#each Object.entries(farming.medals) as [medal, medalData], index (index)}
+            {#if medalData.total}
+              <AdditionStat text={medal} data={medalData.total?.toString()} asterisk={true}>
+                <div class="space-y-1">
+                  {#each Object.entries(medalData) as [key, value], index (index)}
+                    <Label class="gap-1 capitalize">
+                      {key.replaceAll("_", " ")}:
+                      <span class="font-bold">{value.toString()}</span>
+                    </Label>
+                  {/each}
+                </div>
+              </AdditionStat>
+            {/if}
+          {/each}
+        </div>
+      </div>
+    {/if}
+    <div class="space-y-4 rounded-xl border p-4">
+      <SectionSubtitle>Farming Gear</SectionSubtitle>
+      <SkillGear gear={farming.gear} skill="farming" />
+    </div>
+
+    {#if farming.contests}
+      {#if Object.entries(farming.contests).find(([_, cropData]) => (cropData.amount ?? 0) > 0)}
+        <Collapsible.Root open={openSections} class="rounded-xl border p-2">
+          <CollapsibleCustomTrigger>Farming Crops</CollapsibleCustomTrigger>
+          <Collapsible.Content>
+            {const crops = $derived(Object.entries(farming.contests))}
+
+            <ScrollAreaItems>
+              {#each crops as [_, cropData], index (index)}
+                <Chip
+                  image={{ src: cropData.texture ?? "" }}
+                  animationOptions={{ animate: true, amountOfItems: crops.length, index: index }}>
+                  <div class="flex flex-col gap-0.5 whitespace-nowrap">
+                    <h4 class="text-lg font-semibold data-[maxed=true]:text-accent-2" data-maxed={cropData.maxed}>
+                      {cropData.name}
+                    </h4>
+                    {#if cropData.collected != null}
+                      <AdditionStat text="Personal Best" data={formatNumber(cropData.collected)} />
+                    {/if}
+                    {#if cropData.amount != null}
+                      <AdditionStat text="Contests" data={cropData.amount.toString()} />
+                    {/if}
+                  </div>
+                </Chip>
+              {/each}
+            </ScrollAreaItems>
+          </Collapsible.Content>
+        </Collapsible.Root>
+      {/if}
+    {/if}
+  </div>
 {:else}
-  <p class="space-x-0.5 leading-6">This player doesn't have anything related to farming.</p>
+  <EmptyStat title="No Data" description="This player doesn't have anything related to farming" icon={WheatIcon} />
 {/if}
 
 <Garden />

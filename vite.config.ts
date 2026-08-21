@@ -13,7 +13,6 @@ export default defineConfig({
       project: "skycrypt-sveltekit",
       adapter: "node"
     }),
-    tailwindcss(),
     sveltekit({
       // Consult https://svelte.dev/docs/kit/integrations
       // for more information about preprocessors
@@ -32,10 +31,23 @@ export default defineConfig({
         $constants: "./src/lib/server/constants",
         $ctx: "./src/context",
         $routes: "./src/routes",
-        $src: "./src"
+        $src: "./src",
+        $ui: "./src/lib/components/ui",
+        $lib: "./src/lib",
+        $utils: "./src/lib/shared/utils.ts",
+        $hooks: "./src/lib/hooks",
+        $components: "./src/lib/components",
+        "$utils.js": "./src/lib/shared/utils.ts"
       },
       csrf: {
-        trustedOrigins: ["https://cupcake.shiiyu.moe", "https://sky.shiiyu.moe", "http://localhost:5173", "http://localhost:4173", "http://localhost:3000", "http://localhost:8080"]
+        trustedOrigins: [
+          "https://cupcake.shiiyu.moe",
+          "https://sky.shiiyu.moe",
+          "http://localhost:5173",
+          "http://localhost:4173",
+          "http://localhost:3000",
+          "http://localhost:8080"
+        ]
       },
       csp: {
         mode: "auto",
@@ -43,8 +55,28 @@ export default defineConfig({
           "script-src": ["self", "unsafe-inline"],
           "worker-src": ["self", "blob:"],
           "style-src": ["self", "unsafe-inline", "https://fonts.googleapis.com"],
-          "img-src": ["self", "data:", "https://textures.minecraft.net", "http://localhost:8080", "https://cupcake.shiiyu.moe", "https://sky.shiiyu.moe", "https://nmsr.nickac.dev", "https://cms.shiiyu.moe", "http://localhost:3000"],
-          "connect-src": ["self", "https://mowojang.matdoes.dev", "https://mowojang.seraph.si", "http://localhost:8080", "https://cupcake.shiiyu.moe", "https://sky.shiiyu.moe", "https://cms.shiiyu.moe", "http://localhost:3000"],
+          "img-src": [
+            "self",
+            "data:",
+            "https://textures.minecraft.net",
+            "http://localhost:8080",
+            "https://cupcake.shiiyu.moe",
+            "https://sky.shiiyu.moe",
+            "https://nmsr.nickac.dev",
+            "https://cms.shiiyu.moe",
+            "http://localhost:3000",
+            "https://eliteskyblock.com"
+          ],
+          "connect-src": [
+            "self",
+            "https://mowojang.matdoes.dev",
+            "https://mowojang.seraph.si",
+            "http://localhost:8080",
+            "https://cupcake.shiiyu.moe",
+            "https://sky.shiiyu.moe",
+            "https://cms.shiiyu.moe",
+            "http://localhost:3000"
+          ],
           "font-src": ["self", "https://fonts.gstatic.com"],
           "frame-ancestors": ["self", "https://cms.shiiyu.moe", "http://localhost:3000"],
           "frame-src": ["self"]
@@ -60,8 +92,15 @@ export default defineConfig({
           ...config,
           include: [...config.include, "../drizzle.config.ts"]
         })
+      },
+      vitePlugin: {
+        experimental: {
+          sendWarningsToBrowser: process.env.NODE_ENV === "development"
+        },
+        inspector: process.env.NODE_ENV === "development"
       }
-    })
+    }),
+    tailwindcss()
   ],
   build: { sourcemap: true },
   test: {
@@ -91,7 +130,7 @@ export default defineConfig({
         test: {
           name: "server",
           environment: "node",
-          include: ["src/**/*.{test,spec}.{js,ts}"],
+          include: ["src/**/*.{test,spec}.{js,ts}", "scripts/**/*.{test,spec}.{js,ts}"],
           exclude: ["src/**/*.svelte.{test,spec}.{js,ts}"]
         }
       }

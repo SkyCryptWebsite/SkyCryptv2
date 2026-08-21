@@ -2,6 +2,7 @@ import { browser } from "$app/environment";
 import { loadOldStorageKey } from "$ctx/utils";
 import { sections } from "$lib/sections/constants";
 import type { SectionID } from "$lib/sections/types";
+import { isGraphicsAccelerationAvailable } from "$lib/shared/graphics-acceleration";
 import { PersistedState } from "runed";
 import { createContext, untrack } from "svelte";
 
@@ -23,13 +24,15 @@ export class PreferencesContext {
     rainbowEnchantments: false,
     mctooltip: false
   });
+  #graphicsAccelerationAvailable = $state<boolean | null>(browser ? isGraphicsAccelerationAvailable() : null);
 
   constructor() {
     $effect.pre(() => {
       untrack(() => {
         this.loadOldSettings();
         this.sectionOrder = this.#data.current.sectionOrder;
-        // Apply rainbow setting on load
+        // Apply document-level styling flags on load.
+        this.applyPerformanceMode();
         this.rainbowEnchantments = !!this.rainbowEnchantments;
       });
     });
@@ -69,11 +72,32 @@ export class PreferencesContext {
   }
 
   get performanceMode() {
-    return this.#data.current.performanceMode;
+    return this.#data.current.performanceMode || this.performanceModeForced;
   }
 
   set performanceMode(value: boolean) {
+    if (!value && this.performanceModeForced) return;
     this.#data.current = { ...this.#data.current, performanceMode: value };
+    this.applyPerformanceMode();
+  }
+
+  get graphicsAccelerationAvailable() {
+    return this.#graphicsAccelerationAvailable;
+  }
+
+  get performanceModeForced() {
+    return this.#graphicsAccelerationAvailable === false;
+  }
+
+  setGraphicsAccelerationAvailable(available: boolean) {
+    this.#graphicsAccelerationAvailable = available;
+    this.applyPerformanceMode();
+  }
+
+  applyPerformanceMode() {
+    if (browser) {
+      document.documentElement.dataset.performance = this.performanceMode ? "true" : "false";
+    }
   }
 
   get keybind() {

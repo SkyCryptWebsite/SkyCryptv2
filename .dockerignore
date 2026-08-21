@@ -7,7 +7,7 @@ docker-compose*.yml
 .gitattributes
 README.md
 .npmrc
-.prettierrc
+.oxfmtrc.json
 .eslintrc.cjs
 .graphqlrc
 .editorconfig

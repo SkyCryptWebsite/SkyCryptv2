@@ -1,5 +1,68 @@
 # Changelog
 
+## 4.0.0-beta.9
+
+### Major Changes
+
+- Feat: V4 Release _[`2a5f4c6`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/2a5f4c62880eab472db5977ed5dc544fee9fcd1a) [@DarthGigi](https://github.com/DarthGigi)_
+
+## 3.9.0-beta.8
+
+### Patch Changes
+
+- Prevent rapid section navigation from hanging the page while inventory data is loading. _[`2e54f53`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/2e54f533f7dfbf56a7d56c5cbd0444c698f38e34) [@DarthGigi](https://github.com/DarthGigi)_
+
+## 3.9.0-beta.7
+
+### Patch Changes
+
+- Restore mobile drawer visibility by keeping drawer content anchored to the viewport. _[`3badaae`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/3badaae1d68bb78b333a5b6208dae829e86e7924) [@DarthGigi](https://github.com/DarthGigi)_
+- Add ordered resource-pack preferences with drag-and-drop priority, legacy migration, and vanilla-only support. _[`2bc34e9`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/2bc34e9ad6bd3b6d9e381ce985437de516a0c44f) [@DarthGigi](https://github.com/DarthGigi)_
+
+## 3.9.0-beta.6
+
+### Patch Changes
+
+- Show structured skill gear, equipment wardrobes, and saved loadouts from the SkyCrypt API. _[`bded902`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/bded902e0f96c80dec70fc6f6c7a7097183b5740) [@DarthGigi](https://github.com/DarthGigi)_
+
+## 3.9.0-beta.5
+
+### Patch Changes
+
+- Detect unavailable hardware graphics acceleration and lock Performance Mode to avoid expensive visual effects. _[`a2ded10`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/a2ded10e2a04758d92781b38372c04d8ea21dcd2) [@DarthGigi](https://github.com/DarthGigi)_
+- Replace native settings list scrollbars with consistent custom scroll areas. _[`7d05c76`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/7d05c7648dd1d202a9c32c61fd19a97157138053) [@DarthGigi](https://github.com/DarthGigi)_
+
+## 3.9.0-beta.4
+
+### Patch Changes
+
+- Migrate sitemap generation to Super Sitemap v2. _[`95548d3`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/95548d317521c0298fd379c987ef67cc30968942) [@DarthGigi](https://github.com/DarthGigi)_
+
+## 3.9.0-beta.3
+
+### Patch Changes
+
+- Restore generated card fonts and keyed images under Takumi v2. _[`94f1d7b`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/94f1d7b548d65f96e8b38ed6d2b10407060d90c2) [@DarthGigi](https://github.com/DarthGigi)_
+
+## 3.9.0-beta.2
+
+### Minor Changes
+
+- Add dual-mode custom themes with V5 schema migration and mode-watcher-driven light/dark switching. _[`c30f460`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/c30f460ebe9ae6c65d7fcd5442698fb56ab0809f) [@DarthGigi](https://github.com/DarthGigi)_
+
+## 3.8.1-beta.1
+
+### Patch Changes
+
+- Move theme selection to mode-watcher and generate runtime CSS for custom themes. _[`88c623e`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/88c623e5f7f85d808866a02a707404a4743de467) [@DarthGigi](https://github.com/DarthGigi)_
+
+## 3.8.1-beta.0
+
+### Patch Changes
+
+- Move app.css to routes/layout.css _[`#335`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/pull/335) [`2ba7841`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/2ba78417b17abb4815b78655d529835bd6e34568) [@DarthGigi](https://github.com/DarthGigi)_
+- Convert performance-mode glass styling to dynamic Tailwind utilities. _[`#335`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/pull/335) [`b7a062f`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/b7a062fc0c3034998221199af3202d76ca60c214) [@DarthGigi](https://github.com/DarthGigi)_
+
 ## 3.8.0
 
 ### Minor Changes

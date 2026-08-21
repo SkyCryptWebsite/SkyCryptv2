@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { STAT_ALIASES, STATS_DATA } from "$lib/shared/constants/stats";
+  import { getAllStatsContext } from "$ctx";
   import { cn } from "$lib/shared/utils";
   import type { ItemStats } from "$types";
   import { format } from "numerable";
@@ -13,23 +13,24 @@
   let { stats, title = "Bonus:", class: classNames }: Props = $props();
 
   const statsData = $derived(Object.entries(stats));
+  const allStats = $derived(getAllStatsContext().current);
 </script>
 
 {#if statsData.length > 0}
-  <p class={cn("my-4 space-x-0.5 leading-6 font-bold text-text/60 capitalize", classNames)}>
+  <p class={cn("space-x-0.5 leading-6 font-bold text-muted-foreground capitalize", classNames)}>
     <span>{title}</span>
     {#each statsData as [key, value], index (index)}
-      {@const displayKey = (STAT_ALIASES[key] !== undefined ? STAT_ALIASES[key] : key).toLowerCase()}
-      {#if STATS_DATA[displayKey]}
-        <span class={STATS_DATA[displayKey].color}>
-          {format(value)}{STATS_DATA[displayKey].suffix}
-          {STATS_DATA[displayKey].nameTiny}
+      {const displayKey = allStats.find((stat) => stat.id === key)}
+      {#if displayKey}
+        <span class="text-minecraft-{displayKey.color}">
+          {format(value)}{displayKey.suffix}
+          {displayKey.nameTiny}
         </span>
         {#if statsData.length - 1 !== index}
           // {" "}
         {/if}
       {:else}
-        {console.warn(`Unknown stat: ${displayKey}`)}
+        {console.warn("Unknown stat:", key)}
       {/if}
     {/each}
   </p>

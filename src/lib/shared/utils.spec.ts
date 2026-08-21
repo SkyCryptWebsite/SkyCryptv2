@@ -13,7 +13,9 @@ describe.concurrent("cn() - Tailwind merge + clsx utility", () => {
   it("handles conditional classes via clsx syntax", ({ expect }) => {
     const isActive = true;
     const isDisabled = false;
-    expect(cn("base-class", { "active-class": isActive, "disabled-class": isDisabled })).toBe("base-class active-class");
+    expect(cn("base-class", { "active-class": isActive, "disabled-class": isDisabled })).toBe(
+      "base-class active-class"
+    );
   });
 
   it("merges conflicting tailwind classes (padding)", ({ expect }) => {

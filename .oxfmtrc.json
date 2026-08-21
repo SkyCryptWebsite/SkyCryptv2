@@ -1,0 +1,31 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "useTabs": false,
+  "tabWidth": 2,
+  "singleQuote": false,
+  "trailingComma": "none",
+  "bracketSameLine": true,
+  "printWidth": 120,
+  "sortImports": {
+    "newlinesBetween": false
+  },
+  "jsdoc": true,
+  "sortTailwindcss": {
+    "stylesheet": "src/routes/layout.css",
+    "functions": ["cn", "clsx", "payload"],
+    "attributes": ["class", "class:*", "class:name", "payload", "/.*Classes/"],
+    "preserveWhitespace": false
+  },
+  "svelte": {},
+  "ignorePatterns": [
+    "package-lock.json",
+    "pnpm-lock.yaml",
+    "yarn.lock",
+    "bun.lock",
+    "bun.lockb",
+    "/static/",
+    ".changeset/",
+    "/drizzle/",
+    "/src/routes/typeset.css"
+  ]
+}

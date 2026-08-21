@@ -1,19 +1,32 @@
 <script lang="ts">
-  import { ScrollItems } from "$lib/components/misc";
-  import { SectionSubtitle } from "$lib/components/sections";
   import { AdditionStat } from "$lib/components/stats";
   import { type ModelsFormattedDungeonFloor } from "$lib/shared/api/orval-generated";
   import { formatNumber } from "$lib/shared/helper";
+  import CollapsibleCustomTrigger from "$src/lib/components/CollapsibleCustomTrigger.svelte";
+  import EmptyStat from "$src/lib/components/EmptyStat.svelte";
+  import ScrollAreaItems from "$src/lib/components/ScrollAreaItems.svelte";
+  import * as Avatar from "$ui/avatar";
+  import * as Collapsible from "$ui/collapsible";
+  import { Separator } from "$ui/separator";
   import { tz } from "@date-fns/tz";
-  import ChevronDown from "@lucide/svelte/icons/chevron-down";
+  import CircleQuestionMarkIcon from "@lucide/svelte/icons/circle-question-mark";
   import Image from "@lucide/svelte/icons/image";
-  import { Avatar, Collapsible } from "bits-ui";
-  import { formatDate, formatDistanceToNowStrict, formatDuration as formatDurationDateFns, intervalToDuration } from "date-fns";
+  import TrophyIcon from "@lucide/svelte/icons/trophy";
+  import {
+    formatDate,
+    formatDistanceToNowStrict,
+    formatDuration as formatDurationDateFns,
+    intervalToDuration
+  } from "date-fns";
 
-  let { catacombs, master = false }: { catacombs: ModelsFormattedDungeonFloor[] | undefined; master?: boolean } = $props();
+  let { catacombs, master = false }: { catacombs: ModelsFormattedDungeonFloor[] | undefined; master?: boolean } =
+    $props();
 
   function formatDuration(end: number) {
-    const interval = intervalToDuration({ start: 0, end }, { in: tz(Intl.DateTimeFormat().resolvedOptions().timeZone) });
+    const interval = intervalToDuration(
+      { start: 0, end },
+      { in: tz(Intl.DateTimeFormat().resolvedOptions().timeZone) }
+    );
 
     // Always extract and format both minutes and seconds
     const minutes = interval.minutes ?? 0;
@@ -37,71 +50,104 @@
 </script>
 
 {#if catacombs}
-  <ScrollItems>
+  <ScrollAreaItems>
     {#each catacombs as catacomb, index (index)}
       {#if catacomb.stats}
         {#if catacomb.stats.tier_completions != null && catacomb.stats.tier_completions > 0}
-          <div class="flex min-w-80 basis-[calc((100%/3)-1.25rem)] flex-col gap-1 rounded-lg bg-background/30">
-            <div class="flex w-full items-center justify-center gap-1.5 border-b-2 border-icon py-2 text-center font-semibold uppercase">
-              <Avatar.Root>
-                <Avatar.Image loading="lazy" src={catacomb.texture} class="size-8 object-contain [image-rendering:pixelated]" />
-                <Avatar.Fallback>
+          <div class="flex w-sm flex-col self-start rounded-xl border bg-background/50">
+            <div class="flex w-full items-center justify-center gap-1.5 py-2 text-center font-semibold uppercase">
+              <Avatar.Root class="after:rounded-none after:border-none">
+                <Avatar.Image
+                  loading="lazy"
+                  src={catacomb.texture}
+                  class="size-8 rounded-none object-contain [image-rendering:pixelated]" />
+                <Avatar.Fallback class="bg-transparent">
                   <Image class="size-8" />
                 </Avatar.Fallback>
               </Avatar.Root>
               {catacomb.name}
             </div>
+            <Separator class="bg-primary" />
 
-            <Collapsible.Root class="p-5">
-              <Collapsible.Trigger class="group flex items-center gap-0.5">
-                <ChevronDown class="size-5 transition-all duration-300 ease-out group-data-[state=open]:-rotate-180" />
-                <SectionSubtitle class="my-0">Floor Stats</SectionSubtitle>
-              </Collapsible.Trigger>
-              <Collapsible.Content>
-                {#each Object.entries(catacomb.stats) as [key, value], index (index)}
-                  {#if typeof value === "object"}
-                    <AdditionStat class="capitalize" text={key.toLowerCase().replaceAll("_", " ")} data={formatNumber(value.damage)} subData="({value.type})" />
-                  {:else if key.includes("time") && key !== "times_played"}
-                    <AdditionStat class="capitalize" text={key.toLowerCase().replaceAll("_", " ")} data={formatDuration(value)} />
-                  {:else}
-                    <AdditionStat class="capitalize" text={key.toLowerCase().replaceAll("_", " ")} data={formatNumber(value)} />
-                  {/if}
-                {/each}
-              </Collapsible.Content>
-            </Collapsible.Root>
-
-            {#if catacomb.best_run}
-              <Collapsible.Root class="px-5 pb-10">
-                <Collapsible.Trigger class="group flex items-center gap-0.5">
-                  <ChevronDown class="size-5 transition-all duration-300 ease-out group-data-[state=open]:-rotate-180" />
-                  <SectionSubtitle class="my-0">Best run</SectionSubtitle>
-                </Collapsible.Trigger>
-                <Collapsible.Content>
-                  {#each Object.entries(catacomb.best_run) as [key, value], index (index)}
-                    {#if typeof value === "number"}
-                      {#if key === "timestamp"}
-                        <AdditionStat class="capitalize" text={key.toLowerCase().replaceAll("_", " ")} data={formatDistanceToNowStrict(value, { addSuffix: true, in: tz(Intl.DateTimeFormat().resolvedOptions().timeZone) })} asterisk={true}>
-                          {formatDate(value, "dd MMMM yyyy 'at' HH:mm", { in: tz(Intl.DateTimeFormat().resolvedOptions().timeZone) })}
-                        </AdditionStat>
-                      {:else if key.includes("time")}
-                        <AdditionStat class="capitalize" text={key.toLowerCase().replaceAll("_", " ")} data={formatDuration(value)} />
-                      {:else}
-                        <AdditionStat class="capitalize" text={key.toLowerCase().replaceAll("_", " ")} data={formatNumber(value)} />
-                      {/if}
+            <div class="space-y-4 p-4">
+              <Collapsible.Root>
+                <CollapsibleCustomTrigger class="h-auto py-0">Floor Stats</CollapsibleCustomTrigger>
+                <Collapsible.Content class="px-5">
+                  {#each Object.entries(catacomb.stats) as [key, value], index (index)}
+                    {#if typeof value === "object"}
+                      <AdditionStat
+                        class="capitalize"
+                        text={key.toLowerCase().replaceAll("_", " ")}
+                        data={formatNumber(value.damage)}
+                        subData="({value.type})" />
+                    {:else if key.includes("time") && key !== "times_played"}
+                      <AdditionStat
+                        class="capitalize"
+                        text={key.toLowerCase().replaceAll("_", " ")}
+                        data={formatDuration(value)} />
                     {:else}
-                      <AdditionStat class="capitalize" text={key.toLowerCase().replaceAll("_", " ")} data={value} />
+                      <AdditionStat
+                        class="capitalize"
+                        text={key.toLowerCase().replaceAll("_", " ")}
+                        data={formatNumber(value)} />
                     {/if}
                   {/each}
                 </Collapsible.Content>
               </Collapsible.Root>
-            {:else}
-              <div class="p-5 text-center">This player has not completed this floor.</div>
-            {/if}
+
+              {#if catacomb.best_run}
+                <Collapsible.Root>
+                  <CollapsibleCustomTrigger class="h-auto py-0">Best Run</CollapsibleCustomTrigger>
+
+                  <Collapsible.Content class="px-5">
+                    {#each Object.entries(catacomb.best_run) as [key, value], index (index)}
+                      {#if typeof value === "number"}
+                        {#if key === "timestamp"}
+                          <AdditionStat
+                            class="capitalize"
+                            text={key.toLowerCase().replaceAll("_", " ")}
+                            data={formatDistanceToNowStrict(value, {
+                              addSuffix: true,
+                              in: tz(Intl.DateTimeFormat().resolvedOptions().timeZone)
+                            })}
+                            asterisk={true}>
+                            {formatDate(value, "dd MMMM yyyy 'at' HH:mm", {
+                              in: tz(Intl.DateTimeFormat().resolvedOptions().timeZone)
+                            })}
+                          </AdditionStat>
+                        {:else if key.includes("time")}
+                          <AdditionStat
+                            class="capitalize"
+                            text={key.toLowerCase().replaceAll("_", " ")}
+                            data={formatDuration(value)} />
+                        {:else}
+                          <AdditionStat
+                            class="capitalize"
+                            text={key.toLowerCase().replaceAll("_", " ")}
+                            data={formatNumber(value)} />
+                        {/if}
+                      {:else}
+                        <AdditionStat class="capitalize" text={key.toLowerCase().replaceAll("_", " ")} data={value} />
+                      {/if}
+                    {/each}
+                  </Collapsible.Content>
+                </Collapsible.Root>
+              {:else}
+                <EmptyStat
+                  title="No Best Run"
+                  description="This player has not completed this floor"
+                  icon={TrophyIcon} />
+              {/if}
+            </div>
           </div>
         {/if}
       {/if}
     {/each}
-  </ScrollItems>
+  </ScrollAreaItems>
 {:else}
-  This player has not played any {master ? "Master Catacombs" : "Catacombs"}.
+  <EmptyStat
+    title="No Data"
+    description="This player has not played any {master ? 'Master Catacombs' : 'Catacombs'}"
+    icon={CircleQuestionMarkIcon}
+    class="mt-2" />
 {/if}

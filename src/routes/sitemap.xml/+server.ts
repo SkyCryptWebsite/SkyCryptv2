@@ -1,7 +1,7 @@
 import { listPosts } from "$lib/shared/api/cms-api.remote";
 import { getContributors } from "$routes/contributors.remote";
 import type { RequestHandler } from "@sveltejs/kit";
-import * as sitemap from "super-sitemap";
+import * as sitemap from "super-sitemap/sveltekit";
 
 const BASE_URL = "https://sky.shiiyu.moe";
 const postSlugs = new Set<string>();
@@ -21,8 +21,9 @@ export const GET: RequestHandler = async () => {
   }
 
   try {
-    const { docs: posts } = await listPosts({});
-    for (const post of posts) {
+    const posts = await listPosts({});
+    if (!posts) throw new Error("No posts found");
+    for (const post of posts.docs) {
       if (post.slug) {
         postSlugs.add(post.slug);
       }
@@ -37,7 +38,7 @@ export const GET: RequestHandler = async () => {
       "/newsroom/[slug]": [...postSlugs]
     },
     additionalPaths: [...statsPaths],
-    excludeRoutePatterns: ["^/api/.*", "^/stats.*", "^/login.*", "(protected)", "(admin)"],
+    excludeRoutePatterns: [/^\/stats(?:$|\/)/, /^\/login(?:$|\/)/, /^\/dashboard(?:$|\/)/],
     headers: {
       "cache-control": "max-age=0, s-maxage=3600"
     }

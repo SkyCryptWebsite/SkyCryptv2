@@ -1,16 +1,33 @@
+<script lang="ts" module>
+  // eslint-disable-next-line svelte/prefer-svelte-reactivity -- Module-scoped promise cache is deliberately non-reactive.
+  const componentPromises = new Map<string, Promise<unknown>>();
+
+  function loadSection<T>(sectionName: string, loader: () => Promise<T>) {
+    const cached = componentPromises.get(sectionName) as Promise<T> | undefined;
+    if (cached) return cached;
+
+    const promise = loader();
+    componentPromises.set(sectionName, promise);
+    void promise.catch(() => {
+      if (componentPromises.get(sectionName) === promise) {
+        componentPromises.delete(sectionName);
+      }
+    });
+
+    return promise;
+  }
+</script>
+
 <script lang="ts">
   import { getCombinedContext, getInternalState, getPreferences } from "$ctx";
   import { Notice } from "$lib/components/notices";
   import type { SectionName } from "$lib/sections/types";
   import { titleCase } from "$lib/shared/helper";
-  import { cn } from "$lib/shared/utils";
-  import LoaderCircle from "@lucide/svelte/icons/loader-circle";
-  import { Tabs } from "bits-ui";
+  import { Spinner } from "$ui/spinner";
 
   const preferences = getPreferences();
   const internalState = getInternalState();
   const combinedCtx = getCombinedContext();
-  const shouldWaitForCombined = $derived(internalState.tabValue !== "Inventory");
 
   const COMPONENTS = {
     Gear: () => import("$lib/sections/stats/Gear.svelte"),
@@ -27,6 +44,7 @@
     Rift: () => import("$lib/sections/stats/Rift.svelte"),
     Misc: () => import("$lib/sections/stats/MiscSection.svelte")
   } satisfies Record<SectionName, () => Promise<{ default: unknown }>>;
+  const componentPromise = $derived(loadSection(internalState.tabValue, COMPONENTS[internalState.tabValue]));
 
   function findIndex(id: SectionName) {
     return preferences.sectionOrder.findIndex((section) => section.name === id);
@@ -34,45 +52,57 @@
 </script>
 
 {#key internalState.tabValue}
-  {#if internalState.tabValue in COMPONENTS}
-    <Tabs.Root value={internalState.tabValue} class="contents" data-section={internalState.tabValue}>
-      <Tabs.Content value={internalState.tabValue} class="section">
-        {#if shouldWaitForCombined && !combinedCtx.current}
-          <div class={cn("rounded-lg bg-text/5 p-6", preferences.performanceMode ? "bg-background-lore" : "backdrop-blur-sm")}>
-            <div class="flex items-center gap-2">
-              <LoaderCircle class="size-5 animate-spin text-text/60" />
-              <span class="font-semibold text-text/80">Loading {titleCase(internalState.tabValue)}...</span>
-            </div>
-          </div>
+  {const sectionName = internalState.tabValue}
+  {#if sectionName in COMPONENTS}
+    <svelte:boundary>
+      {#snippet pending()}
+        {@render loadingState(sectionName)}
+      {/snippet}
+      {#snippet failed(err, reset)}
+        {@render sectionError(sectionName, err, reset)}
+      {/snippet}
+
+      <div class="section mt-4" data-section={sectionName} role="tabpanel">
+        {#if sectionName !== "Inventory" && !combinedCtx.current}
+          {@render loadingState(sectionName)}
         {:else}
-          {#await COMPONENTS[internalState.tabValue]()}
-            <div class={cn("rounded-lg bg-text/5 p-6", preferences.performanceMode ? "bg-background-lore" : "backdrop-blur-sm")}>
-              <div class="flex items-center gap-2">
-                <LoaderCircle class="size-5 animate-spin text-text/60" />
-                <span class="font-semibold text-text/80">Loading {titleCase(internalState.tabValue)}...</span>
-              </div>
-            </div>
-          {:then { default: Component }}
-            <svelte:boundary>
-              {#snippet pending()}
-                <LoaderCircle class="animate-spin text-icon" />
-              {/snippet}
-              {#snippet failed(err, reset)}
-                <Notice title="An unexpected error has occurred" type="error" error={err instanceof Error ? err.message : String(err)} retry={reset} />
-              {/snippet}
-              <Component order={findIndex(internalState.tabValue)} />
-            </svelte:boundary>
-          {:catch}
-            <Notice type="error" title={`Failed to load section ${internalState.tabValue}`}>
-              <p class="text-text/80">This section may not be available or there was an error loading it.</p>
-            </Notice>
-          {/await}
+          <svelte:boundary>
+            {const { default: Component } = await componentPromise}
+            <Component order={findIndex(sectionName)} />
+
+            {#snippet pending()}
+              {@render loadingState(sectionName)}
+            {/snippet}
+
+            {#snippet failed(err, reset)}
+              {@render sectionError(sectionName, err, reset)}
+            {/snippet}
+          </svelte:boundary>
         {/if}
-      </Tabs.Content>
-    </Tabs.Root>
+      </div>
+    </svelte:boundary>
   {:else}
-    <Notice type="error" title={`Invalid Section: ${internalState.tabValue}`}>
-      <p class="text-text/80">This section does not exist or is not implemented.</p>
+    <Notice type="error" title={`Invalid Section: ${sectionName}`}>
+      <p class="text-foreground/80">This section does not exist or is not implemented.</p>
     </Notice>
   {/if}
 {/key}
+
+{#snippet loadingState(sectionName: SectionName)}
+  <div class="rounded-xl border p-6">
+    <div class="flex items-center gap-2">
+      <Spinner />
+      <span class="font-semibold">Loading {titleCase(sectionName)}</span>
+    </div>
+  </div>
+{/snippet}
+
+{#snippet sectionError(sectionName: SectionName, err: unknown, retry: () => void)}
+  <Notice
+    type="error"
+    title={`Failed to load section ${sectionName}`}
+    error={err instanceof Error ? err.message : String(err)}
+    {retry}>
+    <p class="text-foreground/80">This section may not be available or there was an error loading it.</p>
+  </Notice>
+{/snippet}

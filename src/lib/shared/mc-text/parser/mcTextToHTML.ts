@@ -5,13 +5,11 @@ import { BASE_FORMATTING_CODE_REGEX, htmlStringFormatting } from "$lib/shared/mc
 /**
  * Convert Minecraft text to html.
  *
- * This function parses Minecraft-style formatting codes (like §a, §l, §r) and converts them
- * to HTML with appropriate CSS classes and inline styles. It handles:
- * - Color codes (§a-§f, §0-§9) - converted to CSS color values
- * - Formatting codes (§l bold, §o italic, §n underline, etc.) - converted to CSS classes
- * - Reset codes (§r resets all, §f resets formatting only)
- * - Special rainbow enchantment animation for max-level enchants with blue color
- * - Animation delays for the rainbow effect based on the index parameter
+ * This function parses Minecraft-style formatting codes (like §a, §l, §r) and converts them to HTML with appropriate
+ * CSS classes and inline styles. It handles: - Color codes (§a-§f, §0-§9) - converted to CSS color values - Formatting
+ * codes (§l bold, §o italic, §n underline, etc.) - converted to CSS classes - Reset codes (§r resets all, §f resets
+ * formatting only) - Special rainbow enchantment animation for max-level enchants with blue color - Animation delays
+ * for the rainbow effect based on the index parameter
  *
  * @param mcString The Minecraft text string to convert. (e.g. "§aHello §bWorld")
  * @param breakLine Whether to add a line break at the end of the string.
@@ -41,7 +39,9 @@ export default function mcTextToHTML(...args: [{ mcString: string; breakLine?: b
   let shouldRainbowEnchantedCheck = false;
   let isPostResetObfuscated = false;
 
-  const isResetOnlyState = (): boolean => classList.length === resetClasses.length && classList.every((className, classIndex) => className === resetClasses[classIndex]);
+  const isResetOnlyState = (): boolean =>
+    classList.length === resetClasses.length &&
+    classList.every((className, classIndex) => className === resetClasses[classIndex]);
 
   codeSplit.forEach((item: string, index: number) => {
     const mcTextStringToLowerCase = item.toLowerCase();
@@ -79,7 +79,8 @@ export default function mcTextToHTML(...args: [{ mcString: string; breakLine?: b
         isPostResetObfuscated = false;
       } else {
         const resetOnlyState = isResetOnlyState();
-        isPostResetObfuscated = resetOnlyState && mcTextStringToLowerCase === "§k" && !colorVar && Boolean(lastColorVar);
+        isPostResetObfuscated =
+          resetOnlyState && mcTextStringToLowerCase === "§k" && !colorVar && Boolean(lastColorVar);
         if (resetOnlyState) {
           classList = [];
         }
@@ -89,7 +90,11 @@ export default function mcTextToHTML(...args: [{ mcString: string; breakLine?: b
     }
     // Current item is actual text content, not a formatting code
     else {
-      const shouldUseLastColorAfterResetForObfuscated = !colorVar && classList.includes("obfuscated") && Boolean(lastColorVar) && (classList.includes("text-inherit") || isPostResetObfuscated);
+      const shouldUseLastColorAfterResetForObfuscated =
+        !colorVar &&
+        classList.includes("obfuscated") &&
+        Boolean(lastColorVar) &&
+        (classList.includes("text-inherit") || isPostResetObfuscated);
       const effectiveColorVar = shouldUseLastColorAfterResetForObfuscated ? lastColorVar : colorVar;
       // Escape HTML characters to prevent XSS attacks and display properly
       const textContent: string = item !== "" ? htmlStringFormatting(item) : item;

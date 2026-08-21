@@ -62,7 +62,10 @@ describe.concurrent("renderLore Tests", () => {
   });
 
   it("supports opting out of breaking spaces and dashes", ({ expect }) => {
-    const result = renderLore("Caught within 7-16 minutes after", false, undefined, { breakSpaces: false, breakDashes: false });
+    const result = renderLore("Caught within 7-16 minutes after", false, undefined, {
+      breakSpaces: false,
+      breakDashes: false
+    });
 
     expect(result).toMatch(/&nbsp;|\u00A0/);
     expect(result).toContain("7-16");

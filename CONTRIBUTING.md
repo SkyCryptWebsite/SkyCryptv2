@@ -58,7 +58,7 @@ Please ensure that you don't accidentally commit the changes you made to the `.v
 When you are ready to submit your changes, please create a pull request (PR) on GitHub. Make sure to check the following:
 
 - **Use Conventional Commits**: Follow the [Conventional Commits](https://www.conventionalcommits.org/) specification for your commit messages.
-- Your code is well formatted and follows the project's coding style. Run `pnpm lint` to check for linting errors. If there are any `prettier` errors, run `pnpm format` to fix them automatically. If there are any `eslint` or `svelte-check` errors, fix them manually.
+- Your code is well formatted and follows the project's coding style. Run `pnpm lint` to check for linting errors. If there are any `oxfmt` errors, run `pnpm format` to fix them automatically. If there are any `eslint` or `svelte-check` errors, fix them manually.
 - Your code builds successfully. Run `pnpm build` to check.
 - Your PR has a clear title and description explaining the changes you made.
 - Your PR includes changesets if necessary. If your PR includes changes that should be reflected in the changelog, please include a changeset. You can do this by running `pnpm changeset` and following the prompts.
@@ -93,10 +93,11 @@ Releases are created automatically based on the branch:
 Release behavior details:
 
 - Changesets are authored in feature PRs and merged into `dev`.
-- The release workflow commits version/changelog updates directly on the release branch (`dev` or `prod`) using `github-actions[bot]`.
-- Merging `dev` into `prod` promotes the current beta line to a stable release directly on `prod`; no release PR is created.
+- The beta release workflow commits version/changelog updates directly on `dev` using `github-actions[bot]`.
+- Merging `dev` into `prod` promotes the current beta line to a stable release through a `changeset-release/prod` version PR, because the `prod` ruleset requires pull requests.
 - Avoid routine manual `prod` → `dev` sync merges unless you are intentionally bringing over a stable-only hotfix.
-- The stable release workflow uses `PAT_TOKEN` for direct pushes and GitHub release operations on `prod`.
+- All release automation uses the built-in `GITHUB_TOKEN`; the stable workflow explicitly dispatches the production deployment after merging the version PR.
+- GitHub release descriptions use the matching `CHANGELOG.md` section plus a Full Changelog comparison link.
 
 The version bump is determined automatically by changesets:
 

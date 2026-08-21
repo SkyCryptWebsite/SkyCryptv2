@@ -6,23 +6,23 @@
   type Props = {
     subtitle?: string;
     class?: string;
+    parentClass?: string;
     text?: Snippet;
     children?: Snippet;
     info?: Snippet;
   };
 
-  let { subtitle, class: className, text, children, info }: Props = $props();
+  let { subtitle, class: className, parentClass, text, children, info }: Props = $props();
 </script>
 
-<div class="space-y-4">
+<div class={cn("my-2 space-y-2", parentClass)}>
   {#if subtitle}
     <SectionSubtitle>{subtitle}</SectionSubtitle>
   {/if}
   {@render text?.()}
 
-  <div class={cn("flex flex-wrap gap-3", className)}>
+  {@render info?.()}
+  <div class={cn("flex flex-wrap gap-4", className)}>
     {@render children?.()}
   </div>
-
-  {@render info?.()}
 </div>

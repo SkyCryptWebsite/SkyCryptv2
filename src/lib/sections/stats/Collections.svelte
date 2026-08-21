@@ -1,76 +1,98 @@
 <script lang="ts">
   import { getCombinedContext } from "$ctx";
-  import { Chip, ScrollItems } from "$lib/components/misc";
+  import { Chip, SearchTabs } from "$lib/components/misc";
   import { Section } from "$lib/components/sections";
   import { AdditionStat } from "$lib/components/stats";
-  import Items from "$lib/layouts/stats/Items.svelte";
   import { cn } from "$lib/shared/utils";
+  import EmptyStat from "$src/lib/components/EmptyStat.svelte";
+  import LibraryBigIcon from "@lucide/svelte/icons/library-big";
   import { format } from "numerable";
 
   let { order }: { order: number } = $props();
 
   const collections = $derived(getCombinedContext().current?.collections);
+
+  const categoryTabs = $derived.by(() => {
+    if (!collections?.categories) return [];
+
+    return Object.entries(collections.categories).map(([key, data]) => ({
+      value: key,
+      label: data.name ?? key,
+      items: data.items ?? [],
+      triggerClass: "text-white"
+    }));
+  });
 </script>
 
 <Section id="Collections" {order}>
   {#if collections}
-    <Items class="flex-col">
-      {#snippet text()}
-        <div>
-          <AdditionStat text="Maxed Collections" data="{collections.maxedCollections} / {collections.totalCollections}" maxed={collections.maxedCollections === collections.totalCollections} />
+    <div class="contents space-y-4">
+      <div class="rounded-xl border p-4">
+        <div class="space-y-0.5">
+          <AdditionStat
+            text="Maxed Collections"
+            data="{collections.maxedCollections} / {collections.totalCollections}"
+            maxed={collections.maxedCollections === collections.totalCollections} />
         </div>
-      {/snippet}
-      {#if collections.categories}
-        {#each Object.entries(collections.categories) as [_, data], index (index)}
-          <div class="flex items-center gap-1 text-base font-semibold uppercase">
-            <h3 class="text-xl">{data.name}</h3>
-            {#if data.maxTiers === data.totalTiers}
-              <span class="text-gold">Max!</span>
-            {:else}
-              <span class="text-text/80">({data.maxTiers} / {data.totalTiers} max)</span>
-            {/if}
-          </div>
+      </div>
 
-          <ScrollItems>
-            {#each data.items as item, index (index)}
-              {@const hasUnlocked = item.totalAmount}
-              {@const hasMaxed = item.tier === item.maxTier}
-              <Chip image={{ src: item.texture ?? "" }} class={cn("h-fit w-fit", { "opacity-50": !hasUnlocked })}>
-                <div class={cn("flex flex-col")}>
-                  <div class="font-bold whitespace-nowrap">
-                    <span class={cn(hasMaxed ? "text-maxed" : "opacity-60")}>{item.name}</span>
-                    <span class={cn({ "text-gold": hasMaxed })}>{item.tier}</span>
-                    <div class="text-sm">
-                      <span class="opacity-60">Amount:</span>
-                      <span class="text-text">{format(item.totalAmount)}</span>
-                    </div>
-                  </div>
+      <SearchTabs
+        tabs={categoryTabs}
+        placeholder="Search collections"
+        searchKeys={(item) => [item.name]}
+        itemKey={(item, index) => item.id ?? item.name ?? index}
+        noResultsLabel="No collections match your search.">
+        {#snippet tabHeader(value)}
+          {const data = collections.categories?.[value]}
+          {#if data}
+            <div class="mb-4 text-base font-semibold uppercase">
+              {#if data.maxTiers === data.totalTiers}
+                <span class="text-accent-4">Max!</span>
+              {:else}
+                <span class="text-foreground/80">{data.maxTiers} / {data.totalTiers} maxed</span>
+              {/if}
+            </div>
+          {/if}
+        {/snippet}
+        {#snippet item(item)}
+          {const hasUnlocked = item.totalAmount}
+          {const hasMaxed = item.tier === item.maxTier}
+          <Chip image={{ src: item.texture ?? "" }} class={cn("h-fit w-fit", { "opacity-50": !hasUnlocked })}>
+            <div class="flex flex-col">
+              <div class="font-bold whitespace-nowrap">
+                <span class={cn(hasMaxed ? "text-accent-2" : "opacity-60")}>{item.name}</span>
+                <span class={cn({ "text-accent-4": hasMaxed })}>{item.tier}</span>
+                <div class="text-sm">
+                  <span class="opacity-60">Amount:</span>
+                  <span class="text-foreground">{format(item.totalAmount)}</span>
                 </div>
-                {#snippet tooltip()}
-                  <div class="text-sm font-bold">
-                    {#if item.amounts && item.amounts.length > 0}
-                      <div class="mb-4">
-                        {#each item.amounts as user, index (index)}
-                          <div>
-                            <span class="opacity-85">
-                              {user.username}:
-                            </span>
-                            <span class="text-text">{format(user.amount)}</span>
-                          </div>
-                        {/each}
+              </div>
+            </div>
+            {#snippet tooltip()}
+              <div class="text-sm font-bold">
+                {#if item.amounts && item.amounts.length > 0}
+                  <div class="mb-4">
+                    {#each item.amounts as user, index (index)}
+                      <div>
+                        <span class="opacity-85">
+                          {user.username}:
+                        </span>
+                        <span class="text-foreground">{format(user.amount)}</span>
                       </div>
-                    {/if}
-                    <div>
-                      <span class="opacity-85"> Total: </span>
-                      <span class="text-text opacity-100">{format(item.totalAmount)}</span>
-                    </div>
+                    {/each}
                   </div>
-                {/snippet}
-              </Chip>
-            {/each}
-          </ScrollItems>
-        {/each}
-      {/if}
-    </Items>
+                {/if}
+                <div>
+                  <span class="opacity-85"> Total: </span>
+                  <span class="text-foreground opacity-100">{format(item.totalAmount)}</span>
+                </div>
+              </div>
+            {/snippet}
+          </Chip>
+        {/snippet}
+      </SearchTabs>
+    </div>
+  {:else}
+    <EmptyStat title="No Data" description="This player doesn't have any collections" icon={LibraryBigIcon} />
   {/if}
 </Section>

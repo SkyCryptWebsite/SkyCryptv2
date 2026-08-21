@@ -2,6 +2,8 @@
   import { AdditionStat } from "$lib/components/stats";
   import { type SkycryptSrcModelsNetworthResult } from "$lib/shared/api/orval-generated";
   import { formatNumber } from "$lib/shared/helper";
+  import { Label } from "$ui/label";
+  import { Separator } from "$ui/separator";
   import { format as numberFormat } from "numerable";
 
   const defaultPattern: string = "0,0";
@@ -15,31 +17,35 @@
 </script>
 
 <AdditionStat text={title} data={formatNumber(networth.networth ?? 0)} asterisk={true}>
-  <div class="max-w-xs space-y-2 font-bold">
+  <div class="max-w-xs space-y-2">
     <div>
-      <h3 class="text-text/85">{title}</h3>
-      <p class="font-medium text-text/80 italic">{title} calculations by SkyHelper.</p>
+      <Label class="font-bold">{title}</Label>
+      <p class="text-xs text-foreground/80 italic">{title} calculations by SkyHelper.</p>
     </div>
-    <div>
-      <ul class="font-bold [&_li]:text-text/85 [&_li]:capitalize [&_li_span]:text-text [&_li_span]:normal-case">
-        {#each Object.entries(networth.types ?? {}) as [key, value], index (index)}
-          <li>
-            {key.replace(/_/g, " ")}:
-            <span>
-              {formatNumber(value.total ?? 0)}
-            </span>
-          </li>
-        {/each}
-      </ul>
-    </div>
-    <p class="text-text/85">
+    <Separator />
+    <ul
+      class="space-y-1 [&>li]:text-foreground [&>li]:capitalize [&>li>span]:font-bold [&>li>span]:text-foreground [&>li>span]:normal-case">
+      {#each Object.entries(networth.types ?? {}) as [key, value], index (index)}
+        <li>
+          {key.replace(/_/g, " ")}:
+          <span>
+            {formatNumber(value.total ?? 0)}
+          </span>
+        </li>
+      {/each}
+    </ul>
+
+    <Separator />
+
+    <p>
       Unsoulbound {title}:
-      <span class="text-text">
+      <span class="font-bold">
         {formatNumber(networth.unsoulboundNetworth ?? 0)}
       </span>
-      <br />
+    </p>
+    <p>
       Total {title}:
-      <span class="text-text">
+      <span class="font-bold">
         {numberFormat(networth.networth, defaultPattern)} ({formatNumber(networth.networth ?? 0)})
       </span>
     </p>

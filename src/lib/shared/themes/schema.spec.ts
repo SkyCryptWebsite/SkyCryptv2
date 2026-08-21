@@ -1,223 +1,210 @@
 import { describe, it } from "vitest";
 import { DEFAULT_THEME } from "./defaults";
-import { partialThemeV3Schema, themeV3Schema } from "./schema";
+import { legacyThemeV4Schema, migrateThemeV4ToV5, partialThemeV5Schema, themeV5Schema } from "./schema";
 
-describe.concurrent("Theme V3 Schema Validation", () => {
-  describe.concurrent("themeV3Schema - Full Theme", () => {
-    it("should parse valid full theme successfully", ({ expect }) => {
-      const result = themeV3Schema.safeParse(DEFAULT_THEME);
+describe.concurrent("Theme V5 Schema Validation", () => {
+  describe.concurrent("themeV5Schema", () => {
+    it("parses a valid full theme", ({ expect }) => {
+      const result = themeV5Schema.safeParse(DEFAULT_THEME);
+
       expect(result.success).toBe(true);
       if (result.success) {
-        expect(result.data.schema).toBe(3);
+        expect(result.data.schema).toBe(5);
         expect(result.data.metadata.id).toBe("default");
+        expect(result.data.modes.dark.cssVars).toEqual({});
+        expect(result.data.modes.light.cssVars).toEqual({});
       }
     });
 
-    it("should reject theme with invalid OKLCH color format", ({ expect }) => {
-      const invalidTheme = {
+    it("rejects an invalid color", ({ expect }) => {
+      const result = themeV5Schema.safeParse({
         ...DEFAULT_THEME,
-        colors: {
-          ...DEFAULT_THEME.colors,
-          icon: "oklch(invalid)"
-        }
-      };
-      const result = themeV3Schema.safeParse(invalidTheme);
-      expect(result.success).toBe(false);
-      if (!result.success) {
-        expect(result.error.issues[0].message).toContain("OKLCH");
-      }
-    });
-
-    it("should reject theme with HTTP URL (must be HTTPS)", ({ expect }) => {
-      const invalidTheme = {
-        ...DEFAULT_THEME,
-        backgrounds: {
-          ...DEFAULT_THEME.backgrounds,
-          page: {
-            url: "http://example.com/bg.jpg"
+        modes: {
+          ...DEFAULT_THEME.modes,
+          dark: {
+            cssVars: {
+              primary: "not-a-color"
+            }
           }
         }
-      };
-      const result = themeV3Schema.safeParse(invalidTheme);
+      });
+
       expect(result.success).toBe(false);
-      if (!result.success) {
-        expect(result.error.issues[0].message).toContain("HTTPS");
+    });
+
+    it("rejects an HTTP page background URL", ({ expect }) => {
+      const result = themeV5Schema.safeParse({
+        ...DEFAULT_THEME,
+        modes: {
+          ...DEFAULT_THEME.modes,
+          light: {
+            cssVars: {},
+            extras: {
+              pageBackground: {
+                url: "http://example.com/bg.jpg"
+              }
+            }
+          }
+        }
+      });
+
+      expect(result.success).toBe(false);
+    });
+
+    it("rejects V4-style top-level mode and css vars", ({ expect }) => {
+      const result = themeV5Schema.safeParse({
+        ...DEFAULT_THEME,
+        mode: "dark",
+        cssVars: {
+          primary: "oklch(0.5 0.1 100)"
+        }
+      });
+
+      expect(result.success).toBe(false);
+    });
+
+    it("rejects invalid Minecraft override keys", ({ expect }) => {
+      const result = themeV5Schema.safeParse({
+        ...DEFAULT_THEME,
+        modes: {
+          ...DEFAULT_THEME.modes,
+          dark: {
+            cssVars: {},
+            extras: {
+              minecraft: {
+                palette: "nice-light",
+                overrides: {
+                  z: "oklch(0.5 0.1 100)"
+                }
+              }
+            }
+          }
+        }
+      });
+
+      expect(result.success).toBe(false);
+    });
+
+    it("accepts generated lowercase theme ids", ({ expect }) => {
+      for (const id of ["custom-1780000000000", "custom_theme-1", "theme1"]) {
+        expect(
+          themeV5Schema.safeParse({
+            ...DEFAULT_THEME,
+            metadata: {
+              ...DEFAULT_THEME.metadata,
+              id
+            }
+          }).success
+        ).toBe(true);
       }
     });
 
-    it("should reject theme with missing required fields", ({ expect }) => {
-      const incompleteTheme = {
-        id: "test",
-        name: "Test",
-        author: "Author",
-        schema: 3
-      };
-      const result = themeV3Schema.safeParse(incompleteTheme);
-      expect(result.success).toBe(false);
-    });
-
-    it("should reject theme with invalid schema version", ({ expect }) => {
-      const invalidTheme = {
-        ...DEFAULT_THEME,
-        schema: 2
-      };
-      const result = themeV3Schema.safeParse(invalidTheme);
-      expect(result.success).toBe(false);
-      if (!result.success) {
-        expect(result.error.issues.some((issue) => issue.path.includes("schema"))).toBe(true);
+    it("rejects unsafe theme ids", ({ expect }) => {
+      for (const id of ["BadTheme", "bad theme", "bad[theme]", 'bad"theme', "_preview"]) {
+        expect(
+          themeV5Schema.safeParse({
+            ...DEFAULT_THEME,
+            metadata: {
+              ...DEFAULT_THEME.metadata,
+              id
+            }
+          }).success
+        ).toBe(false);
       }
     });
 
-    it("should validate MC palette enum values", ({ expect }) => {
-      const validPalettes = ["nice-dark", "nice-light", "true-colors", "april-fools-2024"];
-
-      for (const palette of validPalettes) {
-        const theme = {
-          ...DEFAULT_THEME,
-          minecraft: {
-            palette: palette as "nice-dark" | "nice-light" | "true-colors" | "april-fools-2024"
-          }
-        };
-        const result = themeV3Schema.safeParse(theme);
-        expect(result.success).toBe(true);
-      }
-
-      const invalidTheme = {
+    it("requires both mode definitions", ({ expect }) => {
+      const result = themeV5Schema.safeParse({
         ...DEFAULT_THEME,
-        minecraft: {
-          palette: "invalid-palette"
+        modes: {
+          dark: {
+            cssVars: {}
+          }
         }
-      };
-      const result = themeV3Schema.safeParse(invalidTheme);
+      });
+
       expect(result.success).toBe(false);
-    });
-
-    it("should validate MC color override format", ({ expect }) => {
-      const validOverride = {
-        ...DEFAULT_THEME,
-        minecraft: {
-          palette: "nice-dark" as const,
-          overrides: {
-            a: "oklch(0.5 0.1 100)"
-          }
-        }
-      };
-      const result = themeV3Schema.safeParse(validOverride);
-      expect(result.success).toBe(true);
-
-      const invalidOverride = {
-        ...DEFAULT_THEME,
-        minecraft: {
-          palette: "nice-dark" as const,
-          overrides: {
-            a: "rgb(255, 0, 0)"
-          }
-        }
-      };
-      const invalidResult = themeV3Schema.safeParse(invalidOverride);
-      expect(invalidResult.success).toBe(false);
-    });
-
-    it("should accept valid HTTPS enchanted glint URL", ({ expect }) => {
-      const themeWithGlint = {
-        ...DEFAULT_THEME,
-        enchantedGlint: "https://example.com/glint.png"
-      };
-      const result = themeV3Schema.safeParse(themeWithGlint);
-      expect(result.success).toBe(true);
     });
   });
 
-  describe.concurrent("partialThemeV3Schema - Partial Theme", () => {
-    it("should parse valid partial theme successfully", ({ expect }) => {
-      const partial = {
-        id: "custom",
-        colors: {
-          icon: "oklch(0.5 0.2 100)",
-          link: "oklch(0.6 0.1 200)"
-        }
-      };
-      const result = partialThemeV3Schema.safeParse(partial);
-      expect(result.success).toBe(true);
+  describe.concurrent("partialThemeV5Schema", () => {
+    it("accepts an empty object", ({ expect }) => {
+      expect(partialThemeV5Schema.safeParse({}).success).toBe(true);
     });
 
-    it("should accept empty object as valid partial theme", ({ expect }) => {
-      const result = partialThemeV3Schema.safeParse({});
-      expect(result.success).toBe(true);
-    });
-
-    it("should reject partial theme with invalid color format", ({ expect }) => {
-      const invalidPartial = {
-        colors: {
-          icon: "not-a-color"
-        }
-      };
-      const result = partialThemeV3Schema.safeParse(invalidPartial);
-      expect(result.success).toBe(false);
-    });
-
-    it("should validate partial minecraft overrides", ({ expect }) => {
-      const partialMC = {
-        minecraft: {
-          overrides: {
-            "0": "oklch(1 0 0)",
-            f: "oklch(0 0 0)"
+    it("accepts partial css vars", ({ expect }) => {
+      const result = partialThemeV5Schema.safeParse({
+        schema: 5,
+        modes: {
+          dark: {
+            cssVars: {
+              primary: "oklch(0.5 0.1 100)",
+              accent2: "oklch(0.7 0.1 80)",
+              accent3: "oklch(0.6 0.1 80)",
+              accent4: "oklch(0.8 0.1 80)"
+            }
           }
         }
-      };
-      const result = partialThemeV3Schema.safeParse(partialMC);
+      });
+
       expect(result.success).toBe(true);
+    });
+
+    it("accepts partial extras", ({ expect }) => {
+      const result = partialThemeV5Schema.safeParse({
+        schema: 5,
+        modes: {
+          light: {
+            extras: {
+              minecraft: {
+                palette: "true-colors",
+                overrides: {
+                  a: "oklch(0.5 0.1 100)"
+                }
+              }
+            }
+          }
+        }
+      });
+
+      expect(result.success).toBe(true);
+    });
+
+    it("rejects V3-style color fields", ({ expect }) => {
+      const result = partialThemeV5Schema.safeParse({
+        schema: 5,
+        colors: {
+          icon: "oklch(0.5 0.1 100)"
+        }
+      });
+
+      expect(result.success).toBe(false);
     });
   });
 
-  describe.concurrent("Background Schema Validation", () => {
-    it("should validate color background type", ({ expect }) => {
-      const colorBg = {
-        ...DEFAULT_THEME,
-        backgrounds: {
-          ...DEFAULT_THEME.backgrounds,
-          skillbar: {
-            type: "color" as const,
-            color: "oklch(0.5 0.1 100)"
+  describe.concurrent("legacy V4 migration", () => {
+    it("preserves authored dark mode and leaves light mode empty", ({ expect }) => {
+      const v4 = legacyThemeV4Schema.parse({
+        schema: 4,
+        mode: "dark",
+        cssVars: {
+          primary: "oklch(0.5 0.1 100)"
+        },
+        extras: {
+          pageBackground: {
+            url: "https://example.com/bg.png"
           }
-        }
-      };
-      const result = themeV3Schema.safeParse(colorBg);
-      expect(result.success).toBe(true);
-    });
+        },
+        metadata: DEFAULT_THEME.metadata
+      });
 
-    it("should validate stripes background type", ({ expect }) => {
-      const stripesBg = {
-        ...DEFAULT_THEME,
-        backgrounds: {
-          ...DEFAULT_THEME.backgrounds,
-          maxedbar: {
-            type: "stripes" as const,
-            angle: "45deg",
-            colors: ["oklch(0.5 0.1 100)", "oklch(0.6 0.1 200)"] as [string, string],
-            width: 5
-          }
-        }
-      };
-      const result = themeV3Schema.safeParse(stripesBg);
-      expect(result.success).toBe(true);
-    });
+      const migrated = migrateThemeV4ToV5(v4);
 
-    it("should reject stripes background with invalid colors tuple", ({ expect }) => {
-      const invalidStripes = {
-        ...DEFAULT_THEME,
-        backgrounds: {
-          ...DEFAULT_THEME.backgrounds,
-          skillbar: {
-            type: "stripes",
-            angle: "45deg",
-            colors: ["oklch(0.5 0.1 100)"], // Only one color, needs two
-            width: 5
-          }
-        }
-      };
-      const result = themeV3Schema.safeParse(invalidStripes);
-      expect(result.success).toBe(false);
+      expect(migrated.schema).toBe(5);
+      expect(migrated.modes.dark.cssVars.primary).toBe("oklch(0.5 0.1 100)");
+      expect(migrated.modes.dark.extras?.pageBackground?.url).toBe("https://example.com/bg.png");
+      expect(migrated.modes.light.cssVars).toEqual({});
+      expect(migrated.modes.light.extras).toBeUndefined();
     });
   });
 });

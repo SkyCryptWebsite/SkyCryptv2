@@ -1,6 +1,8 @@
 <script lang="ts">
   import { getCombinedContext, MiscContext, setMiscContext } from "$ctx";
   import { Section } from "$lib/components/sections";
+  import EmptyStat from "$src/lib/components/EmptyStat.svelte";
+  import DicesIcon from "@lucide/svelte/icons/dices";
   import Auctions from "./misc/auctions.svelte";
   import Chips from "./misc/chips.svelte";
   import Claimed from "./misc/claimed.svelte";
@@ -29,21 +31,23 @@
 
 <Section id="Misc" {order}>
   {#if misc}
-    <Chips />
-    <!-- TODO: Essence Shop -->
-    <Kills />
-    <!-- <Races /> -->
-    <Gifts />
-    <Jerry />
-    <Dragons />
-    <Endstone />
-    <Damage />
-    <Pet />
-    <Mythological />
-    <!-- <Potions /> -->
-    <Upgrades />
-    <Auctions />
-    <Claimed />
-    <Uncategorized />
+    <div class="contents space-y-4">
+      <Chips />
+      <!-- TODO: Essence Shop -->
+      <Kills />
+      <Gifts />
+      <Jerry />
+      <Dragons />
+      <Endstone />
+      <Damage />
+      <Pet />
+      <Mythological />
+      <Upgrades />
+      <Auctions />
+      <Claimed />
+      <Uncategorized />
+    </div>
+  {:else}
+    <EmptyStat title="No Data" description="This player doesn't have anything related to Misc" icon={DicesIcon} />
   {/if}
 </Section>

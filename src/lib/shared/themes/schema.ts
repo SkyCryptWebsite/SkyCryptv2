@@ -1,27 +1,22 @@
 import { z } from "zod";
+import { paletteNames } from "./presets";
 
-/**
- * Theme V3 Zod Schema
- *
- * Comprehensive schema covering all ~40+ CSS variables for SkyCrypt themes.
- * Organized into logical groups: colors, backgrounds, minecraft, enchantedGlint, meta.
- *
- * Color and background properties are OPTIONAL — when omitted, the CSS cascade
- * provides the correct values (e.g., the `light` utility class in app.css).
- * Only DEFAULT_THEME is expected to have all properties fully specified.
- */
+const cssColorSchema = z.string().refine((value) => {
+  if (typeof CSS === "undefined" || typeof CSS.supports !== "function") {
+    return /^(oklch|hsl|rgb|color|lab|lch)\(/.test(value) || /^#[\da-f]{3,8}$/i.test(value) || /^[a-z]+$/i.test(value);
+  }
 
-// --- Helper Validators ---
+  return CSS.supports("color", value);
+}, "Must be a valid CSS color");
 
-/**
- * OKLCH color format validator
- * Example: "oklch(0.74 0.21 147.69)" or "oklch(0.74 0.21 147.69 / 0.5)"
- */
-const oklchColorSchema = z.string().regex(/^oklch\(\s*[\d.]+%?\s+[\d.]+\s+[\d.]+(?:\s+\/\s+[\d.]+)?\s*\)$/, "Must be a valid OKLCH color format: oklch(L C H) or oklch(L C H / A)");
+const cssLengthSchema = z.string().refine((value) => {
+  if (typeof CSS === "undefined" || typeof CSS.supports !== "function") {
+    return /^-?[\d.]+(px|rem|em|ch|vw|vh|vmin|vmax|%)$/.test(value) || value === "0";
+  }
 
-/**
- * HTTPS URL validator (no HTTP allowed for security)
- */
+  return CSS.supports("border-radius", value);
+}, "Must be a valid CSS length");
+
 const httpsUrlSchema = z
   .string()
   .url()
@@ -29,145 +24,201 @@ const httpsUrlSchema = z
     message: "URL must use HTTPS protocol"
   });
 
-// --- Background Types ---
+const minecraftOverrideKeySchema = z.enum([
+  "0",
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7",
+  "8",
+  "9",
+  "a",
+  "b",
+  "c",
+  "d",
+  "e",
+  "f"
+]);
+const minecraftOverridesSchema = z
+  .record(z.string(), cssColorSchema)
+  .refine((data) => Object.keys(data).every((key) => minecraftOverrideKeySchema.safeParse(key).success), {
+    message: "Override keys must be single hex characters (0-9, a-f)"
+  });
+const themeIdSchema = z
+  .string()
+  .min(1, "Theme ID is required")
+  .max(64, "Theme ID must be 64 characters or fewer")
+  .regex(
+    /^[a-z0-9][a-z0-9_-]*$/,
+    "Theme ID must start with a lowercase letter or number and contain only lowercase letters, numbers, underscores, and dashes"
+  );
 
-/**
- * Solid color background
- */
-const colorBackgroundSchema = z.object({
-  type: z.literal("color"),
-  color: oklchColorSchema
+export const shadcnThemeVarsSchema = z.object({
+  radius: cssLengthSchema.optional(),
+  background: cssColorSchema.optional(),
+  foreground: cssColorSchema.optional(),
+  card: cssColorSchema.optional(),
+  cardForeground: cssColorSchema.optional(),
+  popover: cssColorSchema.optional(),
+  popoverForeground: cssColorSchema.optional(),
+  primary: cssColorSchema.optional(),
+  primaryForeground: cssColorSchema.optional(),
+  secondary: cssColorSchema.optional(),
+  secondaryForeground: cssColorSchema.optional(),
+  muted: cssColorSchema.optional(),
+  mutedForeground: cssColorSchema.optional(),
+  accent: cssColorSchema.optional(),
+  accentForeground: cssColorSchema.optional(),
+  accent2: cssColorSchema.optional(),
+  accent3: cssColorSchema.optional(),
+  accent4: cssColorSchema.optional(),
+  destructive: cssColorSchema.optional(),
+  border: cssColorSchema.optional(),
+  input: cssColorSchema.optional(),
+  ring: cssColorSchema.optional(),
+  chart1: cssColorSchema.optional(),
+  chart2: cssColorSchema.optional(),
+  chart3: cssColorSchema.optional(),
+  chart4: cssColorSchema.optional(),
+  chart5: cssColorSchema.optional(),
+  sidebar: cssColorSchema.optional(),
+  sidebarForeground: cssColorSchema.optional(),
+  sidebarPrimary: cssColorSchema.optional(),
+  sidebarPrimaryForeground: cssColorSchema.optional(),
+  sidebarAccent: cssColorSchema.optional(),
+  sidebarAccentForeground: cssColorSchema.optional(),
+  sidebarBorder: cssColorSchema.optional(),
+  sidebarRing: cssColorSchema.optional()
 });
 
-/**
- * Striped background with angle, colors, and width
- */
-const stripesBackgroundSchema = z.object({
-  type: z.literal("stripes"),
-  angle: z.string(), // e.g., "45deg", "90deg"
-  colors: z.tuple([oklchColorSchema, oklchColorSchema]), // Exactly 2 colors
-  width: z.number().positive()
-});
-
-/**
- * Discriminated union for background types
- */
-const backgroundSchema = z.discriminatedUnion("type", [colorBackgroundSchema, stripesBackgroundSchema]);
-
-// --- Color Schema (individual properties optional) ---
-
-const colorsSchema = z.object({
-  icon: oklchColorSchema.optional(),
-  link: oklchColorSchema.optional(),
-  hover: oklchColorSchema.optional(),
-  maxed: oklchColorSchema.optional(),
-  gold: oklchColorSchema.optional(),
-  logo: oklchColorSchema.optional(),
-  text: oklchColorSchema.optional(),
-  background: oklchColorSchema.optional(),
-  header: oklchColorSchema.optional(),
-  greyBackground: oklchColorSchema.optional(),
-  loreBackground: oklchColorSchema.optional(),
-  bg: oklchColorSchema.optional(),
-  mctooltipBg: oklchColorSchema.optional()
-});
-
-// --- Background Container Schema (individual properties optional) ---
-
-const backgroundsSchema = z.object({
-  skillbar: backgroundSchema.optional(),
-  maxedbar: backgroundSchema.optional(),
-  page: z
+export const skyCryptThemeExtrasSchema = z.object({
+  minecraft: z
+    .object({
+      palette: z.enum(paletteNames),
+      overrides: minecraftOverridesSchema.optional()
+    })
+    .optional(),
+  pageBackground: z
     .object({
       url: httpsUrlSchema
     })
-    .optional()
-});
-
-// --- Main Theme Schema ---
-
-/**
- * Theme V3 Schema
- *
- * Color and background properties are individually optional.
- * When a CSS property is omitted, it won't be applied to the DOM,
- * allowing the CSS cascade (e.g., app.css light/dark defaults) to take effect.
- */
-export const themeV3Schema = z.object({
-  schema: z.literal(3),
-  light: z.boolean().default(false),
-  colors: colorsSchema.optional(),
-  backgrounds: backgroundsSchema.optional(),
-  minecraft: z.object({
-    palette: z.enum(["nice-dark", "nice-light", "true-colors", "april-fools-2024"]).default("nice-dark"),
-    overrides: z
-      .record(z.string(), oklchColorSchema)
-      .refine((data) => Object.keys(data).every((key) => /^[0-9a-f]$/.test(key)), {
-        message: "Override keys must be single hex characters (0-9, a-f)"
-      })
-      .optional()
-  }),
-  enchantedGlint: httpsUrlSchema.optional(),
-  metadata: z.object({
-    id: z.string().min(1, "Theme ID is required"),
-    name: z.string().min(1, "Theme name is required"),
-    author: z.string().min(1, "Author is required"),
-    createdAt: z.number().int().positive(),
-    updatedAt: z.number().int().positive(),
-    version: z.number().int().positive().default(1)
-  })
-});
-
-/**
- * Partial theme schema for URL sharing / user overrides.
- * ALL fields are optional including metadata.
- */
-export const partialThemeV3Schema = z.object({
-  schema: z.literal(3).optional(),
-  light: z.boolean().optional(),
-  colors: colorsSchema.optional(),
-  backgrounds: backgroundsSchema.optional(),
-  minecraft: z
-    .object({
-      palette: z.enum(["nice-dark", "nice-light", "true-colors", "april-fools-2024"]).optional(),
-      overrides: z
-        .record(z.string(), oklchColorSchema)
-        .refine((data) => Object.keys(data).every((key) => /^[0-9a-f]$/.test(key)), {
-          message: "Override keys must be single hex characters (0-9, a-f)"
-        })
-        .optional()
-    })
     .optional(),
-  enchantedGlint: httpsUrlSchema.optional(),
-  metadata: z
-    .object({
-      id: z.string().min(1).optional(),
-      name: z.string().min(1).optional(),
-      author: z.string().min(1).optional(),
-      createdAt: z.number().int().positive().optional(),
-      updatedAt: z.number().int().positive().optional(),
-      version: z.number().int().positive().optional()
-    })
-    .optional()
+  enchantedGlint: httpsUrlSchema.optional()
 });
 
-export type ThemeV3 = z.infer<typeof themeV3Schema>;
+const metadataSchema = z.object({
+  id: themeIdSchema,
+  name: z.string().min(1, "Theme name is required"),
+  author: z.string().min(1, "Author is required"),
+  createdAt: z.number().int().positive(),
+  updatedAt: z.number().int().positive(),
+  version: z.number().int().positive().default(1)
+});
 
-export type PartialThemeV3 = z.infer<typeof partialThemeV3Schema>;
+export const themeModeNameSchema = z.enum(["dark", "light"]);
 
-/**
- * Theme colors type — all properties optional.
- * When a property is undefined, the CSS cascade provides the value.
- */
-export type ThemeColors = z.infer<typeof colorsSchema>;
+export const legacyThemeV4Schema = z
+  .object({
+    schema: z.literal(4),
+    mode: themeModeNameSchema,
+    cssVars: shadcnThemeVarsSchema.default({}),
+    extras: skyCryptThemeExtrasSchema.optional(),
+    metadata: metadataSchema
+  })
+  .strict();
 
-/**
- * Convenience type: a color key name
- */
-export type ThemeColorKey = keyof ThemeColors;
+export const partialThemeV4Schema = z
+  .object({
+    schema: z.literal(4).optional(),
+    mode: themeModeNameSchema.optional(),
+    cssVars: shadcnThemeVarsSchema.optional(),
+    extras: skyCryptThemeExtrasSchema.optional(),
+    metadata: metadataSchema.partial().optional()
+  })
+  .strict();
 
-export type ThemeBackground = z.infer<typeof backgroundSchema>;
+export const themeModeDefinitionSchema = z
+  .object({
+    cssVars: shadcnThemeVarsSchema.default({}),
+    extras: skyCryptThemeExtrasSchema.optional()
+  })
+  .strict();
 
-export type ColorBackground = z.infer<typeof colorBackgroundSchema>;
+export const themeV5Schema = z
+  .object({
+    schema: z.literal(5),
+    modes: z
+      .object({
+        dark: themeModeDefinitionSchema,
+        light: themeModeDefinitionSchema
+      })
+      .strict(),
+    metadata: metadataSchema
+  })
+  .strict();
 
-export type StripesBackground = z.infer<typeof stripesBackgroundSchema>;
+const partialThemeModeDefinitionSchema = z
+  .object({
+    cssVars: shadcnThemeVarsSchema.optional(),
+    extras: skyCryptThemeExtrasSchema.optional()
+  })
+  .strict();
+
+export const partialThemeV5Schema = z
+  .object({
+    schema: z.literal(5).optional(),
+    modes: z
+      .object({
+        dark: partialThemeModeDefinitionSchema.optional(),
+        light: partialThemeModeDefinitionSchema.optional()
+      })
+      .strict()
+      .optional(),
+    metadata: metadataSchema.partial().optional()
+  })
+  .strict();
+
+export function migrateThemeV4ToV5(theme: ThemeV4): ThemeV5 {
+  return {
+    schema: 5,
+    modes: {
+      dark: {
+        cssVars: theme.mode === "dark" ? { ...theme.cssVars } : {},
+        extras: theme.mode === "dark" ? theme.extras : undefined
+      },
+      light: {
+        cssVars: theme.mode === "light" ? { ...theme.cssVars } : {},
+        extras: theme.mode === "light" ? theme.extras : undefined
+      }
+    },
+    metadata: {
+      ...theme.metadata
+    }
+  };
+}
+
+export function migratePartialThemeV4ToV5(theme: PartialThemeV4): PartialThemeV5 {
+  const mode = theme.mode ?? "dark";
+
+  return {
+    schema: 5,
+    modes: {
+      dark: mode === "dark" ? { cssVars: theme.cssVars, extras: theme.extras } : undefined,
+      light: mode === "light" ? { cssVars: theme.cssVars, extras: theme.extras } : undefined
+    },
+    metadata: theme.metadata
+  };
+}
+
+export type ThemeModeName = z.infer<typeof themeModeNameSchema>;
+export type ThemeModeDefinition = z.infer<typeof themeModeDefinitionSchema>;
+export type ThemeV4 = z.infer<typeof legacyThemeV4Schema>;
+export type PartialThemeV4 = z.infer<typeof partialThemeV4Schema>;
+export type ThemeV5 = z.infer<typeof themeV5Schema>;
+export type PartialThemeV5 = z.infer<typeof partialThemeV5Schema>;
+export type ShadcnThemeVars = z.infer<typeof shadcnThemeVarsSchema>;
+export type ShadcnThemeVarKey = keyof ShadcnThemeVars;
+export type SkyCryptThemeExtras = z.infer<typeof skyCryptThemeExtrasSchema>;

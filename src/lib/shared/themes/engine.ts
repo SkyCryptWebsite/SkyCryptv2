@@ -1,34 +1,38 @@
+import { setTheme } from "mode-watcher";
+import { SHADCN_CSS_VAR_MAP } from "./css-vars";
 import { DEFAULT_THEME } from "./defaults";
 import { getPaletteColors } from "./presets";
-import type { PartialThemeV3, ThemeBackground, ThemeColorKey, ThemeV3 } from "./schema";
+import { themeV5Schema } from "./schema";
+import type { PartialThemeV5, ShadcnThemeVarKey, ThemeModeDefinition, ThemeModeName, ThemeV5 } from "./schema";
 
-const COLOR_CSS_MAP: Record<ThemeColorKey, string> = {
-  icon: "--icon",
-  link: "--link",
-  hover: "--hover",
-  maxed: "--maxed",
-  gold: "--gold",
-  logo: "--logo",
-  text: "--text",
-  background: "--background",
-  header: "--header",
-  greyBackground: "--grey_background",
-  loreBackground: "--lore_background",
-  bg: "--bg",
-  mctooltipBg: "--mctooltip-bg"
-};
+export const RUNTIME_THEMES_STYLE_ID = "skycrypt-runtime-themes";
+export const PREVIEW_THEME_ID = "__skycrypt-preview";
 
-export function mergeThemeWithDefaults(partial: PartialThemeV3): ThemeV3 {
+const FIRST_PARTY_IMAGE_HOSTS = new Set(["sky.shiiyu.moe", "cupcake.shiiyu.moe"]);
+const LOCAL_FIRST_PARTY_IMAGE_PATHS = new Set([
+  "/img/bg.avif",
+  "/img/enchanted-glint.avif",
+  "/img/enchanted-glint-legacy.avif"
+]);
+const REMOVED_FIRST_PARTY_THEME_IMAGE_PREFIX = "/img/themes/";
+const runtimeThemeRules = new Map<string, string>();
+let previewThemeRule: string | null = null;
+type PartialThemeModeDefinition = NonNullable<NonNullable<PartialThemeV5["modes"]>[ThemeModeName]>;
+
+function mergeModeWithDefaults(partial: PartialThemeModeDefinition | undefined): ThemeModeDefinition {
   return {
-    schema: 3,
-    light: partial.light ?? DEFAULT_THEME.light,
-    colors: partial.colors,
-    backgrounds: partial.backgrounds,
-    minecraft: {
-      palette: partial.minecraft?.palette ?? DEFAULT_THEME.minecraft.palette,
-      overrides: partial.minecraft?.overrides ?? DEFAULT_THEME.minecraft.overrides
+    cssVars: partial?.cssVars ?? {},
+    extras: partial?.extras
+  };
+}
+
+export function mergeThemeWithDefaults(partial: PartialThemeV5): ThemeV5 {
+  return {
+    schema: 5,
+    modes: {
+      dark: mergeModeWithDefaults(partial.modes?.dark),
+      light: mergeModeWithDefaults(partial.modes?.light)
     },
-    enchantedGlint: partial.enchantedGlint,
     metadata: {
       ...DEFAULT_THEME.metadata,
       ...partial.metadata
@@ -36,63 +40,157 @@ export function mergeThemeWithDefaults(partial: PartialThemeV3): ThemeV3 {
   };
 }
 
-function applyBackgroundVar(root: HTMLElement, cssVar: string, bg: ThemeBackground | undefined): void {
-  if (!bg) {
-    root.style.removeProperty(cssVar);
-    return;
+function themeImageUrl(url: string): string {
+  const targetUrl = new URL(url);
+
+  if (FIRST_PARTY_IMAGE_HOSTS.has(targetUrl.hostname)) {
+    const path = `${targetUrl.pathname}${targetUrl.search}${targetUrl.hash}`;
+
+    if (LOCAL_FIRST_PARTY_IMAGE_PATHS.has(targetUrl.pathname)) {
+      return `url(${path})`;
+    }
+
+    if (targetUrl.pathname.startsWith(REMOVED_FIRST_PARTY_THEME_IMAGE_PREFIX)) {
+      return "url(/img/bg.avif)";
+    }
+
+    return `url(${targetUrl.href})`;
   }
 
-  if (bg.type === "color") {
-    root.style.setProperty(cssVar, bg.color);
-  } else {
-    const { angle, colors, width } = bg;
-    root.style.setProperty(cssVar, `repeating-linear-gradient(${angle}, ${colors[0]} 0px, ${colors[0]} ${width}px, ${colors[1]} ${width}px, ${colors[1]} ${width * 2}px)`);
+  return `url(/api/image-proxy?url=${encodeURIComponent(url)})`;
+}
+
+function cssEscape(value: string): string {
+  if (typeof CSS !== "undefined" && typeof CSS.escape === "function") {
+    return CSS.escape(value);
+  }
+
+  return value.replace(/[^a-zA-Z0-9_-]/g, (char) => `\\${char}`);
+}
+
+function getRuntimeStyleElement(): HTMLStyleElement | null {
+  if (typeof document === "undefined") return null;
+
+  const existing = document.getElementById(RUNTIME_THEMES_STYLE_ID);
+  if (existing instanceof HTMLStyleElement) return existing;
+
+  const style = document.createElement("style");
+  style.id = RUNTIME_THEMES_STYLE_ID;
+  document.head.append(style);
+  return style;
+}
+
+function updateRuntimeStyleElement(): void {
+  const style = getRuntimeStyleElement();
+  if (!style) return;
+
+  const rules = [...runtimeThemeRules.entries()]
+    .sort(([left], [right]) => left.localeCompare(right))
+    .map(([, rule]) => rule);
+
+  if (previewThemeRule) {
+    rules.push(previewThemeRule);
+  }
+
+  style.textContent = rules.join("\n\n");
+}
+
+function addDeclaration(declarations: string[], cssVar: string, value: string | undefined): void {
+  if (value) {
+    declarations.push(`  ${cssVar}: ${value};`);
   }
 }
 
+function modeToCssRule(themeId: string, modeName: ThemeModeName, modeDefinition: ThemeModeDefinition): string {
+  const declarations: string[] = [];
+
+  for (const [key, cssVar] of Object.entries(SHADCN_CSS_VAR_MAP)) {
+    addDeclaration(declarations, cssVar, modeDefinition.cssVars[key as ShadcnThemeVarKey]);
+  }
+
+  const minecraft = modeDefinition.extras?.minecraft;
+  if (minecraft) {
+    const colors = getPaletteColors(minecraft.palette, minecraft.overrides);
+    for (const [code, color] of Object.entries(colors)) {
+      declarations.push(`  --${code}: ${color};`);
+    }
+  }
+
+  if (modeDefinition.extras?.pageBackground?.url) {
+    declarations.push(`  --bg-url: ${themeImageUrl(modeDefinition.extras.pageBackground.url)};`);
+  }
+
+  if (modeDefinition.extras?.enchantedGlint) {
+    declarations.push(`  --enchanted-glint: ${themeImageUrl(modeDefinition.extras.enchantedGlint)};`);
+  }
+
+  return [`:root[data-theme="${cssEscape(themeId)}"].${modeName} {`, ...declarations, "}"].join("\n");
+}
+
 export class ThemeEngine {
-  static applyTheme(theme: ThemeV3): void {
+  static syncRuntimeThemes(themes: ThemeV5[]): void {
     if (typeof document === "undefined") return;
-    const root = document.documentElement;
 
-    root.dataset.theme = theme.metadata.id;
-    root.dataset.mode = theme.light ? "light" : "dark";
-
-    if (theme.light) {
-      root.classList.remove("dark");
-      root.classList.add("light");
-    } else {
-      root.classList.remove("light");
-      root.classList.add("dark");
+    runtimeThemeRules.clear();
+    for (const theme of themes) {
+      if (theme.metadata.id === DEFAULT_THEME.metadata.id) continue;
+      runtimeThemeRules.set(theme.metadata.id, ThemeEngine.themeToCssRule(theme));
     }
 
-    for (const [key, cssVar] of Object.entries(COLOR_CSS_MAP)) {
-      const value = theme.colors?.[key as ThemeColorKey];
-      if (value) {
-        root.style.setProperty(cssVar, value);
-      } else {
-        root.style.removeProperty(cssVar);
-      }
+    updateRuntimeStyleElement();
+  }
+
+  static upsertRuntimeTheme(theme: ThemeV5): void {
+    if (typeof document === "undefined") return;
+    if (theme.metadata.id === DEFAULT_THEME.metadata.id) return;
+
+    runtimeThemeRules.set(theme.metadata.id, ThemeEngine.themeToCssRule(theme));
+    updateRuntimeStyleElement();
+  }
+
+  static removeRuntimeTheme(id: string): void {
+    if (typeof document === "undefined") return;
+
+    runtimeThemeRules.delete(id);
+    updateRuntimeStyleElement();
+  }
+
+  static setActiveTheme(id: string): void {
+    setTheme(id);
+  }
+
+  static previewTheme(theme: ThemeV5): void {
+    if (typeof document === "undefined") return;
+
+    previewThemeRule = ThemeEngine.themeToCssRule(theme, PREVIEW_THEME_ID);
+    updateRuntimeStyleElement();
+  }
+
+  static activatePreviewTheme(): void {
+    if (typeof document === "undefined") return;
+
+    setTheme(PREVIEW_THEME_ID);
+  }
+
+  static clearPreview(): void {
+    if (typeof document === "undefined") return;
+
+    previewThemeRule = null;
+    updateRuntimeStyleElement();
+  }
+
+  static themeToCssRule(theme: ThemeV5, idOverride?: string): string {
+    const result = themeV5Schema.safeParse(theme);
+    if (!result.success) {
+      throw new Error(`Cannot generate CSS for invalid theme: ${result.error.issues[0]?.message ?? "invalid theme"}`);
     }
 
-    const mcColors = getPaletteColors(theme.minecraft.palette, theme.minecraft.overrides);
-    for (const [code, color] of Object.entries(mcColors)) {
-      root.style.setProperty(`--${code}`, color);
-    }
+    const resolvedTheme = mergeThemeWithDefaults(result.data);
+    const id = idOverride ?? resolvedTheme.metadata.id;
 
-    applyBackgroundVar(root, "--skillbar", theme.backgrounds?.skillbar);
-    applyBackgroundVar(root, "--maxedbar", theme.backgrounds?.maxedbar);
-
-    if (theme.backgrounds?.page?.url) {
-      root.style.setProperty("--bg-url", `url(/api/image-proxy?url=${encodeURIComponent(theme.backgrounds.page.url)})`);
-    } else {
-      root.style.setProperty("--bg-url", "none");
-    }
-
-    if (theme.enchantedGlint) {
-      root.style.setProperty("--enchanted-glint", `url(/api/image-proxy?url=${encodeURIComponent(theme.enchantedGlint)})`);
-    } else {
-      root.style.removeProperty("--enchanted-glint");
-    }
+    return [
+      modeToCssRule(id, "dark", resolvedTheme.modes.dark),
+      modeToCssRule(id, "light", resolvedTheme.modes.light)
+    ].join("\n\n");
   }
 }

@@ -1,9 +1,18 @@
 <script lang="ts">
   import { browser } from "$app/environment";
-  import { replaceState } from "$app/navigation";
-  import { resolve } from "$app/paths";
-  import { page } from "$app/state";
-  import { CombinedContext, getHoverContext, getInternalState, getPreferences, getProfileContext, getRecentSearches, ProfileContext, setCombinedContext, setProfileContext } from "$ctx";
+  import {
+    CombinedContext,
+    AllStatsContext,
+    getHoverContext,
+    getInternalState,
+    getPreferences,
+    getProfileContext,
+    getRecentSearches,
+    ProfileContext,
+    setAllStatsContext,
+    setCombinedContext,
+    setProfileContext
+  } from "$ctx";
   import { ContainedItemsGrid, ItemContent } from "$lib/components/item";
   import { Navbar } from "$lib/components/misc";
   import Skin3D from "$lib/components/misc/Skin3D.svelte";
@@ -12,18 +21,25 @@
   import Skills from "$lib/layouts/stats/Skills.svelte";
   import Stats from "$lib/layouts/stats/Stats.svelte";
   import Sections from "$lib/sections/Sections.svelte";
-  import type { ModelsStatsOutput } from "$lib/shared/api/orval-generated";
-  import { getCombined } from "$lib/shared/api/skycrypt-api.remote";
-  import { cn, flyAndScale } from "$lib/shared/utils";
+  import type { ModelsCombinedOutput, ModelsStatData, ModelsStatsOutput } from "$lib/shared/api/orval-generated";
+  import * as Dialog from "$ui/dialog";
+  import * as Drawer from "$ui/drawer";
   import Image from "@lucide/svelte/icons/image";
-  import { Avatar, Dialog } from "bits-ui";
+  import { Avatar } from "bits-ui";
   import { Pane } from "paneforge";
-  import { onDestroy, tick, untrack } from "svelte";
+  import { untrack } from "svelte";
   import { cubicOut } from "svelte/easing";
   import { fade } from "svelte/transition";
-  import { Drawer } from "vaul-svelte";
 
-  const { data: ctx }: { data: ModelsStatsOutput } = $props();
+  const {
+    data: ctx,
+    allStats,
+    combined
+  }: {
+    data: ModelsStatsOutput;
+    allStats: ModelsStatData[];
+    combined: ModelsCombinedOutput | null;
+  } = $props();
 
   const isHover = getHoverContext();
   const preferences = getPreferences();
@@ -41,45 +57,13 @@
   let _defaultLeftPanel = $derived(Math.ceil((300 / innerWidth) * 100));
   let _defaultRightPanel = $derived(Math.ceil((700 / innerWidth) * 100));
 
-  const abortController = new AbortController();
-
   // Initialize the profile context
   const profileClass = new ProfileContext();
+  const allStatsClass = new AllStatsContext();
   const combinedClass = new CombinedContext();
   setProfileContext(profileClass);
+  setAllStatsContext(allStatsClass);
   setCombinedContext(combinedClass);
-  const combined = $derived(ctx.uuid && ctx.profile_id ? await getCombined({ uuid: ctx.uuid, profileId: ctx.profile_id }) : null);
-
-  function rewriteURL() {
-    if (!(ctx as ModelsStatsOutput)) return;
-
-    const { username, profile_cute_name } = ctx;
-    if (!username) return;
-
-    const current = page.url.pathname;
-    const wanted = `/stats/${username}/${profile_cute_name || ""}`;
-
-    // Update the URL to match the username and cute name
-    if (current !== wanted) {
-      // Only proceed if not aborted
-      if (!abortController.signal.aborted) {
-        tick()
-          .then(() => {
-            if (!abortController.signal.aborted) {
-              replaceState(
-                resolve("/stats/[ign]/[[profile]]", {
-                  ign: username,
-                  profile: profile_cute_name || ""
-                }),
-                page.state
-              );
-            }
-          })
-          .catch(() => {});
-      }
-    }
-  }
-
   $effect.pre(() => {
     if (!ctx) return;
 
@@ -88,7 +72,9 @@
 
     untrack(() => {
       // Find existing search by username/IGN and update with UUID
-      const existingIndex = recentSearches.current.findIndex((search) => search.ign.toLowerCase() === username.toLowerCase());
+      const existingIndex = recentSearches.current.findIndex(
+        (search) => search.ign.toLowerCase() === username.toLowerCase()
+      );
 
       if (existingIndex !== -1) {
         // Update existing search with UUID and update IGN in case it changed casing
@@ -110,12 +96,8 @@
     combinedClass.current = combined ?? null;
   });
 
-  $effect(() => {
-    rewriteURL();
-  });
-
-  onDestroy(() => {
-    abortController.abort();
+  $effect.pre(() => {
+    allStatsClass.current = allStats ?? [];
   });
 </script>
 
@@ -152,7 +134,7 @@
                       <div transition:fade={{ duration: 300, easing: cubicOut }} {...props}>
                         <Avatar.Image loading="lazy" src="https://nmsr.nickac.dev/fullbody/{profile.uuid}?no=shadow" alt="{profile.username}'s avatar" class="max-h-[32rem] object-cover" />
                         <Avatar.Fallback>
-                          <Image class="size-24 object-cover text-text" />
+                          <Image class="size-24 object-cover text-foreground" />
                         </Avatar.Fallback>
                       </div>
                     {/snippet}
@@ -168,10 +150,10 @@
         </Pane>
 
         <PaneResizer class="fixed top-1/2 left-(--size) z-20 flex w-2 -translate-x-1 -translate-y-[calc(50%-1.5rem)] items-center justify-center rounded-xs opacity-30 transition-opacity duration-300 ease-out group-hover/pane:opacity-100" style="--size: {leftSize}%">
-          <div class="absolute h-[50dvh] w-2 rounded-xs bg-icon transition-[clip-path] duration-300 ease-out [clip-path:inset(50%_0_50%_0)] group-hover/pane:[clip-path:inset(0_0_0_0)]"></div>
+          <div class="absolute h-[50dvh] w-2 rounded-xs bg-primary transition-[clip-path] duration-300 ease-out [clip-path:inset(50%_0_50%_0)] group-hover/pane:[clip-path:inset(0_0_0_0)]"></div>
 
-          <div class="z-10 flex h-7 min-w-5 items-center justify-center rounded-sm bg-background-grey transition-colors duration-300 ease-out group-hover/pane:bg-icon">
-            <GripVertical class="size-4 text-text/80" />
+          <div class="z-10 flex h-7 min-w-5 items-center justify-center rounded-xl bg-muted transition-colors duration-300 ease-out group-hover/pane:bg-primary">
+            <GripVertical class="size-4 text-foreground/80" />
           </div>
         </PaneResizer>
       </div>
@@ -185,7 +167,7 @@
       onResize={(size) => {
         rightSize = size;
       }}>
-      <div class={cn("fixed top-0 right-0 h-dvh w-(--width)", preferences.performanceMode ? "bg-background-grey" : "backdrop-blur-lg group-data-[mode=dark]/html:backdrop-brightness-50 group-data-[mode=light]/html:backdrop-brightness-100")} style="--width: {skinCollapsed ? 100 : rightSize}%"></div>
+      <div class="fixed top-0 right-0 h-dvh w-(--width) glass dark:glass-brightness-50 light:glass-brightness-100" style="--width: {skinCollapsed ? 100 : rightSize}%"></div>
       <main data-vaul-drawer-wrapper class="@container relative mx-auto mt-12">
         <div class="space-y-5 p-4 @[75rem]/parent:p-8">
           <PlayerProfile />
@@ -206,9 +188,13 @@
       <Avatar.Root class="flex size-full items-center justify-center">
         {#snippet child({ props })}
           <div transition:fade={{ duration: 300, easing: cubicOut }} {...props}>
-            <Avatar.Image loading="lazy" src="https://nmsr.nickac.dev/fullbody/{profile.uuid}?no=shadow" alt="{profile.username}'s avatar" class="max-h-128 object-cover" />
+            <Avatar.Image
+              loading="lazy"
+              src="https://nmsr.nickac.dev/fullbody/{profile.uuid}?no=shadow"
+              alt="{profile.username}'s avatar"
+              class="max-h-128 object-cover" />
             <Avatar.Fallback>
-              <Image class="size-24 object-cover text-text" />
+              <Image class="size-24 object-cover text-foreground" />
             </Avatar.Fallback>
           </div>
         {/snippet}
@@ -218,8 +204,8 @@
     {/if}
   </div>
 
-  <div class={cn("fixed top-0 right-0 min-h-dvh w-full @[75rem]/parent:w-[calc(100%-30vw)]", preferences.performanceMode ? "bg-background-grey" : "backdrop-blur-lg group-data-[mode=dark]/html:backdrop-brightness-50 group-data-[mode=light]/html:backdrop-brightness-100")}></div>
-  <main data-vaul-drawer-wrapper class="@container relative mx-auto @[75rem]/parent:ml-[30vw]">
+  <div class="fixed top-12 right-0 min-h-dvh w-full @[75rem]/parent:w-[70%] dark:bg-background/50"></div>
+  <main data-vaul-drawer-wrapper class="@container relative mx-auto @[75rem]/parent:ml-[30%]">
     {#if getProfileContext().current}
       <div class="space-y-5 p-4 @[75rem]/parent:p-8">
         <PlayerProfile />
@@ -237,24 +223,11 @@
 
 {#if isHover.current}
   <Dialog.Root bind:open={internalState.showItem}>
-    <Dialog.Portal>
-      <Dialog.Overlay forceMount class="fixed inset-0 z-40 bg-black/80">
-        {#snippet child({ props, open })}
-          {#if open}
-            <div {...props} transition:fade={{ duration: 150, easing: cubicOut }}></div>
-          {/if}
-        {/snippet}
-      </Dialog.Overlay>
-      <Dialog.Content forceMount class="fixed top-[50%] left-[50%] z-50 flex max-h-[calc(96%-3rem)] max-w-[calc(100vw-2.5rem)] -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-lg bg-background-lore font-icomoon select-text">
-        {#snippet child({ props, open })}
-          {#if open}
-            <div {...props} transition:flyAndScale>
-              <ItemContent piece={internalState.itemContent!} />
-            </div>
-          {/if}
-        {/snippet}
-      </Dialog.Content>
-    </Dialog.Portal>
+    <Dialog.Content
+      class="flex max-h-[calc(96%-3rem)]! w-auto max-w-[calc(100vw-2.5rem)]! flex-col gap-0 overflow-hidden glass p-0 font-skyblock-icons select-text glass-bg-popover data-[mctooltip=true]:rounded-sm data-[mctooltip=true]:ring-0 *:data-[slot='dialog-close']:hidden standard:bg-transparent"
+      data-mctooltip={preferences.mctooltip}>
+      <ItemContent piece={internalState.itemContent!} />
+    </Dialog.Content>
   </Dialog.Root>
   <Dialog.Root
     bind:open={() => internalState.itemContentSpecial !== undefined, (open) => open}
@@ -263,35 +236,21 @@
         internalState.itemContentSpecial = undefined;
       }
     }}>
-    <Dialog.Portal>
-      <Dialog.Overlay forceMount class="fixed inset-0 z-40 bg-black/80">
-        {#snippet child({ props, open })}
-          {#if open}
-            <div {...props} transition:fade={{ duration: 150, easing: cubicOut }}></div>
-          {/if}
-        {/snippet}
-      </Dialog.Overlay>
-      <Dialog.Content forceMount class="fixed top-[50%] left-[50%] z-50 flex max-h-[calc(96%-3rem)] max-w-[calc(100vw-2.5rem)] -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-lg bg-background-lore font-icomoon select-text">
-        {#snippet child({ props, open })}
-          {#if open}
-            <div {...props} transition:flyAndScale>
-              {#if internalState.itemContentSpecial?.containsItems}
-                <ContainedItemsGrid items={internalState.itemContentSpecial.containsItems} onclose={() => (internalState.itemContentSpecial = undefined)} />
-              {/if}
-            </div>
-          {/if}
-        {/snippet}
-      </Dialog.Content>
-    </Dialog.Portal>
+    <Dialog.Content
+      class="flex max-h-[calc(96%-3rem)]! w-auto max-w-[calc(100vw-2.5rem)]! flex-col overflow-hidden glass p-0 font-skyblock-icons select-text glass-bg-popover *:data-[slot='dialog-close']:hidden standard:bg-transparent">
+      {#if internalState.itemContentSpecial?.containsItems}
+        <ContainedItemsGrid
+          items={internalState.itemContentSpecial.containsItems}
+          onclose={() => (internalState.itemContentSpecial = undefined)} />
+      {/if}
+    </Dialog.Content>
   </Dialog.Root>
 {:else}
   <Drawer.Root bind:open={internalState.showItem} shouldScaleBackground={true} setBackgroundColorOnScale={false}>
-    <Drawer.Portal>
-      <Drawer.Overlay class="fixed inset-0 z-40 bg-black/80" />
-      <Drawer.Content class="fixed right-0 bottom-0 left-0 z-50 flex max-h-[96%] flex-col rounded-t-[10px] bg-background-lore">
-        <ItemContent piece={internalState.itemContent!} isDrawer={true} />
-      </Drawer.Content>
-    </Drawer.Portal>
+    <Drawer.Content
+      class="p-2 before:glass before:p-0 before:glass-bg-popover standard:dark:before:bg-transparent [&>div:first-child]:hidden!">
+      <ItemContent piece={internalState.itemContent!} isDrawer={true} />
+    </Drawer.Content>
   </Drawer.Root>
   <Drawer.Root
     bind:open={() => internalState.itemContentSpecial !== undefined, (open) => open}
@@ -302,23 +261,22 @@
         internalState.itemContentSpecial = undefined;
       }
     }}>
-    <Drawer.Portal>
-      <Drawer.Overlay class="fixed inset-0 z-40 bg-black/80" />
-      <Drawer.Content class="fixed right-0 bottom-0 left-0 z-50 flex max-h-[96%] flex-col rounded-t-[10px] bg-background-lore">
-        {#if internalState.itemContentSpecial?.containsItems}
-          <ContainedItemsGrid items={internalState.itemContentSpecial.containsItems} onclose={() => (internalState.itemContentSpecial = undefined)} />
-        {/if}
-      </Drawer.Content>
-    </Drawer.Portal>
+    <Drawer.Content class="before:glass before:bg-transparent before:glass-bg-popover [&>div:first-child]:my-4">
+      {#if internalState.itemContentSpecial?.containsItems}
+        <ContainedItemsGrid
+          items={internalState.itemContentSpecial.containsItems}
+          onclose={() => (internalState.itemContentSpecial = undefined)} />
+      {/if}
+    </Drawer.Content>
   </Drawer.Root>
 {/if}
 
 {#if preferences.showGlint}
   <svg xmlns="http://www.w3.org/2000/svg" height="0" width="0" class="fixed">
     <filter id="enchanted-glint">
-      <feImage href="/img/enchanted-glint.avif"></feImage>
-      <feComposite in2="SourceGraphic" operator="in"></feComposite>
-      <feBlend in="SourceGraphic" mode="screen"></feBlend>
+      <feImage href="/img/enchanted-glint.gif" preserveAspectRatio="none" result="IMAGE"></feImage>
+      <feBlend in="IMAGE" in2="SourceGraphic" mode="screen" result="BLEND"></feBlend>
+      <feComposite operator="in" in="BLEND" in2="SourceGraphic"></feComposite>
     </filter>
   </svg>
 {/if}

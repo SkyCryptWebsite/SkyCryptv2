@@ -1,38 +1,53 @@
 <script lang="ts">
-  import { getCombinedContext, getProfileContext } from "$ctx";
-  import { ScrollItems } from "$lib/components/misc";
+  import { getCombinedContext } from "$ctx";
   import { Section } from "$lib/components/sections";
   import { AdditionStat, Bonus } from "$lib/components/stats";
-  import { calculatePercentage } from "$lib/shared/helper";
+  import EmptyStat from "$src/lib/components/EmptyStat.svelte";
+  import ScrollAreaItems from "$src/lib/components/ScrollAreaItems.svelte";
+  import { formatNumber } from "$src/lib/shared/helper";
+  import * as Avatar from "$ui/avatar";
+  import { Progress } from "$ui/progress";
   import Image from "@lucide/svelte/icons/image";
-  import { Avatar, Progress } from "bits-ui";
+  import SkullIcon from "@lucide/svelte/icons/skull";
   import { format } from "numerable";
 
   let { order }: { order: number } = $props();
-
-  const profile = $derived(getProfileContext().current);
 
   const slayer = $derived(getCombinedContext().current?.slayers);
 </script>
 
 <Section id="Slayer" {order}>
   {#if slayer}
-    <div class="space-y-4">
-      {#if slayer.totalSlayerExp === 0}
-        <p class="space-x-0.5 leading-6">{profile?.username} hasn't unlocked Slayers yet.</p>
-      {:else}
-        <div class="pt-4 pb-1.5">
+    {#if slayer.totalSlayerExp === 0}
+      <EmptyStat title="No Slayers" description="This player hasn't unlocked Slayers yet" icon={SkullIcon} />
+    {:else}
+      <div class="space-y-4 rounded-xl border p-4">
+        <div>
           <AdditionStat text="Total Slayer XP" data={format(slayer.totalSlayerExp)} />
+          {#if slayer.stats}
+            <Bonus title="Bonus:" stats={slayer.stats} />
+          {/if}
         </div>
+
         {#if slayer.data}
-          <ScrollItems>
+          <ScrollAreaItems>
             {#each Object.entries(slayer.data) as [key, value], index (index)}
+              {const isMaxed = value.level?.maxed ?? false}
+              {let isHovered = $state(false)}
               {#if value.level && value.level.xp != null && value.level.xp > 0}
-                <div class="relative flex min-w-[min(20.625rem,100vw)] flex-col items-center gap-1 space-y-5 overflow-hidden rounded-lg bg-background/30">
-                  <div class="flex w-full items-center justify-center gap-1.5 border-b-2 border-icon py-2 text-center font-semibold uppercase">
-                    <Avatar.Root>
-                      <Avatar.Image loading="lazy" src={value.texture} class="size-8 object-contain [image-rendering:pixelated]" />
-                      <Avatar.Fallback>
+                <div
+                  class="relative flex min-w-xs flex-col items-center gap-1 space-y-5 overflow-hidden rounded-xl border bg-background/50"
+                  onpointerenter={() => (isHovered = true)}
+                  onpointerleave={() => (isHovered = false)}
+                  role="none">
+                  <div
+                    class="flex w-full items-center justify-center gap-1.5 border-b-2 border-primary py-2 text-center font-semibold uppercase">
+                    <Avatar.Root class="rounded-none after:border-none">
+                      <Avatar.Image
+                        loading="lazy"
+                        src={value.texture}
+                        class="size-8 rounded-2xl object-contain [image-rendering:pixelated]" />
+                      <Avatar.Fallback class="rounded-none bg-transparent">
                         <Image class="size-8" />
                       </Avatar.Fallback>
                     </Avatar.Root>
@@ -41,7 +56,7 @@
                   {#if value.kills}
                     <div class="flex h-full w-full flex-wrap gap-5 px-5 uppercase">
                       {#each Object.entries(value.kills) as [key, killValue], index (index)}
-                        <div class="flex flex-col items-center gap-1 text-sm font-bold text-text/60">
+                        <div class="flex flex-col items-center gap-1 text-sm font-bold text-muted-foreground">
                           <span>
                             {#if !isNaN(Number(key))}
                               Tier {["I", "II", "III", "IV", "V"][Number(key) - 1]}
@@ -49,7 +64,7 @@
                               {key}
                             {/if}
                           </span>
-                          <span class="text-text">
+                          <span class="text-foreground">
                             {format(killValue)}
                           </span>
                         </div>
@@ -57,33 +72,42 @@
                     </div>
                   {/if}
                   <div class="w-full">
-                    <p class="mb-2 w-full space-y-5 px-5 text-center font-semibold text-text/60 capitalize">
+                    <p class="mb-2 w-full space-y-5 px-5 text-center font-semibold text-muted-foreground capitalize">
                       {key} Level {value.level.level}
                     </p>
 
-                    <Progress.Root value={value.level.xp} max={value.level.xpForNext} class="group h-4 w-full overflow-hidden bg-text/30" data-maxed={value.level.maxed}>
-                      <div class="absolute z-10 flex h-full w-full justify-center">
-                        <div class="text-xs font-semibold shadow-background/50 text-shadow-md">
-                          {#if value.level.maxed}
-                            {format(value.level.xp)}
-                          {:else}
-                            {format(value.level.xp)} / {format(value.level.xpForNext)}
+                    <div class="group relative" data-maxed={value.level.maxed}>
+                      <Progress
+                        value={value.level.xp}
+                        max={value.level.xpForNext}
+                        class="h-4 w-full overflow-hidden rounded-none bg-foreground/30 [&>div]:rounded-none [&>div]:group-data-[maxed=false]:bg-primary [&>div]:group-data-[maxed=true]:bg-accent-3" />
+                      <div
+                        class="absolute inset-0 z-10 flex w-full flex-nowrap items-center-safe justify-center-safe gap-0.5 text-xs">
+                        <span class="font-bold">
+                          {#if isHovered && !isMaxed}
+                            {format(value.level.xp, "0,0")} / {format(value.level.xpForNext)}
+                          {:else if !isMaxed}
+                            {formatNumber(value.level.xp ?? 0)} / {formatNumber(value.level.xpForNext ?? 0)}
                           {/if}
-                          XP
-                        </div>
+
+                          {#if isHovered && isMaxed}
+                            {format(value.level.xp, "0,0")}
+                          {:else if isMaxed}
+                            {formatNumber(value.level.xp ?? 0)}
+                          {/if}
+                        </span>
+                        XP
                       </div>
-                      <div class="h-full w-full flex-1 transition-all duration-300 ease-out group-data-[maxed=false]:[background:var(--skillbar)] group-data-[maxed=true]:[background:var(--maxedbar)]" style={`transform: translateX(-${100 - parseFloat(calculatePercentage(value.level.xp ?? 0, value.level.maxed ? (value.level.xp ?? 0) : (value.level.xpForNext ?? 0)))}%)`}></div>
-                    </Progress.Root>
+                    </div>
                   </div>
                 </div>
               {/if}
             {/each}
-          </ScrollItems>
+          </ScrollAreaItems>
         {/if}
-        {#if slayer.stats}
-          <Bonus title="Bonus:" stats={slayer.stats} />
-        {/if}
-      {/if}
-    </div>
+      </div>
+    {/if}
+  {:else}
+    <EmptyStat title="No Slayers" description="This player hasn't unlocked Slayers yet" icon={SkullIcon} />
   {/if}
 </Section>

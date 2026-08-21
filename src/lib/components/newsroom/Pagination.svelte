@@ -1,9 +1,9 @@
 <script lang="ts">
+  import { Button } from "$ui/button";
   import ChevronLeft from "@lucide/svelte/icons/chevron-left";
   import ChevronRight from "@lucide/svelte/icons/chevron-right";
   import ChevronsLeft from "@lucide/svelte/icons/chevrons-left";
   import ChevronsRight from "@lucide/svelte/icons/chevrons-right";
-  import { Button } from "bits-ui";
 
   interface Props {
     page: number;
@@ -21,26 +21,46 @@
 
   const atFirst = $derived(page <= 1);
   const atLast = $derived(page >= totalPages);
-
-  const btnClass = "flex size-9 items-center justify-center rounded-lg bg-background-grey text-text transition-all duration-150 ease-out hover:scale-105 hover:bg-background-lore aria-disabled:pointer-events-none aria-disabled:cursor-not-allowed aria-disabled:opacity-40 aria-disabled:hover:scale-100 aria-disabled:hover:bg-background-grey";
 </script>
 
 {#if totalPages > 1}
   <nav aria-label="Pagination" class="flex items-center justify-end gap-1">
-    <span class="px-3 text-sm font-semibold text-text/80 tabular-nums">
-      Page <span class="font-bold text-text">{page}</span> of <span class="font-bold text-text">{totalPages}</span>
+    <span class="px-4 text-sm font-semibold text-muted-foreground tabular-nums">
+      Page <span class="font-bold text-foreground">{page}</span> of
+      <span class="font-bold text-foreground">{totalPages}</span>
     </span>
-    <Button.Root href={atFirst ? undefined : hrefFor(1)} aria-disabled={atFirst} aria-label="First page" data-sveltekit-preload-data="hover" class={btnClass}>
+
+    <Button
+      href={atFirst ? undefined : hrefFor(1)}
+      aria-disabled={atFirst}
+      aria-label="First page"
+      data-sveltekit-preload-data="hover"
+      variant="outline">
       <ChevronsLeft class="size-4" />
-    </Button.Root>
-    <Button.Root href={atFirst ? undefined : hrefFor(page - 1)} aria-disabled={atFirst} aria-label="Previous page" data-sveltekit-preload-data="hover" class={btnClass}>
+    </Button>
+    <Button
+      href={atFirst ? undefined : hrefFor(page - 1)}
+      aria-disabled={atFirst}
+      aria-label="Previous page"
+      data-sveltekit-preload-data="hover"
+      variant="outline">
       <ChevronLeft class="size-4" />
-    </Button.Root>
-    <Button.Root href={atLast ? undefined : hrefFor(page + 1)} aria-disabled={atLast} aria-label="Next page" data-sveltekit-preload-data="hover" class={btnClass}>
+    </Button>
+    <Button
+      href={atLast ? undefined : hrefFor(page + 1)}
+      aria-disabled={atLast}
+      aria-label="Next page"
+      data-sveltekit-preload-data="hover"
+      variant="outline">
       <ChevronRight class="size-4" />
-    </Button.Root>
-    <Button.Root href={atLast ? undefined : hrefFor(totalPages)} aria-disabled={atLast} aria-label="Last page" data-sveltekit-preload-data="hover" class={btnClass}>
+    </Button>
+    <Button
+      href={atLast ? undefined : hrefFor(totalPages)}
+      aria-disabled={atLast}
+      aria-label="Last page"
+      data-sveltekit-preload-data="hover"
+      variant="outline">
       <ChevronsRight class="size-4" />
-    </Button.Root>
+    </Button>
   </nav>
 {/if}

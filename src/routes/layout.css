@@ -1,0 +1,708 @@
+@import "tailwindcss";
+@import "./typeset.css";
+@import "tw-animate-css";
+@import "shadcn-svelte/tailwind.css";
+@import "@fontsource-variable/montserrat";
+@import "@fontsource-variable/geist-mono";
+@import "@fontsource/unifontex";
+@source "app.html";
+@source inline("{group-data-[rainbow=false]/html:,}{text-,bg-}minecraft-{0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f}{,!}");
+@custom-variant dark (&:is(.dark *));
+@custom-variant light (&:is(.light *));
+@custom-variant performance (&:where([data-performance="true"], [data-performance="true"] *));
+@custom-variant standard (&:where([data-performance="false"], [data-performance="false"] *));
+@custom-variant interact (&:is(:hover, :focus-visible));
+
+@plugin "tailwindcss-motion";
+
+.typeset-article {
+  --typeset-font-body: var(--font-montserrat);
+  --typeset-font-heading: var(--font-montserrat);
+  --typeset-font-mono: var(--font-geist-mono);
+  --typeset-size: 16px;
+  --typeset-leading: 1.6;
+  --typeset-flow: 1.25em;
+}
+
+@theme {
+  /* Colors */
+  --color-background: var(--background);
+  --color-mctooltip-bg: var(--mctooltip-bg);
+
+  /* Text Shadow */
+  --text-shadow-sm: 0 0px 2px var(--tw-shadow-color);
+  --text-shadow-md: 0 0px 4px var(--tw-shadow-color);
+  --text-shadow-lg: 0 0px 8px var(--tw-shadow-color);
+  --tw-shadow-color: --alpha(var(--color-background) / 50%);
+
+  /* Animations */
+  --animate-spin-slow: spin 3s linear infinite;
+  --animate-chroma: chroma-bg 40000s linear infinite;
+
+  @keyframes chroma-bg {
+    from {
+      background-position-x: 0;
+    }
+
+    to {
+      background-position-x: 999999px;
+    }
+  }
+
+  /* Fonts */
+  --font-sans:
+    "Montserrat Variable", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol", "Noto Color Emoji";
+  --font-skyblock-icons: "Hypixel SkyBlock Glyphs", "SkyBlockIcons", var(--font-sans);
+  --font-unifontex: "UnifontEX", var(--font-sans);
+  --font-minecraft: "Hypixel SkyBlock Glyphs", "Minecraft", var(--font-unifontex), var(--font-sans);
+  --font-heading: var(--font-sans);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-accent-2: var(--accent-2);
+  --color-accent-3: var(--accent-3);
+  --color-accent-4: var(--accent-4);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+@theme inline {
+  --color-minecraft-0: var(--§0);
+  --color-minecraft-1: var(--§1);
+  --color-minecraft-2: var(--§2);
+  --color-minecraft-3: var(--§3);
+  --color-minecraft-4: var(--§4);
+  --color-minecraft-5: var(--§5);
+  --color-minecraft-6: var(--§6);
+  --color-minecraft-7: var(--§7);
+  --color-minecraft-8: var(--§8);
+  --color-minecraft-9: var(--§9);
+  --color-minecraft-a: var(--§a);
+  --color-minecraft-b: var(--§b);
+  --color-minecraft-c: var(--§c);
+  --color-minecraft-d: var(--§d);
+  --color-minecraft-e: var(--§e);
+  --color-minecraft-f: var(--§f);
+}
+
+@layer base {
+  @font-face {
+    font-family: "Hypixel SkyBlock Glyphs";
+    font-style: normal;
+    font-display: swap;
+    src: url("/fonts/hypixel-glyphs/hypixel-glyphs.ttf") format("truetype");
+  }
+
+  @font-face {
+    font-family: "SkyBlockIcons";
+    font-style: normal;
+    font-display: block;
+    font-weight: 400;
+    src:
+      url("@fontsource/unifontex/files/unifontex-latin-400-normal.woff2") format("woff2"),
+      url("@fontsource/unifontex/files/unifontex-latin-400-normal.woff") format("woff");
+    unicode-range:
+      /* Greek and Coptic, e.g. α */
+      U+0370-03FF,
+      /* Malayalam, e.g. ൠ */ U+0D00-0D7F,
+      /* Thai, e.g. ๑ */ U+0E00-0E7F,
+      /* Mongolian, e.g. ᠅ */ U+1800-18AF,
+      /* Letterlike and enclosed symbols, e.g. Ⓟ and Ⓢ */ U+2100-24FF,
+      /* Box drawing, symbols, dingbats, arrows, operators, e.g. ❤, ☘, ⚔, ➊ */ U+2500-2BFF,
+      /* Supplemental punctuation, e.g. ⸕ and ⸎ */ U+2E00-2E7F,
+      /* Text presentation selector for emoji-capable symbols */ U+FE0E;
+  }
+
+  @font-face {
+    font-family: "Minecraft";
+    src: url("/fonts/minecraft/MinecraftSevenv2-Regular.woff2") format("woff2");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  :root {
+    --font-montserrat: "Montserrat Variable", sans-serif;
+    --font-geist-mono: "Geist Mono Variable", monospace;
+    --bg-url: url(/img/bg-light.avif);
+    --mctooltip-bg: oklch(12.142% 0.05582 328.352 / 0.93);
+
+    /* Minecraft color codes (nice-light palette) */
+    --§0: oklch(0.54 0 0);
+    --§1: oklch(0.5 0.28 269.85);
+    --§2: oklch(0.66 0.23 142.5);
+    --§3: oklch(0.71 0.12 185.91);
+    --§4: oklch(0.5 0.19 27.28);
+    --§5: oklch(0.66 0.3 328.31);
+    --§6: oklch(0.8 0.17 73.27);
+    --§7: oklch(0.78 0 0);
+    --§8: oklch(0.68 0 0);
+    --§9: oklch(0.66 0.16 273.97);
+    --§a: oklch(0.79 0.2 143.36);
+    --§b: oklch(0.81 0.11 211.69);
+    --§c: oklch(0.68 0.2 24.09);
+    --§d: oklch(0.74 0.23 336.42);
+    --§e: oklch(0.94 0.16 109.12);
+    --§f: oklch(1 0 0);
+
+    color-scheme: light;
+
+    --background: oklch(1 0 0);
+    --foreground: oklch(0.145 0 0);
+    --card: oklch(1 0 0);
+    --card-foreground: oklch(0.145 0 0);
+    --popover: oklch(1 0 0);
+    --popover-foreground: oklch(0.145 0 0);
+    --primary: var(--chart-3);
+    --primary-foreground: oklch(0.982 0.018 155.826);
+    --secondary: oklch(0.967 0.001 286.375);
+    --secondary-foreground: oklch(0.21 0.006 285.885);
+    --muted: oklch(0.97 0 0);
+    --muted-foreground: oklch(0.4 0 0);
+    --accent: oklch(0.527 0.154 150.069);
+    --accent-foreground: oklch(0.982 0.018 155.826);
+    --accent-2: oklch(72.84% 0.1506 75.86);
+    --accent-3: oklch(69.69% 0.1423 76.74);
+    --accent-4: oklch(82.84% 0.1548 78.27);
+    --destructive: oklch(0.577 0.245 27.325);
+    --border: oklch(0 0 0 / 10%);
+    --input: oklch(0.922 0 0);
+    --ring: oklch(0.708 0 0);
+    --chart-1: oklch(0.871 0.15 154.449);
+    --chart-2: oklch(0.723 0.219 149.579);
+    --chart-3: oklch(0.627 0.194 149.214);
+    --chart-4: oklch(0.527 0.154 150.069);
+    --chart-5: oklch(0.448 0.119 151.328);
+    --radius: 0.625rem;
+    --sidebar: oklch(0.985 0 0);
+    --sidebar-foreground: oklch(0.145 0 0);
+    --sidebar-primary: oklch(0.627 0.194 149.214);
+    --sidebar-primary-foreground: oklch(0.982 0.018 155.826);
+    --sidebar-accent: oklch(0.97 0 0);
+    --sidebar-accent-foreground: oklch(0.205 0 0);
+    --sidebar-border: oklch(0.922 0 0);
+    --sidebar-ring: oklch(0.708 0 0);
+  }
+
+  .dark {
+    color-scheme: dark;
+    --bg-url: url(/img/bg.avif);
+
+    --background: oklch(0.145 0 0);
+    --foreground: oklch(0.985 0 0);
+    --card: oklch(0.205 0 0);
+    --card-foreground: oklch(0.985 0 0);
+    --popover: oklch(0.205 0 0);
+    --popover-foreground: oklch(0.985 0 0);
+    --primary: var(--chart-3);
+    --primary-foreground: oklch(0.982 0.018 155.826);
+    --secondary: oklch(0.274 0.006 286.033);
+    --secondary-foreground: oklch(0.985 0 0);
+    --muted: oklch(0.269 0 0);
+    --muted-foreground: oklch(0.708 0 0);
+    --accent: oklch(0.448 0.119 151.328);
+    --accent-foreground: oklch(0.982 0.018 155.826);
+    --accent-2: oklch(72.84% 0.1506 75.86);
+    --accent-3: oklch(69.69% 0.1423 76.74);
+    --accent-4: oklch(82.84% 0.1548 78.27);
+    --destructive: oklch(0.704 0.191 22.216);
+    --border: oklch(1 0 0 / 10%);
+    --input: oklch(1 0 0 / 15%);
+    --ring: oklch(0.556 0 0);
+    --chart-1: oklch(0.871 0.15 154.449);
+    --chart-2: oklch(0.723 0.219 149.579);
+    --chart-3: oklch(0.627 0.194 149.214);
+    --chart-4: oklch(0.527 0.154 150.069);
+    --chart-5: oklch(0.448 0.119 151.328);
+    --sidebar: oklch(0.205 0 0);
+    --sidebar-foreground: oklch(0.985 0 0);
+    --sidebar-primary: oklch(0.723 0.219 149.579);
+    --sidebar-primary-foreground: oklch(0.982 0.018 155.826);
+    --sidebar-accent: oklch(0.269 0 0);
+    --sidebar-accent-foreground: oklch(0.985 0 0);
+    --sidebar-border: oklch(1 0 0 / 10%);
+    --sidebar-ring: oklch(0.556 0 0);
+  }
+
+  *:focus-visible {
+    outline: var(--primary) auto 1px;
+  }
+
+  *::selection {
+    background-color: var(--primary);
+    color: var(--foreground);
+    text-shadow: var(--text-shadow-lg);
+  }
+
+  *::target-text {
+    background-color: var(--primary);
+    color: var(--foreground);
+    text-shadow: var(--text-shadow-md);
+  }
+
+  ::view-transition-group(root) {
+    animation-duration: 0.7s;
+    animation-timing-function: ease-out;
+  }
+
+  ::view-transition-new(root) {
+    animation-name: reveal;
+    animation-fill-mode: both;
+  }
+
+  ::view-transition-old(root) {
+    animation: none;
+    animation-fill-mode: both;
+    z-index: -1;
+  }
+
+  @keyframes reveal {
+    from {
+      clip-path: polygon(50% -71%, -50% 71%, -50% 71%, 50% -71%);
+    }
+    to {
+      clip-path: polygon(50% -71%, -50% 71%, 50% 171%, 171% 50%);
+    }
+  }
+
+  @keyframes scroll-fade-out {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  html {
+    @apply scrollbar-gutter-stable font-sans;
+  }
+
+  [data-slot="scroll-area-thumb"] {
+    @apply bg-primary! group-data-[orientation=horizontal]/scroll:px-2 group-data-[orientation=vertical]/scroll:py-2;
+  }
+
+  [data-slot="collapsible-content"] {
+    @apply overflow-clip duration-150 ease-out data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down;
+  }
+
+  [data-slot="dialog-overlay"] {
+    @apply bg-black/50! supports-backdrop-filter:backdrop-blur-none!;
+  }
+
+  .\@container-scroll {
+    container-type: scroll-state;
+  }
+}
+
+@layer components {
+  .virtual-list-wrapper {
+    @apply overflow-x-hidden overflow-y-auto;
+  }
+
+  .virtual-list-inner {
+    @apply overflow-x-auto overflow-y-clip;
+  }
+
+  .lore-enchantment {
+    @apply group-data-[rainbow=false]/html:text-minecraft-6! group-data-[rainbow=true]/html:chroma-gradient;
+  }
+
+  [data-tooltip-content] {
+    @apply text-sm text-pretty;
+  }
+
+  [data-arrow] {
+    @apply text-muted;
+  }
+
+  ::-webkit-color-swatch-wrapper {
+    padding: 0;
+  }
+
+  ::-webkit-color-swatch {
+    border: none;
+  }
+}
+
+@utility nice-colors-dark {
+  /* these colors look nice and have significant contrast with white */
+  --§0: oklch(0 0 0);
+  --§1: oklch(0.32 0.14 264.6);
+  --§2: oklch(0.64 0.22 142.5);
+  --§3: oklch(0.58 0.1 194.78);
+  --§4: oklch(0.42 0.17 28.49);
+  --§5: oklch(0.5 0.23 328.34);
+  --§6: oklch(0.71 0.15 72.75);
+  --§7: oklch(0.5 0 0);
+  --§8: oklch(0.31 0 0);
+  --§9: oklch(0.51 0.25 273.16);
+  --§a: oklch(0.7 0.2 143.13);
+  --§b: oklch(0.69 0.11 211.66);
+  --§c: oklch(0.56 0.17 24.75);
+  --§d: oklch(0.7 0.19 338.3);
+  --§e: oklch(0.84 0.17 93.53);
+  --§f: oklch(0.66 0 0);
+}
+
+@utility glass {
+  --glass-bg: transparent;
+  --glass-performance-bg: var(--muted);
+  --glass-brightness: 50%;
+  --glass-contrast: 100%;
+  --glass-mode-bg: var(--glass-bg);
+  --glass-mode-backdrop-filter: blur(var(--blur-lg)) brightness(var(--glass-brightness)) contrast(var(--glass-contrast));
+
+  background-color: var(--glass-mode-bg);
+  -webkit-backdrop-filter: var(--glass-mode-backdrop-filter);
+  backdrop-filter: var(--glass-mode-backdrop-filter);
+
+  &:is(.light *) {
+    background-color: var(--glass-performance-bg) !important;
+    --glass-mode-backdrop-filter: none;
+  }
+}
+
+@utility glass-bg-* {
+  --glass-performance-bg: --value(--color-*, [color]);
+  --glass-performance-bg: --alpha(--value(--color-*, [color]) / calc(--modifier(integer) * 1%));
+  --glass-performance-bg: --alpha(--value(--color-*, [color]) / --modifier([percentage]));
+}
+
+@utility glass-standard-bg-* {
+  --glass-bg: --value(--color-*, [color]);
+  --glass-bg: --alpha(--value(--color-*, [color]) / calc(--modifier(integer) * 1%));
+  --glass-bg: --alpha(--value(--color-*, [color]) / --modifier([percentage]));
+}
+
+@utility glass-brightness-* {
+  --glass-brightness: calc(--value(integer) * 1%);
+  --glass-brightness: --value([percentage]);
+}
+
+@utility glass-contrast-* {
+  --glass-contrast: calc(--value(integer) * 1%);
+  --glass-contrast: --value([percentage]);
+}
+
+:root[data-performance="true"] *,
+:root[data-performance="true"] *::before,
+:root[data-performance="true"] *::after {
+  --glass-mode-bg: var(--glass-performance-bg);
+  --glass-mode-backdrop-filter: none;
+}
+
+@utility enchanted {
+  filter: url(#enchanted-glint);
+}
+
+@utility enchanted-item {
+  filter: url(#enchanted-glint) drop-shadow(2px 2px 2px oklch(0 0 0 / 0.4));
+}
+
+@utility true-colors {
+  /* Minecraft color codes */
+  --§0: oklch(0 0 0);
+  --§1: oklch(0.33 0.23 264.05);
+  --§2: oklch(0.64 0.22 142.5);
+  --§3: oklch(0.67 0.11 194.77);
+  --§4: oklch(0.46 0.19 29.23);
+  --§5: oklch(0.52 0.24 328.36);
+  --§6: oklch(0.8 0.17 73.27);
+  --§7: oklch(0.74 0 0);
+  --§8: oklch(0.45 0 0);
+  --§9: oklch(0.56 0.24 275.12);
+  --§a: oklch(0.88 0.25 143.06);
+  --§b: oklch(0.91 0.14 195.03);
+  --§c: oklch(0.68 0.21 24.43);
+  --§d: oklch(0.74 0.27 327.9);
+  --§e: oklch(0.97 0.18 109.38);
+  --§f: oklch(1 0 0);
+}
+
+@utility april-fools-2024 {
+  --§0: oklch(0.65 0.26 356.94);
+  --§1: oklch(0.66 0.23 35.4);
+  --§2: oklch(0.66 0.28 347.13);
+  --§3: oklch(0.66 0.24 4.74);
+  --§4: oklch(0.28 0.1 10.33);
+  --§5: oklch(0.72 0.14 356.27);
+  --§6: oklch(0.65 0.16 357.22);
+  --§7: oklch(0.67 0.24 357.79);
+  --§8: oklch(0.62 0.18 334.19);
+  --§9: oklch(0.83 0.09 357.41);
+  --§a: oklch(0.91 0.04 355.91);
+  --§b: oklch(0.44 0.15 4.7);
+  --§c: oklch(0.28 0.1 10.33);
+  --§d: oklch(0.55 0.16 0.51);
+  --§e: oklch(0.73 0.2 351.99);
+  --§f: oklch(0.97 0.01 350.09);
+}
+
+@utility nice-colors-light {
+  /* these colors look nice and have significant contrast with black */
+  --§0: oklch(0.54 0 0);
+  --§1: oklch(0.5 0.28 269.85);
+  --§2: oklch(0.66 0.23 142.5);
+  --§3: oklch(0.71 0.12 185.91);
+  --§4: oklch(0.5 0.19 27.28);
+  --§5: oklch(0.66 0.3 328.31);
+  --§6: oklch(0.8 0.17 73.27);
+  --§7: oklch(0.78 0 0);
+  --§8: oklch(0.68 0 0);
+  --§9: oklch(0.66 0.16 273.97);
+  --§a: oklch(0.79 0.2 143.36);
+  --§b: oklch(0.81 0.11 211.69);
+  --§c: oklch(0.68 0.2 24.09);
+  --§d: oklch(0.74 0.23 336.42);
+  --§e: oklch(0.94 0.16 109.12);
+  --§f: oklch(1 0 0);
+}
+
+@utility chroma-gradient {
+  @apply relative animate-chroma bg-size-[8.875rem_8.875rem] bg-clip-text bg-origin-padding text-transparent!;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    oklch(62.8% 0.258 29.2),
+    oklch(77.2% 0.174 64.6),
+    oklch(93.1% 0.229 123),
+    oklch(87% 0.29 142),
+    oklch(87.2% 0.255 148),
+    oklch(90.5% 0.155 195),
+    oklch(56.3% 0.241 261),
+    oklch(46.6% 0.304 271),
+    oklch(62.7% 0.307 316),
+    oklch(65.3% 0.268 355),
+    oklch(62.8% 0.258 29.2) 100px
+  );
+}
+
+@utility minecraft-tooltip {
+  @apply relative rounded-sm border-2 border-solid border-transparent bg-mctooltip-bg px-1 pt-1 pb-0.75 indent-[initial] font-minecraft text-[0.9375rem] leading-4.5 font-normal text-pretty [border-image:linear-gradient(to_bottom,oklch(48.503%_0.297_278.42/0.31),oklch(29.365%_0.17619_281.21/0.31))_1] text-shadow-[0.09375rem_0.09375rem_oklch(36.768%,0.00004,271.152)];
+}
+
+@utility hit-area-debug {
+  position: relative;
+  &::before {
+    content: "";
+    position: absolute;
+    top: var(--hit-area-t, 0px);
+    right: var(--hit-area-r, 0px);
+    bottom: var(--hit-area-b, 0px);
+    left: var(--hit-area-l, 0px);
+    pointer-events: inherit;
+    @apply border border-dashed border-blue-500 bg-blue-500/10;
+  }
+  &:hover::before {
+    @apply border border-dashed border-green-500 bg-green-500/10;
+  }
+}
+
+@utility hit-area {
+  position: relative;
+  &::before {
+    content: "";
+    position: absolute;
+    top: var(--hit-area-t, 0px);
+    right: var(--hit-area-r, 0px);
+    bottom: var(--hit-area-b, 0px);
+    left: var(--hit-area-l, 0px);
+    pointer-events: inherit;
+  }
+}
+
+@utility hit-area-* {
+  position: relative;
+  --hit-area-t: --spacing(--value(number) * -1);
+  --hit-area-t: calc(--value([*]) * -1);
+  --hit-area-b: --spacing(--value(number) * -1);
+  --hit-area-b: calc(--value([*]) * -1);
+  --hit-area-l: --spacing(--value(number) * -1);
+  --hit-area-l: calc(--value([*]) * -1);
+  --hit-area-r: --spacing(--value(number) * -1);
+  --hit-area-r: calc(--value([*]) * -1);
+  &::before {
+    content: "";
+    position: absolute;
+    top: var(--hit-area-t, 0px);
+    right: var(--hit-area-r, 0px);
+    bottom: var(--hit-area-b, 0px);
+    left: var(--hit-area-l, 0px);
+    pointer-events: inherit;
+  }
+}
+
+@utility hit-area-l-* {
+  position: relative;
+  --hit-area-l: --spacing(--value(number) * -1);
+  --hit-area-l: calc(--value([*]) * -1);
+  &::before {
+    content: "";
+    position: absolute;
+    top: var(--hit-area-t, 0px);
+    right: var(--hit-area-r, 0px);
+    bottom: var(--hit-area-b, 0px);
+    left: var(--hit-area-l, 0px);
+    pointer-events: inherit;
+  }
+}
+
+@utility hit-area-r-* {
+  position: relative;
+  --hit-area-r: --spacing(--value(number) * -1);
+  --hit-area-r: calc(--value([*]) * -1);
+  &::before {
+    content: "";
+    position: absolute;
+    top: var(--hit-area-t, 0px);
+    right: var(--hit-area-r, 0px);
+    bottom: var(--hit-area-b, 0px);
+    left: var(--hit-area-l, 0px);
+    pointer-events: inherit;
+  }
+}
+
+@utility hit-area-t-* {
+  position: relative;
+  --hit-area-t: --spacing(--value(number) * -1);
+  --hit-area-t: calc(--value([*]) * -1);
+  &::before {
+    content: "";
+    position: absolute;
+    top: var(--hit-area-t, 0px);
+    right: var(--hit-area-r, 0px);
+    bottom: var(--hit-area-b, 0px);
+    left: var(--hit-area-l, 0px);
+    pointer-events: inherit;
+  }
+}
+
+@utility hit-area-b-* {
+  position: relative;
+  --hit-area-b: --spacing(--value(number) * -1);
+  --hit-area-b: calc(--value([*]) * -1);
+  &::before {
+    content: "";
+    position: absolute;
+    top: var(--hit-area-t, 0px);
+    right: var(--hit-area-r, 0px);
+    bottom: var(--hit-area-b, 0px);
+    left: var(--hit-area-l, 0px);
+    pointer-events: inherit;
+  }
+}
+
+@utility hit-area-x-* {
+  position: relative;
+  --hit-area-l: --spacing(--value(number) * -1);
+  --hit-area-l: calc(--value([*]) * -1);
+  --hit-area-r: --spacing(--value(number) * -1);
+  --hit-area-r: calc(--value([*]) * -1);
+  &::before {
+    content: "";
+    position: absolute;
+    top: var(--hit-area-t, 0px);
+    right: var(--hit-area-r, 0px);
+    bottom: var(--hit-area-b, 0px);
+    left: var(--hit-area-l, 0px);
+    pointer-events: inherit;
+  }
+}
+
+@utility hit-area-y-* {
+  position: relative;
+  --hit-area-t: --spacing(--value(number) * -1);
+  --hit-area-t: calc(--value([*]) * -1);
+  --hit-area-b: --spacing(--value(number) * -1);
+  --hit-area-b: calc(--value([*]) * -1);
+  &::before {
+    content: "";
+    position: absolute;
+    top: var(--hit-area-t, 0px);
+    right: var(--hit-area-r, 0px);
+    bottom: var(--hit-area-b, 0px);
+    left: var(--hit-area-l, 0px);
+    pointer-events: inherit;
+  }
+}
+
+/* On the scroll container: expose a named scroll-progress timeline per axis. */
+@utility scroll-fade-track-y {
+  scroll-timeline-name: --scroll-fade-y;
+  scroll-timeline-axis: block;
+}
+
+@utility scroll-fade-track-x {
+  scroll-timeline-name: --scroll-fade-x;
+  scroll-timeline-axis: inline;
+}
+
+@utility scroll-fade-track-both {
+  scroll-timeline-name: --scroll-fade-y, --scroll-fade-x;
+  scroll-timeline-axis: block, inline;
+}
+
+@utility scroll-fade-y {
+  opacity: 0;
+  animation-name: scroll-fade-out;
+  animation-timing-function: linear;
+  animation-fill-mode: both;
+  animation-timeline: --scroll-fade-y;
+}
+
+@utility scroll-fade-x {
+  opacity: 0;
+  animation-name: scroll-fade-out;
+  animation-timing-function: linear;
+  animation-fill-mode: both;
+  animation-timeline: --scroll-fade-x;
+}
+
+@custom-variant @stuck-top {
+  @supports (container-type: scroll-state) {
+    @container scroll-state(stuck: top) {
+      @slot;
+    }
+  }
+}

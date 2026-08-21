@@ -9,6 +9,7 @@ export { default as JsonLd } from "./JsonLd.svelte";
 export { default as Navbar } from "./Navbar.svelte";
 export { default as PerformanceMode } from "./PerformanceMode.svelte";
 export { default as ScrollItems } from "./ScrollItems.svelte";
+export { default as SearchTabs } from "./SearchTabs.svelte";
 export { default as SEO } from "./SEO.svelte";
 export { default as Wardrobe } from "./Wardrobe.svelte";
 // Skin3D excluded — dynamically imported for code-splitting

@@ -2,12 +2,12 @@
   import type { PostType } from "$types";
 
   const TYPE_STYLES: Record<PostType, string> = {
-    announcement: "bg-gold/15 text-gold",
-    news: "bg-link/15 text-link",
-    update: "bg-minecraft-a/15 text-minecraft-a",
-    changelog: "bg-minecraft-d/15 text-minecraft-d",
-    guide: "bg-minecraft-b/15 text-minecraft-b",
-    event: "bg-minecraft-c/15 text-minecraft-c"
+    announcement: "bg-accent-4/15 text-accent-4 border border-accent-4/15",
+    news: "bg-primary/15 text-primary border border-primary/15",
+    update: "bg-minecraft-a/15 text-minecraft-a border border-bg-minecraft-a/15",
+    changelog: "bg-minecraft-d/15 text-minecraft-d border border-bg-minecraft-d/15",
+    guide: "bg-minecraft-b/15 text-minecraft-b border border-bg-minecraft-b/15",
+    event: "bg-minecraft-c/15 text-minecraft-c border border-bg-minecraft-c/15"
   };
 
   export const POST_TYPE_LABELS: Record<PostType, string> = {
@@ -22,10 +22,11 @@
 
 <script lang="ts">
   import { cn } from "$lib/shared/utils";
+  import { Badge } from "$ui/badge";
 
   const { type, class: className }: { type: PostType; class?: string } = $props();
 </script>
 
-<span class={cn("inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold tracking-wide uppercase backdrop-blur-sm", TYPE_STYLES[type], className)}>
+<Badge variant="default" class={cn("text-xs tracking-wide uppercase", TYPE_STYLES[type], className)}>
   {POST_TYPE_LABELS[type]}
-</span>
+</Badge>

@@ -42,7 +42,9 @@ const sanitizeData = (value: unknown): NewsroomNotificationsData => {
   if (!value || typeof value !== "object") return defaultData();
 
   const data = value as Partial<NewsroomNotificationsData>;
-  const seenPostIds = Array.isArray(data.seenPostIds) ? data.seenPostIds.map(toPostId).filter((id): id is string => id !== null) : [];
+  const seenPostIds = Array.isArray(data.seenPostIds)
+    ? data.seenPostIds.map(toPostId).filter((id): id is string => id !== null)
+    : [];
   return {
     seenPostIds: seenPostIds.filter((id, index) => seenPostIds.indexOf(id) === index).slice(-MAX_SEEN_POST_IDS),
     lastSeenPublishedAt: isValidDate(data.lastSeenPublishedAt) ? data.lastSeenPublishedAt : null

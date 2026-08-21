@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { getPreferences } from "$ctx";
-  import { cn } from "$lib/shared/utils";
-  import { Avatar, Button } from "bits-ui";
+  import { buttonVariants } from "$src/lib/components/ui/button";
+  import * as Item from "$ui/item";
+  import ExternalLinkIcon from "@lucide/svelte/icons/external-link";
 
   interface Props {
     href: string;
@@ -16,20 +16,26 @@
   }
 
   let { href, text, img }: Props = $props();
-
-  const preferences = getPreferences();
 </script>
 
-<Button.Root {href} target="_blank" rel="noreferrer" class={cn("flex w-full items-center gap-4 rounded-lg p-4 transition-all duration-300 ease-out hover:scale-[1.05]", preferences.performanceMode ? "bg-background-grey" : "backdrop-blur-lg backdrop-brightness-150 backdrop-contrast-60 dark:backdrop-brightness-50 dark:backdrop-contrast-100")}>
-  <Avatar.Root class="size-12 shrink-0 rounded-lg select-none">
-    <Avatar.Image loading="lazy" src={img.src} alt={img.alt} class="pointer-events-none size-12 rounded-lg" />
-    <Avatar.Fallback class="flex h-full items-center justify-center text-lg font-semibold text-text/60 uppercase">{img.alt.slice(0, 2)}</Avatar.Fallback>
-  </Avatar.Root>
-  <div>
-    <div class="font-semibold">
-      <span class="text-text/70">SkyCrypt's</span>
-      <span class="text-link">{text.title}</span>
-    </div>
-    <div class="font-medium text-text/90 opacity-85">{text.description}</div>
-  </div>
-</Button.Root>
+<Item.Root
+  variant="outline"
+  class="w-fit delay-75 duration-300 ease-out [a]:transition-[scale] [a]:interact:scale-95 standard:[a]:interact:bg-inherit">
+  {#snippet child({ props })}
+    <!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
+    <a {href} target="_blank" {...props}>
+      <Item.Media variant="image">
+        <img loading="lazy" src={img.src} alt={img.alt} class="light:invert" />
+      </Item.Media>
+      <Item.Content>
+        <Item.Title>SkyCrypt's {text.title}</Item.Title>
+        <Item.Description>{text.description}</Item.Description>
+      </Item.Content>
+      <Item.Actions>
+        <div class={buttonVariants({ variant: "outline" })}>
+          <ExternalLinkIcon />
+        </div>
+      </Item.Actions>
+    </a>
+  {/snippet}
+</Item.Root>

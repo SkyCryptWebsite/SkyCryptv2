@@ -6,10 +6,12 @@
   const { body }: { body: Block[] } = $props();
 </script>
 
-{#each body as block, i (block.id ?? i)}
-  {#if block.blockType === "image"}
-    <Image {block} />
-  {:else if block.blockType === "richText"}
-    <RichText {block} />
-  {/if}
-{/each}
+<div class="typeset typeset-article max-w-[37em]">
+  {#each body as block, i (block.id ?? i)}
+    {#if block.blockType === "image"}
+      <Image {block} />
+    {:else if block.blockType === "richText"}
+      <RichText {block} />
+    {/if}
+  {/each}
+</div>

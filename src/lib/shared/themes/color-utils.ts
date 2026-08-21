@@ -11,8 +11,8 @@ function round(n: number, decimals: number): number {
 }
 
 /**
- * Parse an oklch(...) string into { L, C, H, alpha? } components.
- * Accepts both absolute L (0-1) and percentage L (0%-100%).
+ * Parse an oklch(...) string into { L, C, H, alpha? } components. Accepts both absolute L (0-1) and percentage L
+ * (0%-100%).
  */
 export function parseOklch(oklch: string): { L: number; C: number; H: number; alpha?: number } | null {
   const color = parse(oklch);
@@ -26,10 +26,7 @@ export function parseOklch(oklch: string): { L: number; C: number; H: number; al
   };
 }
 
-/**
- * Convert hex color (#rrggbb or #rgb) to oklch(L C H) string.
- * Uses absolute L format (0-1 range), NOT percentage.
- */
+/** Convert hex color (#rrggbb or #rgb) to oklch(L C H) string. Uses absolute L format (0-1 range), NOT percentage. */
 export function hexToOklch(hex: string): string {
   const color = toOklch(hex);
   if (!color) return "oklch(0 0 0)";
@@ -46,9 +43,7 @@ export function hexToOklch(hex: string): string {
   return `oklch(${l} ${c} ${h})`;
 }
 
-/**
- * Convert oklch(L C H) string to hex color (#rrggbb).
- */
+/** Convert oklch(L C H) string to hex color (#rrggbb). */
 export function oklchToHex(oklch: string): string {
   const color = parse(oklch);
   if (!color) return "#000000";

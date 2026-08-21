@@ -1,10 +1,38 @@
 import { browser } from "$app/environment";
 import { loadOldStorageKey } from "$ctx/utils";
-import { DEFAULT_THEME, mergeThemeWithDefaults, ThemeEngine, type ThemeV3 } from "$lib/shared/themes";
+import {
+  DEFAULT_THEME,
+  legacyThemeV4Schema,
+  mergeThemeWithDefaults,
+  migrateThemeV4ToV5,
+  ThemeEngine,
+  themeV5Schema,
+  type ThemeV5
+} from "$lib/shared/themes";
 import { FIRST_PARTY_THEMES } from "$lib/shared/themes/first-party";
 import * as devalue from "devalue";
+import { setTheme, theme as activeModeWatcherTheme, themeStorageKey } from "mode-watcher";
 import { PersistedState } from "runed";
 import { createContext, untrack } from "svelte";
+
+const ACTIVE_THEME_STORAGE_KEY = "skycryptActiveTheme";
+themeStorageKey.current = ACTIVE_THEME_STORAGE_KEY;
+
+function ignoreSkippedViewTransition(error: unknown): void {
+  if (error instanceof DOMException && error.name === "AbortError") return;
+  console.warn("Theme transition failed", error);
+}
+
+function runThemeTransition(callback: () => void): void {
+  if (!document.startViewTransition) {
+    callback();
+    return;
+  }
+
+  const transition = document.startViewTransition(callback);
+  void transition.ready.catch(ignoreSkippedViewTransition);
+  void transition.finished.catch(ignoreSkippedViewTransition);
+}
 
 const devalueSerializer = {
   serialize: devalue.stringify,
@@ -18,78 +46,88 @@ const devalueSerializer = {
 };
 
 export class ThemeContext {
-  #themes = new PersistedState<ThemeV3[]>("skycryptThemes", [], { serializer: devalueSerializer });
-  #activeId = new PersistedState<string>("skycryptActiveTheme", "default");
+  #themes = new PersistedState<unknown[]>("skycryptThemes", [], { serializer: devalueSerializer });
 
   constructor() {
     $effect.pre(() => {
       untrack(() => {
         this.#migrateOldTheme();
+        this.#normalizePersistedThemes();
+        this.#normalizeActiveThemeStorage();
+        ThemeEngine.syncRuntimeThemes(this.userThemes);
+
+        const activeId = this.#resolveTheme(this.activeThemeId) ? this.activeThemeId : "default";
         if (browser) {
-          const theme = this.activeTheme;
-          if (theme) {
-            ThemeEngine.applyTheme(theme);
-          }
+          setTheme(activeId);
         }
       });
     });
   }
 
   get activeThemeId(): string {
-    return this.#activeId.current;
+    return activeModeWatcherTheme.current || "default";
   }
 
   set activeThemeId(id: string) {
-    this.#activeId.current = id;
     if (browser) {
-      const theme = this.#resolveTheme(id);
+      const resolvedId = this.#resolveTheme(id) ? id : "default";
+      const theme = this.#resolveTheme(resolvedId);
       if (theme) {
-        if (document.startViewTransition) {
-          document.startViewTransition(() => ThemeEngine.applyTheme(theme));
+        if (resolvedId === this.activeThemeId) {
+          ThemeEngine.setActiveTheme(resolvedId);
         } else {
-          ThemeEngine.applyTheme(theme);
+          runThemeTransition(() => ThemeEngine.setActiveTheme(resolvedId));
         }
       }
+    } else {
+      setTheme(this.#resolveTheme(id) ? id : "default");
     }
   }
 
-  get activeTheme(): ThemeV3 | null {
+  get activeTheme(): ThemeV5 | null {
     return this.#resolveTheme(this.activeThemeId);
   }
 
-  get allThemes(): ThemeV3[] {
+  get allThemes(): ThemeV5[] {
     return [...FIRST_PARTY_THEMES, ...this.userThemes];
   }
 
-  get userThemes(): ThemeV3[] {
-    return this.#themes.current;
+  get userThemes(): ThemeV5[] {
+    if (!Array.isArray(this.#themes.current)) return [];
+    return this.#themes.current.filter((theme): theme is ThemeV5 => themeV5Schema.safeParse(theme).success);
   }
 
-  saveTheme(theme: ThemeV3): void {
+  saveTheme(theme: ThemeV5): void {
+    const result = themeV5Schema.safeParse(theme);
+    if (!result.success) {
+      console.warn("Cannot save invalid theme", result.error);
+      return;
+    }
+
     if (this.isFirstParty(theme.metadata.id)) {
       console.warn(`Cannot save first-party theme: ${theme.metadata.id}`);
       return;
     }
 
-    const existingIndex = this.#themes.current.findIndex((t) => t.metadata.id === theme.metadata.id);
+    const existingIndex = this.userThemes.findIndex((t) => t.metadata.id === theme.metadata.id);
 
     if (existingIndex >= 0) {
-      const updated = [...this.#themes.current];
+      const updated = [...this.userThemes];
       updated[existingIndex] = {
-        ...theme,
+        ...result.data,
         metadata: {
-          ...theme.metadata,
+          ...result.data.metadata,
           updatedAt: Date.now()
         }
       };
       this.#themes.current = updated;
     } else {
       this.#themes.current = [
-        ...this.#themes.current,
+        ...this.userThemes,
         {
-          ...theme,
+          ...result.data,
           metadata: {
-            ...theme.metadata,
+            ...result.data.metadata,
             createdAt: Date.now(),
             updatedAt: Date.now(),
             version: 1
@@ -97,6 +135,8 @@ export class ThemeContext {
         }
       ];
     }
+
+    ThemeEngine.syncRuntimeThemes(this.userThemes);
   }
 
   deleteTheme(id: string): void {
@@ -105,19 +145,20 @@ export class ThemeContext {
       return;
     }
 
-    this.#themes.current = this.#themes.current.filter((t) => t.metadata.id !== id);
+    this.#themes.current = this.userThemes.filter((t) => t.metadata.id !== id);
+    ThemeEngine.syncRuntimeThemes(this.userThemes);
 
     if (this.activeThemeId === id) {
-      this.activeThemeId = "default";
+      ThemeEngine.setActiveTheme("default");
     }
   }
 
-  duplicateTheme(id: string): ThemeV3 | null {
+  duplicateTheme(id: string): ThemeV5 | null {
     const original = this.#resolveTheme(id);
     if (!original) return null;
 
     const duplicateId = `${id}-copy-${Date.now()}`;
-    const duplicate: ThemeV3 = {
+    const duplicate: ThemeV5 = {
       ...original,
       metadata: {
         ...original.metadata,
@@ -137,22 +178,81 @@ export class ThemeContext {
     return id === "default" || FIRST_PARTY_THEMES.some((t) => t.metadata.id === id);
   }
 
-  #resolveTheme(id: string): ThemeV3 | null {
+  #resolveTheme(id: string): ThemeV5 | null {
     if (id === "default") return DEFAULT_THEME;
 
     const firstParty = FIRST_PARTY_THEMES.find((t) => t.metadata.id === id);
     if (firstParty) return firstParty;
 
-    const userTheme = this.#themes.current.find((t) => t.metadata.id === id);
+    const userTheme = this.userThemes.find((t) => t.metadata.id === id);
     if (userTheme) return mergeThemeWithDefaults(userTheme);
 
     return null;
   }
 
+  #normalizePersistedThemes(): void {
+    if (!Array.isArray(this.#themes.current)) {
+      this.#themes.current = [];
+      return;
+    }
+
+    const validThemes: ThemeV5[] = [];
+    for (const theme of this.#themes.current) {
+      const v5 = themeV5Schema.safeParse(theme);
+      if (v5.success) {
+        validThemes.push(v5.data);
+        continue;
+      }
+
+      const v4 = legacyThemeV4Schema.safeParse(theme);
+      if (v4.success) {
+        validThemes.push(migrateThemeV4ToV5(v4.data));
+      }
+    }
+
+    if (devalue.stringify(validThemes) !== devalue.stringify(this.#themes.current)) {
+      this.#themes.current = validThemes;
+    }
+  }
+
   #migrateOldTheme(): void {
     loadOldStorageKey("skycryptTheme", (oldThemeId: string) => {
-      this.#activeId.current = oldThemeId;
+      if (!localStorage.getItem(ACTIVE_THEME_STORAGE_KEY)) {
+        localStorage.setItem(ACTIVE_THEME_STORAGE_KEY, oldThemeId);
+      }
     });
+  }
+
+  #normalizeActiveThemeStorage(): void {
+    const stored = localStorage.getItem(ACTIVE_THEME_STORAGE_KEY);
+    if (!stored) {
+      setTheme("default");
+      return;
+    }
+
+    let activeId = stored;
+    try {
+      const parsed = devalue.parse(stored);
+      if (typeof parsed === "string") {
+        activeId = parsed;
+      }
+    } catch {
+      try {
+        const parsed = JSON.parse(stored);
+        if (typeof parsed === "string") {
+          activeId = parsed;
+        }
+      } catch {
+        // Stored value is already a plain string.
+      }
+    }
+
+    if (!this.#resolveTheme(activeId)) {
+      activeId = "default";
+    }
+
+    localStorage.setItem(ACTIVE_THEME_STORAGE_KEY, activeId);
+    setTheme(activeId);
   }
 
   get current(): string {
@@ -164,16 +264,12 @@ export class ThemeContext {
   }
 }
 
-const [getTheme, setTheme] = createContext<ThemeContext>();
+const [getThemeContext, setThemeContext] = createContext<ThemeContext>();
 
 function initTheme() {
   const themeContext = new ThemeContext();
-  setTheme(themeContext);
+  setThemeContext(themeContext);
   return themeContext;
 }
 
-function changeTheme(themeId: string, themeContext: ThemeContext) {
-  themeContext.activeThemeId = themeId;
-}
-
-export { changeTheme, getTheme, initTheme };
+export { getThemeContext, initTheme };

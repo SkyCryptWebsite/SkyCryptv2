@@ -1,6 +1,6 @@
 <script lang="ts" generics="T">
   import { Notice } from "$lib/components/notices";
-  import LoaderCircle from "@lucide/svelte/icons/loader-circle";
+  import { Spinner } from "$ui/spinner";
   import type { Snippet } from "svelte";
 
   let { query, children }: { query: () => Promise<T>; children: Snippet<[T]> } = $props();
@@ -8,13 +8,11 @@
 
 <svelte:boundary>
   {#snippet pending()}
-    <LoaderCircle class="mx-auto mt-4 animate-spin text-icon" />
+    <Spinner class="mx-auto mt-4 size-6" />
   {/snippet}
   {#snippet failed(err, retry)}
     <Notice title="An unexpected error has occurred" type="error" error={err} {retry} />
   {/snippet}
 
-  {#await query() then result}
-    {@render children(result)}
-  {/await}
+  {@render children(await query())}
 </svelte:boundary>

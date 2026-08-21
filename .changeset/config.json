@@ -1,5 +1,5 @@
 {
-  "$schema": "https://unpkg.com/@changesets/config@3.1.2/schema.json",
+  "$schema": "https://unpkg.com/@changesets/config/schema.json",
   "changelog": ["changesets-changelog-clean", { "repo": "SkyCryptWebsite/SkyCrypt-Frontend" }],
   "commit": false,
   "fixed": [],
@@ -7,5 +7,9 @@
   "access": "restricted",
   "baseBranch": "dev",
   "updateInternalDependencies": "patch",
-  "ignore": []
+  "ignore": [],
+  "privatePackages": {
+    "version": true,
+    "tag": true
+  }
 }

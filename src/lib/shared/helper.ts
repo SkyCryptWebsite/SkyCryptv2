@@ -1,4 +1,3 @@
-import type { ModelsStrippedItem } from "$lib/shared/api/orval-generated";
 import { RARITY_COLORS } from "$lib/shared/constants/rarities";
 import { mcTextToHTML } from "$lib/shared/mc-text";
 import { tz } from "@date-fns/tz";
@@ -26,6 +25,7 @@ export function formatNumber(n: number, digits = 2) {
 
 /**
  * Converts a string to title case
+ *
  * @param {string} string
  * @returns {string}
  */
@@ -40,23 +40,45 @@ export function titleCase(string: string): string {
 
 /**
  * Returns the tailwind css color class for a rarity
- * @param {string} rarity the rarity of the item
- * @param {"bg" | "text"} type the type of color to get
- * @returns {string} the tailwind css color class
+ *
+ * @param {string} rarity The rarity of the item
+ * @param {"bg" | "text"} type The type of color to get
+ * @returns {string} The tailwind css color class
  */
-export function getRarityClass(rarity: string, type: "bg" | "text"): string {
+export function getRarityClass(rarity: string, type: "bg" | "text" | "raw", important?: true): string {
   const rarityColor = RARITY_COLORS[rarity.toLowerCase() as keyof typeof RARITY_COLORS];
   // minecraft colors are safelisted in the tailwind config, so they are always generated
-  return rarityColor ? `${type}-minecraft-${rarityColor}` : "";
+  // return rarityColor ? `${type}-minecraft-${rarityColor}${important ? "!" : ""}` : "";
+  let finalString: string = "";
+  if (!rarityColor) return finalString;
+  switch (type) {
+    case "bg":
+    case "text":
+      finalString = type + "-minecraft-";
+      break;
+
+    default:
+      break;
+  }
+
+  finalString += rarityColor;
+  finalString += important ? "!" : "";
+  return finalString;
 }
 
 /**
  * Convert Minecraft lore to HTML
- * @param {string} text minecraft lore with color and formatting codes
- * @param {boolean} formatTime whether to format timestamps in the lore
+ *
+ * @param {string} text Minecraft lore with color and formatting codes
+ * @param {boolean} formatTime Whether to format timestamps in the lore
  * @returns {string} HTML
  */
-export function renderLore(text: string, formatTime: boolean = true, index?: number, options?: { breakSpaces?: boolean; breakDashes?: boolean }): string {
+export function renderLore(
+  text: string,
+  formatTime: boolean = true,
+  index?: number,
+  options?: { breakSpaces?: boolean; breakDashes?: boolean }
+): string {
   let lore = mcTextToHTML({ mcString: text, index });
 
   const breakSpaces = options?.breakSpaces ?? true;
@@ -96,6 +118,7 @@ export function renderLore(text: string, formatTime: boolean = true, index?: num
 
 /**
  * Removes Minecraft formatting codes from a string
+ *
  * @param {string} string
  * @returns {string}
  */
@@ -121,6 +144,7 @@ export function uniqBy<T>(arr: T[], key: string): T[] {
 
 /**
  * Validates a URL and returns the path to the stats page
+ *
  * @param {string} url
  * @returns {string} The path to the stats page
  */
@@ -146,7 +170,11 @@ export function validateURL(url: string): boolean {
         return false;
       }
     }
-    if (urlSegments[0].match(/^([0-9a-fA-F]{8})-?([0-9a-fA-F]{4})-?([0-9a-fA-F]{4})-?([0-9a-fA-F]{4})-?([0-9a-fA-F]{12})$/)) {
+    if (
+      urlSegments[0].match(
+        /^([0-9a-fA-F]{8})-?([0-9a-fA-F]{4})-?([0-9a-fA-F]{4})-?([0-9a-fA-F]{4})-?([0-9a-fA-F]{12})$/
+      )
+    ) {
       urlSegments[0] = urlSegments[0].replaceAll("-", "");
     } else if (urlSegments[0].match(/^[\w ]{1,16}$/)) {
       urlSegments[0] = urlSegments[0].replace(" ", "_");
@@ -166,9 +194,4 @@ export function calculatePercentage(value: number, total: number, decimal: numbe
   return Math.floor((value / total) * 100)
     .toFixed(decimal)
     .replace(/\.0+$/, "");
-}
-
-export function shouldShine(item: ModelsStrippedItem): boolean | undefined {
-  const enchanted = item.texture_path?.includes("/api/leather/") ? false : item.shiny;
-  return enchanted || item.shiny;
 }

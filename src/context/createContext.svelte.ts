@@ -1,6 +1,13 @@
 import type { IsHover } from "$lib/hooks/is-hover.svelte";
 import type { IsMobile } from "$lib/hooks/is-mobile.svelte";
-import type { ModelsCombinedOutput, ModelsMiscOutput, ModelsResourcePackConfig, ModelsSkillsOutput, ModelsStatsOutput } from "$lib/shared/api/orval-generated";
+import type {
+  ModelsCombinedOutput,
+  ModelsMiscOutput,
+  ModelsResourcePackConfig,
+  ModelsStatData,
+  ModelsSkillsOutput,
+  ModelsStatsOutput
+} from "$lib/shared/api/orval-generated";
 import { createContext } from "svelte";
 
 export class ProfileContext {
@@ -11,6 +18,18 @@ export class ProfileContext {
   }
 
   set current(value: ModelsStatsOutput | null) {
+    this.#current = value;
+  }
+}
+
+export class AllStatsContext {
+  #current: ModelsStatData[] = $state([]);
+
+  get current() {
+    return this.#current;
+  }
+
+  set current(value: ModelsStatData[]) {
     this.#current = value;
   }
 }
@@ -64,6 +83,7 @@ export class SkillsContext {
 }
 
 export const [getProfileContext, setProfileContext] = createContext<ProfileContext>();
+export const [getAllStatsContext, setAllStatsContext] = createContext<AllStatsContext>();
 export const [getCombinedContext, setCombinedContext] = createContext<CombinedContext>();
 export const [getSkillsContext, setSkillsContext] = createContext<SkillsContext>();
 export const [getMiscContext, setMiscContext] = createContext<MiscContext>();

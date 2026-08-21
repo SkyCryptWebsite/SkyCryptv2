@@ -13,7 +13,8 @@
 </script>
 
 {#if internalState.itemContentSpecial}
-  <div class="grid grid-cols-[repeat(9,minmax(1.875rem,4.875rem))] place-content-center gap-1 @md:gap-1.5 @xl:gap-2">
+  <div
+    class="grid grid-cols-[repeat(9,minmax(1.875rem,4.875rem))] place-content-center gap-1 p-4 @md:gap-1.5 @xl:gap-2">
     {#if items && items.length !== 0}
       {#each items as containedItem, index (index)}
         {#if index > 0}
@@ -22,11 +23,14 @@
           {/if}
         {/if}
         {#if containedItem.texture_path}
-          <div class="flex aspect-square items-center justify-center rounded-sm bg-text/4" onclick={onclose} role="none">
+          <div
+            class="relative flex aspect-square items-center justify-center overflow-clip rounded-xl border bg-foreground/5"
+            onclick={onclose}
+            role="none">
             <Item piece={containedItem} isInventory={true} showRecombobulated={false} showCount={true} />
           </div>
         {:else}
-          <div class="aspect-square rounded-sm bg-text/4"></div>
+          <div class="aspect-square size-full rounded-xl border bg-foreground/5"></div>
         {/if}
       {/each}
     {/if}

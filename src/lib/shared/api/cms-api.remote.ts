@@ -1,3 +1,4 @@
+import { dev } from "$app/env";
 import { query } from "$app/server";
 import { env as envPrivate } from "$env/dynamic/private";
 import { listPosts as listPostsRequest, type ListPostsParams } from "$lib/shared/api/cms-generated";
@@ -6,12 +7,12 @@ import { error } from "@sveltejs/kit";
 import z from "zod";
 
 /**
- * Payload REST filters with bracket-notation query params (`where[x][equals]=y`) and
- * supports comma-separated multi-sort — neither of which orval's URL serializer can
- * express through the typed `where`/`sort` params. We pass them as flat string keys
- * instead; this bridges that plain record to the generated `ListPostsParams` shape.
+ * Payload REST filters with bracket-notation query params (`where[x][equals]=y`) and supports comma-separated
+ * multi-sort — neither of which orval's URL serializer can express through the typed `where`/`sort` params. We pass
+ * them as flat string keys instead; this bridges that plain record to the generated `ListPostsParams` shape.
  */
-const asListParams = (params: Record<string, string | number | boolean>): ListPostsParams => params as unknown as ListPostsParams;
+const asListParams = (params: Record<string, string | number | boolean>): ListPostsParams =>
+  params as unknown as ListPostsParams;
 
 /** List published posts, paginated. Featured posts sort first. */
 export const listPosts = query(
@@ -21,17 +22,22 @@ export const listPosts = query(
     type: z.enum(POST_TYPES).optional()
   }),
   async ({ page, limit, type }) => {
-    const params: Record<string, string | number | boolean> = {
-      page,
-      limit,
-      depth: 1,
-      sort: "-featured,-publishedAt",
-      "where[_status][equals]": "published"
-    };
-    if (type) params["where[type][equals]"] = type;
+    try {
+      const params: Record<string, string | number | boolean> = {
+        page,
+        limit,
+        depth: 1,
+        sort: "-featured,-publishedAt",
+        "where[_status][equals]": "published"
+      };
+      if (type) params["where[type][equals]"] = type;
 
-    const { data } = await listPostsRequest(asListParams(params));
-    return data as PostListResponse;
+      const { data } = await listPostsRequest(asListParams(params));
+      return data as PostListResponse;
+    } catch (error) {
+      if (!dev) console.warn("Failed to load newsroom posts", error);
+      return null;
+    }
   }
 );
 
@@ -41,22 +47,44 @@ export const listLatestPostsForNotifications = query(
     limit: z.number().int().min(1).max(10).default(5)
   }),
   async ({ limit }) => {
-    const { data } = await listPostsRequest(asListParams({ page: 1, limit, depth: 1, sort: "-publishedAt", "where[_status][equals]": "published" }));
-    return data as PostListResponse;
+    try {
+      const { data } = await listPostsRequest(
+        asListParams({ page: 1, limit, depth: 1, sort: "-publishedAt", "where[_status][equals]": "published" })
+      );
+      return data as PostListResponse;
+    } catch (error) {
+      if (!dev) console.warn("Failed to load latest newsroom posts for notifications", error);
+      return null;
+    }
   }
 );
 
 /** Get a single published post by slug. */
 export const getPostBySlug = query(z.object({ slug: z.string() }), async ({ slug }) => {
-  const { data } = await listPostsRequest(asListParams({ limit: 1, depth: 2, "where[slug][equals]": slug, "where[_status][equals]": "published" }));
-  if (!data.docs.length) error(404, "Post not found");
-  return data.docs[0] as Post;
+  try {
+    const { data } = await listPostsRequest(
+      asListParams({ limit: 1, depth: 2, "where[slug][equals]": slug, "where[_status][equals]": "published" })
+    );
+    if (!data.docs.length) error(404, "Post not found");
+    return data.docs[0] as Post;
+  } catch (error) {
+    if (!dev) console.warn("Failed to load post by slug", error);
+    return null;
+  }
 });
 
 /** Get a draft post by slug. Never cached. Uses CMS_API_TOKEN. */
 export const getPostBySlugDraft = query(z.object({ slug: z.string() }), async ({ slug }) => {
-  const token = envPrivate.CMS_API_TOKEN;
-  const { data } = await listPostsRequest(asListParams({ limit: 1, depth: 2, draft: true, "where[slug][equals]": slug }), token ? { headers: { Authorization: `users API-Key ${token}` } } : undefined);
-  if (!data.docs.length) error(404, "Post not found");
-  return data.docs[0] as Post;
+  try {
+    const token = envPrivate.CMS_API_TOKEN;
+    const { data } = await listPostsRequest(
+      asListParams({ limit: 1, depth: 2, draft: true, "where[slug][equals]": slug }),
+      token ? { headers: { Authorization: `users API-Key ${token}` } } : undefined
+    );
+    if (!data.docs.length) error(404, "Post not found");
+    return data.docs[0] as Post;
+  } catch (error) {
+    if (!dev) console.warn("Failed to load draft post by slug", error);
+    return null;
+  }
 });

@@ -6,9 +6,10 @@ import { MediaQuery } from "svelte/reactivity";
 const prefersReducedMotion = new MediaQuery("(prefers-reduced-motion: reduce)");
 
 /**
- * Svelte attachment that creates a scrambled text animation effect for obfuscated text.
- * This mimics Minecraft's obfuscated text formatting (§k) by continuously randomizing
- * the characters while preserving the original text length and structure.
+ * Svelte attachment that creates a scrambled text animation effect for obfuscated text. This mimics Minecraft's
+ * obfuscated text formatting (§k) by continuously randomizing the characters while preserving the original text length
+ * and structure.
+ *
  * @see {@link https://svelte.dev/docs/svelte/@attach}
  */
 export const animateObfuscatedText: Attachment = (element) => {

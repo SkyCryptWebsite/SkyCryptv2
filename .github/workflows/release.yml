@@ -19,18 +19,18 @@ jobs:
 
     steps:
       - name: Git checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v6
         with:
-          version: 11
+          version: 11.11.0
           run_install: false
 
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version: 24
           cache: pnpm
@@ -51,24 +51,24 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
+      actions: write
       contents: write
       pull-requests: write
 
     steps:
       - name: Git checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
-          token: ${{ secrets.PAT_TOKEN }}
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v6
         with:
-          version: 11
+          version: 11.11.0
           run_install: false
 
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version: 24
           cache: pnpm
@@ -81,8 +81,13 @@ jobs:
       - name: Prepare Stable Release
         run: node scripts/release-stable.mjs
         env:
-          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
-          GH_TOKEN: ${{ secrets.PAT_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Deploy stable release
+        run: gh workflow run website.yml --ref prod
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   sync_dev_after_stable:
     name: Sync Prod Back To Dev
@@ -95,19 +100,18 @@ jobs:
 
     steps:
       - name: Git checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
-          token: ${{ secrets.PAT_TOKEN }}
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v6
         with:
-          version: 11
+          version: 11.11.0
           run_install: false
 
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version: 24
           cache: pnpm

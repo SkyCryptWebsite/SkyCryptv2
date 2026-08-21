@@ -150,7 +150,18 @@ describe.concurrent("Color Utils (culori-based)", () => {
   });
 
   describe.concurrent("roundtrip conversions", () => {
-    const testColors = ["#ff0000", "#00ff00", "#0000ff", "#ffffff", "#000000", "#808080", "#ff8c00", "#4a90d9", "#2ecc71", "#9b59b6"];
+    const testColors = [
+      "#ff0000",
+      "#00ff00",
+      "#0000ff",
+      "#ffffff",
+      "#000000",
+      "#808080",
+      "#ff8c00",
+      "#4a90d9",
+      "#2ecc71",
+      "#9b59b6"
+    ];
 
     for (const hex of testColors) {
       it(`should roundtrip ${hex} → oklch → hex within ±1 per channel`, ({ expect }) => {

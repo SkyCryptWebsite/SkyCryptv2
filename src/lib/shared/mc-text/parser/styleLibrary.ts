@@ -1,10 +1,26 @@
 type FormattingCodes = "§k" | "§l" | "§m" | "§n" | "§o" | "§r";
-type ColorCodes = "§0" | "§1" | "§2" | "§3" | "§4" | "§5" | "§6" | "§7" | "§8" | "§9" | "§a" | "§b" | "§c" | "§d" | "§e" | "§f";
+type ColorCodes =
+  | "§0"
+  | "§1"
+  | "§2"
+  | "§3"
+  | "§4"
+  | "§5"
+  | "§6"
+  | "§7"
+  | "§8"
+  | "§9"
+  | "§a"
+  | "§b"
+  | "§c"
+  | "§d"
+  | "§e"
+  | "§f";
 type AllFormattingCodes = FormattingCodes | ColorCodes;
 
 /**
- * Mapping of Minecraft formatting style codes to (Tailwind) CSS classes.
- * This mapper provides a mapping of Minecraft formatting style codes to CSS classes
+ * Mapping of Minecraft formatting style codes to (Tailwind) CSS classes. This mapper provides a mapping of Minecraft
+ * formatting style codes to CSS classes
  */
 const extras: Record<FormattingCodes, string[]> = {
   "§k": ["obfuscated", "font-mono"],
@@ -16,8 +32,8 @@ const extras: Record<FormattingCodes, string[]> = {
 } as const;
 
 /**
- * Mapping of Minecraft formatting color codes to (Tailwind) CSS variables.
- * This mapper provides a mapping of Minecraft formatting color codes to CSS variables.
+ * Mapping of Minecraft formatting color codes to (Tailwind) CSS variables. This mapper provides a mapping of Minecraft
+ * formatting color codes to CSS variables.
  */
 const colorCodes: { [K in ColorCodes]: `var(--${K})` } = {
   "§0": "var(--§0)",

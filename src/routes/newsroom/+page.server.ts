@@ -5,7 +5,8 @@ import type { PageServerLoad } from "./$types";
 
 const POSTS_PER_PAGE = 12;
 
-const isPostType = (value: string | null): value is PostType => value != null && (POST_TYPES as readonly string[]).includes(value);
+const isPostType = (value: string | null): value is PostType =>
+  value != null && (POST_TYPES as readonly string[]).includes(value);
 
 export const load: PageServerLoad = async ({ url, setHeaders }) => {
   setHeaders({ "cache-control": "public, s-maxage=60, stale-while-revalidate=600" });
@@ -19,7 +20,7 @@ export const load: PageServerLoad = async ({ url, setHeaders }) => {
 
   try {
     const result = await listPosts({ page, limit: POSTS_PER_PAGE, type });
-    if (result.totalPages > 0 && page > result.totalPages) error(404, "Page not found");
+    if (result && result.totalPages > 0 && page > result.totalPages) error(404, "Page not found");
     return { ...result, type };
   } catch (e) {
     if (isHttpError(e)) throw e;

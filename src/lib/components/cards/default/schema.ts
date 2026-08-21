@@ -50,7 +50,9 @@ export const cardConfigSchema = [
 
 export type DefaultCardSettings = Partial<InferSettings<typeof cardConfigSchema>>;
 
-export function getDefaults(schema: readonly OptionGroup[] = cardConfigSchema): Record<string, boolean | string | number> {
+export function getDefaults(
+  schema: readonly OptionGroup[] = cardConfigSchema
+): Record<string, boolean | string | number> {
   const defaults: Record<string, boolean | string | number> = {};
   for (const group of schema) {
     for (const option of group.options) {
@@ -60,7 +62,10 @@ export function getDefaults(schema: readonly OptionGroup[] = cardConfigSchema): 
   return defaults;
 }
 
-export function parseSettingsFromParams(params: URLSearchParams, schema: readonly OptionGroup[] = cardConfigSchema): DefaultCardSettings {
+export function parseSettingsFromParams(
+  params: URLSearchParams,
+  schema: readonly OptionGroup[] = cardConfigSchema
+): DefaultCardSettings {
   const settings = getDefaults(schema);
   for (const group of schema) {
     for (const option of group.options) {
@@ -83,7 +88,10 @@ export function parseSettingsFromParams(params: URLSearchParams, schema: readonl
   return settings as DefaultCardSettings;
 }
 
-export function settingsToParams(settings: Record<string, boolean | string | number>, schema: readonly OptionGroup[] = cardConfigSchema): URLSearchParams {
+export function settingsToParams(
+  settings: Record<string, boolean | string | number>,
+  schema: readonly OptionGroup[] = cardConfigSchema
+): URLSearchParams {
   const defaults = getDefaults(schema);
   const params = new URLSearchParams();
   for (const group of schema) {

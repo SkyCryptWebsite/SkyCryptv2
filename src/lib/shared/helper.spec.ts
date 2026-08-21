@@ -1,6 +1,13 @@
-import type { ModelsStrippedItem } from "$lib/shared/api/orval-generated";
 import { RARITY_COLORS } from "$lib/shared/constants/rarities";
-import { calculatePercentage, formatNumber, getRarityClass, removeFormatting, shouldShine, titleCase, uniqBy, validateURL } from "$lib/shared/helper";
+import {
+  calculatePercentage,
+  formatNumber,
+  getRarityClass,
+  removeFormatting,
+  titleCase,
+  uniqBy,
+  validateURL
+} from "$lib/shared/helper";
 import { describe, it, vi } from "vitest";
 
 describe.concurrent("formatNumber", () => {
@@ -379,65 +386,5 @@ describe.concurrent("calculatePercentage", () => {
   it("handles large numbers", ({ expect }) => {
     expect(calculatePercentage(1000000, 2000000)).toBe("50");
     expect(calculatePercentage(999999, 1000000, 2)).toBe("99");
-  });
-});
-
-describe.concurrent("shouldShine", () => {
-  it("returns true for shiny item", ({ expect }) => {
-    const item: ModelsStrippedItem = {
-      shiny: true
-    };
-    expect(shouldShine(item)).toBe(true);
-  });
-
-  it("returns false for non-shiny item", ({ expect }) => {
-    const item: ModelsStrippedItem = {
-      shiny: false
-    };
-    expect(shouldShine(item)).toBe(false);
-  });
-
-  it("returns true for leather armor with shiny=true (shiny overrides enchanted=false)", ({ expect }) => {
-    const item: ModelsStrippedItem = {
-      shiny: true,
-      texture_path: "/api/leather/armor_piece"
-    };
-    expect(shouldShine(item)).toBe(true);
-  });
-
-  it("returns true for shiny non-leather item with texture_path", ({ expect }) => {
-    const item: ModelsStrippedItem = {
-      shiny: true,
-      texture_path: "/api/item/sword"
-    };
-    expect(shouldShine(item)).toBe(true);
-  });
-
-  it("returns undefined for item with undefined shiny", ({ expect }) => {
-    const item: ModelsStrippedItem = {};
-    expect(shouldShine(item)).toBeUndefined();
-  });
-
-  it("handles item with no texture_path", ({ expect }) => {
-    const item: ModelsStrippedItem = {
-      shiny: true
-    };
-    expect(shouldShine(item)).toBe(true);
-  });
-
-  it("returns true when enchanted (shiny true, non-leather)", ({ expect }) => {
-    const item: ModelsStrippedItem = {
-      shiny: true,
-      texture_path: "/textures/items/diamond_sword"
-    };
-    expect(shouldShine(item)).toBe(true);
-  });
-
-  it("returns false for leather with shiny false", ({ expect }) => {
-    const item: ModelsStrippedItem = {
-      shiny: false,
-      texture_path: "/api/leather/boots"
-    };
-    expect(shouldShine(item)).toBe(false);
   });
 });
