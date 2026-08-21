@@ -9,14 +9,16 @@
   import { listPosts } from "$lib/shared/api/cms-api.remote";
   import { resolveUuidByUsername } from "$lib/shared/api/skycrypt-api.remote";
   import { getContributors } from "$routes/contributors.remote";
-  import { Button } from "$ui/button";
+  import { Button, buttonVariants } from "$ui/button";
   import * as ButtonGroup from "$ui/button-group";
+  import * as Collapsible from "$ui/collapsible";
   import { Input } from "$ui/input";
   import * as Item from "$ui/item";
   import { Skeleton } from "$ui/skeleton";
   import { Spinner } from "$ui/spinner";
   import * as Tooltip from "$ui/tooltip";
   import ArrowRight from "@lucide/svelte/icons/arrow-right";
+  import ChevronDownIcon from "@lucide/svelte/icons/chevron-down";
   import CodeXml from "@lucide/svelte/icons/code-xml";
   import GitPullRequestArrow from "@lucide/svelte/icons/git-pull-request-arrow";
   import NewspaperIcon from "@lucide/svelte/icons/newspaper";
@@ -36,6 +38,8 @@
 
   let submittedSearchLoading = $state(false);
   let submittedSearchError = $state<string>();
+
+  let newsroomOpen = $state(false);
 
   function getErrorMessage(err: unknown) {
     const httpError = err as { body?: unknown };
@@ -204,10 +208,9 @@
 
     {const newsroom = await listPosts({ page: 1, limit: 3 })}
     {#if newsroom && newsroom.docs.length > 0}
-      <section class="flex flex-col gap-4">
-        <Item.Root
-          variant="outline"
-          class="glass glass-brightness-150 glass-contrast-60 dark:glass-brightness-50 dark:glass-contrast-100">
+      <section
+        class="flex flex-col rounded-xl border glass px-4 py-3.5 glass-brightness-150 glass-contrast-60 dark:glass-brightness-50 dark:glass-contrast-100">
+        <Item.Root class="p-0">
           <Item.Media variant="icon">
             <NewspaperIcon class="size-6" />
           </Item.Media>
@@ -220,13 +223,26 @@
               View all
               <ArrowRight class="size-4" />
             </Button>
+            <Button
+              class={buttonVariants({
+                variant: "outline",
+                size: "icon"
+              })}
+              onclick={() => (newsroomOpen = !newsroomOpen)}>
+              <ChevronDownIcon
+                data-state={newsroomOpen ? "open" : "closed"}
+                class="size-4 transition-[rotate] duration-150 data-[state=open]:rotate-180" />
+            </Button>
           </Item.Actions>
-          <Item.Footer class="grid grid-cols-1 gap-5 @md:grid-cols-2 @xl:grid-cols-3">
+        </Item.Root>
+
+        <Collapsible.Root bind:open={newsroomOpen}>
+          <Collapsible.Content class="mt-4 grid grid-cols-1 gap-4 @md:grid-cols-2 @xl:grid-cols-3">
             {#each newsroom?.docs as post (post.id)}
               <PostCard {post} />
             {/each}
-          </Item.Footer>
-        </Item.Root>
+          </Collapsible.Content>
+        </Collapsible.Root>
       </section>
     {/if}
   </svelte:boundary>
