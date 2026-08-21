@@ -268,7 +268,7 @@
         defer
         src={PUBLIC_UMAMI_RECORDER_URL}
         data-website-id={PUBLIC_UMAMI_HOST_URL}
-        data-host-url={window.location.origin}></script>
+        data-host-url={PUBLIC_UMAMI_HOST_URL}></script>
     {/if}
   {/if}
 </svelte:head>
