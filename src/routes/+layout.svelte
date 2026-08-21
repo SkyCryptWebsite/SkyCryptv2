@@ -252,7 +252,7 @@
   {#if !noEmbedUrls.some((url) => page.url.pathname.startsWith(url))}
     <link rel="icon" href="/favicon.png" sizes="32x32" type="image/png" />
   {/if}
-  {#if PUBLIC_UMAMI_SCRIPT_URL && PUBLIC_UMAMI_WEBSITE_ID && !dev && !building}
+  {#if PUBLIC_UMAMI_SCRIPT_URL && PUBLIC_UMAMI_WEBSITE_ID && !dev && !building && browser && window?.location?.origin}
     <script
       defer
       src={PUBLIC_UMAMI_SCRIPT_URL}
