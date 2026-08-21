@@ -46,6 +46,7 @@
 
   const clipPath = $derived.by(() => {
     if (innerWidth < 1210) return skinHiddenClipPath;
+    if (!page.url.pathname.startsWith("/stats")) return normalClipPath;
     return internalState.navbarPinned ? pinnedClipPath : normalClipPath;
   });
 </script>
