@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.0.0-beta.9
+
+### Major Changes
+
+- Feat: V4 Release _[`2a5f4c6`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/2a5f4c62880eab472db5977ed5dc544fee9fcd1a) [@DarthGigi](https://github.com/DarthGigi)_
+
 ## 3.9.0-beta.8
 
 ### Patch Changes
