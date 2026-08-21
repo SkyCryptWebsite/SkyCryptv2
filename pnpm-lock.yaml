@@ -111,6 +111,9 @@ importers:
       '@types/relaxed-json':
         specifier: ^1.0.4
         version: 1.0.4
+      '@types/umami-browser':
+        specifier: ^2.18.1
+        version: 2.18.1
       '@types/upng-js':
         specifier: ^2.1.5
         version: 2.1.5
@@ -2855,6 +2858,9 @@ packages:
 
   '@types/trusted-types@2.0.7':
     resolution: {integrity: sha512-ScaPdn1dQczgbl0QFTeTOmVHFULt394XJgOQNoyVhZ6r2vLnMLJfBPd53SB52T/3G36VI1/g2MZaX0cwDuXsfw==}
+
+  '@types/umami-browser@2.18.1':
+    resolution: {integrity: sha512-djccTpTXRVodrhGaz59NSMHA9d1cb+jexVsigb+I1bdHFn+N7TTlBesKujrL8tuSWVRsdSE4WM67mTGv3FCWfQ==}
 
   '@types/unist@2.0.11':
     resolution: {integrity: sha512-CmBKiL6NNo/OqgmMn95Fk9Whlp2mtvIv+KNpQKN2F4SjvrEesubTRWGYSg+BnWZOnlCaSTU1sMpsBOzgbYhnsA==}
@@ -8440,6 +8446,8 @@ snapshots:
       meshoptimizer: 0.18.1
 
   '@types/trusted-types@2.0.7': {}
+
+  '@types/umami-browser@2.18.1': {}
 
   '@types/unist@2.0.11': {}
 

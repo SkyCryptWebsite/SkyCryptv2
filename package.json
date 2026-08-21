@@ -76,6 +76,7 @@
     "@types/eslint": "^9.6.1",
     "@types/node": "^26.2.0",
     "@types/relaxed-json": "^1.0.4",
+    "@types/umami-browser": "^2.18.1",
     "@types/upng-js": "^2.1.5",
     "@vitest/browser-playwright": "^4.1.10",
     "@vitest/coverage-v8": "^4.1.10",

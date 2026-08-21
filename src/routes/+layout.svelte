@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { building } from "$app/env";
   import { browser, dev } from "$app/environment";
   import { beforeNavigate, replaceState } from "$app/navigation";
   import { page, updated } from "$app/state";
@@ -15,6 +16,7 @@
     setMobileContext,
     setPacksContext
   } from "$ctx";
+  import { env as publicEnv } from "$env/dynamic/public";
   import Header from "$lib/components/header/Header.svelte";
   import { CommandPalette, JsonLd, PerformanceMode } from "$lib/components/misc";
   import NewPostsNotifier from "$lib/components/newsroom/NewPostsNotifier.svelte";
@@ -34,15 +36,18 @@
   import { onMount, type Snippet } from "svelte";
   import SvelteSeo from "svelte-seo";
   import { toast, Toaster, type ToasterProps } from "svelte-sonner";
+  import "./layout.css";
   import { SvelteURLSearchParams } from "svelte/reactivity";
   import { writable } from "svelte/store";
-  import "./layout.css";
 
   let { children }: { children: Snippet } = $props();
   let isMobile = $state(new IsMobile());
   let isHover = $state(new IsHover());
   let toastId: string | number = $state(0);
   let commandLoading = $state(false);
+
+  const { PUBLIC_UMAMI_SCRIPT_URL, PUBLIC_UMAMI_WEBSITE_ID, PUBLIC_UMAMI_RECORDER_URL, PUBLIC_UMAMI_ENABLE_HEATMAPS } =
+    publicEnv;
   const { ign } = $derived(page.params);
   const showNewsroomToast = $derived(page.url.pathname !== "/" && !page.url.pathname.startsWith("/newsroom"));
   const preferences = initPreferences();
@@ -110,6 +115,21 @@
     if (e.key.toLowerCase() === "t" && dev) {
       // toggle minecraft styled tooltips for testing
       setMode(mode.current === "light" ? "dark" : "light");
+    }
+  }
+
+  function handleOutboundClick(event: MouseEvent) {
+    // Cast target to Element or HTMLElement so .closest() is recognized
+    const target = event.target as HTMLElement | null;
+    const anchor = target?.closest("a");
+    if (!anchor || !anchor.href) return;
+
+    // Only track outbound links that don't already have a custom Umami event
+    const isOutbound = anchor.host && anchor.host !== window.location.host;
+    const hasCustomEvent = anchor.hasAttribute("data-umami-event");
+
+    if (isOutbound && !hasCustomEvent && typeof umami !== "undefined") {
+      umami.track("outbound-link-click", { url: anchor.href });
     }
   }
 
@@ -214,7 +234,7 @@
   lightClassNames={["light"]}
   themeColors={{ dark: "#282828", light: "#dbdbdb" }} />
 
-<svelte:document onkeydown={handleKeydown} />
+<svelte:document onkeydown={handleKeydown} onclick={handleOutboundClick} />
 
 <svelte:window
   onresize={() => {
@@ -231,6 +251,12 @@
 <svelte:head>
   {#if !noEmbedUrls.some((url) => page.url.pathname.startsWith(url))}
     <link rel="icon" href="/favicon.png" sizes="32x32" type="image/png" />
+  {/if}
+  {#if PUBLIC_UMAMI_SCRIPT_URL && PUBLIC_UMAMI_WEBSITE_ID && !dev && !building}
+    <script defer src={PUBLIC_UMAMI_SCRIPT_URL} data-website-id={PUBLIC_UMAMI_WEBSITE_ID}></script>
+    {#if PUBLIC_UMAMI_ENABLE_HEATMAPS === "true" && PUBLIC_UMAMI_RECORDER_URL}
+      <script defer src={PUBLIC_UMAMI_RECORDER_URL} data-website-id={PUBLIC_UMAMI_WEBSITE_ID}></script>
+    {/if}
   {/if}
 </svelte:head>
 

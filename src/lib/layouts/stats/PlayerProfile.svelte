@@ -267,14 +267,14 @@
   <CardBuilder />
 
   <Button
-    href={`https://plancke.io/hypixel/player/stats/${profile?.username}`}
+    href={`https://plancke.io/hypixel/player/stats/${profile?.username}?utm_source=SkyCrypt&utm_campaign=Nav`}
     target="_blank"
     class="text-base font-semibold">
     Plancke <ExternalLink class="size-4" />
   </Button>
 
   <Button
-    href={`https://eliteskyblock.com/@${profile?.username}/${profile?.profile_cute_name}`}
+    href={`https://eliteskyblock.com/@${profile?.username}/${profile?.profile_cute_name}?utm_source=SkyCrypt&utm_campaign=Nav`}
     target="_blank"
     class="text-base font-semibold">
     Elite <ExternalLink class="size-4" />
@@ -308,7 +308,7 @@
     {#if profile?.social}
       {#each Object.entries(profile.social) as [key, value], index (index)}
         <Button
-          href={key === "DISCORD" ? undefined : value}
+          href={key === "DISCORD" ? undefined : value + "?utm_source=SkyCrypt&utm_campaign=Nav"}
           target="_blank"
           style={`animation-delay: ${(index + 2) * 0.1}s`}
           onclick={key === "DISCORD" ? () => copyToClipboard(value) : undefined}

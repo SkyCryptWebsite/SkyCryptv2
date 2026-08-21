@@ -28,7 +28,10 @@
       variant="outline"
       class="mx-auto w-fit rounded-full duration-150 ease-out interact:scale-95 [a]:transition-[scale,background-color] [a]:interact:bg-foreground/10">
       {#snippet child({ props })}
-        <a href="https://eliteskyblock.com/@{username}/{profile_cute_name}" target="_blank" {...props}>
+        <a
+          href="https://eliteskyblock.com/@{username}/{profile_cute_name}?utm_source=SkyCrypt&utm_campaign=Farming"
+          target="_blank"
+          {...props}>
           <Item.Media>
             <Avatar.Root class="after:rounded-none after:border-none">
               <Avatar.Image src="https://eliteskyblock.com/favicon.webp" alt="Elite" class="rounded-none" />
