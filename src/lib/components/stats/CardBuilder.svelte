@@ -314,7 +314,7 @@
       {/snippet}
     </Drawer.Trigger>
     <Drawer.Content class="px-6 py-4 before:bg-background/80">
-      <div class="mt-4 flex flex-col gap-4">
+      <div class="mt-4 flex flex-col gap-4 overflow-y-scroll">
         {@render presetCards()}
         {@render optionGroups()}
         {@render imagePreview()}

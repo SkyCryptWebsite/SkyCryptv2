@@ -108,7 +108,8 @@
       {/snippet}
     </Drawer.Trigger>
 
-    <Drawer.Content class="before:glass before:bg-transparent before:glass-bg-popover [&>div:first-child]:mb-4">
+    <Drawer.Content
+      class="before:glass before:glass-bg-popover standard:dark:before:bg-transparent [&>div:first-child]:mb-4">
       {@render settings()}
     </Drawer.Content>
   </Drawer.Root>

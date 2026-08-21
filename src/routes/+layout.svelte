@@ -364,7 +364,8 @@
 
 {#if isMobile.current}
   <Drawer.Root bind:open={internalState.themeEditorOpen} shouldScaleBackground={true}>
-    <Drawer.Content class="before:glass before:bg-transparent before:glass-bg-popover [&>div:first-child]:my-4">
+    <Drawer.Content
+      class="before:glass before:glass-bg-popover standard:dark:before:bg-transparent [&>div:first-child]:my-4">
       <div class="overflow-auto p-4">
         <ThemeEditor />
       </div>

@@ -77,7 +77,8 @@
   <Drawer.Root shouldScaleBackground={true} setBackgroundColorOnScale={false}>
     <Drawer.Trigger class="text-primary underline">See here</Drawer.Trigger>
 
-    <Drawer.Content class="before:glass before:bg-transparent before:glass-bg-popover [&>div:first-child]:mb-4">
+    <Drawer.Content
+      class="before:glass before:glass-bg-popover standard:dark:before:bg-transparent [&>div:first-child]:mb-4">
       {@render video()}
     </Drawer.Content>
   </Drawer.Root>

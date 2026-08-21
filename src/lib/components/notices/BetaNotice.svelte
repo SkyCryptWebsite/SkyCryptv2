@@ -36,7 +36,7 @@
 
 {#snippet mobileNotice()}
   <Drawer.Root bind:open={noticeOpen} shouldScaleBackground={false} setBackgroundColorOnScale={false}>
-    <Drawer.Content class="gap-4 p-6 before:glass before:bg-transparent before:glass-bg-popover">
+    <Drawer.Content class="gap-4 p-6 before:glass before:glass-bg-popover standard:dark:before:bg-transparent">
       <Drawer.Title>Beta Notice</Drawer.Title>
       {@render notice?.()}
     </Drawer.Content>

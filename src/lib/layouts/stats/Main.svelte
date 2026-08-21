@@ -248,7 +248,7 @@
 {:else}
   <Drawer.Root bind:open={internalState.showItem} shouldScaleBackground={true} setBackgroundColorOnScale={false}>
     <Drawer.Content
-      class="p-2 before:glass before:bg-transparent before:p-0 before:glass-bg-popover [&>div:first-child]:hidden!">
+      class="p-2 before:glass before:p-0 before:glass-bg-popover standard:dark:before:bg-transparent [&>div:first-child]:hidden!">
       <ItemContent piece={internalState.itemContent!} isDrawer={true} />
     </Drawer.Content>
   </Drawer.Root>
