@@ -267,7 +267,7 @@
       <script
         defer
         src={PUBLIC_UMAMI_RECORDER_URL}
-        data-website-id={PUBLIC_UMAMI_HOST_URL}
+        data-website-id={PUBLIC_UMAMI_WEBSITE_ID}
         data-host-url={PUBLIC_UMAMI_HOST_URL}></script>
     {/if}
   {/if}
