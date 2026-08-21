@@ -253,9 +253,17 @@
     <link rel="icon" href="/favicon.png" sizes="32x32" type="image/png" />
   {/if}
   {#if PUBLIC_UMAMI_SCRIPT_URL && PUBLIC_UMAMI_WEBSITE_ID && !dev && !building}
-    <script defer src={PUBLIC_UMAMI_SCRIPT_URL} data-website-id={PUBLIC_UMAMI_WEBSITE_ID} data-host-url=""></script>
+    <script
+      defer
+      src={PUBLIC_UMAMI_SCRIPT_URL}
+      data-website-id={PUBLIC_UMAMI_WEBSITE_ID}
+      data-host-url={window.location.origin}></script>
     {#if PUBLIC_UMAMI_ENABLE_HEATMAPS === "true" && PUBLIC_UMAMI_RECORDER_URL}
-      <script defer src={PUBLIC_UMAMI_RECORDER_URL} data-website-id={PUBLIC_UMAMI_WEBSITE_ID} data-host-url=""></script>
+      <script
+        defer
+        src={PUBLIC_UMAMI_RECORDER_URL}
+        data-website-id={PUBLIC_UMAMI_WEBSITE_ID}
+        data-host-url={window.location.origin}></script>
     {/if}
   {/if}
 </svelte:head>
