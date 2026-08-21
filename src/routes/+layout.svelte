@@ -46,8 +46,13 @@
   let toastId: string | number = $state(0);
   let commandLoading = $state(false);
 
-  const { PUBLIC_UMAMI_SCRIPT_URL, PUBLIC_UMAMI_WEBSITE_ID, PUBLIC_UMAMI_RECORDER_URL, PUBLIC_UMAMI_ENABLE_HEATMAPS } =
-    publicEnv;
+  const {
+    PUBLIC_UMAMI_SCRIPT_URL,
+    PUBLIC_UMAMI_WEBSITE_ID,
+    PUBLIC_UMAMI_RECORDER_URL,
+    PUBLIC_UMAMI_ENABLE_HEATMAPS,
+    PUBLIC_UMAMI_HOST_URL
+  } = publicEnv;
   const { ign } = $derived(page.params);
   const showNewsroomToast = $derived(page.url.pathname !== "/" && !page.url.pathname.startsWith("/newsroom"));
   const preferences = initPreferences();
@@ -252,17 +257,17 @@
   {#if !noEmbedUrls.some((url) => page.url.pathname.startsWith(url))}
     <link rel="icon" href="/favicon.png" sizes="32x32" type="image/png" />
   {/if}
-  {#if PUBLIC_UMAMI_SCRIPT_URL && PUBLIC_UMAMI_WEBSITE_ID && !dev && !building && browser && window?.location?.origin}
+  {#if PUBLIC_UMAMI_SCRIPT_URL && PUBLIC_UMAMI_WEBSITE_ID && !building}
     <script
       defer
       src={PUBLIC_UMAMI_SCRIPT_URL}
       data-website-id={PUBLIC_UMAMI_WEBSITE_ID}
-      data-host-url={window.location.origin}></script>
+      data-host-url={PUBLIC_UMAMI_HOST_URL}></script>
     {#if PUBLIC_UMAMI_ENABLE_HEATMAPS === "true" && PUBLIC_UMAMI_RECORDER_URL}
       <script
         defer
         src={PUBLIC_UMAMI_RECORDER_URL}
-        data-website-id={PUBLIC_UMAMI_WEBSITE_ID}
+        data-website-id={PUBLIC_UMAMI_HOST_URL}
         data-host-url={window.location.origin}></script>
     {/if}
   {/if}
