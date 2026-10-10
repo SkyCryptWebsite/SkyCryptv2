@@ -8,11 +8,31 @@ import Settings from "./settings/+page.svelte";
 
 const route = vi.hoisted(() => ({ url: new URL("http://localhost/dashboard") }));
 vi.mock("$app/state", () => ({ page: route }));
-afterEach(() => document.documentElement.classList.remove("dark"));
-vi.mock("$lib/shared/auth-client", () => ({
-  authClient: { linkSocial: vi.fn(), updateUser: vi.fn(), revokeOtherSessions: vi.fn() }
+vi.mock("$app/env/public", () => ({
+  PUBLIC_PATREON: "patreon",
+  PUBLIC_PATREON_ANY_EMOJI_CENTS: "500",
+  PUBLIC_PATREON_COLORED_HEART_CENTS: "500"
 }));
-vi.mock("./dashboard.remote", () => ({
+afterEach(() => document.documentElement.classList.remove("dark"));
+const authClientMock = vi.hoisted(() => () => ({
+  authClient: {
+    getSession: () =>
+      Promise.resolve({
+        data: {
+          user: {
+            name: "SkyBlock Player",
+            discordProfile: null
+          }
+        }
+      }),
+    linkSocial: vi.fn(),
+    updateUser: vi.fn(),
+    revokeOtherSessions: vi.fn()
+  }
+}));
+vi.mock("#lib/shared/auth-client.js", authClientMock);
+vi.mock("$src/lib/shared/auth-client", authClientMock);
+const dashboardRemoteMock = vi.hoisted(() => ({
   getDashboard: () =>
     Promise.resolve({
       user: { id: "preview", name: "SkyBlock Player", createdAt: new Date("2025-01-01") },
@@ -21,6 +41,14 @@ vi.mock("./dashboard.remote", () => ({
     }),
   verifyMembership: Object.assign(vi.fn(), { pending: 0 })
 }));
+vi.mock("./dashboard.remote", () => dashboardRemoteMock);
+vi.mock("$routes/(protected)/dashboard/dashboard.remote", () => dashboardRemoteMock);
+const minecraftRemoteMock = vi.hoisted(() => ({
+  syncMinecraftAccounts: Object.assign(vi.fn(), { pending: 0 }),
+  getMinecraftAccounts: () => Promise.resolve([])
+}));
+vi.mock("./minecraft.remote", () => minecraftRemoteMock);
+vi.mock("$routes/(protected)/dashboard/minecraft.remote", () => minecraftRemoteMock);
 vi.mock("./donator-perks/perks.remote", () => ({
   getPerks: () => Promise.resolve([]),
   updateEmoji: vi.fn()
@@ -43,7 +71,7 @@ vi.mock("./settings/settings.remote", () => ({
 }));
 
 for (const [name, screen, heading] of [
-  ["home", Home, "Welcome, SkyBlock Player"],
+  ["home", Home, "Connected Minecraft accounts"],
   ["settings", Settings, "Settings"],
   ["perks", Perks, "Donator Perks"]
 ] as const) {
@@ -54,7 +82,7 @@ for (const [name, screen, heading] of [
     await page.viewport(1280, 1000);
     document.documentElement.classList.add("dark");
     const view = await render(Preview, { screen });
-    await expect.element(page.getByRole("heading", { name: heading, exact: true })).toBeVisible();
+    await expect.element(page.getByText(heading, { exact: true })).toBeVisible();
     await page.viewport(390, 844);
     await expect.poll(() => document.documentElement.scrollWidth).toBeLessThanOrEqual(390);
     await page.getByRole("button", { name: "Toggle Sidebar" }).click();

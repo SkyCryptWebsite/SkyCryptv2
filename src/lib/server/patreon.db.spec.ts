@@ -4,8 +4,8 @@ import { describe, expect, it, vi } from "vitest";
 describe.skipIf(!process.env.DATABASE_URL)("Patreon entitlement persistence", () => {
   it("never lowers a previously earned entitlement", async () => {
     const [{ db }, { user }, { storePatreonMembership }] = await Promise.all([
-      import("$lib/server/db"),
-      import("$lib/server/db/schema"),
+      import("#lib/server/db/index.js"),
+      import("#lib/server/db/schema/index.js"),
       import("./patreon")
     ]);
     const userId = randomUUID();
@@ -30,8 +30,8 @@ describe.skipIf(!process.env.DATABASE_URL)("Patreon entitlement persistence", ()
 
   it("persists rotated creator tokens", async () => {
     const [{ db }, { patreonCreatorToken }, { refreshCreatorAccessToken }, { eq }] = await Promise.all([
-      import("$lib/server/db"),
-      import("$lib/server/db/schema"),
+      import("#lib/server/db/index.js"),
+      import("#lib/server/db/schema/index.js"),
       import("./patreon"),
       import("drizzle-orm")
     ]);

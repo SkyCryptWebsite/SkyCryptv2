@@ -18,8 +18,8 @@ vi.mock("$app/server", () => ({
     Object.assign(() => Object.assign(handler(), { refresh: mocks.refresh }), { __: { type: "query" } }),
   command: (handler: () => unknown) => Object.assign(handler, { __: { type: "command" } })
 }));
-vi.mock("$lib/server/auth", () => ({ auth: { api: { listUserAccounts: mocks.listUserAccounts } } }));
-vi.mock("$lib/server/patreon", () => ({
+vi.mock("#lib/server/auth.js", () => ({ auth: { api: { listUserAccounts: mocks.listUserAccounts } } }));
+vi.mock("#lib/server/patreon.js", () => ({
   getStoredPatreonMembership: mocks.getStoredPatreonMembership,
   getPatreonVerificationRetryAt: mocks.getPatreonVerificationRetryAt,
   verifyPatreonMembership: mocks.verifyPatreonMembership,
@@ -33,7 +33,7 @@ vi.mock("$lib/server/patreon", () => ({
   }
 }));
 
-import { PatreonVerificationError } from "$lib/server/patreon";
+import { PatreonVerificationError } from "#lib/server/patreon.js";
 import { getDashboard, verifyMembership } from "./dashboard.remote";
 
 beforeEach(() => {
@@ -107,7 +107,7 @@ it("verifies the current user and refreshes dashboard data after success", async
   signIn();
   await verifyMembership();
   expect(mocks.verifyPatreonMembership).toHaveBeenCalledWith("current-user");
-  expect(mocks.refresh).toHaveBeenCalledOnce();
+  expect(mocks.refresh).toHaveBeenCalledTimes(2);
 });
 
 it("returns the in-memory retry time for the current user", async () => {

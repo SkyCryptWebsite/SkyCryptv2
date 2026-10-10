@@ -1,9 +1,9 @@
 <script lang="ts">
   import { getProfileContext } from "$ctx";
-  import { cn } from "$lib/shared/utils";
   import ky from "ky";
   import * as skinview3d from "skinview3d";
   import { onDestroy } from "svelte";
+  import { cn } from "#lib/shared/utils.js";
 
   interface Props {
     class?: string;

@@ -1,9 +1,6 @@
 <script lang="ts">
   import { resolve } from "$app/paths";
   import { getFavorites, getHoverContext, getProfileContext } from "$ctx";
-  import { APINotice } from "$lib/components/notices";
-  import { getProfileEmoji } from "$lib/shared/profile-emoji.remote";
-  import { cn } from "$lib/shared/utils";
   import CardBuilder from "$src/lib/components/stats/CardBuilder.svelte";
   import * as Avatar from "$ui/avatar";
   import { Button } from "$ui/button";
@@ -19,6 +16,9 @@
   import Link from "@lucide/svelte/icons/link";
   import TriangleAlert from "@lucide/svelte/icons/triangle-alert";
   import { toast } from "svelte-sonner";
+  import { APINotice } from "#lib/components/notices/index.js";
+  import { getProfileEmoji } from "#lib/shared/profile-emoji.remote.js";
+  import { cn } from "#lib/shared/utils.js";
 
   let toastId: string | number = $state(0);
   let showMore = $state(false);

@@ -22,6 +22,7 @@
 <button
   type="button"
   data-slot="button"
+  aria-label="Change skin tone"
   {...rest}
   class={cn(buttonVariants({ variant, size }), "size-11", className)}
   onclick={(e) => {

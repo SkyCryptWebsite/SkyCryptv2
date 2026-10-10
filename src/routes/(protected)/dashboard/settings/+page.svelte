@@ -1,6 +1,5 @@
 <script lang="ts">
   import { resolve } from "$app/paths";
-  import { authClient } from "$lib/shared/auth-client";
   import { Badge } from "$ui/badge";
   import { Button } from "$ui/button";
   import * as Card from "$ui/card";
@@ -16,6 +15,7 @@
   import ShieldCheckIcon from "@lucide/svelte/icons/shield-check";
   import SmartphoneIcon from "@lucide/svelte/icons/smartphone";
   import { toast } from "svelte-sonner";
+  import { authClient } from "#lib/shared/auth-client.js";
   import { sessionDevice } from "./session-device";
   import { deleteAccount, exportData, getSessions, revokeSession } from "./settings.remote";
 

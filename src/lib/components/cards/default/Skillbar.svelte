@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { formatNumber } from "$lib/shared/helper";
   import type { ModelsSkill } from "$src/lib/shared/api/orval-generated";
   import { calculatePercentage } from "$src/lib/shared/helper";
   import { cn } from "$src/lib/shared/utils";
   import { Progress } from "bits-ui";
+  import { formatNumber } from "#lib/shared/helper.js";
   import { getDefaultCardSettingsContext } from "./Base.svelte";
 
   type SkillProps = {

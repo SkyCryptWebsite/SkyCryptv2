@@ -20,29 +20,29 @@
 
 <script lang="ts">
   import { getCombinedContext, getInternalState, getPreferences } from "$ctx";
-  import { Notice } from "$lib/components/notices";
-  import type { SectionName } from "$lib/sections/types";
-  import { titleCase } from "$lib/shared/helper";
   import { Spinner } from "$ui/spinner";
+  import { Notice } from "#lib/components/notices/index.js";
+  import type { SectionName } from "#lib/sections/types.js";
+  import { titleCase } from "#lib/shared/helper.js";
 
   const preferences = getPreferences();
   const internalState = getInternalState();
   const combinedCtx = getCombinedContext();
 
   const COMPONENTS = {
-    Gear: () => import("$lib/sections/stats/Gear.svelte"),
-    Accessories: () => import("$lib/sections/stats/Accessories.svelte"),
-    Pets: () => import("$lib/sections/stats/Pets.svelte"),
-    Inventory: () => import("$lib/sections/stats/Inventory.svelte"),
-    Skills: () => import("$lib/sections/stats/SkillsSection.svelte"),
-    Dungeons: () => import("$lib/sections/stats/Dungeons.svelte"),
-    Slayer: () => import("$lib/sections/stats/Slayer.svelte"),
-    Minions: () => import("$lib/sections/stats/Minions.svelte"),
-    Bestiary: () => import("$lib/sections/stats/Bestiary.svelte"),
-    Collections: () => import("$lib/sections/stats/Collections.svelte"),
-    Crimson_Isle: () => import("$lib/sections/stats/CrimsonIsle.svelte"),
-    Rift: () => import("$lib/sections/stats/Rift.svelte"),
-    Misc: () => import("$lib/sections/stats/MiscSection.svelte")
+    Gear: () => import("#lib/sections/stats/Gear.svelte"),
+    Accessories: () => import("#lib/sections/stats/Accessories.svelte"),
+    Pets: () => import("#lib/sections/stats/Pets.svelte"),
+    Inventory: () => import("#lib/sections/stats/Inventory.svelte"),
+    Skills: () => import("#lib/sections/stats/SkillsSection.svelte"),
+    Dungeons: () => import("#lib/sections/stats/Dungeons.svelte"),
+    Slayer: () => import("#lib/sections/stats/Slayer.svelte"),
+    Minions: () => import("#lib/sections/stats/Minions.svelte"),
+    Bestiary: () => import("#lib/sections/stats/Bestiary.svelte"),
+    Collections: () => import("#lib/sections/stats/Collections.svelte"),
+    Crimson_Isle: () => import("#lib/sections/stats/CrimsonIsle.svelte"),
+    Rift: () => import("#lib/sections/stats/Rift.svelte"),
+    Misc: () => import("#lib/sections/stats/MiscSection.svelte")
   } satisfies Record<SectionName, () => Promise<{ default: unknown }>>;
   const componentPromise = $derived(loadSection(internalState.tabValue, COMPONENTS[internalState.tabValue]));
 

@@ -1,8 +1,8 @@
-import { db } from "$lib/server/db";
-import { account, minecraftAccount, patreonMembership, profileEmoji } from "$lib/server/db/schema";
-import { canSelectEmoji, profileEmojiSchema, profileUuidSchema } from "$lib/shared/profile-emoji";
 import { error } from "@sveltejs/kit";
 import { and, asc, desc, eq, sql } from "drizzle-orm";
+import { db } from "#lib/server/db/index.js";
+import { account, minecraftAccount, patreonMembership, profileEmoji } from "#lib/server/db/schema/index.js";
+import { canSelectEmoji, profileEmojiSchema, profileUuidSchema } from "#lib/shared/profile-emoji.js";
 
 export async function getEmojiAccounts(userId: string) {
   return db

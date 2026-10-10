@@ -1,13 +1,8 @@
 <script lang="ts">
+  import { PUBLIC_DISCORD_INVITE, PUBLIC_PATREON } from "$app/env/public";
   import { goto } from "$app/navigation";
   import { resolve } from "$app/paths";
   import { getFavorites } from "$ctx";
-  import { env } from "$env/dynamic/public";
-  import { ContributorCard, ContributorCardSkeleton, CtaCard } from "$lib/components/misc";
-  import PostCard from "$lib/components/newsroom/PostCard.svelte";
-  import { Notice } from "$lib/components/notices";
-  import { listPosts } from "$lib/shared/api/cms-api.remote";
-  import { resolveUuidByUsername } from "$lib/shared/api/skycrypt-api.remote";
   import { getContributors } from "$routes/contributors.remote";
   import { Button, buttonVariants } from "$ui/button";
   import * as ButtonGroup from "$ui/button-group";
@@ -27,10 +22,14 @@
   import Star from "@lucide/svelte/icons/star";
   import { isHttpError } from "@sveltejs/kit";
   import { onMount } from "svelte";
+  import { ContributorCard, ContributorCardSkeleton, CtaCard } from "#lib/components/misc/index.js";
+  import PostCard from "#lib/components/newsroom/PostCard.svelte";
+  import { Notice } from "#lib/components/notices/index.js";
+  import { listPosts } from "#lib/shared/api/cms-api.remote.js";
+  import { resolveUuidByUsername } from "#lib/shared/api/skycrypt-api.remote.js";
   import { Role } from "./enums";
   import { schema } from "./schema";
 
-  const { PUBLIC_DISCORD_INVITE, PUBLIC_PATREON } = env;
   const favorites = getFavorites();
 
   let searchQuery = $state<string>(null!);
@@ -109,7 +108,7 @@
 
     try {
       const response = await resolveUuidByUsername({ username });
-      await goto(resolve("/stats/[ign]", { ign: response.username ?? "" }));
+      await goto(resolve("/stats/[ign]/[[profile]]", { ign: response.username ?? "" }));
     } catch (err) {
       submittedSearchError = getErrorMessage(err);
     } finally {

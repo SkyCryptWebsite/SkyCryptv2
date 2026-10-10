@@ -15,8 +15,8 @@ vi.mock("$app/server", () => ({
     Object.assign(() => Object.assign(handler(), { refresh: mocks.refresh }), { __: { type: "query" } }),
   command: (handler: () => unknown) => Object.assign(handler, { __: { type: "command" } })
 }));
-vi.mock("$lib/server/auth", () => ({ auth: { api: { getAccessToken: mocks.getAccessToken } } }));
-vi.mock("$lib/server/minecraft-accounts", () => ({
+vi.mock("#lib/server/auth.js", () => ({ auth: { api: { getAccessToken: mocks.getAccessToken } } }));
+vi.mock("#lib/server/minecraft-accounts.js", () => ({
   getMcIdLinks: mocks.getMcIdLinks,
   getStoredMinecraftAccounts: mocks.getStoredMinecraftAccounts,
   fetchMcIdProfile: mocks.fetchMcIdProfile,

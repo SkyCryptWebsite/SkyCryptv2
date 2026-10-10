@@ -1,7 +1,7 @@
 <script lang="ts">
-  import ScrollAreaPrimitive from "$lib/components/ScrollAreaPrimitive.svelte";
   import { ScrollArea } from "bits-ui";
   import type { Snippet } from "svelte";
+  import ScrollAreaPrimitive from "#lib/components/ScrollAreaPrimitive.svelte";
 
   type Props = {
     children?: Snippet;

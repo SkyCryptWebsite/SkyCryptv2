@@ -1,4 +1,5 @@
 import { randomUUID } from "node:crypto";
+import { fileURLToPath } from "node:url";
 import { sentrySvelteKit } from "@sentry/sveltekit";
 import adapter from "@sveltejs/adapter-node";
 import { sveltekit } from "@sveltejs/kit/vite";
@@ -9,6 +10,7 @@ import { defineConfig } from "vitest/config";
 
 // SvelteKit reloads this config for the client build; both bundles need the same prerender ID.
 const prerenderVersion = (process.env.SKYCRYPT_PRERENDER_VERSION ??= randomUUID());
+const root = fileURLToPath(new URL(".", import.meta.url));
 
 export default defineConfig({
   plugins: [
@@ -24,24 +26,13 @@ export default defineConfig({
       compilerOptions: { experimental: { async: true }, runes: true },
       experimental: {
         remoteFunctions: true,
-        tracing: { server: true },
-        instrumentation: { server: true }
+        sendWarningsToBrowser: process.env.NODE_ENV === "development"
       },
+      tracing: { server: true },
+      inspector: process.env.NODE_ENV === "development",
       adapter: adapter(),
-      alias: {
-        $params: "./src/params",
-        $types: "./src/lib/types",
-        $db: "./src/db",
-        $constants: "./src/lib/server/constants",
-        $ctx: "./src/context",
-        $routes: "./src/routes",
-        $src: "./src",
-        $ui: "./src/lib/components/ui",
-        $lib: "./src/lib",
-        $utils: "./src/lib/shared/utils.ts",
-        $hooks: "./src/lib/hooks",
-        $components: "./src/lib/components",
-        "$utils.js": "./src/lib/shared/utils.ts"
+      paths: {
+        origin: process.env.PUBLIC_ORIGIN || process.env.ORIGIN
       },
       csrf: {
         trustedOrigins: [
@@ -91,22 +82,27 @@ export default defineConfig({
         name: process.env.PUBLIC_COMMIT_HASH,
         // in ms
         pollInterval: 1000 * 60 // 1 minute
-      },
-      typescript: {
-        config: (config) => ({
-          ...config,
-          include: [...config.include, "../drizzle.config.ts"]
-        })
-      },
-      vitePlugin: {
-        experimental: {
-          sendWarningsToBrowser: process.env.NODE_ENV === "development"
-        },
-        inspector: process.env.NODE_ENV === "development"
       }
     }),
     tailwindcss()
   ],
+  resolve: {
+    alias: {
+      $params: `${root}/src/params`,
+      $types: `${root}/src/lib/types`,
+      $db: `${root}/src/db`,
+      $constants: `${root}/src/lib/server/constants`,
+      $ctx: `${root}/src/context`,
+      $routes: `${root}/src/routes`,
+      $src: `${root}/src`,
+      $ui: `${root}/src/lib/components/ui`,
+      $lib: `${root}/src/lib`,
+      $utils: `${root}/src/lib/shared/utils.ts`,
+      $hooks: `${root}/src/lib/hooks`,
+      $components: `${root}/src/lib/components`,
+      "$utils.js": `${root}/src/lib/shared/utils.ts`
+    }
+  },
   build: { sourcemap: true },
   test: {
     expect: { requireAssertions: true },

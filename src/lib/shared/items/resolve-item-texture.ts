@@ -1,4 +1,4 @@
-import { readEnabledPacksCookie, serializePackIds } from "$lib/shared/resource-packs";
+import { readEnabledPacksCookie, serializePackIds } from "#lib/shared/resource-packs.js";
 
 export type ResolvedItemTexture = {
   texture: string;

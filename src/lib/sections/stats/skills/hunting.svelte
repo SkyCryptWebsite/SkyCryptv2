@@ -1,16 +1,16 @@
 <script lang="ts">
   import { getSkillsContext } from "$ctx";
-  import { Chip, SearchTabs } from "$lib/components/misc";
-  import { AdditionStat } from "$lib/components/stats";
-  import type { ModelsAttributeShard } from "$lib/shared/api/orval-generated";
-  import { RARITIES } from "$lib/shared/constants/rarities";
-  import { getRarityClass, renderLore, titleCase } from "$lib/shared/helper";
-  import { cn } from "$lib/shared/utils";
   import EmptyStat from "$src/lib/components/EmptyStat.svelte";
   import { tz } from "@date-fns/tz";
   import CrosshairIcon from "@lucide/svelte/icons/crosshair";
   import { formatDate } from "date-fns";
   import { format } from "numerable";
+  import { Chip, SearchTabs } from "#lib/components/misc/index.js";
+  import { AdditionStat } from "#lib/components/stats/index.js";
+  import type { ModelsAttributeShard } from "#lib/shared/api/orval-generated.js";
+  import { RARITIES } from "#lib/shared/constants/rarities.js";
+  import { getRarityClass, renderLore, titleCase } from "#lib/shared/helper.js";
+  import { cn } from "#lib/shared/utils.js";
 
   const skills = $derived(getSkillsContext().skills);
   const hunting = $derived(skills?.hunting);

@@ -1,18 +1,24 @@
-import { env as privateEnv } from "$env/dynamic/private";
-import { env as publicEnv } from "$env/dynamic/public";
-import { db } from "$lib/server/db";
-import { account, patreonCreatorToken, patreonMembership } from "$lib/server/db/schema";
-import { claimPatreonVerification } from "$lib/server/patreon-cooldown";
+import {
+  PATREON_CLIENT_ID,
+  PATREON_CLIENT_SECRET,
+  PATREON_CREATOR_ACCESS_TOKEN,
+  PATREON_CREATOR_REFRESH_TOKEN,
+  PATREON_CAMPAIGN_ID
+} from "$app/env/private";
+import { PUBLIC_PATREON_COLORED_HEART_CENTS, PUBLIC_PATREON_ANY_EMOJI_CENTS } from "$app/env/public";
+import { and, eq, sql } from "drizzle-orm";
+import { db } from "#lib/server/db/index.js";
+import { account, patreonCreatorToken, patreonMembership } from "#lib/server/db/schema/index.js";
+import { claimPatreonVerification } from "#lib/server/patreon-cooldown.js";
 import {
   findPatreonMembership,
   getPatreonEntitlement,
   type PatreonCampaignMember,
   type PatreonCampaignMembersResponse,
   type PatreonEntitlement
-} from "$lib/server/patreon-entitlements";
-import { and, eq, sql } from "drizzle-orm";
+} from "#lib/server/patreon-entitlements.js";
 
-export { getPatreonVerificationRetryAt } from "$lib/server/patreon-cooldown";
+export { getPatreonVerificationRetryAt } from "#lib/server/patreon-cooldown.js";
 
 const PATREON_API_URL = "https://www.patreon.com/api/oauth2/v2";
 const PATREON_TOKEN_URL = "https://www.patreon.com/api/oauth2/token";
@@ -60,8 +66,8 @@ export async function getStoredPatreonMembership(userId: string): Promise<Patreo
 }
 
 export async function refreshCreatorAccessToken(campaignId: string, staleAccessToken?: string) {
-  const clientId = privateEnv.PATREON_CLIENT_ID?.trim();
-  const clientSecret = privateEnv.PATREON_CLIENT_SECRET?.trim();
+  const clientId = PATREON_CLIENT_ID?.trim();
+  const clientSecret = PATREON_CLIENT_SECRET?.trim();
   if (!clientId || !clientSecret) {
     throw new PatreonVerificationError("Patreon creator access is not configured.", "not_configured");
   }
@@ -120,9 +126,9 @@ export async function refreshCreatorAccessToken(campaignId: string, staleAccessT
 }
 
 async function getCreatorAccessToken(campaignId: string) {
-  const accessToken = privateEnv.PATREON_CREATOR_ACCESS_TOKEN?.trim();
-  const refreshToken = privateEnv.PATREON_CREATOR_REFRESH_TOKEN?.trim();
-  if (!accessToken || !refreshToken || !privateEnv.PATREON_CLIENT_ID || !privateEnv.PATREON_CLIENT_SECRET) {
+  const accessToken = PATREON_CREATOR_ACCESS_TOKEN?.trim();
+  const refreshToken = PATREON_CREATOR_REFRESH_TOKEN?.trim();
+  if (!accessToken || !refreshToken || !PATREON_CLIENT_ID || !PATREON_CLIENT_SECRET) {
     throw new PatreonVerificationError("Patreon creator access is not configured.", "not_configured");
   }
 
@@ -208,8 +214,8 @@ export async function storePatreonMembership(
   patreonUserId: string,
   campaignId: string,
   membership: PatreonCampaignMember,
-  coloredHeartCents = Number(publicEnv.PUBLIC_PATREON_COLORED_HEART_CENTS ?? 500),
-  anyEmojiCents = Number(publicEnv.PUBLIC_PATREON_ANY_EMOJI_CENTS ?? 6000)
+  coloredHeartCents = Number(PUBLIC_PATREON_COLORED_HEART_CENTS ?? 500),
+  anyEmojiCents = Number(PUBLIC_PATREON_ANY_EMOJI_CENTS ?? 6000)
 ): Promise<PatreonMembershipStatus> {
   const lifetimeSupportCents = membership.attributes?.campaign_lifetime_support_cents ?? 0;
   const currentlyEntitledAmountCents = membership.attributes?.currently_entitled_amount_cents ?? 0;
@@ -257,9 +263,10 @@ export async function storePatreonMembership(
 }
 
 export async function verifyPatreonMembership(userId: string): Promise<PatreonMembershipStatus> {
-  const campaignId = privateEnv.PATREON_CAMPAIGN_ID?.trim();
-  const coloredHeartCents = Number(publicEnv.PUBLIC_PATREON_COLORED_HEART_CENTS ?? 500);
-  const anyEmojiCents = Number(publicEnv.PUBLIC_PATREON_ANY_EMOJI_CENTS ?? 6000);
+  const campaignId = PATREON_CAMPAIGN_ID?.trim();
+  const coloredHeartCents = Number(PUBLIC_PATREON_COLORED_HEART_CENTS ?? 500);
+  const anyEmojiCents = Number(PUBLIC_PATREON_ANY_EMOJI_CENTS ?? 6000);
+
   if (
     !campaignId ||
     !Number.isSafeInteger(coloredHeartCents) ||

@@ -5,9 +5,9 @@ import type {
   PostListResponseResponse,
   PostType,
   User
-} from "$lib/shared/api/cms-generated";
+} from "#lib/shared/api/cms-generated.js";
 
-// Type-only re-exports: `cms-generated.ts` pulls in a server-only mutator ($env/dynamic/private),
+// Type-only re-exports: `cms-generated.ts` pulls in a server-only mutator ($app/env/private),
 // so this barrel must never create a runtime import of it (it's consumed by browser components).
 export type { Media, PostBodyItem, PostType };
 
@@ -15,7 +15,7 @@ export type { Media, PostBodyItem, PostType };
  * Allowed post categories, in display order.
  *
  * This is the one value we can't derive from the generated schema: the runtime enum only exists as a const in
- * `cms-generated.ts`, and importing that value here would pull the server-only mutator ($env/dynamic/private) into the
+ * `cms-generated.ts`, and importing that value here would pull the server-only mutator ($app/env/private) into the
  * browser bundle. So the list is hand-written but kept honest against the schema — `satisfies` rejects entries that
  * aren't a {@link PostType}, and the assertion below fails to compile if the CMS adds a type that's missing here.
  */

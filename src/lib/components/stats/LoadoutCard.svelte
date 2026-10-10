@@ -1,15 +1,15 @@
 <script lang="ts">
   import { getAllStatsContext } from "$ctx";
-  import type { EmptyItemSlotType } from "$lib/components/item/EmptyItemSlot.svelte";
-  import EmptyItemSlot from "$lib/components/item/EmptyItemSlot.svelte";
-  import GearSlotColumn from "$lib/components/item/GearSlotColumn.svelte";
-  import SkyblockItem from "$lib/components/item/Item.svelte";
-  import type { ModelsResolvedLoadout } from "$lib/shared/api/orval-generated";
-  import { titleCase } from "$lib/shared/helper";
-  import { cn } from "$lib/shared/utils";
   import ScrollAreaItems from "$src/lib/components/ScrollAreaItems.svelte";
   import * as Item from "$ui/item";
   import { Separator } from "$ui/separator";
+  import type { EmptyItemSlotType } from "#lib/components/item/EmptyItemSlot.svelte";
+  import EmptyItemSlot from "#lib/components/item/EmptyItemSlot.svelte";
+  import GearSlotColumn from "#lib/components/item/GearSlotColumn.svelte";
+  import SkyblockItem from "#lib/components/item/Item.svelte";
+  import type { ModelsResolvedLoadout } from "#lib/shared/api/orval-generated.js";
+  import { titleCase } from "#lib/shared/helper.js";
+  import { cn } from "#lib/shared/utils.js";
 
   type Props = {
     loadout: ModelsResolvedLoadout;

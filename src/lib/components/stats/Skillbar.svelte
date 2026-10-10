@@ -1,6 +1,4 @@
 <script lang="ts">
-  import type { ModelsSkill } from "$lib/shared/api/orval-generated";
-  import { calculatePercentage, formatNumber } from "$lib/shared/helper";
   import * as Avatar from "$ui/avatar";
   import { Progress } from "$ui/progress";
   import { cn } from "$utils";
@@ -8,6 +6,8 @@
   import { format } from "numerable";
   import { cubicInOut } from "svelte/easing";
   import { Tween } from "svelte/motion";
+  import type { ModelsSkill } from "#lib/shared/api/orval-generated.js";
+  import { calculatePercentage, formatNumber } from "#lib/shared/helper.js";
 
   type Props = {
     skill: string;

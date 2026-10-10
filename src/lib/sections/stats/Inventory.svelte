@@ -1,14 +1,6 @@
 <script lang="ts">
   import { Notice } from "$components/notices";
   import { getInternalState, getMobileContext, getProfileContext } from "$ctx";
-  import { InventoryGrid, InventorySearch, Item } from "$lib/components/item";
-  import { ScrollItems } from "$lib/components/misc";
-  import { Section } from "$lib/components/sections";
-  import { type ModelsInventory, type ModelsStrippedItem } from "$lib/shared/api/orval-generated";
-  import { getProfileInventory } from "$lib/shared/api/skycrypt-api.remote";
-  import { renderLore } from "$lib/shared/helper";
-  import { animateObfuscatedText } from "$lib/shared/mc-text/obfuscated";
-  import { cn } from "$lib/shared/utils";
   import * as Avatar from "$ui/avatar";
   import { ScrollArea } from "$ui/scroll-area";
   import { Separator } from "$ui/separator";
@@ -17,6 +9,14 @@
   import { Tabs } from "bits-ui";
   import { cubicOut } from "svelte/easing";
   import { crossfade } from "svelte/transition";
+  import { InventoryGrid, InventorySearch, Item } from "#lib/components/item/index.js";
+  import { ScrollItems } from "#lib/components/misc/index.js";
+  import { Section } from "#lib/components/sections/index.js";
+  import { type ModelsInventory, type ModelsStrippedItem } from "#lib/shared/api/orval-generated.js";
+  import { getProfileInventory } from "#lib/shared/api/skycrypt-api.remote.js";
+  import { renderLore } from "#lib/shared/helper.js";
+  import { animateObfuscatedText } from "#lib/shared/mc-text/obfuscated/index.js";
+  import { cn } from "#lib/shared/utils.js";
 
   const internalState = getInternalState();
   const isMobile = getMobileContext();

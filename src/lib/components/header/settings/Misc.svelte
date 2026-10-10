@@ -1,6 +1,5 @@
 <script lang="ts">
   import { getPreferences } from "$ctx";
-  import { SettingsTab } from "$lib/components/header/types";
   import { Button } from "$ui/button";
   import * as Kbd from "$ui/kbd";
   import { ScrollArea } from "$ui/scroll-area";
@@ -13,6 +12,7 @@
   import Rainbow from "@lucide/svelte/icons/rainbow";
   import Settings2 from "@lucide/svelte/icons/settings-2";
   import Sparkle from "@lucide/svelte/icons/sparkle";
+  import { SettingsTab } from "#lib/components/header/types.js";
   import SettingToggleRow from "./SettingToggleRow.svelte";
 
   const preferences = getPreferences();

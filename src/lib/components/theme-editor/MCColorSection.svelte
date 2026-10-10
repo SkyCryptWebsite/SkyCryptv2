@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { hexToOklch, oklchToHex } from "$lib/shared/themes/color-utils";
-  import { MC_PALETTES, paletteNames } from "$lib/shared/themes/presets";
-  import type { SkyCryptThemeExtras, ThemeModeName, ThemeV5 } from "$lib/shared/themes/schema";
   import { Input } from "$ui/input";
   import { Label } from "$ui/label";
   import * as Select from "$ui/select";
+  import { hexToOklch, oklchToHex } from "#lib/shared/themes/color-utils.js";
+  import { MC_PALETTES, paletteNames } from "#lib/shared/themes/presets.js";
+  import type { SkyCryptThemeExtras, ThemeModeName, ThemeV5 } from "#lib/shared/themes/schema.js";
 
   let { workingTheme = $bindable(), editingMode } = $props<{
     workingTheme: ThemeV5;

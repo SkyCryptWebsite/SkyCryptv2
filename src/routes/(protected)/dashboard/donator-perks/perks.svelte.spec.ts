@@ -8,12 +8,18 @@ const mocks = vi.hoisted(() => ({
   linked: true,
   route: { url: new URL("http://localhost/dashboard/donator-perks"), state: {} },
   replaceState: vi.fn(),
+  goto: vi.fn(),
   linkSocial: vi.fn(),
   refresh: vi.fn(),
   verify: vi.fn()
 }));
 vi.mock("$app/state", () => ({ page: mocks.route }));
-vi.mock("$app/navigation", () => ({ replaceState: mocks.replaceState }));
+vi.mock("$app/env/public", () => ({
+  PUBLIC_PATREON: "patreon",
+  PUBLIC_PATREON_ANY_EMOJI_CENTS: "500",
+  PUBLIC_PATREON_COLORED_HEART_CENTS: "500"
+}));
+vi.mock("$app/navigation", () => ({ goto: mocks.goto }));
 beforeEach(() => {
   vi.resetAllMocks();
   localStorage.clear();
@@ -38,8 +44,14 @@ vi.mock("./perks.remote", () => ({
   getPerks: () => Object.assign(Promise.resolve([]), { refresh: vi.fn() }),
   updateEmoji: vi.fn()
 }));
-vi.mock("$lib/shared/auth-client", () => ({ authClient: { linkSocial: mocks.linkSocial } }));
-vi.mock("svelte-sonner", () => ({ toast: { error: vi.fn(), success: vi.fn() } }));
+vi.mock("#lib/shared/auth-client.js", () => ({ authClient: { linkSocial: mocks.linkSocial } }));
+vi.mock("svelte-sonner", () => ({
+  toast: {
+    error: vi.fn(),
+    promise: vi.fn((promise: Promise<unknown> | undefined) => Promise.resolve(promise).catch(() => undefined)),
+    success: vi.fn()
+  }
+}));
 
 it("restores the server cooldown and enables verification when it expires", async () => {
   vi.useFakeTimers({ toFake: ["Date", "setInterval", "clearInterval"] });
@@ -61,11 +73,10 @@ it("restores the server cooldown and enables verification when it expires", asyn
 it("refreshes the cooldown after a failed verification attempt", async () => {
   mocks.retryAt = null;
   mocks.verify.mockRejectedValueOnce(new Error("Wait one minute before verifying Patreon again."));
-  mocks.refresh.mockResolvedValue(undefined);
   const view = await render(Perks);
   try {
     await page.getByRole("button", { name: "Check support", exact: true }).click();
-    await expect.poll(() => mocks.refresh.mock.calls.length).toBe(1);
+    await expect.element(page.getByRole("button", { name: "Check again in 60s" })).toBeDisabled();
   } finally {
     await view.unmount();
   }
@@ -94,7 +105,11 @@ it("checks automatically once after a successful link and hides the link control
   try {
     await expect.poll(() => mocks.verify.mock.calls.length).toBe(1);
     await expect.element(page.getByRole("button", { name: "Link Patreon", exact: true })).not.toBeInTheDocument();
-    expect(mocks.replaceState).toHaveBeenCalledWith(new URL("http://localhost/dashboard/donator-perks"), {});
+    expect(mocks.goto).toHaveBeenCalledWith(new URL("http://localhost/dashboard/donator-perks"), {
+      shallow: true,
+      replace: true,
+      state: {}
+    });
   } finally {
     await view.unmount();
   }

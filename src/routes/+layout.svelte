@@ -1,7 +1,14 @@
 <script lang="ts">
   import { building } from "$app/env";
-  import { browser, dev } from "$app/environment";
-  import { beforeNavigate, replaceState } from "$app/navigation";
+  import { browser, dev } from "$app/env";
+  import {
+    PUBLIC_UMAMI_ENABLE_HEATMAPS,
+    PUBLIC_UMAMI_HOST_URL,
+    PUBLIC_UMAMI_RECORDER_URL,
+    PUBLIC_UMAMI_SCRIPT_URL,
+    PUBLIC_UMAMI_WEBSITE_ID
+  } from "$app/env/public";
+  import { beforeNavigate, goto } from "$app/navigation";
   import { page, updated } from "$app/state";
   import {
     initEnabledPacks,
@@ -16,16 +23,6 @@
     setMobileContext,
     setPacksContext
   } from "$ctx";
-  import { env as publicEnv } from "$env/dynamic/public";
-  import Header from "$lib/components/header/Header.svelte";
-  import { CommandPalette, JsonLd, PerformanceMode } from "$lib/components/misc";
-  import NewPostsNotifier from "$lib/components/newsroom/NewPostsNotifier.svelte";
-  import ThemeEditor from "$lib/components/theme-editor/ThemeEditor.svelte";
-  import { IsHover } from "$lib/hooks/is-hover.svelte";
-  import { IsMobile } from "$lib/hooks/is-mobile.svelte";
-  import { listLatestPostsForNotifications } from "$lib/shared/api/cms-api.remote";
-  import { listResourcePacks } from "$lib/shared/api/skycrypt-api.remote";
-  import { parseThemeFromURL } from "$lib/shared/themes/sharing";
   import * as Drawer from "$ui/drawer";
   import { Separator } from "$ui/separator";
   import * as Sheet from "$ui/sheet";
@@ -36,9 +33,18 @@
   import { onMount, type Snippet } from "svelte";
   import SvelteSeo from "svelte-seo";
   import { toast, Toaster, type ToasterProps } from "svelte-sonner";
-  import "./layout.css";
   import { SvelteURLSearchParams } from "svelte/reactivity";
   import { writable } from "svelte/store";
+  import Header from "#lib/components/header/Header.svelte";
+  import { CommandPalette, JsonLd, PerformanceMode } from "#lib/components/misc/index.js";
+  import NewPostsNotifier from "#lib/components/newsroom/NewPostsNotifier.svelte";
+  import ThemeEditor from "#lib/components/theme-editor/ThemeEditor.svelte";
+  import { IsHover } from "#lib/hooks/is-hover.svelte.js";
+  import { IsMobile } from "#lib/hooks/is-mobile.svelte.js";
+  import { listLatestPostsForNotifications } from "#lib/shared/api/cms-api.remote.js";
+  import "./layout.css";
+  import { listResourcePacks } from "#lib/shared/api/skycrypt-api.remote.js";
+  import { parseThemeFromURL } from "#lib/shared/themes/sharing.js";
 
   let { children }: { children: Snippet } = $props();
   let isMobile = $state(new IsMobile());
@@ -46,13 +52,6 @@
   let toastId: string | number = $state(0);
   let commandLoading = $state(false);
 
-  const {
-    PUBLIC_UMAMI_SCRIPT_URL,
-    PUBLIC_UMAMI_WEBSITE_ID,
-    PUBLIC_UMAMI_RECORDER_URL,
-    PUBLIC_UMAMI_ENABLE_HEATMAPS,
-    PUBLIC_UMAMI_HOST_URL
-  } = publicEnv;
   const { ign } = $derived(page.params);
   const showNewsroomToast = $derived(page.url.pathname !== "/" && !page.url.pathname.startsWith("/newsroom"));
   const preferences = initPreferences();
@@ -169,7 +168,8 @@
     }
   });
 
-  beforeNavigate(({ type }) => {
+  beforeNavigate(({ type, shallow }) => {
+    if (shallow && type === "goto") return;
     if (type === "leave" || type === "link") return;
 
     commandLoading = true;
@@ -180,7 +180,9 @@
     }, 1000);
   });
 
-  beforeNavigate(({ willUnload, to }) => {
+  beforeNavigate(({ willUnload, to, shallow, type }) => {
+    if (shallow && type === "goto") return;
+
     if (updated.current && !willUnload && to?.url) {
       location.href = to.url.href;
     }
@@ -207,7 +209,7 @@
             urlParams.delete("theme");
             const newUrl = `${page.url.pathname}${urlParams.toString() ? "?" + urlParams.toString() : ""}${page.url.hash}`;
             // eslint-disable-next-line svelte/no-navigation-without-resolve
-            replaceState(newUrl, page.state);
+            goto(newUrl, { shallow: true, replace: true, state: page.state });
           }),
         {
           loading: "Importing theme...",
@@ -223,7 +225,7 @@
         urlParams.delete("theme");
         const newUrl = `${page.url.pathname}${urlParams.toString() ? "?" + urlParams.toString() : ""}${page.url.hash}`;
         // eslint-disable-next-line svelte/no-navigation-without-resolve
-        replaceState(newUrl, page.state);
+        goto(newUrl, { shallow: true, replace: true, state: page.state });
       }
     };
   });
@@ -247,7 +249,7 @@
   lightClassNames={["light"]}
   themeColors={{ dark: "#282828", light: "#dbdbdb" }} />
 
-<svelte:document onkeydown={handleKeydown} onclick={handleOutboundClick} />
+<svelte:document onkeydown={handleKeydown} onclick={handleOutboundClick}></svelte:document>
 
 <svelte:window
   onresize={() => {
@@ -334,7 +336,7 @@
   }} />
 
 {#if page.url.origin.includes("cupcake") || dev}
-  {#await import("$lib/components/notices/BetaNotice.svelte") then { default: BetaNotice }}
+  {#await import("#lib/components/notices/BetaNotice.svelte") then { default: BetaNotice }}
     <BetaNotice />
   {/await}
 {/if}
@@ -370,10 +372,8 @@
     {/if}
   </svelte:boundary>
 {/if}
-<Tooltip.Provider delayDuration={0}>
-  {@render children()}
-</Tooltip.Provider>
 
+<Tooltip.Provider delayDuration={0}>{@render children()}</Tooltip.Provider>
 <CommandPalette {ign} bind:loading={commandLoading} />
 
 {#if !isMobile.current}

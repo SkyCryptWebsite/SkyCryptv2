@@ -1,5 +1,5 @@
-import { building, dev } from "$app/environment";
-import { env } from "$env/dynamic/public";
+import { building, dev } from "$app/env";
+import { PUBLIC_ORIGIN as baseUrl } from "$app/env/public";
 import { DefaultCard } from "$src/lib/components/cards";
 import ErrorCard from "$src/lib/components/cards/default/ErrorCard.svelte";
 import { parseSettingsFromParams } from "$src/lib/components/cards/default/schema";
@@ -15,8 +15,6 @@ import { Renderer, type Font, type ImageSource } from "takumi-js/node";
 import { ImageResponse } from "takumi-js/response";
 import type { RequestHandler } from "./$types";
 import appStyles from "$routes/layout.css?inline";
-
-const { PUBLIC_ORIGIN: baseUrl } = env;
 
 // Create shared renderer with 64MB cache budget
 const renderer = new Renderer({ cacheMaxBytes: 64 * 1024 * 1024 });

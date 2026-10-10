@@ -1,6 +1,6 @@
-import type { auth } from "$lib/server/auth";
-import type { DiscordProfileAssets } from "$lib/server/discord-profile";
-import type { McIdLink, McIdProfile } from "$lib/server/minecraft-accounts";
+import type { auth } from "#lib/server/auth.js";
+import type { DiscordProfileAssets } from "#lib/server/discord-profile.js";
+import type { McIdLink, McIdProfile } from "#lib/server/minecraft-accounts.js";
 
 type AuthSession = typeof auth.$Infer.Session;
 

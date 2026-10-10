@@ -1,8 +1,8 @@
-import { env as envPrivate } from "$env/dynamic/private";
-import { getPostBySlug, getPostBySlugDraft } from "$lib/shared/api/cms-api.remote";
-import { richTextToHtml } from "$lib/shared/cms/rich-text-html";
+import { CMS_PREVIEW_TOKEN } from "$app/env/private";
 import type { Post } from "$types";
 import { error, isHttpError } from "@sveltejs/kit";
+import { getPostBySlug, getPostBySlugDraft } from "#lib/shared/api/cms-api.remote.js";
+import { richTextToHtml } from "#lib/shared/cms/rich-text-html.js";
 import type { PageServerLoad } from "./$types";
 
 const constantTimeEqual = (a: string, b: string): boolean => {
@@ -27,7 +27,7 @@ export const load: PageServerLoad = async ({ params, url, setHeaders }) => {
   const token = url.searchParams.get("token") ?? "";
 
   if (preview) {
-    const expected = envPrivate.CMS_PREVIEW_TOKEN;
+    const expected = CMS_PREVIEW_TOKEN;
     if (!expected || !constantTimeEqual(token, expected)) error(404, "Not found");
     setHeaders({ "cache-control": "no-store" });
     try {

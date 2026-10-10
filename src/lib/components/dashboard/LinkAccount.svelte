@@ -1,18 +1,18 @@
 <script lang="ts">
   import { resolve } from "$app/paths";
-  import { authClient } from "$lib/shared/auth-client";
   import { Button } from "$ui/button";
   import { Spinner } from "$ui/spinner";
   import { toast } from "svelte-sonner";
+  import { authClient } from "#lib/shared/auth-client.js";
 
   let {
     provider,
     reconnect = false,
-    callbackURL = "/dashboard"
+    callbackURL = "/(protected)/dashboard"
   }: {
     provider: "patreon" | "mc-id";
     reconnect?: boolean;
-    callbackURL?: "/dashboard" | "/dashboard/donator-perks";
+    callbackURL?: "/(protected)/dashboard" | "/(protected)/dashboard/donator-perks";
   } = $props();
   let pending = $state(false);
   const label = $derived(provider === "patreon" ? "Patreon" : "Minecraft");

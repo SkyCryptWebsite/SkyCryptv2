@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { resolveItemTexture, type ResolvedItemTexture } from "$lib/shared/items/resolve-item-texture";
   import { Avatar } from "bits-ui";
   import { getAbortSignal } from "svelte";
+  import { resolveItemTexture, type ResolvedItemTexture } from "#lib/shared/items/resolve-item-texture.js";
 
   type Props = {
     src?: string;

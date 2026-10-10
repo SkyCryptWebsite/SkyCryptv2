@@ -1,9 +1,9 @@
 import { command, getRequestEvent, query } from "$app/server";
-import { getEmojiAccounts, saveProfileEmoji } from "$lib/server/profile-emoji";
-import { profileEmojiSchema, profileUuidSchema } from "$lib/shared/profile-emoji";
-import { getProfileEmoji } from "$lib/shared/profile-emoji.remote";
 import { error } from "@sveltejs/kit";
 import { z } from "zod";
+import { getEmojiAccounts, saveProfileEmoji } from "#lib/server/profile-emoji.js";
+import { profileEmojiSchema, profileUuidSchema } from "#lib/shared/profile-emoji.js";
+import { getProfileEmoji } from "#lib/shared/profile-emoji.remote.js";
 
 export const getPerks = query(async () => {
   const { locals } = getRequestEvent();

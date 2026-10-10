@@ -1,9 +1,7 @@
 <script lang="ts">
-  import { replaceState } from "$app/navigation";
+  import { PUBLIC_PATREON_ANY_EMOJI_CENTS, PUBLIC_PATREON_COLORED_HEART_CENTS, PUBLIC_PATREON } from "$app/env/public";
+  import { goto } from "$app/navigation";
   import { page } from "$app/state";
-  import { env as publicEnv } from "$env/dynamic/public";
-  import EmojiEditor from "$lib/components/dashboard/EmojiEditor.svelte";
-  import LinkAccount from "$lib/components/dashboard/LinkAccount.svelte";
   import { coloredHearts } from "$src/lib/shared/profile-emoji";
   import { Button } from "$ui/button";
   import * as Card from "$ui/card";
@@ -20,12 +18,13 @@
   import { toast } from "svelte-sonner";
   import { quartOut } from "svelte/easing";
   import { fade } from "svelte/transition";
+  import EmojiEditor from "#lib/components/dashboard/EmojiEditor.svelte";
+  import LinkAccount from "#lib/components/dashboard/LinkAccount.svelte";
   import { getDashboard, verifyMembership } from "../dashboard.remote";
   import { getPerks } from "./perks.remote";
 
   const emojis = emojiData as EmojiMartData;
 
-  const { PUBLIC_PATREON_COLORED_HEART_CENTS, PUBLIC_PATREON_ANY_EMOJI_CENTS, PUBLIC_PATREON } = publicEnv;
   const dashboard = $derived(await getDashboard());
   const membership = $derived(dashboard.membership);
   const linked = $derived(dashboard.accounts.some((account) => account.providerId === "patreon"));
@@ -83,10 +82,10 @@
 
   onMount(() => {
     if (page.url.searchParams.has("linked")) {
-      const url = new URL(page.url);
+      const url = new URL(page.url.href);
       url.searchParams.delete("linked");
       // eslint-disable-next-line svelte/no-navigation-without-resolve -- The current URL already includes the base path.
-      replaceState(url, page.state);
+      goto(url, { shallow: true, replace: true, state: page.state });
     }
     function checkWhenReady() {
       if (checkAfterLink && !cooldownSeconds && !verifyMembership.pending) {
@@ -123,9 +122,8 @@
               transition:fade={{ duration: 700, delay: 0, easing: quartOut }}
               onintrostart={() => (currentState = "open")}
               onoutrostart={() => (currentState = "closed")}
-              class="col-start-1 row-start-1 motion-scale-in-80 motion-blur-in-xs data-[state=closed]:motion-scale-out-80 data-[state=closed]:motion-blur-out-xs">
-              {randomHeartEmoji}
-            </span>
+              class="col-start-1 row-start-1 motion-scale-in-80 motion-blur-in-xs data-[state=closed]:motion-scale-out-80 data-[state=closed]:motion-blur-out-xs"
+              >{randomHeartEmoji}</span>
           {/key}
         </Item.Media>
         <Item.Content>
@@ -144,9 +142,8 @@
               transition:fade={{ duration: 700, delay: 0, easing: quartOut }}
               onintrostart={() => (currentState = "open")}
               onoutrostart={() => (currentState = "closed")}
-              class="col-start-1 row-start-1 motion-scale-in-80 motion-blur-in-xs data-[state=closed]:motion-scale-out-80 data-[state=closed]:motion-blur-out-xs">
-              {randomEmoji}
-            </span>
+              class="col-start-1 row-start-1 motion-scale-in-80 motion-blur-in-xs data-[state=closed]:motion-scale-out-80 data-[state=closed]:motion-blur-out-xs"
+              >{randomEmoji}</span>
           {/key}
         </Item.Media>
         <Item.Content>
@@ -183,7 +180,10 @@
                   </Empty.Description>
                 </Empty.Header>
                 <Empty.Content class="flex">
-                  <LinkAccount provider="mc-id" reconnect={minecraftLinked} callbackURL="/dashboard/donator-perks" />
+                  <LinkAccount
+                    provider="mc-id"
+                    reconnect={minecraftLinked}
+                    callbackURL="/(protected)/dashboard/donator-perks" />
                   {#if minecraftLinked}
                     <Button variant="outline" href="/dashboard">Sync Minecraft accounts</Button>
                   {/if}
@@ -250,7 +250,7 @@
     </Card.Content>
     <Card.Footer class="flex flex-wrap gap-2">
       {#if !linked}
-        <LinkAccount provider="patreon" callbackURL="/dashboard/donator-perks" />
+        <LinkAccount provider="patreon" callbackURL="/(protected)/dashboard/donator-perks" />
       {:else}
         <Button
           variant="outline"
@@ -258,8 +258,12 @@
           aria-busy={!!verifyMembership.pending}
           onclick={verify}
           disabled={!!verifyMembership.pending || cooldownSeconds > 0}>
-          {#if verifyMembership.pending}<Spinner data-icon="inline-start" />{:else}<RefreshCwIcon
-              data-icon="inline-start" />{/if}
+          {#if verifyMembership.pending}
+            <Spinner data-icon="inline-start" />
+          {:else}
+            <RefreshCwIcon data-icon="inline-start" />
+          {/if}
+
           {#if verifyMembership.pending}
             Checking…
           {:else if cooldownSeconds > 0}

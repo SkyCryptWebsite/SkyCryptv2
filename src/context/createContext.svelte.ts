@@ -1,5 +1,6 @@
-import type { IsHover } from "$lib/hooks/is-hover.svelte";
-import type { IsMobile } from "$lib/hooks/is-mobile.svelte";
+import { createContext } from "svelte";
+import type { IsHover } from "#lib/hooks/is-hover.svelte.js";
+import type { IsMobile } from "#lib/hooks/is-mobile.svelte.js";
 import type {
   ModelsCombinedOutput,
   ModelsMiscOutput,
@@ -7,8 +8,7 @@ import type {
   ModelsStatData,
   ModelsSkillsOutput,
   ModelsStatsOutput
-} from "$lib/shared/api/orval-generated";
-import { createContext } from "svelte";
+} from "#lib/shared/api/orval-generated.js";
 
 export class ProfileContext {
   #current: ModelsStatsOutput | null = $state(null);

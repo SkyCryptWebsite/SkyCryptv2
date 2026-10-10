@@ -1,6 +1,5 @@
 <script lang="ts">
   import { getNewsroomNotifications } from "$ctx";
-  import { clientLocale } from "$lib/hooks/client-locale.svelte";
   import TypeBadge from "$src/lib/components/newsroom/TypeBadge.svelte";
   import type { Post } from "$types";
   import { Badge } from "$ui/badge";
@@ -8,6 +7,7 @@
   import ImageIcon from "@lucide/svelte/icons/image";
   import Newspaper from "@lucide/svelte/icons/newspaper";
   import { Avatar } from "bits-ui";
+  import { clientLocale } from "#lib/hooks/client-locale.svelte.js";
 
   interface Props {
     posts: Post[];

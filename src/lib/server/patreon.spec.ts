@@ -1,5 +1,5 @@
-import { patreonCreatorToken, patreonMembership } from "$lib/server/db/schema";
 import { describe, expect, it } from "vitest";
+import { patreonCreatorToken, patreonMembership } from "#lib/server/db/schema/index.js";
 import {
   findPatreonMembership,
   getPatreonEntitlement,

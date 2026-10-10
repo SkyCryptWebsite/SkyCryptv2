@@ -14,7 +14,7 @@ const mocks = vi.hoisted(() => ({
   getDashboard: vi.fn()
 }));
 vi.mock("$app/state", () => ({ page: { url: new URL("http://localhost/dashboard/settings") } }));
-vi.mock("$lib/shared/auth-client", () => ({
+vi.mock("#lib/shared/auth-client.js", () => ({
   authClient: { revokeOtherSessions: mocks.revokeOther, signOut: mocks.signOut }
 }));
 vi.mock("../dashboard.remote", () => ({ getDashboard: mocks.getDashboard }));

@@ -1,13 +1,13 @@
 import { command, getRequestEvent, query } from "$app/server";
-import { auth } from "$lib/server/auth";
+import { getPerks } from "$routes/(protected)/dashboard/donator-perks/perks.remote";
+import { error } from "@sveltejs/kit";
+import { auth } from "#lib/server/auth.js";
 import {
   getPatreonVerificationRetryAt,
   getStoredPatreonMembership,
   PatreonVerificationError,
   verifyPatreonMembership
-} from "$lib/server/patreon";
-import { getPerks } from "$routes/(protected)/dashboard/donator-perks/perks.remote";
-import { error } from "@sveltejs/kit";
+} from "#lib/server/patreon.js";
 
 export const getDashboard = query(async () => {
   const { locals, request } = getRequestEvent();

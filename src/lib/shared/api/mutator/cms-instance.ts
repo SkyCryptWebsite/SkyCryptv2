@@ -1,6 +1,6 @@
+import { SERVER_CMS_API_URL } from "$app/env/private";
+import { PUBLIC_CMS_URL } from "$app/env/public";
 import { getRequestEvent } from "$app/server";
-import { env as envPrivate } from "$env/dynamic/private";
-import { env as envPublic } from "$env/dynamic/public";
 import { error } from "@sveltejs/kit";
 
 // NOTE: Supports cases where `content-type` is other than `json`
@@ -16,7 +16,7 @@ const getBody = <T>(c: Response | Request): Promise<T> => {
 
 // NOTE: Resolve against the CMS base url (server-only, falls back to the public url).
 const getUrl = (contextUrl: string): string => {
-  const base = envPrivate.SERVER_CMS_API_URL || envPublic.PUBLIC_CMS_URL;
+  const base = SERVER_CMS_API_URL || PUBLIC_CMS_URL;
   if (!base) error(500, "CMS URL not configured");
   // The OpenAPI paths already include the `/api` prefix, so strip a trailing one from the base.
   const baseUrl = base.replace(/\/api\/?$/, "");

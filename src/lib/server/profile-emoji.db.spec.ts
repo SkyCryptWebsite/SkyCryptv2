@@ -7,7 +7,7 @@ import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import * as schema from "./db/schema";
 
 const database = vi.hoisted(() => ({ db: undefined as unknown }));
-vi.mock("$lib/server/db", () => ({
+vi.mock("#lib/server/db/index.js", () => ({
   get db() {
     return database.db;
   }

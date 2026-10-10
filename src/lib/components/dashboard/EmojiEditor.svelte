@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { canSelectEmoji, coloredHearts, profileEmojiSchema } from "$lib/shared/profile-emoji";
   import { updateEmoji } from "$routes/(protected)/dashboard/donator-perks/perks.remote";
   import * as EmojiPicker from "$ui/emoji-picker";
   import * as Popover from "$ui/popover";
   import { tick, untrack } from "svelte";
   import { toast } from "svelte-sonner";
+  import { canSelectEmoji, coloredHearts, profileEmojiSchema } from "#lib/shared/profile-emoji.js";
 
   type Props = {
     account: {
@@ -27,7 +27,11 @@
   function save() {
     if (!parsed.success || !valid || saving) return;
     saving = true;
-    toast.promise(updateEmoji({ uuid: account.uuid, emoji: parsed.data }), {
+    const request = updateEmoji({ uuid: account.uuid, emoji: parsed.data });
+    void request.finally(() => {
+      saving = false;
+    });
+    toast.promise(request, {
       loading: "Saving your emoji…",
       success: `Emoji saved for ${account.username}.`,
       error: (error) => (error instanceof Error ? error.message : "Couldn’t save your emoji. Please try again.")

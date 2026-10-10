@@ -1,7 +1,7 @@
 <script lang="ts">
+  import { PUBLIC_DISCORD_INVITE } from "$app/env/public";
   import { resolve } from "$app/paths";
   import { page } from "$app/state";
-  import { env } from "$env/dynamic/public";
   import { Button } from "$ui/button";
   import * as Empty from "$ui/empty";
   import CircleXIcon from "@lucide/svelte/icons/circle-x";
@@ -17,9 +17,11 @@
       <Empty.Description>Try again or contact us if the problem persists.</Empty.Description>
       <Empty.Description>{page.status}: {page.error?.message}</Empty.Description>
     </Empty.Header>
+
     <Empty.Content class="flex flex-row items-center-safe justify-center-safe gap-4">
-      <Button href={resolve("/newsroom")} variant="default">Back to the Newsroom</Button>
-      <Button href={env.PUBLIC_DISCORD_INVITE} variant="outline" target="_blank">Join our Discord</Button>
+      <Button href={resolve("newsroom")} variant="default">Back to the Newsroom</Button>
+
+      <Button href={PUBLIC_DISCORD_INVITE} variant="outline" target="_blank">Join our Discord</Button>
     </Empty.Content>
   </Empty.Root>
 </main>

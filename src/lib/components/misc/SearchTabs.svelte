@@ -1,8 +1,5 @@
 <script lang="ts" generics="TItem">
   import { getMobileContext } from "$ctx";
-  import EmptyStat from "$lib/components/EmptyStat.svelte";
-  import ScrollAreaItems from "$lib/components/ScrollAreaItems.svelte";
-  import { cn } from "$lib/shared/utils";
   import ScrollArea from "$src/lib/components/ui/scroll-area/scroll-area.svelte";
   import { Input } from "$ui/input";
   import * as Tabs from "$ui/tabs";
@@ -11,6 +8,9 @@
   import type { Snippet } from "svelte";
   import { cubicOut } from "svelte/easing";
   import { crossfade } from "svelte/transition";
+  import EmptyStat from "#lib/components/EmptyStat.svelte";
+  import ScrollAreaItems from "#lib/components/ScrollAreaItems.svelte";
+  import { cn } from "#lib/shared/utils.js";
   import ScrollItems from "./ScrollItems.svelte";
 
   type SearchTab = {

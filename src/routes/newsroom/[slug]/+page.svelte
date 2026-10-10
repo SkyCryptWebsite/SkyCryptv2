@@ -2,9 +2,6 @@
   import { afterNavigate } from "$app/navigation";
   import { resolve } from "$app/paths";
   import { getNewsroomNotifications } from "$ctx";
-  import { JsonLd } from "$lib/components/misc";
-  import { clientLocale } from "$lib/hooks/client-locale.svelte";
-  import { cn } from "$lib/shared/utils";
   import PostRenderer from "$src/lib/components/newsroom/PostRenderer.svelte";
   import TypeBadge from "$src/lib/components/newsroom/TypeBadge.svelte";
   import type { Author, AuthorView } from "$types";
@@ -14,6 +11,9 @@
   import Star from "@lucide/svelte/icons/star";
   import { Avatar } from "bits-ui";
   import SvelteSeo from "svelte-seo";
+  import { JsonLd } from "#lib/components/misc/index.js";
+  import { clientLocale } from "#lib/hooks/client-locale.svelte.js";
+  import { cn } from "#lib/shared/utils.js";
   import type { PageData } from "./$types";
 
   const { data }: { data: PageData } = $props();
@@ -146,10 +146,8 @@
 <JsonLd data={breadcrumbJsonLd} />
 
 <article class="mx-auto flex max-w-3xl flex-col gap-4 px-[max(1.25rem,env(safe-area-inset-right))] py-8">
-  <Button href={resolve("/newsroom")} variant="outline" class="w-fit glass performance:bg-muted!">
-    <ArrowLeft class="size-4" />
-    Newsroom
-  </Button>
+  <Button href={resolve("newsroom")} variant="outline" class="w-fit glass performance:bg-muted!"
+    ><ArrowLeft class="size-4" />Newsroom</Button>
 
   {#if data.preview}
     <div

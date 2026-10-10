@@ -15,8 +15,8 @@ vi.mock("$app/server", () => ({
   command: (schemaOrHandler: object, handler?: (...args: unknown[]) => unknown) =>
     Object.assign(handler ?? schemaOrHandler, { __: { type: "command" } })
 }));
-vi.mock("$lib/server/auth", () => ({ auth: { api: mocks } }));
-vi.mock("$lib/server/account-data", () => mocks);
+vi.mock("#lib/server/auth.js", () => ({ auth: { api: mocks } }));
+vi.mock("#lib/server/account-data.js", () => mocks);
 import { deleteAccount, exportData, getSessions, revokeSession } from "./settings.remote";
 
 beforeEach(() => {

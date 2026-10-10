@@ -1,14 +1,14 @@
 <script lang="ts">
   import { getProfileContext } from "$ctx";
-  import { Notice } from "$lib/components/notices";
-  import { Stat } from "$lib/components/stats";
-  import { getPlayerStats } from "$lib/shared/api/skycrypt-api.remote";
   import { buttonVariants } from "$ui/button";
   import { Button } from "$ui/button";
   import * as Collapsible from "$ui/collapsible";
   import { Spinner } from "$ui/spinner";
   import { cubicOut } from "svelte/easing";
   import { slide } from "svelte/transition";
+  import { Notice } from "#lib/components/notices/index.js";
+  import { Stat } from "#lib/components/stats/index.js";
+  import { getPlayerStats } from "#lib/shared/api/skycrypt-api.remote.js";
 
   let openState = $state(false);
   let showAllStats = $state(false);

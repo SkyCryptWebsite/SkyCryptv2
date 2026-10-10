@@ -1,6 +1,6 @@
 <script lang="ts">
+  import { PUBLIC_DISCORD_INVITE, PUBLIC_PATREON } from "$app/env/public";
   import { getInternalState, getPreferences } from "$ctx";
-  import { env } from "$env/dynamic/public";
   import Info from "$src/lib/components/header/Info.svelte";
   import { buttonVariants } from "$src/lib/components/ui/button";
   import { IsHover } from "$src/lib/hooks/is-hover.svelte";
@@ -20,8 +20,6 @@
     content: string;
     icon: LucideIcon | typeof SvglLogo;
   };
-
-  const { PUBLIC_DISCORD_INVITE, PUBLIC_PATREON } = env;
 
   const preferences = getPreferences();
   const internalState = getInternalState();

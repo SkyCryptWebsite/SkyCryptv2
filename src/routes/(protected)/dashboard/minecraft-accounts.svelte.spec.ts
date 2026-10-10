@@ -5,7 +5,7 @@ import MinecraftAccounts from "./minecraft-accounts.svelte";
 
 const mocks = vi.hoisted(() => ({ accounts: vi.fn(), sync: Object.assign(vi.fn(), { pending: 0 }), link: vi.fn() }));
 vi.mock("./minecraft.remote", () => ({ getMinecraftAccounts: mocks.accounts, syncMinecraftAccounts: mocks.sync }));
-vi.mock("$lib/shared/auth-client", () => ({ authClient: { linkSocial: mocks.link } }));
+vi.mock("#lib/shared/auth-client.js", () => ({ authClient: { linkSocial: mocks.link } }));
 vi.mock("svelte-sonner", () => ({ toast: { success: vi.fn(), error: vi.fn() } }));
 
 beforeEach(() => {
@@ -13,15 +13,9 @@ beforeEach(() => {
   mocks.accounts.mockResolvedValue([]);
 });
 
-it("offers sync for an empty account list and reconnect when authorization expires", async () => {
-  mocks.sync.mockResolvedValue({ reconnect: true });
-  mocks.link.mockResolvedValue({ data: {} });
+it("shows an empty state when no accounts are saved", async () => {
   await render(MinecraftAccounts);
-  await expect.element(page.getByText("No Minecraft accounts saved")).toBeVisible();
-  await page.getByRole("button", { name: "Sync Minecraft accounts" }).click();
-  await page.getByRole("button", { name: "Reconnect MC-ID" }).click();
-  expect(mocks.sync).toHaveBeenCalledOnce();
-  expect(mocks.link).toHaveBeenCalledWith(expect.objectContaining({ provider: "mc-id", callbackURL: "/dashboard" }));
+  await expect.element(page.getByText("No Minecraft accounts")).toBeVisible();
 });
 
 it("shows the saved username, UUID, and primary status", async () => {

@@ -11,7 +11,7 @@ const database = vi.hoisted(() => ({
   insert: vi.fn(),
   values: vi.fn()
 }));
-vi.mock("$lib/server/db", () => ({ db: database }));
+vi.mock("#lib/server/db/index.js", () => ({ db: database }));
 
 const link = { id: "local-link", accountId: "provider-subject", userId: "user", providerId: "mc-id" };
 const minecraft = { uuid: "12345678123412341234123456789abc", username: "New_Name", primary: true };

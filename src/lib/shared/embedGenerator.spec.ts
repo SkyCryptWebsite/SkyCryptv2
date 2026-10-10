@@ -1,12 +1,12 @@
-import type { ModelsEmbedData } from "$lib/shared/api/orval-generated";
+import { afterEach, describe, it, vi } from "vitest";
+import type { ModelsEmbedData } from "#lib/shared/api/orval-generated.js";
 import {
   getGenericDescription,
   getGenericTitle,
   getLongDescription,
   getMetaTitle,
   getShortDescription
-} from "$lib/shared/embedGenerator";
-import { afterEach, describe, it, vi } from "vitest";
+} from "#lib/shared/embedGenerator.js";
 
 describe.concurrent("embedGenerator", () => {
   describe.concurrent("getMetaTitle", () => {

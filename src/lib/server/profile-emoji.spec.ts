@@ -7,7 +7,7 @@ const mocks = vi.hoisted(() => ({
   values: vi.fn(),
   upsert: vi.fn()
 }));
-vi.mock("$lib/server/db", () => ({ db: { transaction: mocks.transaction } }));
+vi.mock("#lib/server/db/index.js", () => ({ db: { transaction: mocks.transaction } }));
 
 import { saveProfileEmoji } from "./profile-emoji";
 

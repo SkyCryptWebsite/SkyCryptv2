@@ -1,7 +1,7 @@
 import { prerender } from "$app/server";
-import type { ModelsPlayerResolve } from "$lib/shared/api/orval-generated";
-import { resolveUsernameByUuid } from "$lib/shared/api/skycrypt-api.remote";
 import { z } from "zod";
+import type { ModelsPlayerResolve } from "#lib/shared/api/orval-generated.js";
+import { resolveUsernameByUuid } from "#lib/shared/api/skycrypt-api.remote.js";
 import { Role } from "./enums";
 
 export interface Contributor extends ModelsPlayerResolve {

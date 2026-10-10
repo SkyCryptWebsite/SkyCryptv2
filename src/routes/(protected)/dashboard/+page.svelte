@@ -38,8 +38,8 @@
     toast.promise(
       authClient.linkSocial({
         provider: "mc-id",
-        callbackURL: resolve("/dashboard"),
-        errorCallbackURL: resolve("/dashboard")
+        callbackURL: resolve("dashboard"),
+        errorCallbackURL: resolve("dashboard")
       }),
       {
         loading: "Reconnecting MC-ID…",
@@ -60,7 +60,7 @@
           class="pointer-events-none relative z-20 aspect-video size-full max-h-64 overflow-clip rounded-none select-none after:rounded-none after:border-none">
           <Avatar.Image
             class="size-full rounded-none object-cover"
-            src="https://cdn.discordapp.com/banners/{discord?.discordUserId}/{discord?.bannerHash}?size=1024&amp;animated=true"
+            src="https://cdn.discordapp.com/banners/{discord?.discordUserId}/{discord?.bannerHash}?size=1024&animated=true"
             alt="User banner" />
         </Avatar.Root>
       {:else}
@@ -83,8 +83,9 @@
           <Avatar.Root class="absolute z-0 size-32 overflow-hidden rounded-full bg-card ">
             <Avatar.Image
               loading="lazy"
-              src="https://cdn.discordapp.com/avatars/{discord?.discordUserId}/{discord?.avatarHash}?size=512&amp;animated=true"
+              src="https://cdn.discordapp.com/avatars/{discord?.discordUserId}/{discord?.avatarHash}?size=512&animated=true"
               alt="User avatar" />
+
             <Avatar.Fallback>{session?.data?.user?.name?.slice(0, 2).toUpperCase()}</Avatar.Fallback>
           </Avatar.Root>
         </Avatar.Root>

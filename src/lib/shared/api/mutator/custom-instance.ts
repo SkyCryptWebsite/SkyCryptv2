@@ -1,9 +1,6 @@
+import { SERVER_API_TOKEN } from "$app/env/private";
+import { PUBLIC_SERVER_API_URL } from "$app/env/public";
 import { getRequestEvent } from "$app/server";
-import { env as envPrivate } from "$env/dynamic/private";
-import { env as envPublic } from "$env/dynamic/public";
-
-const { PUBLIC_SERVER_API_URL } = envPublic;
-const { SERVER_API_TOKEN } = envPrivate;
 
 // NOTE: Supports cases where `content-type` is other than `json`
 const getBody = <T>(c: Response | Request): Promise<T> => {

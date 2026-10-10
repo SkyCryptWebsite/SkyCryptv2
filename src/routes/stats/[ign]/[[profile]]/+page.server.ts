@@ -1,4 +1,4 @@
-import { getProfileEmbed, getSelectedProfileEmbed } from "$lib/shared/api/skycrypt-api.remote";
+import { getProfileEmbed, getSelectedProfileEmbed } from "#lib/shared/api/skycrypt-api.remote.js";
 import type { PageServerLoad } from "./$types";
 
 export const load = (async ({ params }) => {

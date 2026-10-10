@@ -1,8 +1,8 @@
 <script lang="ts">
   import { genericTooltipTether, getHoverContext, getPreferences, itemTooltipTether } from "$ctx";
-  import ItemContent from "$lib/components/item/item-content.svelte";
-  import { cn, flyAndScale } from "$lib/shared/utils";
   import { Tooltip } from "bits-ui";
+  import ItemContent from "#lib/components/item/item-content.svelte";
+  import { cn, flyAndScale } from "#lib/shared/utils.js";
 
   const preferences = getPreferences();
   const isHover = getHoverContext();

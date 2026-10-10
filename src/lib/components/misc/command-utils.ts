@@ -1,5 +1,5 @@
-import type { SettingsTab } from "$lib/components/header/types";
 import type { Component } from "svelte";
+import type { SettingsTab } from "#lib/components/header/types.js";
 
 type SettingsTabItem = {
   type: "tab";

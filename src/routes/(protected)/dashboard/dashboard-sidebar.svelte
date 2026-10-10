@@ -1,6 +1,5 @@
 <script lang="ts">
   import { resolve } from "$app/paths";
-  import { authClient } from "$lib/shared/auth-client";
   import * as Avatar from "$ui/avatar";
   import * as DropdownMenu from "$ui/dropdown-menu";
   import * as Sidebar from "$ui/sidebar";
@@ -13,6 +12,7 @@
   import LogOutIcon from "@lucide/svelte/icons/log-out";
   import SettingsIcon from "@lucide/svelte/icons/settings";
   import { toast } from "svelte-sonner";
+  import { authClient } from "#lib/shared/auth-client.js";
   import { getDashboard } from "./dashboard.remote";
 
   const sidebar = Sidebar.useSidebar();
@@ -23,9 +23,11 @@
     try {
       const result = await authClient.signOut();
       if (result.error) throw new Error(result.error.message ?? "Unable to sign out.");
-      window.location.assign(resolve("/login"));
+
+      window.location.assign(resolve("login"));
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Unable to sign out. Please try again.");
+
       signingOut = false;
     }
   }
@@ -33,11 +35,7 @@
   const BASE_URL_DASHBOARD = "/dashboard";
 
   const items = [
-    {
-      title: "Home",
-      url: BASE_URL_DASHBOARD,
-      icon: HouseIcon
-    },
+    { title: "Home", url: BASE_URL_DASHBOARD, icon: HouseIcon },
     {
       title: "Settings",
       url: BASE_URL_DASHBOARD + "/settings",
@@ -110,6 +108,11 @@
               sideOffset={4}
               class="min-w-56">
               <DropdownMenu.Group>
+                <DropdownMenu.Item>
+                  {#snippet child({ props })}
+                    <a {...props} href={resolve("dashboard/settings")}><SettingsIcon />Account settings</a>
+                  {/snippet}
+                </DropdownMenu.Item>
                 <DropdownMenu.Item disabled={signingOut} onSelect={() => void signOut()}>
                   {#if signingOut}
                     <Spinner />
@@ -131,7 +134,7 @@
           <Sidebar.MenuItem>
             <Sidebar.MenuButton>
               {#snippet child({ props })}
-                <a {...props} href={resolve("/dashboard/settings")}><SettingsIcon /><span>Account settings</span></a>
+                <a {...props} href={resolve("dashboard/settings")}><SettingsIcon /><span>Account settings</span></a>
               {/snippet}
             </Sidebar.MenuButton>
           </Sidebar.MenuItem>

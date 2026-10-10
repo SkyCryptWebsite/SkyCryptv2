@@ -1,15 +1,15 @@
 <script lang="ts">
   import { afterNavigate, goto } from "$app/navigation";
   import { getNewsroomNotifications } from "$ctx";
-  import { JsonLd } from "$lib/components/misc";
-  import Pagination from "$lib/components/newsroom/Pagination.svelte";
-  import PostCard from "$lib/components/newsroom/PostCard.svelte";
-  import { POST_TYPE_LABELS } from "$lib/components/newsroom/TypeBadge.svelte";
   import EmptyStat from "$src/lib/components/EmptyStat.svelte";
   import { POST_TYPES, type PostType } from "$types";
   import * as Select from "$ui/select";
   import SearchXIcon from "@lucide/svelte/icons/search-x";
   import SvelteSeo from "svelte-seo";
+  import { JsonLd } from "#lib/components/misc/index.js";
+  import Pagination from "#lib/components/newsroom/Pagination.svelte";
+  import PostCard from "#lib/components/newsroom/PostCard.svelte";
+  import { POST_TYPE_LABELS } from "#lib/components/newsroom/TypeBadge.svelte";
   import type { PageData } from "./$types";
 
   const { data }: { data: PageData } = $props();

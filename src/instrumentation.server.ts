@@ -1,9 +1,7 @@
-import { dev } from "$app/environment";
-import { env } from "$env/dynamic/public";
+import { dev } from "$app/env";
+import { PUBLIC_SENTRY_DSN } from "$app/env/public";
 import * as Sentry from "@sentry/sveltekit";
 import { consoleLoggingIntegration, contextLinesIntegration, extraErrorDataIntegration } from "@sentry/sveltekit";
-
-const { PUBLIC_SENTRY_DSN } = env;
 
 Sentry.init({
   dsn: PUBLIC_SENTRY_DSN,

@@ -1,9 +1,9 @@
 <script lang="ts">
   import { getHoverContext } from "$ctx";
-  import { Button } from "$lib/components/ui/button";
   import * as Dialog from "$ui/dialog";
   import * as Drawer from "$ui/drawer";
   import TriangleAlert from "@lucide/svelte/icons/triangle-alert";
+  import { Button } from "#lib/components/ui/button/index.js";
 
   const isHover = getHoverContext();
   let noticeOpen = $state(false);

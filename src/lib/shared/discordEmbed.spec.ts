@@ -1,10 +1,8 @@
-import { env } from "$env/dynamic/public";
-import type { ModelsEmbedData } from "$lib/shared/api/orval-generated";
+import { PUBLIC_DISCORD_INVITE } from "$app/env/public";
 import type { APIBaseComponent, ComponentType } from "discord-api-types/v10";
 import { describe, expect, it } from "vitest";
+import type { ModelsEmbedData } from "#lib/shared/api/orval-generated.js";
 import { createDiscordEmbed, serializeDiscordEmbed } from "./discordEmbed";
-
-const { PUBLIC_DISCORD_INVITE } = env;
 
 describe("discordEmbed", () => {
   it.each([

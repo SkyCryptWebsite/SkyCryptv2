@@ -2,10 +2,6 @@
   import { resolve } from "$app/paths";
   import { page } from "$app/state";
   import { getHoverContext } from "$ctx";
-  import { cardPresets, type CardPreset } from "$lib/components/cards";
-  import { getDefaults, settingsToParams } from "$lib/components/cards/default/schema";
-  import * as Dialog from "$lib/components/ui/dialog";
-  import { cn } from "$lib/shared/utils";
   import * as Avatar from "$ui/avatar";
   import { Button } from "$ui/button";
   import * as Collapsible from "$ui/collapsible";
@@ -23,6 +19,10 @@
   import type { AvatarImageLoadingStatus } from "bits-ui";
   import { Debounced } from "runed";
   import { toast } from "svelte-sonner";
+  import { getDefaults, settingsToParams } from "#lib/components/cards/default/schema.js";
+  import { cardPresets, type CardPreset } from "#lib/components/cards/index.js";
+  import * as Dialog from "#lib/components/ui/dialog/index.js";
+  import { cn } from "#lib/shared/utils.js";
 
   type TriggerProps = Record<string, unknown>;
   const isHover = getHoverContext();

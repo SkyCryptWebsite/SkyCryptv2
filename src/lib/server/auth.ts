@@ -1,16 +1,19 @@
-import { building, dev } from "$app/environment";
-import { getRequestEvent } from "$app/server";
-import { env as envPrivate } from "$env/dynamic/private";
-import { env as envPublic } from "$env/dynamic/public";
-import { db } from "$lib/server/db";
-import { getDiscordProfile, parseDiscordProfile, syncDiscordProfile } from "$lib/server/discord-profile";
+import { building, dev } from "$app/env";
 import {
-  fetchMcIdProfile,
-  getStoredMinecraftAccounts,
-  parseMcIdProfile,
-  storeMinecraftAccounts,
-  type McIdLink
-} from "$lib/server/minecraft-accounts";
+  ADDRESS_HEADER,
+  BETTER_AUTH_SECRET,
+  DISCORD_CLIENT_ID,
+  DISCORD_CLIENT_SECRET,
+  DISCORD_WHITELIST,
+  MC_ID_CLIENT_ID,
+  MC_ID_CLIENT_SECRET,
+  ORIGIN,
+  PATREON_CLIENT_ID,
+  PATREON_CLIENT_SECRET,
+  TURNSTILE_SECRET_KEY
+} from "$app/env/private";
+import { PUBLIC_BASE_URL } from "$app/env/public";
+import { getRequestEvent } from "$app/server";
 import { apiKey } from "@better-auth/api-key";
 import type { BetterAuthOptions, BetterAuthPlugin } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
@@ -19,21 +22,15 @@ import { betterAuth } from "better-auth/minimal";
 import { admin, customSession, genericOAuth, patreon } from "better-auth/plugins";
 import { captcha } from "better-auth/plugins";
 import { sveltekitCookies } from "better-auth/svelte-kit";
-
-const {
-  BETTER_AUTH_SECRET,
-  ORIGIN,
-  DISCORD_CLIENT_ID,
-  DISCORD_CLIENT_SECRET,
-  ADDRESS_HEADER,
-  MC_ID_CLIENT_ID,
-  MC_ID_CLIENT_SECRET,
-  PATREON_CLIENT_ID,
-  PATREON_CLIENT_SECRET,
-  DISCORD_WHITELIST,
-  TURNSTILE_SECRET_KEY
-} = envPrivate;
-const { PUBLIC_BASE_URL } = envPublic;
+import { db } from "#lib/server/db/index.js";
+import { getDiscordProfile, parseDiscordProfile, syncDiscordProfile } from "#lib/server/discord-profile.js";
+import {
+  fetchMcIdProfile,
+  getStoredMinecraftAccounts,
+  parseMcIdProfile,
+  storeMinecraftAccounts,
+  type McIdLink
+} from "#lib/server/minecraft-accounts.js";
 
 const BUILD_TIME_AUTH_SECRET = "build-time-placeholder-secret-for-sveltekit-build";
 const BUILD_TIME_BASE_URL = "http://localhost:3000";

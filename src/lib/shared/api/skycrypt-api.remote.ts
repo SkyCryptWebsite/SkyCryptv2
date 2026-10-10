@@ -1,4 +1,21 @@
 import { prerender, query } from "$app/server";
+import { APIEndpointName } from "$types";
+import { error, isHttpError } from "@sveltejs/kit";
+import { z } from "zod";
+import {
+  GetCombinedProfileStatsParams,
+  GetGardenStatsParams,
+  GetPlayerStatsParams,
+  GetProfileEmbedParams,
+  GetProfileInventoryParams,
+  GetProfileNetworthParams,
+  GetProfileStatsParams,
+  GetSelectedProfileEmbedParams,
+  GetSelectedProfileStatsParams,
+  ResolveUsernameByUuidParams,
+  ResolveUuidByUsernameParams,
+  SearchProfileInventoryParams
+} from "#lib/shared/api/orval-generated-zod.js";
 import {
   getCombinedProfileStats as getCombinedProfileStatsRequest,
   getGardenStats as getGardenStatsRequest,
@@ -17,24 +34,7 @@ import {
   getStatsConstants as getStatsConstantsRequest,
   type ModelsProcessingError,
   type ModelsSourceInfo
-} from "$lib/shared/api/orval-generated";
-import {
-  GetCombinedProfileStatsParams,
-  GetGardenStatsParams,
-  GetPlayerStatsParams,
-  GetProfileEmbedParams,
-  GetProfileInventoryParams,
-  GetProfileNetworthParams,
-  GetProfileStatsParams,
-  GetSelectedProfileEmbedParams,
-  GetSelectedProfileStatsParams,
-  ResolveUsernameByUuidParams,
-  ResolveUuidByUsernameParams,
-  SearchProfileInventoryParams
-} from "$lib/shared/api/orval-generated-zod";
-import { APIEndpointName } from "$types";
-import { error, isHttpError } from "@sveltejs/kit";
-import { z } from "zod";
+} from "#lib/shared/api/orval-generated.js";
 
 /** Type helper to extract the success data type from an API response Excludes ModelsProcessingError from the union type */
 type ExtractSuccessData<TResponse> = TResponse extends { data: infer TData }

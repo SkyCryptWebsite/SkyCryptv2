@@ -1,6 +1,6 @@
-import { discordProfile } from "$lib/server/db/schema";
 import { PgDialect } from "drizzle-orm/pg-core";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { discordProfile } from "#lib/server/db/schema/index.js";
 import { getDiscordProfile, parseDiscordProfile, syncDiscordProfile } from "./discord-profile";
 
 const database = vi.hoisted(() => ({
@@ -13,7 +13,7 @@ const database = vi.hoisted(() => ({
   limit: vi.fn()
 }));
 
-vi.mock("$lib/server/db", () => ({ db: database }));
+vi.mock("#lib/server/db/index.js", () => ({ db: database }));
 
 beforeEach(() => {
   vi.resetAllMocks();

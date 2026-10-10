@@ -1,6 +1,6 @@
-import { listPosts } from "$lib/shared/api/cms-api.remote";
 import { POST_TYPES, type PostType } from "$types";
 import { error, isHttpError } from "@sveltejs/kit";
+import { listPosts } from "#lib/shared/api/cms-api.remote.js";
 import type { PageServerLoad } from "./$types";
 
 const POSTS_PER_PAGE = 12;

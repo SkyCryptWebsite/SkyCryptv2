@@ -1,12 +1,11 @@
 <script lang="ts">
-  import { env } from "$env/dynamic/public";
-  import { PUBLIC_COMMIT_HASH } from "$env/static/public";
-  import { getSourceInfo } from "$lib/shared/api/skycrypt-api.remote";
+  import { PUBLIC_COMMIT_HASH } from "$app/env/public";
+  import { PUBLIC_DISCORD_INVITE, PUBLIC_PATREON } from "$app/env/public";
   import { Spinner } from "$ui/spinner";
   import ExternalLink from "@lucide/svelte/icons/external-link";
   import { Button } from "bits-ui";
+  import { getSourceInfo } from "#lib/shared/api/skycrypt-api.remote.js";
 
-  const { PUBLIC_DISCORD_INVITE, PUBLIC_PATREON } = env;
   const packageVersion = __NPM_PACKAGE_VERSION__;
   const commitHash = PUBLIC_COMMIT_HASH;
   const prerenderVersion = __PRERENDER_VERSION__;

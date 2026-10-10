@@ -4,7 +4,7 @@ const mocks = vi.hoisted(() => ({ select: vi.fn(), where: vi.fn() }));
 vi.mock("$app/server", () => ({
   query: (_schema: unknown, handler: unknown) => Object.assign(handler as object, { __: { type: "query" } })
 }));
-vi.mock("$lib/server/db", () => ({ db: { select: mocks.select } }));
+vi.mock("#lib/server/db/index.js", () => ({ db: { select: mocks.select } }));
 
 import { getProfileEmoji } from "./profile-emoji.remote";
 

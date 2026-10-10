@@ -1,10 +1,10 @@
 import { dev } from "$app/env";
+import { CMS_API_TOKEN } from "$app/env/private";
 import { query } from "$app/server";
-import { env as envPrivate } from "$env/dynamic/private";
-import { listPosts as listPostsRequest, type ListPostsParams } from "$lib/shared/api/cms-generated";
 import { POST_TYPES, type Post, type PostListResponse } from "$types";
 import { error } from "@sveltejs/kit";
 import z from "zod";
+import { listPosts as listPostsRequest, type ListPostsParams } from "#lib/shared/api/cms-generated.js";
 
 /**
  * Payload REST filters with bracket-notation query params (`where[x][equals]=y`) and supports comma-separated
@@ -76,11 +76,13 @@ export const getPostBySlug = query(z.object({ slug: z.string() }), async ({ slug
 /** Get a draft post by slug. Never cached. Uses CMS_API_TOKEN. */
 export const getPostBySlugDraft = query(z.object({ slug: z.string() }), async ({ slug }) => {
   try {
-    const token = envPrivate.CMS_API_TOKEN;
+    const token = CMS_API_TOKEN;
+
     const { data } = await listPostsRequest(
       asListParams({ limit: 1, depth: 2, draft: true, "where[slug][equals]": slug }),
       token ? { headers: { Authorization: `users API-Key ${token}` } } : undefined
     );
+
     if (!data.docs.length) error(404, "Post not found");
     return data.docs[0] as Post;
   } catch (error) {

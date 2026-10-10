@@ -37,7 +37,7 @@ Follow these instructions when working on SkyCrypt Frontend. Nested `AGENTS.md` 
 
 - Compose components into layouts, then layouts into sections. Components must not depend on sections.
 - Initialize global contexts in `src/routes/+layout.svelte`. Keep request-specific user and session state out of shared server globals.
-- Use configured aliases such as `$lib`, `$ctx`, `$types`, `$ui`, and `$utils`. Alias and SvelteKit configuration live in `vite.config.ts`.
+- Use configured aliases such as `#lib`, `$ctx`, `$types`, `$ui`, and `$utils`. Alias and SvelteKit configuration live in `vite.config.ts`.
 - Keep credentials and database access in server-only code. Treat every `PUBLIC_*` environment variable as exposed to the browser.
 
 ## Implementation conventions

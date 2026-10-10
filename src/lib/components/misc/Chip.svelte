@@ -1,6 +1,5 @@
 <script lang="ts">
   import { genericTooltipTether, getInternalState } from "$ctx";
-  import { cn } from "$lib/shared/utils";
   import * as Avatar from "$ui/avatar";
   import * as Tooltip from "$ui/tooltip";
   import Image from "@lucide/svelte/icons/image";
@@ -8,6 +7,7 @@
   import { type Snippet } from "svelte";
   import { cubicOut } from "svelte/easing";
   import { fade } from "svelte/transition";
+  import { cn } from "#lib/shared/utils.js";
 
   type AnimationOptions =
     | {

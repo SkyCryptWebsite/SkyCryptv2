@@ -1,7 +1,7 @@
-import { db } from "$lib/server/db";
-import { account, minecraftAccount } from "$lib/server/db/schema";
 import { and, asc, desc, eq } from "drizzle-orm";
 import { z } from "zod";
+import { db } from "#lib/server/db/index.js";
+import { account, minecraftAccount } from "#lib/server/db/schema/index.js";
 
 const minecraftUuid = z
   .string()

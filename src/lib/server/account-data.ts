@@ -1,4 +1,5 @@
-import { db } from "$lib/server/db";
+import { eq, inArray } from "drizzle-orm";
+import { db } from "#lib/server/db/index.js";
 import {
   account,
   apikey,
@@ -8,8 +9,7 @@ import {
   profileEmoji,
   session,
   user
-} from "$lib/server/db/schema";
-import { eq, inArray } from "drizzle-orm";
+} from "#lib/server/db/schema/index.js";
 
 export async function exportAccountData(userId: string) {
   return db.transaction(
