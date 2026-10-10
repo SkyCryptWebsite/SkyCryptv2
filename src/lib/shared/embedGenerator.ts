@@ -83,8 +83,8 @@ function getLongDescription(embedData: ModelsEmbedData): string {
     lines.push("-# ~~                                              ~~");
 
     const sortedSkills: SkillKey[][] = [
-      ["combat", "farming", "fishing", "mining", "foraging", "enchanting", "alchemy"],
-      ["carpentry", "runecrafting", "taming", "social", "hunting", "dungeoneering"]
+      ["combat", "farming", "fishing", "mining", "foraging", "enchanting"],
+      ["alchemy", "carpentry", "runecrafting", "taming", "social", "hunting"]
     ];
 
     for (const skillGroup of sortedSkills) {
