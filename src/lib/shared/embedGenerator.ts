@@ -79,7 +79,7 @@ function getLongDescription(embedData: ModelsEmbedData): string {
   // Skills
   const skills = embedData.skills?.skills;
   if (embedData.skills && skills && Object.keys(skills).length > 0) {
-    lines.push(`\n${miscEmojis.skills} **Skills: ${embedData.skills.skillAverage}**`);
+    lines.push(`\n${miscEmojis.skills} **Skill Average: ${embedData.skills.skillAverage}**`);
     lines.push("-# ~~                                              ~~");
 
     const skillsOrder: SkillKey[][] = [
@@ -103,7 +103,7 @@ function getLongDescription(embedData: ModelsEmbedData): string {
   if (embedData.dungeons && embedData.dungeons.classAverage && embedData.dungeons.classAverage) {
     const classAverage = embedData.dungeons.classAverage;
     if (classAverage) {
-      lines.push(`\n${skillEmojis.dungeons} **Dungeons: ${classAverage}**`);
+      lines.push(`\n${skillEmojis.dungeons} **Class Average: ${classAverage}**`);
       lines.push("-# ~~                                              ~~");
     }
 
@@ -126,7 +126,7 @@ function getLongDescription(embedData: ModelsEmbedData): string {
 
   // Slayer
   if (embedData.slayers && embedData.slayers.xp != null && embedData.slayers.xp > 0) {
-    lines.push(`\n${miscEmojis.slayyyter} **Slayer: ${formatNumber(embedData.slayers.xp)}**`);
+    lines.push(`\n${miscEmojis.slayyyter} **Slayer XP: ${formatNumber(embedData.slayers.xp)}**`);
     lines.push("-# ~~                                              ~~");
 
     if (embedData.slayers.slayers) {

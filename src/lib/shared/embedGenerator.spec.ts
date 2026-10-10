@@ -230,7 +230,7 @@ describe.concurrent("embedGenerator", () => {
       };
 
       const result = getLongDescription(embedData);
-      expect(result).toContain("<:skills:1558225234547580948> **Skills: 45.5**");
+      expect(result).toContain("<:skills:1558225234547580948> **Skill Average: 45.5**");
       expect(result).toContain("<:farming:1558225218567147651> 50");
       expect(result).toContain("<:mining:1558225228235018271> 60");
       expect(result).toContain("<:combat:1558225211923636315> 50");
@@ -273,7 +273,7 @@ describe.concurrent("embedGenerator", () => {
       };
 
       const result = getLongDescription(embedData);
-      expect(result).not.toContain("<:skills:1558225234547580948> **Skills:");
+      expect(result).not.toContain("<:skills:1558225234547580948> **Skill Average:");
     });
 
     it("should skip null skills in skills object", ({ expect }) => {
@@ -312,7 +312,7 @@ describe.concurrent("embedGenerator", () => {
       };
 
       const result = getLongDescription(embedData);
-      expect(result).toContain("<:dungeons:1558225214444150794> **Dungeons: 40.5**");
+      expect(result).toContain("<:dungeons:1558225214444150794> **Class Average: 40.5**");
       expect(result).toContain("<:dungeoneering:1558225213223866399> 50");
       expect(result).toContain("<:mage:1558225227039637624> 50");
     });
@@ -402,7 +402,7 @@ describe.concurrent("embedGenerator", () => {
       };
 
       const result = getLongDescription(embedData);
-      expect(result).toContain("<:slayyyter:1558225235713593354> **Slayer: 5M**");
+      expect(result).toContain("<:slayyyter:1558225235713593354> **Slayer XP: 5M**");
       expect(result).toContain("<:zombie:1558225246945939527> 9");
       expect(result).toContain("<:spider:1558225239299727380> 8");
       expect(result).toContain("<:wolf:1558225245532463225> 8");
@@ -442,7 +442,7 @@ describe.concurrent("embedGenerator", () => {
       };
 
       const result = getLongDescription(embedData);
-      expect(result).not.toContain("<:slayyyter:1558225235713593354> **Slayer:");
+      expect(result).not.toContain("<:slayyyter:1558225235713593354> **Slayer XP:");
     });
 
     it("should not include slayers section when xp is undefined", ({ expect }) => {
@@ -457,7 +457,7 @@ describe.concurrent("embedGenerator", () => {
       };
 
       const result = getLongDescription(embedData);
-      expect(result).not.toContain("<:slayyyter:1558225235713593354> **Slayer:");
+      expect(result).not.toContain("<:slayyyter:1558225235713593354> **Slayer XP:");
     });
 
     it("should skip slayers with undefined values", ({ expect }) => {
@@ -517,11 +517,11 @@ describe.concurrent("embedGenerator", () => {
       expect(result).toContain("<:networth:1558225229418074112> Networth: 2B");
       expect(result).toContain("<:purse:1558225230613450814> Purse: 75M");
       expect(result).toContain("<:bank:1558225205909000202> Bank: 150M");
-      expect(result).toContain("<:skills:1558225234547580948> **Skills: 50**");
+      expect(result).toContain("<:skills:1558225234547580948> **Skill Average: 50**");
       expect(result).toContain("<:farming:1558225218567147651> 60");
-      expect(result).toContain("<:dungeons:1558225214444150794> **Dungeons: 45**");
+      expect(result).toContain("<:dungeons:1558225214444150794> **Class Average: 45**");
       expect(result).toContain("<:dungeoneering:1558225213223866399> 50");
-      expect(result).toContain("<:slayyyter:1558225235713593354> **Slayer: 10M**");
+      expect(result).toContain("<:slayyyter:1558225235713593354> **Slayer XP: 10M**");
       expect(result).toContain("<:zombie:1558225246945939527> 9");
     });
 
