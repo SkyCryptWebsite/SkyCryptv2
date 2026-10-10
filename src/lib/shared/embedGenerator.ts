@@ -82,12 +82,12 @@ function getLongDescription(embedData: ModelsEmbedData): string {
     lines.push(`\n${miscEmojis.skills} **Skills: ${embedData.skills.skillAverage}**`);
     lines.push("-# ~~                                              ~~");
 
-    const sortedSkills: SkillKey[][] = [
+    const skillsOrder: SkillKey[][] = [
       ["combat", "farming", "fishing", "mining", "foraging", "enchanting"],
       ["alchemy", "carpentry", "runecrafting", "taming", "social", "hunting"]
     ];
 
-    for (const skillGroup of sortedSkills) {
+    for (const skillGroup of skillsOrder) {
       const row = skillGroup
         .filter((skill) => skills[skill as keyof typeof skills] != null)
         .map((skill) => `${skillEmojis[skill]} ${skills[skill as keyof typeof skills]}`)
@@ -110,11 +110,13 @@ function getLongDescription(embedData: ModelsEmbedData): string {
     const dungeonEntries: string[] = [`${skillEmojis.dungeoneering} ${embedData.dungeons.dungeoneering ?? 0}`];
 
     const classes = embedData.dungeons.classes;
+    const classOrder: SkillKey[] = ["healer", "mage", "berserk", "archer", "tank"];
     if (classes) {
-      for (const [dclass, level] of Object.entries(classes)) {
-        const emoji = skillEmojis[dclass as SkillKey];
-        if (emoji) {
-          dungeonEntries.push(`${emoji} ${level ?? 0}`);
+      for (const dclass of classOrder) {
+        const level = classes[dclass as keyof typeof classes];
+        if (level != null) {
+          const emoji = skillEmojis[dclass];
+          dungeonEntries.push(`${emoji} ${level}`);
         }
       }
     }
