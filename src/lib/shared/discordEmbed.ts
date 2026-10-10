@@ -1,6 +1,7 @@
 import { env } from "$env/dynamic/public";
 import type { ModelsEmbedData } from "$lib/shared/api/orval-generated";
 import { getLongDescription } from "$lib/shared/embedGenerator";
+import { gameModeIcons } from "$src/lib/shared/constants/game-modes";
 import type { APIContainerComponent } from "discord-api-types/v10";
 
 const { PUBLIC_DISCORD_INVITE } = env;
@@ -12,9 +13,14 @@ export function createDiscordEmbed(data: ModelsEmbedData) {
   const profile = encodeURIComponent(data.profile_cute_name || "");
   const profileUrl = `https://sky.shiiyu.moe/stats/${username}/${profile}`;
   const trackingParams = "?utm_source=SkyCrypt&utm_campaign=DiscordEmbed";
-  const title = `${data.displayName || data.username || "SkyCrypt"} (${data.profile_cute_name || "Selected profile"})`
-    .replace(/[\\[\]*_`<>]/g, "\\$&")
-    .replace(/[\r\n]/g, " ");
+  const rank = data.rank?.rankText ? ` [${data.rank.rankText}] ` : "";
+  const gameModeIcon = gameModeIcons[data.game_mode as keyof typeof gameModeIcons];
+  const profileName = data.profile_cute_name
+    ? ` (${data.profile_cute_name}${gameModeIcon ? " " + gameModeIcon : ""})`
+    : "";
+
+  const title =
+    rank + (data.displayName || data.username) + profileName.replace(/[\\[\]*_`<>]/g, "\\$&").replace(/[\r\n]/g, " ");
   const summary = {
     type: 10 as const,
     content: `### [${title}](${profileUrl})\n${getLongDescription(data).trim()}`
@@ -39,19 +45,33 @@ export function createDiscordEmbed(data: ModelsEmbedData) {
         {
           type: 1,
           components: [
-            { type: 2, style: 5, label: "SkyCrypt", url: `${profileUrl}${trackingParams}` },
-            { type: 2, style: 5, label: "SkyCrypt Discord", url: PUBLIC_DISCORD_INVITE },
+            {
+              type: 2,
+              style: 5,
+              label: "SkyCrypt",
+              url: `${profileUrl}${trackingParams}`,
+              emoji: { id: "1558259246070505512", name: "skycrypt" }
+            },
+            {
+              type: 2,
+              style: 5,
+              label: "SkyCrypt Discord",
+              url: PUBLIC_DISCORD_INVITE,
+              emoji: { id: "1558259241679196280", name: "discord" }
+            },
             {
               type: 2,
               style: 5,
               label: "Plancke",
-              url: `https://plancke.io/hypixel/player/stats/${username}${trackingParams}`
+              url: `https://plancke.io/hypixel/player/stats/${username}${trackingParams}`,
+              emoji: { id: "1558259244275597414", name: "plancke" }
             },
             {
               type: 2,
               style: 5,
               label: "Elite",
-              url: `https://eliteskyblock.com/@${username}/${profile}${trackingParams}`
+              url: `https://eliteskyblock.com/@${username}/${profile}${trackingParams}`,
+              emoji: { id: "1558259242828435507", name: "elite" }
             }
           ]
         },
