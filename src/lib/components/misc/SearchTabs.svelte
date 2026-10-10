@@ -6,7 +6,7 @@
   import ScrollArea from "$src/lib/components/ui/scroll-area/scroll-area.svelte";
   import { Input } from "$ui/input";
   import * as Tabs from "$ui/tabs";
-  import { type Icon as IconType } from "@lucide/svelte";
+  import type { LucideIcon } from "@lucide/svelte";
   import SearchXIcon from "@lucide/svelte/icons/search-x";
   import type { Snippet } from "svelte";
   import { cubicOut } from "svelte/easing";
@@ -33,7 +33,7 @@
     viewportClasses?: string;
     emptyTitle?: string;
     emptyDescription?: string;
-    emptyIcon?: typeof IconType;
+    emptyIcon?: LucideIcon;
     noResultsLabel?: string;
   };
 

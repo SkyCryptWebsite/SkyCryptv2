@@ -8,7 +8,7 @@
   import { cn } from "$src/lib/shared/utils";
   import * as Kbd from "$ui/kbd";
   import * as NavigationMenu from "$ui/navigation-menu";
-  import { type Icon as IconType } from "@lucide/svelte";
+  import type { LucideIcon } from "@lucide/svelte";
   import NewspaperIcon from "@lucide/svelte/icons/newspaper";
   import SearchIcon from "@lucide/svelte/icons/search";
   import { SvglDiscordLogo, SvglPatreonLogo, type SvglLogo } from "@selemondev/svgl-svelte";
@@ -18,7 +18,7 @@
     title: string;
     href: string;
     content: string;
-    icon: typeof IconType | typeof SvglLogo;
+    icon: LucideIcon | typeof SvglLogo;
   };
 
   const { PUBLIC_DISCORD_INVITE, PUBLIC_PATREON } = env;

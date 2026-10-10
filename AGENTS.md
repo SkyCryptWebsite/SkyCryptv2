@@ -1,37 +1,92 @@
-# Repository Guidelines
+# AGENTS.md
 
-## Project Structure & Module Organization
+Follow these instructions when working on SkyCrypt Frontend. Nested `AGENTS.md` files may add instructions for their directories. See `CONTRIBUTING.md` for setup and release policy.
 
-SkyCrypt is a SvelteKit 2 application built with TypeScript and Svelte 5. Application code lives in `src/`: reusable UI belongs in `lib/components`, structural composition in `lib/layouts`, domain features in `lib/sections`, utilities and API clients in `lib/shared`, server-only code in `lib/server`, and reactive contexts in `context`. Routes live in `src/routes`, while static assets belong in `static/`. Colocate tests with implementation files; place shared test helpers in `src/test-utils`.
+## Working in this repository
 
-Follow the `components -> layouts -> sections` layering. Initialize global contexts in `src/routes/+layout.svelte`. Do not edit Orval-generated API files manually; regenerate them with the configured generator.
+- Read the code, configuration, and tests relevant to the task before editing. Preserve unrelated staged and unstaged work.
+- Reuse existing helpers and components before introducing dependencies or abstractions.
+- Update this file when project practices change. Check instructions against the repository and link to existing documentation instead of repeating it. Keep machine-specific paths out of this file.
 
-## Build, Test, and Development Commands
+## Stack and setup
 
-Use Node 24 and pnpm 11; other package managers are unsupported.
+- SkyCrypt is a Hypixel SkyBlock profile viewer built with SvelteKit 2, Svelte 5, strict TypeScript, and Tailwind CSS 4. Production uses the Node adapter.
+- Use Node 24 and pnpm 12, as required by `package.json` and CI. Other runtimes and package managers are unsupported. Keep `pnpm-lock.yaml` in sync with dependency changes.
+- Install with `pnpm install`. Copy `.env.example` to `.env` without overwriting an existing file. Never commit secrets or local environment files.
+- Profile data and end-to-end tests require the Go backend from the separate SkyCrypt-Backend repository. Newsroom features use a separate CMS. See `.env.example` for service URLs.
+- Database and authentication code use PostgreSQL, Drizzle, and Better Auth. `pnpm db:start` starts local PostgreSQL. Server startup applies migrations from `drizzle/` through `src/hooks.server.ts`; builds skip migration execution.
 
-- `pnpm dev`: start the Vite development server.
-- `pnpm build`: create a production build.
-- `pnpm preview`: serve the production build locally.
-- `pnpm check`: run Svelte and TypeScript diagnostics.
-- `pnpm lint`: run oxfmt, ESLint, and correctness checks.
-- `pnpm test`: run Vitest once.
-- `pnpm test:coverage`: run tests with V8 coverage.
-- `pnpm test:e2e`: run Playwright end-to-end tests.
-- `pnpm format`: apply repository formatting.
+## Structure and boundaries
 
-## Coding Style & Naming Conventions
+| Location              | Purpose                                                                |
+| --------------------- | ---------------------------------------------------------------------- |
+| `src/lib/components/` | Reusable UI and feature components; shared UI primitives live in `ui/` |
+| `src/lib/layouts/`    | Structural composition of components                                   |
+| `src/lib/sections/`   | Domain sections composed from layouts and components                   |
+| `src/lib/shared/`     | Shared utilities, themes, API clients, and remote functions            |
+| `src/lib/server/`     | Server-only authentication, integrations, and database code            |
+| `src/lib/hooks/`      | Reusable Svelte hooks                                                  |
+| `src/lib/types/`      | Shared TypeScript types                                                |
+| `src/context/`        | Reactive contexts and preferences                                      |
+| `src/routes/`         | SvelteKit routes and route-specific remote functions                   |
+| `src/test-utils/`     | Shared test wrappers and helpers                                       |
+| `e2e/`                | Playwright user-flow tests                                             |
+| `drizzle/`            | SQL migrations and migration metadata                                  |
+| `static/`             | Public assets                                                          |
+| `scripts/`            | Release and maintenance scripts                                        |
 
-oxfmt enforces two-space indentation, double quotes, no trailing commas, and ordered Tailwind classes. Keep TypeScript strict and prefer aliases such as `$lib`, `$ctx`, and `$types`. Use Svelte 5 runes (`$state`, `$derived`, `$props`) and snippets instead of legacy reactive declarations, `export let`, or slots. Name Svelte components in PascalCase, utilities in camelCase, and route files using SvelteKit conventions. Prefer Tailwind v4 utilities and the shared `cn()` helper.
+- Compose components into layouts, then layouts into sections. Components must not depend on sections.
+- Initialize global contexts in `src/routes/+layout.svelte`. Keep request-specific user and session state out of shared server globals.
+- Use configured aliases such as `$lib`, `$ctx`, `$types`, `$ui`, and `$utils`. Alias and SvelteKit configuration live in `vite.config.ts`.
+- Keep credentials and database access in server-only code. Treat every `PUBLIC_*` environment variable as exposed to the browser.
 
-## Testing Guidelines
+## Implementation conventions
 
-Write focused Vitest tests beside the code. Use `*.spec.ts` for Node tests and `*.svelte.spec.ts` for browser/component tests. Add regression coverage for behavior changes and use Playwright for complete user flows. Run `pnpm lint` and relevant tests before submitting changes.
+- Use Svelte 5 runes (`$state`, `$derived`, `$props`) and snippets. Avoid legacy reactive declarations, `export let`, and slots in new code.
+- Use the Svelte MCP to get the latest svelte documentation and conventions. Use the async flag to get the latest SvelteKit documentation and conventions for async svelte and remote functions, as that is the default for this project (instead of +page.server.ts way of loading data).
+- The project enables async Svelte compilation and SvelteKit remote functions. Use `--async` when validating with Svelte MCP/CLI tooling.
+- Use SvelteKit remote functions in `*.remote.ts` for new data loading and mutations instead of adding `+page.server.ts`. Migrate existing server route files only when the task calls for it.
+- Validate remote-function inputs and check authentication and authorization on the server. Follow nearby implementations, and check permissions in each protected mutation even when route guards or hidden controls restrict access.
+- Use Tailwind utilities, the shared `cn()` helper, and existing theme tokens and UI primitives. UI changes must work with a keyboard, show focus, adapt to screen size, and support existing themes.
+- Name reusable Svelte components in PascalCase and utilities in camelCase; follow SvelteKit route naming and nearby feature-file conventions.
+- Follow `.oxfmtrc.json`: two spaces, double quotes, no trailing commas, sorted imports, and ordered Tailwind classes. Format only changed files.
 
-## Commit & Pull Request Guidelines
+## Generated code and database changes
 
-Use Conventional Commits, for example `feat(newsroom): add post filters` or `fix(theme): preserve contrast`. Keep commits scoped and intentional. Pull requests should explain the problem and solution, link relevant issues, list verification commands, and include before/after screenshots for visible UI changes. Add a changeset for user-facing release changes when appropriate.
+- Do not manually edit Orval-generated API clients or schemas in `src/lib/shared/api/`. Change `orval.config.ts`, custom mutators, or the upstream API definition, then regenerate the relevant target.
+- Run `pnpm exec orval --project <target>` for `skycrypt`, `skycryptZod`, `cms`, or `patreon`. SkyCrypt targets read `http://localhost:8080/api/openapi/doc.json`; CMS reads `http://localhost:3000/api/openapi.json`; Patreon reads its configured upstream spec. Required services must be available.
+- Edit database schemas in `src/lib/server/db/schema/`, then run `pnpm db:generate` and review the SQL and metadata in `drizzle/`. Do not rewrite applied migrations.
+- `pnpm auth:schema` regenerates the Better Auth schema from `src/lib/server/auth.ts`. Review the generated changes and generate any required database migration separately.
+- `pnpm db:push` directly changes the configured database; use it only for local schema work. Commit migrations for schema changes. Drizzle CLI commands require `DATABASE_URL` in the process environment.
 
-## Configuration & Security
+## Commands and verification
 
-Copy `.env.example` for local configuration and never commit secrets. Keep credentials in server-only modules; expose client values only when intentionally configured as public.
+| Command                                        | Purpose                                                           |
+| ---------------------------------------------- | ----------------------------------------------------------------- |
+| `pnpm dev`                                     | Start Vite at `http://localhost:5173`                             |
+| `pnpm check`                                   | Synchronize SvelteKit types and run Svelte/TypeScript diagnostics |
+| `pnpm lint`                                    | Check formatting, run ESLint, and run `pnpm check`                |
+| `pnpm exec oxfmt --write <files>`              | Format selected files                                             |
+| `pnpm format`                                  | Format the repository                                             |
+| `pnpm test`                                    | Run both Vitest projects once                                     |
+| `pnpm exec vitest run --project server <file>` | Run a focused Node test                                           |
+| `pnpm exec vitest run --project client <file>` | Run a focused browser/component test                              |
+| `pnpm test:coverage`                           | Run Vitest with V8 coverage                                       |
+| `pnpm test:e2e`                                | Run Playwright tests; starts or reuses the local dev server       |
+| `pnpm build`                                   | Create the production build                                       |
+| `pnpm preview`                                 | Serve the build locally at `http://localhost:4173`                |
+| `pnpm runbuild`                                | Start the built Node server                                       |
+
+- Add regression tests beside the code when behavior changes. Use `*.spec.ts` for Node tests and `*.svelte.spec.ts` for browser/component tests. Reuse helpers from `src/test-utils/`.
+- Vitest has `server` and `client` projects in `vite.config.ts`. The client project uses headless Chromium and requires `pnpm exec playwright install chromium`. Tests must make assertions; `expect.requireAssertions` is enabled.
+- Run `pnpm lint`, relevant tests, and `pnpm build` for code changes before submitting. For documentation-only changes, check formatting and the accuracy of referenced paths and commands.
+- End-to-end tests run locally with the backend and its required API credentials; they are currently disabled in CI. A production build can also require backend access for prerendered data.
+- Report which checks you ran, their results, and anything you could not run. Never report a skipped check as passing.
+
+## Commits, pull requests, and releases
+
+- Use Conventional Commits, for example `fix(theme): preserve contrast`. The commit-message hook runs commitlint.
+- Follow `.github/PULL_REQUEST_TEMPLATE.md`: explain the problem and resulting behavior, link relevant issues, list verification, and include before/after screenshots for visible UI changes. Note migration or environment requirements.
+- Add a changeset with `pnpm changeset` when the change belongs in the release changelog. Documentation-only agent guidance does not need one.
+- Changesets target `dev`. Automation creates beta releases on `dev` and stable releases on `prod`. Follow `CONTRIBUTING.md` for promotion and changeset cleanup. Run release scripts only for an explicit release task.
+- Preserve applicable license notices. New contributions default to AGPLv3; brand assets explicitly listed in `NOTICE` and `static/BRAND_ASSETS_LICENSE` retain their MIT exception.

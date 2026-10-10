@@ -1,12 +1,12 @@
 <script lang="ts">
   import { cn } from "$src/lib/shared/utils";
   import * as Empty from "$ui/empty";
-  import { type Icon as IconType } from "@lucide/svelte";
+  import { type LucideIcon } from "@lucide/svelte";
 
   type Props = {
     title: string;
     description?: string;
-    icon: typeof IconType;
+    icon: LucideIcon;
     class?: string;
   };
 

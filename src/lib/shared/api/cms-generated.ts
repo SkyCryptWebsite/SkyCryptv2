@@ -2607,14 +2607,32 @@ export type listUsersResponse = listUsersResponseSuccess;
 
 export const getListUsersUrl = (params?: ListUsersParams) => {
   const normalizedParams = new URLSearchParams();
+  const deepObjectEntries: string[] = [];
 
   Object.entries(params || {}).forEach(([key, value]) => {
+    const deepObjectParameters = ["where"];
+
+    if (typeof value === "object" && value !== null && !Array.isArray(value) && deepObjectParameters.includes(key)) {
+      Object.entries(value).forEach(([subKey, subValue]) => {
+        if (subValue !== undefined) {
+          deepObjectEntries.push(
+            encodeURIComponent(key) +
+              "[" +
+              encodeURIComponent(subKey) +
+              "]=" +
+              (subValue === null ? "null" : encodeURIComponent(String(subValue)))
+          );
+        }
+      });
+      return;
+    }
+
     if (value !== undefined) {
       normalizedParams.append(key, value === null ? "null" : String(value));
     }
   });
 
-  const stringifiedParams = normalizedParams.toString();
+  const stringifiedParams = [normalizedParams.toString(), deepObjectEntries.join("&")].filter(Boolean).join("&");
 
   return stringifiedParams.length > 0 ? `/api/users?${stringifiedParams}` : `/api/users`;
 };
@@ -2661,10 +2679,16 @@ export const createUser = async (
   params?: CreateUserParams,
   options?: Parameters<typeof cmsFetch>[1]
 ): Promise<createUserResponse> => {
+  const getHeaders = (h?: NonNullable<RequestInit["headers"]>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Array.isArray(h)) return Object.fromEntries(h);
+    return h;
+  };
   return cmsFetch<createUserResponse>(getCreateUserUrl(params), {
     ...options,
     method: "POST",
-    headers: { "Content-Type": "application/json", ...options?.headers },
+    headers: { "Content-Type": "application/json", ...getHeaders(options?.headers) },
     body: JSON.stringify(userRequestBodyBody)
   });
 };
@@ -2691,7 +2715,11 @@ export type findUserByIdResponse = findUserByIdResponseSuccess | findUserByIdRes
 export const getFindUserByIdUrl = (id: string, params?: FindUserByIdParams) => {
   const normalizedParams = new URLSearchParams();
 
-  Object.entries(params || {}).forEach(([key, value]) => {});
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : String(value));
+    }
+  });
 
   const stringifiedParams = normalizedParams.toString();
 
@@ -2732,7 +2760,11 @@ export type updateUserResponse = updateUserResponseSuccess | updateUserResponseE
 export const getUpdateUserUrl = (id: string, params?: UpdateUserParams) => {
   const normalizedParams = new URLSearchParams();
 
-  Object.entries(params || {}).forEach(([key, value]) => {});
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : String(value));
+    }
+  });
 
   const stringifiedParams = normalizedParams.toString();
 
@@ -2746,10 +2778,16 @@ export const updateUser = async (
   params?: UpdateUserParams,
   options?: Parameters<typeof cmsFetch>[1]
 ): Promise<updateUserResponse> => {
+  const getHeaders = (h?: NonNullable<RequestInit["headers"]>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Array.isArray(h)) return Object.fromEntries(h);
+    return h;
+  };
   return cmsFetch<updateUserResponse>(getUpdateUserUrl(id, params), {
     ...options,
     method: "PATCH",
-    headers: { "Content-Type": "application/json", ...options?.headers },
+    headers: { "Content-Type": "application/json", ...getHeaders(options?.headers) },
     body: JSON.stringify(userPatchRequestBodyBody)
   });
 };
@@ -2776,7 +2814,11 @@ export type deleteUserResponse = deleteUserResponseSuccess | deleteUserResponseE
 export const getDeleteUserUrl = (id: string, params?: DeleteUserParams) => {
   const normalizedParams = new URLSearchParams();
 
-  Object.entries(params || {}).forEach(([key, value]) => {});
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : String(value));
+    }
+  });
 
   const stringifiedParams = normalizedParams.toString();
 
@@ -2808,14 +2850,32 @@ export type listMediaResponse = listMediaResponseSuccess;
 
 export const getListMediaUrl = (params?: ListMediaParams) => {
   const normalizedParams = new URLSearchParams();
+  const deepObjectEntries: string[] = [];
 
   Object.entries(params || {}).forEach(([key, value]) => {
+    const deepObjectParameters = ["where"];
+
+    if (typeof value === "object" && value !== null && !Array.isArray(value) && deepObjectParameters.includes(key)) {
+      Object.entries(value).forEach(([subKey, subValue]) => {
+        if (subValue !== undefined) {
+          deepObjectEntries.push(
+            encodeURIComponent(key) +
+              "[" +
+              encodeURIComponent(subKey) +
+              "]=" +
+              (subValue === null ? "null" : encodeURIComponent(String(subValue)))
+          );
+        }
+      });
+      return;
+    }
+
     if (value !== undefined) {
       normalizedParams.append(key, value === null ? "null" : String(value));
     }
   });
 
-  const stringifiedParams = normalizedParams.toString();
+  const stringifiedParams = [normalizedParams.toString(), deepObjectEntries.join("&")].filter(Boolean).join("&");
 
   return stringifiedParams.length > 0 ? `/api/media?${stringifiedParams}` : `/api/media`;
 };
@@ -2862,10 +2922,16 @@ export const createMedia = async (
   params?: CreateMediaParams,
   options?: Parameters<typeof cmsFetch>[1]
 ): Promise<createMediaResponse> => {
+  const getHeaders = (h?: NonNullable<RequestInit["headers"]>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Array.isArray(h)) return Object.fromEntries(h);
+    return h;
+  };
   return cmsFetch<createMediaResponse>(getCreateMediaUrl(params), {
     ...options,
     method: "POST",
-    headers: { "Content-Type": "application/json", ...options?.headers },
+    headers: { "Content-Type": "application/json", ...getHeaders(options?.headers) },
     body: JSON.stringify(mediaRequestBodyBody)
   });
 };
@@ -2892,7 +2958,11 @@ export type findMediaByIdResponse = findMediaByIdResponseSuccess | findMediaById
 export const getFindMediaByIdUrl = (id: string, params?: FindMediaByIdParams) => {
   const normalizedParams = new URLSearchParams();
 
-  Object.entries(params || {}).forEach(([key, value]) => {});
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : String(value));
+    }
+  });
 
   const stringifiedParams = normalizedParams.toString();
 
@@ -2933,7 +3003,11 @@ export type updateMediaResponse = updateMediaResponseSuccess | updateMediaRespon
 export const getUpdateMediaUrl = (id: string, params?: UpdateMediaParams) => {
   const normalizedParams = new URLSearchParams();
 
-  Object.entries(params || {}).forEach(([key, value]) => {});
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : String(value));
+    }
+  });
 
   const stringifiedParams = normalizedParams.toString();
 
@@ -2947,10 +3021,16 @@ export const updateMedia = async (
   params?: UpdateMediaParams,
   options?: Parameters<typeof cmsFetch>[1]
 ): Promise<updateMediaResponse> => {
+  const getHeaders = (h?: NonNullable<RequestInit["headers"]>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Array.isArray(h)) return Object.fromEntries(h);
+    return h;
+  };
   return cmsFetch<updateMediaResponse>(getUpdateMediaUrl(id, params), {
     ...options,
     method: "PATCH",
-    headers: { "Content-Type": "application/json", ...options?.headers },
+    headers: { "Content-Type": "application/json", ...getHeaders(options?.headers) },
     body: JSON.stringify(mediaPatchRequestBodyBody)
   });
 };
@@ -2977,7 +3057,11 @@ export type deleteMediaResponse = deleteMediaResponseSuccess | deleteMediaRespon
 export const getDeleteMediaUrl = (id: string, params?: DeleteMediaParams) => {
   const normalizedParams = new URLSearchParams();
 
-  Object.entries(params || {}).forEach(([key, value]) => {});
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : String(value));
+    }
+  });
 
   const stringifiedParams = normalizedParams.toString();
 
@@ -3009,14 +3093,32 @@ export type listPostsResponse = listPostsResponseSuccess;
 
 export const getListPostsUrl = (params?: ListPostsParams) => {
   const normalizedParams = new URLSearchParams();
+  const deepObjectEntries: string[] = [];
 
   Object.entries(params || {}).forEach(([key, value]) => {
+    const deepObjectParameters = ["where"];
+
+    if (typeof value === "object" && value !== null && !Array.isArray(value) && deepObjectParameters.includes(key)) {
+      Object.entries(value).forEach(([subKey, subValue]) => {
+        if (subValue !== undefined) {
+          deepObjectEntries.push(
+            encodeURIComponent(key) +
+              "[" +
+              encodeURIComponent(subKey) +
+              "]=" +
+              (subValue === null ? "null" : encodeURIComponent(String(subValue)))
+          );
+        }
+      });
+      return;
+    }
+
     if (value !== undefined) {
       normalizedParams.append(key, value === null ? "null" : String(value));
     }
   });
 
-  const stringifiedParams = normalizedParams.toString();
+  const stringifiedParams = [normalizedParams.toString(), deepObjectEntries.join("&")].filter(Boolean).join("&");
 
   return stringifiedParams.length > 0 ? `/api/posts?${stringifiedParams}` : `/api/posts`;
 };
@@ -3063,10 +3165,16 @@ export const createPost = async (
   params?: CreatePostParams,
   options?: Parameters<typeof cmsFetch>[1]
 ): Promise<createPostResponse> => {
+  const getHeaders = (h?: NonNullable<RequestInit["headers"]>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Array.isArray(h)) return Object.fromEntries(h);
+    return h;
+  };
   return cmsFetch<createPostResponse>(getCreatePostUrl(params), {
     ...options,
     method: "POST",
-    headers: { "Content-Type": "application/json", ...options?.headers },
+    headers: { "Content-Type": "application/json", ...getHeaders(options?.headers) },
     body: JSON.stringify(postRequestBodyBody)
   });
 };
@@ -3093,7 +3201,11 @@ export type findPostByIdResponse = findPostByIdResponseSuccess | findPostByIdRes
 export const getFindPostByIdUrl = (id: string, params?: FindPostByIdParams) => {
   const normalizedParams = new URLSearchParams();
 
-  Object.entries(params || {}).forEach(([key, value]) => {});
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : String(value));
+    }
+  });
 
   const stringifiedParams = normalizedParams.toString();
 
@@ -3134,7 +3246,11 @@ export type updatePostResponse = updatePostResponseSuccess | updatePostResponseE
 export const getUpdatePostUrl = (id: string, params?: UpdatePostParams) => {
   const normalizedParams = new URLSearchParams();
 
-  Object.entries(params || {}).forEach(([key, value]) => {});
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : String(value));
+    }
+  });
 
   const stringifiedParams = normalizedParams.toString();
 
@@ -3148,10 +3264,16 @@ export const updatePost = async (
   params?: UpdatePostParams,
   options?: Parameters<typeof cmsFetch>[1]
 ): Promise<updatePostResponse> => {
+  const getHeaders = (h?: NonNullable<RequestInit["headers"]>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Array.isArray(h)) return Object.fromEntries(h);
+    return h;
+  };
   return cmsFetch<updatePostResponse>(getUpdatePostUrl(id, params), {
     ...options,
     method: "PATCH",
-    headers: { "Content-Type": "application/json", ...options?.headers },
+    headers: { "Content-Type": "application/json", ...getHeaders(options?.headers) },
     body: JSON.stringify(postPatchRequestBodyBody)
   });
 };
@@ -3178,7 +3300,11 @@ export type deletePostResponse = deletePostResponseSuccess | deletePostResponseE
 export const getDeletePostUrl = (id: string, params?: DeletePostParams) => {
   const normalizedParams = new URLSearchParams();
 
-  Object.entries(params || {}).forEach(([key, value]) => {});
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : String(value));
+    }
+  });
 
   const stringifiedParams = normalizedParams.toString();
 
@@ -3210,14 +3336,32 @@ export type listPayloadKvsResponse = listPayloadKvsResponseSuccess;
 
 export const getListPayloadKvsUrl = (params?: ListPayloadKvsParams) => {
   const normalizedParams = new URLSearchParams();
+  const deepObjectEntries: string[] = [];
 
   Object.entries(params || {}).forEach(([key, value]) => {
+    const deepObjectParameters = ["where"];
+
+    if (typeof value === "object" && value !== null && !Array.isArray(value) && deepObjectParameters.includes(key)) {
+      Object.entries(value).forEach(([subKey, subValue]) => {
+        if (subValue !== undefined) {
+          deepObjectEntries.push(
+            encodeURIComponent(key) +
+              "[" +
+              encodeURIComponent(subKey) +
+              "]=" +
+              (subValue === null ? "null" : encodeURIComponent(String(subValue)))
+          );
+        }
+      });
+      return;
+    }
+
     if (value !== undefined) {
       normalizedParams.append(key, value === null ? "null" : String(value));
     }
   });
 
-  const stringifiedParams = normalizedParams.toString();
+  const stringifiedParams = [normalizedParams.toString(), deepObjectEntries.join("&")].filter(Boolean).join("&");
 
   return stringifiedParams.length > 0 ? `/api/payload-kv?${stringifiedParams}` : `/api/payload-kv`;
 };
@@ -3264,10 +3408,16 @@ export const createPayloadKv = async (
   params?: CreatePayloadKvParams,
   options?: Parameters<typeof cmsFetch>[1]
 ): Promise<createPayloadKvResponse> => {
+  const getHeaders = (h?: NonNullable<RequestInit["headers"]>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Array.isArray(h)) return Object.fromEntries(h);
+    return h;
+  };
   return cmsFetch<createPayloadKvResponse>(getCreatePayloadKvUrl(params), {
     ...options,
     method: "POST",
-    headers: { "Content-Type": "application/json", ...options?.headers },
+    headers: { "Content-Type": "application/json", ...getHeaders(options?.headers) },
     body: JSON.stringify(payloadKvRequestBodyBody)
   });
 };
@@ -3294,7 +3444,11 @@ export type findPayloadKvByIdResponse = findPayloadKvByIdResponseSuccess | findP
 export const getFindPayloadKvByIdUrl = (id: string, params?: FindPayloadKvByIdParams) => {
   const normalizedParams = new URLSearchParams();
 
-  Object.entries(params || {}).forEach(([key, value]) => {});
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : String(value));
+    }
+  });
 
   const stringifiedParams = normalizedParams.toString();
 
@@ -3335,7 +3489,11 @@ export type updatePayloadKvResponse = updatePayloadKvResponseSuccess | updatePay
 export const getUpdatePayloadKvUrl = (id: string, params?: UpdatePayloadKvParams) => {
   const normalizedParams = new URLSearchParams();
 
-  Object.entries(params || {}).forEach(([key, value]) => {});
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : String(value));
+    }
+  });
 
   const stringifiedParams = normalizedParams.toString();
 
@@ -3349,10 +3507,16 @@ export const updatePayloadKv = async (
   params?: UpdatePayloadKvParams,
   options?: Parameters<typeof cmsFetch>[1]
 ): Promise<updatePayloadKvResponse> => {
+  const getHeaders = (h?: NonNullable<RequestInit["headers"]>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Array.isArray(h)) return Object.fromEntries(h);
+    return h;
+  };
   return cmsFetch<updatePayloadKvResponse>(getUpdatePayloadKvUrl(id, params), {
     ...options,
     method: "PATCH",
-    headers: { "Content-Type": "application/json", ...options?.headers },
+    headers: { "Content-Type": "application/json", ...getHeaders(options?.headers) },
     body: JSON.stringify(payloadKvPatchRequestBodyBody)
   });
 };
@@ -3379,7 +3543,11 @@ export type deletePayloadKvResponse = deletePayloadKvResponseSuccess | deletePay
 export const getDeletePayloadKvUrl = (id: string, params?: DeletePayloadKvParams) => {
   const normalizedParams = new URLSearchParams();
 
-  Object.entries(params || {}).forEach(([key, value]) => {});
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : String(value));
+    }
+  });
 
   const stringifiedParams = normalizedParams.toString();
 
@@ -3411,14 +3579,32 @@ export type listPayloadJobsResponse = listPayloadJobsResponseSuccess;
 
 export const getListPayloadJobsUrl = (params?: ListPayloadJobsParams) => {
   const normalizedParams = new URLSearchParams();
+  const deepObjectEntries: string[] = [];
 
   Object.entries(params || {}).forEach(([key, value]) => {
+    const deepObjectParameters = ["where"];
+
+    if (typeof value === "object" && value !== null && !Array.isArray(value) && deepObjectParameters.includes(key)) {
+      Object.entries(value).forEach(([subKey, subValue]) => {
+        if (subValue !== undefined) {
+          deepObjectEntries.push(
+            encodeURIComponent(key) +
+              "[" +
+              encodeURIComponent(subKey) +
+              "]=" +
+              (subValue === null ? "null" : encodeURIComponent(String(subValue)))
+          );
+        }
+      });
+      return;
+    }
+
     if (value !== undefined) {
       normalizedParams.append(key, value === null ? "null" : String(value));
     }
   });
 
-  const stringifiedParams = normalizedParams.toString();
+  const stringifiedParams = [normalizedParams.toString(), deepObjectEntries.join("&")].filter(Boolean).join("&");
 
   return stringifiedParams.length > 0 ? `/api/payload-jobs?${stringifiedParams}` : `/api/payload-jobs`;
 };
@@ -3465,10 +3651,16 @@ export const createPayloadJob = async (
   params?: CreatePayloadJobParams,
   options?: Parameters<typeof cmsFetch>[1]
 ): Promise<createPayloadJobResponse> => {
+  const getHeaders = (h?: NonNullable<RequestInit["headers"]>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Array.isArray(h)) return Object.fromEntries(h);
+    return h;
+  };
   return cmsFetch<createPayloadJobResponse>(getCreatePayloadJobUrl(params), {
     ...options,
     method: "POST",
-    headers: { "Content-Type": "application/json", ...options?.headers },
+    headers: { "Content-Type": "application/json", ...getHeaders(options?.headers) },
     body: JSON.stringify(payloadJobRequestBodyBody)
   });
 };
@@ -3495,7 +3687,11 @@ export type findPayloadJobByIdResponse = findPayloadJobByIdResponseSuccess | fin
 export const getFindPayloadJobByIdUrl = (id: string, params?: FindPayloadJobByIdParams) => {
   const normalizedParams = new URLSearchParams();
 
-  Object.entries(params || {}).forEach(([key, value]) => {});
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : String(value));
+    }
+  });
 
   const stringifiedParams = normalizedParams.toString();
 
@@ -3536,7 +3732,11 @@ export type updatePayloadJobResponse = updatePayloadJobResponseSuccess | updateP
 export const getUpdatePayloadJobUrl = (id: string, params?: UpdatePayloadJobParams) => {
   const normalizedParams = new URLSearchParams();
 
-  Object.entries(params || {}).forEach(([key, value]) => {});
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : String(value));
+    }
+  });
 
   const stringifiedParams = normalizedParams.toString();
 
@@ -3550,10 +3750,16 @@ export const updatePayloadJob = async (
   params?: UpdatePayloadJobParams,
   options?: Parameters<typeof cmsFetch>[1]
 ): Promise<updatePayloadJobResponse> => {
+  const getHeaders = (h?: NonNullable<RequestInit["headers"]>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Array.isArray(h)) return Object.fromEntries(h);
+    return h;
+  };
   return cmsFetch<updatePayloadJobResponse>(getUpdatePayloadJobUrl(id, params), {
     ...options,
     method: "PATCH",
-    headers: { "Content-Type": "application/json", ...options?.headers },
+    headers: { "Content-Type": "application/json", ...getHeaders(options?.headers) },
     body: JSON.stringify(payloadJobPatchRequestBodyBody)
   });
 };
@@ -3580,7 +3786,11 @@ export type deletePayloadJobResponse = deletePayloadJobResponseSuccess | deleteP
 export const getDeletePayloadJobUrl = (id: string, params?: DeletePayloadJobParams) => {
   const normalizedParams = new URLSearchParams();
 
-  Object.entries(params || {}).forEach(([key, value]) => {});
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : String(value));
+    }
+  });
 
   const stringifiedParams = normalizedParams.toString();
 
@@ -3612,14 +3822,32 @@ export type listPayloadLockedDocumentsResponse = listPayloadLockedDocumentsRespo
 
 export const getListPayloadLockedDocumentsUrl = (params?: ListPayloadLockedDocumentsParams) => {
   const normalizedParams = new URLSearchParams();
+  const deepObjectEntries: string[] = [];
 
   Object.entries(params || {}).forEach(([key, value]) => {
+    const deepObjectParameters = ["where"];
+
+    if (typeof value === "object" && value !== null && !Array.isArray(value) && deepObjectParameters.includes(key)) {
+      Object.entries(value).forEach(([subKey, subValue]) => {
+        if (subValue !== undefined) {
+          deepObjectEntries.push(
+            encodeURIComponent(key) +
+              "[" +
+              encodeURIComponent(subKey) +
+              "]=" +
+              (subValue === null ? "null" : encodeURIComponent(String(subValue)))
+          );
+        }
+      });
+      return;
+    }
+
     if (value !== undefined) {
       normalizedParams.append(key, value === null ? "null" : String(value));
     }
   });
 
-  const stringifiedParams = normalizedParams.toString();
+  const stringifiedParams = [normalizedParams.toString(), deepObjectEntries.join("&")].filter(Boolean).join("&");
 
   return stringifiedParams.length > 0
     ? `/api/payload-locked-documents?${stringifiedParams}`
@@ -3670,10 +3898,16 @@ export const createPayloadLockedDocument = async (
   params?: CreatePayloadLockedDocumentParams,
   options?: Parameters<typeof cmsFetch>[1]
 ): Promise<createPayloadLockedDocumentResponse> => {
+  const getHeaders = (h?: NonNullable<RequestInit["headers"]>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Array.isArray(h)) return Object.fromEntries(h);
+    return h;
+  };
   return cmsFetch<createPayloadLockedDocumentResponse>(getCreatePayloadLockedDocumentUrl(params), {
     ...options,
     method: "POST",
-    headers: { "Content-Type": "application/json", ...options?.headers },
+    headers: { "Content-Type": "application/json", ...getHeaders(options?.headers) },
     body: JSON.stringify(payloadLockedDocumentRequestBodyBody)
   });
 };
@@ -3702,7 +3936,11 @@ export type findPayloadLockedDocumentByIdResponse =
 export const getFindPayloadLockedDocumentByIdUrl = (id: string, params?: FindPayloadLockedDocumentByIdParams) => {
   const normalizedParams = new URLSearchParams();
 
-  Object.entries(params || {}).forEach(([key, value]) => {});
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : String(value));
+    }
+  });
 
   const stringifiedParams = normalizedParams.toString();
 
@@ -3747,7 +3985,11 @@ export type updatePayloadLockedDocumentResponse =
 export const getUpdatePayloadLockedDocumentUrl = (id: string, params?: UpdatePayloadLockedDocumentParams) => {
   const normalizedParams = new URLSearchParams();
 
-  Object.entries(params || {}).forEach(([key, value]) => {});
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : String(value));
+    }
+  });
 
   const stringifiedParams = normalizedParams.toString();
 
@@ -3763,10 +4005,16 @@ export const updatePayloadLockedDocument = async (
   params?: UpdatePayloadLockedDocumentParams,
   options?: Parameters<typeof cmsFetch>[1]
 ): Promise<updatePayloadLockedDocumentResponse> => {
+  const getHeaders = (h?: NonNullable<RequestInit["headers"]>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Array.isArray(h)) return Object.fromEntries(h);
+    return h;
+  };
   return cmsFetch<updatePayloadLockedDocumentResponse>(getUpdatePayloadLockedDocumentUrl(id, params), {
     ...options,
     method: "PATCH",
-    headers: { "Content-Type": "application/json", ...options?.headers },
+    headers: { "Content-Type": "application/json", ...getHeaders(options?.headers) },
     body: JSON.stringify(payloadLockedDocumentPatchRequestBodyBody)
   });
 };
@@ -3795,7 +4043,11 @@ export type deletePayloadLockedDocumentResponse =
 export const getDeletePayloadLockedDocumentUrl = (id: string, params?: DeletePayloadLockedDocumentParams) => {
   const normalizedParams = new URLSearchParams();
 
-  Object.entries(params || {}).forEach(([key, value]) => {});
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : String(value));
+    }
+  });
 
   const stringifiedParams = normalizedParams.toString();
 
@@ -3829,14 +4081,32 @@ export type listPayloadPreferencesResponse = listPayloadPreferencesResponseSucce
 
 export const getListPayloadPreferencesUrl = (params?: ListPayloadPreferencesParams) => {
   const normalizedParams = new URLSearchParams();
+  const deepObjectEntries: string[] = [];
 
   Object.entries(params || {}).forEach(([key, value]) => {
+    const deepObjectParameters = ["where"];
+
+    if (typeof value === "object" && value !== null && !Array.isArray(value) && deepObjectParameters.includes(key)) {
+      Object.entries(value).forEach(([subKey, subValue]) => {
+        if (subValue !== undefined) {
+          deepObjectEntries.push(
+            encodeURIComponent(key) +
+              "[" +
+              encodeURIComponent(subKey) +
+              "]=" +
+              (subValue === null ? "null" : encodeURIComponent(String(subValue)))
+          );
+        }
+      });
+      return;
+    }
+
     if (value !== undefined) {
       normalizedParams.append(key, value === null ? "null" : String(value));
     }
   });
 
-  const stringifiedParams = normalizedParams.toString();
+  const stringifiedParams = [normalizedParams.toString(), deepObjectEntries.join("&")].filter(Boolean).join("&");
 
   return stringifiedParams.length > 0 ? `/api/payload-preferences?${stringifiedParams}` : `/api/payload-preferences`;
 };
@@ -3883,10 +4153,16 @@ export const createPayloadPreference = async (
   params?: CreatePayloadPreferenceParams,
   options?: Parameters<typeof cmsFetch>[1]
 ): Promise<createPayloadPreferenceResponse> => {
+  const getHeaders = (h?: NonNullable<RequestInit["headers"]>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Array.isArray(h)) return Object.fromEntries(h);
+    return h;
+  };
   return cmsFetch<createPayloadPreferenceResponse>(getCreatePayloadPreferenceUrl(params), {
     ...options,
     method: "POST",
-    headers: { "Content-Type": "application/json", ...options?.headers },
+    headers: { "Content-Type": "application/json", ...getHeaders(options?.headers) },
     body: JSON.stringify(payloadPreferenceRequestBodyBody)
   });
 };
@@ -3915,7 +4191,11 @@ export type findPayloadPreferenceByIdResponse =
 export const getFindPayloadPreferenceByIdUrl = (id: string, params?: FindPayloadPreferenceByIdParams) => {
   const normalizedParams = new URLSearchParams();
 
-  Object.entries(params || {}).forEach(([key, value]) => {});
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : String(value));
+    }
+  });
 
   const stringifiedParams = normalizedParams.toString();
 
@@ -3960,7 +4240,11 @@ export type updatePayloadPreferenceResponse =
 export const getUpdatePayloadPreferenceUrl = (id: string, params?: UpdatePayloadPreferenceParams) => {
   const normalizedParams = new URLSearchParams();
 
-  Object.entries(params || {}).forEach(([key, value]) => {});
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : String(value));
+    }
+  });
 
   const stringifiedParams = normalizedParams.toString();
 
@@ -3976,10 +4260,16 @@ export const updatePayloadPreference = async (
   params?: UpdatePayloadPreferenceParams,
   options?: Parameters<typeof cmsFetch>[1]
 ): Promise<updatePayloadPreferenceResponse> => {
+  const getHeaders = (h?: NonNullable<RequestInit["headers"]>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Array.isArray(h)) return Object.fromEntries(h);
+    return h;
+  };
   return cmsFetch<updatePayloadPreferenceResponse>(getUpdatePayloadPreferenceUrl(id, params), {
     ...options,
     method: "PATCH",
-    headers: { "Content-Type": "application/json", ...options?.headers },
+    headers: { "Content-Type": "application/json", ...getHeaders(options?.headers) },
     body: JSON.stringify(payloadPreferencePatchRequestBodyBody)
   });
 };
@@ -4008,7 +4298,11 @@ export type deletePayloadPreferenceResponse =
 export const getDeletePayloadPreferenceUrl = (id: string, params?: DeletePayloadPreferenceParams) => {
   const normalizedParams = new URLSearchParams();
 
-  Object.entries(params || {}).forEach(([key, value]) => {});
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : String(value));
+    }
+  });
 
   const stringifiedParams = normalizedParams.toString();
 
@@ -4042,14 +4336,32 @@ export type listPayloadMigrationsResponse = listPayloadMigrationsResponseSuccess
 
 export const getListPayloadMigrationsUrl = (params?: ListPayloadMigrationsParams) => {
   const normalizedParams = new URLSearchParams();
+  const deepObjectEntries: string[] = [];
 
   Object.entries(params || {}).forEach(([key, value]) => {
+    const deepObjectParameters = ["where"];
+
+    if (typeof value === "object" && value !== null && !Array.isArray(value) && deepObjectParameters.includes(key)) {
+      Object.entries(value).forEach(([subKey, subValue]) => {
+        if (subValue !== undefined) {
+          deepObjectEntries.push(
+            encodeURIComponent(key) +
+              "[" +
+              encodeURIComponent(subKey) +
+              "]=" +
+              (subValue === null ? "null" : encodeURIComponent(String(subValue)))
+          );
+        }
+      });
+      return;
+    }
+
     if (value !== undefined) {
       normalizedParams.append(key, value === null ? "null" : String(value));
     }
   });
 
-  const stringifiedParams = normalizedParams.toString();
+  const stringifiedParams = [normalizedParams.toString(), deepObjectEntries.join("&")].filter(Boolean).join("&");
 
   return stringifiedParams.length > 0 ? `/api/payload-migrations?${stringifiedParams}` : `/api/payload-migrations`;
 };
@@ -4096,10 +4408,16 @@ export const createPayloadMigration = async (
   params?: CreatePayloadMigrationParams,
   options?: Parameters<typeof cmsFetch>[1]
 ): Promise<createPayloadMigrationResponse> => {
+  const getHeaders = (h?: NonNullable<RequestInit["headers"]>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Array.isArray(h)) return Object.fromEntries(h);
+    return h;
+  };
   return cmsFetch<createPayloadMigrationResponse>(getCreatePayloadMigrationUrl(params), {
     ...options,
     method: "POST",
-    headers: { "Content-Type": "application/json", ...options?.headers },
+    headers: { "Content-Type": "application/json", ...getHeaders(options?.headers) },
     body: JSON.stringify(payloadMigrationRequestBodyBody)
   });
 };
@@ -4128,7 +4446,11 @@ export type findPayloadMigrationByIdResponse =
 export const getFindPayloadMigrationByIdUrl = (id: string, params?: FindPayloadMigrationByIdParams) => {
   const normalizedParams = new URLSearchParams();
 
-  Object.entries(params || {}).forEach(([key, value]) => {});
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : String(value));
+    }
+  });
 
   const stringifiedParams = normalizedParams.toString();
 
@@ -4173,7 +4495,11 @@ export type updatePayloadMigrationResponse =
 export const getUpdatePayloadMigrationUrl = (id: string, params?: UpdatePayloadMigrationParams) => {
   const normalizedParams = new URLSearchParams();
 
-  Object.entries(params || {}).forEach(([key, value]) => {});
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : String(value));
+    }
+  });
 
   const stringifiedParams = normalizedParams.toString();
 
@@ -4189,10 +4515,16 @@ export const updatePayloadMigration = async (
   params?: UpdatePayloadMigrationParams,
   options?: Parameters<typeof cmsFetch>[1]
 ): Promise<updatePayloadMigrationResponse> => {
+  const getHeaders = (h?: NonNullable<RequestInit["headers"]>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Array.isArray(h)) return Object.fromEntries(h);
+    return h;
+  };
   return cmsFetch<updatePayloadMigrationResponse>(getUpdatePayloadMigrationUrl(id, params), {
     ...options,
     method: "PATCH",
-    headers: { "Content-Type": "application/json", ...options?.headers },
+    headers: { "Content-Type": "application/json", ...getHeaders(options?.headers) },
     body: JSON.stringify(payloadMigrationPatchRequestBodyBody)
   });
 };
@@ -4221,7 +4553,11 @@ export type deletePayloadMigrationResponse =
 export const getDeletePayloadMigrationUrl = (id: string, params?: DeletePayloadMigrationParams) => {
   const normalizedParams = new URLSearchParams();
 
-  Object.entries(params || {}).forEach(([key, value]) => {});
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : String(value));
+    }
+  });
 
   const stringifiedParams = normalizedParams.toString();
 

@@ -10,7 +10,7 @@
 </script>
 
 <footer
-  class="fixed -bottom-0.5 left-0 z-50 w-full p-[env(safe-area-inset-top,0)] pr-[max(0.625rem,env(safe-area-inset-right))] pb-[env(safe-area-inset-bottom,0)] pl-[max(0.625rem,env(safe-area-inset-left))] leading-12">
+  class="fixed -bottom-0.5 left-0 z-0 w-full p-[env(safe-area-inset-top,0)] pr-[max(0.625rem,env(safe-area-inset-right))] pb-[env(safe-area-inset-bottom,0)] pl-[max(0.625rem,env(safe-area-inset-left))] leading-12 interact:z-50">
   <Button
     variant="ghost"
     class="relative mx-auto w-fit border! border-border glass transition-[scale] duration-150 ease-out glass-bg-popover interact:scale-95 "

@@ -7,19 +7,19 @@ import Separator from "./breadcrumb-separator.svelte";
 import Root from "./breadcrumb.svelte";
 
 export {
-	Root,
-	Ellipsis,
-	Item,
-	Separator,
-	Link,
-	List,
-	Page,
-	//
-	Root as Breadcrumb,
-	Ellipsis as BreadcrumbEllipsis,
-	Item as BreadcrumbItem,
-	Separator as BreadcrumbSeparator,
-	Link as BreadcrumbLink,
-	List as BreadcrumbList,
-	Page as BreadcrumbPage,
+  Root,
+  Ellipsis,
+  Item,
+  Separator,
+  Link,
+  List,
+  Page,
+  //
+  Root as Breadcrumb,
+  Ellipsis as BreadcrumbEllipsis,
+  Item as BreadcrumbItem,
+  Separator as BreadcrumbSeparator,
+  Link as BreadcrumbLink,
+  List as BreadcrumbList,
+  Page as BreadcrumbPage
 };
