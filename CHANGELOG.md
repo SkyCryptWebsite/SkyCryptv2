@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.2.0
+
+### Minor Changes
+
+- Feat: redesign discord embeds _[`#352`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/pull/352) [`9fdabac`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/9fdabace1d71cfdc3dbab5f2cf7a1c685ceec8e3) [@DarthGigi](https://github.com/DarthGigi)_
+
 ## 4.2.0-beta.0
 
 ### Minor Changes
