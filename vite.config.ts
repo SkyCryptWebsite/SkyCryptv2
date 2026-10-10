@@ -69,7 +69,8 @@ export default defineConfig({
             "https://nmsr.nickac.dev",
             "https://cms.shiiyu.moe",
             "http://localhost:3000",
-            "https://eliteskyblock.com"
+            "https://eliteskyblock.com",
+            "https://cdn.discordapp.com"
           ],
           "connect-src": [
             "self",

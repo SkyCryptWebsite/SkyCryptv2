@@ -1,6 +1,8 @@
 import { env } from "$env/dynamic/public";
+import type { auth } from "$lib/server/auth";
 import { apiKeyClient } from "@better-auth/api-key/client";
 import { adminClient, organizationClient } from "better-auth/client/plugins";
+import { customSessionClient } from "better-auth/client/plugins";
 import { createAuthClient } from "better-auth/svelte";
 
 export const authClient = createAuthClient({
@@ -10,5 +12,5 @@ export const authClient = createAuthClient({
     refetchOnWindowFocus: true,
     refetchWhenOffline: false
   },
-  plugins: [apiKeyClient(), adminClient(), organizationClient()]
+  plugins: [apiKeyClient(), adminClient(), organizationClient(), customSessionClient<typeof auth>()]
 });

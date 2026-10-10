@@ -2,12 +2,14 @@
   import { resolve } from "$app/paths";
   import { getFavorites, getHoverContext, getProfileContext } from "$ctx";
   import { APINotice } from "$lib/components/notices";
+  import { getProfileEmoji } from "$lib/shared/profile-emoji.remote";
   import { cn } from "$lib/shared/utils";
   import CardBuilder from "$src/lib/components/stats/CardBuilder.svelte";
   import * as Avatar from "$ui/avatar";
   import { Button } from "$ui/button";
   import * as Item from "$ui/item";
   import * as Popover from "$ui/popover";
+  import { Spinner } from "$ui/spinner";
   import Ban from "@lucide/svelte/icons/ban";
   import ChevronRight from "@lucide/svelte/icons/chevron-right";
   import ExternalLink from "@lucide/svelte/icons/external-link";
@@ -80,7 +82,20 @@
           </div>
         </div>
       {/if}
-      <span class={cn(profile?.rank?.rankColor ? "pl-4" : "pl-2")}>{profile?.displayName}</span>
+      <span class={cn(profile?.rank?.rankColor ? "pl-4" : "pl-2")}>
+        {profile?.username}
+        {#if profile?.uuid}
+          <svelte:boundary>
+            {const emoji = await getProfileEmoji(profile.uuid)}
+            {#if emoji}
+              {emoji}
+            {/if}
+            {#snippet pending()}
+              <Spinner class="inline size-7.5 text-muted-foreground" />
+            {/snippet}
+          </svelte:boundary>
+        {/if}
+      </span>
     </Popover.Trigger>
 
     <Popover.Content
