@@ -9,7 +9,7 @@
     // we add name, color, and stroke for compatibility with different icon libraries props
     name,
     color,
-    stroke,
+    stroke = "currentColor",
     "aria-label": ariaLabel = "Loading",
     ...restProps
   }: SVGAttributes<SVGSVGElement> = $props();
