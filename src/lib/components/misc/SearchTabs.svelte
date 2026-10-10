@@ -110,7 +110,7 @@
               {@render tabsListItems()}
             </div>
             <div
-              class="pointer-events-none sticky -bottom-1 z-10 -mt-36 h-36 w-full bg-linear-to-t from-background/80 to-transparent scroll-fade-y blur-xs">
+              class="pointer-events-none sticky -bottom-1 z-10 -mt-36 h-36 w-full scroll-fade-y bg-linear-to-t from-background/80 to-transparent blur-xs">
             </div>
           </ScrollArea>
         </Tabs.List>

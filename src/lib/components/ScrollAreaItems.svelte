@@ -75,10 +75,10 @@
     class="relative flex gap-2 pt-4 group-data-[orientation=horizontal]/scroll:w-max group-data-[orientation=horizontal]/scroll:flex-nowrap group-data-[orientation=vertical]/scroll:flex-wrap sm:gap-4">
     {@render children?.()}
     <div
-      class="pointer-events-none sticky -right-1 z-10 -ml-40 w-36 self-stretch bg-linear-to-l from-background/80 to-transparent scroll-fade-x blur-xs group-data-[orientation=vertical]/scroll:hidden">
+      class="pointer-events-none sticky -right-1 z-10 -ml-40 w-36 scroll-fade-x self-stretch bg-linear-to-l from-background/80 to-transparent blur-xs group-data-[orientation=vertical]/scroll:hidden">
     </div>
   </div>
   <div
-    class="pointer-events-none sticky -bottom-1 z-10 -mt-36 h-36 w-full bg-linear-to-t from-background/80 to-transparent scroll-fade-y blur-xs group-data-[orientation=horizontal]/scroll:hidden">
+    class="pointer-events-none sticky -bottom-1 z-10 -mt-36 h-36 w-full scroll-fade-y bg-linear-to-t from-background/80 to-transparent blur-xs group-data-[orientation=horizontal]/scroll:hidden">
   </div>
 </ScrollArea>

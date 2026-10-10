@@ -113,7 +113,7 @@
               </div>
             {/each}
             <div
-              class="pointer-events-none sticky -right-2 z-10 -ml-42 h-82 w-36 self-stretch bg-linear-to-l from-background/80 to-transparent scroll-fade-x blur-xs md:-ml-39">
+              class="pointer-events-none sticky -right-2 z-10 -ml-42 h-82 w-36 scroll-fade-x self-stretch bg-linear-to-l from-background/80 to-transparent blur-xs md:-ml-39">
             </div>
           </div>
         </ScrollAreaItems>
@@ -136,7 +136,7 @@
               </div>
             {/each}
             <div
-              class="pointer-events-none sticky -right-2 z-10 -ml-42 h-82 w-36 self-stretch bg-linear-to-l from-background/80 to-transparent scroll-fade-x blur-xs md:-ml-39">
+              class="pointer-events-none sticky -right-2 z-10 -ml-42 h-82 w-36 scroll-fade-x self-stretch bg-linear-to-l from-background/80 to-transparent blur-xs md:-ml-39">
             </div>
           </div>
         </ScrollAreaItems>
