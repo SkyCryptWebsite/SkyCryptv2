@@ -4,73 +4,114 @@ import { afterEach, describe, it, vi } from "vitest";
 
 describe.concurrent("embedGenerator", () => {
   describe.concurrent("getMetaTitle", () => {
-    it("should return title without profile name when missing", ({ expect }) => {
+    it("should return empty string when embedData is null", ({ expect }) => {
+      expect.assertions(1);
+      // @ts-expect-error Testing null case
+      const result = getMetaTitle(null);
+      expect(result).toBe("");
+    });
+
+    it("should return empty string when embedData is undefined", ({ expect }) => {
+      expect.assertions(1);
+      // @ts-expect-error Testing undefined case
+      const result = getMetaTitle(undefined);
+      expect(result).toBe("");
+    });
+
+    it("should return empty string when username is missing", ({ expect }) => {
       expect.assertions(1);
       const embedData: ModelsEmbedData = {
         displayName: "TestPlayer"
       };
 
       const result = getMetaTitle(embedData);
-      expect(result).toBe("TestPlayer (undefined)");
+      expect(result).toBe("");
+    });
+
+    it("should return empty string when username is empty string", ({ expect }) => {
+      expect.assertions(1);
+      const embedData: ModelsEmbedData = {
+        username: "",
+        displayName: "TestPlayer"
+      };
+
+      const result = getMetaTitle(embedData);
+      expect(result).toBe("");
+    });
+
+    it("should return title without profile name when missing", ({ expect }) => {
+      expect.assertions(1);
+      const embedData: ModelsEmbedData = {
+        username: "TestPlayer",
+        displayName: "TestPlayer"
+      };
+
+      const result = getMetaTitle(embedData);
+      expect(result).toBe("TestPlayer (undefined )");
     });
 
     it("should return title with profile name and no icon for default game mode", ({ expect }) => {
       expect.assertions(1);
       const embedData: ModelsEmbedData = {
+        username: "TestPlayer",
         displayName: "TestPlayer",
         profile_cute_name: "Banana"
       };
 
       const result = getMetaTitle(embedData);
-      expect(result).toBe("TestPlayer (Banana)");
+      expect(result).toBe("TestPlayer (Banana )");
     });
 
     it("should return title with ironman icon for ironman game mode", ({ expect }) => {
       expect.assertions(1);
       const embedData: ModelsEmbedData = {
+        username: "IronPlayer",
         displayName: "IronPlayer",
         profile_cute_name: "Iron Profile",
         game_mode: "ironman"
       };
 
       const result = getMetaTitle(embedData);
-      expect(result).toBe("IronPlayer (Iron Profile ♻️)");
+      expect(result).toBe("IronPlayer (Iron Profile ♲)");
     });
 
     it("should return title with bingo icon for bingo game mode", ({ expect }) => {
       expect.assertions(1);
       const embedData: ModelsEmbedData = {
+        username: "BingoPlayer",
         displayName: "BingoPlayer",
         profile_cute_name: "Bingo Profile",
         game_mode: "bingo"
       };
 
       const result = getMetaTitle(embedData);
-      expect(result).toBe("BingoPlayer (Bingo Profile 🎲)");
+      expect(result).toBe("BingoPlayer (Bingo Profile Ⓑ)");
     });
 
     it("should return title with island icon for island game mode", ({ expect }) => {
       expect.assertions(1);
       const embedData: ModelsEmbedData = {
+        username: "IslandPlayer",
         displayName: "IslandPlayer",
         profile_cute_name: "Island Profile",
         game_mode: "island"
       };
 
       const result = getMetaTitle(embedData);
-      expect(result).toBe("IslandPlayer (Island Profile 🌴)");
+      expect(result).toBe("IslandPlayer (Island Profile ☀)");
     });
 
     it("should handle unknown game mode as default", ({ expect }) => {
       expect.assertions(1);
       const embedData: ModelsEmbedData = {
+        username: "UnknownPlayer",
         displayName: "UnknownPlayer",
         profile_cute_name: "Custom Profile",
         game_mode: "unknown_mode"
       };
 
       const result = getMetaTitle(embedData);
-      expect(result).toBe("UnknownPlayer (Custom Profile)");
+      expect(result).toBe("UnknownPlayer (Custom Profile )");
     });
   });
 
@@ -89,67 +130,94 @@ describe.concurrent("embedGenerator", () => {
       expect(result).toBe("");
     });
 
-    it("should format skyblock level with emoji", ({ expect }) => {
-      expect.assertions(2);
+    it("should return empty string when username is missing", ({ expect }) => {
+      expect.assertions(1);
       const embedData: ModelsEmbedData = {
         skyblock_level: 250.5
       };
 
       const result = getLongDescription(embedData);
-      expect(result).toContain("🌟 Level:");
+      expect(result).toBe("");
+    });
+
+    it("should return empty string when username is empty string", ({ expect }) => {
+      expect.assertions(1);
+      const embedData: ModelsEmbedData = {
+        username: "",
+        skyblock_level: 250.5
+      };
+
+      const result = getLongDescription(embedData);
+      expect(result).toBe("");
+    });
+
+    it("should format skyblock level with emoji", ({ expect }) => {
+      expect.assertions(2);
+      const embedData: ModelsEmbedData = {
+        username: "TestPlayer",
+        skyblock_level: 250.5
+      };
+
+      const result = getLongDescription(embedData);
+      expect(result).toContain("<:level:1558225225768767530> Level:");
       expect(result).toContain("250.5");
     });
 
     it("should format networth with emoji when normal value exists", ({ expect }) => {
       expect.assertions(2);
       const embedData: ModelsEmbedData = {
+        username: "TestPlayer",
         networth: {
           normal: 1500000000
         }
       };
 
       const result = getLongDescription(embedData);
-      expect(result).toContain("💸 Networth:");
+      expect(result).toContain("<:networth:1558225229418074112> Networth:");
       expect(result).toContain("1.50B");
     });
 
     it("should not include networth when normal value is null", ({ expect }) => {
       expect.assertions(1);
       const embedData: ModelsEmbedData = {
+        username: "TestPlayer",
         networth: {
           normal: undefined
         }
       };
 
       const result = getLongDescription(embedData);
-      expect(result).not.toContain("💸 Networth:");
+      expect(result).not.toContain("<:networth:1558225229418074112> Networth:");
     });
 
     it("should format purse with emoji", ({ expect }) => {
       expect.assertions(2);
       const embedData: ModelsEmbedData = {
+        username: "TestPlayer",
         purse: 50000000
       };
 
       const result = getLongDescription(embedData);
-      expect(result).toContain("💰 Purse:");
+      expect(result).toContain("<:purse:1558225230613450814> Purse:");
       expect(result).toContain("50M");
     });
 
     it("should format bank with emoji", ({ expect }) => {
       expect.assertions(2);
       const embedData: ModelsEmbedData = {
+        username: "TestPlayer",
         bank: 100000000
       };
 
       const result = getLongDescription(embedData);
-      expect(result).toContain("🏦 Bank:");
+      expect(result).toContain("<:bank:1558225205909000202> Bank:");
       expect(result).toContain("100M");
     });
 
     it("should format skills with emojis and skill average", ({ expect }) => {
       expect.assertions(5);
       const embedData: ModelsEmbedData = {
+        username: "TestPlayer",
         skills: {
           skillAverage: 45.5,
           skills: {
@@ -162,16 +230,42 @@ describe.concurrent("embedGenerator", () => {
       };
 
       const result = getLongDescription(embedData);
-      expect(result).toContain("📚 Skills: 45.5");
-      expect(result).toContain("🌾 50");
-      expect(result).toContain("⛏️ 60");
-      expect(result).toContain("⚔️ 50");
-      expect(result).toContain("🌳 50");
+      expect(result).toContain("<:skills:1558225234547580948> **Skills: 45.5**");
+      expect(result).toContain("<:farming:1558225218567147651> 50");
+      expect(result).toContain("<:mining:1558225228235018271> 60");
+      expect(result).toContain("<:combat:1558225211923636315> 50");
+      expect(result).toContain("<:foraging:1558225221247303880> 50");
+    });
+
+    it("should order skills correctly across groups", ({ expect }) => {
+      expect.assertions(2);
+      const embedData: ModelsEmbedData = {
+        username: "TestPlayer",
+        skills: {
+          skillAverage: 50,
+          skills: {
+            enchanting: 60,
+            combat: 50,
+            farming: 40,
+            hunting: 30,
+            alchemy: 20
+          }
+        }
+      };
+
+      const result = getLongDescription(embedData);
+      // Group 1: combat, farming, enchanting
+      expect(result).toContain(
+        "<:combat:1558225211923636315> 50 ︲ <:farming:1558225218567147651> 40 ︲ <:enchanting:1558225216164069436> 60"
+      );
+      // Group 2: alchemy, hunting
+      expect(result).toContain("<:alchemy:1558225203379703858> 20 ︲ <:hunting:1558225223621283921> 30");
     });
 
     it("should not include skills when skills object is empty", ({ expect }) => {
       expect.assertions(1);
       const embedData: ModelsEmbedData = {
+        username: "TestPlayer",
         skills: {
           skillAverage: 0,
           skills: {}
@@ -179,12 +273,13 @@ describe.concurrent("embedGenerator", () => {
       };
 
       const result = getLongDescription(embedData);
-      expect(result).not.toContain("📚 Skills:");
+      expect(result).not.toContain("<:skills:1558225234547580948> **Skills:");
     });
 
     it("should skip null skills in skills object", ({ expect }) => {
       expect.assertions(2);
       const embedData: ModelsEmbedData = {
+        username: "TestPlayer",
         skills: {
           skillAverage: 25,
           skills: {
@@ -195,13 +290,14 @@ describe.concurrent("embedGenerator", () => {
       };
 
       const result = getLongDescription(embedData);
-      expect(result).toContain("🌾 50");
-      expect(result).toContain("⚔️ 30");
+      expect(result).toContain("<:farming:1558225218567147651> 50");
+      expect(result).toContain("<:combat:1558225211923636315> 30");
     });
 
     it("should format dungeons with class average and dungeoneering level", ({ expect }) => {
       expect.assertions(3);
       const embedData: ModelsEmbedData = {
+        username: "TestPlayer",
         dungeons: {
           classAverage: 40.5,
           dungeoneering: 50,
@@ -216,26 +312,28 @@ describe.concurrent("embedGenerator", () => {
       };
 
       const result = getLongDescription(embedData);
-      expect(result).toContain("🪦 Dungeons: 40.5");
-      expect(result).toContain("💀 50");
-      expect(result).toContain("🧙🏽 50");
+      expect(result).toContain("<:dungeons:1558225214444150794> **Dungeons: 40.5**");
+      expect(result).toContain("<:dungeoneering:1558225213223866399> 50");
+      expect(result).toContain("<:mage:1558225227039637624> 50");
     });
 
     it("should default dungeoneering to 0 when undefined", ({ expect }) => {
       expect.assertions(1);
       const embedData: ModelsEmbedData = {
+        username: "TestPlayer",
         dungeons: {
           classAverage: 20
         }
       };
 
       const result = getLongDescription(embedData);
-      expect(result).toContain("💀 0");
+      expect(result).toContain("<:dungeoneering:1558225213223866399> 0");
     });
 
-    it("should default class values to 0 when undefined", ({ expect }) => {
+    it("should not include dungeons when classAverage is undefined", ({ expect }) => {
       expect.assertions(1);
       const embedData: ModelsEmbedData = {
+        username: "TestPlayer",
         dungeons: {
           dungeoneering: 30,
           classes: {
@@ -245,12 +343,53 @@ describe.concurrent("embedGenerator", () => {
       };
 
       const result = getLongDescription(embedData);
-      expect(result).toContain("🧙🏽 40");
+      expect(result).not.toContain("<:dungeons:1558225214444150794>");
+    });
+
+    it("should format class values when class average is present", ({ expect }) => {
+      expect.assertions(1);
+      const embedData: ModelsEmbedData = {
+        username: "TestPlayer",
+        dungeons: {
+          classAverage: 40,
+          dungeoneering: 30,
+          classes: {
+            mage: 40
+          }
+        }
+      };
+
+      const result = getLongDescription(embedData);
+      expect(result).toContain("<:mage:1558225227039637624> 40");
+    });
+
+    it("should order dungeon classes correctly according to healer, mage, berserk, archer, tank", ({ expect }) => {
+      expect.assertions(1);
+      const embedData: ModelsEmbedData = {
+        username: "TestPlayer",
+        dungeons: {
+          classAverage: 40,
+          dungeoneering: 50,
+          classes: {
+            tank: 30,
+            mage: 50,
+            archer: 35,
+            healer: 45,
+            berserk: 40
+          }
+        }
+      };
+
+      const result = getLongDescription(embedData);
+      expect(result).toContain(
+        "<:dungeoneering:1558225213223866399> 50 ︲ <:healer:1558225222702866442> 45 ︲ <:mage:1558225227039637624> 50 ︲ <:berserk:1558225207322476544> 40 ︲ <:archer:1558225204704976966> 35 ︲ <:tank:1558225242030346390> 30"
+      );
     });
 
     it("should format slayers with total xp and individual slayer levels", ({ expect }) => {
       expect.assertions(4);
       const embedData: ModelsEmbedData = {
+        username: "TestPlayer",
         slayers: {
           xp: 5000000,
           slayers: {
@@ -263,15 +402,37 @@ describe.concurrent("embedGenerator", () => {
       };
 
       const result = getLongDescription(embedData);
-      expect(result).toContain("🤺 Slayer: 5M");
-      expect(result).toContain("🧟 9");
-      expect(result).toContain("🕸️ 8");
-      expect(result).toContain("🐺 8");
+      expect(result).toContain("<:slayyyter:1558225235713593354> **Slayer: 5M**");
+      expect(result).toContain("<:zombie:1558225246945939527> 9");
+      expect(result).toContain("<:spider:1558225239299727380> 8");
+      expect(result).toContain("<:wolf:1558225245532463225> 8");
+    });
+
+    it("should order slayers correctly", ({ expect }) => {
+      expect.assertions(1);
+      const embedData: ModelsEmbedData = {
+        username: "TestPlayer",
+        slayers: {
+          xp: 1000000,
+          slayers: {
+            blaze: 3,
+            zombie: 9,
+            wolf: 7,
+            spider: 8
+          }
+        }
+      };
+
+      const result = getLongDescription(embedData);
+      expect(result).toContain(
+        "<:zombie:1558225246945939527> 9 ︲ <:spider:1558225239299727380> 8 ︲ <:wolf:1558225245532463225> 7 ︲ <:blaze:1558225209226559529> 3"
+      );
     });
 
     it("should not include slayers section when xp is 0", ({ expect }) => {
       expect.assertions(1);
       const embedData: ModelsEmbedData = {
+        username: "TestPlayer",
         slayers: {
           xp: 0,
           slayers: {
@@ -281,12 +442,13 @@ describe.concurrent("embedGenerator", () => {
       };
 
       const result = getLongDescription(embedData);
-      expect(result).not.toContain("🤺 Slayer:");
+      expect(result).not.toContain("<:slayyyter:1558225235713593354> **Slayer:");
     });
 
     it("should not include slayers section when xp is undefined", ({ expect }) => {
       expect.assertions(1);
       const embedData: ModelsEmbedData = {
+        username: "TestPlayer",
         slayers: {
           slayers: {
             zombie: 5
@@ -295,12 +457,13 @@ describe.concurrent("embedGenerator", () => {
       };
 
       const result = getLongDescription(embedData);
-      expect(result).not.toContain("🤺 Slayer:");
+      expect(result).not.toContain("<:slayyyter:1558225235713593354> **Slayer:");
     });
 
     it("should skip slayers with undefined values", ({ expect }) => {
       expect.assertions(2);
       const embedData: ModelsEmbedData = {
+        username: "TestPlayer",
         slayers: {
           xp: 1000000,
           slayers: {
@@ -311,13 +474,14 @@ describe.concurrent("embedGenerator", () => {
       };
 
       const result = getLongDescription(embedData);
-      expect(result).toContain("🧟 7");
-      expect(result).toContain("🐺 6");
+      expect(result).toContain("<:zombie:1558225246945939527> 7");
+      expect(result).toContain("<:wolf:1558225245532463225> 6");
     });
 
     it("should handle complete embedData with all fields", ({ expect }) => {
       expect.assertions(10);
       const embedData: ModelsEmbedData = {
+        username: "TestPlayer",
         skyblock_level: 300,
         networth: {
           normal: 2000000000
@@ -349,16 +513,16 @@ describe.concurrent("embedGenerator", () => {
       };
 
       const result = getLongDescription(embedData);
-      expect(result).toContain("🌟 Level: 300");
-      expect(result).toContain("💸 Networth: 2B");
-      expect(result).toContain("💰 Purse: 75M");
-      expect(result).toContain("🏦 Bank: 150M");
-      expect(result).toContain("📚 Skills: 50");
-      expect(result).toContain("🌾 60");
-      expect(result).toContain("🪦 Dungeons: 45");
-      expect(result).toContain("💀 50");
-      expect(result).toContain("🤺 Slayer: 10M");
-      expect(result).toContain("🧟 9");
+      expect(result).toContain("<:level:1558225225768767530> Level: 300");
+      expect(result).toContain("<:networth:1558225229418074112> Networth: 2B");
+      expect(result).toContain("<:purse:1558225230613450814> Purse: 75M");
+      expect(result).toContain("<:bank:1558225205909000202> Bank: 150M");
+      expect(result).toContain("<:skills:1558225234547580948> **Skills: 50**");
+      expect(result).toContain("<:farming:1558225218567147651> 60");
+      expect(result).toContain("<:dungeons:1558225214444150794> **Dungeons: 45**");
+      expect(result).toContain("<:dungeoneering:1558225213223866399> 50");
+      expect(result).toContain("<:slayyyter:1558225235713593354> **Slayer: 10M**");
+      expect(result).toContain("<:zombie:1558225246945939527> 9");
     });
 
     it("should handle embedData with all fields missing gracefully", ({ expect }) => {
@@ -366,7 +530,17 @@ describe.concurrent("embedGenerator", () => {
       const embedData: ModelsEmbedData = {};
 
       const result = getLongDescription(embedData);
-      expect(result).toBe("\n\n");
+      expect(result).toBe("");
+    });
+
+    it("should handle embedData with only username gracefully", ({ expect }) => {
+      expect.assertions(1);
+      const embedData: ModelsEmbedData = {
+        username: "TestPlayer"
+      };
+
+      const result = getLongDescription(embedData);
+      expect(result).toBe("\n");
     });
   });
 

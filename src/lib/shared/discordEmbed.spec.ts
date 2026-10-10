@@ -34,11 +34,15 @@ it("uses the profile data and puts a separator directly above valid link buttons
   expect(section).toMatchObject({
     type: 9,
     components: [
-      { content: expect.stringContaining("### [tiltedhoney (Kiwi)](https://sky.shiiyu.moe/stats/tiltedhoney/Kiwi)") }
+      {
+        content: expect.stringContaining(
+          "### [ [MVP] tiltedhoney (Kiwi)](https://sky.shiiyu.moe/stats/tiltedhoney/Kiwi)"
+        )
+      }
     ],
     accessory: { type: 11, media: { url: "https://nmsr.nickac.dev/bust/debb9e1f6dcb4f5b83c291fd5388bb56?y=-20" } }
   });
-  expect(JSON.stringify(section)).toContain("🌟 Level: 620.16");
+  expect(JSON.stringify(section)).toContain("<:level:1558225225768767530> Level: 620.16");
   expect(separator).toEqual({ type: 14, divider: true, spacing: 1 });
   expect(row).toEqual({
     type: 1,
@@ -47,20 +51,29 @@ it("uses the profile data and puts a separator directly above valid link buttons
         type: 2,
         style: 5,
         label: "SkyCrypt",
-        url: "https://sky.shiiyu.moe/stats/tiltedhoney/Kiwi?utm_source=SkyCrypt&utm_campaign=DiscordEmbed"
+        url: "https://sky.shiiyu.moe/stats/tiltedhoney/Kiwi?utm_source=SkyCrypt&utm_campaign=DiscordEmbed",
+        emoji: { id: "1558259246070505512", name: "skycrypt" }
       },
-      { type: 2, style: 5, label: "SkyCrypt Discord", url: PUBLIC_DISCORD_INVITE },
+      {
+        type: 2,
+        style: 5,
+        label: "SkyCrypt Discord",
+        url: PUBLIC_DISCORD_INVITE,
+        emoji: { id: "1558259241679196280", name: "discord" }
+      },
       {
         type: 2,
         style: 5,
         label: "Plancke",
-        url: "https://plancke.io/hypixel/player/stats/tiltedhoney?utm_source=SkyCrypt&utm_campaign=DiscordEmbed"
+        url: "https://plancke.io/hypixel/player/stats/tiltedhoney?utm_source=SkyCrypt&utm_campaign=DiscordEmbed",
+        emoji: { id: "1558259244275597414", name: "plancke" }
       },
       {
         type: 2,
         style: 5,
         label: "Elite",
-        url: "https://eliteskyblock.com/@tiltedhoney/Kiwi?utm_source=SkyCrypt&utm_campaign=DiscordEmbed"
+        url: "https://eliteskyblock.com/@tiltedhoney/Kiwi?utm_source=SkyCrypt&utm_campaign=DiscordEmbed",
+        emoji: { id: "1558259242828435507", name: "elite" }
       }
     ]
   });
