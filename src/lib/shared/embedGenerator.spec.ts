@@ -1,5 +1,11 @@
 import type { ModelsEmbedData } from "$lib/shared/api/orval-generated";
-import { getLongDescription, getMetaTitle, getShortDescription } from "$lib/shared/embedGenerator";
+import {
+  getGenericDescription,
+  getGenericTitle,
+  getLongDescription,
+  getMetaTitle,
+  getShortDescription
+} from "$lib/shared/embedGenerator";
 import { afterEach, describe, it, vi } from "vitest";
 
 describe.concurrent("embedGenerator", () => {
@@ -230,7 +236,7 @@ describe.concurrent("embedGenerator", () => {
       };
 
       const result = getLongDescription(embedData);
-      expect(result).toContain("<:skills:1558225234547580948> **Skills: 45.5**");
+      expect(result).toContain("<:skills:1558225234547580948> **Skill Average: 45.5**");
       expect(result).toContain("<:farming:1558225218567147651> 50");
       expect(result).toContain("<:mining:1558225228235018271> 60");
       expect(result).toContain("<:combat:1558225211923636315> 50");
@@ -273,7 +279,7 @@ describe.concurrent("embedGenerator", () => {
       };
 
       const result = getLongDescription(embedData);
-      expect(result).not.toContain("<:skills:1558225234547580948> **Skills:");
+      expect(result).not.toContain("<:skills:1558225234547580948> **Skill Average:");
     });
 
     it("should skip null skills in skills object", ({ expect }) => {
@@ -312,7 +318,7 @@ describe.concurrent("embedGenerator", () => {
       };
 
       const result = getLongDescription(embedData);
-      expect(result).toContain("<:dungeons:1558225214444150794> **Dungeons: 40.5**");
+      expect(result).toContain("<:dungeons:1558225214444150794> **Class Average: 40.5**");
       expect(result).toContain("<:dungeoneering:1558225213223866399> 50");
       expect(result).toContain("<:mage:1558225227039637624> 50");
     });
@@ -402,7 +408,7 @@ describe.concurrent("embedGenerator", () => {
       };
 
       const result = getLongDescription(embedData);
-      expect(result).toContain("<:slayyyter:1558225235713593354> **Slayer: 5M**");
+      expect(result).toContain("<:slayyyter:1558225235713593354> **Slayer XP: 5M**");
       expect(result).toContain("<:zombie:1558225246945939527> 9");
       expect(result).toContain("<:spider:1558225239299727380> 8");
       expect(result).toContain("<:wolf:1558225245532463225> 8");
@@ -442,7 +448,7 @@ describe.concurrent("embedGenerator", () => {
       };
 
       const result = getLongDescription(embedData);
-      expect(result).not.toContain("<:slayyyter:1558225235713593354> **Slayer:");
+      expect(result).not.toContain("<:slayyyter:1558225235713593354> **Slayer XP:");
     });
 
     it("should not include slayers section when xp is undefined", ({ expect }) => {
@@ -457,7 +463,7 @@ describe.concurrent("embedGenerator", () => {
       };
 
       const result = getLongDescription(embedData);
-      expect(result).not.toContain("<:slayyyter:1558225235713593354> **Slayer:");
+      expect(result).not.toContain("<:slayyyter:1558225235713593354> **Slayer XP:");
     });
 
     it("should skip slayers with undefined values", ({ expect }) => {
@@ -517,11 +523,11 @@ describe.concurrent("embedGenerator", () => {
       expect(result).toContain("<:networth:1558225229418074112> Networth: 2B");
       expect(result).toContain("<:purse:1558225230613450814> Purse: 75M");
       expect(result).toContain("<:bank:1558225205909000202> Bank: 150M");
-      expect(result).toContain("<:skills:1558225234547580948> **Skills: 50**");
+      expect(result).toContain("<:skills:1558225234547580948> **Skill Average: 50**");
       expect(result).toContain("<:farming:1558225218567147651> 60");
-      expect(result).toContain("<:dungeons:1558225214444150794> **Dungeons: 45**");
+      expect(result).toContain("<:dungeons:1558225214444150794> **Class Average: 45**");
       expect(result).toContain("<:dungeoneering:1558225213223866399> 50");
-      expect(result).toContain("<:slayyyter:1558225235713593354> **Slayer: 10M**");
+      expect(result).toContain("<:slayyyter:1558225235713593354> **Slayer XP: 10M**");
       expect(result).toContain("<:zombie:1558225246945939527> 9");
     });
 
@@ -669,6 +675,96 @@ describe.concurrent("embedGenerator", () => {
 
       const result = getShortDescription(embedData);
       expect(result).toBe("Player_123 has been playing SkyBlock for 1 year");
+    });
+  });
+
+  describe("getGenericTitle", () => {
+    it("returns default title when embedData is empty or missing username/displayName", ({ expect }) => {
+      // @ts-expect-error null case
+      expect(getGenericTitle(null)).toBe("SkyBlock Stats | SkyCrypt");
+      expect(getGenericTitle({})).toBe("SkyBlock Stats | SkyCrypt");
+    });
+
+    it("returns formatted title with player and profile name", ({ expect }) => {
+      const embedData: ModelsEmbedData = {
+        username: "tiltedhoney",
+        displayName: "TiltedHoney",
+        profile_cute_name: "Kiwi"
+      };
+      expect(getGenericTitle(embedData)).toBe("TiltedHoney (Kiwi) | SkyBlock Stats");
+    });
+
+    it("includes gamemode when not normal", ({ expect }) => {
+      const embedData: ModelsEmbedData = {
+        username: "ironman_steve",
+        displayName: "Steve",
+        profile_cute_name: "Apple",
+        game_mode: "ironman"
+      };
+      expect(getGenericTitle(embedData)).toBe("Steve (Apple [ironman]) | SkyBlock Stats");
+    });
+
+    it("returns title without profile when profile is missing", ({ expect }) => {
+      const embedData: ModelsEmbedData = {
+        username: "tiltedhoney",
+        displayName: "TiltedHoney"
+      };
+      expect(getGenericTitle(embedData)).toBe("TiltedHoney | SkyBlock Stats");
+    });
+  });
+
+  describe("getGenericDescription", () => {
+    it("returns default description when embedData is empty", ({ expect }) => {
+      // @ts-expect-error null case
+      expect(getGenericDescription(null)).toBe("A beautiful site for sharing your SkyBlock profile 🍣");
+      expect(getGenericDescription({})).toBe("A beautiful site for sharing your SkyBlock profile 🍣");
+    });
+
+    it("creates a clean, human-readable SEO summary with stats", ({ expect }) => {
+      const embedData: ModelsEmbedData = {
+        username: "tiltedhoney",
+        displayName: "TiltedHoney",
+        profile_cute_name: "Kiwi",
+        skyblock_level: 420.5,
+        networth: { normal: 15200000000 },
+        skills: { skillAverage: 55.4 },
+        dungeons: { classAverage: 50 },
+        slayers: { xp: 12000000 }
+      };
+
+      const desc = getGenericDescription(embedData);
+      expect(desc).toBe(
+        "Check out TiltedHoney's SkyBlock profile (Kiwi) on SkyCrypt: Level 420.50 • Networth: 15.20B • Skill Avg: 55.4 • Class Avg: 50 • Slayer XP: 12M."
+      );
+      // Ensure no Discord custom emoji IDs or Discord markdown tags are leaked
+      expect(desc).not.toContain("<:");
+      expect(desc).not.toContain("-#");
+      expect(desc).not.toContain("**");
+    });
+
+    it("falls back to join date if no primary stats are present", ({ expect }) => {
+      vi.useFakeTimers();
+      vi.setSystemTime(new Date("2025-06-15T00:00:00.000Z"));
+
+      const embedData: ModelsEmbedData = {
+        username: "tiltedhoney",
+        displayName: "TiltedHoney",
+        joined: new Date("2023-01-01T00:00:00.000Z").getTime()
+      };
+
+      expect(getGenericDescription(embedData)).toBe("TiltedHoney has been playing SkyBlock for 2 years on SkyCrypt.");
+      vi.useRealTimers();
+    });
+
+    it("falls back to generic profile overview if joined and stats are absent", ({ expect }) => {
+      const embedData: ModelsEmbedData = {
+        username: "tiltedhoney",
+        displayName: "TiltedHoney"
+      };
+
+      expect(getGenericDescription(embedData)).toBe(
+        "View TiltedHoney's Hypixel SkyBlock stats, skills, networth, dungeons, and gear on SkyCrypt."
+      );
     });
   });
 });

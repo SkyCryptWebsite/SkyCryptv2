@@ -2,6 +2,7 @@
   import { afterNavigate } from "$app/navigation";
   import { resolve } from "$app/paths";
   import { getNewsroomNotifications } from "$ctx";
+  import { JsonLd } from "$lib/components/misc";
   import { clientLocale } from "$lib/hooks/client-locale.svelte";
   import { cn } from "$lib/shared/utils";
   import PostRenderer from "$src/lib/components/newsroom/PostRenderer.svelte";
@@ -59,16 +60,73 @@
   };
 
   afterNavigate(markCurrentPostSeen);
+
+  const articleJsonLd = $derived({
+    "@context": "https://schema.org",
+    "@type": "NewsArticle",
+    "@id": `https://sky.shiiyu.moe/newsroom/${post.slug}#article`,
+    headline: post.title,
+    description: post.excerpt ?? post.title,
+    url: `https://sky.shiiyu.moe/newsroom/${post.slug}`,
+    datePublished: post.publishedAt ?? undefined,
+    dateModified: post.updatedAt ?? post.publishedAt ?? undefined,
+    image: heroSrc ? [heroSrc] : undefined,
+    author: {
+      "@type": "Person",
+      name: displayName
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "SkyCrypt",
+      url: "https://sky.shiiyu.moe",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://sky.shiiyu.moe/img/app-icons/512.png"
+      }
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `https://sky.shiiyu.moe/newsroom/${post.slug}`
+    }
+  } as const);
+
+  const breadcrumbJsonLd = $derived({
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://sky.shiiyu.moe"
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Newsroom",
+        item: "https://sky.shiiyu.moe/newsroom"
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: post.title,
+        item: `https://sky.shiiyu.moe/newsroom/${post.slug}`
+      }
+    ]
+  } as const);
 </script>
 
 <SvelteSeo
   title="{post.title} | SkyCrypt"
   description={post.excerpt ?? post.title}
   canonical="https://sky.shiiyu.moe/newsroom/{post.slug}"
+  noindex={data.preview ? true : undefined}
+  nofollow={data.preview ? true : undefined}
   openGraph={{
     type: "article",
     title: post.title,
     description: post.excerpt ?? post.title,
+    url: `https://sky.shiiyu.moe/newsroom/${post.slug}`,
     site_name: "SkyCrypt",
     images: ogImages,
     article: {
@@ -83,6 +141,9 @@
     image: heroSrc ?? undefined,
     imageAlt: heroAlt
   }} />
+
+<JsonLd data={articleJsonLd} />
+<JsonLd data={breadcrumbJsonLd} />
 
 <article class="mx-auto flex max-w-3xl flex-col gap-4 px-[max(1.25rem,env(safe-area-inset-right))] py-8">
   <Button href={resolve("/newsroom")} variant="outline" class="w-fit glass performance:bg-muted!">

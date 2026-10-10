@@ -13,7 +13,7 @@ export function createDiscordEmbed(data: ModelsEmbedData) {
   const profile = encodeURIComponent(data.profile_cute_name || "");
   const profileUrl = `https://sky.shiiyu.moe/stats/${username}/${profile}`;
   const trackingParams = "?utm_source=SkyCrypt&utm_campaign=DiscordEmbed";
-  const rank = data.rank?.rankText ? ` [${data.rank.rankText}] ` : "";
+  const rank = data.rank?.rankText ? ` [${data.rank.rankText + data.rank.plusText}] ` : "";
   const gameModeIcon = gameModeIcons[data.game_mode as keyof typeof gameModeIcons];
   const profileName = data.profile_cute_name
     ? ` (${data.profile_cute_name}${gameModeIcon ? " " + gameModeIcon : ""})`

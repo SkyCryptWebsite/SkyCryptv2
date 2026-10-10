@@ -61,7 +61,7 @@
   const internalState = initInternalState();
   const position = writable<ToasterProps["position"]>("bottom-right");
   const theme = writable<ToasterProps["theme"]>("dark");
-  const noEmbedUrls = ["/stats/", "/newsroom"];
+  const noEmbedUrls = ["/stats/", "/newsroom", "/login", "/dashboard"];
   const packs = new PacksContext();
   const websiteJsonLd = {
     "@context": "https://schema.org",
@@ -75,7 +75,15 @@
       "@id": "https://sky.shiiyu.moe/#organization",
       name: "SkyCrypt",
       url: "https://sky.shiiyu.moe",
-      logo: "https://sky.shiiyu.moe/img/app-icons/svg.svg"
+      logo: "https://sky.shiiyu.moe/img/app-icons/512.png"
+    },
+    potentialAction: {
+      "@type": "SearchAction",
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate: "https://sky.shiiyu.moe/stats/{search_term_string}"
+      },
+      "query-input": "required name=search_term_string"
     }
   } as const;
 
@@ -277,13 +285,33 @@
   <SvelteSeo
     title="SkyCrypt"
     description="A beautiful site for sharing your SkyBlock profile 🍣"
-    canonical="https://sky.shiiyu.moe/"
+    canonical={page.url.pathname === "/"
+      ? "https://sky.shiiyu.moe/"
+      : `https://sky.shiiyu.moe${page.url.pathname.replace(/\/$/, "")}`}
     openGraph={{
       title: "SkyBlock Stats",
       description: "A beautiful site for sharing your SkyBlock profile 🍣",
       site_name: "SkyCrypt",
-      // @ts-expect-error It accepts any property
-      image: "/img/app-icons/svg.svg"
+      url:
+        page.url.pathname === "/"
+          ? "https://sky.shiiyu.moe/"
+          : `https://sky.shiiyu.moe${page.url.pathname.replace(/\/$/, "")}`,
+      type: "website",
+      images: [
+        {
+          url: "https://sky.shiiyu.moe/img/app-icons/512.png",
+          width: 512,
+          height: 512,
+          alt: "SkyCrypt Logo"
+        }
+      ]
+    }}
+    twitter={{
+      card: "summary",
+      title: "SkyBlock Stats",
+      description: "A beautiful site for sharing your SkyBlock profile 🍣",
+      image: "https://sky.shiiyu.moe/img/app-icons/512.png",
+      imageAlt: "SkyCrypt Logo"
     }}
     manifest="/manifest.webmanifest" />
   <JsonLd data={websiteJsonLd} />

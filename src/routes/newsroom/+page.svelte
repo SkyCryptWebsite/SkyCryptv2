@@ -1,6 +1,7 @@
 <script lang="ts">
   import { afterNavigate, goto } from "$app/navigation";
   import { getNewsroomNotifications } from "$ctx";
+  import { JsonLd } from "$lib/components/misc";
   import Pagination from "$lib/components/newsroom/Pagination.svelte";
   import PostCard from "$lib/components/newsroom/PostCard.svelte";
   import { POST_TYPE_LABELS } from "$lib/components/newsroom/TypeBadge.svelte";
@@ -27,6 +28,25 @@
   const markVisiblePostsSeen = () => notifications.markAllSeen(data.docs);
 
   afterNavigate(markVisiblePostsSeen);
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://sky.shiiyu.moe"
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Newsroom",
+        item: "https://sky.shiiyu.moe/newsroom"
+      }
+    ]
+  } as const;
 </script>
 
 <SvelteSeo
@@ -37,6 +57,7 @@
     type: "website",
     title: "Newsroom | SkyCrypt",
     description: "Latest announcements and updates from the SkyCrypt team",
+    url: "https://sky.shiiyu.moe/newsroom",
     site_name: "SkyCrypt",
     images: [{ url: "https://sky.shiiyu.moe/img/newsroom.avif", width: 1200, height: 630, alt: "SkyCrypt Newsroom" }]
   }}
@@ -47,6 +68,8 @@
     image: "https://sky.shiiyu.moe/img/newsroom.avif",
     imageAlt: "SkyCrypt Newsroom"
   }} />
+
+<JsonLd data={breadcrumbJsonLd} />
 
 <main
   class="@container mx-auto flex max-w-272 flex-col gap-6 pt-5 pr-[max(1.25rem,env(safe-area-inset-right))] pb-[max(1.25rem,env(safe-area-inset-bottom))] pl-[max(1.25rem,env(safe-area-inset-left))]">

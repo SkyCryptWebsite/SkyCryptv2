@@ -1,8 +1,11 @@
 <script lang="ts">
   import LoaderCircle from "@lucide/svelte/icons/loader-circle";
   import { Avatar, Button } from "bits-ui";
+  import SvelteSeo from "svelte-seo";
   import { signInSocial } from "./login.remote";
 </script>
+
+<SvelteSeo title="Sign in | SkyCrypt" noindex={true} nofollow={true} />
 
 <main
   class="@container mx-auto flex min-h-[calc(100dvh-3rem)] w-full max-w-md flex-col items-center justify-center gap-6 py-10 pr-[max(1.25rem,env(safe-area-inset-right))] pb-[max(2.5rem,env(safe-area-inset-bottom))] pl-[max(1.25rem,env(safe-area-inset-left))]">

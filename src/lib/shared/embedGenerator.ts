@@ -79,7 +79,7 @@ function getLongDescription(embedData: ModelsEmbedData): string {
   // Skills
   const skills = embedData.skills?.skills;
   if (embedData.skills && skills && Object.keys(skills).length > 0) {
-    lines.push(`\n${miscEmojis.skills} **Skills: ${embedData.skills.skillAverage}**`);
+    lines.push(`\n${miscEmojis.skills} **Skill Average: ${embedData.skills.skillAverage}**`);
     lines.push("-# ~~                                              ~~");
 
     const skillsOrder: SkillKey[][] = [
@@ -103,7 +103,7 @@ function getLongDescription(embedData: ModelsEmbedData): string {
   if (embedData.dungeons && embedData.dungeons.classAverage && embedData.dungeons.classAverage) {
     const classAverage = embedData.dungeons.classAverage;
     if (classAverage) {
-      lines.push(`\n${skillEmojis.dungeons} **Dungeons: ${classAverage}**`);
+      lines.push(`\n${skillEmojis.dungeons} **Class Average: ${classAverage}**`);
       lines.push("-# ~~                                              ~~");
     }
 
@@ -126,7 +126,7 @@ function getLongDescription(embedData: ModelsEmbedData): string {
 
   // Slayer
   if (embedData.slayers && embedData.slayers.xp != null && embedData.slayers.xp > 0) {
-    lines.push(`\n${miscEmojis.slayyyter} **Slayer: ${formatNumber(embedData.slayers.xp)}**`);
+    lines.push(`\n${miscEmojis.slayyyter} **Slayer XP: ${formatNumber(embedData.slayers.xp)}**`);
     lines.push("-# ~~                                              ~~");
 
     if (embedData.slayers.slayers) {
@@ -166,4 +166,60 @@ function getShortDescription(embedData: ModelsEmbedData): string {
   return `${embedData.displayName} has been playing SkyBlock for ${formatDistanceToNowStrict(new Date(embedData.joined))}`;
 }
 
-export { getLongDescription, getMetaTitle, getShortDescription };
+function getGenericDescription(embedData: ModelsEmbedData): string {
+  if (!embedData || (!embedData.username && !embedData.displayName)) {
+    return "A beautiful site for sharing your SkyBlock profile 🍣";
+  }
+
+  const name = embedData.displayName || embedData.username || "Player";
+  const profileName = embedData.profile_cute_name ? ` (${embedData.profile_cute_name})` : "";
+  const parts: string[] = [];
+
+  if (embedData.skyblock_level != null) {
+    parts.push(`Level ${formatNumber(embedData.skyblock_level)}`);
+  }
+
+  if (embedData.networth?.normal != null) {
+    parts.push(`Networth: ${formatNumber(embedData.networth.normal)}`);
+  }
+
+  if (embedData.skills?.skillAverage != null) {
+    parts.push(`Skill Avg: ${embedData.skills.skillAverage}`);
+  }
+
+  if (embedData.dungeons?.classAverage != null) {
+    parts.push(`Class Avg: ${embedData.dungeons.classAverage}`);
+  }
+
+  if (embedData.slayers?.xp != null && embedData.slayers.xp > 0) {
+    parts.push(`Slayer XP: ${formatNumber(embedData.slayers.xp)}`);
+  }
+
+  if (parts.length > 0) {
+    return `Check out ${name}'s SkyBlock profile${profileName} on SkyCrypt: ${parts.join(" • ")}.`;
+  }
+
+  if (embedData.joined) {
+    return `${name} has been playing SkyBlock for ${formatDistanceToNowStrict(new Date(embedData.joined))} on SkyCrypt.`;
+  }
+
+  return `View ${name}'s Hypixel SkyBlock stats, skills, networth, dungeons, and gear on SkyCrypt.`;
+}
+
+function getGenericTitle(embedData: ModelsEmbedData): string {
+  if (!embedData || (!embedData.username && !embedData.displayName)) {
+    return "SkyBlock Stats | SkyCrypt";
+  }
+
+  const name = embedData.displayName || embedData.username;
+  const profile = embedData.profile_cute_name;
+  const gameMode = embedData.game_mode && embedData.game_mode !== "normal" ? ` [${embedData.game_mode}]` : "";
+
+  if (profile) {
+    return `${name} (${profile}${gameMode}) | SkyBlock Stats`;
+  }
+
+  return `${name} | SkyBlock Stats`;
+}
+
+export { getGenericDescription, getGenericTitle, getLongDescription, getMetaTitle, getShortDescription };
