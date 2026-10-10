@@ -90,6 +90,7 @@
   openGraph={{
     title: ogTitle,
     description: seoDescription,
+    url: canonicalUrl,
     type: "profile",
     profile: {
       username: embedData.username
