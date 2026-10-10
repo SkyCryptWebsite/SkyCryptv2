@@ -1,5 +1,11 @@
 import type { ModelsEmbedData } from "$lib/shared/api/orval-generated";
-import { getLongDescription, getMetaTitle, getShortDescription } from "$lib/shared/embedGenerator";
+import {
+  getGenericDescription,
+  getGenericTitle,
+  getLongDescription,
+  getMetaTitle,
+  getShortDescription
+} from "$lib/shared/embedGenerator";
 import { afterEach, describe, it, vi } from "vitest";
 
 describe.concurrent("embedGenerator", () => {
@@ -669,6 +675,96 @@ describe.concurrent("embedGenerator", () => {
 
       const result = getShortDescription(embedData);
       expect(result).toBe("Player_123 has been playing SkyBlock for 1 year");
+    });
+  });
+
+  describe("getGenericTitle", () => {
+    it("returns default title when embedData is empty or missing username/displayName", ({ expect }) => {
+      // @ts-expect-error null case
+      expect(getGenericTitle(null)).toBe("SkyBlock Stats | SkyCrypt");
+      expect(getGenericTitle({})).toBe("SkyBlock Stats | SkyCrypt");
+    });
+
+    it("returns formatted title with player and profile name", ({ expect }) => {
+      const embedData: ModelsEmbedData = {
+        username: "tiltedhoney",
+        displayName: "TiltedHoney",
+        profile_cute_name: "Kiwi"
+      };
+      expect(getGenericTitle(embedData)).toBe("TiltedHoney (Kiwi) | SkyBlock Stats");
+    });
+
+    it("includes gamemode when not normal", ({ expect }) => {
+      const embedData: ModelsEmbedData = {
+        username: "ironman_steve",
+        displayName: "Steve",
+        profile_cute_name: "Apple",
+        game_mode: "ironman"
+      };
+      expect(getGenericTitle(embedData)).toBe("Steve (Apple [ironman]) | SkyBlock Stats");
+    });
+
+    it("returns title without profile when profile is missing", ({ expect }) => {
+      const embedData: ModelsEmbedData = {
+        username: "tiltedhoney",
+        displayName: "TiltedHoney"
+      };
+      expect(getGenericTitle(embedData)).toBe("TiltedHoney | SkyBlock Stats");
+    });
+  });
+
+  describe("getGenericDescription", () => {
+    it("returns default description when embedData is empty", ({ expect }) => {
+      // @ts-expect-error null case
+      expect(getGenericDescription(null)).toBe("A beautiful site for sharing your SkyBlock profile 🍣");
+      expect(getGenericDescription({})).toBe("A beautiful site for sharing your SkyBlock profile 🍣");
+    });
+
+    it("creates a clean, human-readable SEO summary with stats", ({ expect }) => {
+      const embedData: ModelsEmbedData = {
+        username: "tiltedhoney",
+        displayName: "TiltedHoney",
+        profile_cute_name: "Kiwi",
+        skyblock_level: 420.5,
+        networth: { normal: 15200000000 },
+        skills: { skillAverage: 55.4 },
+        dungeons: { classAverage: 50 },
+        slayers: { xp: 12000000 }
+      };
+
+      const desc = getGenericDescription(embedData);
+      expect(desc).toBe(
+        "Check out TiltedHoney's SkyBlock profile (Kiwi) on SkyCrypt: Level 420.50 • Networth: 15.20B • Skill Avg: 55.4 • Class Avg: 50 • Slayer XP: 12M."
+      );
+      // Ensure no Discord custom emoji IDs or Discord markdown tags are leaked
+      expect(desc).not.toContain("<:");
+      expect(desc).not.toContain("-#");
+      expect(desc).not.toContain("**");
+    });
+
+    it("falls back to join date if no primary stats are present", ({ expect }) => {
+      vi.useFakeTimers();
+      vi.setSystemTime(new Date("2025-06-15T00:00:00.000Z"));
+
+      const embedData: ModelsEmbedData = {
+        username: "tiltedhoney",
+        displayName: "TiltedHoney",
+        joined: new Date("2023-01-01T00:00:00.000Z").getTime()
+      };
+
+      expect(getGenericDescription(embedData)).toBe("TiltedHoney has been playing SkyBlock for 2 years on SkyCrypt.");
+      vi.useRealTimers();
+    });
+
+    it("falls back to generic profile overview if joined and stats are absent", ({ expect }) => {
+      const embedData: ModelsEmbedData = {
+        username: "tiltedhoney",
+        displayName: "TiltedHoney"
+      };
+
+      expect(getGenericDescription(embedData)).toBe(
+        "View TiltedHoney's Hypixel SkyBlock stats, skills, networth, dungeons, and gear on SkyCrypt."
+      );
     });
   });
 });
