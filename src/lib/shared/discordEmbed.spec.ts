@@ -36,7 +36,7 @@ it("uses the profile data and puts a separator directly above valid link buttons
     components: [
       {
         content: expect.stringContaining(
-          "### [ [MVP] tiltedhoney (Kiwi)](https://sky.shiiyu.moe/stats/tiltedhoney/Kiwi)"
+          "### [ [MVP+] tiltedhoney (Kiwi)](https://sky.shiiyu.moe/stats/tiltedhoney/Kiwi)"
         )
       }
     ],
