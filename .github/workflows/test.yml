@@ -7,22 +7,6 @@ jobs:
   vitest:
     name: Vitest (Server + Browser)
     runs-on: ubuntu-latest
-    env:
-      DATABASE_URL: postgres://root:mysecretpassword@localhost:5432/skycrypt_frontend
-    services:
-      postgres:
-        image: postgres:18-alpine
-        env:
-          POSTGRES_USER: root
-          POSTGRES_PASSWORD: mysecretpassword
-          POSTGRES_DB: skycrypt_frontend
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd "pg_isready -U root -d skycrypt_frontend"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
 
     steps:
       - name: Checkout
