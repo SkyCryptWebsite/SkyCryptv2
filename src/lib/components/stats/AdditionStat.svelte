@@ -74,7 +74,7 @@
 {/if}
 
 {#snippet additionalStatLabel()}
-  <Item.Content class="flex w-fit flex-row items-center text-base font-bold text-muted-foreground">
+  <Item.Content class="flex w-fit basis-auto flex-row items-center text-base font-bold text-muted-foreground">
     <div
       class={!asterisk
         ? cn(
