@@ -45,7 +45,7 @@
   },
   "dependencies": {
     "@payloadcms/richtext-lexical": "^3.90.2",
-    "@sentry/sveltekit": "^10.74.0",
+    "@sentry/sveltekit": "^11.6.0",
     "@takumi-rs/core-linux-x64-gnu": "^2.14.0",
     "culori": "^4.0.2",
     "simple-git-hooks": "^2.14.0",
