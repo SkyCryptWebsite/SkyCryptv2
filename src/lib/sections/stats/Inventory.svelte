@@ -95,12 +95,9 @@
                 class="h-144"
                 orientation="vertical"
                 type="auto"
-                viewportClasses="rounded-xl rounded-br-none scroll-fade-track-y">
+                viewportClasses="scroll-fade-y rounded-xl rounded-br-none scroll-fade-36">
                 <div class="flex flex-col gap-3 px-4 py-4">
                   {@render inventoryTabItems(inventories, selectedTabName)}
-                </div>
-                <div
-                  class="pointer-events-none sticky -bottom-1 z-10 -mt-36 h-36 w-full scroll-fade-y bg-linear-to-t from-background/80 to-transparent blur-xs">
                 </div>
               </ScrollArea>
             </Tabs.List>

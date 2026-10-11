@@ -298,15 +298,6 @@
     }
   }
 
-  @keyframes scroll-fade-out {
-    from {
-      opacity: 1;
-    }
-    to {
-      opacity: 0;
-    }
-  }
-
   * {
     @apply border-border outline-ring/50;
   }
@@ -665,38 +656,6 @@
     left: var(--hit-area-l, 0px);
     pointer-events: inherit;
   }
-}
-
-/* On the scroll container: expose a named scroll-progress timeline per axis. */
-@utility scroll-fade-track-y {
-  scroll-timeline-name: --scroll-fade-y;
-  scroll-timeline-axis: block;
-}
-
-@utility scroll-fade-track-x {
-  scroll-timeline-name: --scroll-fade-x;
-  scroll-timeline-axis: inline;
-}
-
-@utility scroll-fade-track-both {
-  scroll-timeline-name: --scroll-fade-y, --scroll-fade-x;
-  scroll-timeline-axis: block, inline;
-}
-
-@utility scroll-fade-y {
-  opacity: 0;
-  animation-name: scroll-fade-out;
-  animation-timing-function: linear;
-  animation-fill-mode: both;
-  animation-timeline: --scroll-fade-y;
-}
-
-@utility scroll-fade-x {
-  opacity: 0;
-  animation-name: scroll-fade-out;
-  animation-timing-function: linear;
-  animation-fill-mode: both;
-  animation-timeline: --scroll-fade-x;
 }
 
 @custom-variant @stuck-top {

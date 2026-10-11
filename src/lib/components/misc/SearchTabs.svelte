@@ -105,12 +105,13 @@
       {#if isVertical}
         <Tabs.List
           class="sticky top-2 flex h-fit shrink-0 flex-col items-stretch justify-start gap-1 self-start border bg-transparent text-base">
-          <ScrollArea class="h-144" orientation="vertical" type="auto" viewportClasses="rounded-xl scroll-fade-track-y">
+          <ScrollArea
+            class="h-144"
+            orientation="vertical"
+            type="auto"
+            viewportClasses="scroll-fade-y rounded-xl scroll-fade-36">
             <div class="flex flex-col gap-3 pr-4">
               {@render tabsListItems()}
-            </div>
-            <div
-              class="pointer-events-none sticky -bottom-1 z-10 -mt-36 h-36 w-full scroll-fade-y bg-linear-to-t from-background/80 to-transparent blur-xs">
             </div>
           </ScrollArea>
         </Tabs.List>

@@ -68,7 +68,7 @@
 <div
   data-slot="loadout-card"
   class={cn("w-full max-w-4xl space-y-4 overflow-clip rounded-xl border bg-background/20 p-4", className)}>
-  <ScrollAreaItems orientation="horizontal" viewportClasses="scroll-fade-track-x">
+  <ScrollAreaItems orientation="horizontal" viewportClasses="scroll-fade-x">
     <div class="flex flex-col items-start gap-4 overflow-x-auto md:mx-auto md:w-fit md:flex-row">
       <GearSlotColumn label="Armor" items={armor} emptySlots={armorSlots} slotContainerClass="flex-row" />
       <Separator orientation="vertical" class="hidden h-25! md:block" />

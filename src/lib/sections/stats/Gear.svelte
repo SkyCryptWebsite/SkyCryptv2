@@ -102,19 +102,13 @@
     <div class="rounded-xl border p-4">
       <SectionSubtitle>Wardrobe</SectionSubtitle>
       <div class="max-w-full">
-        <ScrollAreaItems
-          class="relative w-full"
-          viewportClasses="min-h-86 scroll-fade-track-x"
-          orientation="horizontal">
+        <ScrollAreaItems class="relative w-full" viewportClasses="min-h-86 scroll-fade-x" orientation="horizontal">
           <div class="relative flex flex-row gap-6 md:gap-3">
             {#each firstWardrobeItems as _, i (i)}
               <div class="min-h-18 min-w-18">
                 <Wardrobe wardrobeItems={wardrobe[i]} />
               </div>
             {/each}
-            <div
-              class="pointer-events-none sticky -right-2 z-10 -ml-42 h-82 w-36 scroll-fade-x self-stretch bg-linear-to-l from-background/80 to-transparent blur-xs md:-ml-39">
-            </div>
           </div>
         </ScrollAreaItems>
       </div>
@@ -125,19 +119,13 @@
     <div class="rounded-xl border p-4">
       <SectionSubtitle>Equipment Wardrobe</SectionSubtitle>
       <div class="max-w-full">
-        <ScrollAreaItems
-          class="relative w-full"
-          viewportClasses="min-h-86 scroll-fade-track-x"
-          orientation="horizontal">
+        <ScrollAreaItems class="relative w-full" viewportClasses="min-h-86 scroll-fade-x" orientation="horizontal">
           <div class="relative flex flex-row gap-6 md:gap-3">
             {#each firstEquipmentWardrobeItems as _, i (i)}
               <div class="min-h-18 min-w-18">
                 <Wardrobe wardrobeItems={equipmentWardrobe[i]} kind="equipment" />
               </div>
             {/each}
-            <div
-              class="pointer-events-none sticky -right-2 z-10 -ml-42 h-82 w-36 scroll-fade-x self-stretch bg-linear-to-l from-background/80 to-transparent blur-xs md:-ml-39">
-            </div>
           </div>
         </ScrollAreaItems>
       </div>

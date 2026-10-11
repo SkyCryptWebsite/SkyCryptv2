@@ -67,7 +67,7 @@
   scrollbarYClasses="py-2"
   scrollbarXClasses="px-2"
   viewportClasses={cn(
-    "rounded-xl group-data-[orientation=horizontal]/scroll:w-full group-data-[orientation=horizontal]/scroll:scroll-fade-track-x group-data-[orientation=vertical]/scroll:h-full group-data-[orientation=vertical]/scroll:max-h-144 group-data-[orientation=vertical]/scroll:scroll-fade-track-y",
+    "rounded-xl scroll-fade-36 group-data-[orientation=horizontal]/scroll:w-full group-data-[orientation=horizontal]/scroll:scroll-fade-x group-data-[orientation=vertical]/scroll:h-full group-data-[orientation=vertical]/scroll:max-h-144 group-data-[orientation=vertical]/scroll:scroll-fade-y",
     viewportClasses
   )}
   data-orientation={orientation}
@@ -75,11 +75,5 @@
   <div
     class="relative flex gap-2 pt-4 group-data-[orientation=horizontal]/scroll:w-max group-data-[orientation=horizontal]/scroll:flex-nowrap group-data-[orientation=vertical]/scroll:flex-wrap sm:gap-4">
     {@render children?.()}
-    <div
-      class="pointer-events-none sticky -right-1 z-10 -ml-40 w-36 scroll-fade-x self-stretch bg-linear-to-l from-background/80 to-transparent blur-xs group-data-[orientation=vertical]/scroll:hidden">
-    </div>
-  </div>
-  <div
-    class="pointer-events-none sticky -bottom-1 z-10 -mt-36 h-36 w-full scroll-fade-y bg-linear-to-t from-background/80 to-transparent blur-xs group-data-[orientation=horizontal]/scroll:hidden">
   </div>
 </ScrollArea>
