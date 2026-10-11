@@ -48,7 +48,7 @@ export default defineConfig({
       csp: {
         mode: "auto",
         directives: {
-          "script-src": ["self", "unsafe-inline"],
+          "script-src": ["self", "unsafe-inline", "https://challenges.cloudflare.com"],
           "worker-src": ["self", "blob:"],
           "style-src": ["self", "unsafe-inline", "https://fonts.googleapis.com"],
           "img-src": [
@@ -76,7 +76,7 @@ export default defineConfig({
           ],
           "font-src": ["self", "https://fonts.gstatic.com"],
           "frame-ancestors": ["self", "https://cms.shiiyu.moe", "http://localhost:3000"],
-          "frame-src": ["self"]
+          "frame-src": ["self", "https://challenges.cloudflare.com"]
         }
       },
       version: {

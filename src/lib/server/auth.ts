@@ -35,10 +35,6 @@ import {
 const BUILD_TIME_AUTH_SECRET = "build-time-placeholder-secret-for-sveltekit-build";
 const BUILD_TIME_BASE_URL = "http://localhost:3000";
 
-// Uncomment when running `pn auth:schema`
-// const building = false; // Placeholder since we can't import from $app/environment in this file
-// const dev = false; // Placeholder since we can't import from $app/environment in this file
-
 function getBetterAuthSecret() {
   if (BETTER_AUTH_SECRET) return BETTER_AUTH_SECRET;
   if (building) return BUILD_TIME_AUTH_SECRET;
@@ -248,8 +244,8 @@ const options = {
     }),
     captcha({
       provider: "cloudflare-turnstile",
-      secretKey: TURNSTILE_SECRET_KEY
-      // endpoints: ["/sign-in/social", "/api-key/create"]
+      secretKey: TURNSTILE_SECRET_KEY,
+      endpoints: ["/sign-in/social", "/api-key/create"]
     }),
     ...(openAPIPlugin ? [openAPIPlugin] : []) // Conditionally include the openAPI plugin only in development
   ]

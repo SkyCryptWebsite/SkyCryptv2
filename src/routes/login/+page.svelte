@@ -6,11 +6,23 @@
   import * as Collapsible from "$ui/collapsible";
   import ChevronDownIcon from "@lucide/svelte/icons/chevron-down";
   import SvelteSeo from "svelte-seo";
+  import Captcha from "#lib/components/Captcha.svelte";
+
+  let turnstileToken: string | undefined = $state();
 
   const signIn = async () => {
+    if (!turnstileToken) {
+      console.error("Captcha token is missing. Please complete the captcha.");
+      return;
+    }
     await authClient.signIn.social({
       provider: "discord",
-      callbackURL: "/dashboard"
+      callbackURL: "/dashboard",
+      fetchOptions: {
+        headers: {
+          "x-captcha-response": turnstileToken
+        }
+      }
     });
   };
 </script>
@@ -33,22 +45,21 @@
       <Card.Title>Sign in to <span class="text-primary">SkyCrypt</span></Card.Title>
     </Card.Header>
     <Card.Content>
-      <!-- <form {...signInSocial} class="flex flex-col gap-3">
-        <input {...signInSocial.fields.provider.as("hidden", "discord")} />
-        <input {...signInSocial.fields.callbackURL.as("hidden", "/login/better-auth")} /> -->
-
-      <Button
-        onclick={signIn}
-        class="w-full bg-[#5865F2] duration-300 hover:bg-[#5865F2] focus-visible:outline-[#5865F2] interact:scale-95 disabled:interact:scale-100">
-        <img
-          src="/img/icons/discord.svg"
-          alt=""
-          aria-hidden="true"
-          draggable="false"
-          class="pointer-events-none size-5 select-none" />
-        <span>Continue with Discord</span>
-      </Button>
-      <!-- </form> -->
+      <div class="flex w-full flex-col items-center gap-2">
+        <Button
+          disabled={!turnstileToken}
+          onclick={signIn}
+          class="w-full bg-[#5865F2] duration-300 hover:bg-[#5865F2] focus-visible:outline-[#5865F2] interact:scale-95 disabled:interact:scale-100">
+          <img
+            src="/img/icons/discord.svg"
+            alt=""
+            aria-hidden="true"
+            draggable="false"
+            class="pointer-events-none size-5 select-none" />
+          <span>Continue with Discord</span>
+        </Button>
+        <Captcha bind:turnstileToken />
+      </div>
     </Card.Content>
     <Card.Footer>
       <Collapsible.Root class="relative w-full rounded-xl border p-2">

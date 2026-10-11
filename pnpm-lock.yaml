@@ -188,6 +188,9 @@ importers:
       '@better-auth/api-key':
         specifier: ^1.7.7
         version: 1.7.7(43ce7c85f1a1cf12ce70a86e1921348f)
+      '@better-captcha/svelte':
+        specifier: ^0.8.0
+        version: 0.8.0(svelte@5.57.2(@typescript-eslint/types@8.71.1))
       '@changesets/cli':
         specifier: ^3.0.3
         version: 3.0.3
@@ -419,6 +422,9 @@ importers:
       tslib:
         specifier: ^2.8.1
         version: 2.8.1
+      turnstile-types:
+        specifier: ^1.2.3
+        version: 1.2.3
       tw-animate-css:
         specifier: ^1.4.0
         version: 1.4.0
@@ -706,6 +712,14 @@ packages:
 
   '@better-auth/utils@0.5.0':
     resolution: {integrity: sha512-BL8W4EfIZFwlu0r54m3v1ztjDhu6dDe/amLTm0xybmbZaNgYUqhD3SjpAsnq0q8YD6/ki4iwIgxJNLP/N3TxiA==}
+
+  '@better-captcha/core@0.8.0':
+    resolution: {integrity: sha512-zNNVu2qP6sh0VXHtvHEaVy3nOs2d2R5+eUQIiQKUZIqle/rE3Yfjn4QQXlEmgc6hbAZNxLJIjBrP6N04qVQ28w==}
+
+  '@better-captcha/svelte@0.8.0':
+    resolution: {integrity: sha512-y/MDs7e8jyvz1aqH71nfUO8QWt+0LTxwYnGVNSq1qQZEP+YSBgc7EgJdtPakHWad1w+WAbTwcnCxhgypuOiYlw==}
+    peerDependencies:
+      svelte: ^5.0.0
 
   '@better-fetch/fetch@1.3.2':
     resolution: {integrity: sha512-Gs7n99b5tqUC6cQAPbV0uED3IraHB6xQbHLQ/C3l7ZFafHScOx9pQ+DYmP5blbLFShVWLqxNUlI9wi4xU/X+ow==}
@@ -5898,6 +5912,9 @@ packages:
     engines: {node: '>=18.0.0'}
     hasBin: true
 
+  turnstile-types@1.2.3:
+    resolution: {integrity: sha512-EDjhDB9TDwda2JRbhzO/kButPio3JgrC3gXMVAMotxldybTCJQVMvPNJ89rcAiN9vIrCb2i1E+VNBCqB8wue0A==}
+
   tw-animate-css@1.4.0:
     resolution: {integrity: sha512-7bziOlRqH0hJx80h/3mbicLW7o8qLsH5+RaLR2t+OHM3D0JlWGODQKQ4cxbK7WlvmUxpcj6Kgu6EKqjrGFe3QQ==}
 
@@ -6542,6 +6559,13 @@ snapshots:
   '@better-auth/utils@0.5.0':
     dependencies:
       '@noble/hashes': 2.4.0
+
+  '@better-captcha/core@0.8.0': {}
+
+  '@better-captcha/svelte@0.8.0(svelte@5.57.2(@typescript-eslint/types@8.71.1))':
+    dependencies:
+      '@better-captcha/core': 0.8.0
+      svelte: 5.57.2(@typescript-eslint/types@8.71.1)
 
   '@better-fetch/fetch@1.3.2': {}
 
@@ -11474,6 +11498,8 @@ snapshots:
       esbuild: 0.28.2
     optionalDependencies:
       fsevents: 2.3.3
+
+  turnstile-types@1.2.3: {}
 
   tw-animate-css@1.4.0: {}
 
