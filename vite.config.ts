@@ -96,7 +96,6 @@ export default defineConfig({
       $routes: `${root}/src/routes`,
       $src: `${root}/src`,
       $ui: `${root}/src/lib/components/ui`,
-      $lib: `${root}/src/lib`,
       $utils: `${root}/src/lib/shared/utils.ts`,
       $hooks: `${root}/src/lib/hooks`,
       $components: `${root}/src/lib/components`,
