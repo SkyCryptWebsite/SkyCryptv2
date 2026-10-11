@@ -141,6 +141,20 @@
   "simple-git-hooks": {
     "commit-msg": "pnpm exec commitlint --edit $1"
   },
+  "devEngines": {
+    "packageManager": [
+      {
+        "name": "pnpm",
+        "version": "^12",
+        "onFail": "download"
+      }
+    ],
+    "runtime": {
+      "name": "node",
+      "version": "^24.21.0",
+      "onFail": "download"
+    }
+  },
   "engines": {
     "bun": "forbidden, use pnpm instead",
     "deno": "forbidden, use node instead",
