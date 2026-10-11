@@ -183,26 +183,6 @@
   </div>
 
   <svelte:boundary>
-    {#snippet pending()}
-      <section
-        class="flex flex-col gap-4 rounded-xl glass p-4 glass-brightness-150 glass-contrast-60 dark:glass-brightness-50 dark:glass-contrast-100">
-        <Skeleton class="h-6 w-1/5 rounded" />
-        <Skeleton class="h-6 w-2/5 rounded" />
-        <div class="grid grid-cols-1 gap-5 @md:grid-cols-2 @xl:grid-cols-3">
-          {#each new Array(3) as _, i (i)}
-            <div class="flex flex-col overflow-hidden rounded-xl border">
-              <Skeleton class="aspect-video w-full rounded-none" />
-              <div class="flex flex-col gap-2.5 p-4">
-                <Skeleton class="h-4 w-2/5 rounded" />
-                <Skeleton class="h-6 w-4/5 rounded" />
-                <Skeleton class="h-12 rounded" />
-              </div>
-            </div>
-          {/each}
-        </div>
-      </section>
-    {/snippet}
-
     {#snippet failed()}{/snippet}
 
     {const newsroom = await listPosts({ page: 1, limit: 3 })}
