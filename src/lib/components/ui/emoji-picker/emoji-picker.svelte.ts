@@ -113,6 +113,7 @@ type EmojiPickerListProps = ReadableBoxedValues<{
 class EmojiPickerListState {
   renderLimit = $state(RENDER_PAGE_SIZE);
   loadingMore = false;
+  queuedMore = false;
   search = $derived.by(() => this.root.emojiPickerState.search.trim().toLowerCase());
   allowedEmojis = $derived.by(() =>
     this.opts.allowedEmojis.current ? new Set(this.opts.allowedEmojis.current) : null
@@ -168,7 +169,10 @@ class EmojiPickerListState {
   }
 
   async showMore(list: HTMLElement) {
-    if (this.loadingMore) return;
+    if (this.loadingMore) {
+      this.queuedMore = true;
+      return;
+    }
     this.loadingMore = true;
 
     const scrollTop = list.scrollTop;
@@ -185,6 +189,10 @@ class EmojiPickerListState {
       list.scrollTop = scrollTop;
     } finally {
       this.loadingMore = false;
+      if (this.queuedMore) {
+        this.queuedMore = false;
+        if (list.isConnected && this.visibleGroups.remaining > 0) void this.showMore(list);
+      }
     }
   }
 
