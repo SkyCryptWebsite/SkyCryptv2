@@ -63,6 +63,36 @@ const getWhitelist = () => {
 
 const baseURL = getBaseURL();
 
+const mcIdOAuthConfig =
+  MC_ID_CLIENT_ID && MC_ID_CLIENT_SECRET
+    ? [
+        {
+          providerId: "mc-id",
+          clientId: MC_ID_CLIENT_ID,
+          clientSecret: MC_ID_CLIENT_SECRET,
+          tokenEndpointAuth: { method: "client_secret_basic" as const },
+          discoveryUrl: "https://mc-id.com/.well-known/openid-configuration",
+          scopes: ["openid", "profile", "connections", "offline_access"],
+          // Accounts live in userinfo; an ID token alone may omit them.
+          getUserInfo: async ({ accessToken }: { accessToken?: string }) => {
+            if (!accessToken) return null;
+            const profile = await fetchMcIdProfile(accessToken);
+            return profile
+              ? { ...profile, name: profile.name ?? "", emailVerified: profile.email_verified ?? false }
+              : null;
+          },
+          mapProfileToUser: (profile: Parameters<typeof parseMcIdProfile>[0]) => {
+            const minecraft = parseMcIdProfile(profile);
+            if (minecraft) getRequestEvent().locals.pendingMcIdProfile = minecraft;
+            return {};
+          },
+          pkce: true,
+          disableSignUp: true,
+          disableImplicitSignUp: true
+        }
+      ]
+    : [];
+
 // Dynamically import the openAPI plugin only in development to avoid including it in the production bundle
 const openAPIPlugin: BetterAuthPlugin | null = dev
   ? await (async () => {
@@ -205,30 +235,7 @@ const options = {
     admin(),
     genericOAuth({
       config: [
-        {
-          providerId: "mc-id",
-          clientId: MC_ID_CLIENT_ID,
-          clientSecret: MC_ID_CLIENT_SECRET,
-          tokenEndpointAuth: { method: "client_secret_basic" },
-          discoveryUrl: "https://mc-id.com/.well-known/openid-configuration",
-          scopes: ["openid", "profile", "connections", "offline_access"],
-          // Accounts live in userinfo; an ID token alone may omit them.
-          getUserInfo: async ({ accessToken }) => {
-            if (!accessToken) return null;
-            const profile = await fetchMcIdProfile(accessToken);
-            return profile
-              ? { ...profile, name: profile.name ?? "", emailVerified: profile.email_verified ?? false }
-              : null;
-          },
-          mapProfileToUser: (profile) => {
-            const minecraft = parseMcIdProfile(profile);
-            if (minecraft) getRequestEvent().locals.pendingMcIdProfile = minecraft;
-            return {};
-          },
-          pkce: true,
-          disableSignUp: true,
-          disableImplicitSignUp: true
-        },
+        ...mcIdOAuthConfig,
         patreon({
           clientId: PATREON_CLIENT_ID,
           clientSecret: PATREON_CLIENT_SECRET,

@@ -112,6 +112,7 @@ type EmojiPickerListProps = ReadableBoxedValues<{
 
 class EmojiPickerListState {
   renderLimit = $state(RENDER_PAGE_SIZE);
+  loadingMore = false;
   search = $derived.by(() => this.root.emojiPickerState.search.trim().toLowerCase());
   allowedEmojis = $derived.by(() =>
     this.opts.allowedEmojis.current ? new Set(this.opts.allowedEmojis.current) : null
@@ -167,17 +168,24 @@ class EmojiPickerListState {
   }
 
   async showMore(list: HTMLElement) {
+    if (this.loadingMore) return;
+    this.loadingMore = true;
+
     const scrollTop = list.scrollTop;
     const command = this.root.command;
     const selectedIndex = command?.getValidItems().findIndex((item) => item.hasAttribute("data-selected")) ?? -1;
     const categories = this.filteredCategories;
-    this.renderLimit += RENDER_PAGE_SIZE;
-    // Let Bits UI finish registering and selecting items before restoring the highlight.
-    await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
-    if (!list.isConnected || command !== this.root.command || categories !== this.filteredCategories) return;
-    if (selectedIndex >= 0) command?.updateSelectedToIndex(selectedIndex);
-    await tick();
-    list.scrollTop = scrollTop;
+    try {
+      this.renderLimit += RENDER_PAGE_SIZE;
+      // Let Bits UI finish registering and selecting items before restoring the highlight.
+      await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+      if (!list.isConnected || command !== this.root.command || categories !== this.filteredCategories) return;
+      if (selectedIndex >= 0) command?.updateSelectedToIndex(selectedIndex);
+      await tick();
+      list.scrollTop = scrollTop;
+    } finally {
+      this.loadingMore = false;
+    }
   }
 
   get skinIndex() {

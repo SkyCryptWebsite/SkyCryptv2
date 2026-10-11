@@ -7,6 +7,20 @@ jobs:
   vitest:
     name: Vitest (Server + Browser)
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:18-alpine
+        env:
+          POSTGRES_USER: root
+          POSTGRES_PASSWORD: mysecretpassword
+          POSTGRES_DB: skycrypt_frontend
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U root -d skycrypt_frontend"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - name: Checkout
@@ -23,6 +37,8 @@ jobs:
 
       - name: Run Vitest tests
         run: pnpm test
+        env:
+          DATABASE_URL: postgres://root:mysecretpassword@localhost:5432/skycrypt_frontend
 
   # e2e tests are not possible in CI due to the need for 1. the golang backend to be running and 2. the backend needing a hypixel api key, which resets every 24 hours. So skip these in CI and only run them locally.
   # e2e:

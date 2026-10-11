@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
@@ -29,19 +29,10 @@ describe.skipIf(!process.env.DATABASE_URL)("Profile emoji grants", () => {
     db = drizzle(client, { schema });
     database.db = db;
     // An isolated schema runs the real migrations without changing application data.
-    for (const migration of [
-      "0000_mixed_lord_tyger",
-      "0001_nosy_zuras",
-      "0002_lonely_nick_fury",
-      "0003_mean_tiger_shark",
-      "0004_swift_shotgun",
-      "0005_special_medusa",
-      "0006_striped_caretaker",
-      "0007_wooden_molly_hayes",
-      "0008_profile_emoji",
-      "0009_remove_verification_cooldown_table"
-    ]) {
-      const sql = readFileSync(`drizzle/${migration}.sql`, "utf8").replaceAll('"public".', `"${namespace}".`);
+    for (const migration of readdirSync("drizzle")
+      .filter((file) => file.endsWith(".sql"))
+      .sort()) {
+      const sql = readFileSync(`drizzle/${migration}`, "utf8").replaceAll('"public".', `"${namespace}".`);
       for (const statement of sql.split("--> statement-breakpoint")) await client.unsafe(statement);
     }
     await db.insert(schema.user).values({ id: userId, name: "Emoji test", email: `${userId}@example.invalid` });
