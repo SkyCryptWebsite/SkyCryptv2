@@ -191,6 +191,7 @@ class EmojiPickerListState {
       this.loadingMore = false;
       if (this.queuedMore) {
         this.queuedMore = false;
+        await tick();
         if (list.isConnected && this.visibleGroups.remaining > 0) void this.showMore(list);
       }
     }
