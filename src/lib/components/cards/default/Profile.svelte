@@ -31,7 +31,7 @@
   </div>
   on
   <div
-    class="relative inline-flex items-center gap-2 rounded-full bg-foreground/10 align-middle text-2xl font-semibold data-[warning=false]:px-3 data-[warning=false]:py-1.5 data-[warning=true]:border-2 data-[warning=true]:border-yellow-500/20 data-[warning=true]:px-2.5 data-[warning=true]:py-1"
+    class="relative inline-flex items-center gap-2 rounded-full bg-foreground/10 align-middle text-2xl font-semibold data-[warning=false]:px-3 data-[warning=false]:py-1.5 data-[warning=true]:border-2 data-[warning=true]:border-accent-4/20 data-[warning=true]:px-2.5 data-[warning=true]:py-1"
     data-warning={apiSettings?.length > 0}>
     <div class="rounded-full">
       <span>{profile?.profile_cute_name}</span>
@@ -39,8 +39,8 @@
     </div>
 
     {#if apiSettings?.length}
-      <div class="rounded-full bg-yellow-500/20 px-2 py-1">
-        <TriangleAlert class="size-6 text-yellow-500" />
+      <div class="rounded-full bg-accent-4/20 px-2 py-1">
+        <TriangleAlert class="size-6 text-accent-4" />
       </div>
     {/if}
   </div>

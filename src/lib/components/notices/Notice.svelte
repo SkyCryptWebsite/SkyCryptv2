@@ -47,12 +47,12 @@
 
 <div
   class={cn(
-    "space-y-5 rounded-xl p-6 data-[type=error]:text-red-200 data-[type=info]:text-blue-200 data-[type=warning]:text-yellow-200 @[75rem]/parent:p-8",
-    "performance:data-[type=error]:bg-red-800 performance:data-[type=info]:bg-blue-800 performance:data-[type=warning]:bg-yellow-800 standard:backdrop-blur-lg standard:data-[type=error]:bg-red-700/5 standard:data-[type=info]:bg-blue-700/5 standard:data-[type=warning]:bg-yellow-700/5",
+    "space-y-5 rounded-xl p-6 data-[type=error]:text-input data-[type=info]:text-secondary data-[type=warning]:text-accent-4 @[75rem]/parent:p-8",
+    "performance:data-[type=error]:bg-destructive performance:data-[type=info]:bg-secondary performance:data-[type=warning]:bg-accent-4 standard:backdrop-blur-lg standard:data-[type=error]:bg-destructive/5 standard:data-[type=info]:bg-secondary/5 standard:data-[type=warning]:bg-accent-4/5",
     className
   )}
   data-type={type}>
-  <div class="justify-starts flex items-center gap-2">
+  <div class="flex items-center justify-start gap-2">
     {#if type === "error"}
       <CircleX class="size-8" />
     {/if}
@@ -99,9 +99,9 @@
       <div class="flex justify-center">
         <Button.Root
           onclick={retry}
-          class="group/retry flex items-center gap-1 rounded-full bg-red-700 px-4 py-2 text-white">
+          class="group/retry flex items-center gap-1 rounded-full bg-destructive px-4 py-2 text-white">
           Retry
-          <RotateCcw class="h-hl size-4 transition-all duration-150 group-hover/retry:-rotate-90" />
+          <RotateCcw class="size-4 transition-all duration-150 group-hover/retry:-rotate-90" />
         </Button.Root>
       </div>
     {/if}

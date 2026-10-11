@@ -62,7 +62,7 @@
         {@render sectionError(sectionName, err, reset)}
       {/snippet}
 
-      <div class="section mt-4" data-section={sectionName} role="tabpanel">
+      <div class="mt-4" data-section={sectionName} role="tabpanel">
         {#if sectionName !== "Inventory" && !combinedCtx.current}
           {@render loadingState(sectionName)}
         {:else}

@@ -49,7 +49,7 @@
               asterisk={true}>
               <Label>
                 XP:
-                <span class="text-bold">
+                <span class="font-bold">
                   {format(garden.level?.xp)}
                 </span>
               </Label>

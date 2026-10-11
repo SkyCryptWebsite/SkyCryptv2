@@ -57,6 +57,7 @@
   bind:ref
   bind:viewportRef
   class={cn(
+    // eslint-disable-next-line shadcn/no-unknown-classes
     "data-[orientation=vertical]/scroll:w-fit data-[orientation=horizontal]/scroll:max-w-full group/scroll h-fit",
     { "rounded-xl border": border },
     className

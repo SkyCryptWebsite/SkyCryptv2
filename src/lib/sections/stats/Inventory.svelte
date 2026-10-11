@@ -88,7 +88,7 @@
           </ScrollItems>
           <Separator orientation="horizontal" />
         {:else}
-          <div class="@container-scroll relative flex h-fit w-full md:sticky md:top-1/4 md:w-fit">
+          <div class="relative flex h-fit w-full md:sticky md:top-1/4 md:w-fit">
             <Tabs.List
               class="h-fit rounded-xl bg-transparent transition-colors duration-150 @stuck-top:bg-background/50">
               <ScrollArea

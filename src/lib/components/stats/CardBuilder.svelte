@@ -110,7 +110,7 @@
         <Button
           onclick={() => selectPreset(preset.id)}
           class={cn(
-            "fle h-full flex-col gap-1.5 rounded-xl border-2 p-2 transition-all",
+            "flex h-full flex-col gap-1.5 rounded-xl border-2 p-2 transition-all",
             selectedPreset.id === preset.id
               ? "border-primary bg-primary/10"
               : "border-foreground/10 bg-foreground/5 hover:border-foreground/20 hover:bg-foreground/10"

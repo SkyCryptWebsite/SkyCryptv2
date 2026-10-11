@@ -158,7 +158,7 @@
 
 <ScrollAreaPrimitive
   type="scroll"
-  class="navbar group sticky! top-[calc(3rem+env(safe-area-inset-top,0))] z-30 overflow-clip"
+  class="group sticky! top-[calc(3rem+env(safe-area-inset-top,0))] z-30 overflow-clip"
   data-pinned={internalState.navbarPinned}
   bind:ref={navbarElement}
   orientation="horizontal">

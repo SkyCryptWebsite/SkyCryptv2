@@ -66,7 +66,7 @@
   </Progress.Root>
 
   <div
-    class="absolute bottom-0 left-0 z-10 flex size-9 items-center justify-center rounded-full border p-1 drop-shadow-sm data-[api=false]:bg-gray-600 data-[maxed=false]:bg-primary data-[maxed=true]:bg-accent-3"
+    class="absolute bottom-0 left-0 z-10 flex size-9 items-center justify-center rounded-full border p-1 drop-shadow-sm data-[api=false]:bg-muted-foreground data-[maxed=false]:bg-primary data-[maxed=true]:bg-accent-3"
     data-maxed={isMaxed}
     data-api={apiEnabled}>
     <img

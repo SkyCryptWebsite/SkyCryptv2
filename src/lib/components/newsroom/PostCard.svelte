@@ -90,7 +90,7 @@
       <time datetime={post.publishedAt} class="shrink-0 text-muted-foreground">{formatDate(post.publishedAt)}</time>
     </div>
 
-    <svelte:element this={as} class="text-background-foreground text-xl leading-tight font-bold transition-colors"
+    <svelte:element this={as} class="text-xl leading-tight font-bold text-foreground transition-colors"
       >{post.title}</svelte:element>
 
     {#if post.excerpt}

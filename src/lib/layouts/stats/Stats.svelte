@@ -20,7 +20,7 @@
   );
 </script>
 
-<div class="stats flex flex-col">
+<div class="flex flex-col">
   <Collapsible.Root bind:open={openState}>
     {#key profile}
       <Collapsible.Content

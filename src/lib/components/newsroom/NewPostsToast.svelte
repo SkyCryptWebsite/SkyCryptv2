@@ -65,7 +65,7 @@
           height={thumb.height}
           loading="lazy"
           class="size-full object-cover" />
-        <Avatar.Fallback class="bg-foretext-foreground/10 flex size-full items-center justify-center">
+        <Avatar.Fallback class="flex size-full items-center justify-center bg-foreground/10">
           <ImageIcon class="size-5" aria-label="Image failed to load" />
         </Avatar.Fallback>
         <div

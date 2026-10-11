@@ -155,7 +155,7 @@
   </Popover.Root>
   <span>on</span>
   <div
-    class="relative inline-flex items-center gap-2 rounded-full bg-foreground/10 px-2 py-1 align-middle text-xl font-semibold transition-[scale,background-color] duration-300 ease-out data-[disabled=false]:data-[open=true]:scale-95 data-[disabled=false]:data-[open=true]:bg-foreground/20 data-[warning=true]:border-2 data-[warning=true]:border-yellow-500/20 sm:text-3xl data-[disabled=false]:interact:scale-95 data-[disabled=false]:interact:bg-foreground/20"
+    class="relative inline-flex items-center gap-2 rounded-full bg-foreground/10 px-2 py-1 align-middle text-xl font-semibold transition-[scale,background-color] duration-300 ease-out data-[disabled=false]:data-[open=true]:scale-95 data-[disabled=false]:data-[open=true]:bg-foreground/20 data-[warning=true]:border-2 data-[warning=true]:border-accent-4/20 sm:text-3xl data-[disabled=false]:interact:scale-95 data-[disabled=false]:interact:bg-foreground/20"
     data-open={profileOpen || noticeOpen}
     data-warning={apiSettings.length > 0}
     bind:this={noticeRef}
@@ -221,8 +221,8 @@
 
     {#if apiSettings.length}
       <Popover.Root bind:open={noticeOpen}>
-        <Popover.Trigger class="rounded-full bg-yellow-500/20 px-4 py-2" onpointerenter={() => (noticeOpen = true)}>
-          <TriangleAlert class="size-6 motion-preset-pulse text-yellow-500 motion-duration-1000" />
+        <Popover.Trigger class="rounded-full bg-accent-4/20 px-4 py-2" onpointerenter={() => (noticeOpen = true)}>
+          <TriangleAlert class="size-6 motion-preset-pulse text-accent-4 motion-duration-1000" />
         </Popover.Trigger>
 
         <Popover.Content
@@ -266,7 +266,7 @@
       }
     }}>
     {#if favorites.current.some((fav) => fav.uuid === profile?.uuid)}
-      <Heart class="size-4 fill-red-500 stroke-red-300" />
+      <Heart class="size-4 fill-destructive stroke-destructive" />
     {:else}
       <Heart class="size-4" />
     {/if}

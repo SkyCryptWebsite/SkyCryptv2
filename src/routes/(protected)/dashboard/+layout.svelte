@@ -35,7 +35,7 @@
 
 <Sidebar.Provider class="min-h-[calc(100svh-3rem)] antialiased">
   <AppSidebar />
-  <main class="dashboard min-w-0 flex-1 text-pretty">
+  <main class="min-w-0 flex-1 text-pretty">
     <header
       class="flex h-16 items-center gap-2 border-b bg-sidebar px-4 sm:px-8 standard:glass standard:bg-transparent">
       <Sidebar.Trigger class="size-11" />

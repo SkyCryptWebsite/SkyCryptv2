@@ -97,7 +97,7 @@
 
         {#if packageVersion}
           <Button.Root
-            class="text-xs leading-none font-normal text-muted-foreground transition-colors hover:text-primary/60 data-[cupcake=true]:text-yellow-500/60 data-[cupcake=true]:hover:text-yellow-500"
+            class="text-xs leading-none font-normal text-muted-foreground transition-colors hover:text-primary/60 data-[cupcake=true]:text-accent-4/60 data-[cupcake=true]:hover:text-accent-4"
             rel="noreferrer"
             href="https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/releases/tag/v{packageVersion}"
             target="_blank"
