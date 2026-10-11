@@ -4,7 +4,7 @@
     "rewriteRelativeImportExtensions": true,
     "sourceMap": true,
     "strict": true,
-    "types": ["$app/types", "@types/umami-browser"],
+    "types": ["$app/types", "@types/umami-browser", "node"],
     "paths": {
       "$params": ["./src/params"],
       "$types": ["./src/lib/types"],
@@ -31,6 +31,13 @@
       "$components/*": ["./src/lib/components/*"]
     }
   },
-  "include": [".svelte-kit/ambient.d.ts", "src", "vite.config.ts", "drizzle.config.ts", "playwright.config.ts"],
+  "include": [
+    ".svelte-kit/ambient.d.ts",
+    "src",
+    "vite.config.ts",
+    "drizzle.config.ts",
+    "playwright.config.ts",
+    "eslint.config.ts"
+  ],
   "exclude": ["src/service-worker"]
 }
