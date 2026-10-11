@@ -1,5 +1,6 @@
 import path from "node:path";
 import js from "@eslint/js";
+import { plugin as shadcn } from "@shadcn/lint";
 import { loadConfig } from "@sveltejs/load-config";
 import prettier from "eslint-config-prettier";
 import svelte from "eslint-plugin-svelte";
@@ -40,6 +41,13 @@ export default defineConfig(
         parser: ts.parser,
         svelteConfig
       }
+    },
+    plugins: {
+      shadcn
+    },
+    rules: {
+      "shadcn/no-raw-colors": "error",
+      "shadcn/no-unknown-classes": "warn"
     }
   },
   // Override or add rule settings here, such as:
