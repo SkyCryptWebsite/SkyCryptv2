@@ -17,7 +17,8 @@ export default defineConfig({
     sentrySvelteKit({
       org: "skycrypt",
       project: "skycrypt-sveltekit",
-      adapter: "node"
+      adapter: "node",
+      authToken: process.env.SENTRY_AUTH_TOKEN
     }),
     sveltekit({
       // Consult https://svelte.dev/docs/kit/integrations

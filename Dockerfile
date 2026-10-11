@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:1
+
 FROM node:24-alpine AS builder
 
 RUN apk add git
@@ -24,7 +26,11 @@ COPY .env.example .env
 COPY . .
 
 RUN pnpm run prepare
-RUN pnpm run build
+RUN --mount=type=secret,id=sentry_auth_token,required=false \
+    if [ -f /run/secrets/sentry_auth_token ]; then \
+      export SENTRY_AUTH_TOKEN="$(cat /run/secrets/sentry_auth_token)"; \
+    fi && \
+    pnpm run build
 RUN pnpm prune --production
 
 FROM node:24-alpine
