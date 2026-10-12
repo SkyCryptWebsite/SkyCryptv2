@@ -130,21 +130,22 @@ export const resolveUuidByUsername = query(ResolveUuidByUsernameParams, async ({
 /** Resolve a UUID to a username */
 export const resolveUsernameByUuid = prerender(
   ResolveUsernameByUuidParams.extend({ version: z.string() }),
-  async ({ uuid }) => fetchSection(APIEndpointName.USERNAME, () => resolveUsernameByUuidRequest(uuid))
+  async ({ uuid }) => fetchSection(APIEndpointName.USERNAME, () => resolveUsernameByUuidRequest(uuid)),
+  { dynamic: true }
 );
 
 /** Give each build its own static catalog URL without changing the app's commit version. */
 export const listResourcePacks = prerender(
   z.string(),
   async (_version) => fetchSection(APIEndpointName.RESOURCEPACK, () => listResourcePacksRequest()),
-  { inputs: () => [__PRERENDER_VERSION__] }
+  { dynamic: true, inputs: () => [__PRERENDER_VERSION__] }
 );
 
 /** Fetch stats list */
 export const getAllStats = prerender(
   z.string(),
   async (_version) => fetchSection(APIEndpointName.STATS, () => getStatsConstantsRequest()),
-  { inputs: () => [__PRERENDER_VERSION__] }
+  { dynamic: true, inputs: () => [__PRERENDER_VERSION__] }
 );
 
 /** Fetch the source information for the currently running backend service. */

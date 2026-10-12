@@ -57,5 +57,5 @@ export const getContributors = prerender(
 
     return contributors();
   },
-  { inputs: () => [__PRERENDER_VERSION__] }
+  { dynamic: true, inputs: () => [__PRERENDER_VERSION__] }
 );
