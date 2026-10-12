@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.3.0-beta.1
+
+### Patch Changes
+
+- Feat: remove Sentry _[`6b255d1`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/6b255d172e7f142fe341fcef62c4cee04f2ff2cc) [@DarthGigi](https://github.com/DarthGigi)_
+
 ## 4.3.0-beta.0
 
 ### Minor Changes
