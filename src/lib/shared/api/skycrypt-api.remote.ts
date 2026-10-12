@@ -56,6 +56,11 @@ async function fetchSection<TResponse extends { data: unknown; status: number }>
 ): Promise<ExtractSuccessData<TResponse>> {
   try {
     const { data, status } = await apiFetcher();
+    if (status >= 400) {
+      const message = typeof data === "object" && data !== null && "error" in data ? String(data.error) : String(data);
+      console.error(`API returned status ${status} for ${sectionName}:`, message);
+      error(status, message);
+    }
     // Check if the API returned a processing error
     if (typeof data === "object" && data !== null && "error" in data && data.error) {
       console.error(`API returned an error for ${sectionName}:`, data);
@@ -65,7 +70,7 @@ async function fetchSection<TResponse extends { data: unknown; status: number }>
   } catch (err) {
     if (isHttpError(err)) {
       console.error(`HTTP error fetching ${sectionName} section data:`, err);
-      error(err.status, err.body);
+      error(err.status, err.body.message);
     }
     console.error(`Error fetching ${sectionName} section data:`, err);
     error(500, `Failed to fetch ${sectionName} section data`);

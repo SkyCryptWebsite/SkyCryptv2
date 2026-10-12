@@ -232,7 +232,7 @@
 
   $effect(() => {
     const query = listResourcePacks(__PRERENDER_VERSION__);
-    if (query.current) {
+    if (Array.isArray(query.current)) {
       packs.packs = query.current;
       enabledPacks.configure(query.current);
     }
