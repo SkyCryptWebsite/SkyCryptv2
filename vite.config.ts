@@ -6,11 +6,15 @@ import { sveltekit } from "@sveltejs/kit/vite";
 import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
 import tailwindcss from "@tailwindcss/vite";
 import { playwright } from "@vitest/browser-playwright";
+import { loadEnv } from "vite";
 import { defineConfig } from "vitest/config";
 
-// SvelteKit reloads this config for the client build; both bundles need the same prerender ID.
-const prerenderVersion = (process.env.SKYCRYPT_PRERENDER_VERSION ??= randomUUID());
 const root = fileURLToPath(new URL(".", import.meta.url));
+
+const env = loadEnv(process.env.NODE_ENV ?? "production", root, "");
+
+// SvelteKit reloads this config for the client build; both bundles need the same prerender ID.
+const prerenderVersion = (env.SKYCRYPT_PRERENDER_VERSION ??= randomUUID());
 
 export default defineConfig({
   plugins: [
@@ -18,7 +22,7 @@ export default defineConfig({
       org: "skycrypt",
       project: "skycrypt-sveltekit",
       adapter: "node",
-      authToken: process.env.SENTRY_AUTH_TOKEN
+      authToken: env.SENTRY_AUTH_TOKEN
     }),
     sveltekit({
       // Consult https://svelte.dev/docs/kit/integrations
@@ -27,13 +31,13 @@ export default defineConfig({
       compilerOptions: { experimental: { async: true }, runes: true },
       experimental: {
         remoteFunctions: true,
-        sendWarningsToBrowser: process.env.NODE_ENV === "development"
+        sendWarningsToBrowser: env.NODE_ENV === "development"
       },
       tracing: { server: true },
-      inspector: process.env.NODE_ENV === "development",
+      inspector: env.NODE_ENV === "development",
       adapter: adapter(),
       paths: {
-        origin: process.env.PUBLIC_ORIGIN || process.env.ORIGIN
+        origin: env.PUBLIC_ORIGIN || env.ORIGIN
       },
       csrf: {
         trustedOrigins: [
@@ -80,7 +84,7 @@ export default defineConfig({
         }
       },
       version: {
-        name: process.env.PUBLIC_COMMIT_HASH,
+        name: env.PUBLIC_COMMIT_HASH,
         // in ms
         pollInterval: 1000 * 60 // 1 minute
       }
@@ -139,6 +143,6 @@ export default defineConfig({
   },
   define: {
     __PRERENDER_VERSION__: JSON.stringify(prerenderVersion),
-    __NPM_PACKAGE_VERSION__: JSON.stringify(process.env.npm_package_version || "")
+    __NPM_PACKAGE_VERSION__: JSON.stringify(env.npm_package_version || "")
   }
 });
