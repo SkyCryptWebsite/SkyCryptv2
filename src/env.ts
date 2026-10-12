@@ -18,14 +18,21 @@ export const variables = defineEnvVars({
   PUBLIC_UMAMI_SCRIPT_URL: { public: true, schema },
   PUBLIC_UMAMI_WEBSITE_ID: { public: true, schema },
   ADDRESS_HEADER: { schema },
-  BETTER_AUTH_SECRET: { schema },
+  BETTER_AUTH_SECRET: {
+    schema,
+    description:
+      "Secret used to sign tokens. For production use 32 characters generated with high entropy. See [Better Auth installation](https://www.better-auth.com/docs/installation)."
+  },
   CMS_API_TOKEN: { schema },
   DISCORD_CLIENT_ID: { schema },
   DISCORD_CLIENT_SECRET: { schema },
   DISCORD_WHITELIST: { schema },
   MC_ID_CLIENT_ID: { schema },
   MC_ID_CLIENT_SECRET: { schema },
-  ORIGIN: { schema },
+  ORIGIN: {
+    schema,
+    description: "The app origin (base URL), e.g. `http://localhost:5173`."
+  },
   SERVER_API_TOKEN: { schema },
   SERVER_CMS_API_URL: { schema },
   PATREON_CLIENT_ID: { schema },

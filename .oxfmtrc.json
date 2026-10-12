@@ -27,6 +27,7 @@
     "/static/",
     ".changeset/",
     "/drizzle/",
-    "/src/routes/typeset.css"
+    "/src/routes/typeset.css",
+    ".github/{agents,skills}/**"
   ]
 }
