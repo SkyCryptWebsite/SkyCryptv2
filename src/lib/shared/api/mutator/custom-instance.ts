@@ -51,11 +51,15 @@ const getHeaders = (headers?: HeadersInit): HeadersInit => {
 
 export const customFetch = async <T>(url: string, options: RequestInit): Promise<T> => {
   let fetchFunction = fetch;
-  try {
-    const event = getRequestEvent();
-    fetchFunction = event.fetch;
-  } catch {
-    // Ignore this, we just won't have access to the request for this call
+  // During prerender, event.fetch resolves URLs on ORIGIN's host through the app's own router, so the
+  // backend (served on that same host) is never reached and every call 404s. Use the global fetch instead.
+  if (!building) {
+    try {
+      const event = getRequestEvent();
+      fetchFunction = event.fetch;
+    } catch {
+      // Ignore this, we just won't have access to the request for this call
+    }
   }
 
   const requestUrl = getUrl(url);
@@ -74,7 +78,7 @@ export const customFetch = async <T>(url: string, options: RequestInit): Promise
     delete sentHeaders.cookie;
     console.info(
       `[prerender-fetch] -> ${method} ${requestUrl} (PUBLIC_SERVER_API_URL=${PUBLIC_SERVER_API_URL}, ` +
-        `tokenSet=${SERVER_API_TOKEN.length > 0}, requestEvent=${fetchFunction !== fetch}) headers=${JSON.stringify(sentHeaders)}`
+        `tokenSet=${SERVER_API_TOKEN.length > 0}, eventFetch=${fetchFunction !== fetch}) headers=${JSON.stringify(sentHeaders)}`
     );
   }
 
