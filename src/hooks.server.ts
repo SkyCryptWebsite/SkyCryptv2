@@ -1,7 +1,6 @@
 import { building } from "$app/env";
 import { PUBLIC_CMS_URL } from "$app/env/public";
 import { runMigrations } from "$src/lib/server/db/migrate";
-import { handleErrorWithSentry, sentryHandle } from "@sentry/sveltekit";
 import { redirect } from "@sveltejs/kit";
 import { sequence, type Handle, type ServerInit } from "@sveltejs/kit/hooks";
 import { svelteKitHandler } from "better-auth/svelte-kit";
@@ -18,6 +17,12 @@ export const init: ServerInit = async () => {
     return;
   }
   await runMigrations();
+
+  // Node 24's default --unhandled-rejections=throw kills the process on any orphaned
+  // promise rejection (e.g. losing-side promises in Promise.all). Log it instead.
+  process.on("unhandledRejection", (reason) => {
+    console.error("Unhandled promise rejection:", reason);
+  });
 };
 
 const headersHandler = (async ({ event, resolve }) => {
@@ -66,9 +71,6 @@ const headersHandler = (async ({ event, resolve }) => {
   return response;
 }) satisfies Handle;
 
-// If you have a custom error handler, pass it to `handleErrorWithSentry`
-export const handleError = handleErrorWithSentry();
-
 const betterAuthHandler: Handle = async ({ event, resolve }) => {
   const session = await auth.api.getSession({ headers: event.request.headers });
 
@@ -104,5 +106,4 @@ const protectedHandler = (async ({ event, resolve }) => {
   return resolve(event);
 }) satisfies Handle;
 
-// If you have custom handlers, make sure to place them after `sentryHandle()` in the `sequence` function.
-export const handle = sequence(sentryHandle(), betterAuthHandler, protectedHandler, headersHandler) satisfies Handle;
+export const handle = sequence(betterAuthHandler, protectedHandler, headersHandler) satisfies Handle;

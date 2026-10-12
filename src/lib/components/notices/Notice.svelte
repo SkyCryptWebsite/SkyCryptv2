@@ -4,7 +4,6 @@
   import CircleX from "@lucide/svelte/icons/circle-x";
   import Info from "@lucide/svelte/icons/info";
   import RotateCcw from "@lucide/svelte/icons/rotate-ccw";
-  import * as Sentry from "@sentry/sveltekit";
   import { isHttpError, type HttpError } from "@sveltejs/kit";
   import { Button } from "bits-ui";
   import type { Snippet } from "svelte";
@@ -24,8 +23,6 @@
 
   $effect(() => {
     if (fullError) {
-      Sentry.captureException(fullError);
-
       // 1. Group the error log so it stands out cleanly in DevTools
       console.group(`[Notice Boundary Error]: ${title}`);
 

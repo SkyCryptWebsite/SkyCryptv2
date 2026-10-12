@@ -29,11 +29,7 @@ COPY .env.example .env
 COPY . .
 
 RUN pnpm run prepare
-RUN --mount=type=secret,id=sentry_auth_token,required=false \
-    if [ -f /run/secrets/sentry_auth_token ]; then \
-      export SENTRY_AUTH_TOKEN="$(cat /run/secrets/sentry_auth_token)"; \
-    fi && \
-    pnpm run build
+RUN pnpm run build
 RUN pnpm prune --production
 
 FROM node:24-alpine

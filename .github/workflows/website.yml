@@ -118,8 +118,6 @@ jobs:
             PUBLIC_COMMIT_HASH=${{ env.SHORT_SHA }}
             PUBLIC_SERVER_API_URL=https://${{ needs.prepare.outputs.server_api_url }}/api/
             ORIGIN=https://${{ needs.prepare.outputs.server_api_url }}
-          secrets: |
-            sentry_auth_token=${{ github.ref_name == 'prod' && secrets.SENTRY_AUTH_TOKEN || '' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
