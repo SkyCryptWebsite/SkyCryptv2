@@ -1,3 +1,4 @@
+import { building } from "$app/env";
 import { SERVER_API_TOKEN } from "$app/env/private";
 import { PUBLIC_SERVER_API_URL } from "$app/env/public";
 import { getRequestEvent } from "$app/server";
@@ -65,8 +66,29 @@ export const customFetch = async <T>(url: string, options: RequestInit): Promise
     headers: requestHeaders
   };
 
+  const method = options.method ?? "GET";
+  const startedAt = Date.now();
+  if (building) {
+    const sentHeaders = Object.fromEntries(new Headers(requestHeaders).entries());
+    if (sentHeaders["x-api-token"]) sentHeaders["x-api-token"] = `<redacted len=${sentHeaders["x-api-token"].length}>`;
+    delete sentHeaders.cookie;
+    console.info(
+      `[prerender-fetch] -> ${method} ${requestUrl} (PUBLIC_SERVER_API_URL=${PUBLIC_SERVER_API_URL}, ` +
+        `tokenSet=${SERVER_API_TOKEN.length > 0}, requestEvent=${fetchFunction !== fetch}) headers=${JSON.stringify(sentHeaders)}`
+    );
+  }
+
   const response = await fetchFunction(requestUrl, requestInit);
   const data = await getBody<T>(response);
+
+  if (building) {
+    const preview = typeof data === "string" ? data : JSON.stringify(data);
+    console.info(
+      `[prerender-fetch] <- ${response.status} ${method} ${response.url || requestUrl} in ${Date.now() - startedAt}ms ` +
+        `redirected=${response.redirected} content-type=${response.headers.get("content-type")} ` +
+        `body=${preview.slice(0, 300)}`
+    );
+  }
 
   return { status: response.status, data, headers: response.headers } as T;
 };
