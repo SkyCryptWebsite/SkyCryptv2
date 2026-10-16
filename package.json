@@ -144,7 +144,7 @@
     "packageManager": [
       {
         "name": "pnpm",
-        "version": "^12",
+        "version": "^12.11.1",
         "onFail": "download"
       }
     ],
