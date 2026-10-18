@@ -1,13 +1,12 @@
 <script lang="ts">
   import { resolve } from "$app/paths";
   import { getFavorites, getHoverContext, getProfileContext } from "$ctx";
-  import { APINotice } from "$lib/components/notices";
-  import { cn } from "$lib/shared/utils";
   import CardBuilder from "$src/lib/components/stats/CardBuilder.svelte";
   import * as Avatar from "$ui/avatar";
   import { Button } from "$ui/button";
   import * as Item from "$ui/item";
   import * as Popover from "$ui/popover";
+  import { Spinner } from "$ui/spinner";
   import Ban from "@lucide/svelte/icons/ban";
   import ChevronRight from "@lucide/svelte/icons/chevron-right";
   import ExternalLink from "@lucide/svelte/icons/external-link";
@@ -17,6 +16,9 @@
   import Link from "@lucide/svelte/icons/link";
   import TriangleAlert from "@lucide/svelte/icons/triangle-alert";
   import { toast } from "svelte-sonner";
+  import { APINotice } from "#lib/components/notices/index.js";
+  import { getProfileEmoji } from "#lib/shared/profile-emoji.remote.js";
+  import { cn } from "#lib/shared/utils.js";
 
   let toastId: string | number = $state(0);
   let showMore = $state(false);
@@ -80,7 +82,20 @@
           </div>
         </div>
       {/if}
-      <span class={cn(profile?.rank?.rankColor ? "pl-4" : "pl-2")}>{profile?.displayName}</span>
+      <span class={cn(profile?.rank?.rankColor ? "pl-4" : "pl-2")}>
+        {profile?.username}
+        {#if profile?.uuid}
+          <svelte:boundary>
+            {const emoji = await getProfileEmoji(profile.uuid)}
+            {#if emoji}
+              {emoji}
+            {/if}
+            {#snippet pending()}
+              <Spinner class="inline size-7.5 text-muted-foreground" />
+            {/snippet}
+          </svelte:boundary>
+        {/if}
+      </span>
     </Popover.Trigger>
 
     <Popover.Content
@@ -140,7 +155,7 @@
   </Popover.Root>
   <span>on</span>
   <div
-    class="relative inline-flex items-center gap-2 rounded-full bg-foreground/10 px-2 py-1 align-middle text-xl font-semibold transition-[scale,background-color] duration-300 ease-out data-[disabled=false]:data-[open=true]:scale-95 data-[disabled=false]:data-[open=true]:bg-foreground/20 data-[warning=true]:border-2 data-[warning=true]:border-yellow-500/20 sm:text-3xl data-[disabled=false]:interact:scale-95 data-[disabled=false]:interact:bg-foreground/20"
+    class="relative inline-flex items-center gap-2 rounded-full bg-foreground/10 px-2 py-1 align-middle text-xl font-semibold transition-[scale,background-color] duration-300 ease-out data-[disabled=false]:data-[open=true]:scale-95 data-[disabled=false]:data-[open=true]:bg-foreground/20 data-[warning=true]:border-2 data-[warning=true]:border-accent-4/20 sm:text-3xl data-[disabled=false]:interact:scale-95 data-[disabled=false]:interact:bg-foreground/20"
     data-open={profileOpen || noticeOpen}
     data-warning={apiSettings.length > 0}
     bind:this={noticeRef}
@@ -206,8 +221,8 @@
 
     {#if apiSettings.length}
       <Popover.Root bind:open={noticeOpen}>
-        <Popover.Trigger class="rounded-full bg-yellow-500/20 px-4 py-2" onpointerenter={() => (noticeOpen = true)}>
-          <TriangleAlert class="size-6 motion-preset-pulse text-yellow-500 motion-duration-1000" />
+        <Popover.Trigger class="rounded-full bg-accent-4/20 px-4 py-2" onpointerenter={() => (noticeOpen = true)}>
+          <TriangleAlert class="size-6 motion-preset-pulse text-accent-4 motion-duration-1000" />
         </Popover.Trigger>
 
         <Popover.Content
@@ -251,7 +266,7 @@
       }
     }}>
     {#if favorites.current.some((fav) => fav.uuid === profile?.uuid)}
-      <Heart class="size-4 fill-red-500 stroke-red-300" />
+      <Heart class="size-4 fill-destructive stroke-destructive" />
     {:else}
       <Heart class="size-4" />
     {/if}

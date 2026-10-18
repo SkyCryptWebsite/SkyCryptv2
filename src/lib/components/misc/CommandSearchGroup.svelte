@@ -17,6 +17,7 @@
   <Command.LinkItem
     value={item.ign}
     href="/stats/{item.ign}"
+    class="data-selected:bg-accent"
     keywords={[item.ign, item.uuid, "profile", "player", "favorite", "favorites"].filter(Boolean) as string[]}>
     <Avatar.Root class="size-4 shrink-0 bg-foreground/10">
       <Avatar.Image

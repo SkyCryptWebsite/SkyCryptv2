@@ -1987,7 +1987,7 @@ export const GetCombinedProfileStatsResponse = zod.object({
                       })
                       .optional()
                       .describe(
-                        'HideFlags       int             `nbt:\"HideFlags\" json:\"HideFlags,omitempty\"`\nUnbreakable     int             `nbt:\"Unbreakable\" json:\"Unbreakable,omitempty\"`\nEnchantments    []Enchantment   `nbt:\"ench\" json:\"ench,omitempty\"`'
+                        'HideFlags       int             `nbt:"HideFlags" json:"HideFlags,omitempty"`\nUnbreakable     int             `nbt:"Unbreakable" json:"Unbreakable,omitempty"`\nEnchantments    []Enchantment   `nbt:"ench" json:"ench,omitempty"`'
                       ),
                     ItemModel: zod.string().optional(),
                     SkullOwner: zod
@@ -2510,7 +2510,7 @@ export const GetCombinedProfileStatsResponse = zod.object({
                       })
                       .optional()
                       .describe(
-                        'HideFlags       int             `nbt:\"HideFlags\" json:\"HideFlags,omitempty\"`\nUnbreakable     int             `nbt:\"Unbreakable\" json:\"Unbreakable,omitempty\"`\nEnchantments    []Enchantment   `nbt:\"ench\" json:\"ench,omitempty\"`'
+                        'HideFlags       int             `nbt:"HideFlags" json:"HideFlags,omitempty"`\nUnbreakable     int             `nbt:"Unbreakable" json:"Unbreakable,omitempty"`\nEnchantments    []Enchantment   `nbt:"ench" json:"ench,omitempty"`'
                       ),
                     ItemModel: zod.string().optional(),
                     SkullOwner: zod
@@ -3035,7 +3035,7 @@ export const GetGardenStatsResponse = zod.object({
                   })
                   .optional()
                   .describe(
-                    'HideFlags       int             `nbt:\"HideFlags\" json:\"HideFlags,omitempty\"`\nUnbreakable     int             `nbt:\"Unbreakable\" json:\"Unbreakable,omitempty\"`\nEnchantments    []Enchantment   `nbt:\"ench\" json:\"ench,omitempty\"`'
+                    'HideFlags       int             `nbt:"HideFlags" json:"HideFlags,omitempty"`\nUnbreakable     int             `nbt:"Unbreakable" json:"Unbreakable,omitempty"`\nEnchantments    []Enchantment   `nbt:"ench" json:"ench,omitempty"`'
                   ),
                 ItemModel: zod.string().optional(),
                 SkullOwner: zod

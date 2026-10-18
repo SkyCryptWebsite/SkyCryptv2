@@ -1,4 +1,4 @@
-import { browser } from "$app/environment";
+import { browser } from "$app/env";
 
 const ENABLED_PACKS_COOKIE = "enabledPacks";
 const LEGACY_DISABLED_PACKS_COOKIE = "disabledPacks";

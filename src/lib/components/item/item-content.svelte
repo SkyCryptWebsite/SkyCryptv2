@@ -1,13 +1,13 @@
 <script lang="ts">
   import { getPacksContext, getPreferences } from "$ctx";
-  import type { ModelsStrippedItem } from "$lib/shared/api/orval-generated";
-  import { getRarityClass, removeFormatting, renderLore } from "$lib/shared/helper";
-  import { animateObfuscatedText } from "$lib/shared/mc-text/obfuscated";
-  import { cn } from "$lib/shared/utils";
   import Image from "@lucide/svelte/icons/image";
   import Info from "@lucide/svelte/icons/info";
   import TriangleAlert from "@lucide/svelte/icons/triangle-alert";
   import { Avatar, Button } from "bits-ui";
+  import type { ModelsStrippedItem } from "#lib/shared/api/orval-generated.js";
+  import { getRarityClass, removeFormatting, renderLore } from "#lib/shared/helper.js";
+  import { animateObfuscatedText } from "#lib/shared/mc-text/obfuscated/index.js";
+  import { cn } from "#lib/shared/utils.js";
   import ContainedItem from "./ContainedItem.svelte";
   import ResolvedItemImage from "./ResolvedItemImage.svelte";
 

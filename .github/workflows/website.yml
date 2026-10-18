@@ -2,7 +2,7 @@ name: Website
 
 on:
   push:
-    paths: ["src/**", "Dockerfile", "package.json", ".changeset/**", ".github/workflows/website.yml"]
+    paths: ["src/**", "Dockerfile", "package.json", "vite.config.ts", ".changeset/**", ".github/workflows/website.yml"]
   workflow_dispatch:
 
 env:
@@ -73,20 +73,13 @@ jobs:
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v4
 
-  build:
-    needs: prepare
-    if: needs.prepare.outputs.should_deploy == 'true'
-    uses: ./.github/workflows/build.yml
-    with:
-      server-api-url: ${{ needs.prepare.outputs.server_api_url }}
-    secrets:
-      server-api-token: ${{ secrets.SERVER_API_TOKEN }}
-
   package:
     name: Package into Container
     runs-on: ubuntu-latest
-    needs: [prepare, checks, analyze, build]
+    needs: [prepare, checks, analyze]
     if: needs.prepare.outputs.should_deploy == 'true'
+    environment:
+      name: ${{ github.ref_name == 'prod' && 'production' || 'development' }}
 
     permissions:
       packages: write
@@ -124,6 +117,7 @@ jobs:
           build-args: |
             PUBLIC_COMMIT_HASH=${{ env.SHORT_SHA }}
             PUBLIC_SERVER_API_URL=https://${{ needs.prepare.outputs.server_api_url }}/api/
+            ORIGIN=https://${{ needs.prepare.outputs.server_api_url }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 

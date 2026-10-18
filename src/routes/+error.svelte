@@ -1,6 +1,6 @@
 <script lang="ts">
+  import { PUBLIC_DISCORD_INVITE } from "$app/env/public";
   import { page } from "$app/state";
-  import { env } from "$env/dynamic/public";
   import { Button } from "$ui/button";
   import * as Empty from "$ui/empty";
   import CircleXIcon from "@lucide/svelte/icons/circle-x";
@@ -18,7 +18,8 @@
     </Empty.Header>
     <Empty.Content class="flex flex-row items-center-safe justify-center-safe gap-4">
       <Button href="/" variant="default">Go home</Button>
-      <Button href={env.PUBLIC_DISCORD_INVITE} variant="outline" target="_blank">Join our Discord</Button>
+
+      <Button href={PUBLIC_DISCORD_INVITE} variant="outline" target="_blank">Join our Discord</Button>
     </Empty.Content>
   </Empty.Root>
 </main>

@@ -1,12 +1,12 @@
 <script lang="ts">
-  import TypeBadge from "$lib/components/newsroom/TypeBadge.svelte";
-  import { clientLocale } from "$lib/hooks/client-locale.svelte";
   import { cn } from "$src/lib/shared/utils";
   import type { Author, AuthorView, Post } from "$types";
   import { Badge } from "$ui/badge";
   import ImageIcon from "@lucide/svelte/icons/image";
   import Star from "@lucide/svelte/icons/star";
   import { Avatar, Button } from "bits-ui";
+  import TypeBadge from "#lib/components/newsroom/TypeBadge.svelte";
+  import { clientLocale } from "#lib/hooks/client-locale.svelte.js";
 
   /** `as` sets the title's heading level so the card fits its surrounding document outline. */
   const { post, as = "h3", glass = false }: { post: Post; as?: "h2" | "h3"; glass?: boolean } = $props();
@@ -90,7 +90,7 @@
       <time datetime={post.publishedAt} class="shrink-0 text-muted-foreground">{formatDate(post.publishedAt)}</time>
     </div>
 
-    <svelte:element this={as} class="text-background-foreground text-xl leading-tight font-bold transition-colors"
+    <svelte:element this={as} class="text-xl leading-tight font-bold text-foreground transition-colors"
       >{post.title}</svelte:element>
 
     {#if post.excerpt}

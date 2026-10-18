@@ -1,13 +1,11 @@
 import path from "node:path";
 import js from "@eslint/js";
-import { loadConfig } from "@sveltejs/load-config";
+import { plugin as shadcn } from "@shadcn/lint";
 import prettier from "eslint-config-prettier";
 import svelte from "eslint-plugin-svelte";
 import { defineConfig, includeIgnoreFile } from "eslint/config";
 import globals from "globals";
 import ts from "typescript-eslint";
-
-const svelteConfig = await loadConfig(process.cwd());
 
 const gitignorePath = path.resolve(import.meta.dirname, ".gitignore");
 
@@ -37,9 +35,15 @@ export default defineConfig(
       parserOptions: {
         projectService: true,
         extraFileExtensions: [".svelte"],
-        parser: ts.parser,
-        svelteConfig
+        parser: ts.parser
       }
+    },
+    plugins: {
+      shadcn
+    },
+    rules: {
+      "shadcn/no-raw-colors": "error",
+      "shadcn/no-unknown-classes": "warn"
     }
   },
   // Override or add rule settings here, such as:

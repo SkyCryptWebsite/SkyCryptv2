@@ -1,5 +1,5 @@
-import { building, dev } from "$app/environment";
-import { env } from "$env/dynamic/public";
+import { building, dev } from "$app/env";
+import { PUBLIC_ORIGIN as baseUrl } from "$app/env/public";
 import { DefaultCard } from "$src/lib/components/cards";
 import ErrorCard from "$src/lib/components/cards/default/ErrorCard.svelte";
 import { parseSettingsFromParams } from "$src/lib/components/cards/default/schema";
@@ -15,8 +15,6 @@ import { Renderer, type Font, type ImageSource } from "takumi-js/node";
 import { ImageResponse } from "takumi-js/response";
 import type { RequestHandler } from "./$types";
 import appStyles from "$routes/layout.css?inline";
-
-const { PUBLIC_ORIGIN: baseUrl } = env;
 
 // Create shared renderer with 64MB cache budget
 const renderer = new Renderer({ cacheMaxBytes: 64 * 1024 * 1024 });
@@ -38,9 +36,11 @@ export const GET: RequestHandler = async ({ params, request, url }) => {
   try {
     const fetchStart = performance.now();
     const user = (await resolveUuidByUsername(ign)).data as ModelsPlayerResolve;
-    const cardData = profile
-      ? await fetchProfileCardData(user.uuid ?? ign, profile)
-      : await fetchSelectedProfileCardData(user.uuid ?? ign);
+    const uuid = user.uuid ?? ign;
+    const [cardData, playerImage] = await Promise.all([
+      profile ? fetchProfileCardData(uuid, profile) : fetchSelectedProfileCardData(uuid),
+      fetchAssetBuffer(`https://nmsr.nickac.dev/fullbody/${uuid}?no=shadow`, "Player Image", request.signal)
+    ]);
     const fetchDuration = performance.now() - fetchStart;
 
     const componentRenderStart = performance.now();
@@ -53,12 +53,6 @@ export const GET: RequestHandler = async ({ params, request, url }) => {
     const html = `${head}${body}`;
     const componentRenderDuration = performance.now() - componentRenderStart;
 
-    // Diagnostic: Extract and log all dynamic image sources present in the HTML template
-    const imgMatches = Array.from(html.matchAll(/<img[^>]+src=["']([^"']+)["']/gi)).map((m) => m[1]);
-    if (imgMatches.length > 0) {
-      console.debug(`[Card Gen] HTML references ${imgMatches.length} dynamic images:`, imgMatches);
-    }
-
     // 3. Measure Image Rasterization
     const renderStart = performance.now();
     const imageResponse = new ImageResponse(html, {
@@ -69,10 +63,10 @@ export const GET: RequestHandler = async ({ params, request, url }) => {
       headers: {
         "cache-control": cacheControl
       },
-      stylesheets: [appStyles],
+      css: appStyles,
       emoji: "twemoji",
       signal: request.signal,
-      images,
+      images: [...images, { src: "player", data: playerImage, cache: "none" }],
       renderer
     });
 
@@ -110,7 +104,7 @@ export const GET: RequestHandler = async ({ params, request, url }) => {
         headers: {
           "cache-control": "no-cache, no-store, must-revalidate"
         },
-        stylesheets: [appStyles],
+        css: appStyles,
         emoji: "twemoji",
         images,
         renderer
@@ -165,23 +159,26 @@ async function fetchSelectedProfileCardData(uuid: string) {
 }
 
 /** Validates external asset buffers, checks HTTP status, and verifies that responses aren't HTML error/redirect pages. */
-async function fetchAssetBuffer(url: string, assetName: string): Promise<ArrayBuffer> {
-  const res = await fetch(url);
+async function fetchAssetBuffer(url: string, assetName: string, signal?: AbortSignal): Promise<ArrayBuffer> {
+  const res = await fetch(url, { signal });
   if (!res.ok) {
     throw new Error(`[Asset Fetch Failed] ${assetName} (${url}) returned HTTP ${res.status}: ${res.statusText}`);
+  }
+
+  const contentLength = res.headers.get("content-length");
+  if (contentLength && Number(contentLength) > 8 * 1024 * 1024) {
+    throw new Error(`[Asset Fetch Too Large] ${assetName} (${url}) exceeded the 8 MiB limit.`);
   }
 
   const buffer = await res.arrayBuffer();
   if (buffer.byteLength === 0) {
     throw new Error(`[Asset Fetch Empty] ${assetName} (${url}) returned an empty buffer.`);
   }
+  if (buffer.byteLength > 8 * 1024 * 1024) {
+    throw new Error(`[Asset Fetch Too Large] ${assetName} (${url}) exceeded the 8 MiB limit.`);
+  }
 
   const header = new Uint8Array(buffer.slice(0, 4));
-  const hexHeader = Array.from(header)
-    .map((b) => b.toString(16).padStart(2, "0"))
-    .join(" ");
-
-  console.debug(`[Asset Loaded] ${assetName} | Size: ${buffer.byteLength} bytes | Header: [${hexHeader}]`);
 
   // Detect HTML error pages (e.g. '<!DO' or '<htm') returned with 200 OK
   if (header[0] === 0x3c) {

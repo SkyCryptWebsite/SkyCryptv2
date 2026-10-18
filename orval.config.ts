@@ -46,5 +46,16 @@ export default defineConfig({
     hooks: {
       afterAllFilesWrite: "oxfmt ./src/lib/shared/api/cms-generated.ts"
     }
+  },
+  patreon: {
+    input: "https://raw.githubusercontent.com/ghostrider-05/patreon-api-spec/refs/heads/main/specs/openapi.json",
+    output: {
+      target: "./src/lib/shared/api/patreon-generated.ts",
+      client: "fetch",
+      tsconfig: "./tsconfig.json"
+    },
+    hooks: {
+      afterAllFilesWrite: "oxfmt ./src/lib/shared/api/patreon-generated.ts"
+    }
   }
 });

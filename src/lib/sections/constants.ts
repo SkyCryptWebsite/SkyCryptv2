@@ -1,4 +1,4 @@
-import type { SectionID } from "$lib/sections/types";
+import type { SectionID } from "#lib/sections/types.js";
 
 export const sections: SectionID[] = [
   { id: 0, name: "Gear" },

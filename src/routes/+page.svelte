@@ -1,13 +1,8 @@
 <script lang="ts">
+  import { PUBLIC_DISCORD_INVITE, PUBLIC_PATREON } from "$app/env/public";
   import { goto } from "$app/navigation";
   import { resolve } from "$app/paths";
   import { getFavorites } from "$ctx";
-  import { env } from "$env/dynamic/public";
-  import { ContributorCard, ContributorCardSkeleton, CtaCard } from "$lib/components/misc";
-  import PostCard from "$lib/components/newsroom/PostCard.svelte";
-  import { Notice } from "$lib/components/notices";
-  import { listPosts } from "$lib/shared/api/cms-api.remote";
-  import { resolveUuidByUsername } from "$lib/shared/api/skycrypt-api.remote";
   import { getContributors } from "$routes/contributors.remote";
   import { Button, buttonVariants } from "$ui/button";
   import * as ButtonGroup from "$ui/button-group";
@@ -27,10 +22,14 @@
   import Star from "@lucide/svelte/icons/star";
   import { isHttpError } from "@sveltejs/kit";
   import { onMount } from "svelte";
+  import { ContributorCard, ContributorCardSkeleton, CtaCard } from "#lib/components/misc/index.js";
+  import PostCard from "#lib/components/newsroom/PostCard.svelte";
+  import { Notice } from "#lib/components/notices/index.js";
+  import { listPosts } from "#lib/shared/api/cms-api.remote.js";
+  import { resolveUuidByUsername } from "#lib/shared/api/skycrypt-api.remote.js";
   import { Role } from "./enums";
   import { schema } from "./schema";
 
-  const { PUBLIC_DISCORD_INVITE, PUBLIC_PATREON } = env;
   const favorites = getFavorites();
 
   let searchQuery = $state<string>(null!);
@@ -109,7 +108,7 @@
 
     try {
       const response = await resolveUuidByUsername({ username });
-      await goto(resolve("/stats/[ign]", { ign: response.username ?? "" }));
+      await goto(resolve("/stats/[ign]/[[profile]]", { ign: response.username ?? "" }));
     } catch (err) {
       submittedSearchError = getErrorMessage(err);
     } finally {
@@ -184,26 +183,6 @@
   </div>
 
   <svelte:boundary>
-    {#snippet pending()}
-      <section
-        class="flex flex-col gap-4 rounded-xl glass p-4 glass-brightness-150 glass-contrast-60 dark:glass-brightness-50 dark:glass-contrast-100">
-        <Skeleton class="h-6 w-1/5 rounded" />
-        <Skeleton class="h-6 w-2/5 rounded" />
-        <div class="grid grid-cols-1 gap-5 @md:grid-cols-2 @xl:grid-cols-3">
-          {#each new Array(3) as _, i (i)}
-            <div class="flex flex-col overflow-hidden rounded-xl border">
-              <Skeleton class="aspect-video w-full rounded-none" />
-              <div class="flex flex-col gap-2.5 p-4">
-                <Skeleton class="h-4 w-2/5 rounded" />
-                <Skeleton class="h-6 w-4/5 rounded" />
-                <Skeleton class="h-12 rounded" />
-              </div>
-            </div>
-          {/each}
-        </div>
-      </section>
-    {/snippet}
-
     {#snippet failed()}{/snippet}
 
     {const newsroom = await listPosts({ page: 1, limit: 3 })}
@@ -273,7 +252,7 @@
           <Notice title="Failed to load contributors." type="error" error={err} {retry} class="col-span-full" />
         {/snippet}
 
-        {#each await getContributors() as contributor (contributor.id)}
+        {#each await getContributors(__PRERENDER_VERSION__) as contributor (contributor.id)}
           <ContributorCard user={contributor} {iconMapper} />
         {/each}
       </svelte:boundary>

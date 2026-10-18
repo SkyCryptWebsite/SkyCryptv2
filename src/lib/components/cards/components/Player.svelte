@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { browser } from "$app/env";
   import { getCardDataContext } from "../index";
 
   const { showMinecraftName = false }: { showMinecraftName?: boolean } = $props();
@@ -22,7 +23,7 @@
     </div>
   {/if}
   <img
-    src="https://nmsr.nickac.dev/fullbody/{profile?.uuid}?no=shadow"
+    src={browser ? `https://nmsr.nickac.dev/fullbody/${profile?.uuid}?no=shadow` : "player"}
     alt={profile?.username}
     class="relative h-full object-cover" />
 </div>

@@ -1,11 +1,5 @@
 <script lang="ts">
   import { getSkillsContext } from "$ctx";
-  import { Item } from "$lib/components/item";
-  import { Chip, ScrollItems } from "$lib/components/misc";
-  import { SectionSubtitle } from "$lib/components/sections";
-  import { AdditionStat, SkillGear } from "$lib/components/stats";
-  import Items from "$lib/layouts/stats/Items.svelte";
-  import { cn } from "$lib/shared/utils";
   import EmptyStat from "$src/lib/components/EmptyStat.svelte";
   import ScrollAreaItems from "$src/lib/components/ScrollAreaItems.svelte";
   import { Label } from "$ui/label";
@@ -19,6 +13,12 @@
   import { format } from "numerable";
   import { cubicOut } from "svelte/easing";
   import { fade } from "svelte/transition";
+  import { Item } from "#lib/components/item/index.js";
+  import { Chip, ScrollItems } from "#lib/components/misc/index.js";
+  import { SectionSubtitle } from "#lib/components/sections/index.js";
+  import { AdditionStat, SkillGear } from "#lib/components/stats/index.js";
+  import Items from "#lib/layouts/stats/Items.svelte";
+  import { cn } from "#lib/shared/utils.js";
 
   const data = $derived(getSkillsContext().skills);
   const mining = $derived(data?.mining);

@@ -1,4 +1,21 @@
 import { prerender, query } from "$app/server";
+import { APIEndpointName } from "$types";
+import { error, isHttpError } from "@sveltejs/kit";
+import { z } from "zod";
+import {
+  GetCombinedProfileStatsParams,
+  GetGardenStatsParams,
+  GetPlayerStatsParams,
+  GetProfileEmbedParams,
+  GetProfileInventoryParams,
+  GetProfileNetworthParams,
+  GetProfileStatsParams,
+  GetSelectedProfileEmbedParams,
+  GetSelectedProfileStatsParams,
+  ResolveUsernameByUuidParams,
+  ResolveUuidByUsernameParams,
+  SearchProfileInventoryParams
+} from "#lib/shared/api/orval-generated-zod.js";
 import {
   getCombinedProfileStats as getCombinedProfileStatsRequest,
   getGardenStats as getGardenStatsRequest,
@@ -18,23 +35,7 @@ import {
   getStatsConstants as getStatsConstantsRequest,
   type ModelsProcessingError,
   type ModelsSourceInfo
-} from "$lib/shared/api/orval-generated";
-import {
-  GetCombinedProfileStatsParams,
-  GetGardenStatsParams,
-  GetPlayerStatsParams,
-  GetProfileEmbedParams,
-  GetProfileInventoryParams,
-  GetProfileNetworthParams,
-  GetProfileStatsParams,
-  GetSelectedProfileEmbedParams,
-  GetSelectedProfileStatsParams,
-  ResolveUsernameByUuidParams,
-  ResolveUuidByUsernameParams,
-  SearchProfileInventoryParams
-} from "$lib/shared/api/orval-generated-zod";
-import { APIEndpointName } from "$types";
-import { error, isHttpError } from "@sveltejs/kit";
+} from "#lib/shared/api/orval-generated.js";
 
 /** Type helper to extract the success data type from an API response Excludes ModelsProcessingError from the union type */
 type ExtractSuccessData<TResponse> = TResponse extends { data: infer TData }
@@ -56,6 +57,11 @@ async function fetchSection<TResponse extends { data: unknown; status: number }>
 ): Promise<ExtractSuccessData<TResponse>> {
   try {
     const { data, status } = await apiFetcher();
+    if (status >= 400) {
+      const message = typeof data === "object" && data !== null && "error" in data ? String(data.error) : String(data);
+      console.error(`API returned status ${status} for ${sectionName}:`, message);
+      error(status, message);
+    }
     // Check if the API returned a processing error
     if (typeof data === "object" && data !== null && "error" in data && data.error) {
       console.error(`API returned an error for ${sectionName}:`, data);
@@ -65,7 +71,7 @@ async function fetchSection<TResponse extends { data: unknown; status: number }>
   } catch (err) {
     if (isHttpError(err)) {
       console.error(`HTTP error fetching ${sectionName} section data:`, err);
-      error(err.status, err.body);
+      error(err.status, err.body.message);
     }
     console.error(`Error fetching ${sectionName} section data:`, err);
     error(500, `Failed to fetch ${sectionName} section data`);
@@ -128,24 +134,32 @@ export const resolveUuidByUsername = query(ResolveUuidByUsernameParams, async ({
 });
 
 /** Resolve a UUID to a username */
-export const resolveUsernameByUuid = prerender(ResolveUsernameByUuidParams, async ({ uuid }) => {
-  return fetchSection(APIEndpointName.USERNAME, () => resolveUsernameByUuidRequest(uuid));
-});
+export const resolveUsernameByUuid = prerender(
+  ResolveUsernameByUuidParams.extend({ version: z.string() }),
+  async ({ uuid }) => fetchSection(APIEndpointName.USERNAME, () => resolveUsernameByUuidRequest(uuid)),
+  { dynamic: true }
+);
 
-/** Fetch resource packs */
-export const listResourcePacks = prerender(async () => {
-  return fetchSection(APIEndpointName.RESOURCEPACK, () => listResourcePacksRequest());
-});
+/** Give each build its own static catalog URL without changing the app's commit version. */
+export const listResourcePacks = prerender(
+  z.string(),
+  async (_version) => fetchSection(APIEndpointName.RESOURCEPACK, () => listResourcePacksRequest()),
+  { dynamic: true, inputs: () => [__PRERENDER_VERSION__] }
+);
 
 /** Fetch stats list */
-export const getAllStats = prerender(async () => {
-  return fetchSection(APIEndpointName.STATS, () => getStatsConstantsRequest());
-});
+export const getAllStats = prerender(
+  z.string(),
+  async (_version) => fetchSection(APIEndpointName.STATS, () => getStatsConstantsRequest()),
+  { dynamic: true, inputs: () => [__PRERENDER_VERSION__] }
+);
 
 /** Fetch max-level enchantment lore strings */
-export const listEnchantments = prerender(async () => {
-  return fetchSection(APIEndpointName.ENCHANTMENTS, () => listEnchantmentsRequest());
-});
+export const listEnchantments = prerender(
+  z.string(),
+  async (_version) => fetchSection(APIEndpointName.ENCHANTMENTS, () => listEnchantmentsRequest()),
+  { dynamic: true, inputs: () => [__PRERENDER_VERSION__] }
+);
 
 /** Fetch the source information for the currently running backend service. */
 export const getSourceInfo = query(async (): Promise<ModelsSourceInfo | null> => {

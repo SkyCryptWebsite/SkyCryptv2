@@ -1,5 +1,5 @@
-import { renderLore } from "$lib/shared/helper";
 import { afterEach, beforeEach, describe, it, vi } from "vitest";
+import { renderLore } from "#lib/shared/helper.js";
 
 vi.mock("$ctx", () => ({
   getEnchantmentsContext: () => ({ current: [] })

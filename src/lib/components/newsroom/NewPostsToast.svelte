@@ -1,6 +1,5 @@
 <script lang="ts">
   import { getNewsroomNotifications } from "$ctx";
-  import { clientLocale } from "$lib/hooks/client-locale.svelte";
   import TypeBadge from "$src/lib/components/newsroom/TypeBadge.svelte";
   import type { Post } from "$types";
   import { Badge } from "$ui/badge";
@@ -8,6 +7,7 @@
   import ImageIcon from "@lucide/svelte/icons/image";
   import Newspaper from "@lucide/svelte/icons/newspaper";
   import { Avatar } from "bits-ui";
+  import { clientLocale } from "#lib/hooks/client-locale.svelte.js";
 
   interface Props {
     posts: Post[];
@@ -65,7 +65,7 @@
           height={thumb.height}
           loading="lazy"
           class="size-full object-cover" />
-        <Avatar.Fallback class="bg-foretext-foreground/10 flex size-full items-center justify-center">
+        <Avatar.Fallback class="flex size-full items-center justify-center bg-foreground/10">
           <ImageIcon class="size-5" aria-label="Image failed to load" />
         </Avatar.Fallback>
         <div

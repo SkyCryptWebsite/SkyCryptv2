@@ -1,5 +1,81 @@
 # Changelog
 
+## 4.3.0-beta.1
+
+### Patch Changes
+
+- Feat: remove Sentry _[`6b255d1`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/6b255d172e7f142fe341fcef62c4cee04f2ff2cc) [@DarthGigi](https://github.com/DarthGigi)_
+
+## 4.3.0-beta.0
+
+### Minor Changes
+
+- Feat: migrate to sveltekit v3 _[`17d5428`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/17d542800a6fde71b91fb0e11655df2c0262d95b) [@DarthGigi](https://github.com/DarthGigi)_
+- Store Discord username, primary guild, and avatar, banner, and avatar decoration hashes in an application-owned table, refresh them after successful Discord sign-in, and expose them through the custom session. _[`4468767`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/4468767b8434af2c7737b8d18d1883640db05d1b) [@DarthGigi](https://github.com/DarthGigi)_
+- Complete the dashboard with account linking, profile and session settings, and Patreon membership details. Move dashboard loading and membership verification to authenticated remote functions. _[`4468767`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/4468767b8434af2c7737b8d18d1883640db05d1b) [@DarthGigi](https://github.com/DarthGigi)_
+
+  Refine dashboard navigation, account connections, donator benefit previews, and mobile session settings.
+
+- Store Minecraft accounts returned by MC-ID separately from authentication accounts. Sync UUIDs, usernames, and primary-account status after linking, and add a dashboard sync action with token refresh and reconnect support. _[`4468767`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/4468767b8434af2c7737b8d18d1883640db05d1b) [@DarthGigi](https://github.com/DarthGigi)_
+- Let verified Minecraft accounts choose and save permanent profile emojis from Patreon support or existing UUID grants. Add colored heart selection, a searchable emoji picker with skin tones, custom emoji validation, profile previews, and emoji display on stats pages. Refresh the donator perks page, correct donation amounts to USD, automatically check support after linking Patreon, and store the verification countdown in localStorage while enforcing the rate limit in server memory. _[`4468767`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/4468767b8434af2c7737b8d18d1883640db05d1b) [@DarthGigi](https://github.com/DarthGigi)_
+- Remove profile editing from settings, improve the active sessions list, and add personal data export and account deletion. _[`4468767`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/4468767b8434af2c7737b8d18d1883640db05d1b) [@DarthGigi](https://github.com/DarthGigi)_
+- Add an avatar and account menu to the dashboard sidebar footer with account settings and sign-out actions. _[`4468767`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/4468767b8434af2c7737b8d18d1883640db05d1b) [@DarthGigi](https://github.com/DarthGigi)_
+
+### Patch Changes
+
+- Feat: migrate to sentry v11 _[`79e390c`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/79e390ceb1d9adb9b73e4367cac961fc24879c2e) [@DarthGigi](https://github.com/DarthGigi)_
+- Render emojis progressively and cache search terms to reduce emoji picker opening and search work while preserving substring search and allowed emoji restrictions. _[`4468767`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/4468767b8434af2c7737b8d18d1883640db05d1b) [@DarthGigi](https://github.com/DarthGigi)_
+
+  Initialize the profile emoji picker inside its popover so the first emoji is highlighted and its footer preview appears when opening.
+
+- Validate profile emoji inputs in the server save helper and check stored entitlement levels before displaying emojis. Reject unsupported entitlement levels. _[`4468767`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/4468767b8434af2c7737b8d18d1883640db05d1b) [@DarthGigi](https://github.com/DarthGigi)_
+
+## 4.2.0
+
+### Minor Changes
+
+- Feat: redesign discord embeds _[`#352`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/pull/352) [`9fdabac`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/9fdabace1d71cfdc3dbab5f2cf7a1c685ceec8e3) [@DarthGigi](https://github.com/DarthGigi)_
+
+## 4.2.0-beta.0
+
+### Minor Changes
+
+- Feat: redesign discord embeds _[`9fdabac`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/9fdabace1d71cfdc3dbab5f2cf7a1c685ceec8e3) [@DarthGigi](https://github.com/DarthGigi)_
+
+## 4.1.1
+
+### Patch Changes
+
+- Use the player's rank color for Discord component embeds, preferring the plus color and falling back to the default preview color when no valid rank color is available. _[`#349`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/pull/349) [`c027c31`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/c027c31cc48c2f260004d4d0f7dc032063c3af25) [@DarthGigi](https://github.com/DarthGigi)_
+
+## 4.1.1-beta.0
+
+### Patch Changes
+
+- Use the player's rank color for Discord component embeds, preferring the plus color and falling back to the default preview color when no valid rank color is available. _[`c027c31`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/c027c31cc48c2f260004d4d0f7dc032063c3af25) [@DarthGigi](https://github.com/DarthGigi)_
+
+## 4.1.0
+
+### Minor Changes
+
+- Use the new component embeds for discord embeds _[`#347`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/pull/347) [`6ff47f5`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/6ff47f5bf899bfacf9e4a384ac1038c83022fd0d) [@DarthGigi](https://github.com/DarthGigi)_
+
+### Patch Changes
+
+- Version prerendered endpoint URLs per build so updated resource packs and other static data appear without clearing browser caches. Preserve saved pack preferences and the commit-based app version, and show the separate prerender version in About. _[`#347`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/pull/347) [`93f5414`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/93f541482372b322ceb5246b29842068fc14ec3c) [@DarthGigi](https://github.com/DarthGigi)_
+
+## 4.1.0-beta.1
+
+### Patch Changes
+
+- Version prerendered endpoint URLs per build so updated resource packs and other static data appear without clearing browser caches. Preserve saved pack preferences and the commit-based app version, and show the separate prerender version in About. _[`93f5414`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/93f541482372b322ceb5246b29842068fc14ec3c) [@DarthGigi](https://github.com/DarthGigi)_
+
+## 4.1.0-beta.0
+
+### Minor Changes
+
+- Use the new component embeds for discord embeds _[`6ff47f5`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/6ff47f5bf899bfacf9e4a384ac1038c83022fd0d) [@DarthGigi](https://github.com/DarthGigi)_
+
 ## 4.0.0
 
 ### Major Changes

@@ -1,15 +1,15 @@
 <script lang="ts">
   import { getCombinedContext } from "$ctx";
-  import { Chip, SearchTabs } from "$lib/components/misc";
-  import { Section } from "$lib/components/sections";
-  import { AdditionStat } from "$lib/components/stats";
-  import { calculatePercentage } from "$lib/shared/helper";
-  import { cn } from "$lib/shared/utils";
   import EmptyStat from "$src/lib/components/EmptyStat.svelte";
   import * as Avatar from "$ui/avatar";
   import * as Item from "$ui/item";
   import BotIcon from "@lucide/svelte/icons/bot";
   import ExternalLinkIcon from "@lucide/svelte/icons/external-link";
+  import { Chip, SearchTabs } from "#lib/components/misc/index.js";
+  import { Section } from "#lib/components/sections/index.js";
+  import { AdditionStat } from "#lib/components/stats/index.js";
+  import { calculatePercentage } from "#lib/shared/helper.js";
+  import { cn } from "#lib/shared/utils.js";
 
   let { order }: { order: number } = $props();
 
@@ -34,7 +34,7 @@
   <div class="contents space-y-4">
     <Item.Root
       variant="outline"
-      class="hover:interact-95 mx-auto w-fit rounded-full duration-150 ease-out [a]:transition-[scale,background-color] [a]:hover:bg-foreground/10">
+      class="mx-auto w-fit rounded-full duration-150 ease-out interact:scale-95 [a]:transition-[scale,background-color] [a]:hover:bg-foreground/10">
       {#snippet child({ props })}
         <a href="https://minionah.com/" target="_blank" {...props}>
           <Item.Media>

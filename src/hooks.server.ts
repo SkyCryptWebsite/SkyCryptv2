@@ -1,12 +1,11 @@
-import { building } from "$app/environment";
-import { env as envPublic } from "$env/dynamic/public";
-import { auth } from "$lib/server/auth";
-import { UserRole } from "$lib/shared/roles";
+import { building } from "$app/env";
+import { PUBLIC_CMS_URL } from "$app/env/public";
 import { runMigrations } from "$src/lib/server/db/migrate";
-import { handleErrorWithSentry, sentryHandle } from "@sentry/sveltekit";
-import { redirect, type Handle, type ServerInit } from "@sveltejs/kit";
-import { sequence } from "@sveltejs/kit/hooks";
+import { redirect } from "@sveltejs/kit";
+import { sequence, type Handle, type ServerInit } from "@sveltejs/kit/hooks";
 import { svelteKitHandler } from "better-auth/svelte-kit";
+import { auth } from "#lib/server/auth.js";
+import { UserRole } from "#lib/shared/roles.js";
 
 const protectedRouteGroupName = "(protected)";
 const protectedAdminRouteGroupName = "(admin)";
@@ -18,6 +17,12 @@ export const init: ServerInit = async () => {
     return;
   }
   await runMigrations();
+
+  // Node 24's default --unhandled-rejections=throw kills the process on any orphaned
+  // promise rejection (e.g. losing-side promises in Promise.all). Log it instead.
+  process.on("unhandledRejection", (reason) => {
+    console.error("Unhandled promise rejection:", reason);
+  });
 };
 
 const headersHandler = (async ({ event, resolve }) => {
@@ -38,7 +43,7 @@ const headersHandler = (async ({ event, resolve }) => {
   // everything else stays frame-locked.
   const isNewsroomPreview = url.pathname.startsWith("/newsroom/") && url.searchParams.get("preview") === "1";
   if (isNewsroomPreview) {
-    const cms = envPublic.PUBLIC_CMS_URL?.trim();
+    const cms = PUBLIC_CMS_URL?.trim();
     response.headers.append("Content-Security-Policy", `frame-ancestors 'self'${cms ? ` ${cms}` : ""}`);
   } else {
     response.headers.set("X-Frame-Options", "DENY");
@@ -65,9 +70,6 @@ const headersHandler = (async ({ event, resolve }) => {
 
   return response;
 }) satisfies Handle;
-
-// If you have a custom error handler, pass it to `handleErrorWithSentry`
-export const handleError = handleErrorWithSentry();
 
 const betterAuthHandler: Handle = async ({ event, resolve }) => {
   const session = await auth.api.getSession({ headers: event.request.headers });
@@ -104,5 +106,4 @@ const protectedHandler = (async ({ event, resolve }) => {
   return resolve(event);
 }) satisfies Handle;
 
-// If you have custom handlers, make sure to place them after `sentryHandle()` in the `sequence` function.
-export const handle = sequence(sentryHandle(), betterAuthHandler, protectedHandler, headersHandler) satisfies Handle;
+export const handle = sequence(betterAuthHandler, protectedHandler, headersHandler) satisfies Handle;

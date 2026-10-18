@@ -1,25 +1,27 @@
 <script lang="ts">
-  import { afterNavigate, replaceState } from "$app/navigation";
+  import { afterNavigate, goto } from "$app/navigation";
   import { resolve } from "$app/paths";
   import { page } from "$app/state";
   import { getInternalState, getPreferences } from "$ctx";
-  import { SEO } from "$lib/components/misc";
-  import { Notice } from "$lib/components/notices";
-  import TooltipSetup from "$lib/components/tooltip/TooltipSetup.svelte";
-  import Main from "$lib/layouts/stats/Main.svelte";
-  import type { SectionName } from "$lib/sections/types";
-  import type { ModelsStatsOutput } from "$lib/shared/api/orval-generated";
+  import LoaderCircle from "@lucide/svelte/icons/loader-circle";
+  import { SEO } from "#lib/components/misc/index.js";
+  import { Notice } from "#lib/components/notices/index.js";
+  import TooltipSetup from "#lib/components/tooltip/TooltipSetup.svelte";
+  import Main from "#lib/layouts/stats/Main.svelte";
+  import type { SectionName } from "#lib/sections/types.js";
+  import type { ModelsStatsOutput } from "#lib/shared/api/orval-generated.js";
   import {
     getAllStats,
     getCombinedProfileStats,
     getProfileStats,
     getSelectedProfileStats,
     listEnchantments
-  } from "$lib/shared/api/skycrypt-api.remote";
-  import LoaderCircle from "@lucide/svelte/icons/loader-circle";
+  } from "#lib/shared/api/skycrypt-api.remote.js";
+  import { createDiscordEmbed, serializeDiscordEmbed } from "#lib/shared/discordEmbed.js";
   import { type PageServerData } from "./$types";
 
   const { data }: { data: PageServerData } = $props();
+  const discordEmbed = $derived(createDiscordEmbed(data.embed));
 
   const preferences = getPreferences();
   const internalState = getInternalState();
@@ -29,8 +31,8 @@
   const profileViewPromise = $derived(loadProfileView(ign, profileId));
 
   async function loadProfileView(uuid: string, requestedProfileId: string | undefined) {
-    const allStatsPromise = getAllStats();
-    const enchantmentsPromise = listEnchantments();
+    const allStatsPromise = getAllStats(__PRERENDER_VERSION__);
+    const enchantmentsPromise = listEnchantments(__PRERENDER_VERSION__);
     const profile = requestedProfileId
       ? await getProfileStats({ uuid, profileId: requestedProfileId })
       : await getSelectedProfileStats({ uuid });
@@ -57,7 +59,7 @@
     });
 
     if (page.url.pathname !== wanted) {
-      replaceState(wanted, page.state);
+      goto(wanted, { shallow: true, replace: true, state: page.state });
     }
   }
 
@@ -71,7 +73,9 @@
     }
   });
 
-  afterNavigate(async ({ from, to, willUnload }) => {
+  afterNavigate(async ({ from, to, willUnload, shallow, type }) => {
+    if (shallow && type === "goto") return;
+
     if (from && to) {
       const { params: fromParams } = from;
       const { params: toParams } = to;
@@ -92,6 +96,13 @@
     }
   });
 </script>
+
+<svelte:head>
+  {#if data.embed.username}
+    <svelte:element this={"script"} id="discord:component-embed" type="application/json">
+      {serializeDiscordEmbed(discordEmbed)}</svelte:element>
+  {/if}
+</svelte:head>
 
 {#if data.embed}
   <SEO embedData={data.embed} />

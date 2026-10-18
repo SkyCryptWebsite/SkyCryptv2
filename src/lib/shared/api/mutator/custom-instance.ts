@@ -1,9 +1,7 @@
+import { building } from "$app/env";
+import { SERVER_API_TOKEN } from "$app/env/private";
+import { PUBLIC_SERVER_API_URL } from "$app/env/public";
 import { getRequestEvent } from "$app/server";
-import { env as envPrivate } from "$env/dynamic/private";
-import { env as envPublic } from "$env/dynamic/public";
-
-const { PUBLIC_SERVER_API_URL } = envPublic;
-const { SERVER_API_TOKEN } = envPrivate;
 
 // NOTE: Supports cases where `content-type` is other than `json`
 const getBody = <T>(c: Response | Request): Promise<T> => {
@@ -53,11 +51,15 @@ const getHeaders = (headers?: HeadersInit): HeadersInit => {
 
 export const customFetch = async <T>(url: string, options: RequestInit): Promise<T> => {
   let fetchFunction = fetch;
-  try {
-    const event = getRequestEvent();
-    fetchFunction = event.fetch;
-  } catch {
-    // Ignore this, we just won't have access to the request for this call
+  // During prerender, event.fetch resolves URLs on ORIGIN's host through the app's own router, so the
+  // backend (served on that same host) is never reached and every call 404s. Use the global fetch instead.
+  if (!building) {
+    try {
+      const event = getRequestEvent();
+      fetchFunction = event.fetch;
+    } catch {
+      // Ignore this, we just won't have access to the request for this call
+    }
   }
 
   const requestUrl = getUrl(url);
@@ -68,8 +70,29 @@ export const customFetch = async <T>(url: string, options: RequestInit): Promise
     headers: requestHeaders
   };
 
+  const method = options.method ?? "GET";
+  const startedAt = Date.now();
+  if (building) {
+    const sentHeaders = Object.fromEntries(new Headers(requestHeaders).entries());
+    if (sentHeaders["x-api-token"]) sentHeaders["x-api-token"] = `<redacted len=${sentHeaders["x-api-token"].length}>`;
+    delete sentHeaders.cookie;
+    console.info(
+      `[prerender-fetch] -> ${method} ${requestUrl} (PUBLIC_SERVER_API_URL=${PUBLIC_SERVER_API_URL}, ` +
+        `tokenSet=${SERVER_API_TOKEN.length > 0}, eventFetch=${fetchFunction !== fetch}) headers=${JSON.stringify(sentHeaders)}`
+    );
+  }
+
   const response = await fetchFunction(requestUrl, requestInit);
   const data = await getBody<T>(response);
+
+  if (building) {
+    const preview = typeof data === "string" ? data : JSON.stringify(data);
+    console.info(
+      `[prerender-fetch] <- ${response.status} ${method} ${response.url || requestUrl} in ${Date.now() - startedAt}ms ` +
+        `redirected=${response.redirected} content-type=${response.headers.get("content-type")} ` +
+        `body=${preview.slice(0, 300)}`
+    );
+  }
 
   return { status: response.status, data, headers: response.headers } as T;
 };

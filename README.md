@@ -4,7 +4,7 @@
     <img alt="SkyCrypt 🍣" height="96px" src="static/img/logo.avif">
   </picture>
 </p>
-<h1 align="center">A Hypixel Skyblock Profile Viewer</h1>
+<h1 align="center">A Hypixel SkyBlock Profile Viewer</h1>
 
 <p align='center'>
   <a href="https://www.patreon.com/shiiyu"><img alt="Sponsor" src="https://img.shields.io/badge/sponsor-30363D?style=for-the-badge&logo=GitHub-Sponsors&logoColor=#white" /></a>

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { browser } from "$app/environment";
+  import { browser } from "$app/env";
   import {
     CombinedContext,
     AllStatsContext,
@@ -15,15 +15,6 @@
     setEnchantmentsContext,
     setProfileContext
   } from "$ctx";
-  import { ContainedItemsGrid, ItemContent } from "$lib/components/item";
-  import { Navbar } from "$lib/components/misc";
-  import Skin3D from "$lib/components/misc/Skin3D.svelte";
-  import AdditionalStats from "$lib/layouts/stats/AdditionalStats.svelte";
-  import PlayerProfile from "$lib/layouts/stats/PlayerProfile.svelte";
-  import Skills from "$lib/layouts/stats/Skills.svelte";
-  import Stats from "$lib/layouts/stats/Stats.svelte";
-  import Sections from "$lib/sections/Sections.svelte";
-  import type { ModelsCombinedOutput, ModelsStatData, ModelsStatsOutput, listEnchantmentsResponse } from "$lib/shared/api/orval-generated";
   import * as Dialog from "$ui/dialog";
   import * as Drawer from "$ui/drawer";
   import Image from "@lucide/svelte/icons/image";
@@ -32,6 +23,20 @@
   import { untrack } from "svelte";
   import { cubicOut } from "svelte/easing";
   import { fade } from "svelte/transition";
+  import { ContainedItemsGrid, ItemContent } from "#lib/components/item/index.js";
+  import { Navbar } from "#lib/components/misc/index.js";
+  import Skin3D from "#lib/components/misc/Skin3D.svelte";
+  import AdditionalStats from "#lib/layouts/stats/AdditionalStats.svelte";
+  import PlayerProfile from "#lib/layouts/stats/PlayerProfile.svelte";
+  import Skills from "#lib/layouts/stats/Skills.svelte";
+  import Stats from "#lib/layouts/stats/Stats.svelte";
+  import Sections from "#lib/sections/Sections.svelte";
+  import type {
+    ModelsCombinedOutput,
+    ModelsStatData,
+    ModelsStatsOutput,
+    listEnchantmentsResponse
+  } from "#lib/shared/api/orval-generated.js";
 
   const {
     data: ctx,
@@ -87,7 +92,7 @@
         recentSearches.current[existingIndex] = {
           ...recentSearches.current[existingIndex],
           ign: username,
-          uuid: uuid
+          uuid
         };
       }
     });
@@ -150,7 +155,7 @@
                     {/snippet}
                   </Avatar.Root>
                 {:else if browser && innerWidth >= 1024}
-                   {#await import('$lib/components/misc/Skin3D.svelte') then { default: Skin3D }}
+                   {#await import('#lib/components/misc/Skin3D.svelte') then { default: Skin3D }}
                     <Skin3D class="h-full" />
                   {/await}
                 {/if}

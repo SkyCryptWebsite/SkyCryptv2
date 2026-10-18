@@ -1,7 +1,7 @@
-import { listPosts } from "$lib/shared/api/cms-api.remote";
 import { getContributors } from "$routes/contributors.remote";
 import type { RequestHandler } from "@sveltejs/kit";
 import * as sitemap from "super-sitemap/sveltekit";
+import { listPosts } from "#lib/shared/api/cms-api.remote.js";
 
 const BASE_URL = "https://sky.shiiyu.moe";
 const postSlugs = new Set<string>();
@@ -9,7 +9,7 @@ const statsPaths = new Set<string>();
 
 export const GET: RequestHandler = async () => {
   try {
-    const contributors = await getContributors();
+    const contributors = await getContributors(__PRERENDER_VERSION__);
 
     for (const contributor of contributors) {
       const ign = contributor.name ?? contributor.id;

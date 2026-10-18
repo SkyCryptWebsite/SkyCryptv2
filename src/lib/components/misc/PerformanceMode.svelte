@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { browser } from "$app/environment";
+  import { browser } from "$app/env";
   import { getPreferences } from "$ctx";
   import { onMount } from "svelte";
   import { toast } from "svelte-sonner";
@@ -143,4 +143,4 @@
   });
 </script>
 
-<svelte:document on:visibilitychange={handleVisibilityChange} />
+<svelte:document on:visibilitychange={handleVisibilityChange}></svelte:document>

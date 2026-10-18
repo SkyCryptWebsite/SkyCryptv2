@@ -1,6 +1,6 @@
-import { mcTextToHTML } from "$lib/shared/mc-text";
-import { colorCodes, extras } from "$lib/shared/mc-text/parser/styleLibrary";
 import { describe, it, vi } from "vitest";
+import { mcTextToHTML } from "#lib/shared/mc-text/index.js";
+import { colorCodes, extras } from "#lib/shared/mc-text/parser/styleLibrary.js";
 
 vi.mock("$ctx", () => ({
   getEnchantmentsContext: () => ({ current: ["Aqua Affinity I"] })

@@ -1,10 +1,10 @@
-import { browser } from "$app/environment";
+import { browser } from "$app/env";
 import { loadOldStorageKey } from "$ctx/utils";
-import { sections } from "$lib/sections/constants";
-import type { SectionID } from "$lib/sections/types";
-import { isGraphicsAccelerationAvailable } from "$lib/shared/graphics-acceleration";
 import { PersistedState } from "runed";
 import { createContext, untrack } from "svelte";
+import { sections } from "#lib/sections/constants.js";
+import type { SectionID } from "#lib/sections/types.js";
+import { isGraphicsAccelerationAvailable } from "#lib/shared/graphics-acceleration.js";
 
 interface PreferencesData {
   sectionOrder: SectionID[];

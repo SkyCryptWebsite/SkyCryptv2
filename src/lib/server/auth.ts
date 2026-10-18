@@ -1,35 +1,39 @@
-import { building, dev } from "$app/environment";
-import { getRequestEvent } from "$app/server";
-import { env as envPrivate } from "$env/dynamic/private";
-import { env as envPublic } from "$env/dynamic/public";
-import { db } from "$lib/server/db";
-import { apiKey } from "@better-auth/api-key";
-import type { BetterAuthPlugin } from "better-auth";
-import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import { betterAuth } from "better-auth/minimal";
-import { admin, genericOAuth, patreon } from "better-auth/plugins";
-import { sveltekitCookies } from "better-auth/svelte-kit";
-
-const {
+import { building, dev } from "$app/env";
+import {
+  ADDRESS_HEADER,
   BETTER_AUTH_SECRET,
-  ORIGIN,
   DISCORD_CLIENT_ID,
   DISCORD_CLIENT_SECRET,
-  ADDRESS_HEADER,
+  DISCORD_WHITELIST,
   MC_ID_CLIENT_ID,
   MC_ID_CLIENT_SECRET,
+  ORIGIN,
   PATREON_CLIENT_ID,
   PATREON_CLIENT_SECRET,
-  DISCORD_WHITELIST
-} = envPrivate;
-const { PUBLIC_BASE_URL } = envPublic;
+  TURNSTILE_SECRET_KEY
+} from "$app/env/private";
+import { PUBLIC_BASE_URL } from "$app/env/public";
+import { getRequestEvent } from "$app/server";
+import { apiKey } from "@better-auth/api-key";
+import type { BetterAuthOptions, BetterAuthPlugin } from "better-auth";
+import { drizzleAdapter } from "better-auth/adapters/drizzle";
+import { createAuthMiddleware } from "better-auth/api";
+import { betterAuth } from "better-auth/minimal";
+import { admin, customSession, genericOAuth, patreon } from "better-auth/plugins";
+import { captcha } from "better-auth/plugins";
+import { sveltekitCookies } from "better-auth/svelte-kit";
+import { db } from "#lib/server/db/index.js";
+import { getDiscordProfile, parseDiscordProfile, syncDiscordProfile } from "#lib/server/discord-profile.js";
+import {
+  fetchMcIdProfile,
+  getStoredMinecraftAccounts,
+  parseMcIdProfile,
+  storeMinecraftAccounts,
+  type McIdLink
+} from "#lib/server/minecraft-accounts.js";
 
 const BUILD_TIME_AUTH_SECRET = "build-time-placeholder-secret-for-sveltekit-build";
 const BUILD_TIME_BASE_URL = "http://localhost:3000";
-
-// Uncomment when running `pn auth:schema`
-// const building = false; // Placeholder since we can't import from $app/environment in this file
-// const dev = false; // Placeholder since we can't import from $app/environment in this file
 
 function getBetterAuthSecret() {
   if (BETTER_AUTH_SECRET) return BETTER_AUTH_SECRET;
@@ -55,6 +59,36 @@ const getWhitelist = () => {
 
 const baseURL = getBaseURL();
 
+const mcIdOAuthConfig =
+  MC_ID_CLIENT_ID && MC_ID_CLIENT_SECRET
+    ? [
+        {
+          providerId: "mc-id",
+          clientId: MC_ID_CLIENT_ID,
+          clientSecret: MC_ID_CLIENT_SECRET,
+          tokenEndpointAuth: { method: "client_secret_basic" as const },
+          discoveryUrl: "https://mc-id.com/.well-known/openid-configuration",
+          scopes: ["openid", "profile", "connections", "offline_access"],
+          // Accounts live in userinfo; an ID token alone may omit them.
+          getUserInfo: async ({ accessToken }: { accessToken?: string }) => {
+            if (!accessToken) return null;
+            const profile = await fetchMcIdProfile(accessToken);
+            return profile
+              ? { ...profile, name: profile.name ?? "", emailVerified: profile.email_verified ?? false }
+              : null;
+          },
+          mapProfileToUser: (profile: Parameters<typeof parseMcIdProfile>[0]) => {
+            const minecraft = parseMcIdProfile(profile);
+            if (minecraft) getRequestEvent().locals.pendingMcIdProfile = minecraft;
+            return {};
+          },
+          pkce: true,
+          disableSignUp: true,
+          disableImplicitSignUp: true
+        }
+      ]
+    : [];
+
 // Dynamically import the openAPI plugin only in development to avoid including it in the production bundle
 const openAPIPlugin: BetterAuthPlugin | null = dev
   ? await (async () => {
@@ -63,12 +97,32 @@ const openAPIPlugin: BetterAuthPlugin | null = dev
     })()
   : null;
 
-export const auth = betterAuth({
+// Account hooks run after Better Auth has validated ownership and persisted the link.
+async function queueMinecraftSync(link: McIdLink) {
+  if (link.providerId !== "mc-id") return;
+  const { locals } = getRequestEvent();
+  if (locals.pendingMcIdProfile?.sub === link.accountId) {
+    locals.pendingMcIdLink = {
+      id: link.id,
+      accountId: link.accountId,
+      userId: link.userId,
+      providerId: link.providerId
+    };
+  }
+}
+
+const options = {
   appName: "SkyCrypt",
   baseURL,
   secret: getBetterAuthSecret(),
   database: drizzleAdapter(db, { provider: "pg" }),
   emailAndPassword: { enabled: false },
+  account: {
+    accountLinking: {
+      trustedProviders: ["patreon", "mc-id"],
+      allowDifferentEmails: true
+    }
+  },
   socialProviders: {
     discord: {
       clientId: DISCORD_CLIENT_ID,
@@ -78,13 +132,50 @@ export const auth = betterAuth({
       scope: ["identify"],
       enabled: true,
       prompt: "consent",
-      mapProfileToUser: (profile) => ({
-        email: profile.id + "@discord.placeholder.local"
-      })
+      overrideUserInfoOnSignIn: true,
+      mapProfileToUser: (profile) => {
+        const assets = parseDiscordProfile(profile);
+        if (assets) getRequestEvent().locals.pendingDiscordProfile = assets;
+        return {
+          email: profile.id + "@discord.placeholder.invalid"
+        };
+      }
     }
+  },
+  hooks: {
+    after: createAuthMiddleware(async (ctx) => {
+      if (!ctx.path.startsWith("/callback/")) return;
+      const { locals } = getRequestEvent();
+      const mcProfile = locals.pendingMcIdProfile;
+      const mcLink = locals.pendingMcIdLink;
+      delete locals.pendingMcIdProfile;
+      delete locals.pendingMcIdLink;
+      if (mcProfile && mcLink) {
+        try {
+          await storeMinecraftAccounts(mcLink, mcProfile);
+        } catch (error) {
+          console.error("Unable to sync linked Minecraft accounts", error);
+        }
+      }
+      if (!ctx.context.newSession) return;
+      const assets = locals.pendingDiscordProfile;
+      delete locals.pendingDiscordProfile;
+      if (!assets) return;
+
+      try {
+        await syncDiscordProfile(ctx.context.newSession.user.id, assets);
+      } catch (error) {
+        // Cosmetic data must not turn a successful sign-in into an error.
+        console.error("Unable to sync Discord profile assets", error);
+      }
+    })
   },
   // Better Auth lifecycle database hooks
   databaseHooks: {
+    account: {
+      create: { after: queueMinecraftSync },
+      update: { after: queueMinecraftSync }
+    },
     user: {
       create: {
         before: async (user) => {
@@ -124,33 +215,56 @@ export const auth = betterAuth({
   },
   plugins: [
     apiKey({
-      defaultPrefix: "sky_"
+      defaultPrefix: "skycrypt_",
+      enableMetadata: true,
+      requireName: true,
+      rateLimit: {
+        enabled: true,
+        maxRequests: 300,
+        timeWindow: 1000 * 60 * 5 // 5 minutes
+      },
+      startingCharactersConfig: {
+        charactersLength: 15,
+        shouldStore: true
+      }
     }),
     admin(),
     genericOAuth({
       config: [
-        {
-          providerId: "mc-id",
-          clientId: MC_ID_CLIENT_ID,
-          clientSecret: MC_ID_CLIENT_SECRET,
-          discoveryUrl: "https://mc-id.com/.well-known/openid-configuration",
-          scopes: ["profile", "connections"],
-          pkce: true,
-          disableSignUp: true,
-          disableImplicitSignUp: true,
-          requireIssuerValidation: true
-        },
+        ...mcIdOAuthConfig,
         patreon({
           clientId: PATREON_CLIENT_ID,
           clientSecret: PATREON_CLIENT_SECRET,
           pkce: true,
           disableSignUp: true,
           disableImplicitSignUp: true,
-          scopes: ["identity.memberships"]
+          scopes: ["identity", "identity[email]"]
         })
       ]
     }),
-    ...(openAPIPlugin ? [openAPIPlugin] : []), // Conditionally include the openAPI plugin only in development
+    captcha({
+      provider: "cloudflare-turnstile",
+      secretKey: TURNSTILE_SECRET_KEY,
+      endpoints: ["/sign-in/social", "/api-key/create"]
+    }),
+    ...(openAPIPlugin ? [openAPIPlugin] : []) // Conditionally include the openAPI plugin only in development
+  ]
+} satisfies BetterAuthOptions;
+
+export const auth = betterAuth({
+  ...options,
+  plugins: [
+    ...(options.plugins ?? []),
+    customSession(async ({ user, session }) => {
+      const [discordProfile, minecraftAccounts] = await Promise.all([
+        getDiscordProfile(user.id),
+        getStoredMinecraftAccounts(user.id)
+      ]);
+      return {
+        user: { ...user, discordProfile, minecraftAccounts },
+        session
+      };
+    }, options),
     sveltekitCookies(getRequestEvent) // make sure this is the last plugin in the array
   ]
 });
