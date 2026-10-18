@@ -5,10 +5,13 @@
   import Sparkles from "@lucide/svelte/icons/sparkles";
   import type { ThemeModeName, ThemeV5 } from "#lib/shared/themes/schema.js";
 
-  let { workingTheme = $bindable(), editingMode } = $props<{
+  let {
+    workingTheme = $bindable(),
+    editingMode
+  }: {
     workingTheme: ThemeV5;
     editingMode: ThemeModeName;
-  }>();
+  } = $props();
 
   function ensureExtras() {
     workingTheme.modes[editingMode].extras ??= {};

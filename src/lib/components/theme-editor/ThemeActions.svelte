@@ -15,13 +15,13 @@
     onSave,
     handleNameChange,
     handleAuthorChange
-  } = $props<{
+  }: {
     workingTheme: ThemeV5;
     onReset: () => void;
     onSave: () => void;
     handleNameChange: (name: string) => void;
     handleAuthorChange: (author: string) => void;
-  }>();
+  } = $props();
 
   async function handleShare() {
     const url = await getThemeShareURL(workingTheme);
