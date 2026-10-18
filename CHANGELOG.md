@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.3.0-beta.2
+
+### Patch Changes
+
+- Load max-level enchantments from the backend constants API. _[`#345`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/pull/345) [`22b69c9`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/22b69c9714324955032928be83287ba66390a3bc) [@cataladev](https://github.com/cataladev)_
+
 ## 4.3.0-beta.1
 
 ### Patch Changes
