@@ -3,6 +3,8 @@
   import {
     CombinedContext,
     AllStatsContext,
+    EnchantmentsContext,
+    type Enchantments,
     getHoverContext,
     getInternalState,
     getPreferences,
@@ -11,6 +13,7 @@
     ProfileContext,
     setAllStatsContext,
     setCombinedContext,
+    setEnchantmentsContext,
     setProfileContext
   } from "$ctx";
   import * as Dialog from "$ui/dialog";
@@ -34,11 +37,13 @@
   const {
     data: ctx,
     allStats,
-    combined
+    combined,
+    enchantments
   }: {
     data: ModelsStatsOutput;
     allStats: ModelsStatData[];
     combined: ModelsCombinedOutput | null;
+    enchantments: Enchantments;
   } = $props();
 
   const isHover = getHoverContext();
@@ -60,9 +65,11 @@
   // Initialize the profile context
   const profileClass = new ProfileContext();
   const allStatsClass = new AllStatsContext();
+  const enchantmentsClass = new EnchantmentsContext();
   const combinedClass = new CombinedContext();
   setProfileContext(profileClass);
   setAllStatsContext(allStatsClass);
+  setEnchantmentsContext(enchantmentsClass);
   setCombinedContext(combinedClass);
   $effect.pre(() => {
     if (!ctx) return;
@@ -98,6 +105,10 @@
 
   $effect.pre(() => {
     allStatsClass.current = allStats ?? [];
+  });
+
+  $effect.pre(() => {
+    enchantmentsClass.current = enchantments ?? [];
   });
 </script>
 

@@ -1,3 +1,4 @@
+import { getEnchantmentsContext } from "$ctx";
 import { tz } from "@date-fns/tz";
 import { format } from "date-fns";
 import prettyMilliseconds from "pretty-ms";
@@ -5,6 +6,11 @@ import { RARITY_COLORS } from "#lib/shared/constants/rarities.js";
 import { mcTextToHTML } from "#lib/shared/mc-text/index.js";
 
 export { prettyMilliseconds as formatTime };
+
+/** Check whether an enchantment is at its maximum level according to the backend constants. */
+export function isMaxEnchantment(enchantment: string): boolean {
+  return getEnchantmentsContext().current.includes(enchantment);
+}
 
 /**
  * Formats a number using the compact notation (e.g., 1.2K, 3.4M).

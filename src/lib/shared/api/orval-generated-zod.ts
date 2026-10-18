@@ -2648,6 +2648,14 @@ export const GetCombinedProfileStatsResponse = zod.object({
 });
 
 /**
+ * Returns the lore strings for enchantments at their maximum level.
+ *
+ * @summary List max-level enchantments
+ */
+export const ListEnchantmentsResponseItem = zod.string();
+export const ListEnchantmentsResponse = zod.array(ListEnchantmentsResponseItem);
+
+/**
  * Returns toggleable resource packs sorted by descending priority for the recommended default order. The enabledPacks
  * cookie controls per-request rendering from highest to lowest priority and does not change this response order. A
  * missing preference uses the default order, while an explicit empty array uses vanilla textures only. The vanilla

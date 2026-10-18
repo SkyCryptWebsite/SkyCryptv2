@@ -27,6 +27,7 @@ import {
   getSelectedProfileEmbed as getSelectedProfileEmbedRequest,
   getSelectedProfileStats as getSelectedProfileStatsRequest,
   getSourceInfo as getSourceInfoRequest,
+  listEnchantments as listEnchantmentsRequest,
   listResourcePacks as listResourcePacksRequest,
   resolveUsernameByUuid as resolveUsernameByUuidRequest,
   resolveUuidByUsername as resolveUuidByUsernameRequest,
@@ -150,6 +151,13 @@ export const listResourcePacks = prerender(
 export const getAllStats = prerender(
   z.string(),
   async (_version) => fetchSection(APIEndpointName.STATS, () => getStatsConstantsRequest()),
+  { dynamic: true, inputs: () => [__PRERENDER_VERSION__] }
+);
+
+/** Fetch max-level enchantment lore strings */
+export const listEnchantments = prerender(
+  z.string(),
+  async (_version) => fetchSection(APIEndpointName.ENCHANTMENTS, () => listEnchantmentsRequest()),
   { dynamic: true, inputs: () => [__PRERENDER_VERSION__] }
 );
 

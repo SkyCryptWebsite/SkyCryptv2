@@ -20,6 +20,7 @@ export enum APIEndpointName {
   GARDEN = "Garden",
   EMBED = "Embed Data",
   RESOURCEPACK = "Resource Pack",
+  ENCHANTMENTS = "Enchantments",
   SEARCH = "Search",
   USERNAME = "Username"
 }

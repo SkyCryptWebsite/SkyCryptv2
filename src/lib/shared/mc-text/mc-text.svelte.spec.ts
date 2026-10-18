@@ -1,6 +1,10 @@
-import { describe, it } from "vitest";
+import { describe, it, vi } from "vitest";
 import { mcTextToHTML } from "#lib/shared/mc-text/index.js";
 import { colorCodes, extras } from "#lib/shared/mc-text/parser/styleLibrary.js";
+
+vi.mock("$ctx", () => ({
+  getEnchantmentsContext: () => ({ current: ["Aqua Affinity I"] })
+}));
 
 function sortedClasses(element: Element): string[] {
   return Array.from(element.classList).sort();

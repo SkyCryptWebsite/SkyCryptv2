@@ -1,6 +1,8 @@
 import { createContext } from "svelte";
+import type { z } from "zod";
 import type { IsHover } from "#lib/hooks/is-hover.svelte.js";
 import type { IsMobile } from "#lib/hooks/is-mobile.svelte.js";
+import type { ListEnchantmentsResponse } from "#lib/shared/api/orval-generated-zod.js";
 import type {
   ModelsCombinedOutput,
   ModelsMiscOutput,
@@ -9,6 +11,8 @@ import type {
   ModelsSkillsOutput,
   ModelsStatsOutput
 } from "#lib/shared/api/orval-generated.js";
+
+export type Enchantments = z.infer<typeof ListEnchantmentsResponse>;
 
 export class ProfileContext {
   #current: ModelsStatsOutput | null = $state(null);
@@ -30,6 +34,18 @@ export class AllStatsContext {
   }
 
   set current(value: ModelsStatData[]) {
+    this.#current = value;
+  }
+}
+
+export class EnchantmentsContext {
+  #current: Enchantments = $state([]);
+
+  get current() {
+    return this.#current;
+  }
+
+  set current(value: Enchantments) {
     this.#current = value;
   }
 }
@@ -84,6 +100,7 @@ export class SkillsContext {
 
 export const [getProfileContext, setProfileContext] = createContext<ProfileContext>();
 export const [getAllStatsContext, setAllStatsContext] = createContext<AllStatsContext>();
+export const [getEnchantmentsContext, setEnchantmentsContext] = createContext<EnchantmentsContext>();
 export const [getCombinedContext, setCombinedContext] = createContext<CombinedContext>();
 export const [getSkillsContext, setSkillsContext] = createContext<SkillsContext>();
 export const [getMiscContext, setMiscContext] = createContext<MiscContext>();

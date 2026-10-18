@@ -6,10 +6,13 @@
   import { MC_PALETTES, paletteNames } from "#lib/shared/themes/presets.js";
   import type { SkyCryptThemeExtras, ThemeModeName, ThemeV5 } from "#lib/shared/themes/schema.js";
 
-  let { workingTheme = $bindable(), editingMode } = $props<{
+  let {
+    workingTheme = $bindable(),
+    editingMode
+  }: {
     workingTheme: ThemeV5;
     editingMode: ThemeModeName;
-  }>();
+  } = $props();
 
   type McCode = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "a" | "b" | "c" | "d" | "e" | "f";
   type McPalette = (typeof paletteNames)[number];

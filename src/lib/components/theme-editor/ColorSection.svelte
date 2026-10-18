@@ -5,10 +5,13 @@
   import { readComputedThemeCssVars } from "#lib/shared/themes/computed-css-vars.js";
   import type { ShadcnThemeVarKey, ThemeModeName, ThemeV5 } from "#lib/shared/themes/schema.js";
 
-  let { workingTheme = $bindable(), editingMode } = $props<{
+  let {
+    workingTheme = $bindable(),
+    editingMode
+  }: {
     workingTheme: ThemeV5;
     editingMode: ThemeModeName;
-  }>();
+  } = $props();
 
   const GROUPS: { name: string; keys: ShadcnThemeVarKey[] }[] = [
     {
