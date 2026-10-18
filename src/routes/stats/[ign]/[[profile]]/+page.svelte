@@ -6,7 +6,6 @@
   import LoaderCircle from "@lucide/svelte/icons/loader-circle";
   import { SEO } from "#lib/components/misc/index.js";
   import { Notice } from "#lib/components/notices/index.js";
-  import TooltipSetup from "#lib/components/tooltip/TooltipSetup.svelte";
   import Main from "#lib/layouts/stats/Main.svelte";
   import type { SectionName } from "#lib/sections/types.js";
   import type { ModelsStatsOutput } from "#lib/shared/api/orval-generated.js";
@@ -139,5 +138,3 @@
     {/snippet}
   </svelte:boundary>
 {/key}
-
-<TooltipSetup />

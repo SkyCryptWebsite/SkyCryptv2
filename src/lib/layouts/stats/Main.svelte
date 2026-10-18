@@ -27,6 +27,7 @@
   import { ContainedItemsGrid, ItemContent } from "#lib/components/item/index.js";
   import { Navbar } from "#lib/components/misc/index.js";
   import Skin3D from "#lib/components/misc/Skin3D.svelte";
+  import TooltipSetup from "#lib/components/tooltip/TooltipSetup.svelte";
   import AdditionalStats from "#lib/layouts/stats/AdditionalStats.svelte";
   import PlayerProfile from "#lib/layouts/stats/PlayerProfile.svelte";
   import Skills from "#lib/layouts/stats/Skills.svelte";
@@ -281,6 +282,9 @@
     </Drawer.Content>
   </Drawer.Root>
 {/if}
+
+<!-- Inside Main so tooltip item content can read the stats contexts (e.g. enchantments) -->
+<TooltipSetup />
 
 {#if preferences.showGlint}
   <svg xmlns="http://www.w3.org/2000/svg" height="0" width="0" class="fixed">
