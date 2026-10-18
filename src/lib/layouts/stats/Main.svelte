@@ -4,6 +4,7 @@
     CombinedContext,
     AllStatsContext,
     EnchantmentsContext,
+    type Enchantments,
     getHoverContext,
     getInternalState,
     getPreferences,
@@ -31,12 +32,7 @@
   import Skills from "#lib/layouts/stats/Skills.svelte";
   import Stats from "#lib/layouts/stats/Stats.svelte";
   import Sections from "#lib/sections/Sections.svelte";
-  import type {
-    ModelsCombinedOutput,
-    ModelsStatData,
-    ModelsStatsOutput,
-    listEnchantmentsResponse
-  } from "#lib/shared/api/orval-generated.js";
+  import type { ModelsCombinedOutput, ModelsStatData, ModelsStatsOutput } from "#lib/shared/api/orval-generated.js";
 
   const {
     data: ctx,
@@ -47,7 +43,7 @@
     data: ModelsStatsOutput;
     allStats: ModelsStatData[];
     combined: ModelsCombinedOutput | null;
-    enchantments: listEnchantmentsResponse["data"];
+    enchantments: Enchantments;
   } = $props();
 
   const isHover = getHoverContext();

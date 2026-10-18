@@ -1,15 +1,18 @@
 import { createContext } from "svelte";
+import type { z } from "zod";
 import type { IsHover } from "#lib/hooks/is-hover.svelte.js";
 import type { IsMobile } from "#lib/hooks/is-mobile.svelte.js";
+import type { ListEnchantmentsResponse } from "#lib/shared/api/orval-generated-zod.js";
 import type {
   ModelsCombinedOutput,
   ModelsMiscOutput,
   ModelsResourcePackConfig,
   ModelsStatData,
   ModelsSkillsOutput,
-  ModelsStatsOutput,
-  listEnchantmentsResponse
+  ModelsStatsOutput
 } from "#lib/shared/api/orval-generated.js";
+
+export type Enchantments = z.infer<typeof ListEnchantmentsResponse>;
 
 export class ProfileContext {
   #current: ModelsStatsOutput | null = $state(null);
@@ -36,13 +39,13 @@ export class AllStatsContext {
 }
 
 export class EnchantmentsContext {
-  #current: listEnchantmentsResponse["data"] = $state([]);
+  #current: Enchantments = $state([]);
 
   get current() {
     return this.#current;
   }
 
-  set current(value: listEnchantmentsResponse["data"]) {
+  set current(value: Enchantments) {
     this.#current = value;
   }
 }
