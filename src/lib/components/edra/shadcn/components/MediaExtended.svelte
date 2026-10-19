@@ -136,6 +136,7 @@
   id="resizable-container-media"
   class={cn(
     "relative my-4! flex flex-col rounded-md border border-transparent",
+    // eslint-disable-next-line shadcn/no-unknown-classes
     selected && "is-media-selected",
     node.attrs.align === "left" && "left-0 translate-x-0",
     node.attrs.align === "center" && "left-1/2 -translate-x-1/2",

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { resolve } from "$app/paths";
   import { Button } from "$ui/button";
   import * as Field from "$ui/field";
   import { Input } from "$ui/input";
@@ -109,8 +110,9 @@
       <Field.FieldContent>
         <Field.FieldLabel for="api-request-terms" class="font-normal">
           I’ve read and will follow the
-          <a href="/api-policy" target="_blank" class="font-medium underline underline-offset-4">API Policy</a>.
-          SkyCrypt may revoke keys that break it.
+          <a href={resolve("/(pages)/api-policy")} target="_blank" class="font-medium underline underline-offset-4"
+            >API Policy</a
+          >. SkyCrypt may revoke keys that break it.
         </Field.FieldLabel>
         <Field.FieldError errors={fields.acceptTerms.issues()} />
       </Field.FieldContent>

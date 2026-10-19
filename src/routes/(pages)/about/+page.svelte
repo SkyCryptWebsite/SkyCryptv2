@@ -1,6 +1,7 @@
 <script lang="ts">
   import { PUBLIC_COMMIT_HASH } from "$app/env/public";
   import { PUBLIC_DISCORD_INVITE, PUBLIC_PATREON } from "$app/env/public";
+  import { resolve } from "$app/paths";
   import { Spinner } from "$ui/spinner";
   import SvelteSeo from "svelte-seo";
   import { getSourceInfo } from "#lib/shared/api/skycrypt-api.remote.js";
@@ -27,6 +28,7 @@
 
 <h2>Get involved</h2>
 
+<!-- eslint-disable svelte/no-navigation-without-resolve -- external links -->
 <ul>
   <li>
     Join our community, report bugs and suggest features on
@@ -39,6 +41,7 @@
     Help keep SkyCrypt ad free by donating on <a href={PUBLIC_PATREON} target="_blank" rel="noreferrer">Patreon</a>.
   </li>
 </ul>
+<!-- eslint-enable svelte/no-navigation-without-resolve -->
 
 <h2>Open source</h2>
 
@@ -89,6 +92,7 @@
     <p>
       Backend version
       {#if backend.repository}
+        <!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external link -->
         <a href="{backend.repository}/commit/{backend.commit}" target="_blank" rel="noreferrer"
           >{backend.commit.slice(0, 7)}</a>
       {:else}
@@ -103,7 +107,7 @@
 <h2>Legal</h2>
 
 <ul>
-  <li><a href="/terms-of-service">Terms of Service</a></li>
-  <li><a href="/privacy-policy">Privacy Policy</a></li>
-  <li><a href="/api-policy">API Policy</a></li>
+  <li><a href={resolve("/(pages)/terms-of-service")}>Terms of Service</a></li>
+  <li><a href={resolve("/(pages)/privacy-policy")}>Privacy Policy</a></li>
+  <li><a href={resolve("/(pages)/api-policy")}>API Policy</a></li>
 </ul>
