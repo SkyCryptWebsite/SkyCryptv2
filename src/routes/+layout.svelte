@@ -112,6 +112,8 @@
   }
 
   function handleKeydown(e: KeyboardEvent) {
+    // Single-key shortcuts must not steal characters typed into fields.
+    if (e.target instanceof HTMLElement && e.target.closest("input, textarea, select, [contenteditable]")) return;
     if (e.key === preferences.keybind) {
       e.preventDefault();
       internalState.openCommand = true;

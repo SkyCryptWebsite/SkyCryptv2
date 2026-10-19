@@ -19,10 +19,10 @@ export const getDashboard = query(async () => {
     getStoredPatreonMembership(locals.user.id),
     getPatreonVerificationRetryAt(locals.user.id)
   ]);
-  const { id, name, image, createdAt } = locals.user;
+  const { id, name, image, createdAt, developerMode } = locals.user;
 
   return {
-    user: { id, name, image, createdAt },
+    user: { id, name, image, createdAt, developerMode: developerMode ?? false },
     accounts: accounts.map(({ id, providerId, accountId, createdAt }) => ({ id, providerId, accountId, createdAt })),
     membership,
     verificationRetryAt

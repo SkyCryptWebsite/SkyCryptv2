@@ -15,6 +15,20 @@
       "when": 1791664895171,
       "tag": "0001_fresh_sally_floyd",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1792407690844,
+      "tag": "0002_needy_starfox",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1792410384195,
+      "tag": "0003_fancy_jazinda",
+      "breakpoints": true
     }
   ]
 }

@@ -11,8 +11,10 @@
   let turnstileErrored: boolean = $state(false);
 </script>
 
+<!-- Tokens are passed explicitly; Turnstile's injected `cf-turnstile-response` input breaks SvelteKit remote forms. -->
 <Turnstile
   sitekey={PUBLIC_TURNSTILE_SITE_KEY}
+  options={{ "response-field": false }}
   onready={() => {
     turnstileReady = true;
   }}

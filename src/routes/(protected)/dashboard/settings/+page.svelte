@@ -9,6 +9,7 @@
   import { Input } from "$ui/input";
   import * as Item from "$ui/item";
   import { Spinner } from "$ui/spinner";
+  import { Switch } from "$ui/switch";
   import DownloadIcon from "@lucide/svelte/icons/download";
   import LogOutIcon from "@lucide/svelte/icons/log-out";
   import MonitorIcon from "@lucide/svelte/icons/monitor";
@@ -16,10 +17,12 @@
   import SmartphoneIcon from "@lucide/svelte/icons/smartphone";
   import { toast } from "svelte-sonner";
   import { authClient } from "#lib/shared/auth-client.js";
+  import { getDashboard } from "../dashboard.remote";
   import { sessionDevice } from "./session-device";
-  import { deleteAccount, exportData, getSessions, revokeSession } from "./settings.remote";
+  import { deleteAccount, exportData, getSessions, revokeSession, setDeveloperMode } from "./settings.remote";
 
   const sessions = $derived(await getSessions());
+  const developerMode = $derived((await getDashboard()).user.developerMode);
   const otherSessions = $derived(sessions.filter((session) => !session.current));
   let revoking = $state<string | null>(null);
   let exporting = $state(false);
@@ -50,6 +53,17 @@
       toast.error(error instanceof Error ? error.message : "Unable to sign out. Please try again.");
     } finally {
       revoking = null;
+    }
+  }
+
+  async function toggleDeveloperMode(enabled: boolean) {
+    try {
+      await setDeveloperMode(enabled);
+      // A fresh request reads the session cookie Better Auth just updated.
+      await getDashboard().refresh();
+      toast.success(enabled ? "Developer mode turned on." : "Developer mode turned off.");
+    } catch {
+      toast.error("Unable to update developer mode. Please try again.");
     }
   }
 
@@ -97,7 +111,7 @@
   <Card.Root class="border glass ring-0 glass-bg-card standard:bg-transparent">
     <Card.Header>
       <h1 class="text-3xl font-semibold text-balance">Settings</h1>
-      <Card.Description>Manage your sessions and personal data.</Card.Description>
+      <Card.Description>Manage developer mode, your sessions and personal data.</Card.Description>
     </Card.Header>
   </Card.Root>
 
@@ -176,6 +190,25 @@
         {revoking === "all" ? "Signing out…" : "Sign out other sessions"}
       </Button>
     </Card.Footer>
+  </Card.Root>
+
+  <Card.Root class="border glass ring-0 glass-bg-card standard:bg-transparent">
+    <Card.Content>
+      <Field.Field orientation="horizontal" data-disabled={!!setDeveloperMode.pending}>
+        <Field.FieldContent>
+          <Field.FieldLabel for="developer-mode">Developer mode</Field.FieldLabel>
+          <Field.FieldDescription>
+            Show developer tools, such as API keys, in the dashboard sidebar. Existing API keys keep working when this
+            is off.
+          </Field.FieldDescription>
+        </Field.FieldContent>
+        <Switch
+          id="developer-mode"
+          checked={developerMode}
+          disabled={!!setDeveloperMode.pending}
+          onCheckedChange={toggleDeveloperMode} />
+      </Field.Field>
+    </Card.Content>
   </Card.Root>
 
   <Card.Root class="border glass ring-0 glass-bg-card standard:bg-transparent">

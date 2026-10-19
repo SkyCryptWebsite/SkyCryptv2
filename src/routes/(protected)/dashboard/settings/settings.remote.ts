@@ -38,6 +38,12 @@ export const revokeSession = command(z.string().min(1), async (id) => {
   await auth.api.revokeSession({ headers, body: { token: target.token } });
 });
 
+export const setDeveloperMode = command(z.boolean(), async (developerMode) => {
+  const { headers } = await requireSession();
+  // Better Auth refreshes the cached session cookie, so later requests see the new value.
+  await auth.api.updateUser({ headers, body: { developerMode } });
+});
+
 export const exportData = command(async () => {
   const { user } = await requireSession();
   return exportAccountData(user.id);

@@ -15,7 +15,8 @@ export const user = pgTable("user", {
   role: text("role"),
   banned: boolean("banned").default(false),
   banReason: text("ban_reason"),
-  banExpires: timestamp("ban_expires")
+  banExpires: timestamp("ban_expires"),
+  developerMode: boolean("developer_mode").default(false)
 });
 
 export const session = pgTable(

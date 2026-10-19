@@ -17,7 +17,7 @@ import { getRequestEvent } from "$app/server";
 import { apiKey } from "@better-auth/api-key";
 import type { BetterAuthOptions, BetterAuthPlugin } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import { createAuthMiddleware } from "better-auth/api";
+import { APIError, createAuthMiddleware } from "better-auth/api";
 import { betterAuth } from "better-auth/minimal";
 import { admin, customSession, genericOAuth, patreon } from "better-auth/plugins";
 import { captcha } from "better-auth/plugins";
@@ -118,6 +118,11 @@ const options = {
   secret: getBetterAuthSecret(),
   database: drizzleAdapter(db, { provider: "pg" }),
   emailAndPassword: { enabled: false },
+  user: {
+    additionalFields: {
+      developerMode: { type: "boolean", defaultValue: false, required: false }
+    }
+  },
   account: {
     accountLinking: {
       trustedProviders: ["patreon", "mc-id"],
@@ -144,6 +149,12 @@ const options = {
     }
   },
   hooks: {
+    // Keys are only issued after admin approval, so browsers may not create, re-enable or replace keys themselves.
+    before: createAuthMiddleware(async (ctx) => {
+      if (ctx.request && ["/api-key/create", "/api-key/update", "/api-key/delete"].includes(ctx.path)) {
+        throw new APIError("FORBIDDEN", { message: "Request API access from the developer dashboard." });
+      }
+    }),
     after: createAuthMiddleware(async (ctx) => {
       if (!ctx.path.startsWith("/callback/")) return;
       const { locals } = getRequestEvent();
@@ -246,7 +257,7 @@ const options = {
     captcha({
       provider: "cloudflare-turnstile",
       secretKey: TURNSTILE_SECRET_KEY,
-      endpoints: ["/sign-in/social", "/api-key/create"]
+      endpoints: ["/sign-in/social"]
     }),
     ...(openAPIPlugin ? [openAPIPlugin] : []) // Conditionally include the openAPI plugin only in development
   ]

@@ -5,14 +5,16 @@
   import * as Sidebar from "$ui/sidebar";
   import { Skeleton } from "$ui/skeleton";
   import { Spinner } from "$ui/spinner";
-  import type { Icon as IconType } from "@lucide/svelte";
   import ChevronsUpDownIcon from "@lucide/svelte/icons/chevrons-up-down";
+  import ExternalLinkIcon from "@lucide/svelte/icons/external-link";
   import HeartIcon from "@lucide/svelte/icons/heart";
   import HouseIcon from "@lucide/svelte/icons/house";
+  import KeyRoundIcon from "@lucide/svelte/icons/key-round";
   import LogOutIcon from "@lucide/svelte/icons/log-out";
   import SettingsIcon from "@lucide/svelte/icons/settings";
   import { toast } from "svelte-sonner";
   import { authClient } from "#lib/shared/auth-client.js";
+  import { API_DOCS_URL } from "#lib/shared/constants/developer.js";
   import { getDashboard } from "./dashboard.remote";
 
   const sidebar = Sidebar.useSidebar();
@@ -34,6 +36,8 @@
 
   const BASE_URL_DASHBOARD = "/dashboard";
 
+  type NavItem = { title: string; url: string; icon: typeof HouseIcon; external?: boolean };
+
   const items = [
     { title: "Home", url: BASE_URL_DASHBOARD, icon: HouseIcon },
     {
@@ -46,8 +50,35 @@
       url: BASE_URL_DASHBOARD + "/donator-perks",
       icon: HeartIcon
     }
-  ] satisfies { title: string; url: string; icon: typeof IconType }[];
+  ] satisfies NavItem[];
+
+  const developerItems = [
+    { title: "API Keys", url: BASE_URL_DASHBOARD + "/developer", icon: KeyRoundIcon },
+    { title: "API Docs", url: API_DOCS_URL, icon: ExternalLinkIcon, external: true }
+  ] satisfies NavItem[];
 </script>
+
+{#snippet navItem(item: NavItem)}
+  <Sidebar.MenuItem>
+    <Sidebar.MenuButton
+      variant="outline"
+      class="my-1 bg-transparent transition-[scale] hover:scale-95 hover:bg-transparent hover:shadow-border active:bg-transparent">
+      {#snippet child({ props })}
+        <!-- eslint-disable svelte/no-navigation-without-resolve -->
+        <a
+          href={item.url}
+          target={item.external ? "_blank" : undefined}
+          rel={item.external ? "noopener" : undefined}
+          {...props}>
+          <item.icon />
+          <span>{item.title}</span>
+          {#if item.external}<span class="sr-only">(opens in a new tab)</span>{/if}
+        </a>
+        <!-- eslint-enable svelte/no-navigation-without-resolve -->
+      {/snippet}
+    </Sidebar.MenuButton>
+  </Sidebar.MenuItem>
+{/snippet}
 
 <Sidebar.Root class="top-12 h-[calc(100svh-3rem)] bg-sidebar standard:glass standard:bg-transparent" collapsible="icon">
   <Sidebar.Content class="">
@@ -56,23 +87,27 @@
       <Sidebar.GroupContent>
         <Sidebar.Menu>
           {#each items as item (item.title)}
-            <Sidebar.MenuItem>
-              <Sidebar.MenuButton
-                variant="outline"
-                class="my-1 bg-transparent transition-[scale] hover:scale-95 hover:bg-transparent hover:shadow-border active:bg-transparent">
-                {#snippet child({ props })}
-                  <!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
-                  <a href={item.url} {...props}>
-                    <item.icon />
-                    <span>{item.title}</span>
-                  </a>
-                {/snippet}
-              </Sidebar.MenuButton>
-            </Sidebar.MenuItem>
+            {@render navItem(item)}
           {/each}
         </Sidebar.Menu>
       </Sidebar.GroupContent>
     </Sidebar.Group>
+    <svelte:boundary>
+      {#if (await getDashboard()).user.developerMode}
+        <Sidebar.Group>
+          <Sidebar.GroupLabel>Developer</Sidebar.GroupLabel>
+          <Sidebar.GroupContent>
+            <Sidebar.Menu>
+              {#each developerItems as item (item.title)}
+                {@render navItem(item)}
+              {/each}
+            </Sidebar.Menu>
+          </Sidebar.GroupContent>
+        </Sidebar.Group>
+      {/if}
+      {#snippet pending()}{/snippet}
+      {#snippet failed()}{/snippet}
+    </svelte:boundary>
   </Sidebar.Content>
   <Sidebar.Footer>
     <svelte:boundary>

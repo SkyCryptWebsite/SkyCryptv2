@@ -3,10 +3,12 @@ import { db } from "#lib/server/db/index.js";
 import {
   account,
   apikey,
+  apiKeyRequest,
   discordProfile,
   minecraftAccount,
   patreonMembership,
   profileEmoji,
+  rateLimitRequest,
   session,
   user
 } from "#lib/server/db/schema/index.js";
@@ -38,7 +40,7 @@ export async function exportAccountData(userId: string) {
         .innerJoin(account, eq(minecraftAccount.accountId, account.id))
         .where(eq(account.userId, userId));
       const uuids = minecraftAccounts.map(({ uuid }) => uuid);
-      const [discord, membership, sessions, apiKeys, emojis] = await Promise.all([
+      const [discord, membership, sessions, apiKeys, apiKeyRequests, rateLimitRequests, emojis] = await Promise.all([
         tx.select().from(discordProfile).where(eq(discordProfile.userId, userId)),
         tx.select().from(patreonMembership).where(eq(patreonMembership.userId, userId)),
         tx
@@ -76,6 +78,37 @@ export async function exportAccountData(userId: string) {
           })
           .from(apikey)
           .where(eq(apikey.referenceId, userId)),
+        tx
+          .select({
+            id: apiKeyRequest.id,
+            name: apiKeyRequest.name,
+            useCase: apiKeyRequest.useCase,
+            description: apiKeyRequest.description,
+            url: apiKeyRequest.url,
+            status: apiKeyRequest.status,
+            reviewNote: apiKeyRequest.reviewNote,
+            reviewedAt: apiKeyRequest.reviewedAt,
+            apiKeyId: apiKeyRequest.apiKeyId,
+            termsAcceptedAt: apiKeyRequest.termsAcceptedAt,
+            createdAt: apiKeyRequest.createdAt,
+            updatedAt: apiKeyRequest.updatedAt
+          })
+          .from(apiKeyRequest)
+          .where(eq(apiKeyRequest.userId, userId)),
+        tx
+          .select({
+            id: rateLimitRequest.id,
+            apiKeyRequestId: rateLimitRequest.apiKeyRequestId,
+            requestedMax: rateLimitRequest.requestedMax,
+            reason: rateLimitRequest.reason,
+            status: rateLimitRequest.status,
+            reviewNote: rateLimitRequest.reviewNote,
+            reviewedAt: rateLimitRequest.reviewedAt,
+            createdAt: rateLimitRequest.createdAt,
+            updatedAt: rateLimitRequest.updatedAt
+          })
+          .from(rateLimitRequest)
+          .where(eq(rateLimitRequest.userId, userId)),
         uuids.length ? tx.select().from(profileEmoji).where(inArray(profileEmoji.uuid, uuids)) : Promise.resolve([])
       ]);
       return {
@@ -88,6 +121,8 @@ export async function exportAccountData(userId: string) {
         patreonMembership: membership[0] ?? null,
         sessions,
         apiKeys,
+        apiKeyRequests,
+        rateLimitRequests,
         profileEmojis: emojis
       };
     },
@@ -110,7 +145,7 @@ export async function deleteAccountData(userId: string) {
         )
       );
     await tx.delete(apikey).where(eq(apikey.referenceId, userId));
-    // Foreign keys remove sessions, provider accounts, Minecraft links, Discord data and membership together.
+    // Foreign keys remove sessions, provider accounts, Minecraft links, Discord data, membership, API key and rate limit requests together.
     await tx.delete(user).where(eq(user.id, userId));
   });
 }
