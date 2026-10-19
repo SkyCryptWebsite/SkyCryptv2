@@ -1,5 +1,12 @@
 # Changelog
 
+## 4.3.0-beta.5
+
+### Minor Changes
+
+- Add a staff admin dashboard with trial moderator, moderator, head moderator and admin roles, review queues for API access and rate limit requests, API key and user management, and an audit log of staff actions _[`a2a581d`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/a2a581d688a286dab8296c0ddf0f366e7084c5e8) [@DarthGigi](https://github.com/DarthGigi)_
+- Add developer mode with a dashboard developer section where users can request API access, generate or regenerate an API key after admin approval, request rate limit increases and open the API docs _[`036494e`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/036494ef24303116751872e75759b2ace71eedb4) [@DarthGigi](https://github.com/DarthGigi)_
+
 ## 4.3.0-beta.4
 
 ### Patch Changes
