@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.3.0-beta.6
+
+### Minor Changes
+
+- Replace Payload CMS with a built-in newsroom: admins write, schedule and publish posts in the admin dashboard with a rich text editor, keep a publish history, and manage site-wide banners that reach open pages live. Post authors show their Minecraft account, with their Discord profile on hover or tap _[`#359`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/pull/359) [`a3ae439`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/a3ae4395144bae7a95b8e6830cf8bbfa581a80ee) [@DarthGigi](https://github.com/DarthGigi)_
+
 ## 4.3.0-beta.5
 
 ### Minor Changes
