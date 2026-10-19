@@ -128,6 +128,7 @@
     "globals": "^17.13.0",
     "ky": "^2.2.0",
     "lowlight": "^3.3.0",
+    "mdsvex": "^0.12.7",
     "mode-watcher": "^1.1.0",
     "numerable": "^0.3.15",
     "orval": "^8.43.0",

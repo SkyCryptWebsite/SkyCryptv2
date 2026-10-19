@@ -21,7 +21,7 @@ export const apiKeyRequestSchema = z.object({
   acceptTerms: z
     .boolean()
     .default(false)
-    .refine((accepted) => accepted, "Accept the API rules to continue."),
+    .refine((accepted) => accepted, "Accept the API Policy to continue."),
   // Underscore: never echoed back into the form, and tokens are single-use anyway.
   _captchaToken: z.string("Complete the captcha.").min(1, "Complete the captcha.").max(2048)
 });
