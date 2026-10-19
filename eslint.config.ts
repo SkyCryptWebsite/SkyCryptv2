@@ -94,7 +94,7 @@ export default defineConfig(
     }
   },
   {
-    // Server code logs through evlog (`log` / `locals.log`) so output reaches Loki and stays readable in Dokploy.
+    // Server code logs through evlog (`log` / `locals.log`) so output reaches HyperDX and stays readable in Dokploy.
     files: [
       "src/hooks.server.ts",
       "src/lib/server/**/*.ts",
