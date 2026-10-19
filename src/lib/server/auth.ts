@@ -22,6 +22,7 @@ import { betterAuth } from "better-auth/minimal";
 import { admin, customSession, genericOAuth, patreon } from "better-auth/plugins";
 import { captcha } from "better-auth/plugins";
 import { sveltekitCookies } from "better-auth/svelte-kit";
+import { log } from "evlog";
 import { db } from "#lib/server/db/index.js";
 import { getDiscordProfile, parseDiscordProfile, syncDiscordProfile } from "#lib/server/discord-profile.js";
 import {
@@ -154,7 +155,7 @@ const options = {
         try {
           await storeMinecraftAccounts(mcLink, mcProfile);
         } catch (error) {
-          console.error("Unable to sync linked Minecraft accounts", error);
+          log.error({ action: "auth.sync_minecraft_accounts", error });
         }
       }
       if (!ctx.context.newSession) return;
@@ -166,7 +167,7 @@ const options = {
         await syncDiscordProfile(ctx.context.newSession.user.id, assets);
       } catch (error) {
         // Cosmetic data must not turn a successful sign-in into an error.
-        console.error("Unable to sync Discord profile assets", error);
+        log.error({ action: "auth.sync_discord_profile", error });
       }
     })
   },

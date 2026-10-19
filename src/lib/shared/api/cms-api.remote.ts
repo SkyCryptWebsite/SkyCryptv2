@@ -3,6 +3,7 @@ import { CMS_API_TOKEN } from "$app/env/private";
 import { query } from "$app/server";
 import { POST_TYPES, type Post, type PostListResponse } from "$types";
 import { error } from "@sveltejs/kit";
+import { log } from "evlog";
 import z from "zod";
 import { listPosts as listPostsRequest, type ListPostsParams } from "#lib/shared/api/cms-generated.js";
 
@@ -35,7 +36,7 @@ export const listPosts = query(
       const { data } = await listPostsRequest(asListParams(params));
       return data as PostListResponse;
     } catch (error) {
-      if (!dev) console.warn("Failed to load newsroom posts", error);
+      if (!dev) log.warn({ action: "cms.list_posts", error });
       return null;
     }
   }
@@ -53,7 +54,7 @@ export const listLatestPostsForNotifications = query(
       );
       return data as PostListResponse;
     } catch (error) {
-      if (!dev) console.warn("Failed to load latest newsroom posts for notifications", error);
+      if (!dev) log.warn({ action: "cms.list_latest_posts", error });
       return null;
     }
   }
@@ -68,7 +69,7 @@ export const getPostBySlug = query(z.object({ slug: z.string() }), async ({ slug
     if (!data.docs.length) error(404, "Post not found");
     return data.docs[0] as Post;
   } catch (error) {
-    if (!dev) console.warn("Failed to load post by slug", error);
+    if (!dev) log.warn({ action: "cms.get_post", slug, error });
     return null;
   }
 });
@@ -86,7 +87,7 @@ export const getPostBySlugDraft = query(z.object({ slug: z.string() }), async ({
     if (!data.docs.length) error(404, "Post not found");
     return data.docs[0] as Post;
   } catch (error) {
-    if (!dev) console.warn("Failed to load draft post by slug", error);
+    if (!dev) log.warn({ action: "cms.get_draft_post", slug, error });
     return null;
   }
 });

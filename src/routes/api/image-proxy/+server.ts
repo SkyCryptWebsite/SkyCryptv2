@@ -1,3 +1,4 @@
+import { log } from "evlog";
 import type { RequestHandler } from "./$types";
 
 // An internal endpoint used to proxy images for security/privacy reasons.
@@ -86,7 +87,7 @@ export const GET: RequestHandler = async ({ request }) => {
       throw error;
     }
   } catch (error) {
-    console.error("Image Proxy Error:", error);
+    log.error({ action: "image_proxy.failed", error });
     return new Response("Error fetching image", { status: 500 });
   }
 };

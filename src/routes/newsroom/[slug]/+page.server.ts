@@ -1,6 +1,7 @@
 import { CMS_PREVIEW_TOKEN } from "$app/env/private";
 import type { Post } from "$types";
 import { error, isHttpError } from "@sveltejs/kit";
+import { log } from "evlog";
 import { getPostBySlug, getPostBySlugDraft } from "#lib/shared/api/cms-api.remote.js";
 import { richTextToHtml } from "#lib/shared/cms/rich-text-html.js";
 import type { PageServerLoad } from "./$types";
@@ -36,7 +37,7 @@ export const load: PageServerLoad = async ({ params, url, setHeaders }) => {
       return { post: renderRichTextBlocks(post), preview: true };
     } catch (e) {
       if (isHttpError(e)) throw e;
-      console.error("Failed to fetch draft from CMS:", e);
+      log.error({ action: "newsroom.fetch_draft", slug: params.slug, error: e });
       error(503, "Newsroom is temporarily unavailable");
     }
   }
@@ -48,7 +49,7 @@ export const load: PageServerLoad = async ({ params, url, setHeaders }) => {
     return { post: renderRichTextBlocks(post), preview: false };
   } catch (e) {
     if (isHttpError(e)) throw e;
-    console.error("Failed to fetch post from CMS:", e);
+    log.error({ action: "newsroom.fetch_post", slug: params.slug, error: e });
     error(503, "Newsroom is temporarily unavailable");
   }
 };

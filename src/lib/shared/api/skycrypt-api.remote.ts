@@ -1,6 +1,7 @@
 import { prerender, query } from "$app/server";
 import { APIEndpointName } from "$types";
 import { error, isHttpError } from "@sveltejs/kit";
+import { log } from "evlog";
 import { z } from "zod";
 import {
   GetCombinedProfileStatsParams,
@@ -59,21 +60,21 @@ async function fetchSection<TResponse extends { data: unknown; status: number }>
     const { data, status } = await apiFetcher();
     if (status >= 400) {
       const message = typeof data === "object" && data !== null && "error" in data ? String(data.error) : String(data);
-      console.error(`API returned status ${status} for ${sectionName}:`, message);
+      log.error({ action: "skycrypt_api.fetch_section", section: sectionName, status, message });
       error(status, message);
     }
     // Check if the API returned a processing error
     if (typeof data === "object" && data !== null && "error" in data && data.error) {
-      console.error(`API returned an error for ${sectionName}:`, data);
+      log.error({ action: "skycrypt_api.fetch_section", section: sectionName, status, response: data });
       error(status, data.error as string);
     }
     return data as ExtractSuccessData<TResponse>;
   } catch (err) {
     if (isHttpError(err)) {
-      console.error(`HTTP error fetching ${sectionName} section data:`, err);
+      log.error({ action: "skycrypt_api.http_error", section: sectionName, error: err });
       error(err.status, err.body.message);
     }
-    console.error(`Error fetching ${sectionName} section data:`, err);
+    log.error({ action: "skycrypt_api.fetch_section_failed", section: sectionName, error: err });
     error(500, `Failed to fetch ${sectionName} section data`);
   }
 }
@@ -167,7 +168,7 @@ export const getSourceInfo = query(async (): Promise<ModelsSourceInfo | null> =>
     const { data } = await getSourceInfoRequest({ cache: "no-store" });
     return data;
   } catch (error) {
-    console.warn("Failed to load backend version information", error);
+    log.warn({ action: "skycrypt_api.get_source_info", error });
     return null;
   }
 });
