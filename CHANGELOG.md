@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.3.0-beta.4
+
+### Patch Changes
+
+- Ship logs to HyperDX instead of Grafana Loki (`HYPERDX_OTLP_ENDPOINT` and `HYPERDX_API_KEY` replace `LOKI_*`). _[`#358`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/pull/358) [`858e64b`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/858e64bc93ca2c841aaea83d44083ad49b6112c1) [@DarthGigi](https://github.com/DarthGigi)_
+
 ## 4.3.0-beta.3
 
 ### Minor Changes
