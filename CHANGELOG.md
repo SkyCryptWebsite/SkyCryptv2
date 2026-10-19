@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.3.0-beta.3
+
+### Minor Changes
+
+- Add structured logging with evlog: one wide event per request (with the signed-in user), readable text output in the container logs, and optional shipping to Grafana Loki via `LOKI_ENDPOINT`. Server `console.*` calls now use evlog. _[`#357`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/pull/357) [`dbc47c6`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/dbc47c656ce1a3a8b3e64403ad73c9336ba50ced) [@DarthGigi](https://github.com/DarthGigi)_
+
 ## 4.3.0-beta.2
 
 ### Patch Changes
