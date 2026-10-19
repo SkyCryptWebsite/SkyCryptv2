@@ -9,6 +9,7 @@ import {
   PatreonVerificationError,
   verifyPatreonMembership
 } from "#lib/server/patreon.js";
+import { can } from "#lib/shared/roles.js";
 
 export const getDashboard = query(async () => {
   const { locals, request } = getRequestEvent();
@@ -19,10 +20,17 @@ export const getDashboard = query(async () => {
     getStoredPatreonMembership(locals.user.id),
     getPatreonVerificationRetryAt(locals.user.id)
   ]);
-  const { id, name, image, createdAt, developerMode } = locals.user;
+  const { id, name, image, createdAt, developerMode, role } = locals.user;
 
   return {
-    user: { id, name, image, createdAt, developerMode: developerMode ?? false },
+    user: {
+      id,
+      name,
+      image,
+      createdAt,
+      developerMode: developerMode ?? false,
+      staff: can(role, { dashboard: ["view"] })
+    },
     accounts: accounts.map(({ id, providerId, accountId, createdAt }) => ({ id, providerId, accountId, createdAt })),
     membership,
     verificationRetryAt

@@ -4,6 +4,7 @@ import { adminClient, organizationClient } from "better-auth/client/plugins";
 import { customSessionClient } from "better-auth/client/plugins";
 import { createAuthClient } from "better-auth/svelte";
 import type { auth } from "#lib/server/auth.js";
+import { ac, roles } from "#lib/shared/roles.js";
 
 export const authClient = createAuthClient({
   baseURL: PUBLIC_ORIGIN,
@@ -12,5 +13,5 @@ export const authClient = createAuthClient({
     refetchOnWindowFocus: true,
     refetchWhenOffline: false
   },
-  plugins: [apiKeyClient(), adminClient(), organizationClient(), customSessionClient<typeof auth>()]
+  plugins: [apiKeyClient(), adminClient({ ac, roles }), organizationClient(), customSessionClient<typeof auth>()]
 });

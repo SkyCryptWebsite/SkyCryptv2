@@ -46,6 +46,7 @@
   "dependencies": {
     "@payloadcms/richtext-lexical": "^3.91.0",
     "@takumi-rs/core-linux-x64-gnu": "^2.16.3",
+    "@tanstack/svelte-table": "^9.3.1",
     "culori": "^4.0.2",
     "evlog": "^2.33.1",
     "simple-git-hooks": "^2.14.0",

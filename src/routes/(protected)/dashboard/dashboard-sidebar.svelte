@@ -12,6 +12,7 @@
   import KeyRoundIcon from "@lucide/svelte/icons/key-round";
   import LogOutIcon from "@lucide/svelte/icons/log-out";
   import SettingsIcon from "@lucide/svelte/icons/settings";
+  import ShieldIcon from "@lucide/svelte/icons/shield";
   import { toast } from "svelte-sonner";
   import { authClient } from "#lib/shared/auth-client.js";
   import { API_DOCS_URL } from "#lib/shared/constants/developer.js";
@@ -148,6 +149,13 @@
                     <a {...props} href={resolve("dashboard/settings")}><SettingsIcon />Account settings</a>
                   {/snippet}
                 </DropdownMenu.Item>
+                {#if user.staff}
+                  <DropdownMenu.Item>
+                    {#snippet child({ props })}
+                      <a {...props} href={resolve("admin-dashboard")}><ShieldIcon />Admin dashboard</a>
+                    {/snippet}
+                  </DropdownMenu.Item>
+                {/if}
                 <DropdownMenu.Item disabled={signingOut} onSelect={() => void signOut()}>
                   {#if signingOut}
                     <Spinner />

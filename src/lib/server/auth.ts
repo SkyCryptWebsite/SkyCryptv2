@@ -32,6 +32,7 @@ import {
   storeMinecraftAccounts,
   type McIdLink
 } from "#lib/server/minecraft-accounts.js";
+import { ac, roles } from "#lib/shared/roles.js";
 
 const BUILD_TIME_AUTH_SECRET = "build-time-placeholder-secret-for-sveltekit-build";
 const BUILD_TIME_BASE_URL = "http://localhost:3000";
@@ -149,10 +150,15 @@ const options = {
     }
   },
   hooks: {
-    // Keys are only issued after admin approval, so browsers may not create, re-enable or replace keys themselves.
     before: createAuthMiddleware(async (ctx) => {
-      if (ctx.request && ["/api-key/create", "/api-key/update", "/api-key/delete"].includes(ctx.path)) {
+      if (!ctx.request) return;
+      // Keys are only issued after admin approval, so browsers may not create, re-enable or replace keys themselves.
+      if (["/api-key/create", "/api-key/update", "/api-key/delete"].includes(ctx.path)) {
         throw new APIError("FORBIDDEN", { message: "Request API access from the developer dashboard." });
+      }
+      // Admin endpoints check permissions but not staff rank, so staff act through the admin dashboard only.
+      if (ctx.path.startsWith("/admin/")) {
+        throw new APIError("FORBIDDEN", { message: "Use the admin dashboard." });
       }
     }),
     after: createAuthMiddleware(async (ctx) => {
@@ -240,7 +246,7 @@ const options = {
         shouldStore: true
       }
     }),
-    admin(),
+    admin({ ac, roles }),
     genericOAuth({
       config: [
         ...mcIdOAuthConfig,

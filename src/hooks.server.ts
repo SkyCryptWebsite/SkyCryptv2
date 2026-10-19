@@ -11,7 +11,7 @@ import { createHyperDXDrain } from "evlog/hyperdx";
 import { createDrainPipeline } from "evlog/pipeline";
 import { createEvlogHooks } from "evlog/sveltekit";
 import { auth } from "#lib/server/auth.js";
-import { UserRole } from "#lib/shared/roles.js";
+import { can } from "#lib/shared/roles.js";
 import evlogConfig from "../evlog.config";
 
 // HyperDX in production (batched, retried), local NDJSON in dev for `evlog logs`. Stdout always stays on.
@@ -136,10 +136,9 @@ const protectedHandler = (async ({ event, resolve }) => {
     }
   }
   if (locals.user) {
-    const roles = (locals.user.role ? locals.user.role.split(",") : []) as UserRole[];
-    const isAdmin = roles.includes(UserRole.Admin);
-    if (route.id?.includes(protectedAdminRouteGroupName) && !isAdmin) {
-      locals.log.set({ redirect: { to: "/dashboard", reason: "missing_admin_role" } });
+    // Coarse gate only; every admin remote function checks its own permission and staff rank.
+    if (route.id?.includes(protectedAdminRouteGroupName) && !can(locals.user.role, { dashboard: ["view"] })) {
+      locals.log.set({ redirect: { to: "/dashboard", reason: "missing_staff_role" } });
       return redirectTo("/dashboard");
     }
   }
