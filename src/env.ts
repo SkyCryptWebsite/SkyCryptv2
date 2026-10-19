@@ -3,13 +3,11 @@ import { defineEnvVars } from "@sveltejs/kit/env";
 const schema = (input: string | undefined) => input ?? "";
 
 export const variables = defineEnvVars({
-  PUBLIC_CMS_URL: { public: true, schema },
   PUBLIC_BASE_URL: { public: true, schema },
   PUBLIC_DISCORD_INVITE: { public: true, schema },
   PUBLIC_PATREON: { public: true, schema },
   PUBLIC_PATREON_ANY_EMOJI_CENTS: { public: true, schema },
   PUBLIC_PATREON_COLORED_HEART_CENTS: { public: true, schema },
-  CMS_PREVIEW_TOKEN: { schema },
   PUBLIC_ORIGIN: { public: true, schema },
   PUBLIC_SERVER_API_URL: { public: true, schema },
   PUBLIC_UMAMI_ENABLE_HEATMAPS: { public: true, schema },
@@ -23,7 +21,6 @@ export const variables = defineEnvVars({
     description:
       "Secret used to sign tokens. For production use 32 characters generated with high entropy. See [Better Auth installation](https://www.better-auth.com/docs/installation)."
   },
-  CMS_API_TOKEN: { schema },
   DISCORD_CLIENT_ID: { schema },
   DISCORD_CLIENT_SECRET: { schema },
   DISCORD_WHITELIST: { schema },
@@ -34,7 +31,6 @@ export const variables = defineEnvVars({
     description: "The app origin (base URL), e.g. `http://localhost:5173`."
   },
   SERVER_API_TOKEN: { schema },
-  SERVER_CMS_API_URL: { schema },
   PATREON_CLIENT_ID: { schema },
   PATREON_CLIENT_SECRET: { schema },
   PATREON_CREATOR_ACCESS_TOKEN: { schema },
@@ -48,5 +44,14 @@ export const variables = defineEnvVars({
   },
   HYPERDX_API_KEY: { schema, description: "HyperDX ingestion API key (Team Settings → API Keys)." },
   PUBLIC_TURNSTILE_SITE_KEY: { public: true, schema },
+  R2_ACCOUNT_ID: { schema, description: "Cloudflare account ID that owns the media bucket." },
+  R2_ACCESS_KEY_ID: { schema, description: "R2 API token access key with read and write access to `R2_BUCKET`." },
+  R2_SECRET_ACCESS_KEY: { schema },
+  R2_BUCKET: { schema, description: "R2 bucket that stores newsroom uploads." },
+  PUBLIC_MEDIA_URL: {
+    public: true,
+    schema,
+    description: "Public URL the bucket is served from (an R2 custom domain), e.g. `https://media.shiiyu.moe`."
+  },
   PUBLIC_COMMIT_HASH: { public: true, static: true }
 });

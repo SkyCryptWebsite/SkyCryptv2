@@ -17,7 +17,8 @@ export const getStaffContext = query(async () => {
       revokeSessions: can(role, { session: ["revoke"] }),
       banUsers: can(role, { user: ["ban"] }),
       setRoles: can(role, { user: ["set-role"] }),
-      viewAuditLog: can(role, { auditLog: ["list"] })
+      viewAuditLog: can(role, { auditLog: ["list"] }),
+      manageContent: can(role, { content: ["manage"] })
     }
   };
 });

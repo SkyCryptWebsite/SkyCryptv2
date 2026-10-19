@@ -12,7 +12,14 @@ export const AUDIT_ACTIONS = {
   "user.ban": "Banned user",
   "user.unban": "Unbanned user",
   "user.revoke_sessions": "Signed user out",
-  "user.set_role": "Changed role"
+  "user.set_role": "Changed role",
+  "post.create": "Created post",
+  "post.publish": "Published post",
+  "post.unpublish": "Unpublished post",
+  "post.delete": "Deleted post",
+  "banner.create": "Created banner",
+  "banner.update": "Updated banner",
+  "banner.delete": "Deleted banner"
 } as const;
 
 export type AuditAction = keyof typeof AUDIT_ACTIONS;

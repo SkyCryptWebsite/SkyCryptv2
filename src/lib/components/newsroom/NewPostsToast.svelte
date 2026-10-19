@@ -21,20 +21,10 @@
   const dateFormatter = $derived(
     new Intl.DateTimeFormat(clientLocale.current, { year: "numeric", month: "long", day: "numeric" })
   );
-  const thumb = $derived(
-    newestUnseen.heroImage?.sizes?.card ??
-      newestUnseen.heroImage?.sizes?.thumbnail ??
-      (newestUnseen.heroImage
-        ? {
-            url: newestUnseen.heroImage.url,
-            width: newestUnseen.heroImage.width,
-            height: newestUnseen.heroImage.height
-          }
-        : null)
-  );
+  const thumb = $derived(newestUnseen.heroImage);
   const publishedDate = $derived(formatDate(newestUnseen.publishedAt));
-  const visibleTags = $derived(newestUnseen.tags?.slice(0, 3) ?? []);
-  const overflowTags = $derived((newestUnseen.tags?.length ?? 0) - visibleTags.length);
+  const visibleTags = $derived(newestUnseen.tags.slice(0, 3));
+  const overflowTags = $derived(newestUnseen.tags.length - visibleTags.length);
 
   function formatDate(iso: string | null | undefined): string {
     if (!iso) return "";
@@ -56,11 +46,11 @@
   aria-live="polite"
   class="@container-normal flex w-full max-w-sm flex-col gap-3 px-4 py-3 text-foreground shadow-lg shadow-black/10 @sm:max-w-md">
   <div class="flex min-w-0 flex-col items-start gap-3">
-    {#if thumb && newestUnseen.heroImage}
+    {#if thumb}
       <Avatar.Root class="relative mx-auto aspect-video w-full max-w-sm shrink-0 overflow-hidden rounded-xl border">
         <Avatar.Image
           src={thumb.url}
-          alt={newestUnseen.heroImage.alt ?? ""}
+          alt={thumb.alt}
           width={thumb.width}
           height={thumb.height}
           loading="lazy"

@@ -25,8 +25,8 @@
   import { ContributorCard, ContributorCardSkeleton, CtaCard } from "#lib/components/misc/index.js";
   import PostCard from "#lib/components/newsroom/PostCard.svelte";
   import { Notice } from "#lib/components/notices/index.js";
-  import { listPosts } from "#lib/shared/api/cms-api.remote.js";
   import { resolveUuidByUsername } from "#lib/shared/api/skycrypt-api.remote.js";
+  import { listPosts } from "#lib/shared/newsroom.remote.js";
   import { Role } from "./enums";
   import { schema } from "./schema";
 
