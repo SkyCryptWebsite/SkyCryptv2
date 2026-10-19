@@ -42,12 +42,11 @@ export const variables = defineEnvVars({
   PATREON_CAMPAIGN_ID: { schema },
   DATABASE_URL: { schema },
   TURNSTILE_SECRET_KEY: { schema },
-  LOKI_ENDPOINT: {
+  HYPERDX_OTLP_ENDPOINT: {
     schema,
-    description: "Base URL of the Loki instance (without `/loki/api/v1/push`). Logs only go to stdout when empty."
+    description: "Base URL of the HyperDX OTLP HTTP intake (without `/v1/logs`). Logs only go to stdout when empty."
   },
-  LOKI_API_KEY: { schema },
-  LOKI_TENANT_ID: { schema },
+  HYPERDX_API_KEY: { schema, description: "HyperDX ingestion API key (Team Settings → API Keys)." },
   PUBLIC_TURNSTILE_SITE_KEY: { public: true, schema },
   PUBLIC_COMMIT_HASH: { public: true, static: true }
 });

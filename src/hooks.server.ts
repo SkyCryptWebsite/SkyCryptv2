@@ -1,5 +1,5 @@
 import { building, dev } from "$app/env";
-import { LOKI_API_KEY, LOKI_ENDPOINT, LOKI_TENANT_ID } from "$app/env/private";
+import { HYPERDX_API_KEY, HYPERDX_OTLP_ENDPOINT } from "$app/env/private";
 import { PUBLIC_CMS_URL } from "$app/env/public";
 import { runMigrations } from "$src/lib/server/db/migrate";
 import { sequence, type Handle, type HandleServerError, type ServerInit } from "@sveltejs/kit/hooks";
@@ -7,29 +7,23 @@ import { svelteKitHandler } from "better-auth/svelte-kit";
 import { initLogger, log, toLoggerConfig, toMiddlewareOptions, type DrainContext } from "evlog";
 import { identifyUser } from "evlog/better-auth";
 import { createFsDrain } from "evlog/fs";
-import { createLokiDrain } from "evlog/loki";
+import { createHyperDXDrain } from "evlog/hyperdx";
 import { createDrainPipeline } from "evlog/pipeline";
 import { createEvlogHooks } from "evlog/sveltekit";
 import { auth } from "#lib/server/auth.js";
 import { UserRole } from "#lib/shared/roles.js";
 import evlogConfig from "../evlog.config";
 
-// Loki in production (batched, retried), local NDJSON in dev for `evlog logs`. Stdout always stays on.
-const lokiDrain = LOKI_ENDPOINT
+// HyperDX in production (batched, retried), local NDJSON in dev for `evlog logs`. Stdout always stays on.
+const hyperdxDrain = HYPERDX_OTLP_ENDPOINT
   ? createDrainPipeline<DrainContext>({
       batch: { size: 100, intervalMs: 5000 },
       retry: { maxAttempts: 3 },
       onDropped: (events, error) =>
         log.warn("evlog", `Dropped ${events.length} events: ${error?.message ?? "buffer full"}`)
-    })(
-      createLokiDrain({
-        endpoint: LOKI_ENDPOINT,
-        apiKey: LOKI_API_KEY || undefined,
-        tenantId: LOKI_TENANT_ID || undefined
-      })
-    )
+    })(createHyperDXDrain({ endpoint: HYPERDX_OTLP_ENDPOINT, apiKey: HYPERDX_API_KEY }))
   : undefined;
-const drain = lokiDrain ?? (dev ? createFsDrain({ maxFiles: 7 }) : undefined);
+const drain = hyperdxDrain ?? (dev ? createFsDrain({ maxFiles: 7 }) : undefined);
 
 initLogger({ ...toLoggerConfig(evlogConfig), drain });
 
@@ -45,7 +39,7 @@ export const handleError: HandleServerError = ({ kind, error, event }) => {
 };
 
 // Buffered events are lost on a redeploy otherwise.
-process.on("SIGTERM", () => void lokiDrain?.flush());
+process.on("SIGTERM", () => void hyperdxDrain?.flush());
 
 // Returned instead of thrown via `redirect()`: evlog's handle would log a thrown Redirect as a 500 error.
 const redirectTo = (location: string) => new Response(null, { status: 307, headers: { location } });
