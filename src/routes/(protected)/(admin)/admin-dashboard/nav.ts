@@ -1,7 +1,9 @@
 import FileKeyIcon from "@lucide/svelte/icons/file-key";
+import FlagIcon from "@lucide/svelte/icons/flag";
 import GaugeIcon from "@lucide/svelte/icons/gauge";
 import KeyRoundIcon from "@lucide/svelte/icons/key-round";
 import LayoutDashboardIcon from "@lucide/svelte/icons/layout-dashboard";
+import NewspaperIcon from "@lucide/svelte/icons/newspaper";
 import ScrollTextIcon from "@lucide/svelte/icons/scroll-text";
 import UsersIcon from "@lucide/svelte/icons/users";
 
@@ -19,6 +21,13 @@ export const navGroups = [
       { title: "Access requests", url: `${ADMIN_BASE}/api-requests`, icon: FileKeyIcon, pending: "pendingApiRequests" },
       { title: "Rate limits", url: `${ADMIN_BASE}/rate-limits`, icon: GaugeIcon, pending: "pendingRateLimits" },
       { title: "API keys", url: `${ADMIN_BASE}/api-keys`, icon: KeyRoundIcon }
+    ]
+  },
+  {
+    label: "Content",
+    items: [
+      { title: "Posts", url: `${ADMIN_BASE}/posts`, icon: NewspaperIcon, requires: "manageContent" },
+      { title: "Banners", url: `${ADMIN_BASE}/banners`, icon: FlagIcon, requires: "manageContent" }
     ]
   },
   { label: "Community", items: [{ title: "Users", url: `${ADMIN_BASE}/users`, icon: UsersIcon }] },

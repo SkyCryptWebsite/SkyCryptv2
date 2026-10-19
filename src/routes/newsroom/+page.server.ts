@@ -1,7 +1,7 @@
 import { POST_TYPES, type PostType } from "$types";
 import { error, isHttpError } from "@sveltejs/kit";
 import { log } from "evlog";
-import { listPosts } from "#lib/shared/api/cms-api.remote.js";
+import { listPublishedPosts } from "#lib/server/newsroom.js";
 import type { PageServerLoad } from "./$types";
 
 const POSTS_PER_PAGE = 12;
@@ -20,8 +20,8 @@ export const load: PageServerLoad = async ({ url, setHeaders }) => {
   const type = isPostType(rawType) ? rawType : undefined;
 
   try {
-    const result = await listPosts({ page, limit: POSTS_PER_PAGE, type });
-    if (result && result.totalPages > 0 && page > result.totalPages) error(404, "Page not found");
+    const result = await listPublishedPosts({ page, limit: POSTS_PER_PAGE, type });
+    if (result.totalPages > 0 && page > result.totalPages) error(404, "Page not found");
     return { ...result, type };
   } catch (e) {
     if (isHttpError(e)) throw e;

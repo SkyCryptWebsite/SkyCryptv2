@@ -4,14 +4,13 @@
   import { getNewsroomNotifications } from "$ctx";
   import PostRenderer from "$src/lib/components/newsroom/PostRenderer.svelte";
   import TypeBadge from "$src/lib/components/newsroom/TypeBadge.svelte";
-  import type { Author, AuthorView } from "$types";
   import { Badge } from "$ui/badge";
   import { Button } from "$ui/button";
   import ArrowLeft from "@lucide/svelte/icons/arrow-left";
   import Star from "@lucide/svelte/icons/star";
-  import { Avatar } from "bits-ui";
   import SvelteSeo from "svelte-seo";
   import { JsonLd } from "#lib/components/misc/index.js";
+  import UserChip from "#lib/components/misc/UserChip.svelte";
   import { clientLocale } from "#lib/hooks/client-locale.svelte.js";
   import { cn } from "#lib/shared/utils.js";
   import type { PageData } from "./$types";
@@ -36,19 +35,14 @@
     }
   }
 
-  function authorOf(author: Author | string): AuthorView {
-    if (typeof author === "string") return { id: author, name: "Unknown" };
-    return author;
-  }
-
   const post = $derived(data.post);
-  const author = $derived(authorOf(post.author));
-  const displayName = $derived(author.displayName?.trim() || author.name);
-  const initials = $derived(displayName.slice(0, 2).toUpperCase());
-  const heroSrc = $derived(post.heroImage?.sizes?.hero?.url ?? post.heroImage?.url ?? null);
-  const heroWidth = $derived(post.heroImage?.sizes?.hero?.width ?? post.heroImage?.width ?? undefined);
-  const heroHeight = $derived(post.heroImage?.sizes?.hero?.height ?? post.heroImage?.height ?? undefined);
-  const heroAlt = $derived(post.heroImage?.alt ?? post.title);
+  const displayName = $derived(post.author?.minecraft?.username ?? post.author?.name ?? "SkyCrypt");
+  const heroSrc = $derived(post.heroImage?.url ?? null);
+  const heroWidth = $derived(post.heroImage?.width);
+  const heroHeight = $derived(post.heroImage?.height);
+  const heroAlt = $derived(post.heroImage?.alt || post.title);
+  const seoTitle = $derived(post.seoTitle || post.title);
+  const description = $derived(post.seoDescription || post.excerpt || post.title);
 
   const ogImages = $derived(heroSrc ? [{ url: heroSrc, width: heroWidth, height: heroHeight, alt: heroAlt }] : []);
 
@@ -66,7 +60,7 @@
     "@type": "NewsArticle",
     "@id": `https://sky.shiiyu.moe/newsroom/${post.slug}#article`,
     headline: post.title,
-    description: post.excerpt ?? post.title,
+    description,
     url: `https://sky.shiiyu.moe/newsroom/${post.slug}`,
     datePublished: post.publishedAt ?? undefined,
     dateModified: post.updatedAt ?? post.publishedAt ?? undefined,
@@ -117,15 +111,15 @@
 </script>
 
 <SvelteSeo
-  title="{post.title} | SkyCrypt"
-  description={post.excerpt ?? post.title}
+  title="{seoTitle} | SkyCrypt"
+  {description}
   canonical="https://sky.shiiyu.moe/newsroom/{post.slug}"
   noindex={data.preview ? true : undefined}
   nofollow={data.preview ? true : undefined}
   openGraph={{
     type: "article",
-    title: post.title,
-    description: post.excerpt ?? post.title,
+    title: seoTitle,
+    description,
     url: `https://sky.shiiyu.moe/newsroom/${post.slug}`,
     site_name: "SkyCrypt",
     images: ogImages,
@@ -136,8 +130,8 @@
   }}
   twitter={{
     card: "summary_large_image",
-    title: post.title,
-    description: post.excerpt ?? post.title,
+    title: seoTitle,
+    description,
     image: heroSrc ?? undefined,
     imageAlt: heroAlt
   }} />
@@ -172,7 +166,7 @@
   <header class={cn("flex flex-col gap-4 p-4 md:p-8", containerClass)}>
     <div class="flex items-center gap-2">
       <TypeBadge type={post.type} />
-      {#if !post.featured}
+      {#if post.featured}
         <Badge
           variant="default"
           class="border border-accent-2/15 bg-accent-2/15 font-semibold tracking-wide text-accent-2 uppercase">
@@ -183,24 +177,10 @@
     </div>
     <h1 class="text-4xl leading-tight font-bold text-foreground md:text-5xl">{post.title}</h1>
     <div class="flex items-center gap-4 text-sm">
-      <Avatar.Root class="size-10 shrink-0">
-        {#if author.mcUuid}
-          <Avatar.Image
-            loading="lazy"
-            src="https://nmsr.nickac.dev/face/{author.mcUuid}"
-            alt={displayName}
-            class="size-10 [image-rendering:pixelated]" />
-        {/if}
-        <Avatar.Fallback
-          class="flex size-10 items-center justify-center bg-foreground/10 text-sm font-semibold text-muted-foreground uppercase"
-          >{initials}</Avatar.Fallback>
-      </Avatar.Root>
-      <div class="flex flex-col leading-tight">
-        <span class="font-semibold text-foreground">{displayName}</span>
-        <time datetime={post.publishedAt} class="text-xs text-muted-foreground">{formatDate(post.publishedAt)}</time>
-      </div>
+      <UserChip profile={post.author} size="lg" class="font-semibold text-foreground" />
+      <time datetime={post.publishedAt ?? undefined} class="text-muted-foreground">{formatDate(post.publishedAt)}</time>
     </div>
-    {#if post.tags && post.tags.length > 0}
+    {#if post.tags.length > 0}
       <div class="flex flex-wrap gap-1.5">
         {#each post.tags as tag (tag)}
           <Badge variant="outline">
@@ -212,6 +192,6 @@
   </header>
 
   <div class={cn("p-4 md:p-8", containerClass)}>
-    <PostRenderer body={post.body ?? []} />
+    <PostRenderer html={post.html} />
   </div>
 </article>

@@ -30,7 +30,8 @@ export const statement = {
   dashboard: ["view"],
   apiAccess: ["review"],
   apiKey: ["manage"],
-  auditLog: ["list"]
+  auditLog: ["list"],
+  content: ["manage"]
 } as const;
 
 export const ac = createAccessControl(statement);
@@ -56,7 +57,8 @@ export const roles = {
     session: ["list", "revoke"],
     apiAccess: ["review"],
     apiKey: ["manage"],
-    auditLog: ["list"]
+    auditLog: ["list"],
+    content: ["manage"]
   })
 };
 

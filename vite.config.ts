@@ -58,8 +58,7 @@ export default defineConfig({
             "https://cupcake.shiiyu.moe",
             "https://sky.shiiyu.moe",
             "https://nmsr.nickac.dev",
-            "https://cms.shiiyu.moe",
-            "http://localhost:3000",
+            "https://media.shiiyu.moe",
             "https://eliteskyblock.com",
             "https://cdn.discordapp.com"
           ],
@@ -70,12 +69,23 @@ export default defineConfig({
             "http://localhost:8080",
             "https://cupcake.shiiyu.moe",
             "https://sky.shiiyu.moe",
-            "https://cms.shiiyu.moe",
-            "http://localhost:3000"
+
+            "https://cloudflarestorage.com"
           ],
+          "media-src": ["self", "https://media.shiiyu.moe"],
           "font-src": ["self", "https://fonts.gstatic.com"],
-          "frame-ancestors": ["self", "https://cms.shiiyu.moe", "http://localhost:3000"],
-          "frame-src": ["self", "https://challenges.cloudflare.com"]
+          "frame-ancestors": ["none"],
+          // Keep the embed hosts in sync with EMBED_HOSTS in src/lib/server/rich-text.ts.
+          "frame-src": [
+            "self",
+            "https://challenges.cloudflare.com",
+            "https://www.youtube.com",
+            "https://youtube.com",
+            "https://www.youtube-nocookie.com",
+            "https://player.vimeo.com",
+            "https://streamable.com",
+            "https://open.spotify.com"
+          ]
         }
       },
       version: {

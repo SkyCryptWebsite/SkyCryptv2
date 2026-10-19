@@ -38,12 +38,13 @@
   import Header from "#lib/components/header/Header.svelte";
   import { CommandPalette, JsonLd, PerformanceMode } from "#lib/components/misc/index.js";
   import NewPostsNotifier from "#lib/components/newsroom/NewPostsNotifier.svelte";
+  import SiteBanners from "#lib/components/newsroom/SiteBanners.svelte";
   import ThemeEditor from "#lib/components/theme-editor/ThemeEditor.svelte";
   import { IsHover } from "#lib/hooks/is-hover.svelte.js";
   import { IsMobile } from "#lib/hooks/is-mobile.svelte.js";
-  import { listLatestPostsForNotifications } from "#lib/shared/api/cms-api.remote.js";
   import "./layout.css";
   import { listResourcePacks } from "#lib/shared/api/skycrypt-api.remote.js";
+  import { getActiveBanners, listLatestPostsForNotifications } from "#lib/shared/newsroom.remote.js";
   import { parseThemeFromURL } from "#lib/shared/themes/sharing.js";
 
   let { children }: { children: Snippet } = $props();
@@ -149,6 +150,7 @@
 
   initFavorites();
   initNewsroomNotifications();
+
   initRecentSearches();
   setMobileContext(isMobile);
   setHoverContext(isHover);
@@ -365,13 +367,17 @@
 </div>
 
 <Header />
+<!-- The admin dashboard's fixed sidebar would sit on top of them; staff manage banners there instead. -->
+{#if !page.url.pathname.startsWith("/admin-dashboard")}
+  <svelte:boundary>
+    {#snippet failed()}{/snippet}
+    <SiteBanners banners={await getActiveBanners()} />
+  </svelte:boundary>
+{/if}
 {#if showNewsroomToast}
   <svelte:boundary>
     {#snippet failed()}{/snippet}
-    {const latestNewsroom = await listLatestPostsForNotifications({ limit: 5 })}
-    {#if latestNewsroom}
-      <NewPostsNotifier posts={latestNewsroom.docs} />
-    {/if}
+    <NewPostsNotifier posts={await listLatestPostsForNotifications({ limit: 5 })} />
   </svelte:boundary>
 {/if}
 

@@ -1,6 +1,5 @@
 import { building, dev } from "$app/env";
 import { HYPERDX_API_KEY, HYPERDX_OTLP_ENDPOINT } from "$app/env/private";
-import { PUBLIC_CMS_URL } from "$app/env/public";
 import { runMigrations } from "$src/lib/server/db/migrate";
 import { sequence, type Handle, type HandleServerError, type ServerInit } from "@sveltejs/kit/hooks";
 import { svelteKitHandler } from "better-auth/svelte-kit";
@@ -75,17 +74,9 @@ const headersHandler = (async ({ event, resolve }) => {
   response.headers.set("X-Content-Type-Options", "nosniff");
   response.headers.set("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload");
 
-  // Clickjacking protection. The newsroom draft preview must be embeddable in the Payload
-  // CMS admin's live-preview iframe, so allow only the CMS origin to frame that one route;
-  // everything else stays frame-locked.
-  const isNewsroomPreview = url.pathname.startsWith("/newsroom/") && url.searchParams.get("preview") === "1";
-  if (isNewsroomPreview) {
-    const cms = PUBLIC_CMS_URL?.trim();
-    response.headers.append("Content-Security-Policy", `frame-ancestors 'self'${cms ? ` ${cms}` : ""}`);
-  } else {
-    response.headers.set("X-Frame-Options", "DENY");
-    response.headers.append("Content-Security-Policy", "frame-ancestors 'none'");
-  }
+  // Clickjacking protection.
+  response.headers.set("X-Frame-Options", "DENY");
+  response.headers.append("Content-Security-Policy", "frame-ancestors 'none'");
 
   // Cross-Origin policies
   // COEP intentionally unsafe-none: tightening would require all cross-origin

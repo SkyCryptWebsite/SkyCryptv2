@@ -13,7 +13,7 @@ Follow these instructions when working on SkyCrypt Frontend. Nested `AGENTS.md` 
 - SkyCrypt is a Hypixel SkyBlock profile viewer built with SvelteKit 2, Svelte 5, strict TypeScript, and Tailwind CSS 4. Production uses the Node adapter.
 - Use Node 24 and pnpm 12, as required by `package.json` and CI. Other runtimes and package managers are unsupported. Keep `pnpm-lock.yaml` in sync with dependency changes.
 - Install with `pnpm install`. Copy `.env.example` to `.env` without overwriting an existing file. Never commit secrets or local environment files.
-- Profile data and end-to-end tests require the Go backend from the separate SkyCrypt-Backend repository. Newsroom features use a separate CMS. See `.env.example` for service URLs.
+- Profile data and end-to-end tests require the Go backend from the separate SkyCrypt-Backend repository. Newsroom uploads go to Cloudflare R2. See `.env.example` for service URLs.
 - Database and authentication code use PostgreSQL, Drizzle, and Better Auth. `pnpm db:start` starts local PostgreSQL. Server startup applies migrations from `drizzle/` through `src/hooks.server.ts`; builds skip migration execution.
 
 ## Structure and boundaries
@@ -52,10 +52,18 @@ Follow these instructions when working on SkyCrypt Frontend. Nested `AGENTS.md` 
 - Name reusable Svelte components in PascalCase and utilities in camelCase; follow SvelteKit route naming and nearby feature-file conventions.
 - Follow `.oxfmtrc.json`: two spaces, double quotes, no trailing commas, sorted imports, and ordered Tailwind classes. Format only changed files.
 
+## Newsroom and rich text
+
+- Posts and banners live in `src/lib/server/db/schema/content.schema.ts` and are managed under `admin-dashboard/posts` and `admin-dashboard/banners`, gated by the `content: ["manage"]` permission. A published post keeps its live columns while edits autosave to `draft`; every publish writes a `post_revision`.
+- The editor is Edra, vendored in `src/lib/components/edra/` (Tiptap v3). We own that code: edit it directly. `getContentExtensions()` is the server-safe schema and must stay free of `.svelte` imports; node names and attributes must match the editor's.
+- Store editor JSON and render it on the server with `renderContent` in `src/lib/server/rich-text.ts`. Call `assertValidContent` before every save; it checks the schema and allows only safe links and embed hosts. Never render user content with the editor on public pages.
+- Show users with `UserChip` (`src/lib/components/misc/`) and `getPublicProfiles` (`src/lib/server/public-profile.ts`): the primary Minecraft account, with the Discord profile on hover or tap. Keep private fields out of `PublicProfile`.
+- Live data uses `query.live` with `watch()` from `src/lib/server/live.ts`; call `publish()` after changing posts or banners so open pages update.
+
 ## Generated code and database changes
 
 - Do not manually edit Orval-generated API clients or schemas in `src/lib/shared/api/`. Change `orval.config.ts`, custom mutators, or the upstream API definition, then regenerate the relevant target.
-- Run `pnpm exec orval --project <target>` for `skycrypt`, `skycryptZod`, `cms`, or `patreon`. SkyCrypt targets read `http://localhost:8080/api/openapi/doc.json`; CMS reads `http://localhost:3000/api/openapi.json`; Patreon reads its configured upstream spec. Required services must be available.
+- Run `pnpm exec orval --project <target>` for `skycrypt`, `skycryptZod`, or `patreon`. SkyCrypt targets read `http://localhost:8080/api/openapi/doc.json`; Patreon reads its configured upstream spec. Required services must be available.
 - Edit database schemas in `src/lib/server/db/schema/`, then run `pnpm db:generate` and review the SQL and metadata in `drizzle/`. Do not rewrite applied migrations.
 - `pnpm auth:schema` regenerates the Better Auth schema from `src/lib/server/auth.ts`. Review the generated changes and generate any required database migration separately.
 - `pnpm db:push` directly changes the configured database; use it only for local schema work. Commit migrations for schema changes. Drizzle CLI commands require `DATABASE_URL` in the process environment.
