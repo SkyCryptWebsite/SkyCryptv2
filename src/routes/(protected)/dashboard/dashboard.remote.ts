@@ -1,6 +1,7 @@
 import { command, getRequestEvent, query } from "$app/server";
 import { getPerks } from "$routes/(protected)/dashboard/donator-perks/perks.remote";
 import { error } from "@sveltejs/kit";
+import { log } from "evlog";
 import { auth } from "#lib/server/auth.js";
 import {
   getPatreonVerificationRetryAt,
@@ -40,19 +41,19 @@ export const verifyMembership = command(async () => {
       switch (cause.code) {
         case "rate_limited":
           status = 429;
-          console.warn("Patreon verification rate limited", cause);
+          log.warn({ action: "patreon.verify_rate_limited", userId: locals.user.id, error: cause });
           break;
         case "already_claimed":
           status = 409;
-          console.warn("Patreon verification already claimed", cause);
+          log.warn({ action: "patreon.verify_already_claimed", userId: locals.user.id, error: cause });
           break;
         default:
           status = 400;
-          console.error("Patreon verification failed", cause);
+          log.error({ action: "patreon.verify_failed", userId: locals.user.id, error: cause });
       }
       error(status, cause.message);
     }
-    console.error("Unexpected Patreon verification failure", cause);
+    log.error({ action: "patreon.verify_unexpected", userId: locals.user.id, error: cause });
     error(500, "Patreon verification failed unexpectedly.");
   }
 

@@ -94,6 +94,19 @@ export default defineConfig(
     }
   },
   {
+    // Server code logs through evlog (`log` / `locals.log`) so output reaches Loki and stays readable in Dokploy.
+    files: [
+      "src/hooks.server.ts",
+      "src/lib/server/**/*.ts",
+      "src/**/*.remote.ts",
+      "src/**/+server.ts",
+      "src/**/+page.server.ts",
+      "src/**/+layout.server.ts"
+    ],
+    ignores: ["**/*.spec.ts"],
+    rules: { "no-console": "error" }
+  },
+  {
     ignores: [
       "**/.DS_Store",
       "**/node_modules/",

@@ -33,6 +33,7 @@
     ".svelte-kit/ambient.d.ts",
     "src",
     "vite.config.ts",
+    "evlog.config.ts",
     "drizzle.config.ts",
     "playwright.config.ts",
     "eslint.config.ts"

@@ -10,6 +10,7 @@ import {
   getProfileStats,
   getSelectedProfileStats
 } from "$src/lib/shared/api/skycrypt-api.remote";
+import { log } from "evlog";
 import { render } from "svelte/server";
 import { Renderer, type Font, type ImageSource } from "takumi-js/node";
 import { ImageResponse } from "takumi-js/response";
@@ -22,7 +23,7 @@ const renderer = new Renderer({ cacheMaxBytes: 64 * 1024 * 1024 });
 // Initialize assets once and pre-register fonts onto the renderer
 const assetsPromise = setupAssetsAndRenderer();
 
-export const GET: RequestHandler = async ({ params, request, url }) => {
+export const GET: RequestHandler = async ({ params, request, url, locals }) => {
   const start = performance.now();
   const { ign, profile } = params;
   const settings = parseSettingsFromParams(url.searchParams);
@@ -74,9 +75,14 @@ export const GET: RequestHandler = async ({ params, request, url }) => {
     const renderDuration = performance.now() - renderStart;
 
     const totalDuration = performance.now() - start;
-    console.debug(
-      `[Card Gen] Total: ${totalDuration.toFixed(2)}ms | Fetch: ${fetchDuration.toFixed(2)}ms | Component: ${componentRenderDuration.toFixed(2)}ms | Rasterize: ${renderDuration.toFixed(2)}ms`
-    );
+    locals.log.set({
+      card: {
+        totalMs: Math.round(totalDuration),
+        fetchMs: Math.round(fetchDuration),
+        componentMs: Math.round(componentRenderDuration),
+        rasterizeMs: Math.round(renderDuration)
+      }
+    });
 
     // Server-Timing header
     imageResponse.headers.set(
@@ -86,11 +92,12 @@ export const GET: RequestHandler = async ({ params, request, url }) => {
 
     return imageResponse;
   } catch (error) {
-    console.error("[Card Gen Error] Primary generation failed:", error);
-    console.error("[Card Gen Diagnostics]", {
+    log.error({
+      action: "card.generate_failed",
       ign,
       profile,
-      preRegisteredImages: images.map((img) => ({ src: img.src, byteLength: img.data.byteLength }))
+      preRegisteredImages: images.map((img) => ({ src: img.src, byteLength: img.data.byteLength })),
+      error
     });
 
     try {
@@ -113,7 +120,7 @@ export const GET: RequestHandler = async ({ params, request, url }) => {
       await errorResponse.ready;
       return errorResponse;
     } catch (err) {
-      console.error("[Card Gen Error] ErrorCard generation also failed:", err);
+      log.error({ action: "card.error_card_failed", ign, profile, error: err });
       return new Response("Internal Server Error", { status: 500 });
     }
   }
@@ -218,7 +225,7 @@ async function setupAssetsAndRenderer() {
 
     return { fonts, images };
   } catch (err) {
-    console.error("[Startup Asset Error] Failed to initialize assets and renderer:", err);
+    log.error({ action: "card.init_assets_failed", error: err });
     return { fonts: [], images: [] };
   }
 }

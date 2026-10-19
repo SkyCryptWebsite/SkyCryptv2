@@ -5,6 +5,7 @@ import { sveltekit } from "@sveltejs/kit/vite";
 import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
 import tailwindcss from "@tailwindcss/vite";
 import { playwright } from "@vitest/browser-playwright";
+import evlog from "evlog/vite";
 import { loadEnv } from "vite";
 import { defineConfig } from "vitest/config";
 
@@ -17,6 +18,8 @@ const prerenderVersion = (process.env.SKYCRYPT_PRERENDER_VERSION ??= randomUUID(
 
 export default defineConfig({
   plugins: [
+    // Strips log.debug() from production builds and tags dev logs with file:line. Logger config lives in evlog.config.ts.
+    evlog({ strip: ["debug"], sourceLocation: "dev" }),
     sveltekit({
       // Consult https://svelte.dev/docs/kit/integrations
       // for more information about preprocessors

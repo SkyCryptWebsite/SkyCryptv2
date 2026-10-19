@@ -1,3 +1,4 @@
+import type { RequestLogger } from "evlog";
 import type { auth } from "#lib/server/auth.js";
 import type { DiscordProfileAssets } from "#lib/server/discord-profile.js";
 import type { McIdLink, McIdProfile } from "#lib/server/minecraft-accounts.js";
@@ -20,6 +21,7 @@ declare global {
     }
 
     interface Locals {
+      log: RequestLogger;
       pendingDiscordProfile?: DiscordProfileAssets;
       pendingMcIdProfile?: McIdProfile;
       pendingMcIdLink?: McIdLink;

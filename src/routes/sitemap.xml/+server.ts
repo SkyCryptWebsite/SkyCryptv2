@@ -1,5 +1,6 @@
 import { getContributors } from "$routes/contributors.remote";
 import type { RequestHandler } from "@sveltejs/kit";
+import { log } from "evlog";
 import * as sitemap from "super-sitemap/sveltekit";
 import { listPosts } from "#lib/shared/api/cms-api.remote.js";
 
@@ -17,7 +18,7 @@ export const GET: RequestHandler = async () => {
       statsPaths.add(`/stats/${encodeURIComponent(ign)}`);
     }
   } catch (error) {
-    console.error("Failed to generate contributor sitemap entries", error);
+    log.error({ action: "sitemap.contributors_failed", error });
   }
 
   try {
@@ -29,7 +30,7 @@ export const GET: RequestHandler = async () => {
       }
     }
   } catch (error) {
-    console.error("Failed to generate newsroom sitemap entries", error);
+    log.error({ action: "sitemap.newsroom_failed", error });
   }
 
   return sitemap.response({

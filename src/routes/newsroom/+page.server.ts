@@ -1,5 +1,6 @@
 import { POST_TYPES, type PostType } from "$types";
 import { error, isHttpError } from "@sveltejs/kit";
+import { log } from "evlog";
 import { listPosts } from "#lib/shared/api/cms-api.remote.js";
 import type { PageServerLoad } from "./$types";
 
@@ -24,7 +25,7 @@ export const load: PageServerLoad = async ({ url, setHeaders }) => {
     return { ...result, type };
   } catch (e) {
     if (isHttpError(e)) throw e;
-    console.error("Failed to list posts from CMS:", e);
+    log.error({ action: "newsroom.list_posts", error: e });
     error(503, "Newsroom is temporarily unavailable");
   }
 };

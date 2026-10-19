@@ -1,4 +1,5 @@
 import { prerender } from "$app/server";
+import { log } from "evlog";
 import { z } from "zod";
 import type { ModelsPlayerResolve } from "#lib/shared/api/orval-generated.js";
 import { resolveUsernameByUuid } from "#lib/shared/api/skycrypt-api.remote.js";
@@ -17,7 +18,7 @@ export const getContributors = prerender(
       try {
         return await resolveUsernameByUuid({ uuid, version });
       } catch (error) {
-        console.error("Something went wrong fetching contributor username for UUID:", uuid, error);
+        log.error({ action: "contributors.resolve_username", uuid, error });
         return {
           displayName: "???",
           uuid: uuid,
