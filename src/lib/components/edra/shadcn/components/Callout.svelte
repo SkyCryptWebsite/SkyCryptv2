@@ -40,6 +40,7 @@
   </div>
 
   <div class="min-w-2 flex-1 leading-relaxed">
+    <!-- eslint-disable-next-line shadcn/no-unknown-classes -->
     <NodeViewContent class="edra-callout-content" />
   </div>
 </NodeViewWrapper>

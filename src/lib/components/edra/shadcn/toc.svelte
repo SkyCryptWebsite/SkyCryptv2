@@ -37,6 +37,7 @@
           <a
             href={`#${item.id}`}
             class={cn(
+              // eslint-disable-next-line shadcn/no-unknown-classes
               "nodefault text-sm text-wrap text-foreground transition-all duration-500",
               item.isScrolledOver && "text-muted-foreground italic"
             )}

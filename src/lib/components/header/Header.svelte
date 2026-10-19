@@ -1,10 +1,13 @@
 <script lang="ts">
   import { dev } from "$app/env";
+  import { resolve } from "$app/paths";
   import { page } from "$app/state";
   import { getInternalState, getThemeContext } from "$ctx";
   import Menu from "$src/lib/components/header/Menu.svelte";
+  import * as AvatarUI from "$ui/avatar";
   import { buttonVariants } from "$ui/button";
   import * as DropdownMenu from "$ui/dropdown-menu";
+  import LogInIcon from "@lucide/svelte/icons/log-in";
   import MoonIcon from "@lucide/svelte/icons/moon";
   import SunIcon from "@lucide/svelte/icons/sun";
   import SunMoonIcon from "@lucide/svelte/icons/sun-moon";
@@ -12,6 +15,7 @@
   import { mode, resetMode, setMode, userPrefersMode } from "mode-watcher";
   import Settings from "#lib/components/header/settings/index.js";
   import { getThemeIcons } from "#lib/shared/api/themes.remote.js";
+  import { getHeaderUser } from "#lib/shared/session.remote.js";
   import { readComputedThemeCssVars } from "#lib/shared/themes/computed-css-vars.js";
   import type { ThemeModeName } from "#lib/shared/themes/schema.js";
 
@@ -53,6 +57,30 @@
 </script>
 
 <svelte:window bind:innerWidth />
+
+{#snippet loginButton()}
+  <a href={resolve("/login")} class={buttonVariants({ variant: "outline" })} aria-label="Log in">
+    <LogInIcon />
+    <span class="hidden sm:inline">Log in</span>
+  </a>
+{/snippet}
+
+{#snippet accountButton(user: Awaited<ReturnType<typeof getHeaderUser>>)}
+  {#if user}
+    <a href={resolve("/(protected)/dashboard")} class={buttonVariants({ variant: "outline" })} aria-label="Dashboard">
+      <AvatarUI.Root class="size-5 shrink-0">
+        {#if user.image}
+          <AvatarUI.Image src={user.image} alt="" />
+        {/if}
+        <AvatarUI.Fallback class="text-[0.5rem]"
+          >{user.name.trim().slice(0, 2).toUpperCase() || "SC"}</AvatarUI.Fallback>
+      </AvatarUI.Root>
+      <span class="hidden sm:inline">Dashboard</span>
+    </a>
+  {:else}
+    {@render loginButton()}
+  {/if}
+{/snippet}
 
 <div class="invisible h-12 w-full"></div>
 <div
@@ -126,6 +154,12 @@
           <DropdownMenu.Item onclick={() => resetMode()}>System</DropdownMenu.Item>
         </DropdownMenu.Content>
       </DropdownMenu.Root>
+      <svelte:boundary>
+        {@render accountButton(await getHeaderUser())}
+        {#snippet failed()}
+          {@render loginButton()}
+        {/snippet}
+      </svelte:boundary>
       <Settings />
     </div>
   </div>

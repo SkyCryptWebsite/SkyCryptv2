@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { resolve } from "$app/paths";
   import { Button } from "$ui/button";
   import * as Field from "$ui/field";
   import { Input } from "$ui/input";
@@ -108,8 +109,10 @@
         class="mt-0.5 size-4 shrink-0 accent-primary" />
       <Field.FieldContent>
         <Field.FieldLabel for="api-request-terms" class="font-normal">
-          I won’t scrape or resell SkyCrypt data, I’ll stay within the rate limits and keep my key private. SkyCrypt may
-          revoke keys that break these rules.
+          I’ve read and will follow the
+          <a href={resolve("/(pages)/api-policy")} target="_blank" class="font-medium underline underline-offset-4"
+            >API Policy</a
+          >. SkyCrypt may revoke keys that break it.
         </Field.FieldLabel>
         <Field.FieldError errors={fields.acceptTerms.issues()} />
       </Field.FieldContent>
