@@ -35,6 +35,7 @@
   import { toast, Toaster, type ToasterProps } from "svelte-sonner";
   import { SvelteURLSearchParams } from "svelte/reactivity";
   import { writable } from "svelte/store";
+  import Footer from "#lib/components/footer/Footer.svelte";
   import Header from "#lib/components/header/Header.svelte";
   import { CommandPalette, JsonLd, PerformanceMode } from "#lib/components/misc/index.js";
   import NewPostsNotifier from "#lib/components/newsroom/NewPostsNotifier.svelte";
@@ -61,6 +62,8 @@
   const internalState = initInternalState();
   const position = writable<ToasterProps["position"]>("bottom-right");
   const theme = writable<ToasterProps["theme"]>("dark");
+  // The dashboards' fixed sidebars span the full viewport height and would cover the footer.
+  const showFooter = $derived(!/^\/(admin-)?dashboard(\/|$)/.test(page.url.pathname));
   const noEmbedUrls = ["/stats/", "/newsroom", "/login", "/dashboard"];
   const packs = new PacksContext();
   const websiteJsonLd = {
@@ -381,7 +384,12 @@
   </svelte:boundary>
 {/if}
 
-<Tooltip.Provider delayDuration={0}>{@render children()}</Tooltip.Provider>
+<div class="min-h-[calc(100dvh-3rem)]">
+  <Tooltip.Provider delayDuration={0}>{@render children()}</Tooltip.Provider>
+</div>
+{#if showFooter}
+  <Footer />
+{/if}
 <CommandPalette {ign} bind:loading={commandLoading} />
 
 {#if !isMobile.current}
