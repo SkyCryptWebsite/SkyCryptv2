@@ -9,7 +9,7 @@
 
 # Privacy Policy
 
-Last updated: 19 October 2026
+Last updated: 20 October 2026
 
 This policy explains what data SkyCrypt collects when you use [sky.shiiyu.moe](https://sky.shiiyu.moe), why we collect it, who else receives it, and what you can do about it. You can use most of SkyCrypt without an account, and in that case we collect very little.
 
@@ -89,6 +89,8 @@ If you request API access, we store your project name, use case, website and des
 ### Moderation
 
 SkyCrypt staff can see your account details to review requests and handle abuse. If staff ban you, we store the reason and when the ban ends. Every staff action is recorded in an internal log, which names the staff member and the account affected.
+
+To stop banned users from coming back on a new account, we compare the Minecraft accounts you link through MC-ID with the Minecraft accounts of banned users. If one matches, your account is banned automatically for as long as the original ban lasts, and the match is recorded in the staff log. Staff can review and lift these bans. A banned account keeps its Discord and Minecraft links while the ban lasts, so it can't be deleted and recreated with the same accounts.
 
 ## Why we use your data
 

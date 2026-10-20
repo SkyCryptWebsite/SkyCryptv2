@@ -46,8 +46,17 @@ async function getAccessState(userId: string, headers: Headers) {
   };
 }
 
-/** Creates a key for an approved request, carrying over any rate limit increase staff approved for it. */
-async function createKey(userId: string, requestId: string, name: string) {
+type KeySettings = {
+  name?: string | null;
+  metadata?: Record<string, unknown> | null;
+  permissions?: Record<string, string[]> | null;
+};
+
+/**
+ * Creates a key for an approved request, carrying over any rate limit increase staff approved for it and, when
+ * regenerating, the name, metadata and scopes of the key it replaces.
+ */
+async function createKey(userId: string, requestId: string, name: string, previous?: KeySettings) {
   const [approved] = await db
     .select({ requestedMax: rateLimitRequest.requestedMax })
     .from(rateLimitRequest)
@@ -56,7 +65,13 @@ async function createKey(userId: string, requestId: string, name: string) {
     .limit(1);
   // Server-side creation: browsers can't call /api-key/create (see the auth hooks).
   return auth.api.createApiKey({
-    body: { userId, name, metadata: { requestId }, ...(approved && { rateLimitMax: approved.requestedMax }) }
+    body: {
+      userId,
+      name: previous?.name || name,
+      metadata: { ...previous?.metadata, requestId },
+      ...(previous?.permissions && { permissions: previous.permissions }),
+      ...(approved && { rateLimitMax: approved.requestedMax })
+    }
   });
 }
 
@@ -174,7 +189,7 @@ export const regenerateApiKey = command(async () => {
   const { request, key } = await getAccessState(user.id, headers);
   if (request?.status !== "approved" || !key) error(404, "You don’t have an active API key to regenerate.");
 
-  const created = await createKey(user.id, request.id, request.name);
+  const created = await createKey(user.id, request.id, request.name, key);
   try {
     await db.transaction(async (tx) => {
       const [swapped] = await tx

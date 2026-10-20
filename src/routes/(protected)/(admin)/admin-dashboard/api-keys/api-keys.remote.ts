@@ -1,11 +1,14 @@
-import { command, query, requested } from "$app/server";
-import { error } from "@sveltejs/kit";
+import { command, form, query, requested } from "$app/server";
+import { error, invalid } from "@sveltejs/kit";
 import { and, count, desc, eq, ilike, or, type SQL } from "drizzle-orm";
 import { z } from "zod";
 import { audit, requireOutranks, requireStaff } from "#lib/server/admin.js";
+import { auth } from "#lib/server/auth.js";
 import { db } from "#lib/server/db/index.js";
-import { apikey, apiKeyRequest, rateLimitRequest, user } from "#lib/server/db/schema/index.js";
+import { adminAuditLog, apikey, apiKeyRequest, rateLimitRequest, user } from "#lib/server/db/schema/index.js";
 import { listArgs, reviewNote } from "#lib/shared/admin.js";
+import { API_KEY_SCOPES, type ApiKeyScope } from "#lib/shared/constants/developer.js";
+import { can, roleRank } from "#lib/shared/roles.js";
 import { getOverview } from "../admin.remote";
 
 export const listApiKeys = query(
@@ -56,6 +59,7 @@ async function getManagedKey(id: string) {
     .select({
       ownerId: apikey.referenceId,
       enabled: apikey.enabled,
+      metadata: apikey.metadata,
       requestId: apiKeyRequest.id,
       requestStatus: apiKeyRequest.status
     })
@@ -121,3 +125,134 @@ export const setApiKeyRateLimit = command(
     await requested(listApiKeys, 1).refreshAll();
   }
 );
+
+// Better Auth stores JSON fields as text, and older keys hold double-encoded metadata.
+function parseJson(value: string | null): unknown {
+  let parsed: unknown = value;
+  for (let i = 0; i < 2 && typeof parsed === "string"; i++) {
+    try {
+      parsed = JSON.parse(parsed);
+    } catch {
+      return null;
+    }
+  }
+  return parsed ?? null;
+}
+
+const asObject = (value: unknown) =>
+  value && typeof value === "object" && !Array.isArray(value) ? (value as Record<string, unknown>) : {};
+
+export const getApiKeyDetail = query(z.string().min(1), async (id) => {
+  const { staff } = await requireStaff({ user: ["list"] });
+  const [row] = await db
+    .select({
+      key: apikey,
+      owner: { id: user.id, name: user.name, image: user.image, role: user.role },
+      request: {
+        id: apiKeyRequest.id,
+        name: apiKeyRequest.name,
+        useCase: apiKeyRequest.useCase,
+        url: apiKeyRequest.url,
+        description: apiKeyRequest.description,
+        status: apiKeyRequest.status
+      }
+    })
+    .from(apikey)
+    .innerJoin(user, eq(user.id, apikey.referenceId))
+    .leftJoin(apiKeyRequest, eq(apiKeyRequest.apiKeyId, apikey.id))
+    .where(eq(apikey.id, id));
+  if (!row) error(404, "API key not found.");
+  const { key, owner, request } = row;
+  const { requestId: _, ...metadata } = asObject(parseJson(key.metadata));
+  const scopes = asObject(parseJson(key.permissions)).api;
+  const history = await db
+    .select({
+      id: adminAuditLog.id,
+      action: adminAuditLog.action,
+      note: adminAuditLog.note,
+      createdAt: adminAuditLog.createdAt
+    })
+    .from(adminAuditLog)
+    .where(eq(adminAuditLog.targetId, id))
+    .orderBy(desc(adminAuditLog.createdAt))
+    .limit(20);
+  return {
+    key: {
+      id: key.id,
+      name: key.name,
+      start: key.start,
+      enabled: !!key.enabled,
+      rateLimitEnabled: !!key.rateLimitEnabled,
+      rateLimitMax: key.rateLimitMax,
+      rateLimitTimeWindow: key.rateLimitTimeWindow,
+      requestCount: key.requestCount ?? 0,
+      lastRequest: key.lastRequest,
+      expiresAt: key.expiresAt,
+      createdAt: key.createdAt,
+      scopes: Array.isArray(scopes) ? scopes.filter((scope): scope is ApiKeyScope => scope in API_KEY_SCOPES) : [],
+      metadata
+    },
+    owner,
+    request,
+    history,
+    manageable:
+      can(staff.role, { apiKey: ["manage"] }) && owner.id !== staff.id && roleRank(owner.role) < roleRank(staff.role)
+  };
+});
+
+const scopeValues = Object.keys(API_KEY_SCOPES) as [ApiKeyScope, ...ApiKeyScope[]];
+
+export const updateApiKey = form(
+  z.object({
+    id: z.string().min(1),
+    name: z.string().trim().min(3, "Use at least 3 characters.").max(32, "Keep the name under 32 characters."),
+    scopes: z.array(z.enum(scopeValues)).default([]),
+    metadata: z.string().trim().max(5000, "Keep the metadata under 5000 characters.").default(""),
+    note: reviewNote
+  }),
+  async ({ id, name, scopes, metadata, note }, issue) => {
+    const { staff, key } = await getManagedKey(id);
+    let extra: Record<string, unknown> = {};
+    if (metadata) {
+      try {
+        extra = JSON.parse(metadata);
+      } catch {
+        invalid(issue.metadata("Enter valid JSON."));
+      }
+      if (!extra || typeof extra !== "object" || Array.isArray(extra)) invalid(issue.metadata("Enter a JSON object."));
+    }
+    // The request link is how regenerated keys keep their settings, so staff can't edit or remove it.
+    const { requestId } = asObject(parseJson(key.metadata));
+    await auth.api.updateApiKey({
+      body: {
+        keyId: id,
+        userId: key.ownerId,
+        name,
+        permissions: { api: scopes },
+        metadata: { ...extra, ...(requestId ? { requestId } : {}) }
+      }
+    });
+    await audit(db, {
+      actorId: staff.id,
+      action: "api_key.update",
+      targetUserId: key.ownerId,
+      targetId: id,
+      note,
+      details: { name, scopes }
+    });
+    await Promise.all([getApiKeyDetail(id).refresh(), requested(listApiKeys, 1).refreshAll()]);
+  }
+);
+
+export const deleteApiKey = command(z.object({ id: z.string().min(1), note: reviewNote }), async ({ id, note }) => {
+  const { staff, key } = await getManagedKey(id);
+  await db.transaction(async (tx) => {
+    // Revoking the request too, so the owner has to request access again instead of generating a fresh key.
+    if (key.requestId && key.requestStatus === "approved") {
+      await tx.update(apiKeyRequest).set({ status: "revoked" }).where(eq(apiKeyRequest.id, key.requestId));
+    }
+    await tx.delete(apikey).where(eq(apikey.id, id));
+    await audit(tx, { actorId: staff.id, action: "api_key.delete", targetUserId: key.ownerId, targetId: id, note });
+  });
+  await Promise.all([requested(listApiKeys, 1).refreshAll(), getOverview().refresh()]);
+});

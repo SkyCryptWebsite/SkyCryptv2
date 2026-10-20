@@ -14,3 +14,12 @@ export type RateLimitRequestStatus = "pending" | "approved" | "denied";
 
 // shortcut: arbitrary ceiling for self-service requests, raise it if staff regularly grant more.
 export const MAX_REQUESTED_RATE_LIMIT = 10_000;
+
+/** Scopes an API key can hold, stored as Better Auth permissions `{ api: [...] }`. New keys get `normal`. */
+export const API_KEY_SCOPES = {
+  normal: { label: "Normal", description: "Standard read access to the API." },
+  "cache-bypass": { label: "Cache bypass", description: "May skip cached data and fetch fresh profiles." }
+} as const;
+
+export type ApiKeyScope = keyof typeof API_KEY_SCOPES;
+export const DEFAULT_API_KEY_PERMISSIONS = { api: ["normal"] satisfies ApiKeyScope[] };

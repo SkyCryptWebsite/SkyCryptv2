@@ -18,6 +18,7 @@ import { apiKey } from "@better-auth/api-key";
 import type { BetterAuthOptions, BetterAuthPlugin } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { APIError, createAuthMiddleware } from "better-auth/api";
+import { deleteSessionCookie } from "better-auth/cookies";
 import { betterAuth } from "better-auth/minimal";
 import { admin, customSession, genericOAuth, patreon } from "better-auth/plugins";
 import { captcha } from "better-auth/plugins";
@@ -32,6 +33,7 @@ import {
   storeMinecraftAccounts,
   type McIdLink
 } from "#lib/server/minecraft-accounts.js";
+import { DEFAULT_API_KEY_PERMISSIONS } from "#lib/shared/constants/developer.js";
 import { ac, roles } from "#lib/shared/roles.js";
 
 const BUILD_TIME_AUTH_SECRET = "build-time-placeholder-secret-for-sveltekit-build";
@@ -170,7 +172,8 @@ const options = {
       delete locals.pendingMcIdLink;
       if (mcProfile && mcLink) {
         try {
-          await storeMinecraftAccounts(mcLink, mcProfile);
+          // The evasion check already ended the sessions; this drops the cookie too.
+          if (await storeMinecraftAccounts(mcLink, mcProfile)) deleteSessionCookie(ctx);
         } catch (error) {
           log.error({ action: "auth.sync_minecraft_accounts", error });
         }
@@ -236,6 +239,7 @@ const options = {
       defaultPrefix: "skycrypt_",
       enableMetadata: true,
       requireName: true,
+      permissions: { defaultPermissions: DEFAULT_API_KEY_PERMISSIONS },
       rateLimit: {
         enabled: true,
         maxRequests: 300,

@@ -9,7 +9,7 @@
 
 # Terms of Service
 
-Last updated: 19 October 2026
+Last updated: 20 October 2026
 
 These terms are the agreement between you and SkyCrypt LLC, registered in Maryland, which runs SkyCrypt at [sky.shiiyu.moe](https://sky.shiiyu.moe). By using SkyCrypt you agree to them. If you don't agree, please don't use the site.
 
@@ -44,6 +44,8 @@ When you use SkyCrypt, you agree not to:
 - use SkyCrypt to harass other players or to break the law.
 
 If you break these rules, we can remove content, revoke API keys, or suspend or ban your account. Our staff decide this case by case.
+
+A ban applies to you, not just to one account. While you are banned, you may not use another Discord account to create a new SkyCrypt account or link the Minecraft accounts from your banned account to one. If you do, the new account is banned automatically for as long as the original ban lasts.
 
 ## The SkyCrypt API
 

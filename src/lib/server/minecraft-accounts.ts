@@ -1,7 +1,8 @@
-import { and, asc, desc, eq } from "drizzle-orm";
+import { and, asc, desc, eq, gt, inArray, isNull, ne, or } from "drizzle-orm";
 import { z } from "zod";
 import { db } from "#lib/server/db/index.js";
-import { account, minecraftAccount } from "#lib/server/db/schema/index.js";
+import { account, adminAuditLog, apikey, minecraftAccount, session, user } from "#lib/server/db/schema/index.js";
+import { roleRank } from "#lib/shared/roles.js";
 
 const minecraftUuid = z
   .string()
@@ -87,6 +88,61 @@ export async function storeMinecraftAccounts(link: McIdLink, profile: McIdProfil
         .values(profile.accounts.map((minecraft) => ({ ...minecraft, accountId: link.id, syncedAt })));
     }
   });
+  return banIfEvading(
+    link.userId,
+    profile.accounts.map((minecraft) => minecraft.uuid)
+  );
+}
+
+export const BAN_EVASION_REASON = "Ban evasion: this account linked a Minecraft account from a banned account.";
+
+/**
+ * Bans a user who links a Minecraft account that also belongs to a currently banned user, for as long as that ban
+ * lasts. Returns whether the user was banned.
+ */
+export async function banIfEvading(userId: string, uuids: string[]) {
+  if (!uuids.length) return false;
+  const [[target], [source]] = await Promise.all([
+    db.select({ role: user.role, banned: user.banned }).from(user).where(eq(user.id, userId)),
+    db
+      .select({ id: user.id, banExpires: user.banExpires, uuid: minecraftAccount.uuid })
+      .from(minecraftAccount)
+      .innerJoin(account, eq(account.id, minecraftAccount.accountId))
+      .innerJoin(user, eq(user.id, account.userId))
+      .where(
+        and(
+          inArray(minecraftAccount.uuid, uuids),
+          ne(user.id, userId),
+          eq(user.banned, true),
+          or(isNull(user.banExpires), gt(user.banExpires, new Date()))
+        )
+      )
+      // Postgres sorts nulls first when descending, so a permanent ban wins over the longest temporary one.
+      .orderBy(desc(user.banExpires))
+      .limit(1)
+  ]);
+  // Staff are never banned automatically, so a mistake can't lock them out.
+  if (!target || target.banned || roleRank(target.role) > 0 || !source) return false;
+  await db.transaction(async (tx) => {
+    await tx
+      .update(user)
+      .set({ banned: true, banReason: BAN_EVASION_REASON, banExpires: source.banExpires })
+      .where(eq(user.id, userId));
+    await tx.delete(session).where(eq(session.userId, userId));
+    await tx
+      .update(apikey)
+      .set({ enabled: false })
+      .where(and(eq(apikey.referenceId, userId), eq(apikey.enabled, true)));
+    await tx.insert(adminAuditLog).values({
+      id: crypto.randomUUID(),
+      actorId: null,
+      action: "user.ban_evasion",
+      targetUserId: userId,
+      note: BAN_EVASION_REASON,
+      details: { bannedUserId: source.id, uuid: source.uuid }
+    });
+  });
+  return true;
 }
 
 export async function fetchMcIdProfile(accessToken: string) {

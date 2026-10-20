@@ -25,6 +25,9 @@
     if (row.action === "user.set_role") return `${details.from} → ${details.to}`;
     if (row.action === "user.ban") return `Duration: ${details.duration}`;
     if (row.action === "api_key.rate_limit") return `New limit: ${details.max}`;
+    if (row.action === "api_key.update")
+      return `Name: ${details.name} · Scopes: ${(details.scopes as string[]).join(", ") || "none"}`;
+    if (row.action === "user.update") return `Developer mode ${details.developerMode ? "on" : "off"}`;
     if (row.action === "rate_limit.approve" || row.action === "rate_limit.deny")
       return `Requested: ${details.requestedMax}`;
     return null;
@@ -61,7 +64,8 @@
       {#if row.actor?.image}<Avatar.Image src={row.actor.image} alt="" />{/if}
       <Avatar.Fallback class="text-[10px]">{(row.actor?.name ?? "?").slice(0, 2).toUpperCase()}</Avatar.Fallback>
     </Avatar.Root>
-    <span class="truncate">{row.actor?.name ?? "Deleted user"}</span>
+    <span class="truncate"
+      >{row.actor?.name ?? (row.action === "user.ban_evasion" ? "Automatic" : "Deleted user")}</span>
   </div>
 {/snippet}
 

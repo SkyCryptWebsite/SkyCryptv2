@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { goto } from "$app/navigation";
   import { resolve } from "$app/paths";
   import { Badge } from "$ui/badge";
   import { Button } from "$ui/button";
@@ -28,6 +29,7 @@
   const loading = $derived($effect.pending() > 0);
 
   type Row = (typeof data.rows)[number];
+  const keyHref = (id: string) => resolve("/(protected)/(admin)/admin-dashboard/api-keys/[id]", { id });
   let action = $state<{ kind: "toggle" | "limit"; row: Row } | null>(null);
   let note = $state("");
   let limit = $state(0);
@@ -94,7 +96,7 @@
 
 {#snippet keyCell(row: Row)}
   <div class="flex flex-col">
-    <code class="font-mono text-xs">{row.start}…</code>
+    <a class="font-mono text-xs underline-offset-4 hover:underline" href={keyHref(row.id)}>{row.start}…</a>
     <span class="text-xs text-muted-foreground">{row.projectName ?? "No access request"}</span>
   </div>
 {/snippet}
@@ -122,6 +124,7 @@
         {/snippet}
       </DropdownMenu.Trigger>
       <DropdownMenu.Content align="end">
+        <DropdownMenu.Item onSelect={() => goto(keyHref(row.id))}>Edit details</DropdownMenu.Item>
         <DropdownMenu.Item onSelect={() => open("limit", row)}>Set rate limit</DropdownMenu.Item>
         <DropdownMenu.Separator />
         <DropdownMenu.Item variant={row.enabled ? "destructive" : "default"} onSelect={() => open("toggle", row)}>
@@ -168,6 +171,7 @@
     size={args.size}
     {loading}
     getRowId={(row) => row.id}
+    onRowClick={(row) => goto(keyHref(row.id))}
     onPageChange={(page, size) => params.set({ page, size })}
     empty="No API keys match these filters." />
 </div>

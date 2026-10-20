@@ -13,6 +13,7 @@
   import * as Item from "$ui/item";
   import * as Select from "$ui/select";
   import { Spinner } from "$ui/spinner";
+  import { Switch } from "$ui/switch";
   import { Textarea } from "$ui/textarea";
   import BanIcon from "@lucide/svelte/icons/ban";
   import LogOutIcon from "@lucide/svelte/icons/log-out";
@@ -23,7 +24,14 @@
   import { getStaffContext } from "../../admin.remote";
   import { formatDate, formatDateTime, formatNumber } from "../../format";
   import StatusBadge from "../../status-badge.svelte";
-  import { banUser, getUserDetail, revokeUserSessions, setUserRole, unbanUser } from "../users.remote";
+  import {
+    banUser,
+    getUserDetail,
+    revokeUserSessions,
+    setDeveloperMode,
+    setUserRole,
+    unbanUser
+  } from "../users.remote";
 
   const id = $derived(page.params.id ?? "");
   // One async derived for both, so they load in parallel without an await waterfall.
@@ -32,7 +40,8 @@
   const can = $derived({
     ban: staff.permissions.banUsers && detail.outranked,
     revoke: staff.permissions.revokeSessions && detail.outranked,
-    setRole: staff.permissions.setRoles && detail.outranked
+    setRole: staff.permissions.setRoles && detail.outranked,
+    edit: staff.permissions.editUsers && detail.outranked
   });
   // Only roles below the staff member's own rank can be handed out.
   const assignableRoles = $derived(
@@ -139,6 +148,20 @@
           <dt class="text-muted-foreground">{providerLabels[linked.providerId] ?? linked.providerId}</dt>
           <dd class="truncate">Linked {formatDate(linked.createdAt)}</dd>
         {/each}
+        <dt class="text-muted-foreground"><label for="developer-mode">Developer mode</label></dt>
+        <dd>
+          <Switch
+            id="developer-mode"
+            disabled={!can.edit || !!setDeveloperMode.pending}
+            bind:checked={
+              () => user.developerMode,
+              (enabled) =>
+                run(
+                  () => setDeveloperMode({ userId: id, enabled }),
+                  enabled ? "Developer mode turned on." : "Developer mode turned off."
+                )
+            } />
+        </dd>
         <dt class="text-muted-foreground">Patreon tier</dt>
         <dd>
           {#if detail.membership}
@@ -206,8 +229,11 @@
                 <Item.Title>{request.name}</Item.Title>
                 <Item.Description>
                   {formatDate(request.createdAt)}
-                  {#if request.keyStart}
-                    · key <code class="font-mono">{request.keyStart}…</code>
+                  {#if request.keyId}
+                    · key <a
+                      class="font-mono underline-offset-4 hover:underline"
+                      href={resolve("/(protected)/(admin)/admin-dashboard/api-keys/[id]", { id: request.keyId })}
+                      >{request.keyStart}…</a>
                     {request.keyEnabled ? "active" : "disabled"}
                   {/if}
                 </Item.Description>

@@ -16,6 +16,7 @@ export const getStaffContext = query(async () => {
       manageKeys: can(role, { apiKey: ["manage"] }),
       revokeSessions: can(role, { session: ["revoke"] }),
       banUsers: can(role, { user: ["ban"] }),
+      editUsers: can(role, { user: ["update"] }),
       setRoles: can(role, { user: ["set-role"] }),
       viewAuditLog: can(role, { auditLog: ["list"] }),
       manageContent: can(role, { content: ["manage"] })

@@ -5,7 +5,14 @@ import { z } from "zod";
 import { audit, requireOutranks, requireStaff } from "#lib/server/admin.js";
 import { auth } from "#lib/server/auth.js";
 import { db } from "#lib/server/db/index.js";
-import { account, adminAuditLog, apikey, apiKeyRequest, rateLimitRequest } from "#lib/server/db/schema/index.js";
+import {
+  account,
+  adminAuditLog,
+  apikey,
+  apiKeyRequest,
+  rateLimitRequest,
+  user as userTable
+} from "#lib/server/db/schema/index.js";
 import { getStoredMinecraftAccounts } from "#lib/server/minecraft-accounts.js";
 import { getStoredPatreonMembership } from "#lib/server/patreon.js";
 import { BAN_DURATIONS, listArgs, USER_FILTERS } from "#lib/shared/admin.js";
@@ -61,7 +68,9 @@ export const listUsers = query(
 export const getUserDetail = query(z.string().min(1), async (id) => {
   const { staff, headers } = await requireStaff({ user: ["get"] });
   const target = await auth.api.getUser({ query: { id }, headers });
-  const [accounts, minecraft, membership, sessions, requests, rateLimits, history] = await Promise.all([
+  const [[settings], accounts, minecraft, membership, sessions, requests, rateLimits, history] = await Promise.all([
+    // Better Auth's `getUser` result doesn't include additional fields.
+    db.select({ developerMode: userTable.developerMode }).from(userTable).where(eq(userTable.id, id)),
     db
       .select({ providerId: account.providerId, accountId: account.accountId, createdAt: account.createdAt })
       .from(account)
@@ -75,6 +84,7 @@ export const getUserDetail = query(z.string().min(1), async (id) => {
         name: apiKeyRequest.name,
         status: apiKeyRequest.status,
         createdAt: apiKeyRequest.createdAt,
+        keyId: apikey.id,
         keyStart: apikey.start,
         keyEnabled: apikey.enabled
       })
@@ -116,6 +126,7 @@ export const getUserDetail = query(z.string().min(1), async (id) => {
       banned: !!target.banned,
       banReason: target.banReason ?? null,
       banExpires: target.banExpires ?? null,
+      developerMode: !!settings?.developerMode,
       createdAt: target.createdAt
     },
     outranked: target.id !== staff.id && roleRank(target.role) < roleRank(staff.role),
@@ -200,6 +211,22 @@ export const setUserRole = form(
       action: "user.set_role",
       targetUserId: userId,
       details: { from: primaryRole(target.role), to: role }
+    });
+    await getUserDetail(userId).refresh();
+  }
+);
+
+export const setDeveloperMode = command(
+  z.object({ userId: z.string().min(1), enabled: z.boolean() }),
+  async ({ userId, enabled }) => {
+    const { staff, headers } = await requireStaff({ user: ["update"] });
+    await requireOutranks(staff, userId);
+    await auth.api.adminUpdateUser({ headers, body: { userId, data: { developerMode: enabled } } });
+    await audit(db, {
+      actorId: staff.id,
+      action: "user.update",
+      targetUserId: userId,
+      details: { developerMode: enabled }
     });
     await getUserDetail(userId).refresh();
   }

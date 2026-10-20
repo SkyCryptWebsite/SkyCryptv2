@@ -45,7 +45,7 @@ export const roles = {
   [UserRole.Moderator]: ac.newRole({ ...view, session: ["list", "revoke"], apiAccess: ["review"] }),
   [UserRole.HeadModerator]: ac.newRole({
     ...view,
-    user: ["list", "get", "ban"],
+    user: ["list", "get", "ban", "update"],
     session: ["list", "revoke"],
     apiAccess: ["review"],
     apiKey: ["manage"],
@@ -53,7 +53,7 @@ export const roles = {
   }),
   [UserRole.Admin]: ac.newRole({
     ...view,
-    user: ["list", "get", "ban", "set-role"],
+    user: ["list", "get", "ban", "update", "set-role"],
     session: ["list", "revoke"],
     apiAccess: ["review"],
     apiKey: ["manage"],

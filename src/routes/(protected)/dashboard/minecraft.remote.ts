@@ -19,6 +19,7 @@ export const syncMinecraftAccounts = command(async () => {
   if (!locals.user) error(401, "Sign in to sync Minecraft accounts.");
   const links = await getMcIdLinks(locals.user.id);
   if (!links.length) error(400, "Link MC-ID before syncing Minecraft accounts.");
+  let banned = false;
   for (const link of links) {
     let accessToken: string;
     try {
@@ -29,10 +30,11 @@ export const syncMinecraftAccounts = command(async () => {
     try {
       const profile = await fetchMcIdProfile(accessToken);
       if (!profile) return { reconnect: true };
-      await storeMinecraftAccounts(link, profile);
+      banned = await storeMinecraftAccounts(link, profile);
     } catch {
       error(502, "Couldn’t sync Minecraft accounts from MC-ID. Try again or reconnect MC-ID.");
     }
+    if (banned) error(403, "Your account was banned for ban evasion.");
   }
   await getMinecraftAccounts().refresh();
   return { reconnect: false };
