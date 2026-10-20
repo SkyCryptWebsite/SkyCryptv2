@@ -12,6 +12,3 @@ updateConfig:
 
 publicHoistPattern:
   - "@takumi-rs/core-*"
-
-minimumReleaseAgeExclude:
-  - evlog@2.33.1
