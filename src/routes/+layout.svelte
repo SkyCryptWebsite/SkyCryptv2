@@ -40,15 +40,14 @@
   import { CommandPalette, JsonLd, PerformanceMode } from "#lib/components/misc";
   import NewPostsNotifier from "#lib/components/newsroom/NewPostsNotifier.svelte";
   import SiteBanners from "#lib/components/newsroom/SiteBanners.svelte";
-  import ThemeEditor from "#lib/components/theme-editor/ThemeEditor.svelte";
   import { IsHover } from "#lib/hooks/is-hover.svelte.js";
   import { IsMobile } from "#lib/hooks/is-mobile.svelte.js";
   import "./layout.css";
   import { listResourcePacks } from "#lib/shared/api/skycrypt-api.remote";
   import { getActiveBanners, listLatestPostsForNotifications } from "#lib/shared/newsroom.remote";
-  import { parseThemeFromURL } from "#lib/shared/themes/sharing";
 
   let { children }: { children: Snippet } = $props();
+  const loadThemeEditor = () => import("#lib/components/theme-editor/ThemeEditor.svelte");
   let isMobile = $state(new IsMobile());
   let isHover = $state(new IsHover());
   let toastId: string | number = $state(0);
@@ -200,7 +199,8 @@
     const themeParam = urlParams.get("theme");
     if (themeParam) {
       toast.promise(
-        parseThemeFromURL(window.location.href)
+        import("#lib/shared/themes/sharing")
+          .then(({ parseThemeFromURL }) => parseThemeFromURL(window.location.href))
           .then((decoded) => {
             if (decoded) {
               themeContext.saveTheme(decoded);
@@ -401,7 +401,9 @@
       escapeKeydownBehavior="ignore"
       interactOutsideBehavior="ignore"
       preventScroll={false}>
-      <ThemeEditor />
+      {#await loadThemeEditor() then { default: ThemeEditor }}
+        <ThemeEditor />
+      {/await}
     </Sheet.Content>
   </Sheet.Root>
 {/if}
@@ -411,7 +413,9 @@
     <Drawer.Content
       class="before:glass before:glass-bg-popover standard:dark:before:bg-transparent [&>div:first-child]:my-4">
       <div class="overflow-auto p-4">
-        <ThemeEditor />
+        {#await loadThemeEditor() then { default: ThemeEditor }}
+          <ThemeEditor />
+        {/await}
       </div>
     </Drawer.Content>
   </Drawer.Root>

@@ -261,7 +261,7 @@
 {#if preferences.showGlint}
   <svg xmlns="http://www.w3.org/2000/svg" height="0" width="0" class="fixed">
     <filter id="enchanted-glint">
-      <feImage href="/img/enchanted-glint.gif" preserveAspectRatio="none" result="IMAGE"></feImage>
+      <feImage href="/img/enchanted-glint.avif" preserveAspectRatio="none" result="IMAGE"></feImage>
       <feBlend in="IMAGE" in2="SourceGraphic" mode="screen" result="BLEND"></feBlend>
       <feComposite operator="in" in="BLEND" in2="SourceGraphic"></feComposite>
     </filter>

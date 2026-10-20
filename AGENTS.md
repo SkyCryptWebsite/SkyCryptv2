@@ -47,11 +47,13 @@ Follow these instructions when working on SkyCrypt Frontend. Nested `AGENTS.md` 
 - Use Svelte 5 runes (`$state`, `$derived`, `$props`) and snippets. Avoid legacy reactive declarations, `export let`, and slots in new code.
 - Use the Svelte MCP to get the latest svelte documentation and conventions. Use the async flag to get the latest SvelteKit documentation and conventions for async svelte and remote functions, as that is the default for this project (instead of +page.server.ts way of loading data).
 - The project enables async Svelte compilation and SvelteKit remote functions. Use `--async` when validating with Svelte MCP/CLI tooling.
+- Check official documentation before implementing: the Svelte MCP for Svelte and SvelteKit, the library's own docs (for example takumi, Better Auth, Cloudflare) and the Node 24 docs for server code. Prefer SvelteKit features, then Node 24 built-ins, then library features, then hand-written code. Context7 can lag behind official docs. Say which docs you checked when reporting.
 - Use SvelteKit remote functions in `*.remote.ts` for new data loading and mutations instead of adding `+page.server.ts`. Migrate existing server route files only when the task calls for it.
 - Validate remote-function inputs and check authentication and authorization on the server. Follow nearby implementations, and check permissions in each protected mutation even when route guards or hidden controls restrict access.
 - Use Tailwind utilities, the shared `cn()` helper, and existing theme tokens and UI primitives. UI changes must work with a keyboard, show focus, adapt to screen size, and support existing themes.
 - Name reusable Svelte components in PascalCase and utilities in camelCase; follow SvelteKit route naming and nearby feature-file conventions.
 - Follow `.oxfmtrc.json`: two spaces, double quotes, no trailing commas, sorted imports, and ordered Tailwind classes. Format only changed files.
+- Comment only what the code cannot say: a non-obvious reason, a gotcha, a security constraint. Don't restate what the code does.
 
 ## Newsroom and rich text
 

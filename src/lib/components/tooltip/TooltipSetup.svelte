@@ -49,10 +49,10 @@
   tether={itemTooltipTether}
   disabled={!isHover.current}>
   {#snippet children({ payload })}
-    {#if payload?.inViewport?.current}
+    {#if payload?.inViewport}
       <Tooltip.Portal>
         <Tooltip.Content
-          forceMount={payload.inViewport.current}
+          forceMount={payload.inViewport}
           class="group/itemtooltip z-50 flex max-h-[calc(96vh-3rem)] flex-col overflow-clip font-skyblock-icons select-text data-[mctooltip=false]:rounded-xl data-[mctooltip=false]:border data-[mctooltip=false]:glass data-[mctooltip=false]:glass-bg-popover data-[mctooltip=true]:rounded-xs data-[mctooltip=true]:bg-transparent"
           side="right"
           align="center"

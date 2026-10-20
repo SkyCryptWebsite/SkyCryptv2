@@ -7,7 +7,6 @@
   import { cubicOut } from "svelte/easing";
   import { MediaQuery } from "svelte/reactivity";
   import { fade } from "svelte/transition";
-  import Skin3D from "#lib/components/misc/Skin3D.svelte";
   import type { ModelsStatsOutput } from "#lib/shared/api/orval-generated";
 
   // Lives outside the profile boundary so the skin viewer keeps spinning from loading into the loaded profile
@@ -45,6 +44,8 @@
       <!-- The page shows the error -->
     {/await}
   {:else if browser && isWide.current}
-    <Skin3D {uuid} showStaticSkin={() => (skinFailed = true)} class="h-full" />
+    {#await import("#lib/components/misc/Skin3D.svelte") then { default: Skin3D }}
+      <Skin3D {uuid} showStaticSkin={() => (skinFailed = true)} class="h-full" />
+    {/await}
   {/if}
 </div>

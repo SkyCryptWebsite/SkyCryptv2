@@ -13,29 +13,31 @@ import { log } from "evlog";
 import { render } from "svelte/server";
 import { Renderer, type Font, type ImageSource } from "takumi-js/node";
 import { ImageResponse } from "takumi-js/response";
+import { createSemaphore } from "#lib/server/semaphore";
 import type { RequestHandler } from "./$types";
 import appStyles from "$routes/layout.css?inline";
 
 // Create shared renderer with 64MB cache budget
 const renderer = new Renderer({ cacheMaxBytes: 64 * 1024 * 1024 });
+// Only the few Twemoji glyphs in card text are fetched remotely, so this stays tiny.
+const fetchCache = new Map<string, Promise<ArrayBuffer>>();
 
 let assetsPromise: Promise<{ images: ImageSource[] }> | undefined;
 const loadAssets = () => (assetsPromise ??= setupAssetsAndRenderer());
 loadAssets();
 
-// shortcut: a fixed guess, not load-tested. Tune it, or make it an env var, once real burst numbers exist.
-const MAX_CONCURRENT_CARDS = 16;
-let cardsInFlight = 0;
+const cardSlots = createSemaphore({ limit: 16, maxQueue: 64, timeoutMs: 10_000 });
 
 export const GET: RequestHandler = async (event) => {
-  if (cardsInFlight >= MAX_CONCURRENT_CARDS) {
+  try {
+    await cardSlots.acquire(event.request.signal);
+  } catch {
     return new Response("Too many card renders, try again shortly", { status: 503, headers: { "retry-after": "5" } });
   }
-  cardsInFlight++;
   try {
     return await renderCard(event);
   } finally {
-    cardsInFlight--;
+    cardSlots.release();
   }
 };
 
@@ -82,7 +84,7 @@ async function renderCard({ params, request, url, locals }: Parameters<RequestHa
       css: appStyles,
       emoji: "twemoji",
       signal: request.signal,
-      images: [...images, { src: "player", data: playerImage, cache: "none" }],
+      images: { sources: [...images, { src: "player", data: playerImage, cache: "none" }], fetchCache },
       renderer,
       onError: () => {}
     });
@@ -130,7 +132,7 @@ async function renderCard({ params, request, url, locals }: Parameters<RequestHa
         },
         css: appStyles,
         emoji: "twemoji",
-        images,
+        images: { sources: images, fetchCache },
         renderer,
         onError: () => {}
       });

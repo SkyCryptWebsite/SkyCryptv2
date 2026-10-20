@@ -18,8 +18,7 @@
   const dashboard = $derived(await getDashboard());
   const minecraft = $derived(dashboard.accounts.some((account) => account.providerId === "mc-id"));
 
-  const session = await authClient.getSession();
-  const discord = $derived(session.data?.user.discordProfile);
+  const discord = $derived(dashboard.discord);
 
   let needsReconnect = $state(false);
   async function sync() {
@@ -86,7 +85,7 @@
               src="https://cdn.discordapp.com/avatars/{discord?.discordUserId}/{discord?.avatarHash}?size=512&animated=true"
               alt="User avatar" />
 
-            <Avatar.Fallback>{session?.data?.user?.name?.slice(0, 2).toUpperCase()}</Avatar.Fallback>
+            <Avatar.Fallback>{dashboard.user.name.slice(0, 2).toUpperCase()}</Avatar.Fallback>
           </Avatar.Root>
         </Avatar.Root>
       </div>
@@ -94,7 +93,7 @@
     <div class="relative mt-16 flex flex-row items-center gap-4 p-4">
       <div class="flex flex-col gap-1 break-all">
         <div class="flex flex-row items-center-safe gap-2">
-          <p class="text-2xl font-semibold">{session?.data?.user?.name}</p>
+          <p class="text-2xl font-semibold">{dashboard.user.name}</p>
           {#if discord?.primaryGuild && discord?.primaryGuild?.identity_enabled}
             <Badge variant="outline" class="px-2 py-3.5 text-base">
               <Avatar.Root class="size-4 rounded-none after:rounded-none after:border-none">

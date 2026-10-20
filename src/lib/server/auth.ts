@@ -19,15 +19,14 @@ import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { APIError, createAuthMiddleware } from "better-auth/api";
 import { deleteSessionCookie } from "better-auth/cookies";
 import { betterAuth } from "better-auth/minimal";
-import { admin, customSession, genericOAuth, patreon } from "better-auth/plugins";
+import { admin, genericOAuth, patreon } from "better-auth/plugins";
 import { captcha } from "better-auth/plugins";
 import { sveltekitCookies } from "better-auth/svelte-kit";
 import { log } from "evlog";
 import { db } from "#lib/server/db";
-import { getDiscordProfile, parseDiscordProfile, syncDiscordProfile } from "#lib/server/discord-profile";
+import { parseDiscordProfile, syncDiscordProfile } from "#lib/server/discord-profile";
 import {
   fetchMcIdProfile,
-  getStoredMinecraftAccounts,
   parseMcIdProfile,
   storeMinecraftAccounts,
   type McIdLink
@@ -247,16 +246,6 @@ export const auth = betterAuth({
   ...options,
   plugins: [
     ...(options.plugins ?? []),
-    customSession(async ({ user, session }) => {
-      const [discordProfile, minecraftAccounts] = await Promise.all([
-        getDiscordProfile(user.id),
-        getStoredMinecraftAccounts(user.id)
-      ]);
-      return {
-        user: { ...user, discordProfile, minecraftAccounts },
-        session
-      };
-    }, options),
     sveltekitCookies(getRequestEvent) // make sure this is the last plugin in the array
   ]
 });

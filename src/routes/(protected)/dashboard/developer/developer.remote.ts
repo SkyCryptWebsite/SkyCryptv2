@@ -10,6 +10,7 @@ import {
 import { auth } from "#lib/server/auth";
 import { db } from "#lib/server/db";
 import { apikey, apiKeyRequest, rateLimitRequest } from "#lib/server/db/schema";
+import { getStoredMinecraftAccounts } from "#lib/server/minecraft-accounts";
 import { verifyTurnstile } from "#lib/server/turnstile";
 import { apiKeyRequestSchema, rateLimitRequestSchema } from "#lib/shared/api-key-request";
 
@@ -77,9 +78,12 @@ async function createKey(userId: string, requestId: string, name: string, previo
 
 export const getApiAccess = query(async () => {
   const { user, headers } = await requireDeveloper();
-  const { request, key, rateLimit } = await getAccessState(user.id, headers);
+  const [{ request, key, rateLimit }, minecraftAccounts] = await Promise.all([
+    getAccessState(user.id, headers),
+    getStoredMinecraftAccounts(user.id)
+  ]);
   return {
-    minecraftLinked: user.minecraftAccounts.length > 0,
+    minecraftLinked: minecraftAccounts.length > 0,
     reapplyAt: getReapplyAt(request),
     rateLimitRequest: rateLimit && {
       requestedMax: rateLimit.requestedMax,
@@ -114,8 +118,11 @@ export const submitApiKeyRequest = form(
   async ({ _captchaToken, acceptTerms: _, ...fields }, issue) => {
     const { user, headers } = await requireDeveloper();
     const { getClientAddress, locals } = getRequestEvent();
-    const { request } = await getAccessState(user.id, headers);
-    const blocked = getRequestBlockReason(request, user.minecraftAccounts.length > 0);
+    const [{ request }, minecraftAccounts] = await Promise.all([
+      getAccessState(user.id, headers),
+      getStoredMinecraftAccounts(user.id)
+    ]);
+    const blocked = getRequestBlockReason(request, minecraftAccounts.length > 0);
     if (blocked) invalid(blocked);
     if (!(await verifyTurnstile(_captchaToken, getClientAddress()))) {
       invalid(issue._captchaToken("Captcha verification failed. Please try again."));

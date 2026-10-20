@@ -3,6 +3,7 @@ import { getPerks } from "$routes/(protected)/dashboard/donator-perks/perks.remo
 import { error } from "@sveltejs/kit";
 import { log } from "evlog";
 import { auth } from "#lib/server/auth";
+import { getDiscordProfile } from "#lib/server/discord-profile";
 import {
   getPatreonVerificationRetryAt,
   getStoredPatreonMembership,
@@ -15,10 +16,11 @@ export const getDashboard = query(async () => {
   const { locals, request } = getRequestEvent();
   if (!locals.user) error(401, "Sign in to view your dashboard.");
 
-  const [accounts, membership, verificationRetryAt] = await Promise.all([
+  const [accounts, membership, verificationRetryAt, discord] = await Promise.all([
     auth.api.listUserAccounts({ headers: request.headers }),
     getStoredPatreonMembership(locals.user.id),
-    getPatreonVerificationRetryAt(locals.user.id)
+    getPatreonVerificationRetryAt(locals.user.id),
+    getDiscordProfile(locals.user.id)
   ]);
   const { id, name, image, createdAt, developerMode, role } = locals.user;
 
@@ -33,7 +35,8 @@ export const getDashboard = query(async () => {
     },
     accounts: accounts.map(({ id, providerId, accountId, createdAt }) => ({ id, providerId, accountId, createdAt })),
     membership,
-    verificationRetryAt
+    verificationRetryAt,
+    discord
   };
 });
 
