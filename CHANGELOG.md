@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.3.0-beta.8
+
+### Minor Changes
+
+- Anyone can now create a SkyCrypt account with Discord; the sign-up whitelist is gone. _[`ab32c3b`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/ab32c3b21e51145a71470071990042bab9091593) [@DarthGigi](https://github.com/DarthGigi)_
+
 ## 4.3.0-beta.7
 
 ### Minor Changes
