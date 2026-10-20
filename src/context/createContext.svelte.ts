@@ -15,7 +15,7 @@ import type { ListEnchantmentsResponse } from "#lib/shared/api/orval-generated-z
 export type Enchantments = z.infer<typeof ListEnchantmentsResponse>;
 
 export class ProfileContext {
-  #current: ModelsStatsOutput | null = $state(null);
+  #current: ModelsStatsOutput | null = $state.raw(null);
 
   get current() {
     return this.#current;
@@ -27,7 +27,7 @@ export class ProfileContext {
 }
 
 export class AllStatsContext {
-  #current: ModelsStatData[] = $state([]);
+  #current: ModelsStatData[] = $state.raw([]);
 
   get current() {
     return this.#current;
@@ -39,7 +39,7 @@ export class AllStatsContext {
 }
 
 export class EnchantmentsContext {
-  #current: Enchantments = $state([]);
+  #current: Enchantments = $state.raw([]);
 
   get current() {
     return this.#current;
@@ -51,7 +51,7 @@ export class EnchantmentsContext {
 }
 
 export class CombinedContext {
-  #current: ModelsCombinedOutput | null = $state(null);
+  #current: ModelsCombinedOutput | null = $state.raw(null);
 
   get current() {
     return this.#current;
@@ -63,7 +63,7 @@ export class CombinedContext {
 }
 
 export class PacksContext {
-  #packs: ModelsResourcePackConfig[] = $state([]);
+  #packs: ModelsResourcePackConfig[] = $state.raw([]);
 
   get packs() {
     return this.#packs;
@@ -75,7 +75,7 @@ export class PacksContext {
 }
 
 export class MiscContext {
-  #misc: ModelsMiscOutput | null = $state(null);
+  #misc: ModelsMiscOutput | null = $state.raw(null);
 
   get misc() {
     return this.#misc;
@@ -87,7 +87,7 @@ export class MiscContext {
 }
 
 export class SkillsContext {
-  #skills: ModelsSkillsOutput | null = $state(null);
+  #skills: ModelsSkillsOutput | null = $state.raw(null);
 
   get skills() {
     return this.#skills;

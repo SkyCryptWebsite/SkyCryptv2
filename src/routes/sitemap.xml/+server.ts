@@ -5,10 +5,12 @@ import * as sitemap from "super-sitemap/sveltekit";
 import { listPublishedSlugs } from "#lib/server/newsroom";
 
 const BASE_URL = "https://sky.shiiyu.moe";
-const postSlugs = new Set<string>();
-const statsPaths = new Set<string>();
 
 export const GET: RequestHandler = async () => {
+  // Per request, so unpublished posts drop out instead of lingering until a restart.
+  const postSlugs = new Set<string>();
+  const statsPaths = new Set<string>();
+
   try {
     const contributors = await getContributors(__PRERENDER_VERSION__);
 

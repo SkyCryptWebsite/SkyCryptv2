@@ -30,4 +30,12 @@
   });
 </script>
 
-<Avatar.Image {loading} src={resolvedSrc} {alt} class={className} data-enchanted={enchanted} />
+<Avatar.Image
+  {loading}
+  decoding="async"
+  width={16}
+  height={16}
+  src={resolvedSrc}
+  {alt}
+  class={className}
+  data-enchanted={enchanted} />
