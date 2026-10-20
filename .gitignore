@@ -115,5 +115,5 @@ coverage/
 playwright-report/
 test-results/
 
-# Sisyphus planning artifacts
-.sisyphus/
+# Eslint cache
+.eslintcache
