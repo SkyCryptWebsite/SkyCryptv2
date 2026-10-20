@@ -55,7 +55,7 @@
         <p class="text-sm text-pretty text-muted-foreground">A free, open-source stats viewer for Hypixel SkyBlock.</p>
       </div>
 
-      <div class="grid gap-8 sm:grid-cols-2 md:col-span-2 md:grid-cols-4">
+      <div class="grid grid-cols-2 gap-8 md:col-span-2 md:grid-cols-4">
         {#each footerLinks as section (section.label)}
           <nav aria-label={section.label}>
             <h2 class="text-xs font-medium">{section.label}</h2>

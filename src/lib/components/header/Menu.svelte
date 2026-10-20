@@ -25,6 +25,8 @@
   const preferences = getPreferences();
   const internalState = getInternalState();
   const isHover = new IsHover();
+
+  let popoverOpen = $state(false);
 </script>
 
 {#snippet ListItem({ title, content, href, class: className, icon: IconComponent }: ListItemProps)}
@@ -34,7 +36,8 @@
     class={cn(
       "flex items-center gap-1.5 rounded-3xl p-3 text-sm transition-all interact:scale-95 interact:bg-background/50 [&_svg:not([class*='size-'])]:size-4 ",
       className
-    )}>
+    )}
+    onclick={() => (popoverOpen = false)}>
     <div class="flex flex-col gap-1">
       <div class="flex items-center-safe gap-1">
         <IconComponent class="size-5" />
@@ -48,7 +51,7 @@
 {/snippet}
 
 <div class="flex gap-4">
-  <Popover.Root>
+  <Popover.Root bind:open={popoverOpen}>
     <Popover.Trigger
       class={buttonVariants({ variant: "outline", class: "group hidden md:flex data-open:focus:bg-transparent" })}
       openOnHover={true}
@@ -59,14 +62,15 @@
     </Popover.Trigger>
     <Popover.Content
       class="grid gap-1 glass sm:min-w-lg! sm:grid-cols-[16rem_auto] standard:bg-transparent!"
-      align="start"
+      align="center"
       side="bottom"
       sideOffset={12}
       arrowPadding={12}
       collisionPadding={12}>
       <a
         href={resolve("/newsroom")}
-        class="row-span-3 flex h-full flex-col items-stretch gap-3 rounded-3xl p-3 text-sm transition-all interact:scale-95 interact:bg-background/50">
+        class="row-span-3 flex h-full flex-col items-stretch gap-3 rounded-3xl p-3 text-sm transition-all interact:scale-95 interact:bg-background/50"
+        onclick={() => (popoverOpen = false)}>
         <img
           src="/img/newsroom.avif"
           alt="Newsroom"
@@ -92,7 +96,7 @@
       {@render ListItem({
         href: resolve("/(pages)/about"),
         title: "About",
-        content: "Credits, contributors and version details.",
+        content: "Learn more about SkyCrypt and the team behind it",
         icon: InfoIcon,
         class: "[&_svg]:text-primary"
       })}

@@ -156,7 +156,7 @@
       {:else}
         <Empty.Root class="border">
           <Empty.Header>
-            <Empty.Media variant="icon">
+            <Empty.Media variant="icon" class="border bg-transparent">
               <PickaxeIcon />
             </Empty.Media>
             <Empty.Title>No accounts</Empty.Title>

@@ -169,9 +169,9 @@
             <EmojiEditor {account} />
           {/key}
         {:else}
-          <Card.Root class="border glass ring-0 glass-bg-card standard:bg-transparent">
-            <Card.Content>
-              <Empty.Root class="border">
+          <Card.Root class="rounded-none glass p-0 shadow-none ring-0 glass-bg-card standard:bg-transparent">
+            <Card.Content class="overflow-visible rounded-none p-0">
+              <Empty.Root class="w-full border">
                 <Empty.Header>
                   <Empty.Title>Connect your Minecraft account</Empty.Title>
                   <Empty.Description>
