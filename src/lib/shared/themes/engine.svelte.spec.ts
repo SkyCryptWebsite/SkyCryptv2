@@ -1,5 +1,3 @@
-// @vitest-environment happy-dom
-
 import { afterEach, beforeEach, describe, it, vi } from "vitest";
 import { DEFAULT_THEME } from "./defaults";
 import { mergeThemeWithDefaults, PREVIEW_THEME_ID, RUNTIME_THEMES_STYLE_ID, ThemeEngine } from "./engine";
