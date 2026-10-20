@@ -23,7 +23,6 @@ export const variables = defineEnvVars({
   },
   DISCORD_CLIENT_ID: { schema },
   DISCORD_CLIENT_SECRET: { schema },
-  DISCORD_WHITELIST: { schema },
   MC_ID_CLIENT_ID: { schema },
   MC_ID_CLIENT_SECRET: { schema },
   ORIGIN: {

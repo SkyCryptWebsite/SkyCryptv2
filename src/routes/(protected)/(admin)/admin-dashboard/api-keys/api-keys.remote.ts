@@ -126,17 +126,14 @@ export const setApiKeyRateLimit = command(
   }
 );
 
-// Better Auth stores JSON fields as text, and older keys hold double-encoded metadata.
+// Better Auth stores JSON fields as text.
 function parseJson(value: string | null): unknown {
-  let parsed: unknown = value;
-  for (let i = 0; i < 2 && typeof parsed === "string"; i++) {
-    try {
-      parsed = JSON.parse(parsed);
-    } catch {
-      return null;
-    }
+  if (!value) return null;
+  try {
+    return JSON.parse(value);
+  } catch {
+    return null;
   }
-  return parsed ?? null;
 }
 
 const asObject = (value: unknown) =>

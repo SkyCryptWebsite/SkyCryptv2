@@ -5,43 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1779478193206,
-      "tag": "0000_dapper_killer_shrike",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1791664895171,
-      "tag": "0001_fresh_sally_floyd",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1792407690844,
-      "tag": "0002_needy_starfox",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1792410384195,
-      "tag": "0003_fancy_jazinda",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1792412370298,
-      "tag": "0004_glamorous_dormammu",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "7",
-      "when": 1792417550037,
-      "tag": "0005_loose_felicia_hardy",
+      "when": 1792505508187,
+      "tag": "0000_milky_sir_ram",
       "breakpoints": true
     }
   ]

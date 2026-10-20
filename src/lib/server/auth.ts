@@ -4,7 +4,6 @@ import {
   BETTER_AUTH_SECRET,
   DISCORD_CLIENT_ID,
   DISCORD_CLIENT_SECRET,
-  DISCORD_WHITELIST,
   MC_ID_CLIENT_ID,
   MC_ID_CLIENT_SECRET,
   ORIGIN,
@@ -53,13 +52,6 @@ function getBaseURL() {
 
   throw new Error("PUBLIC_BASE_URL or ORIGIN is required at runtime.");
 }
-
-const getWhitelist = () => {
-  if (!DISCORD_WHITELIST) return [];
-  return DISCORD_WHITELIST.split(",")
-    .map((id) => id.trim())
-    .filter(Boolean);
-};
 
 const baseURL = getBaseURL();
 
@@ -196,28 +188,6 @@ const options = {
     account: {
       create: { after: queueMinecraftSync },
       update: { after: queueMinecraftSync }
-    },
-    user: {
-      create: {
-        before: async (user) => {
-          const whitelist = getWhitelist();
-
-          // Fallback if whitelist environment variable isn't configured yet
-          if (whitelist.length === 0) {
-            throw new Error("Access Denied: Registrations are currently locked.");
-          }
-
-          // Extract the Discord ID out of the generated placeholder email address
-          const discordId = user.email.split("@")[0];
-
-          if (!whitelist.includes(discordId)) {
-            // Throwing an error here stops the database transaction entirely
-            throw new Error("Access Denied: Your Discord account is not whitelisted.");
-          }
-
-          return { data: user };
-        }
-      }
     }
   },
   session: {
