@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { browser } from "$app/env";
   import {
     CombinedContext,
     AllStatsContext,
@@ -18,15 +17,10 @@
   } from "$ctx";
   import * as Dialog from "$ui/dialog";
   import * as Drawer from "$ui/drawer";
-  import Image from "@lucide/svelte/icons/image";
-  import { Avatar } from "bits-ui";
   import { Pane } from "paneforge";
   import { untrack } from "svelte";
-  import { cubicOut } from "svelte/easing";
-  import { fade } from "svelte/transition";
   import { ContainedItemsGrid, ItemContent } from "#lib/components/item";
   import { Navbar } from "#lib/components/misc";
-  import Skin3D from "#lib/components/misc/Skin3D.svelte";
   import TooltipSetup from "#lib/components/tooltip/TooltipSetup.svelte";
   import AdditionalStats from "#lib/layouts/stats/AdditionalStats.svelte";
   import PlayerProfile from "#lib/layouts/stats/PlayerProfile.svelte";
@@ -54,7 +48,6 @@
 
   const profile = $derived(ctx);
 
-  let showStaticSkin = $derived(preferences.performanceMode);
   let _rightSize = $state(0);
   let _leftSize = $state(0);
   let _skinCollapsed = $state(false);
@@ -195,27 +188,6 @@
     </Pane>
   </PaneGroup> -->
   <!-- TODO: See the paneforge todo above  -->
-  <div class="@container fixed top-1/2 left-0 z-10 hidden h-dvh w-[30vw] -translate-y-1/2 @[75rem]/parent:block">
-    {#if showStaticSkin}
-      <Avatar.Root class="flex size-full items-center justify-center">
-        {#snippet child({ props })}
-          <div transition:fade={{ duration: 300, easing: cubicOut }} {...props}>
-            <Avatar.Image
-              loading="lazy"
-              src="https://nmsr.nickac.dev/fullbody/{profile.uuid}?no=shadow"
-              alt="{profile.username}'s avatar"
-              class="max-h-128 object-cover" />
-            <Avatar.Fallback>
-              <Image class="size-24 object-cover text-foreground" />
-            </Avatar.Fallback>
-          </div>
-        {/snippet}
-      </Avatar.Root>
-    {:else if browser && innerWidth >= 1210}
-      <Skin3D showStaticSkin={() => (showStaticSkin = true)} class="h-full" />
-    {/if}
-  </div>
-
   <div class="fixed top-12 right-0 min-h-dvh w-full @[75rem]/parent:w-[70%] dark:bg-background/50"></div>
   <main data-vaul-drawer-wrapper class="@container relative mx-auto @[75rem]/parent:ml-[30%]">
     {#if getProfileContext().current}

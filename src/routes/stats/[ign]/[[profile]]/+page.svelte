@@ -3,10 +3,11 @@
   import { resolve } from "$app/paths";
   import { page } from "$app/state";
   import { getInternalState, getPreferences } from "$ctx";
-  import LoaderCircle from "@lucide/svelte/icons/loader-circle";
   import { SEO } from "#lib/components/misc";
   import { Notice } from "#lib/components/notices";
   import Main from "#lib/layouts/stats/Main.svelte";
+  import SkinColumn from "#lib/layouts/stats/SkinColumn.svelte";
+  import StatsSkeleton from "#lib/layouts/stats/StatsSkeleton.svelte";
   import type { SectionName } from "#lib/sections/types";
   import type { ModelsStatsOutput } from "#lib/shared/api/orval-generated";
   import {
@@ -107,34 +108,27 @@
   <SEO embedData={data.embed} />
 {/if}
 
-{#snippet loading()}
-  <div class="flex h-screen items-center justify-center">
-    <div class="rounded-xl glass bg-foreground/5 p-6">
-      <div class="flex items-center gap-2">
-        <LoaderCircle class="size-5 animate-spin text-muted-foreground" />
-        <span class="font-semibold text-foreground/80">Loading profile...</span>
-      </div>
-    </div>
-  </div>
-{/snippet}
+<div class="@container/parent relative">
+  <SkinColumn profileView={profileViewPromise} />
 
-{#key routeKey}
-  <svelte:boundary>
-    {const profileView = await profileViewPromise}
-    <Main
-      data={profileView.profile}
-      allStats={profileView.allStats}
-      combined={profileView.combined}
-      enchantments={profileView.enchantments} />
+  {#key routeKey}
+    <svelte:boundary>
+      {const profileView = await profileViewPromise}
+      <Main
+        data={profileView.profile}
+        allStats={profileView.allStats}
+        combined={profileView.combined}
+        enchantments={profileView.enchantments} />
 
-    {#snippet pending()}
-      {@render loading()}
-    {/snippet}
+      {#snippet pending()}
+        <StatsSkeleton />
+      {/snippet}
 
-    {#snippet failed(err, reset)}
-      <div class="flex h-screen items-center justify-center">
-        <Notice title="An unexpected error has occurred" type="error" error={err} retry={reset} />
-      </div>
-    {/snippet}
-  </svelte:boundary>
-{/key}
+      {#snippet failed(err, reset)}
+        <div class="flex h-screen items-center justify-center">
+          <Notice title="An unexpected error has occurred" type="error" error={err} retry={reset} />
+        </div>
+      {/snippet}
+    </svelte:boundary>
+  {/key}
+</div>
