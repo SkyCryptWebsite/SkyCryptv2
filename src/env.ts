@@ -3,7 +3,6 @@ import { defineEnvVars } from "@sveltejs/kit/env";
 const schema = (input: string | undefined) => input ?? "";
 
 export const variables = defineEnvVars({
-  PUBLIC_BASE_URL: { public: true, schema },
   PUBLIC_DISCORD_INVITE: { public: true, schema },
   PUBLIC_PATREON: { public: true, schema },
   PUBLIC_PATREON_ANY_EMOJI_CENTS: { public: true, schema },

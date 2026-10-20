@@ -11,7 +11,6 @@ import {
   PATREON_CLIENT_SECRET,
   TURNSTILE_SECRET_KEY
 } from "$app/env/private";
-import { PUBLIC_BASE_URL } from "$app/env/public";
 import { getRequestEvent } from "$app/server";
 import { apiKey } from "@better-auth/api-key";
 import type { BetterAuthOptions, BetterAuthPlugin } from "better-auth";
@@ -45,11 +44,10 @@ function getBetterAuthSecret() {
 }
 
 function getBaseURL() {
-  if (PUBLIC_BASE_URL) return PUBLIC_BASE_URL;
   if (ORIGIN) return ORIGIN;
   if (building) return BUILD_TIME_BASE_URL;
 
-  throw new Error("PUBLIC_BASE_URL or ORIGIN is required at runtime.");
+  throw new Error("ORIGIN is required at runtime.");
 }
 
 const baseURL = getBaseURL();
