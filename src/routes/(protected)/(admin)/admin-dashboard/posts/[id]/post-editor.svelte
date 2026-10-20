@@ -17,11 +17,11 @@
   import ImagePlusIcon from "@lucide/svelte/icons/image-plus";
   import Trash2Icon from "@lucide/svelte/icons/trash-2";
   import { toast } from "svelte-sonner";
-  import { stripTransientNodes } from "#lib/components/edra/extensions.js";
-  import { createEditor, Edra } from "#lib/components/edra/shadcn/index.js";
+  import { stripTransientNodes } from "#lib/components/edra/extensions";
+  import { createEditor, Edra } from "#lib/components/edra/shadcn";
   import UserChip from "#lib/components/misc/UserChip.svelte";
   import { POST_TYPE_LABELS } from "#lib/components/newsroom/TypeBadge.svelte";
-  import { slugify, type PostData } from "#lib/shared/newsroom.js";
+  import { slugify, type PostData } from "#lib/shared/newsroom";
   import DateTimePicker from "../../date-time-picker.svelte";
   import { formatDateTime } from "../../format";
   import PostStatus from "../post-status.svelte";

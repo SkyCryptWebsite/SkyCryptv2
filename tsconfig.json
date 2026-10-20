@@ -4,6 +4,7 @@
     "sourceMap": true,
     "types": ["$app/types", "@types/umami-browser", "node"],
     "paths": {
+      "#lib/*": ["./src/lib/*"],
       "$params": ["./src/params"],
       "$types": ["./src/lib/types"],
       "$db": ["./src/db"],

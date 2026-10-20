@@ -2,13 +2,13 @@ import { command, form, query, requested } from "$app/server";
 import { error, invalid } from "@sveltejs/kit";
 import { and, count, desc, eq, ilike, or, type SQL } from "drizzle-orm";
 import { z } from "zod";
-import { audit, requireOutranks, requireStaff } from "#lib/server/admin.js";
-import { auth } from "#lib/server/auth.js";
-import { db } from "#lib/server/db/index.js";
-import { adminAuditLog, apikey, apiKeyRequest, rateLimitRequest, user } from "#lib/server/db/schema/index.js";
-import { listArgs, reviewNote } from "#lib/shared/admin.js";
-import { API_KEY_SCOPES, type ApiKeyScope } from "#lib/shared/constants/developer.js";
-import { can, roleRank } from "#lib/shared/roles.js";
+import { audit, requireOutranks, requireStaff } from "#lib/server/admin";
+import { auth } from "#lib/server/auth";
+import { db } from "#lib/server/db";
+import { adminAuditLog, apikey, apiKeyRequest, rateLimitRequest, user } from "#lib/server/db/schema";
+import { listArgs, reviewNote } from "#lib/shared/admin";
+import { API_KEY_SCOPES, type ApiKeyScope } from "#lib/shared/constants/developer";
+import { can, roleRank } from "#lib/shared/roles";
 import { getOverview } from "../admin.remote";
 
 export const listApiKeys = query(

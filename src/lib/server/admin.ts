@@ -1,11 +1,11 @@
 import { getRequestEvent } from "$app/server";
 import { error } from "@sveltejs/kit";
 import { eq } from "drizzle-orm";
-import { auth } from "#lib/server/auth.js";
-import { db } from "#lib/server/db/index.js";
-import { adminAuditLog, user } from "#lib/server/db/schema/index.js";
-import type { AuditAction } from "#lib/shared/admin.js";
-import { can, roleRank, type Permissions } from "#lib/shared/roles.js";
+import { auth } from "#lib/server/auth";
+import { db } from "#lib/server/db";
+import { adminAuditLog, user } from "#lib/server/db/schema";
+import type { AuditAction } from "#lib/shared/admin";
+import { can, roleRank, type Permissions } from "#lib/shared/roles";
 
 /**
  * Loads a fresh session (bypassing the 5 minute cookie cache, so demotions apply immediately) and requires dashboard

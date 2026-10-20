@@ -1,8 +1,8 @@
 import { query } from "$app/server";
 import { POST_TYPES } from "$types";
 import { z } from "zod";
-import { watch } from "#lib/server/live.js";
-import { listActiveBanners, listLatestPosts, listPublishedPosts } from "#lib/server/newsroom.js";
+import { watch } from "#lib/server/live";
+import { listActiveBanners, listLatestPosts, listPublishedPosts } from "#lib/server/newsroom";
 
 /** Published posts, paginated, featured first. */
 export const listPosts = query(

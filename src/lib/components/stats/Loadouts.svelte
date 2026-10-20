@@ -3,7 +3,7 @@
   import * as Tabs from "$ui/tabs";
   import { cubicOut } from "svelte/easing";
   import { crossfade } from "svelte/transition";
-  import type { ModelsResolvedLoadout } from "#lib/shared/api/orval-generated.js";
+  import type { ModelsResolvedLoadout } from "#lib/shared/api/orval-generated";
   import LoadoutCard from "./LoadoutCard.svelte";
 
   type Props = {

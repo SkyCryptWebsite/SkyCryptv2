@@ -1,7 +1,7 @@
 import * as devalue from "devalue";
 import { flushSync, untrack } from "svelte";
 import { afterEach, beforeEach, describe, it, vi } from "vitest";
-import { DEFAULT_THEME, type ThemeV5 } from "#lib/shared/themes/index.js";
+import { DEFAULT_THEME, type ThemeV5 } from "#lib/shared/themes";
 import { ThemeContext } from "./themes.svelte";
 
 function customTheme(id = "custom"): ThemeV5 {

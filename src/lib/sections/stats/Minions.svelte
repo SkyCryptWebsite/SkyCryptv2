@@ -5,11 +5,11 @@
   import * as Item from "$ui/item";
   import BotIcon from "@lucide/svelte/icons/bot";
   import ExternalLinkIcon from "@lucide/svelte/icons/external-link";
-  import { Chip, SearchTabs } from "#lib/components/misc/index.js";
-  import { Section } from "#lib/components/sections/index.js";
-  import { AdditionStat } from "#lib/components/stats/index.js";
-  import { calculatePercentage } from "#lib/shared/helper.js";
-  import { cn } from "#lib/shared/utils.js";
+  import { Chip, SearchTabs } from "#lib/components/misc";
+  import { Section } from "#lib/components/sections";
+  import { AdditionStat } from "#lib/components/stats";
+  import { calculatePercentage } from "#lib/shared/helper";
+  import { cn } from "#lib/shared/utils";
 
   let { order }: { order: number } = $props();
 

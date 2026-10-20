@@ -2,10 +2,10 @@
   import { getMiscContext } from "$ctx";
   import { IsMobile } from "$src/lib/hooks/is-mobile.svelte";
   import { format } from "numerable";
-  import { Chip } from "#lib/components/misc/index.js";
+  import { Chip } from "#lib/components/misc";
   import ScrollAreaItems from "#lib/components/ScrollAreaItems.svelte";
-  import { SectionSubtitle } from "#lib/components/sections/index.js";
-  import { cn } from "#lib/shared/utils.js";
+  import { SectionSubtitle } from "#lib/components/sections";
+  import { cn } from "#lib/shared/utils";
 
   interface ChipData {
     amount?: number;

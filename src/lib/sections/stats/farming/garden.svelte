@@ -9,13 +9,13 @@
   import { Separator } from "$ui/separator";
   import LockIcon from "@lucide/svelte/icons/lock";
   import { format } from "numerable";
-  import { Chip } from "#lib/components/misc/index.js";
-  import { SectionBoundary, SectionSubtitle } from "#lib/components/sections/index.js";
-  import { AdditionStat, GardenPlotGrid } from "#lib/components/stats/index.js";
-  import { type ModelsGarden } from "#lib/shared/api/orval-generated.js";
-  import { getGardenStats } from "#lib/shared/api/skycrypt-api.remote.js";
-  import { formatNumber, getRarityClass } from "#lib/shared/helper.js";
-  import { cn } from "#lib/shared/utils.js";
+  import { Chip } from "#lib/components/misc";
+  import { SectionBoundary, SectionSubtitle } from "#lib/components/sections";
+  import { AdditionStat, GardenPlotGrid } from "#lib/components/stats";
+  import { type ModelsGarden } from "#lib/shared/api/orval-generated";
+  import { getGardenStats } from "#lib/shared/api/skycrypt-api.remote";
+  import { formatNumber, getRarityClass } from "#lib/shared/helper";
+  import { cn } from "#lib/shared/utils";
   import { getCurrentTabContext } from "../skills/current-tab-context.svelte";
   import { TabNamesEnum } from "../types";
 

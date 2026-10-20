@@ -2,8 +2,8 @@ import { getEnchantmentsContext } from "$ctx";
 import { tz } from "@date-fns/tz";
 import { format } from "date-fns";
 import prettyMilliseconds from "pretty-ms";
-import { RARITY_COLORS } from "#lib/shared/constants/rarities.js";
-import { mcTextToHTML } from "#lib/shared/mc-text/index.js";
+import { RARITY_COLORS } from "#lib/shared/constants/rarities";
+import { mcTextToHTML } from "#lib/shared/mc-text";
 
 export { prettyMilliseconds as formatTime };
 

@@ -3,11 +3,11 @@ import { invalid } from "@sveltejs/kit";
 import { and, asc, count, desc, eq, ilike, type SQL } from "drizzle-orm";
 import { alias } from "drizzle-orm/pg-core";
 import { z } from "zod";
-import { audit, requireStaff } from "#lib/server/admin.js";
-import { db } from "#lib/server/db/index.js";
-import { apikey, apiKeyRequest, rateLimitRequest, user } from "#lib/server/db/schema/index.js";
-import { listArgs, reviewSchema } from "#lib/shared/admin.js";
-import { roleRank } from "#lib/shared/roles.js";
+import { audit, requireStaff } from "#lib/server/admin";
+import { db } from "#lib/server/db";
+import { apikey, apiKeyRequest, rateLimitRequest, user } from "#lib/server/db/schema";
+import { listArgs, reviewSchema } from "#lib/shared/admin";
+import { roleRank } from "#lib/shared/roles";
 import { getOverview } from "../admin.remote";
 
 const reviewer = alias(user, "reviewer");

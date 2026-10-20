@@ -8,8 +8,8 @@
   import { Textarea } from "$ui/textarea";
   import GaugeIcon from "@lucide/svelte/icons/gauge";
   import { toast } from "svelte-sonner";
-  import { rateLimitRequestSchema } from "#lib/shared/api-key-request.js";
-  import { MAX_REQUESTED_RATE_LIMIT } from "#lib/shared/constants/developer.js";
+  import { rateLimitRequestSchema } from "#lib/shared/api-key-request";
+  import { MAX_REQUESTED_RATE_LIMIT } from "#lib/shared/constants/developer";
   import { submitRateLimitRequest, type getApiAccess } from "./developer.remote";
 
   let { access }: { access: Awaited<ReturnType<typeof getApiAccess>> } = $props();

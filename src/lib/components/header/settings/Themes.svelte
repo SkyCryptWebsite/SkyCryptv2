@@ -14,12 +14,12 @@
   import { Avatar, RadioGroup } from "bits-ui";
   import { mode } from "mode-watcher";
   import { toast } from "svelte-sonner";
-  import { SettingsTab } from "#lib/components/header/types.js";
-  import { getThemeIcons } from "#lib/shared/api/themes.remote.js";
-  import { readDefaultThemeCssVars } from "#lib/shared/themes/computed-css-vars.js";
-  import { FIRST_PARTY_THEMES } from "#lib/shared/themes/first-party/index.js";
-  import type { ThemeModeName, ThemeV5 } from "#lib/shared/themes/schema.js";
-  import { getThemeShareURL } from "#lib/shared/themes/sharing.js";
+  import { SettingsTab } from "#lib/components/header/types";
+  import { getThemeIcons } from "#lib/shared/api/themes.remote";
+  import { readDefaultThemeCssVars } from "#lib/shared/themes/computed-css-vars";
+  import { FIRST_PARTY_THEMES } from "#lib/shared/themes/first-party";
+  import type { ThemeModeName, ThemeV5 } from "#lib/shared/themes/schema";
+  import { getThemeShareURL } from "#lib/shared/themes/sharing";
 
   const themeContext = getThemeContext();
   const internalState = getInternalState();

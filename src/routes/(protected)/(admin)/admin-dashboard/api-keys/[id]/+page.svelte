@@ -15,8 +15,8 @@
   import PencilIcon from "@lucide/svelte/icons/pencil";
   import Trash2Icon from "@lucide/svelte/icons/trash-2";
   import { toast } from "svelte-sonner";
-  import { AUDIT_ACTIONS } from "#lib/shared/admin.js";
-  import { API_KEY_SCOPES, API_USE_CASES } from "#lib/shared/constants/developer.js";
+  import { AUDIT_ACTIONS } from "#lib/shared/admin";
+  import { API_KEY_SCOPES, API_USE_CASES } from "#lib/shared/constants/developer";
   import { formatDate, formatDateTime, formatNumber } from "../../format";
   import StatusBadge from "../../status-badge.svelte";
   import {

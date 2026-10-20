@@ -2,7 +2,6 @@ import { createContext } from "svelte";
 import type { z } from "zod";
 import type { IsHover } from "#lib/hooks/is-hover.svelte.js";
 import type { IsMobile } from "#lib/hooks/is-mobile.svelte.js";
-import type { ListEnchantmentsResponse } from "#lib/shared/api/orval-generated-zod.js";
 import type {
   ModelsCombinedOutput,
   ModelsMiscOutput,
@@ -10,7 +9,8 @@ import type {
   ModelsStatData,
   ModelsSkillsOutput,
   ModelsStatsOutput
-} from "#lib/shared/api/orval-generated.js";
+} from "#lib/shared/api/orval-generated";
+import type { ListEnchantmentsResponse } from "#lib/shared/api/orval-generated-zod";
 
 export type Enchantments = z.infer<typeof ListEnchantmentsResponse>;
 

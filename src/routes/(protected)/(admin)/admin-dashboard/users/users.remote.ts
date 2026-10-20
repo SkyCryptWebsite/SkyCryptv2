@@ -2,9 +2,9 @@ import { command, form, query } from "$app/server";
 import { invalid } from "@sveltejs/kit";
 import { and, desc, eq } from "drizzle-orm";
 import { z } from "zod";
-import { audit, requireOutranks, requireStaff } from "#lib/server/admin.js";
-import { auth } from "#lib/server/auth.js";
-import { db } from "#lib/server/db/index.js";
+import { audit, requireOutranks, requireStaff } from "#lib/server/admin";
+import { auth } from "#lib/server/auth";
+import { db } from "#lib/server/db";
 import {
   account,
   adminAuditLog,
@@ -12,11 +12,11 @@ import {
   apiKeyRequest,
   rateLimitRequest,
   user as userTable
-} from "#lib/server/db/schema/index.js";
-import { getStoredMinecraftAccounts } from "#lib/server/minecraft-accounts.js";
-import { getStoredPatreonMembership } from "#lib/server/patreon.js";
-import { BAN_DURATIONS, listArgs, USER_FILTERS } from "#lib/shared/admin.js";
-import { can, primaryRole, roleRank, STAFF_ROLES, UserRole } from "#lib/shared/roles.js";
+} from "#lib/server/db/schema";
+import { getStoredMinecraftAccounts } from "#lib/server/minecraft-accounts";
+import { getStoredPatreonMembership } from "#lib/server/patreon";
+import { BAN_DURATIONS, listArgs, USER_FILTERS } from "#lib/shared/admin";
+import { can, primaryRole, roleRank, STAFF_ROLES, UserRole } from "#lib/shared/roles";
 
 const discordId = (email: string) => email.split("@")[0];
 

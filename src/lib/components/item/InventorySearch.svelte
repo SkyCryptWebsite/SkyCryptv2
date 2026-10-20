@@ -5,9 +5,9 @@
   import SearchX from "@lucide/svelte/icons/search-x";
   import { Debounced } from "runed";
   import type { Snippet } from "svelte";
-  import { SectionBoundary } from "#lib/components/sections/index.js";
-  import { type ModelsStrippedItem } from "#lib/shared/api/orval-generated.js";
-  import { searchProfileInventory } from "#lib/shared/api/skycrypt-api.remote.js";
+  import { SectionBoundary } from "#lib/components/sections";
+  import { type ModelsStrippedItem } from "#lib/shared/api/orval-generated";
+  import { searchProfileInventory } from "#lib/shared/api/skycrypt-api.remote";
 
   let {
     search = $bindable(),

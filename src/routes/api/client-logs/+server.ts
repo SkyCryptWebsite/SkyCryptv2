@@ -1,5 +1,5 @@
 import { error } from "@sveltejs/kit";
-import { allowClientLog, sanitizeClientLog } from "#lib/server/client-logs.js";
+import { allowClientLog, sanitizeClientLog } from "#lib/server/client-logs";
 import type { RequestHandler } from "./$types";
 
 const MAX_BODY_BYTES = 8192;

@@ -8,7 +8,7 @@
   import XIcon from "@lucide/svelte/icons/x";
   import { toast } from "svelte-sonner";
   import type { z } from "zod";
-  import type { reviewSchema } from "#lib/shared/admin.js";
+  import type { reviewSchema } from "#lib/shared/admin";
 
   type Props = {
     /** A per-row instance from `.for(id)`, so notes don't leak between requests. */

@@ -6,12 +6,12 @@ import {
   getRateLimitBlockReason,
   getReapplyAt,
   getRequestBlockReason
-} from "#lib/server/api-key-requests.js";
-import { auth } from "#lib/server/auth.js";
-import { db } from "#lib/server/db/index.js";
-import { apikey, apiKeyRequest, rateLimitRequest } from "#lib/server/db/schema/index.js";
-import { verifyTurnstile } from "#lib/server/turnstile.js";
-import { apiKeyRequestSchema, rateLimitRequestSchema } from "#lib/shared/api-key-request.js";
+} from "#lib/server/api-key-requests";
+import { auth } from "#lib/server/auth";
+import { db } from "#lib/server/db";
+import { apikey, apiKeyRequest, rateLimitRequest } from "#lib/server/db/schema";
+import { verifyTurnstile } from "#lib/server/turnstile";
+import { apiKeyRequestSchema, rateLimitRequestSchema } from "#lib/shared/api-key-request";
 
 async function requireDeveloper() {
   const { request } = getRequestEvent();

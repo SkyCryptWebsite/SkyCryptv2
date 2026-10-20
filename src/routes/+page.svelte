@@ -22,11 +22,11 @@
   import Star from "@lucide/svelte/icons/star";
   import { isHttpError } from "@sveltejs/kit";
   import { onMount } from "svelte";
-  import { ContributorCard, ContributorCardSkeleton, CtaCard } from "#lib/components/misc/index.js";
+  import { ContributorCard, ContributorCardSkeleton, CtaCard } from "#lib/components/misc";
   import PostCard from "#lib/components/newsroom/PostCard.svelte";
-  import { Notice } from "#lib/components/notices/index.js";
-  import { resolveUuidByUsername } from "#lib/shared/api/skycrypt-api.remote.js";
-  import { listPosts } from "#lib/shared/newsroom.remote.js";
+  import { Notice } from "#lib/components/notices";
+  import { resolveUuidByUsername } from "#lib/shared/api/skycrypt-api.remote";
+  import { listPosts } from "#lib/shared/newsroom.remote";
   import { Role } from "./enums";
   import { schema } from "./schema";
 

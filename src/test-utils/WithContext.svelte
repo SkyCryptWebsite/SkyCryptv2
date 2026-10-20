@@ -3,7 +3,7 @@
   import { initInternalState } from "$ctx/internal.svelte";
   import { Tooltip } from "bits-ui";
   import type { Component, Snippet } from "svelte";
-  import type { ModelsStatData } from "#lib/shared/api/orval-generated.js";
+  import type { ModelsStatData } from "#lib/shared/api/orval-generated";
   import { MockIsHover } from "./test-wrapper.svelte";
 
   interface Props {

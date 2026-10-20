@@ -7,7 +7,7 @@
   import ChevronsLeftIcon from "@lucide/svelte/icons/chevrons-left";
   import ChevronsRightIcon from "@lucide/svelte/icons/chevrons-right";
   import type { RowData, SvelteTable } from "@tanstack/svelte-table";
-  import { PAGE_SIZES } from "#lib/shared/admin.js";
+  import { PAGE_SIZES } from "#lib/shared/admin";
   import type { DataTableFeatures } from "./features";
 
   let { table, rowCount }: { table: SvelteTable<DataTableFeatures, TData>; rowCount: number } = $props();

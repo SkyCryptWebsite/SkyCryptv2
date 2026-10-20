@@ -4,20 +4,6 @@ import { error, isHttpError } from "@sveltejs/kit";
 import { log } from "evlog";
 import { z } from "zod";
 import {
-  GetCombinedProfileStatsParams,
-  GetGardenStatsParams,
-  GetPlayerStatsParams,
-  GetProfileEmbedParams,
-  GetProfileInventoryParams,
-  GetProfileNetworthParams,
-  GetProfileStatsParams,
-  GetSelectedProfileEmbedParams,
-  GetSelectedProfileStatsParams,
-  ResolveUsernameByUuidParams,
-  ResolveUuidByUsernameParams,
-  SearchProfileInventoryParams
-} from "#lib/shared/api/orval-generated-zod.js";
-import {
   getCombinedProfileStats as getCombinedProfileStatsRequest,
   getGardenStats as getGardenStatsRequest,
   getPlayerStats as getPlayerStatsRequest,
@@ -36,7 +22,21 @@ import {
   getStatsConstants as getStatsConstantsRequest,
   type ModelsProcessingError,
   type ModelsSourceInfo
-} from "#lib/shared/api/orval-generated.js";
+} from "#lib/shared/api/orval-generated";
+import {
+  GetCombinedProfileStatsParams,
+  GetGardenStatsParams,
+  GetPlayerStatsParams,
+  GetProfileEmbedParams,
+  GetProfileInventoryParams,
+  GetProfileNetworthParams,
+  GetProfileStatsParams,
+  GetSelectedProfileEmbedParams,
+  GetSelectedProfileStatsParams,
+  ResolveUsernameByUuidParams,
+  ResolveUuidByUsernameParams,
+  SearchProfileInventoryParams
+} from "#lib/shared/api/orval-generated-zod";
 
 /** Type helper to extract the success data type from an API response Excludes ModelsProcessingError from the union type */
 type ExtractSuccessData<TResponse> = TResponse extends { data: infer TData }

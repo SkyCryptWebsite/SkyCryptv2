@@ -3,7 +3,7 @@
   import PackageSearchIcon from "@lucide/svelte/icons/package-search";
   import type { Snippet } from "svelte";
   import EmptyStat from "#lib/components/EmptyStat.svelte";
-  import { type ModelsStrippedItem } from "#lib/shared/api/orval-generated.js";
+  import { type ModelsStrippedItem } from "#lib/shared/api/orval-generated";
 
   let {
     inventoryId,

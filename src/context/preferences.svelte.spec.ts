@@ -1,7 +1,7 @@
 import { flushSync, untrack } from "svelte";
 import { afterEach, beforeEach, describe, it, vi } from "vitest";
-import { sections } from "#lib/sections/constants.js";
-import type { SectionID } from "#lib/sections/types.js";
+import { sections } from "#lib/sections/constants";
+import type { SectionID } from "#lib/sections/types";
 import { PreferencesContext } from "./preferences.svelte";
 
 describe("PreferencesContext Tests", () => {

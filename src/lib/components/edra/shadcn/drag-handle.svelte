@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { Button } from "$ui/button/index.js";
-  import * as DropdownMenu from "$ui/dropdown-menu/index.js";
-  import { cn } from "$utils.js";
+  import { Button } from "$ui/button";
+  import * as DropdownMenu from "$ui/dropdown-menu";
+  import { cn } from "$utils";
   import { autoPlacement } from "@floating-ui/dom";
   import { Braces, TextAlignCenter } from "@lucide/svelte";
   import Clipboard from "@lucide/svelte/icons/clipboard";
@@ -17,9 +17,9 @@
   import type { Node } from "@tiptap/pm/model";
   import { NodeSelection } from "@tiptap/pm/state";
   import { onMount } from "svelte";
-  import { commands, type EdraCommand } from "../commands/index.ts";
-  import { getEditor } from "../tiptap/index.ts";
-  import { quickcolors } from "../utils.ts";
+  import { commands, type EdraCommand } from "../commands";
+  import { getEditor } from "../tiptap";
+  import { quickcolors } from "../utils";
 
   interface Props {
     type?: "simple" | "extended";

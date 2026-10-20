@@ -1,8 +1,8 @@
 import { TableHeader as TiptapTableHeader } from "@tiptap/extension-table";
 import { Plugin } from "@tiptap/pm/state";
 import { Decoration, DecorationSet } from "@tiptap/pm/view";
-import strings from "../../../strings.js";
-import { getCellsInRow, isColumnSelected, selectColumn } from "./utils.js";
+import strings from "../../../strings";
+import { getCellsInRow, isColumnSelected, selectColumn } from "./utils";
 
 export const TableHeader = TiptapTableHeader.extend({
   addAttributes() {

@@ -2,8 +2,8 @@
   import { getMiscContext } from "$ctx";
   import { tz } from "@date-fns/tz";
   import { formatDate, formatDistanceToNowStrict } from "date-fns";
-  import { SectionSubtitle } from "#lib/components/sections/index.js";
-  import { AdditionStat } from "#lib/components/stats/index.js";
+  import { SectionSubtitle } from "#lib/components/sections";
+  import { AdditionStat } from "#lib/components/stats";
 
   const misc = $derived(getMiscContext().misc);
 </script>

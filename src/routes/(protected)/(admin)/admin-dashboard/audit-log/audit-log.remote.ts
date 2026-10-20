@@ -2,10 +2,10 @@ import { query } from "$app/server";
 import { and, count, desc, eq, ilike, or, type SQL } from "drizzle-orm";
 import { alias } from "drizzle-orm/pg-core";
 import { z } from "zod";
-import { requireStaff } from "#lib/server/admin.js";
-import { db } from "#lib/server/db/index.js";
-import { adminAuditLog, user } from "#lib/server/db/schema/index.js";
-import { AUDIT_ACTIONS, listArgs, type AuditAction } from "#lib/shared/admin.js";
+import { requireStaff } from "#lib/server/admin";
+import { db } from "#lib/server/db";
+import { adminAuditLog, user } from "#lib/server/db/schema";
+import { AUDIT_ACTIONS, listArgs, type AuditAction } from "#lib/shared/admin";
 
 const actor = alias(user, "actor");
 const target = alias(user, "target");

@@ -13,8 +13,8 @@
   import type { Component } from "svelte";
   import { cubicOut } from "svelte/easing";
   import { crossfade } from "svelte/transition";
-  import { ScrollItems } from "#lib/components/misc/index.js";
-  import { Section } from "#lib/components/sections/index.js";
+  import { ScrollItems } from "#lib/components/misc";
+  import { Section } from "#lib/components/sections";
   import { CurrentTabContext, setCurrentTabContext } from "./skills/current-tab-context.svelte";
   import Enchanting from "./skills/enchanting.svelte";
   import Farming from "./skills/farming.svelte";

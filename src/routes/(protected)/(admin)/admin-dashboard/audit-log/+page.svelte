@@ -6,9 +6,9 @@
   import { createColumnHelper, renderSnippet } from "@tanstack/svelte-table";
   import DataTable from "#lib/components/data-table/DataTable.svelte";
   import DataTableSearch from "#lib/components/data-table/DataTableSearch.svelte";
-  import type { DataTableFeatures } from "#lib/components/data-table/features.js";
+  import type { DataTableFeatures } from "#lib/components/data-table/features";
   import { useSearchParams } from "#lib/hooks/search-params.svelte.js";
-  import { AUDIT_ACTIONS, type AuditAction } from "#lib/shared/admin.js";
+  import { AUDIT_ACTIONS, type AuditAction } from "#lib/shared/admin";
   import { formatDateTime } from "../format";
   import { listAuditLog } from "./audit-log.remote";
 

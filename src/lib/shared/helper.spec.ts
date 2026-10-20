@@ -1,5 +1,5 @@
 import { describe, it, vi } from "vitest";
-import { RARITY_COLORS } from "#lib/shared/constants/rarities.js";
+import { RARITY_COLORS } from "#lib/shared/constants/rarities";
 import {
   calculatePercentage,
   formatNumber,
@@ -8,7 +8,7 @@ import {
   titleCase,
   uniqBy,
   validateURL
-} from "#lib/shared/helper.js";
+} from "#lib/shared/helper";
 
 describe.concurrent("formatNumber", () => {
   it("formats thousands with K suffix", ({ expect }) => {

@@ -16,7 +16,7 @@
   import ShieldCheckIcon from "@lucide/svelte/icons/shield-check";
   import SmartphoneIcon from "@lucide/svelte/icons/smartphone";
   import { toast } from "svelte-sonner";
-  import { authClient } from "#lib/shared/auth-client.js";
+  import { authClient } from "#lib/shared/auth-client";
   import { getDashboard } from "../dashboard.remote";
   import { sessionDevice } from "./session-device";
   import { deleteAccount, exportData, getSessions, revokeSession, setDeveloperMode } from "./settings.remote";

@@ -2,7 +2,7 @@ import type { BannerVariant, MediaImage, PostType } from "$types";
 import type { JSONContent } from "@tiptap/core";
 import { sql } from "drizzle-orm";
 import { boolean, index, jsonb, pgTable, text, timestamp } from "drizzle-orm/pg-core";
-import type { PostData } from "#lib/shared/newsroom.js";
+import type { PostData } from "#lib/shared/newsroom";
 import { user } from "./auth.schema";
 
 /**

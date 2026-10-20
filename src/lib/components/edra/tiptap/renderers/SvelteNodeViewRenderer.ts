@@ -4,7 +4,7 @@ import type { Node as ProseMirrorNode } from "@tiptap/pm/model";
 import type { Decoration, DecorationSource } from "@tiptap/pm/view";
 import type { Component } from "svelte";
 import NodeViewFrame from "../components/NodeViewFrame.svelte";
-import type { Editor } from "../Editor.ts";
+import type { Editor } from "../Editor";
 import { SvelteRenderer } from "./SvelteRenderer.svelte.js";
 
 export interface SvelteNodeViewRendererOptions extends NodeViewRendererOptions {

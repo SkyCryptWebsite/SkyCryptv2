@@ -22,7 +22,7 @@
 
 <script lang="ts">
   import { Badge } from "$ui/badge";
-  import { cn } from "#lib/shared/utils.js";
+  import { cn } from "#lib/shared/utils";
 
   const { type, class: className }: { type: PostType; class?: string } = $props();
 </script>

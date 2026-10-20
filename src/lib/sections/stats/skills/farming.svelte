@@ -9,11 +9,11 @@
   import { Label } from "$ui/label";
   import ExternalLinkIcon from "@lucide/svelte/icons/external-link";
   import WheatIcon from "@lucide/svelte/icons/wheat";
-  import { Chip } from "#lib/components/misc/index.js";
-  import { SectionSubtitle } from "#lib/components/sections/index.js";
-  import { AdditionStat, SkillGear } from "#lib/components/stats/index.js";
+  import { Chip } from "#lib/components/misc";
+  import { SectionSubtitle } from "#lib/components/sections";
+  import { AdditionStat, SkillGear } from "#lib/components/stats";
   import Garden from "#lib/sections/stats/farming/garden.svelte";
-  import { formatNumber } from "#lib/shared/helper.js";
+  import { formatNumber } from "#lib/shared/helper";
 
   const openSections = true as const;
   const data = $derived(getSkillsContext().skills);

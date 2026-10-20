@@ -1,6 +1,6 @@
 import { sql } from "drizzle-orm";
 import { index, integer, pgTable, text, timestamp, uniqueIndex } from "drizzle-orm/pg-core";
-import type { ApiKeyRequestStatus, ApiUseCase, RateLimitRequestStatus } from "#lib/shared/constants/developer.js";
+import type { ApiKeyRequestStatus, ApiUseCase, RateLimitRequestStatus } from "#lib/shared/constants/developer";
 import { apikey, user } from "./auth.schema";
 
 export const apiKeyRequest = pgTable(

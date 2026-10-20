@@ -37,16 +37,16 @@
   import { writable } from "svelte/store";
   import Footer from "#lib/components/footer/Footer.svelte";
   import Header from "#lib/components/header/Header.svelte";
-  import { CommandPalette, JsonLd, PerformanceMode } from "#lib/components/misc/index.js";
+  import { CommandPalette, JsonLd, PerformanceMode } from "#lib/components/misc";
   import NewPostsNotifier from "#lib/components/newsroom/NewPostsNotifier.svelte";
   import SiteBanners from "#lib/components/newsroom/SiteBanners.svelte";
   import ThemeEditor from "#lib/components/theme-editor/ThemeEditor.svelte";
   import { IsHover } from "#lib/hooks/is-hover.svelte.js";
   import { IsMobile } from "#lib/hooks/is-mobile.svelte.js";
   import "./layout.css";
-  import { listResourcePacks } from "#lib/shared/api/skycrypt-api.remote.js";
-  import { getActiveBanners, listLatestPostsForNotifications } from "#lib/shared/newsroom.remote.js";
-  import { parseThemeFromURL } from "#lib/shared/themes/sharing.js";
+  import { listResourcePacks } from "#lib/shared/api/skycrypt-api.remote";
+  import { getActiveBanners, listLatestPostsForNotifications } from "#lib/shared/newsroom.remote";
+  import { parseThemeFromURL } from "#lib/shared/themes/sharing";
 
   let { children }: { children: Snippet } = $props();
   let isMobile = $state(new IsMobile());

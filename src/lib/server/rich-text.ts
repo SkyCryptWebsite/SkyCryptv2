@@ -3,7 +3,7 @@ import { getSchema, type JSONContent } from "@tiptap/core";
 import { Node } from "@tiptap/pm/model";
 import { renderToHTMLString } from "@tiptap/static-renderer/pm/html-string";
 import { log } from "evlog";
-import { getContentExtensions } from "#lib/components/edra/extensions.js";
+import { getContentExtensions } from "#lib/components/edra/extensions";
 
 const extensions = getContentExtensions();
 const schema = getSchema(extensions);

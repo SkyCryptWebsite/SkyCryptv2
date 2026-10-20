@@ -10,7 +10,7 @@
   import { crossfade } from "svelte/transition";
   import EmptyStat from "#lib/components/EmptyStat.svelte";
   import ScrollAreaItems from "#lib/components/ScrollAreaItems.svelte";
-  import { cn } from "#lib/shared/utils.js";
+  import { cn } from "#lib/shared/utils";
   import ScrollItems from "./ScrollItems.svelte";
 
   type SearchTab = {

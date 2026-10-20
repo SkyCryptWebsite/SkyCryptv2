@@ -3,10 +3,10 @@
   import EmptyStat from "$src/lib/components/EmptyStat.svelte";
   import LibraryBigIcon from "@lucide/svelte/icons/library-big";
   import { format } from "numerable";
-  import { Chip, SearchTabs } from "#lib/components/misc/index.js";
-  import { Section } from "#lib/components/sections/index.js";
-  import { AdditionStat } from "#lib/components/stats/index.js";
-  import { cn } from "#lib/shared/utils.js";
+  import { Chip, SearchTabs } from "#lib/components/misc";
+  import { Section } from "#lib/components/sections";
+  import { AdditionStat } from "#lib/components/stats";
+  import { cn } from "#lib/shared/utils";
 
   let { order }: { order: number } = $props();
 

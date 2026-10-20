@@ -1,8 +1,8 @@
 import { command, getRequestEvent, query } from "$app/server";
 import { error } from "@sveltejs/kit";
 import { z } from "zod";
-import { deleteAccountData, exportAccountData } from "#lib/server/account-data.js";
-import { auth } from "#lib/server/auth.js";
+import { deleteAccountData, exportAccountData } from "#lib/server/account-data";
+import { auth } from "#lib/server/auth";
 
 async function requireSession() {
   const { request } = getRequestEvent();

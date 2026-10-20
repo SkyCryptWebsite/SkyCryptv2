@@ -5,8 +5,8 @@
   import { Separator } from "$ui/separator";
   import * as Tooltip from "$ui/tooltip";
   import { format } from "numerable";
-  import type { ModelsPlayerStat } from "#lib/shared/api/orval-generated.js";
-  import { cn } from "#lib/shared/utils.js";
+  import type { ModelsPlayerStat } from "#lib/shared/api/orval-generated";
+  import { cn } from "#lib/shared/utils";
 
   type Props = {
     data: ModelsPlayerStat;

@@ -1,15 +1,15 @@
 <script lang="ts">
-  import { Button, buttonVariants } from "$ui/button/index.js";
-  import { NodeViewContent, NodeViewWrapper, type NodeViewProps } from "../../tiptap/index.js";
+  import { Button, buttonVariants } from "$ui/button";
+  import { NodeViewContent, NodeViewWrapper, type NodeViewProps } from "../../tiptap";
 
   const { editor, node, updateAttributes, extension }: NodeViewProps = $props();
 
-  import * as Command from "$ui/command/index.js";
-  import * as Popover from "$ui/popover/index.js";
-  import { cn } from "$utils.js";
+  import * as Command from "$ui/command";
+  import * as Popover from "$ui/popover";
+  import { cn } from "$utils";
   import Check from "@lucide/svelte/icons/check";
   import Copy from "@lucide/svelte/icons/copy";
-  import strings from "../../strings.js";
+  import strings from "../../strings";
   import Tooltip from "./Tooltip.svelte";
 
   let preRef = $state<HTMLPreElement>();

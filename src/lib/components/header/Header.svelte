@@ -13,11 +13,11 @@
   import SunMoonIcon from "@lucide/svelte/icons/sun-moon";
   import { Avatar, Button } from "bits-ui";
   import { mode, resetMode, setMode, userPrefersMode } from "mode-watcher";
-  import Settings from "#lib/components/header/settings/index.js";
-  import { getThemeIcons } from "#lib/shared/api/themes.remote.js";
-  import { getHeaderUser } from "#lib/shared/session.remote.js";
-  import { readComputedThemeCssVars } from "#lib/shared/themes/computed-css-vars.js";
-  import type { ThemeModeName } from "#lib/shared/themes/schema.js";
+  import Settings from "#lib/components/header/settings";
+  import { getThemeIcons } from "#lib/shared/api/themes.remote";
+  import { getHeaderUser } from "#lib/shared/session.remote";
+  import { readComputedThemeCssVars } from "#lib/shared/themes/computed-css-vars";
+  import type { ThemeModeName } from "#lib/shared/themes/schema";
 
   const internalState = getInternalState();
   const theme = getThemeContext();

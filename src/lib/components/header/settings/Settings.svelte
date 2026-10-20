@@ -16,7 +16,7 @@
   import Order from "#lib/components/header/settings/Order.svelte";
   import Packs from "#lib/components/header/settings/Packs.svelte";
   import Themes from "#lib/components/header/settings/Themes.svelte";
-  import { SettingsTab } from "#lib/components/header/types.js";
+  import { SettingsTab } from "#lib/components/header/types";
 
   type SettingsProps = Record<string, unknown>;
   type TabsListType = {

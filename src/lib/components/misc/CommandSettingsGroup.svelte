@@ -8,7 +8,7 @@
   import PaintBucket from "@lucide/svelte/icons/paint-bucket";
   import Pickaxe from "@lucide/svelte/icons/pickaxe";
   import Sparkle from "@lucide/svelte/icons/sparkle";
-  import { SettingsTab } from "#lib/components/header/types.js";
+  import { SettingsTab } from "#lib/components/header/types";
   import type { SettingsConfigItem } from "./command-utils";
 
   const { closeCommand }: { closeCommand: () => void } = $props();

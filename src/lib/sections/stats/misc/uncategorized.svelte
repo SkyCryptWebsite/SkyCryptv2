@@ -1,8 +1,8 @@
 <script lang="ts">
   import { getMiscContext } from "$ctx";
   import { format } from "numerable";
-  import { SectionSubtitle } from "#lib/components/sections/index.js";
-  import { AdditionStat } from "#lib/components/stats/index.js";
+  import { SectionSubtitle } from "#lib/components/sections";
+  import { AdditionStat } from "#lib/components/stats";
 
   const misc = $derived(getMiscContext().misc);
 </script>

@@ -7,9 +7,9 @@
   import EmptyItemSlot from "#lib/components/item/EmptyItemSlot.svelte";
   import GearSlotColumn from "#lib/components/item/GearSlotColumn.svelte";
   import SkyblockItem from "#lib/components/item/Item.svelte";
-  import type { ModelsResolvedLoadout } from "#lib/shared/api/orval-generated.js";
-  import { titleCase } from "#lib/shared/helper.js";
-  import { cn } from "#lib/shared/utils.js";
+  import type { ModelsResolvedLoadout } from "#lib/shared/api/orval-generated";
+  import { titleCase } from "#lib/shared/helper";
+  import { cn } from "#lib/shared/utils";
 
   type Props = {
     loadout: ModelsResolvedLoadout;

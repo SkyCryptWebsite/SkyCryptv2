@@ -3,15 +3,15 @@ import { error } from "@sveltejs/kit";
 import type { JSONContent } from "@tiptap/core";
 import { and, count, desc, eq, gt, ilike, lte, or, sql, type SQL } from "drizzle-orm";
 import { z } from "zod";
-import { audit, requireStaff } from "#lib/server/admin.js";
-import { db } from "#lib/server/db/index.js";
-import { post, postRevision } from "#lib/server/db/schema/index.js";
-import { publish } from "#lib/server/live.js";
-import { getPublicProfiles } from "#lib/server/public-profile.js";
-import { assertValidContent } from "#lib/server/rich-text.js";
-import { presignUpload } from "#lib/server/storage.js";
-import { listArgs } from "#lib/shared/admin.js";
-import { POST_FILTERS, postData, UPLOAD_LIMITS, UPLOAD_TYPES, type PostData } from "#lib/shared/newsroom.js";
+import { audit, requireStaff } from "#lib/server/admin";
+import { db } from "#lib/server/db";
+import { post, postRevision } from "#lib/server/db/schema";
+import { publish } from "#lib/server/live";
+import { getPublicProfiles } from "#lib/server/public-profile";
+import { assertValidContent } from "#lib/server/rich-text";
+import { presignUpload } from "#lib/server/storage";
+import { listArgs } from "#lib/shared/admin";
+import { POST_FILTERS, postData, UPLOAD_LIMITS, UPLOAD_TYPES, type PostData } from "#lib/shared/newsroom";
 
 const requireEditor = () => requireStaff({ content: ["manage"] });
 

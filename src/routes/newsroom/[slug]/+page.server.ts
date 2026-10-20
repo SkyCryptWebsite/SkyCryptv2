@@ -1,8 +1,8 @@
 import { error, isHttpError } from "@sveltejs/kit";
 import { log } from "evlog";
-import { auth } from "#lib/server/auth.js";
-import { getPreviewPost, getPublishedPost } from "#lib/server/newsroom.js";
-import { can } from "#lib/shared/roles.js";
+import { auth } from "#lib/server/auth";
+import { getPreviewPost, getPublishedPost } from "#lib/server/newsroom";
+import { can } from "#lib/shared/roles";
 import type { PageServerLoad } from "./$types";
 
 export const load: PageServerLoad = async ({ params, url, request, setHeaders }) => {

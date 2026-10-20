@@ -1,4 +1,4 @@
-import { Video } from "./Video.js";
+import { Video } from "./Video";
 
 /** Base video node; the editor adds its Svelte node view in `shadcn/editor.ts`. */
 export const VideoExtended = Video.extend({

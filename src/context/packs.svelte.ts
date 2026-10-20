@@ -2,13 +2,13 @@ import { browser } from "$app/env";
 import { PersistedState } from "runed";
 import { createContext } from "svelte";
 import { SvelteSet } from "svelte/reactivity";
-import type { ModelsResourcePackConfig } from "#lib/shared/api/orval-generated.js";
+import type { ModelsResourcePackConfig } from "#lib/shared/api/orval-generated";
 import {
   readEnabledPacksCookie,
   readLegacyDisabledPacksCookie,
   removeLegacyDisabledPacksCookie,
   writeEnabledPacksCookie
-} from "#lib/shared/resource-packs.js";
+} from "#lib/shared/resource-packs";
 
 type EnabledPacksData = string;
 

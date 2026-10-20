@@ -1,9 +1,9 @@
 <script lang="ts">
   import { buttonVariants } from "$ui/button/button.svelte";
-  import { Input } from "$ui/input/index.js";
-  import * as Popover from "$ui/popover/index.js";
-  import { cn } from "$utils.js";
-  import { NodeViewContent, NodeViewWrapper, type NodeViewProps } from "../../tiptap/index.js";
+  import { Input } from "$ui/input";
+  import * as Popover from "$ui/popover";
+  import { cn } from "$utils";
+  import { NodeViewContent, NodeViewWrapper, type NodeViewProps } from "../../tiptap";
 
   const { node, updateAttributes }: NodeViewProps = $props();
 

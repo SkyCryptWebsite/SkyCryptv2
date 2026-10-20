@@ -10,9 +10,9 @@
   import { isHttpError } from "@sveltejs/kit";
   import { format as dateFormat, formatDistanceToNowStrict } from "date-fns";
   import { format as numberFormat } from "numerable";
-  import { AdditionStat, NetworthCard } from "#lib/components/stats/index.js";
-  import { getProfileNetworth } from "#lib/shared/api/skycrypt-api.remote.js";
-  import { calculatePercentage, formatNumber } from "#lib/shared/helper.js";
+  import { AdditionStat, NetworthCard } from "#lib/components/stats";
+  import { getProfileNetworth } from "#lib/shared/api/skycrypt-api.remote";
+  import { calculatePercentage, formatNumber } from "#lib/shared/helper";
 
   const profile = $derived(getProfileContext().current);
   const profileUUID = $derived(profile?.uuid);

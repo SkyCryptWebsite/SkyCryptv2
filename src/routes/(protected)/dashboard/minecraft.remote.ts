@@ -1,12 +1,12 @@
 import { command, getRequestEvent, query } from "$app/server";
 import { error } from "@sveltejs/kit";
-import { auth } from "#lib/server/auth.js";
+import { auth } from "#lib/server/auth";
 import {
   fetchMcIdProfile,
   getMcIdLinks,
   getStoredMinecraftAccounts,
   storeMinecraftAccounts
-} from "#lib/server/minecraft-accounts.js";
+} from "#lib/server/minecraft-accounts";
 
 export const getMinecraftAccounts = query(async () => {
   const { locals } = getRequestEvent();

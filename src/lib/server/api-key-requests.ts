@@ -1,4 +1,4 @@
-import type { ApiKeyRequestStatus, RateLimitRequestStatus } from "#lib/shared/constants/developer.js";
+import type { ApiKeyRequestStatus, RateLimitRequestStatus } from "#lib/shared/constants/developer";
 
 export const REAPPLY_COOLDOWN_MS = 1000 * 60 * 60 * 24 * 3; // 3 days
 

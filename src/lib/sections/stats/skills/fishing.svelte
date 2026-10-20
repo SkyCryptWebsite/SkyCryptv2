@@ -10,11 +10,11 @@
   import Image from "@lucide/svelte/icons/image";
   import { Avatar } from "bits-ui";
   import { format } from "numerable";
-  import { Chip } from "#lib/components/misc/index.js";
-  import { SectionSubtitle } from "#lib/components/sections/index.js";
-  import { AdditionStat, SkillGear } from "#lib/components/stats/index.js";
-  import { renderLore, titleCase } from "#lib/shared/helper.js";
-  import { animateObfuscatedText } from "#lib/shared/mc-text/obfuscated/index.js";
+  import { Chip } from "#lib/components/misc";
+  import { SectionSubtitle } from "#lib/components/sections";
+  import { AdditionStat, SkillGear } from "#lib/components/stats";
+  import { renderLore, titleCase } from "#lib/shared/helper";
+  import { animateObfuscatedText } from "#lib/shared/mc-text/obfuscated";
 
   type ColorSchema = Record<(typeof tiers)[number], { bg: string; text: string }>;
 

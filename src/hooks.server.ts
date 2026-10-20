@@ -9,8 +9,8 @@ import { createFsDrain } from "evlog/fs";
 import { createHyperDXDrain } from "evlog/hyperdx";
 import { createDrainPipeline } from "evlog/pipeline";
 import { createEvlogHooks } from "evlog/sveltekit";
-import { auth } from "#lib/server/auth.js";
-import { can } from "#lib/shared/roles.js";
+import { auth } from "#lib/server/auth";
+import { can } from "#lib/shared/roles";
 import evlogConfig from "../evlog.config";
 
 // HyperDX in production (batched, retried), local NDJSON in dev for `evlog logs`. Stdout always stays on.

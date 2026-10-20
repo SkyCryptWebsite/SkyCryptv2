@@ -5,7 +5,7 @@
   import { cn } from "$utils";
   import Info from "@lucide/svelte/icons/info";
   import { type Snippet } from "svelte";
-  import { RARITY_COLORS } from "#lib/shared/constants/rarities.js";
+  import { RARITY_COLORS } from "#lib/shared/constants/rarities";
 
   type Props = {
     text: string;

@@ -8,8 +8,8 @@
   import { Textarea } from "$ui/textarea";
   import { toast } from "svelte-sonner";
   import Captcha from "#lib/components/Captcha.svelte";
-  import { apiKeyRequestSchema } from "#lib/shared/api-key-request.js";
-  import { API_USE_CASES, type ApiUseCase } from "#lib/shared/constants/developer.js";
+  import { apiKeyRequestSchema } from "#lib/shared/api-key-request";
+  import { API_USE_CASES, type ApiUseCase } from "#lib/shared/constants/developer";
   import { submitApiKeyRequest } from "./developer.remote";
 
   const { fields } = submitApiKeyRequest;

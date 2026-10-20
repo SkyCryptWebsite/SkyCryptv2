@@ -7,8 +7,8 @@
   import LockIcon from "@lucide/svelte/icons/lock";
   import SkullIcon from "@lucide/svelte/icons/skull";
   import { format } from "numerable";
-  import { Section } from "#lib/components/sections/index.js";
-  import { AdditionStat, DungeonCataCard, Skillbar } from "#lib/components/stats/index.js";
+  import { Section } from "#lib/components/sections";
+  import { AdditionStat, DungeonCataCard, Skillbar } from "#lib/components/stats";
 
   let { order }: { order: number } = $props();
 

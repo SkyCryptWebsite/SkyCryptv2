@@ -3,8 +3,8 @@ import { apiKeyClient } from "@better-auth/api-key/client";
 import { adminClient, organizationClient } from "better-auth/client/plugins";
 import { customSessionClient } from "better-auth/client/plugins";
 import { createAuthClient } from "better-auth/svelte";
-import type { auth } from "#lib/server/auth.js";
-import { ac, roles } from "#lib/shared/roles.js";
+import type { auth } from "#lib/server/auth";
+import { ac, roles } from "#lib/shared/roles";
 
 export const authClient = createAuthClient({
   baseURL: PUBLIC_ORIGIN,

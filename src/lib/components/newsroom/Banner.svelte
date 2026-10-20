@@ -24,7 +24,7 @@
 <script lang="ts">
   import { Button } from "$ui/button";
   import XIcon from "@lucide/svelte/icons/x";
-  import { cn } from "#lib/shared/utils.js";
+  import { cn } from "#lib/shared/utils";
 
   type Props = { html: string; variant: BannerVariant; onDismiss?: () => void; class?: string };
   const { html, variant, onDismiss, class: className }: Props = $props();

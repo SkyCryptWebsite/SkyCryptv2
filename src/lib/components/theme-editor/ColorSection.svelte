@@ -1,9 +1,9 @@
 <script lang="ts">
   import { Input } from "$ui/input";
   import { Label } from "$ui/label";
-  import { hexToOklch, oklchToHex } from "#lib/shared/themes/color-utils.js";
-  import { readComputedThemeCssVars } from "#lib/shared/themes/computed-css-vars.js";
-  import type { ShadcnThemeVarKey, ThemeModeName, ThemeV5 } from "#lib/shared/themes/schema.js";
+  import { hexToOklch, oklchToHex } from "#lib/shared/themes/color-utils";
+  import { readComputedThemeCssVars } from "#lib/shared/themes/computed-css-vars";
+  import type { ShadcnThemeVarKey, ThemeModeName, ThemeV5 } from "#lib/shared/themes/schema";
 
   let {
     workingTheme = $bindable(),

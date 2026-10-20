@@ -1,6 +1,6 @@
-import { isMaxEnchantment } from "#lib/shared/helper.js";
-import { colorCodes, extras, type ColorCodes, type FormattingCodes } from "#lib/shared/mc-text/parser/styleLibrary.js";
-import { BASE_FORMATTING_CODE_REGEX, htmlStringFormatting } from "#lib/shared/mc-text/parser/utils.js";
+import { isMaxEnchantment } from "#lib/shared/helper";
+import { colorCodes, extras, type ColorCodes, type FormattingCodes } from "#lib/shared/mc-text/parser/styleLibrary";
+import { BASE_FORMATTING_CODE_REGEX, htmlStringFormatting } from "#lib/shared/mc-text/parser/utils";
 
 /**
  * Convert Minecraft text to html.

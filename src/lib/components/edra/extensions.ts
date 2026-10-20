@@ -11,15 +11,15 @@ import Typography from "@tiptap/extension-typography";
 import { CharacterCount, Placeholder } from "@tiptap/extensions";
 import { Markdown } from "@tiptap/markdown";
 import StarterKit from "@tiptap/starter-kit";
-import strings from "./strings.ts";
-import { Audio } from "./tiptap/extensions/audio/index.ts";
-import { Callout } from "./tiptap/extensions/Callout.ts";
-import ColorHighlighter from "./tiptap/extensions/ColorHighlighter.ts";
-import { IFrameExtended } from "./tiptap/extensions/iframe/index.ts";
-import { ImageExtended } from "./tiptap/extensions/image/ImageExtended.ts";
-import { SelectAcrossAtoms } from "./tiptap/extensions/SelectAcrossAtoms.ts";
-import { Table, TableCell, TableHeader, TableRow } from "./tiptap/extensions/table/index.ts";
-import { VideoExtended } from "./tiptap/extensions/video/VideoExtended.ts";
+import strings from "./strings";
+import { Audio } from "./tiptap/extensions/audio";
+import { Callout } from "./tiptap/extensions/Callout";
+import ColorHighlighter from "./tiptap/extensions/ColorHighlighter";
+import { IFrameExtended } from "./tiptap/extensions/iframe";
+import { ImageExtended } from "./tiptap/extensions/image/ImageExtended";
+import { SelectAcrossAtoms } from "./tiptap/extensions/SelectAcrossAtoms";
+import { Table, TableCell, TableHeader, TableRow } from "./tiptap/extensions/table";
+import { VideoExtended } from "./tiptap/extensions/video/VideoExtended";
 
 interface SharedOptions {
   /** Editor-only plugins from StarterKit (history, cursors, trailing node). */

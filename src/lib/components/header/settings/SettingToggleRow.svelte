@@ -2,7 +2,7 @@
   import { Label } from "$ui/label";
   import { Switch } from "$ui/switch";
   import type { Snippet } from "svelte";
-  import { cn } from "#lib/shared/utils.js";
+  import { cn } from "#lib/shared/utils";
 
   let {
     icon,

@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { buttonVariants } from "$ui/button/index.js";
-  import * as DropdownMenu from "$ui/dropdown-menu/index.js";
-  import { cn } from "$utils.js";
+  import { buttonVariants } from "$ui/button";
+  import * as DropdownMenu from "$ui/dropdown-menu";
+  import { cn } from "$utils";
   import AlignLeft from "@lucide/svelte/icons/align-left";
   import ChevronDown from "@lucide/svelte/icons/chevron-down";
-  import { commands } from "../../../commands/index.js";
-  import { getEditor, useEditorTransaction } from "../../../tiptap/index.js";
+  import { commands } from "../../../commands";
+  import { getEditor, useEditorTransaction } from "../../../tiptap";
   import Tooltip from "../Tooltip.svelte";
 
   const alignments = commands["alignment"];

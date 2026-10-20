@@ -2,13 +2,13 @@ import { command, query } from "$app/server";
 import { error } from "@sveltejs/kit";
 import { desc, eq } from "drizzle-orm";
 import { z } from "zod";
-import { audit, requireStaff } from "#lib/server/admin.js";
-import { db } from "#lib/server/db/index.js";
-import { banner } from "#lib/server/db/schema/index.js";
-import { publish } from "#lib/server/live.js";
-import { getPublicProfiles } from "#lib/server/public-profile.js";
-import { assertValidContent, renderContent } from "#lib/server/rich-text.js";
-import { bannerData } from "#lib/shared/newsroom.js";
+import { audit, requireStaff } from "#lib/server/admin";
+import { db } from "#lib/server/db";
+import { banner } from "#lib/server/db/schema";
+import { publish } from "#lib/server/live";
+import { getPublicProfiles } from "#lib/server/public-profile";
+import { assertValidContent, renderContent } from "#lib/server/rich-text";
+import { bannerData } from "#lib/shared/newsroom";
 
 const requireEditor = () => requireStaff({ content: ["manage"] });
 

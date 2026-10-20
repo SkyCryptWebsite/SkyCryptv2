@@ -2,8 +2,8 @@
   import { Separator } from "$ui/separator";
   import { cn } from "$utils";
   import type { Snippet } from "svelte";
-  import { SectionSubtitle, SectionTitle } from "#lib/components/sections/index.js";
-  import type { SectionName } from "#lib/sections/types.js";
+  import { SectionSubtitle, SectionTitle } from "#lib/components/sections";
+  import type { SectionName } from "#lib/sections/types";
 
   type Props = {
     id: SectionName | "Catacombs" | "Master_Catacombs";

@@ -1,7 +1,7 @@
 import { PUBLIC_DISCORD_INVITE } from "$app/env/public";
 import type { APIBaseComponent, ComponentType } from "discord-api-types/v10";
 import { describe, expect, it } from "vitest";
-import type { ModelsEmbedData } from "#lib/shared/api/orval-generated.js";
+import type { ModelsEmbedData } from "#lib/shared/api/orval-generated";
 import { createDiscordEmbed, serializeDiscordEmbed } from "./discordEmbed";
 
 describe("discordEmbed", () => {

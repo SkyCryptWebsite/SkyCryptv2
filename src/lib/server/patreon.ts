@@ -7,18 +7,18 @@ import {
 } from "$app/env/private";
 import { PUBLIC_PATREON_COLORED_HEART_CENTS, PUBLIC_PATREON_ANY_EMOJI_CENTS } from "$app/env/public";
 import { and, eq, sql } from "drizzle-orm";
-import { db } from "#lib/server/db/index.js";
-import { account, patreonCreatorToken, patreonMembership } from "#lib/server/db/schema/index.js";
-import { claimPatreonVerification } from "#lib/server/patreon-cooldown.js";
+import { db } from "#lib/server/db";
+import { account, patreonCreatorToken, patreonMembership } from "#lib/server/db/schema";
+import { claimPatreonVerification } from "#lib/server/patreon-cooldown";
 import {
   findPatreonMembership,
   getPatreonEntitlement,
   type PatreonCampaignMember,
   type PatreonCampaignMembersResponse,
   type PatreonEntitlement
-} from "#lib/server/patreon-entitlements.js";
+} from "#lib/server/patreon-entitlements";
 
-export { getPatreonVerificationRetryAt } from "#lib/server/patreon-cooldown.js";
+export { getPatreonVerificationRetryAt } from "#lib/server/patreon-cooldown";
 
 const PATREON_API_URL = "https://www.patreon.com/api/oauth2/v2";
 const PATREON_TOKEN_URL = "https://www.patreon.com/api/oauth2/token";

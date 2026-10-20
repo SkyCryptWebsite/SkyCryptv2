@@ -13,7 +13,7 @@
   import { toast } from "svelte-sonner";
   import UserChip from "#lib/components/misc/UserChip.svelte";
   import Banner, { BANNER_LABELS } from "#lib/components/newsroom/Banner.svelte";
-  import type { BannerData } from "#lib/shared/newsroom.js";
+  import type { BannerData } from "#lib/shared/newsroom";
   import DateTimePicker from "../date-time-picker.svelte";
   import { formatDateTime } from "../format";
   import BannerEditor from "./banner-editor.svelte";

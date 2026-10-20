@@ -4,7 +4,7 @@
   import * as Popover from "$ui/popover";
   import { tick, untrack } from "svelte";
   import { toast } from "svelte-sonner";
-  import { canSelectEmoji, coloredHearts, profileEmojiSchema } from "#lib/shared/profile-emoji.js";
+  import { canSelectEmoji, coloredHearts, profileEmojiSchema } from "#lib/shared/profile-emoji";
 
   type Props = {
     account: {

@@ -1,8 +1,8 @@
 import { and, asc, desc, eq, gt, inArray, isNull, ne, or } from "drizzle-orm";
 import { z } from "zod";
-import { db } from "#lib/server/db/index.js";
-import { account, adminAuditLog, apikey, minecraftAccount, session, user } from "#lib/server/db/schema/index.js";
-import { roleRank } from "#lib/shared/roles.js";
+import { db } from "#lib/server/db";
+import { account, adminAuditLog, apikey, minecraftAccount, session, user } from "#lib/server/db/schema";
+import { roleRank } from "#lib/shared/roles";
 
 const minecraftUuid = z
   .string()

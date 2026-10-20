@@ -1,7 +1,7 @@
 import { getSchema } from "@tiptap/core";
 import { Node } from "@tiptap/pm/model";
 import { describe, it } from "vitest";
-import { getContentExtensions, stripTransientNodes } from "./extensions.ts";
+import { getContentExtensions, stripTransientNodes } from "./extensions";
 
 describe("getContentExtensions", () => {
   const schema = getSchema(getContentExtensions());

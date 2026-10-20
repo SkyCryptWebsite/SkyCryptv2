@@ -14,8 +14,8 @@
   import SettingsIcon from "@lucide/svelte/icons/settings";
   import ShieldIcon from "@lucide/svelte/icons/shield";
   import { toast } from "svelte-sonner";
-  import { authClient } from "#lib/shared/auth-client.js";
-  import { API_DOCS_URL } from "#lib/shared/constants/developer.js";
+  import { authClient } from "#lib/shared/auth-client";
+  import { API_DOCS_URL } from "#lib/shared/constants/developer";
   import { getDashboard } from "./dashboard.remote";
 
   const sidebar = Sidebar.useSidebar();

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { STAFF_ROLES } from "#lib/shared/roles.js";
+import { STAFF_ROLES } from "#lib/shared/roles";
 
 export const AUDIT_ACTIONS = {
   "api_request.approve": "Approved API access",

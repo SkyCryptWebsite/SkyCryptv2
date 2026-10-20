@@ -3,7 +3,7 @@
   import ky from "ky";
   import * as skinview3d from "skinview3d";
   import { onDestroy } from "svelte";
-  import { cn } from "#lib/shared/utils.js";
+  import { cn } from "#lib/shared/utils";
 
   interface Props {
     class?: string;

@@ -1,12 +1,12 @@
-import ColorHighlighter from "./ColorHighlighter.ts";
+import ColorHighlighter from "./ColorHighlighter";
 export { ColorHighlighter };
-export * from "./table/index.ts";
-export * from "./image/ImageExtended.ts";
-export * from "./video/VideoExtended.ts";
-export * from "./iframe/index.js";
-export { default as SlashCommand } from "./slash/index.js";
-export * from "./Callout.ts";
-export * from "./audio/index.js";
+export * from "./table";
+export * from "./image/ImageExtended";
+export * from "./video/VideoExtended";
+export * from "./iframe";
+export { default as SlashCommand } from "./slash";
+export * from "./Callout";
+export * from "./audio";
 export {
   SelectAcrossAtoms,
   ATOM_SLIGHT_PENETRATION_PX,
@@ -14,4 +14,4 @@ export {
   includeAtomInDragSelection,
   excludeAtomFromDragSelection,
   resolveAtomLeave
-} from "./SelectAcrossAtoms.ts";
+} from "./SelectAcrossAtoms";

@@ -2,9 +2,9 @@
   import { getMiscContext } from "$ctx";
   import { Label } from "$ui/label";
   import { format } from "numerable";
-  import { SectionSubtitle } from "#lib/components/sections/index.js";
-  import { AdditionStat } from "#lib/components/stats/index.js";
-  import { RARITY_COLORS } from "#lib/shared/constants/rarities.js";
+  import { SectionSubtitle } from "#lib/components/sections";
+  import { AdditionStat } from "#lib/components/stats";
+  import { RARITY_COLORS } from "#lib/shared/constants/rarities";
 
   const misc = $derived(getMiscContext().misc);
 </script>

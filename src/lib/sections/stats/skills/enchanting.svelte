@@ -8,8 +8,8 @@
   import LockIcon from "@lucide/svelte/icons/lock";
   import SparklesIcon from "@lucide/svelte/icons/sparkles";
   import { formatDistanceToNowStrict } from "date-fns";
-  import { Chip } from "#lib/components/misc/index.js";
-  import { AdditionStat } from "#lib/components/stats/index.js";
+  import { Chip } from "#lib/components/misc";
+  import { AdditionStat } from "#lib/components/stats";
 
   const data = $derived(getSkillsContext().skills);
   const enchanting = $derived(data?.enchanting);

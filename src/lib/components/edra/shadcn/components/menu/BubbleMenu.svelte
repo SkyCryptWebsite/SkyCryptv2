@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { Button } from "$ui/button/index.js";
-  import { Separator } from "$ui/separator/index.js";
-  import { cn } from "$utils.js";
+  import { Button } from "$ui/button";
+  import { Separator } from "$ui/separator";
+  import { cn } from "$utils";
   import type { Editor } from "@tiptap/core";
   import type { EditorState } from "@tiptap/pm/state";
   import type { EditorView } from "@tiptap/pm/view";
-  import { commands } from "../../../commands/index.js";
-  import { BubbleMenu, getEditor, isTextSelection, useEditorTransaction } from "../../../tiptap/index.js";
+  import { commands } from "../../../commands";
+  import { BubbleMenu, getEditor, isTextSelection, useEditorTransaction } from "../../../tiptap";
   import AlignMent from "../tools/AlignMent.svelte";
   import Colors from "../tools/Colors.svelte";
   import FontSize from "../tools/FontSize.svelte";

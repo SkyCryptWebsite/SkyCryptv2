@@ -2,7 +2,7 @@
   import { getCombinedContext, MiscContext, setMiscContext } from "$ctx";
   import EmptyStat from "$src/lib/components/EmptyStat.svelte";
   import DicesIcon from "@lucide/svelte/icons/dices";
-  import { Section } from "#lib/components/sections/index.js";
+  import { Section } from "#lib/components/sections";
   import Auctions from "./misc/auctions.svelte";
   import Chips from "./misc/chips.svelte";
   import Claimed from "./misc/claimed.svelte";

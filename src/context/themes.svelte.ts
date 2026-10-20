@@ -4,7 +4,6 @@ import * as devalue from "devalue";
 import { setTheme, theme as activeModeWatcherTheme, themeStorageKey } from "mode-watcher";
 import { PersistedState } from "runed";
 import { createContext, untrack } from "svelte";
-import { FIRST_PARTY_THEMES } from "#lib/shared/themes/first-party/index.js";
 import {
   DEFAULT_THEME,
   legacyThemeV4Schema,
@@ -13,7 +12,8 @@ import {
   ThemeEngine,
   themeV5Schema,
   type ThemeV5
-} from "#lib/shared/themes/index.js";
+} from "#lib/shared/themes";
+import { FIRST_PARTY_THEMES } from "#lib/shared/themes/first-party";
 
 const ACTIVE_THEME_STORAGE_KEY = "skycryptActiveTheme";
 themeStorageKey.current = ACTIVE_THEME_STORAGE_KEY;

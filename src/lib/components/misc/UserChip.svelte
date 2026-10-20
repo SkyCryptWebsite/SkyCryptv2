@@ -4,7 +4,7 @@
   import * as HoverCard from "$ui/hover-card";
   import * as Popover from "$ui/popover";
   import { MediaQuery } from "svelte/reactivity";
-  import { cn } from "#lib/shared/utils.js";
+  import { cn } from "#lib/shared/utils";
 
   type Props = {
     profile: PublicProfile | null;

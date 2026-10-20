@@ -8,7 +8,7 @@
   import UserChip from "#lib/components/misc/UserChip.svelte";
   import TypeBadge from "#lib/components/newsroom/TypeBadge.svelte";
   import { clientLocale } from "#lib/hooks/client-locale.svelte.js";
-  import { cn } from "#lib/shared/utils.js";
+  import { cn } from "#lib/shared/utils";
 
   /** `as` sets the title's heading level so the card fits its surrounding document outline. */
   const { post, as = "h3", glass = false }: { post: Post; as?: "h2" | "h3"; glass?: boolean } = $props();

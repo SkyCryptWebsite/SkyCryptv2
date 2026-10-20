@@ -1,9 +1,9 @@
 import { query } from "$app/server";
 import { count, desc, eq, sql } from "drizzle-orm";
-import { requireStaff } from "#lib/server/admin.js";
-import { db } from "#lib/server/db/index.js";
-import { adminAuditLog, apikey, apiKeyRequest, rateLimitRequest, user } from "#lib/server/db/schema/index.js";
-import { can, primaryRole } from "#lib/shared/roles.js";
+import { requireStaff } from "#lib/server/admin";
+import { db } from "#lib/server/db";
+import { adminAuditLog, apikey, apiKeyRequest, rateLimitRequest, user } from "#lib/server/db/schema";
+import { can, primaryRole } from "#lib/shared/roles";
 
 /** What the signed-in staff member may do. The UI hides controls with it; the server checks again. */
 export const getStaffContext = query(async () => {

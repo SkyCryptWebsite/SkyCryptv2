@@ -1,14 +1,14 @@
 <script lang="ts">
-  import { Separator } from "$ui/separator/index.js";
+  import { Separator } from "$ui/separator";
   import ArrowLeft from "@lucide/svelte/icons/arrow-left";
   import ArrowLeftFromLine from "@lucide/svelte/icons/arrow-left-from-line";
   import ArrowRight from "@lucide/svelte/icons/arrow-right";
   import ArrowRightFromLine from "@lucide/svelte/icons/arrow-right-from-line";
   import Sheet from "@lucide/svelte/icons/sheet";
   import Trash from "@lucide/svelte/icons/trash";
-  import strings from "../../../strings.js";
-  import { isColumnGripSelected, moveColumnLeft, moveColumnRight } from "../../../tiptap/extensions/table/index.js";
-  import { BubbleMenu, getEditor } from "../../../tiptap/index.js";
+  import strings from "../../../strings";
+  import { BubbleMenu, getEditor } from "../../../tiptap";
+  import { isColumnGripSelected, moveColumnLeft, moveColumnRight } from "../../../tiptap/extensions/table";
   const editor = getEditor();
 </script>
 

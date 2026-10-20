@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { buttonVariants, Button } from "$ui/button/index.js";
-  import { Input } from "$ui/input/index.js";
-  import * as Popover from "$ui/popover/index.js";
+  import { buttonVariants, Button } from "$ui/button";
+  import { Input } from "$ui/input";
+  import * as Popover from "$ui/popover";
   import Check from "@lucide/svelte/icons/check";
   import ChevronDown from "@lucide/svelte/icons/chevron-down";
   import Link from "@lucide/svelte/icons/link-2";
-  import { getEditor, useEditorTransaction } from "../../../tiptap/index.js";
+  import { getEditor, useEditorTransaction } from "../../../tiptap";
   import Tooltip from "../Tooltip.svelte";
 
   let open = $state(false);

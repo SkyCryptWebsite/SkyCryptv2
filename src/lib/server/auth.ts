@@ -24,17 +24,17 @@ import { admin, customSession, genericOAuth, patreon } from "better-auth/plugins
 import { captcha } from "better-auth/plugins";
 import { sveltekitCookies } from "better-auth/svelte-kit";
 import { log } from "evlog";
-import { db } from "#lib/server/db/index.js";
-import { getDiscordProfile, parseDiscordProfile, syncDiscordProfile } from "#lib/server/discord-profile.js";
+import { db } from "#lib/server/db";
+import { getDiscordProfile, parseDiscordProfile, syncDiscordProfile } from "#lib/server/discord-profile";
 import {
   fetchMcIdProfile,
   getStoredMinecraftAccounts,
   parseMcIdProfile,
   storeMinecraftAccounts,
   type McIdLink
-} from "#lib/server/minecraft-accounts.js";
-import { DEFAULT_API_KEY_PERMISSIONS } from "#lib/shared/constants/developer.js";
-import { ac, roles } from "#lib/shared/roles.js";
+} from "#lib/server/minecraft-accounts";
+import { DEFAULT_API_KEY_PERMISSIONS } from "#lib/shared/constants/developer";
+import { ac, roles } from "#lib/shared/roles";
 
 const BUILD_TIME_AUTH_SECRET = "build-time-placeholder-secret-for-sveltekit-build";
 const BUILD_TIME_BASE_URL = "http://localhost:3000";

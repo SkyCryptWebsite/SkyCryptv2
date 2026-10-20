@@ -6,8 +6,8 @@
   import { format } from "numerable";
   import { cubicInOut } from "svelte/easing";
   import { Tween } from "svelte/motion";
-  import type { ModelsSkill } from "#lib/shared/api/orval-generated.js";
-  import { calculatePercentage, formatNumber } from "#lib/shared/helper.js";
+  import type { ModelsSkill } from "#lib/shared/api/orval-generated";
+  import { calculatePercentage, formatNumber } from "#lib/shared/helper";
 
   type Props = {
     skill: string;

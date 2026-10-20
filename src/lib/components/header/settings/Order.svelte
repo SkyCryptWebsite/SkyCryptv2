@@ -10,8 +10,8 @@
   import { createSortable } from "@dnd-kit/svelte/sortable";
   import GripVertical from "@lucide/svelte/icons/grip-vertical";
   import ListOrdered from "@lucide/svelte/icons/list-ordered";
-  import { SettingsTab } from "#lib/components/header/types.js";
-  import { sections } from "#lib/sections/constants.js";
+  import { SettingsTab } from "#lib/components/header/types";
+  import { sections } from "#lib/sections/constants";
 
   const preferences = getPreferences();
   type SectionItem = (typeof preferences.sectionOrder)[number];

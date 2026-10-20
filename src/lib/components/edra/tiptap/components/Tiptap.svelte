@@ -1,7 +1,7 @@
 <script lang="ts">
   import { type Snippet } from "svelte";
-  import type { Editor } from "../Editor.ts";
-  import { setEditor } from "./editorContext.js";
+  import type { Editor } from "../Editor";
+  import { setEditor } from "./editorContext";
 
   let { editor, children }: { editor: Editor | undefined; children?: Snippet } = $props();
 

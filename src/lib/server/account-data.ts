@@ -1,5 +1,5 @@
 import { eq, inArray } from "drizzle-orm";
-import { db } from "#lib/server/db/index.js";
+import { db } from "#lib/server/db";
 import {
   account,
   apikey,
@@ -11,7 +11,7 @@ import {
   rateLimitRequest,
   session,
   user
-} from "#lib/server/db/schema/index.js";
+} from "#lib/server/db/schema";
 
 export async function exportAccountData(userId: string) {
   return db.transaction(

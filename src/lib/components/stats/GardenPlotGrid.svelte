@@ -5,10 +5,10 @@
   import * as Avatar from "$ui/avatar";
   import * as Tooltip from "$ui/tooltip";
   import Image from "@lucide/svelte/icons/image";
-  import { AdditionStat } from "#lib/components/stats/index.js";
-  import { type ModelsPlotLayout } from "#lib/shared/api/orval-generated.js";
-  import { renderLore } from "#lib/shared/helper.js";
-  import { animateObfuscatedText } from "#lib/shared/mc-text/obfuscated/index.js";
+  import { AdditionStat } from "#lib/components/stats";
+  import { type ModelsPlotLayout } from "#lib/shared/api/orval-generated";
+  import { renderLore } from "#lib/shared/helper";
+  import { animateObfuscatedText } from "#lib/shared/mc-text/obfuscated";
 
   let { plot }: { plot: ModelsPlotLayout | undefined } = $props();
 

@@ -3,7 +3,7 @@ import type { Node, ResolvedPos } from "@tiptap/pm/model";
 import type { EditorState, Selection, Transaction } from "@tiptap/pm/state";
 import { CellSelection, type Rect, TableMap } from "@tiptap/pm/tables";
 import type { EditorView } from "@tiptap/pm/view";
-import Table from "./table.js";
+import Table from "./table";
 
 export const isRectSelected = (rect: Rect) => (selection: CellSelection) => {
   const map = TableMap.get(selection.$anchorCell.node(-1));

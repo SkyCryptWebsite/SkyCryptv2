@@ -100,6 +100,8 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
+      // Mirrors the `#lib` import map in package.json, but lets Vite resolve imports without file extensions.
+      "#lib": `${root}/src/lib`,
       $params: `${root}/src/params`,
       $types: `${root}/src/lib/types`,
       $db: `${root}/src/db`,

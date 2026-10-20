@@ -4,7 +4,7 @@
   import * as Card from "$ui/card";
   import BookOpenIcon from "@lucide/svelte/icons/book-open";
   import ExternalLinkIcon from "@lucide/svelte/icons/external-link";
-  import { API_DOCS_URL } from "#lib/shared/constants/developer.js";
+  import { API_DOCS_URL } from "#lib/shared/constants/developer";
   import { getDashboard } from "../dashboard.remote";
   import ApiAccess from "./api-access.svelte";
 

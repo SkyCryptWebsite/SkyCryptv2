@@ -21,9 +21,9 @@
 <script lang="ts">
   import { getCombinedContext, getInternalState, getPreferences } from "$ctx";
   import { Spinner } from "$ui/spinner";
-  import { Notice } from "#lib/components/notices/index.js";
-  import type { SectionName } from "#lib/sections/types.js";
-  import { titleCase } from "#lib/shared/helper.js";
+  import { Notice } from "#lib/components/notices";
+  import type { SectionName } from "#lib/sections/types";
+  import { titleCase } from "#lib/shared/helper";
 
   const preferences = getPreferences();
   const internalState = getInternalState();

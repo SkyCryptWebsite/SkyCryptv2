@@ -2,7 +2,7 @@ import { getContributors } from "$routes/contributors.remote";
 import type { RequestHandler } from "@sveltejs/kit";
 import { log } from "evlog";
 import * as sitemap from "super-sitemap/sveltekit";
-import { listPublishedSlugs } from "#lib/server/newsroom.js";
+import { listPublishedSlugs } from "#lib/server/newsroom";
 
 const BASE_URL = "https://sky.shiiyu.moe";
 const postSlugs = new Set<string>();

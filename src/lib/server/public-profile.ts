@@ -1,7 +1,7 @@
 import type { PublicProfile } from "$types";
 import { and, desc, eq, inArray } from "drizzle-orm";
-import { db } from "#lib/server/db/index.js";
-import { account, discordProfile, minecraftAccount, user } from "#lib/server/db/schema/index.js";
+import { db } from "#lib/server/db";
+import { account, discordProfile, minecraftAccount, user } from "#lib/server/db/schema";
 
 const discordAvatar = (discordUserId: string, hash: string) =>
   `https://cdn.discordapp.com/avatars/${discordUserId}/${hash}.webp?size=128&animated=true`;

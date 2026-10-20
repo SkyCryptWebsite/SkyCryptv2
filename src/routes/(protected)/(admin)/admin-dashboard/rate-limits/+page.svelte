@@ -6,7 +6,7 @@
   import { createColumnHelper, renderComponent, renderSnippet } from "@tanstack/svelte-table";
   import DataTable from "#lib/components/data-table/DataTable.svelte";
   import DataTableSearch from "#lib/components/data-table/DataTableSearch.svelte";
-  import type { DataTableFeatures } from "#lib/components/data-table/features.js";
+  import type { DataTableFeatures } from "#lib/components/data-table/features";
   import { useSearchParams } from "#lib/hooks/search-params.svelte.js";
   import { getStaffContext } from "../admin.remote";
   import { formatDate, formatDateTime, formatNumber } from "../format";

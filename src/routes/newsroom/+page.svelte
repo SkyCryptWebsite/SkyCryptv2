@@ -6,7 +6,7 @@
   import * as Select from "$ui/select";
   import SearchXIcon from "@lucide/svelte/icons/search-x";
   import SvelteSeo from "svelte-seo";
-  import { JsonLd } from "#lib/components/misc/index.js";
+  import { JsonLd } from "#lib/components/misc";
   import Pagination from "#lib/components/newsroom/Pagination.svelte";
   import PostCard from "#lib/components/newsroom/PostCard.svelte";
   import { POST_TYPE_LABELS } from "#lib/components/newsroom/TypeBadge.svelte";

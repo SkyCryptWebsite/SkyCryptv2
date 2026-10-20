@@ -1,7 +1,7 @@
 import { gameModeIcons } from "$src/lib/shared/constants/game-modes";
 import { formatDistanceToNowStrict } from "date-fns";
-import type { ModelsEmbedData } from "#lib/shared/api/orval-generated.js";
-import { formatNumber } from "#lib/shared/helper.js";
+import type { ModelsEmbedData } from "#lib/shared/api/orval-generated";
+import { formatNumber } from "#lib/shared/helper";
 
 const skillEmojis = {
   combat: "<:combat:1558225211923636315>",

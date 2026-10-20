@@ -8,7 +8,7 @@
   import Search from "@lucide/svelte/icons/search";
   import { isHttpError } from "@sveltejs/kit";
   import { computeCommandScore } from "bits-ui";
-  import { resolveUuidByUsername } from "#lib/shared/api/skycrypt-api.remote.js";
+  import { resolveUuidByUsername } from "#lib/shared/api/skycrypt-api.remote";
   import CommandSearchGroup from "./CommandSearchGroup.svelte";
   import CommandSettingsGroup from "./CommandSettingsGroup.svelte";
 

@@ -1,8 +1,8 @@
 import { query } from "$app/server";
 import { eq } from "drizzle-orm";
-import { db } from "#lib/server/db/index.js";
-import { profileEmoji } from "#lib/server/db/schema/index.js";
-import { canSelectEmoji, profileEmojiSchema, profileUuidSchema } from "#lib/shared/profile-emoji.js";
+import { db } from "#lib/server/db";
+import { profileEmoji } from "#lib/server/db/schema";
+import { canSelectEmoji, profileEmojiSchema, profileUuidSchema } from "#lib/shared/profile-emoji";
 
 export const getProfileEmoji = query(profileUuidSchema, async (uuid) => {
   const [profile] = await db

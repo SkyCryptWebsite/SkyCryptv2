@@ -11,7 +11,7 @@
   import { cubicOut } from "svelte/easing";
   import { crossfade } from "svelte/transition";
   import ScrollAreaPrimitive from "#lib/components/ScrollAreaPrimitive.svelte";
-  import type { SectionName } from "#lib/sections/types.js";
+  import type { SectionName } from "#lib/sections/types";
 
   const { children }: { children?: Snippet } = $props();
 

@@ -1,8 +1,8 @@
 <script lang="ts">
   import { buttonVariants } from "$ui/button/button.svelte";
-  import * as DropdownMenu from "$ui/dropdown-menu/index.js";
+  import * as DropdownMenu from "$ui/dropdown-menu";
   import { ChevronDown, Download } from "@lucide/svelte";
-  import { getEditor } from "../../../tiptap/index.js";
+  import { getEditor } from "../../../tiptap";
   const editor = getEditor();
   const handleExport = (as: "markdown" | "html" | "json") => {
     let text = "";

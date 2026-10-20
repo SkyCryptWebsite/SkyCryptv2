@@ -7,11 +7,11 @@
   import { format } from "numerable";
   import { cubicOut } from "svelte/easing";
   import { fade } from "svelte/transition";
-  import { Item } from "#lib/components/item/index.js";
-  import { Chip } from "#lib/components/misc/index.js";
-  import { SectionSubtitle } from "#lib/components/sections/index.js";
-  import { AdditionStat, SkillGear } from "#lib/components/stats/index.js";
-  import { cn } from "#lib/shared/utils.js";
+  import { Item } from "#lib/components/item";
+  import { Chip } from "#lib/components/misc";
+  import { SectionSubtitle } from "#lib/components/sections";
+  import { AdditionStat, SkillGear } from "#lib/components/stats";
+  import { cn } from "#lib/shared/utils";
 
   const data = $derived(getSkillsContext().skills);
   const foraging = $derived(data?.foraging);

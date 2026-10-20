@@ -8,10 +8,10 @@
   import DataTable from "#lib/components/data-table/DataTable.svelte";
   import DataTableSearch from "#lib/components/data-table/DataTableSearch.svelte";
   import DataTableSortButton from "#lib/components/data-table/DataTableSortButton.svelte";
-  import type { DataTableFeatures } from "#lib/components/data-table/features.js";
+  import type { DataTableFeatures } from "#lib/components/data-table/features";
   import { useSearchParams } from "#lib/hooks/search-params.svelte.js";
-  import { USER_FILTERS } from "#lib/shared/admin.js";
-  import { roleLabels, UserRole } from "#lib/shared/roles.js";
+  import { USER_FILTERS } from "#lib/shared/admin";
+  import { roleLabels, UserRole } from "#lib/shared/roles";
   import { formatDate } from "../format";
   import { listUsers } from "./users.remote";
 

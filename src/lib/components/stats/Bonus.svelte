@@ -2,7 +2,7 @@
   import { getAllStatsContext } from "$ctx";
   import type { ItemStats } from "$types";
   import { format } from "numerable";
-  import { cn } from "#lib/shared/utils.js";
+  import { cn } from "#lib/shared/utils";
 
   type Props = {
     stats: ItemStats;

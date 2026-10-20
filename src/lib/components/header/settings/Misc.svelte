@@ -12,7 +12,7 @@
   import Rainbow from "@lucide/svelte/icons/rainbow";
   import Settings2 from "@lucide/svelte/icons/settings-2";
   import Sparkle from "@lucide/svelte/icons/sparkle";
-  import { SettingsTab } from "#lib/components/header/types.js";
+  import { SettingsTab } from "#lib/components/header/types";
   import SettingToggleRow from "./SettingToggleRow.svelte";
 
   const preferences = getPreferences();

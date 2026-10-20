@@ -8,7 +8,7 @@
   import ArrowLeftIcon from "@lucide/svelte/icons/arrow-left";
   import ChevronsUpDownIcon from "@lucide/svelte/icons/chevrons-up-down";
   import ShieldIcon from "@lucide/svelte/icons/shield";
-  import { roleLabels } from "#lib/shared/roles.js";
+  import { roleLabels } from "#lib/shared/roles";
   import { getOverview, getStaffContext } from "./admin.remote";
   import { ADMIN_BASE, navGroups } from "./nav";
 

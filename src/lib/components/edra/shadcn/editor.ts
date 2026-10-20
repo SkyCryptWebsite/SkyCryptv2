@@ -2,8 +2,7 @@ import type { Content, EditorOptions, Extensions } from "@tiptap/core";
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import TableOfContents, { getHierarchicalIndexes } from "@tiptap/extension-table-of-contents";
 import { all, createLowlight } from "lowlight";
-import { getDefaultExtensions } from "../extensions.ts";
-import { MediaPlaceholder } from "../tiptap/extensions/MediaPlaceHolder.ts";
+import { getDefaultExtensions } from "../extensions";
 import {
   Callout,
   IFrameExtended,
@@ -12,7 +11,8 @@ import {
   SvelteNodeViewRenderer,
   useEditor,
   VideoExtended
-} from "../tiptap/index.ts";
+} from "../tiptap";
+import { MediaPlaceholder } from "../tiptap/extensions/MediaPlaceHolder";
 import CalloutComp from "./components/Callout.svelte";
 import CodeBlock from "./components/CodeBlock.svelte";
 import IFrameComp from "./components/IFrame.svelte";

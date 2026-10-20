@@ -3,7 +3,7 @@
   import { calculatePercentage } from "$src/lib/shared/helper";
   import { cn } from "$src/lib/shared/utils";
   import { Progress } from "bits-ui";
-  import { formatNumber } from "#lib/shared/helper.js";
+  import { formatNumber } from "#lib/shared/helper";
   import { getDefaultCardSettingsContext } from "./Base.svelte";
 
   type SkillProps = {

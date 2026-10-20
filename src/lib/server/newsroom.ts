@@ -1,10 +1,10 @@
 import type { Banner, Post, PostListResponse, PostType, PublicProfile } from "$types";
 import { and, count, desc, eq, getTableColumns, gt, isNull, lte, or, sql } from "drizzle-orm";
-import { db } from "#lib/server/db/index.js";
-import { banner, post } from "#lib/server/db/schema/index.js";
-import { getPublicProfiles } from "#lib/server/public-profile.js";
-import { renderContent } from "#lib/server/rich-text.js";
-import type { PostData } from "#lib/shared/newsroom.js";
+import { db } from "#lib/server/db";
+import { banner, post } from "#lib/server/db/schema";
+import { getPublicProfiles } from "#lib/server/public-profile";
+import { renderContent } from "#lib/server/rich-text";
+import type { PostData } from "#lib/shared/newsroom";
 
 // Compared against JS dates rather than now(): the columns are written the same way, so time zones can't drift.
 const isLive = () => and(eq(post.status, "published"), lte(post.publishedAt, new Date()));

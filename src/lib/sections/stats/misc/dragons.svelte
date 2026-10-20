@@ -2,9 +2,9 @@
   import { getMiscContext } from "$ctx";
   import { Label } from "$ui/label";
   import { format } from "numerable";
-  import { SectionSubtitle } from "#lib/components/sections/index.js";
-  import { AdditionStat } from "#lib/components/stats/index.js";
-  import { formatTime } from "#lib/shared/helper.js";
+  import { SectionSubtitle } from "#lib/components/sections";
+  import { AdditionStat } from "#lib/components/stats";
+  import { formatTime } from "#lib/shared/helper";
 
   const misc = $derived(getMiscContext().misc);
   const dragons = $derived(misc?.dragons);

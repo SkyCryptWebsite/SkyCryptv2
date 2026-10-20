@@ -1,6 +1,6 @@
 <script lang="ts">
   import { untrack } from "svelte";
-  import type { Editor } from "../Editor.ts";
+  import type { Editor } from "../Editor";
 
   let { editor, class: className }: { editor: Editor | null; class: string } = $props();
 

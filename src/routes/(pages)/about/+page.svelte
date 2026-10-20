@@ -4,7 +4,7 @@
   import { resolve } from "$app/paths";
   import { Spinner } from "$ui/spinner";
   import SvelteSeo from "svelte-seo";
-  import { getSourceInfo } from "#lib/shared/api/skycrypt-api.remote.js";
+  import { getSourceInfo } from "#lib/shared/api/skycrypt-api.remote";
 
   const packageVersion = __NPM_PACKAGE_VERSION__;
   const commitHash = PUBLIC_COMMIT_HASH;

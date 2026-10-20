@@ -4,19 +4,19 @@
   import { page } from "$app/state";
   import { getInternalState, getPreferences } from "$ctx";
   import LoaderCircle from "@lucide/svelte/icons/loader-circle";
-  import { SEO } from "#lib/components/misc/index.js";
-  import { Notice } from "#lib/components/notices/index.js";
+  import { SEO } from "#lib/components/misc";
+  import { Notice } from "#lib/components/notices";
   import Main from "#lib/layouts/stats/Main.svelte";
-  import type { SectionName } from "#lib/sections/types.js";
-  import type { ModelsStatsOutput } from "#lib/shared/api/orval-generated.js";
+  import type { SectionName } from "#lib/sections/types";
+  import type { ModelsStatsOutput } from "#lib/shared/api/orval-generated";
   import {
     getAllStats,
     getCombinedProfileStats,
     getProfileStats,
     getSelectedProfileStats,
     listEnchantments
-  } from "#lib/shared/api/skycrypt-api.remote.js";
-  import { createDiscordEmbed, serializeDiscordEmbed } from "#lib/shared/discordEmbed.js";
+  } from "#lib/shared/api/skycrypt-api.remote";
+  import { createDiscordEmbed, serializeDiscordEmbed } from "#lib/shared/discordEmbed";
   import { type PageServerData } from "./$types";
 
   const { data }: { data: PageServerData } = $props();

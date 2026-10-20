@@ -8,7 +8,7 @@
   import * as Item from "$ui/item";
   import ArrowRightIcon from "@lucide/svelte/icons/arrow-right";
   import ScrollTextIcon from "@lucide/svelte/icons/scroll-text";
-  import { AUDIT_ACTIONS } from "#lib/shared/admin.js";
+  import { AUDIT_ACTIONS } from "#lib/shared/admin";
   import { getOverview } from "./admin.remote";
   import { formatDateTime, formatNumber } from "./format";
 

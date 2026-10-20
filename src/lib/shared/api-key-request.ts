@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { API_USE_CASES, MAX_REQUESTED_RATE_LIMIT } from "#lib/shared/constants/developer.js";
+import { API_USE_CASES, MAX_REQUESTED_RATE_LIMIT } from "#lib/shared/constants/developer";
 
 // Shared so the request form can preflight with the same rules the server enforces.
 export const apiKeyRequestSchema = z.object({

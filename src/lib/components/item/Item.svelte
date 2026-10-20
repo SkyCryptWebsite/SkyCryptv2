@@ -5,10 +5,10 @@
   import { Avatar, Tooltip, type AvatarImageLoadingStatus } from "bits-ui";
   import { IsInViewport } from "runed";
   import { untrack } from "svelte";
-  import type { ModelsStrippedItem } from "#lib/shared/api/orval-generated.js";
-  import { RARITIES, RARITY_COLORS } from "#lib/shared/constants/rarities.js";
-  import { formatNumber, getRarityClass } from "#lib/shared/helper.js";
-  import { cn } from "#lib/shared/utils.js";
+  import type { ModelsStrippedItem } from "#lib/shared/api/orval-generated";
+  import { RARITIES, RARITY_COLORS } from "#lib/shared/constants/rarities";
+  import { formatNumber, getRarityClass } from "#lib/shared/helper";
+  import { cn } from "#lib/shared/utils";
   import ResolvedItemImage from "./ResolvedItemImage.svelte";
 
   type Props = {

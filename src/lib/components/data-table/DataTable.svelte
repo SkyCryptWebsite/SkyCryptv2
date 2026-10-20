@@ -1,6 +1,6 @@
 <script lang="ts" generics="TData extends RowData">
   import * as Table from "$ui/table";
-  import { cn } from "$utils.js";
+  import { cn } from "$utils";
   import {
     createTable,
     FlexRender,

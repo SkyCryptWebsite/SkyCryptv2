@@ -7,7 +7,7 @@
   import type { JSONContent } from "@tiptap/core";
   import StarterKit from "@tiptap/starter-kit";
   import LinkTool from "#lib/components/edra/shadcn/components/tools/Link.svelte";
-  import { Tiptap, useEditor, useEditorTransaction } from "#lib/components/edra/tiptap/index.js";
+  import { Tiptap, useEditor, useEditorTransaction } from "#lib/components/edra/tiptap";
 
   type Props = { content: JSONContent; onchange: (content: JSONContent) => void; id?: string };
   let { content, onchange, id }: Props = $props();

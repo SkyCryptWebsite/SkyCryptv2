@@ -19,8 +19,8 @@
   import LogOutIcon from "@lucide/svelte/icons/log-out";
   import ShieldIcon from "@lucide/svelte/icons/shield";
   import { toast } from "svelte-sonner";
-  import { AUDIT_ACTIONS, BAN_DURATIONS } from "#lib/shared/admin.js";
-  import { roleLabels, roleRank, UserRole } from "#lib/shared/roles.js";
+  import { AUDIT_ACTIONS, BAN_DURATIONS } from "#lib/shared/admin";
+  import { roleLabels, roleRank, UserRole } from "#lib/shared/roles";
   import { getStaffContext } from "../../admin.remote";
   import { formatDate, formatDateTime, formatNumber } from "../../format";
   import StatusBadge from "../../status-badge.svelte";

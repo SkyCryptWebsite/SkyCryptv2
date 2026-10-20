@@ -5,7 +5,7 @@
   import * as Popover from "$ui/popover";
   import { fromDate, getLocalTimeZone, toCalendarDate, today, type DateValue } from "@internationalized/date";
   import CalendarIcon from "@lucide/svelte/icons/calendar";
-  import { cn } from "#lib/shared/utils.js";
+  import { cn } from "#lib/shared/utils";
 
   type Props = {
     /** In the viewer's local time zone; `null` when unset. */

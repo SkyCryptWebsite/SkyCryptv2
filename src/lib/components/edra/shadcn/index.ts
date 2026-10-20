@@ -1,8 +1,8 @@
-import { Tiptap } from "../tiptap/index.ts";
+import { Tiptap } from "../tiptap";
 import Toolbar from "./components/Toolbar.svelte";
 import DragHandle from "./drag-handle.svelte";
 import Editor from "./editor.svelte";
-export { createEditor } from "./editor.ts";
+export { createEditor } from "./editor";
 export * from "@tiptap/core";
 import BubbleMenu from "./components/menu/BubbleMenu.svelte";
 import ToC from "./toc.svelte";

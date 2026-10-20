@@ -6,13 +6,13 @@
   import ShirtIcon from "@lucide/svelte/icons/shirt";
   import SwordIcon from "@lucide/svelte/icons/sword";
   import EmptyStat from "#lib/components/EmptyStat.svelte";
-  import { EmptyItemSlot, Item } from "#lib/components/item/index.js";
-  import { Wardrobe } from "#lib/components/misc/index.js";
-  import { Section } from "#lib/components/sections/index.js";
-  import { Bonus, Loadouts } from "#lib/components/stats/index.js";
-  import { getRarityClass, renderLore } from "#lib/shared/helper.js";
-  import { animateObfuscatedText } from "#lib/shared/mc-text/obfuscated/index.js";
-  import { cn } from "#lib/shared/utils.js";
+  import { EmptyItemSlot, Item } from "#lib/components/item";
+  import { Wardrobe } from "#lib/components/misc";
+  import { Section } from "#lib/components/sections";
+  import { Bonus, Loadouts } from "#lib/components/stats";
+  import { getRarityClass, renderLore } from "#lib/shared/helper";
+  import { animateObfuscatedText } from "#lib/shared/mc-text/obfuscated";
+  import { cn } from "#lib/shared/utils";
 
   let { order }: { order: number } = $props();
 

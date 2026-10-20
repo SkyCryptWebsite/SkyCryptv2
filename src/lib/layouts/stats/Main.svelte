@@ -24,8 +24,8 @@
   import { untrack } from "svelte";
   import { cubicOut } from "svelte/easing";
   import { fade } from "svelte/transition";
-  import { ContainedItemsGrid, ItemContent } from "#lib/components/item/index.js";
-  import { Navbar } from "#lib/components/misc/index.js";
+  import { ContainedItemsGrid, ItemContent } from "#lib/components/item";
+  import { Navbar } from "#lib/components/misc";
   import Skin3D from "#lib/components/misc/Skin3D.svelte";
   import TooltipSetup from "#lib/components/tooltip/TooltipSetup.svelte";
   import AdditionalStats from "#lib/layouts/stats/AdditionalStats.svelte";
@@ -33,7 +33,7 @@
   import Skills from "#lib/layouts/stats/Skills.svelte";
   import Stats from "#lib/layouts/stats/Stats.svelte";
   import Sections from "#lib/sections/Sections.svelte";
-  import type { ModelsCombinedOutput, ModelsStatData, ModelsStatsOutput } from "#lib/shared/api/orval-generated.js";
+  import type { ModelsCombinedOutput, ModelsStatData, ModelsStatsOutput } from "#lib/shared/api/orval-generated";
 
   const {
     data: ctx,

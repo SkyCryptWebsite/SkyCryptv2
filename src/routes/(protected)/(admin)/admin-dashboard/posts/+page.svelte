@@ -10,11 +10,11 @@
   import { toast } from "svelte-sonner";
   import DataTable from "#lib/components/data-table/DataTable.svelte";
   import DataTableSearch from "#lib/components/data-table/DataTableSearch.svelte";
-  import type { DataTableFeatures } from "#lib/components/data-table/features.js";
+  import type { DataTableFeatures } from "#lib/components/data-table/features";
   import UserChip from "#lib/components/misc/UserChip.svelte";
   import TypeBadge from "#lib/components/newsroom/TypeBadge.svelte";
   import { useSearchParams } from "#lib/hooks/search-params.svelte.js";
-  import { POST_FILTERS } from "#lib/shared/newsroom.js";
+  import { POST_FILTERS } from "#lib/shared/newsroom";
   import { formatDateTime } from "../format";
   import PostStatus from "./post-status.svelte";
   import { createPost, listPosts } from "./posts.remote";

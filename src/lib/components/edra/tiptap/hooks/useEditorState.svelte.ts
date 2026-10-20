@@ -1,5 +1,5 @@
 import { type Readable, writable } from "svelte/store";
-import type { Editor } from "../Editor.ts";
+import type { Editor } from "../Editor";
 
 export type EditorStateSnapshot = {
   editor: Editor;

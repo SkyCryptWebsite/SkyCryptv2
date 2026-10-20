@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
 import { z } from "zod";
-import { db } from "#lib/server/db/index.js";
-import { discordProfile } from "#lib/server/db/schema/index.js";
+import { db } from "#lib/server/db";
+import { discordProfile } from "#lib/server/db/schema";
 
 const assetHash = z
   .string()

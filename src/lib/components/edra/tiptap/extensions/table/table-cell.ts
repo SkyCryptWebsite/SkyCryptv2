@@ -1,8 +1,8 @@
 import { mergeAttributes, Node } from "@tiptap/core";
 import { Plugin } from "@tiptap/pm/state";
 import { Decoration, DecorationSet } from "@tiptap/pm/view";
-import strings from "../../../strings.ts";
-import { getCellsInColumn, isRowSelected, selectRow } from "./utils.js";
+import strings from "../../../strings";
+import { getCellsInColumn, isRowSelected, selectRow } from "./utils";
 
 export interface TableCellOptions {
   HTMLAttributes: Record<string, unknown>;

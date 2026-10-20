@@ -14,7 +14,7 @@
   import KeyRoundIcon from "@lucide/svelte/icons/key-round";
   import PickaxeIcon from "@lucide/svelte/icons/pickaxe";
   import { toast } from "svelte-sonner";
-  import { API_USE_CASES } from "#lib/shared/constants/developer.js";
+  import { API_USE_CASES } from "#lib/shared/constants/developer";
   import ApiKeyRequestForm from "./api-key-request-form.svelte";
   import {
     deleteApiKey,

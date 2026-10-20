@@ -1,7 +1,7 @@
 import { Tooltip, type TooltipContentPropsWithoutHTML } from "bits-ui";
 import type { IsInViewport } from "runed";
 import type { ClassValue } from "svelte/elements";
-import type { ModelsStrippedItem } from "#lib/shared/api/orval-generated.js";
+import type { ModelsStrippedItem } from "#lib/shared/api/orval-generated";
 
 type ItemTooltipPayload = {
   skyblockItem?: ModelsStrippedItem;

@@ -7,7 +7,7 @@
   import { isHttpError, type HttpError } from "@sveltejs/kit";
   import { Button } from "bits-ui";
   import type { Snippet } from "svelte";
-  import { cn } from "#lib/shared/utils.js";
+  import { cn } from "#lib/shared/utils";
 
   type Props = {
     title: string;

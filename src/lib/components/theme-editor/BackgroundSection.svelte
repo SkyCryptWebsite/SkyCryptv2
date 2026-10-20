@@ -3,7 +3,7 @@
   import { Label } from "$ui/label";
   import ImageIcon from "@lucide/svelte/icons/image";
   import Sparkles from "@lucide/svelte/icons/sparkles";
-  import type { ThemeModeName, ThemeV5 } from "#lib/shared/themes/schema.js";
+  import type { ThemeModeName, ThemeV5 } from "#lib/shared/themes/schema";
 
   let {
     workingTheme = $bindable(),

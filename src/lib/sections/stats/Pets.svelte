@@ -10,9 +10,9 @@
   import * as Collapsible from "$ui/collapsible";
   import { Label } from "$ui/label";
   import PawPrintIcon from "@lucide/svelte/icons/paw-print";
-  import { formatNumber, getRarityClass, renderLore, uniqBy } from "#lib/shared/helper.js";
-  import { animateObfuscatedText } from "#lib/shared/mc-text/obfuscated/index.js";
-  import { cn } from "#lib/shared/utils.js";
+  import { formatNumber, getRarityClass, renderLore, uniqBy } from "#lib/shared/helper";
+  import { animateObfuscatedText } from "#lib/shared/mc-text/obfuscated";
+  import { cn } from "#lib/shared/utils";
 
   let { order }: { order: number } = $props();
 

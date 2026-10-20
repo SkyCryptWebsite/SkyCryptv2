@@ -3,7 +3,7 @@
   import { Button } from "$ui/button";
   import { Spinner } from "$ui/spinner";
   import { toast } from "svelte-sonner";
-  import { authClient } from "#lib/shared/auth-client.js";
+  import { authClient } from "#lib/shared/auth-client";
 
   let {
     provider,

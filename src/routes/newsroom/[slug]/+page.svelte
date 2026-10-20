@@ -9,10 +9,10 @@
   import ArrowLeft from "@lucide/svelte/icons/arrow-left";
   import Star from "@lucide/svelte/icons/star";
   import SvelteSeo from "svelte-seo";
-  import { JsonLd } from "#lib/components/misc/index.js";
+  import { JsonLd } from "#lib/components/misc";
   import UserChip from "#lib/components/misc/UserChip.svelte";
   import { clientLocale } from "#lib/hooks/client-locale.svelte.js";
-  import { cn } from "#lib/shared/utils.js";
+  import { cn } from "#lib/shared/utils";
   import type { PageData } from "./$types";
 
   const { data }: { data: PageData } = $props();

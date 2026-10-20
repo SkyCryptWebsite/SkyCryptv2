@@ -6,7 +6,7 @@
   import * as Item from "$ui/item";
   import * as Tooltip from "$ui/tooltip";
   import type { Component } from "svelte";
-  import { cn } from "#lib/shared/utils.js";
+  import { cn } from "#lib/shared/utils";
 
   interface Props {
     user: Contributor;

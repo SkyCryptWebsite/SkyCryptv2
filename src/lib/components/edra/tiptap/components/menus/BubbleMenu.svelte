@@ -3,7 +3,7 @@
   import { BubbleMenuPlugin } from "@tiptap/extension-bubble-menu";
   import { untrack } from "svelte";
   import type { Snippet } from "svelte";
-  import type { Editor } from "../../Editor.ts";
+  import type { Editor } from "../../Editor";
   interface Props {
     editor: Editor;
     pluginKey?: BubbleMenuPluginProps["pluginKey"];

@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { Button, buttonVariants } from "$ui/button/index.js";
-  import * as DropdownMenu from "$ui/dropdown-menu/index.js";
-  import { cn } from "$utils.js";
+  import { Button, buttonVariants } from "$ui/button";
+  import * as DropdownMenu from "$ui/dropdown-menu";
+  import { cn } from "$utils";
   import Captions from "@lucide/svelte/icons/captions";
   import CopyIcon from "@lucide/svelte/icons/copy";
   import EllipsisVertical from "@lucide/svelte/icons/ellipsis-vertical";
@@ -12,9 +12,9 @@
   import Trash from "@lucide/svelte/icons/trash-2";
   import type { NodeViewProps } from "@tiptap/core";
   import { onDestroy, onMount, type Snippet } from "svelte";
-  import strings from "../../strings.js";
-  import { NodeViewWrapper } from "../../tiptap/index.js";
-  import { duplicateContent } from "../../utils.js";
+  import strings from "../../strings";
+  import { NodeViewWrapper } from "../../tiptap";
+  import { duplicateContent } from "../../utils";
 
   interface MediaExtendedProps extends NodeViewProps {
     children: Snippet<[]>;

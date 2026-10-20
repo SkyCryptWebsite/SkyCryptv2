@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { cn } from "$utils.js";
+  import { cn } from "$utils";
   import "./editor.css";
   import TiptapContent from "../tiptap/components/TiptapContent.svelte";
-  import { Link, TableColMenu, TableRowMenu } from "./components/menu/index.js";
+  import { Link, TableColMenu, TableRowMenu } from "./components/menu";
 
   interface Props {
     class?: string;

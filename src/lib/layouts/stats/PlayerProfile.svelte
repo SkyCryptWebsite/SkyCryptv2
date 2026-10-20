@@ -16,9 +16,9 @@
   import Link from "@lucide/svelte/icons/link";
   import TriangleAlert from "@lucide/svelte/icons/triangle-alert";
   import { toast } from "svelte-sonner";
-  import { APINotice } from "#lib/components/notices/index.js";
-  import { getProfileEmoji } from "#lib/shared/profile-emoji.remote.js";
-  import { cn } from "#lib/shared/utils.js";
+  import { APINotice } from "#lib/components/notices";
+  import { getProfileEmoji } from "#lib/shared/profile-emoji.remote";
+  import { cn } from "#lib/shared/utils";
 
   let toastId: string | number = $state(0);
   let showMore = $state(false);

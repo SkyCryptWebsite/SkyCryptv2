@@ -1,5 +1,5 @@
 import { index, jsonb, pgTable, text, timestamp } from "drizzle-orm/pg-core";
-import type { AuditAction } from "#lib/shared/admin.js";
+import type { AuditAction } from "#lib/shared/admin";
 import { user } from "./auth.schema";
 
 export const adminAuditLog = pgTable(

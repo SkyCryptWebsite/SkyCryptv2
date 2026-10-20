@@ -1,7 +1,7 @@
 import { POST_TYPES, type PostType } from "$types";
 import { error, isHttpError } from "@sveltejs/kit";
 import { log } from "evlog";
-import { listPublishedPosts } from "#lib/server/newsroom.js";
+import { listPublishedPosts } from "#lib/server/newsroom";
 import type { PageServerLoad } from "./$types";
 
 const POSTS_PER_PAGE = 12;

@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { Button } from "$ui/button/index.js";
-  import { Separator } from "$ui/separator/index.js";
-  import { cn } from "$utils.js";
-  import { commands } from "../../commands/index.js";
-  import { getEditor, useEditorTransaction } from "../../tiptap/index.js";
+  import { Button } from "$ui/button";
+  import { Separator } from "$ui/separator";
+  import { cn } from "$utils";
+  import { commands } from "../../commands";
+  import { getEditor, useEditorTransaction } from "../../tiptap";
   import Colors from "./tools/Colors.svelte";
   import Export from "./tools/Export.svelte";
   import Tooltip from "./Tooltip.svelte";

@@ -7,9 +7,9 @@ import { Extension } from "@tiptap/core";
 import { EditorState, PluginKey } from "@tiptap/pm/state";
 import Suggestion, { type SuggestionKeyDownProps, type SuggestionProps } from "@tiptap/suggestion";
 import type { Component } from "svelte";
-import { commands, type EdraCommand } from "../../../commands/index.js";
-import type { Editor } from "../../../tiptap/index.js";
-import { SvelteRenderer } from "../../index.ts";
+import { SvelteRenderer } from "../..";
+import { commands, type EdraCommand } from "../../../commands";
+import type { Editor } from "../../../tiptap";
 
 interface Group {
   name: string;

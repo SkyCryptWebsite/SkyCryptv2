@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { buttonVariants } from "$ui/button/index.js";
-  import * as DropdownMenu from "$ui/dropdown-menu/index.js";
-  import { cn } from "$utils.js";
+  import { buttonVariants } from "$ui/button";
+  import * as DropdownMenu from "$ui/dropdown-menu";
+  import { cn } from "$utils";
   import Check from "@lucide/svelte/icons/check";
   import ChevronDown from "@lucide/svelte/icons/chevron-down";
-  import { getEditor, useEditorState } from "../../../tiptap/index.js";
-  import { quickcolors } from "../../../utils.ts";
+  import { getEditor, useEditorState } from "../../../tiptap";
+  import { quickcolors } from "../../../utils";
   import Tooltip from "../Tooltip.svelte";
 
   let open = $state(false);

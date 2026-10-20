@@ -1,14 +1,14 @@
 <script lang="ts">
-  import { Button } from "$ui/button/index.js";
-  import { Input } from "$ui/input/index.js";
+  import { Button } from "$ui/button";
+  import { Input } from "$ui/input";
   import { Link } from "@lucide/svelte";
   import Check from "@lucide/svelte/icons/check";
   import Copy from "@lucide/svelte/icons/copy";
   import Edit from "@lucide/svelte/icons/pen";
   import Trash2 from "@lucide/svelte/icons/trash-2";
   import { slide } from "svelte/transition";
-  import strings from "../../../strings.js";
-  import { BubbleMenu, getEditor, useEditorState } from "../../../tiptap/index.js";
+  import strings from "../../../strings";
+  import { BubbleMenu, getEditor, useEditorState } from "../../../tiptap";
   import Tooltip from "../Tooltip.svelte";
 
   const editor = getEditor();
