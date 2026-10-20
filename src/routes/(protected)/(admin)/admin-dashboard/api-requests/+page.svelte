@@ -150,7 +150,13 @@
           {#if selected.status === "approved" || selected.status === "revoked"}
             <dt class="text-muted-foreground">API key</dt>
             <dd>
-              {selected.keyEnabled === null ? "Not generated yet" : selected.keyEnabled ? "Active" : "Disabled"}
+              {#if selected.keyEnabled === null}
+                Not generated yet
+              {:else if selected.keyEnabled}
+                Active
+              {:else}
+                Disabled
+              {/if}
             </dd>
           {/if}
         </dl>

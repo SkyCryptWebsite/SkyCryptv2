@@ -345,13 +345,15 @@
             disabled={busy}
             aria-busy={busy}>
             {#if busy}<Spinner data-icon="inline-start" />{/if}
-            {action === "limit"
-              ? "Save limit"
-              : action === "delete"
-                ? "Delete key"
-                : key.enabled
-                  ? "Disable key"
-                  : "Enable key"}
+            {#if action === "limit"}
+              Save limit
+            {:else if action === "delete"}
+              Delete key
+            {:else if key.enabled}
+              Disable key
+            {:else}
+              Enable key
+            {/if}
           </Button>
         </Dialog.Footer>
       </form>

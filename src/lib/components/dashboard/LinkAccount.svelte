@@ -38,5 +38,11 @@
   {#if pending}
     <Spinner data-icon="inline-start" />
   {/if}
-  {pending ? "Connecting…" : reconnect ? "Reconnect MC-ID" : `Link ${label}`}
+  {#if pending}
+    Connecting…
+  {:else if reconnect}
+    Reconnect MC-ID
+  {:else}
+    Link {label}
+  {/if}
 </Button>

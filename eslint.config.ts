@@ -52,6 +52,7 @@ export default defineConfig(
     rules: {
       "svelte/no-at-html-tags": "off",
       "svelte/no-useless-mustaches": "off",
+      "no-nested-ternary": "error",
       "@typescript-eslint/no-unused-vars": [
         "error",
         {

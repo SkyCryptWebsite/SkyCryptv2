@@ -145,7 +145,7 @@
     onSortingChange={([next]) =>
       params.set({
         sort: (next?.id as typeof args.sort) ?? "createdAt",
-        dir: next ? (next.desc ? "desc" : "asc") : "desc"
+        dir: next && !next.desc ? "asc" : "desc"
       })}
     getRowId={(row) => row.id}
     onPageChange={(page, size) => params.set({ page, size })}

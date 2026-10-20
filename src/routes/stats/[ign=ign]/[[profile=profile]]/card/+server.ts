@@ -50,7 +50,12 @@ async function renderCard({ params, request, url, locals }: Parameters<RequestHa
   const { images } = await loadAssets();
 
   const isSameOrigin = request.headers.get("sec-fetch-site") === "same-origin";
-  const cacheControl = dev || isSameOrigin ? "no-cache, no-store, must-revalidate" : "public, max-age=86400, immutable";
+  let cacheControl = "public, max-age=86400, immutable";
+  if (dev) {
+    cacheControl = "no-cache, no-store, must-revalidate";
+  } else if (isSameOrigin) {
+    cacheControl = "private, max-age=300";
+  }
 
   try {
     const fetchStart = performance.now();

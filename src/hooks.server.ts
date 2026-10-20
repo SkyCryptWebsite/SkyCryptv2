@@ -62,7 +62,13 @@ export const init: ServerInit = async () => {
 };
 
 const headersHandler = (async ({ event, resolve }) => {
-  const response = await resolve(event);
+  const response = await resolve(event, {
+    // Body text font; without this it only starts downloading once the CSS has been parsed.
+    preload: (input) =>
+      input.type === "js" ||
+      input.type === "css" ||
+      (input.type === "font" && input.filename.endsWith("montserrat-latin-wght-normal.woff2"))
+  });
   const { request, url } = event;
 
   // Security headers

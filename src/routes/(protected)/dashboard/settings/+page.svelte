@@ -174,11 +174,13 @@
     <Card.Footer class="flex flex-wrap justify-between gap-3 border-t">
       <p class="flex items-center gap-2 text-sm text-muted-foreground">
         <ShieldCheckIcon class="size-4 shrink-0" strokeWidth={1.5} />
-        {sessions.length === 0
-          ? "No active sessions to manage."
-          : otherSessions.length
-            ? "You’ll stay signed in here."
-            : "You’re only signed in here."}
+        {#if sessions.length === 0}
+          No active sessions to manage.
+        {:else if otherSessions.length}
+          You’ll stay signed in here.
+        {:else}
+          You’re only signed in here.
+        {/if}
       </p>
       <Button
         variant="outline"

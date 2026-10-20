@@ -54,6 +54,8 @@ Follow these instructions when working on SkyCrypt Frontend. Nested `AGENTS.md` 
 - Name reusable Svelte components in PascalCase and utilities in camelCase; follow SvelteKit route naming and nearby feature-file conventions.
 - Follow `.oxfmtrc.json`: two spaces, double quotes, no trailing commas, sorted imports, and ordered Tailwind classes. Format only changed files.
 - Comment only what the code cannot say: a non-obvious reason, a gotcha, a security constraint. Don't restate what the code does.
+- Never nest ternaries (ESLint enforces `no-nested-ternary`). Use `if`/`else`, an early-returning helper, or a lookup object instead.
+- Use braces on `if`/`else` blocks. Skip them only for a short single-statement guard such as `if (!user) return;`.
 
 ## Newsroom and rich text
 

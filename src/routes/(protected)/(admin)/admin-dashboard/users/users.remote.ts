@@ -20,6 +20,13 @@ import { can, primaryRole, roleRank, STAFF_ROLES, UserRole } from "#lib/shared/r
 
 const discordId = (email: string) => email.split("@")[0];
 
+function filterQuery(filter: (typeof USER_FILTERS)[number]) {
+  if (filter === "all") return {};
+  if (filter === "banned") return { filterField: "banned", filterValue: true, filterOperator: "eq" as const };
+  if (filter === "staff") return { filterField: "role", filterValue: [...STAFF_ROLES], filterOperator: "in" as const };
+  return { filterField: "role", filterValue: filter, filterOperator: "eq" as const };
+}
+
 export const listUsers = query(
   listArgs.extend({
     filter: z.enum(USER_FILTERS).default("all"),
@@ -42,11 +49,7 @@ export const listUsers = query(
           searchField: byDiscordId ? "email" : "name",
           searchOperator: byDiscordId ? "starts_with" : "contains"
         }),
-        ...(filter === "banned"
-          ? { filterField: "banned", filterValue: true, filterOperator: "eq" }
-          : filter === "staff"
-            ? { filterField: "role", filterValue: [...STAFF_ROLES], filterOperator: "in" }
-            : filter !== "all" && { filterField: "role", filterValue: filter, filterOperator: "eq" })
+        ...filterQuery(filter)
       }
     });
     return {

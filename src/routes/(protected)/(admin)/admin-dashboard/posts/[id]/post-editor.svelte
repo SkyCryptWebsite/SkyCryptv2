@@ -211,17 +211,13 @@
       )
     ]);
 
-  const statusText = $derived(
-    saving
-      ? "Saving…"
-      : saveError
-        ? saveError
-        : dirty
-          ? "Unsaved changes"
-          : post.hasChanges
-            ? "Changes saved, not published yet"
-            : "Saved"
-  );
+  const statusText = $derived.by(() => {
+    if (saving) return "Saving…";
+    if (saveError) return saveError;
+    if (dirty) return "Unsaved changes";
+    if (post.hasChanges) return "Changes saved, not published yet";
+    return "Saved";
+  });
 </script>
 
 <svelte:window
@@ -291,7 +287,7 @@
       <Card.Content class="flex flex-col gap-3">
         <Button onclick={() => publish(null)} disabled={busy}>
           {#if busy}<Spinner data-icon="inline-start" />{/if}
-          {isPublished ? (isScheduled ? "Publish now" : "Publish changes") : "Publish now"}
+          {isPublished && !isScheduled ? "Publish changes" : "Publish now"}
         </Button>
         <Field.Field>
           <Field.FieldLabel for="post-publish-at">Publish date</Field.FieldLabel>

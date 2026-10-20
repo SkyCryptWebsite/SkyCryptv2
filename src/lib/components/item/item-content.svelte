@@ -26,13 +26,10 @@
   const isMulticolor = $derived((itemNameHtml?.match(/<\/span>/g) || [])?.length > 1);
   const bgColor = $derived(getRarityClass(piece?.rarity ?? ("common".toLowerCase() as string), "bg"));
   const textColor = $derived(getRarityClass(piece?.rarity ?? ("common".toLowerCase() as string), "text"));
-  const enchanted = $derived(
-    skyblockItem?.texture_path?.includes("/api/leather/")
-      ? false
-      : skyblockItem && "shiny" in skyblockItem
-        ? skyblockItem.shiny
-        : false
-  );
+  const enchanted = $derived.by(() => {
+    if (skyblockItem?.texture_path?.includes("/api/leather/")) return false;
+    return skyblockItem && "shiny" in skyblockItem ? skyblockItem.shiny : false;
+  });
   const hasColor = $derived(skyblockItem?.lore?.some((lore) => lore.includes("Color:")) ?? false);
   const packs = $derived(getPacksContext().packs);
   const packData = $derived(packs?.find((pack) => pack.id === skyblockItem?.texture_pack));
