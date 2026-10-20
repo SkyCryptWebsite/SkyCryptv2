@@ -116,7 +116,7 @@
             class="group flex-nowrap bg-foreground/5 [a]:transition-[scale,background-color] [a]:duration-300 [a]:ease-out [a]:hover:bg-foreground/10 [a]:interact:scale-95">
             {#snippet child({ props })}
               <a
-                href={resolve("/stats/[ign]/[[profile]]", {
+                href={resolve("/stats/[ign=ign]/[[profile=profile]]", {
                   ign: member.username ?? "",
                   profile: member?.profile_id
                 })}
@@ -194,7 +194,7 @@
               class="flex-nowrap bg-foreground/5 [a]:transition-[scale,background-color] [a]:duration-300 [a]:ease-out [a]:hover:bg-foreground/10 [a]:interact:scale-95">
               {#snippet child({ props })}
                 <a
-                  href={resolve("/stats/[ign]/[[profile]]", {
+                  href={resolve("/stats/[ign=ign]/[[profile=profile]]", {
                     ign: profile?.username ?? "",
                     profile: otherProfile.cute_name
                   })}

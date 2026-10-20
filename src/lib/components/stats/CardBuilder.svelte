@@ -34,7 +34,7 @@
   const imageUrl = $derived.by(() => {
     const base =
       page.url.origin +
-      resolve("/stats/[ign]/[[profile]]/card", {
+      resolve("/stats/[ign=ign]/[[profile=profile]]/card", {
         ign: page.params.ign ?? "",
         profile: page.params.profile ?? ""
       });
@@ -77,7 +77,7 @@
   async function copyBBCode() {
     const profileUrl =
       page.url.origin +
-      resolve("/stats/[ign]/[[profile]]", {
+      resolve("/stats/[ign=ign]/[[profile=profile]]", {
         ign: page.params.ign ?? "",
         profile: page.params.profile ?? ""
       });
@@ -254,7 +254,7 @@
         <Button
           variant="outline"
           class="text-xs"
-          href={resolve("/stats/[ign]/[[profile]]/card", {
+          href={resolve("/stats/[ign=ign]/[[profile=profile]]/card", {
             ign: page.params.ign ?? "",
             profile: page.params.profile ?? ""
           })}

@@ -2,6 +2,7 @@ import { building } from "$app/env";
 import { SERVER_API_TOKEN } from "$app/env/private";
 import { PUBLIC_SERVER_API_URL } from "$app/env/public";
 import { getRequestEvent } from "$app/server";
+import { toBackendPath } from "./backend-path";
 
 // NOTE: Supports cases where `content-type` is other than `json`
 const getBody = <T>(c: Response | Request): Promise<T> => {
@@ -18,7 +19,7 @@ const getBody = <T>(c: Response | Request): Promise<T> => {
 const getUrl = (contextUrl: string): string => {
   // Remove the trailing /api/ if present
   const baseUrl = PUBLIC_SERVER_API_URL.replace(/\/api\/?$/, "");
-  const requestUrl = new URL(`${baseUrl}${contextUrl}`);
+  const requestUrl = new URL(`${baseUrl}${toBackendPath(contextUrl)}`);
 
   return requestUrl.toString();
 };

@@ -45,7 +45,7 @@
     <svelte:element
       this={options?.tip ? "div" : "a"}
       {...props}
-      href={options?.tip ? undefined : resolve("/stats/[ign]/[[profile]]", { ign: user.id })}>
+      href={options?.tip ? undefined : resolve("/stats/[ign=ign]/[[profile=profile]]", { ign: user.id })}>
       <Item.Media variant="image" class="size-16 translate-y-0! self-center-safe! rounded-none">
         <img
           loading="lazy"

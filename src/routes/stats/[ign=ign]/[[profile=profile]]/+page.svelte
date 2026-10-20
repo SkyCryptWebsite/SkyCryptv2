@@ -21,7 +21,6 @@
   import { type PageServerData } from "./$types";
 
   const { data }: { data: PageServerData } = $props();
-  const discordEmbed = $derived(createDiscordEmbed(data.embed));
 
   const preferences = getPreferences();
   const internalState = getInternalState();
@@ -53,7 +52,7 @@
     const { username, profile_cute_name } = profile;
     if (!username) return;
 
-    const wanted = resolve("/stats/[ign]/[[profile]]", {
+    const wanted = resolve("/stats/[ign=ign]/[[profile=profile]]", {
       ign: username,
       profile: profile_cute_name || ""
     });
@@ -97,16 +96,19 @@
   });
 </script>
 
+<!-- A plain value on the server render; a streamed promise on client-side navigation (see +page.server.ts). -->
 <svelte:head>
-  {#if data.embed.username}
-    <svelte:element this={"script"} id="discord:component-embed" type="application/json">
-      {serializeDiscordEmbed(discordEmbed)}</svelte:element>
-  {/if}
+  {#await data.embed then embed}
+    {#if embed.username}
+      <svelte:element this={"script"} id="discord:component-embed" type="application/json">
+        {serializeDiscordEmbed(createDiscordEmbed(embed))}</svelte:element>
+    {/if}
+  {/await}
 </svelte:head>
 
-{#if data.embed}
-  <SEO embedData={data.embed} />
-{/if}
+{#await data.embed then embed}
+  <SEO embedData={embed} />
+{/await}
 
 <div class="@container/parent relative">
   <SkinColumn profileView={profileViewPromise} />

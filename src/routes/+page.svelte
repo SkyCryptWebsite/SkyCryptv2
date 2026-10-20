@@ -108,7 +108,7 @@
 
     try {
       const response = await resolveUuidByUsername({ username });
-      await goto(resolve("/stats/[ign]/[[profile]]", { ign: response.username ?? "" }));
+      await goto(resolve("/stats/[ign=ign]/[[profile=profile]]", { ign: response.username ?? "" }));
     } catch (err) {
       submittedSearchError = getErrorMessage(err);
     } finally {
