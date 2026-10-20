@@ -17,7 +17,7 @@ export const listPosts = query(
 /** The latest published posts for the unread toast; updates while the page is open. */
 export const listLatestPostsForNotifications = query.live(
   z.object({ limit: z.number().int().min(1).max(10).default(5) }),
-  ({ limit }) => watch("posts", () => listLatestPosts(limit))
+  ({ limit }) => watch("posts", () => listLatestPosts(limit), String(limit))
 );
 
 /** Site-wide banners; updates while the page is open. */

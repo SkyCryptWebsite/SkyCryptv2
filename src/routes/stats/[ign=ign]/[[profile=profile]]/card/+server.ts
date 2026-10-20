@@ -3,7 +3,6 @@ import { PUBLIC_ORIGIN as baseUrl } from "$app/env/public";
 import { DefaultCard } from "$src/lib/components/cards";
 import ErrorCard from "$src/lib/components/cards/default/ErrorCard.svelte";
 import { parseSettingsFromParams } from "$src/lib/components/cards/default/schema";
-import { resolveUuidByUsername, type ModelsPlayerResolve } from "$src/lib/shared/api/orval-generated";
 import {
   getCombinedProfileStats,
   getProfileNetworth,
@@ -20,28 +19,44 @@ import appStyles from "$routes/layout.css?inline";
 // Create shared renderer with 64MB cache budget
 const renderer = new Renderer({ cacheMaxBytes: 64 * 1024 * 1024 });
 
-// Initialize assets once and pre-register fonts onto the renderer
-const assetsPromise = setupAssetsAndRenderer();
+let assetsPromise: Promise<{ images: ImageSource[] }> | undefined;
+const loadAssets = () => (assetsPromise ??= setupAssetsAndRenderer());
+loadAssets();
 
-export const GET: RequestHandler = async ({ params, request, url, locals }) => {
+// shortcut: a fixed guess, not load-tested. Tune it, or make it an env var, once real burst numbers exist.
+const MAX_CONCURRENT_CARDS = 16;
+let cardsInFlight = 0;
+
+export const GET: RequestHandler = async (event) => {
+  if (cardsInFlight >= MAX_CONCURRENT_CARDS) {
+    return new Response("Too many card renders, try again shortly", { status: 503, headers: { "retry-after": "5" } });
+  }
+  cardsInFlight++;
+  try {
+    return await renderCard(event);
+  } finally {
+    cardsInFlight--;
+  }
+};
+
+async function renderCard({ params, request, url, locals }: Parameters<RequestHandler>[0]) {
   const start = performance.now();
   const { ign, profile } = params;
   const settings = parseSettingsFromParams(url.searchParams);
 
   // Await shared assets
-  const { images } = await assetsPromise;
+  const { images } = await loadAssets();
 
   const isSameOrigin = request.headers.get("sec-fetch-site") === "same-origin";
   const cacheControl = dev || isSameOrigin ? "no-cache, no-store, must-revalidate" : "public, max-age=86400, immutable";
 
   try {
     const fetchStart = performance.now();
-    const user = (await resolveUuidByUsername(ign)).data as ModelsPlayerResolve;
-    const uuid = user.uuid ?? ign;
-    const [cardData, playerImage] = await Promise.all([
-      profile ? fetchProfileCardData(uuid, profile) : fetchSelectedProfileCardData(uuid),
-      fetchAssetBuffer(`https://nmsr.nickac.dev/fullbody/${uuid}?no=shadow`, "Player Image", request.signal)
-    ]);
+    const fetchPlayerImage = (uuid: string) =>
+      fetchAssetBuffer(`https://nmsr.nickac.dev/fullbody/${uuid}?no=shadow`, "Player Image", request.signal);
+    const { playerImage, ...cardData } = profile
+      ? await fetchProfileCardData(ign, profile, fetchPlayerImage)
+      : await fetchSelectedProfileCardData(ign, fetchPlayerImage);
     const fetchDuration = performance.now() - fetchStart;
 
     const componentRenderStart = performance.now();
@@ -68,7 +83,8 @@ export const GET: RequestHandler = async ({ params, request, url, locals }) => {
       emoji: "twemoji",
       signal: request.signal,
       images: [...images, { src: "player", data: playerImage, cache: "none" }],
-      renderer
+      renderer,
+      onError: () => {}
     });
 
     await imageResponse.ready;
@@ -92,6 +108,7 @@ export const GET: RequestHandler = async ({ params, request, url, locals }) => {
 
     return imageResponse;
   } catch (error) {
+    if (request.signal.aborted) return new Response(null, { status: 499 });
     log.error({
       action: "card.generate_failed",
       ign,
@@ -114,7 +131,8 @@ export const GET: RequestHandler = async ({ params, request, url, locals }) => {
         css: appStyles,
         emoji: "twemoji",
         images,
-        renderer
+        renderer,
+        onError: () => {}
       });
 
       await errorResponse.ready;
@@ -124,44 +142,54 @@ export const GET: RequestHandler = async ({ params, request, url, locals }) => {
       return new Response("Internal Server Error", { status: 500 });
     }
   }
-};
+}
 
-async function fetchProfileCardData(uuid: string, profileId: string) {
-  const [profileResult, networthResult, combinedResult] = await Promise.allSettled([
-    getProfileStats({ uuid, profileId }),
-    getProfileNetworth({ uuid, profileId }),
-    getCombinedProfileStats({ uuid, profileId })
+type PlayerImageFetcher = (uuid: string) => Promise<ArrayBuffer>;
+
+async function fetchProfileCardData(ign: string, profileId: string, fetchPlayerImage: PlayerImageFetcher) {
+  const profilePromise = Promise.resolve(getProfileStats({ uuid: ign, profileId }));
+  const [profileResult, networthResult, combinedResult, playerImageResult] = await Promise.allSettled([
+    profilePromise,
+    getProfileNetworth({ uuid: ign, profileId }),
+    getCombinedProfileStats({ uuid: ign, profileId }),
+    profilePromise.then((profile) => fetchPlayerImage(profile.uuid ?? ign))
   ]);
 
   if (profileResult.status === "rejected") throw profileResult.reason;
   if (networthResult.status === "rejected") throw networthResult.reason;
   if (combinedResult.status === "rejected") throw combinedResult.reason;
+  if (playerImageResult.status === "rejected") throw playerImageResult.reason;
 
   return {
     profile: profileResult.value,
     networth: networthResult.value,
-    dungeons: combinedResult.value.dungeons
+    dungeons: combinedResult.value.dungeons,
+    playerImage: playerImageResult.value
   };
 }
 
-async function fetchSelectedProfileCardData(uuid: string) {
-  const profile = await getSelectedProfileStats({ uuid });
+async function fetchSelectedProfileCardData(ign: string, fetchPlayerImage: PlayerImageFetcher) {
+  const profile = await getSelectedProfileStats({ uuid: ign });
   const profileId = profile.profile_id;
+  const uuid = profile.uuid ?? ign;
 
   if (!profileId) throw new Error("Selected profile is missing a profile ID");
 
-  const [networthResult, combinedResult] = await Promise.allSettled([
+  const [networthResult, combinedResult, playerImageResult] = await Promise.allSettled([
     getProfileNetworth({ uuid, profileId }),
-    getCombinedProfileStats({ uuid, profileId })
+    getCombinedProfileStats({ uuid, profileId }),
+    fetchPlayerImage(uuid)
   ]);
 
   if (networthResult.status === "rejected") throw networthResult.reason;
   if (combinedResult.status === "rejected") throw combinedResult.reason;
+  if (playerImageResult.status === "rejected") throw playerImageResult.reason;
 
   return {
     profile,
     networth: networthResult.value,
-    dungeons: combinedResult.value.dungeons
+    dungeons: combinedResult.value.dungeons,
+    playerImage: playerImageResult.value
   };
 }
 
@@ -198,7 +226,7 @@ async function fetchAssetBuffer(url: string, assetName: string, signal?: AbortSi
 
 // Single initialization routine for fetching assets and registering fonts
 async function setupAssetsAndRenderer() {
-  if (building) return { fonts: [], images: [] };
+  if (building) return { images: [] };
 
   try {
     const [montserratNormalBuffer, minecraftFontBuffer, skycryptLogo, skycryptBackground] = await Promise.all([
@@ -223,9 +251,10 @@ async function setupAssetsAndRenderer() {
       await renderer.registerFont(font);
     }
 
-    return { fonts, images };
+    return { images };
   } catch (err) {
     log.error({ action: "card.init_assets_failed", error: err });
-    return { fonts: [], images: [] };
+    assetsPromise = undefined;
+    return { images: [] };
   }
 }
