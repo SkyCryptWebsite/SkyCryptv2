@@ -109,10 +109,19 @@
         class="mt-0.5 size-4 shrink-0 accent-primary" />
       <Field.FieldContent>
         <Field.FieldLabel for="api-request-terms" class="font-normal">
-          I’ve read and will follow the
-          <a href={resolve("/(pages)/api-policy")} target="_blank" class="font-medium underline underline-offset-4"
-            >API Policy</a
-          >. SkyCrypt may revoke keys that break it.
+          I’ve read and agree to the <a
+            href={resolve("/(pages)/api-policy")}
+            target="_blank"
+            class="font-medium underline underline-offset-4">API Policy</a
+          >,
+          <a
+            href={resolve("/(pages)/terms-of-service")}
+            target="_blank"
+            class="font-medium underline underline-offset-4">Terms of Service</a>
+          and
+          <a href={resolve("/(pages)/privacy-policy")} target="_blank" class="font-medium underline underline-offset-4"
+            >Privacy Policy</a
+          >.
         </Field.FieldLabel>
         <Field.FieldError errors={fields.acceptTerms.issues()} />
       </Field.FieldContent>

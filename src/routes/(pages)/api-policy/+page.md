@@ -9,7 +9,7 @@
 
 # API Policy
 
-Last updated: 19 October 2026
+Last updated: 20 October 2026
 
 This policy covers everything you build with a SkyCrypt API key. It applies on top of our [Terms of Service](/terms-of-service). If you break it, we can revoke your key and ban your account, and we don't have to warn you first.
 
@@ -17,7 +17,9 @@ SkyCrypt gets its data from Hypixel and follows the [Hypixel API Policy](https:/
 
 ## What the API is for
 
-The SkyCrypt API is for projects that look up a player when someone asks for that player, such as a Discord bot command, a mod that shows a player's stats, or a website where you search for a name.
+The SkyCrypt API is for small, free hobby projects that look up a player when someone asks for that player, such as a Discord bot command, a mod that shows a player's stats, or a website where you search for a name.
+
+If you need fresh data, more requests or a commercial project, apply for your own key in the [Hypixel Developer Dashboard](https://developer.hypixel.net) and use the Hypixel API directly.
 
 It is not for collecting data in bulk. You may not:
 
@@ -52,22 +54,17 @@ Your project must also say clearly that it is not affiliated with or endorsed by
 
 If your key leaks, delete it in your dashboard and request a new one.
 
-## Caching
+## Cached data only
 
-Cache our responses and reuse them, instead of asking for the same player again and again. Stats on SkyCrypt only change every few minutes, so requesting the same player more often than that doesn't get you newer data.
+The API only returns data SkyCrypt already has, from players someone recently looked up on SkyCrypt. It never asks Hypixel for new data on your behalf. If we don't have a player, you get no data for them, and the data you do get can be older than what the website shows.
 
-## Making money
+Cache our responses and reuse them, instead of asking for the same player again and again.
 
-You can earn money from your project with ads, donations or subscriptions, as long as:
+## No money
 
-- everyone can use a free version of it, which can show ads;
-- anything behind a paywall adds something of its own, such as new tools or insights, instead of just showing SkyCrypt data;
-- it doesn't compete with SkyCrypt, for example by copying SkyCrypt's stats pages;
-- it is fair to players and doesn't push them to spend money.
+You may not make money from anything that uses the SkyCrypt API. That means no ads, subscriptions, paid features or selling data, and no selling access to the API. You can ask for donations, as long as everything in your project stays free for everyone. Your project may also not compete with SkyCrypt, for example by copying SkyCrypt's stats pages.
 
-You may not sell SkyCrypt data itself, sell access to the SkyCrypt API, or offer your project as a replacement for the SkyCrypt or Hypixel API.
-
-Hypixel also has rules for projects that make money, such as needing a Production application. If your project uses the Hypixel API directly, check the [Hypixel API Policy](https://developer.hypixel.net/policies) as well.
+If you want to make money from your project, use the Hypixel API directly and follow the [Hypixel API Policy](https://developer.hypixel.net/policies), which requires a Production application for that.
 
 ## Abuse
 

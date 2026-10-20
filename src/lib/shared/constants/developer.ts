@@ -5,7 +5,6 @@ export const API_USE_CASES = [
   { value: "discord-bot", label: "Discord bot" },
   { value: "mod", label: "Minecraft mod" },
   { value: "tool", label: "Tool or script" },
-  { value: "research", label: "Research or statistics" },
   { value: "other", label: "Something else" }
 ] as const;
 

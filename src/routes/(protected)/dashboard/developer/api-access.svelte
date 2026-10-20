@@ -110,7 +110,9 @@
         <Item.Content class="min-w-0">
           <Item.Title>{request.name}</Item.Title>
           <Item.Description>
-            {API_USE_CASES.find(({ value }) => value === request.useCase)?.label} · Submitted {date(request.createdAt)}
+            {API_USE_CASES.find(({ value }) => value === request.useCase)?.label ?? request.useCase} · Submitted {date(
+              request.createdAt
+            )}
           </Item.Description>
           <p class="text-sm leading-relaxed wrap-break-word whitespace-pre-line text-muted-foreground">
             {request.description}
