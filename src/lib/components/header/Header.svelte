@@ -88,7 +88,7 @@
   style="clip-path: {clipPath}">
 </div>
 <header
-  class="@container fixed top-0 left-0 isolate z-35 h-12 w-full border-b px-2.5 pt-[env(safe-area-inset-top,0)] pr-[max(0.625rem,env(safe-area-inset-right))] pb-[env(safe-area-inset-bottom,0)] pl-[max(0.625rem,env(safe-area-inset-left))] leading-12">
+  class="@container fixed top-0 left-0 isolate z-35 h-12 w-full border-b px-2.5 pt-[env(safe-area-inset-top,0)] pr-[max(0.625rem,env(safe-area-inset-right))] pl-[max(0.625rem,env(safe-area-inset-left))] leading-12">
   <div class="flex h-full w-full items-center-safe justify-between">
     <div class="flex gap-2">
       <Button.Root
