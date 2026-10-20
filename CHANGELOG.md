@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.3.0-beta.10
+
+### Minor Changes
+
+- Add a Beta Version switch to the settings. The beta now runs on sky.shiiyu.moe for visitors who turn it on, and cupcake.shiiyu.moe redirects to sky.shiiyu.moe. _[`648ab0e`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/648ab0e061f085a2f8a82d9e734a6f9f2318d064) [@DarthGigi](https://github.com/DarthGigi)_
+
 ## 4.3.0-beta.9
 
 ### Patch Changes
