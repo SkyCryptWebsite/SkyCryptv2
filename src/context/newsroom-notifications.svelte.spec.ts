@@ -28,21 +28,6 @@ describe("NewsroomNotificationsContext", () => {
     localStorage.clear();
   });
 
-  it("starts with zero unread posts", ({ expect }) => {
-    const cleanup = $effect.root(() => {
-      const notifications = new NewsroomNotificationsContext();
-
-      untrack(() => {
-        expect(notifications.current.seenPostIds).toEqual([]);
-        expect(notifications.current.lastSeenPublishedAt).toBeNull();
-        expect(notifications.unreadCount).toBe(0);
-        expect(notifications.newestUnseen).toBeNull();
-      });
-    });
-
-    cleanup();
-  });
-
   it("marks latest posts as unseen until they are seen", ({ expect }) => {
     const cleanup = $effect.root(() => {
       const notifications = new NewsroomNotificationsContext();

@@ -6,7 +6,7 @@ Follow these instructions when working on SkyCrypt Frontend. Nested `AGENTS.md` 
 
 - Read the code, configuration, and tests relevant to the task before editing. Preserve unrelated staged and unstaged work.
 - Reuse existing helpers and components before introducing dependencies or abstractions.
-- Update this file when project practices change. Check instructions against the repository and link to existing documentation instead of repeating it. Keep machine-specific paths out of this file.
+- Update this file when project practices change, or when the user states a preference or corrects your approach in a way that should apply to future work. Add or update the rule without being asked and mention it in your report. Check instructions against the repository and link to existing documentation instead of repeating it. Keep machine-specific paths out of this file.
 
 ## Stack and setup
 
@@ -92,6 +92,7 @@ Follow these instructions when working on SkyCrypt Frontend. Nested `AGENTS.md` 
 | `pnpm runbuild`                                | Start the built Node server                                       |
 
 - Add regression tests beside the code when behavior changes. Use `*.spec.ts` for Node tests and `*.svelte.spec.ts` for browser/component tests. Reuse helpers from `src/test-utils/`.
+- Only write tests that would catch a real bug: logic, parsing, edge cases, security checks, persistence and migrations, and user flows that broke before. Don't test that something renders, that a prop or class is applied, that a constant or lookup table has its current values, or how a library behaves. A test that has to change whenever the UI changes on purpose, without ever catching a regression, costs more than it saves. Delete such tests when you find them.
 - Vitest has `server` and `client` projects in `vite.config.ts`. The client project uses headless Chromium and requires `pnpm exec playwright install chromium`. Tests must make assertions; `expect.requireAssertions` is enabled.
 - Run `pnpm lint`, relevant tests, and `pnpm build` for code changes before submitting. For documentation-only changes, check formatting and the accuracy of referenced paths and commands.
 - End-to-end tests run locally with the backend and its required API credentials; they are currently disabled in CI. A production build can also require backend access for prerendered data.

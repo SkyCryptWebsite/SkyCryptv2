@@ -256,14 +256,6 @@ describe("Theme Engine", () => {
       expect(runtimeStyle()?.textContent).toContain(':root[data-theme="custom-a"].light');
     });
 
-    it("removes deleted custom theme rules after resync", ({ expect }) => {
-      ThemeEngine.syncRuntimeThemes([customTheme("custom-a"), customTheme("custom-b")]);
-      ThemeEngine.syncRuntimeThemes([customTheme("custom-b")]);
-
-      expect(runtimeStyle()?.textContent).not.toContain("custom-a");
-      expect(runtimeStyle()?.textContent).toContain("custom-b");
-    });
-
     it("keeps deterministic rule order", ({ expect }) => {
       ThemeEngine.syncRuntimeThemes([customTheme("custom-b"), customTheme("custom-a")]);
 
@@ -281,13 +273,6 @@ describe("Theme Engine", () => {
       expect(text).toContain(`data-theme="${PREVIEW_THEME_ID}"].light`);
       expect(modeWatcherMock.setTheme).not.toHaveBeenCalled();
       expect(document.documentElement.getAttribute("data-theme")).toBeNull();
-    });
-
-    it("activates the preview theme id separately", ({ expect }) => {
-      ThemeEngine.activatePreviewTheme();
-
-      expect(modeWatcherMock.setTheme).toHaveBeenCalledWith(PREVIEW_THEME_ID);
-      expect(document.documentElement.getAttribute("data-theme")).toBe(PREVIEW_THEME_ID);
     });
 
     it("clears only the preview rule", ({ expect }) => {

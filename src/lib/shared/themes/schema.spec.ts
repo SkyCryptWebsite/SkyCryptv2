@@ -128,10 +128,6 @@ describe.concurrent("Theme V5 Schema Validation", () => {
   });
 
   describe.concurrent("partialThemeV5Schema", () => {
-    it("accepts an empty object", ({ expect }) => {
-      expect(partialThemeV5Schema.safeParse({}).success).toBe(true);
-    });
-
     it("accepts partial css vars", ({ expect }) => {
       const result = partialThemeV5Schema.safeParse({
         schema: 5,

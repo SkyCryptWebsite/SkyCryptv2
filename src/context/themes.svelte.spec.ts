@@ -44,20 +44,6 @@ describe("ThemeContext", () => {
     });
   });
 
-  it("resolves first-party themes", ({ expect }) => {
-    const cleanup = $effect.root(() => {
-      const themes = new ThemeContext();
-
-      untrack(() => {
-        expect(themes.activeTheme?.metadata.id).toBe("default");
-        expect(themes.isFirstParty("default")).toBe(true);
-        expect(themes.allThemes).toHaveLength(1);
-      });
-    });
-
-    cleanup();
-  });
-
   it("filters persisted V3 custom themes and keeps V5 themes", ({ expect }) => {
     localStorage.setItem(
       "skycryptThemes",
