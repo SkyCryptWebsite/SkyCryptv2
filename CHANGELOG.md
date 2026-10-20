@@ -1,5 +1,15 @@
 # Changelog
 
+## 4.3.0-beta.9
+
+### Patch Changes
+
+- Speed up stats pages and cards: the profile and embed load in parallel, card renders skip the username lookup and are capped under bursts, and banners and latest posts are shared across open pages instead of queried per visitor. _[`00a26eb`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/00a26eb55dd07c7ddb43971178314b17f9aa483a) [@DarthGigi](https://github.com/DarthGigi)_
+- Make stats pages much lighter: the icon font drops from 2 MB to 69 KB, the enchanted glint is a 31 KB animated AVIF instead of a 730 KB GIF, and the 3D skin viewer, settings panes, theme editor and card builder load only when used. Signed-in requests no longer run extra database queries for the session, and card renders queue under load instead of failing. _[`941a56c`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/941a56cff14198e12468091c917e3477f486f617) [@DarthGigi](https://github.com/DarthGigi)_
+- Harden the theme image proxy against requests to internal addresses, including via DNS and redirects, and cap image size while streaming. Load the card builder only when it is opened, and drop unpublished posts from the sitemap without a restart. _[`65bacc5`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/65bacc5a248d49ed7e92a52f5824db6545b62515) [@DarthGigi](https://github.com/DarthGigi)_
+- Stop player and profile names from reaching other backend routes: invalid names on stats pages now return 404, and backend request paths are escaped so `.` and `..` can no longer be normalized away. Client-side navigation between profiles no longer waits for the Discord embed data. _[`a5e2966`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/a5e2966a49e43da15efd95db8fc2e19040643e27) [@DarthGigi](https://github.com/DarthGigi)_
+- Preload the main Montserrat font so body text renders sooner, and cache in-site card previews for five minutes. _[`3fa9bd5`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/3fa9bd5c3799f4cb6911a0d88a99d5c7d191e4d9) [@DarthGigi](https://github.com/DarthGigi)_
+
 ## 4.3.0-beta.8
 
 ### Minor Changes
