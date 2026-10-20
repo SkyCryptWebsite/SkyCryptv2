@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.3.0-beta.7
+
+### Minor Changes
+
+- Admin dashboard: API key detail pages with editable name, scopes and metadata, key deletion, a developer mode toggle for users, and automatic bans for accounts that link a banned user's Minecraft account. _[`843685f`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/843685f074bc03373f2214159789502fb7d5396d) [@DarthGigi](https://github.com/DarthGigi)_
+
 ## 4.3.0-beta.6
 
 ### Minor Changes
