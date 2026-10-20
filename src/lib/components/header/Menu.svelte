@@ -111,9 +111,8 @@
       {#if isHover.current}
         <Kbd.Root class="right-4 ml-2 hidden size-fit min-w-auto border bg-inherit py-0.5 md:block"
           >{preferences.keybind}</Kbd.Root>
-      {:else}
-        <SearchIcon class="size-4 md:size-3" />
       {/if}
+      <SearchIcon class={cn("size-4 md:size-3", isHover.current && "md:hidden")} />
     </div>
   </Button>
 </div>
