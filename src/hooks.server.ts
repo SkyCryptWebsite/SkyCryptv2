@@ -1,5 +1,6 @@
 import { building, dev } from "$app/env";
 import { HYPERDX_API_KEY, HYPERDX_OTLP_ENDPOINT } from "$app/env/private";
+import { PUBLIC_RELEASE_CHANNEL } from "$app/env/public";
 import { runMigrations } from "$src/lib/server/db/migrate";
 import { sequence, type Handle, type HandleServerError, type ServerInit } from "@sveltejs/kit/hooks";
 import { svelteKitHandler } from "better-auth/svelte-kit";
@@ -24,7 +25,10 @@ const hyperdxDrain = HYPERDX_OTLP_ENDPOINT
   : undefined;
 const drain = hyperdxDrain ?? (dev ? createFsDrain({ maxFiles: 7 }) : undefined);
 
-initLogger({ ...toLoggerConfig(evlogConfig), drain });
+// Stable keeps NODE_ENV ("production") so existing HyperDX searches still match it.
+const environment = !dev && PUBLIC_RELEASE_CHANNEL === "beta" ? "beta" : undefined;
+
+initLogger({ ...toLoggerConfig({ ...evlogConfig, environment }), drain });
 
 const { handle: evlogHandle } = createEvlogHooks({ ...toMiddlewareOptions(evlogConfig), drain });
 
@@ -69,7 +73,6 @@ const headersHandler = (async ({ event, resolve }) => {
       input.type === "css" ||
       (input.type === "font" && input.filename.endsWith("montserrat-latin-wght-normal.woff2"))
   });
-  const { request, url } = event;
 
   // Security headers
   response.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
@@ -94,13 +97,6 @@ const headersHandler = (async ({ event, resolve }) => {
 
   // Legacy XSS protection
   response.headers.set("X-XSS-Protection", "1; mode=block");
-
-  const host = request.headers.get("x-forwarded-host") ?? url.host;
-  const isCupcake = host.includes("cupcake.shiiyu.moe");
-
-  if (isCupcake) {
-    response.headers.set("X-Robots-Tag", "noindex, nofollow");
-  }
 
   return response;
 }) satisfies Handle;

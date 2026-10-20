@@ -45,6 +45,7 @@
   import "./layout.css";
   import { listResourcePacks } from "#lib/shared/api/skycrypt-api.remote";
   import { getActiveBanners, listLatestPostsForNotifications } from "#lib/shared/newsroom.remote";
+  import { isBeta } from "#lib/shared/release-channel";
 
   let { children }: { children: Snippet } = $props();
   const loadThemeEditor = () => import("#lib/components/theme-editor/ThemeEditor.svelte");
@@ -342,7 +343,7 @@
     }
   }} />
 
-{#if page.url.origin.includes("cupcake") || dev}
+{#if isBeta || dev}
   {#await import("#lib/components/notices/BetaNotice.svelte") then { default: BetaNotice }}
     <BetaNotice />
   {/await}

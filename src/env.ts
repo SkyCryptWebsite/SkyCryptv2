@@ -52,5 +52,12 @@ export const variables = defineEnvVars({
     schema,
     description: "Public URL the bucket is served from (an R2 custom domain), e.g. `https://media.shiiyu.moe`."
   },
-  PUBLIC_COMMIT_HASH: { public: true, static: true }
+  PUBLIC_COMMIT_HASH: { public: true, static: true },
+  PUBLIC_RELEASE_CHANNEL: {
+    public: true,
+    static: true,
+    schema: (input: string | undefined) => (input === "beta" ? "beta" : "stable"),
+    description:
+      "`beta` for builds from `dev`, `stable` otherwise. nginx serves the beta build to visitors with a `beta=true` cookie."
+  }
 });

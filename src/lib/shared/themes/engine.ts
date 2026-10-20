@@ -44,6 +44,8 @@ function themeImageUrl(url: string): string {
   const targetUrl = new URL(url);
 
   if (FIRST_PARTY_IMAGE_HOSTS.has(targetUrl.hostname)) {
+    // Older themes can point at cupcake.shiiyu.moe, which now only redirects and isn't allowed by the CSP.
+    targetUrl.hostname = "sky.shiiyu.moe";
     const path = `${targetUrl.pathname}${targetUrl.search}${targetUrl.hash}`;
 
     if (LOCAL_FIRST_PARTY_IMAGE_PATHS.has(targetUrl.pathname)) {

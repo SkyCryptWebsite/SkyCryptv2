@@ -20,7 +20,6 @@ jobs:
       && github.event_name != 'pull_request'
     outputs:
       should_deploy: ${{ steps.decision.outputs.should_deploy }}
-      server_api_url: ${{ steps.decision.outputs.server_api_url }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
@@ -29,22 +28,16 @@ jobs:
         id: decision
         run: |
           VERSION=$(node -p "require('./package.json').version")
-          SERVER_API_URL=cupcake.shiiyu.moe
           SHOULD_DEPLOY=false
 
           if [ "$GITHUB_REF" = "refs/heads/dev" ]; then
             SHOULD_DEPLOY=true
-          else
-            SERVER_API_URL=sky.shiiyu.moe
-
-            if [[ "$VERSION" != *beta* ]]; then
-              SHOULD_DEPLOY=true
-            fi
+          elif [[ "$VERSION" != *beta* ]]; then
+            SHOULD_DEPLOY=true
           fi
 
           echo "Detected version: $VERSION"
           echo "should_deploy=$SHOULD_DEPLOY" >> "$GITHUB_OUTPUT"
-          echo "server_api_url=$SERVER_API_URL" >> "$GITHUB_OUTPUT"
 
   checks:
     needs: prepare
@@ -116,8 +109,9 @@ jobs:
           push: true
           build-args: |
             PUBLIC_COMMIT_HASH=${{ env.SHORT_SHA }}
-            PUBLIC_SERVER_API_URL=https://${{ needs.prepare.outputs.server_api_url }}/api/
-            ORIGIN=https://${{ needs.prepare.outputs.server_api_url }}
+            PUBLIC_RELEASE_CHANNEL=${{ github.ref_name == 'prod' && 'stable' || 'beta' }}
+            PUBLIC_SERVER_API_URL=https://sky.shiiyu.moe/api/
+            ORIGIN=https://sky.shiiyu.moe
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 

@@ -87,7 +87,7 @@ The scope is optional but recommended for better categorization.
 
 Releases are created automatically based on the branch:
 
-- **dev branch** → Creates prereleases (e.g., `v1.1.0-beta.1`) and deploys to [cupcake.shiiyu.moe](https://cupcake.shiiyu.moe)
+- **dev branch** → Creates prereleases (e.g., `v1.1.0-beta.1`) and deploys the beta build of [sky.shiiyu.moe](https://sky.shiiyu.moe), served to visitors who enable **Beta Version** in the settings (a `beta=true` cookie)
 - **prod branch** → Creates stable releases (e.g., `v1.1.0`) and deploys to [sky.shiiyu.moe](https://sky.shiiyu.moe)
 
 Release behavior details:

@@ -199,6 +199,22 @@ describe("Theme Engine", () => {
       expect(rule).not.toContain("/api/image-proxy");
     });
 
+    it("moves images from the retired cupcake host to sky", ({ expect }) => {
+      const rule = ThemeEngine.themeToCssRule(
+        withDarkExtras(customTheme("cupcake-assets"), {
+          minecraft: {
+            palette: "nice-light"
+          },
+          pageBackground: {
+            url: "https://cupcake.shiiyu.moe/img/custom/user-bg.avif"
+          }
+        })
+      );
+
+      expect(rule).toContain("  --bg-url: url(https://sky.shiiyu.moe/img/custom/user-bg.avif);");
+      expect(rule).not.toContain("cupcake.shiiyu.moe");
+    });
+
     it("omits undefined css vars", ({ expect }) => {
       const rule = ThemeEngine.themeToCssRule({
         ...customTheme("minimal-theme"),

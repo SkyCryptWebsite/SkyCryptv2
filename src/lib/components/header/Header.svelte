@@ -15,6 +15,7 @@
   import { mode, resetMode, setMode, userPrefersMode } from "mode-watcher";
   import Settings from "#lib/components/header/settings";
   import { getThemeIcons } from "#lib/shared/api/themes.remote";
+  import { isBeta } from "#lib/shared/release-channel";
   import { getHeaderUser } from "#lib/shared/session.remote";
   import { readComputedThemeCssVars } from "#lib/shared/themes/computed-css-vars";
   import type { ThemeModeName } from "#lib/shared/themes/schema";
@@ -118,18 +119,18 @@
       <div class="flex flex-col items-start justify-center-safe gap-1">
         <Button.Root href="/" class="leading-none font-bold text-nowrap" data-sveltekit-preload-data="hover">
           SkyCrypt
-          {#if page.url.origin.includes("cupcake") || dev}
+          {#if isBeta || dev}
             Beta
           {/if}
         </Button.Root>
 
         {#if packageVersion}
           <Button.Root
-            class="text-xs leading-none font-normal text-muted-foreground transition-colors hover:text-primary/60 data-[cupcake=true]:text-accent-4/60 data-[cupcake=true]:hover:text-accent-4"
+            class="text-xs leading-none font-normal text-muted-foreground transition-colors hover:text-primary/60 data-[beta=true]:text-accent-4/60 data-[beta=true]:hover:text-accent-4"
             rel="noreferrer"
             href="https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/releases/tag/v{packageVersion}"
             target="_blank"
-            data-cupcake={page.url.origin.includes("cupcake") || dev}>v{packageVersion}</Button.Root>
+            data-beta={isBeta || dev}>v{packageVersion}</Button.Root>
         {/if}
       </div>
     </div>

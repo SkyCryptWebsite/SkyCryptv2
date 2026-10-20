@@ -19,7 +19,7 @@ A website that provides per-player information about the game Hypixel SkyBlock.
 Originally inspired by [LeaPhant's skyblock-stats](https://github.com/LeaPhant/skyblock-stats).
 
 - **Website**: https://sky.shiiyu.moe
-- **Development Website**: https://cupcake.shiiyu.moe
+- **Beta**: turn on Beta Version in the settings on the website
 - **Backend**: [SkyCrypt-Backend](https://github.com/SkyCryptWebsite/SkyCrypt-Backend)
 
 ---
