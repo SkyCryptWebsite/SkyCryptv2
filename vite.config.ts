@@ -67,8 +67,7 @@ export default defineConfig({
             "https://mowojang.seraph.si",
             "http://localhost:8080",
             "https://sky.shiiyu.moe",
-
-            "https://cloudflarestorage.com"
+            "https://*.r2.cloudflarestorage.com"
           ],
           "media-src": ["self", "https://media.shiiyu.moe"],
           "font-src": ["self", "https://fonts.gstatic.com"],
