@@ -8,18 +8,19 @@
 
   interface Props {
     class?: string;
-    uuid: Promise<string | undefined>;
+    player: Promise<{ uuid?: string; username?: string }>;
+    ign: string;
     showStaticSkin: () => void;
   }
 
-  let { class: className, uuid, showStaticSkin }: Props = $props();
+  let { class: className, player, ign, showStaticSkin }: Props = $props();
 
   const contributorSkinsPromise = getContributorSkins(__PRERENDER_VERSION__).catch(() => []);
   let contributorSkins: string[] = [];
   const SPIN_DELAY = 90;
-  const LAND_DELAY = 600;
+  const LAND_DELAY = 300;
 
-  // Grace period before spinning again, so fast loads and profile switches keep the current skin
+  // Grace period before spinning again, so fast loads keep the current skin
   const RESPIN_DELAY = 150;
   const prefersReducedMotion = new MediaQuery("(prefers-reduced-motion: reduce)");
 
@@ -28,6 +29,7 @@
 
   let viewer: skinview3d.SkinViewer | undefined;
   let loadedUuid = "";
+  let loadedUsername = "";
   let updateRequest = 0;
   let spinId = 0;
   let spinCount = 0;
@@ -84,6 +86,7 @@
     const id = ++spinCount;
     spinId = id;
     loadedUuid = "";
+    loadedUsername = "";
     viewer?.resetCape();
     contributorSkins = await contributorSkinsPromise;
     if (destroyed || spinId !== id) return;
@@ -95,7 +98,7 @@
     }
   }
 
-  const updateSkinViewer = async (targetUuid: string, requestId: number) => {
+  const updateSkinViewer = async (targetUuid: string, username: string, requestId: number) => {
     const isStale = () => destroyed || requestId !== updateRequest || !viewer;
     if (loadedUuid === targetUuid) return;
 
@@ -103,15 +106,21 @@
       const { skinUrl, capeUrl } = await fetchSkinTextures(targetUuid);
       if (isStale()) return;
 
+      // Download the skin during the slowdown; crossOrigin matches skinview3d so its load hits the cache
+      const preload = new Image();
+      preload.crossOrigin = "anonymous";
+      preload.src = skinUrl;
+
       if (spinId !== 0) {
         spinId = 0;
         if (!prefersReducedMotion.current) {
-          for (let delay = SPIN_DELAY * 1.5; delay < LAND_DELAY; delay *= 1.3) {
+          let delay = SPIN_DELAY;
+          while ((delay *= 1.4) < LAND_DELAY) {
             await sleep(delay);
             if (isStale()) return;
             await showNextContributorSkin();
           }
-          await sleep(LAND_DELAY);
+          await sleep(delay);
           if (isStale()) return;
         }
       }
@@ -127,6 +136,7 @@
       }
 
       loadedUuid = targetUuid;
+      loadedUsername = username.toLowerCase();
       canvasIsLoading = false;
 
       requestAnimationFrame(updateViewerSize);
@@ -144,13 +154,17 @@
     viewer ??= createViewer(minecraftAvatar);
 
     const requestId = ++updateRequest;
-    const spinTimer = setTimeout(spin, loadedUuid ? RESPIN_DELAY : 0);
-    uuid.then(
-      (targetUuid) => {
+    const routePlayer = ign.toLowerCase().replaceAll("-", "");
+    const spinTimer =
+      loadedUuid && (routePlayer === loadedUuid || routePlayer === loadedUsername)
+        ? undefined
+        : setTimeout(spin, loadedUuid ? RESPIN_DELAY : 0);
+    player.then(
+      ({ uuid: targetUuid, username = "" }) => {
         clearTimeout(spinTimer);
         if (requestId !== updateRequest) return;
         if (targetUuid) {
-          updateSkinViewer(targetUuid, requestId);
+          updateSkinViewer(targetUuid, username, requestId);
         } else {
           spinId = 0;
         }

@@ -5,7 +5,6 @@ import { createContext, untrack } from "svelte";
 interface FavoritesData {
   uuid: string;
   ign: string;
-  displayName?: string;
 }
 
 export class FavoritesContext {
