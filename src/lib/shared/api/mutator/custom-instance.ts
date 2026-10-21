@@ -65,6 +65,10 @@ export const customFetch = async <T>(url: string, options: RequestInit): Promise
 
   const requestUrl = getUrl(url);
   const requestHeaders = getHeaders(options.headers);
+  // Lets CI prerender through the Cloudflare maintenance redirect. Read at runtime so the secret is never bundled.
+  if (building && process.env.MAINTENANCE_BYPASS_TOKEN) {
+    (requestHeaders as Record<string, string>)["X-Maintenance-Bypass"] = process.env.MAINTENANCE_BYPASS_TOKEN;
+  }
 
   const requestInit: RequestInit = {
     ...options,
@@ -77,6 +81,7 @@ export const customFetch = async <T>(url: string, options: RequestInit): Promise
     const sentHeaders = Object.fromEntries(new Headers(requestHeaders).entries());
     if (sentHeaders["x-api-token"]) sentHeaders["x-api-token"] = `<redacted len=${sentHeaders["x-api-token"].length}>`;
     delete sentHeaders.cookie;
+    delete sentHeaders["x-maintenance-bypass"];
     console.info(
       `[prerender-fetch] -> ${method} ${requestUrl} (PUBLIC_SERVER_API_URL=${PUBLIC_SERVER_API_URL}, ` +
         `tokenSet=${SERVER_API_TOKEN.length > 0}, eventFetch=${fetchFunction !== fetch}) headers=${JSON.stringify(sentHeaders)}`
