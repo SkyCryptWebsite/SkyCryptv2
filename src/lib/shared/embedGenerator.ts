@@ -155,7 +155,7 @@ function getMetaTitle(embedData: ModelsEmbedData): string {
   }
 
   const gameModeIcon = gameModeIcons[embedData.game_mode as keyof typeof gameModeIcons] ?? "";
-  return `${embedData.displayName} (${embedData.profile_cute_name} ${gameModeIcon})`.trim();
+  return `${embedData.username} (${embedData.profile_cute_name} ${gameModeIcon})`.trim();
 }
 
 function getShortDescription(embedData: ModelsEmbedData): string {
@@ -163,15 +163,15 @@ function getShortDescription(embedData: ModelsEmbedData): string {
     return "";
   }
 
-  return `${embedData.displayName} has been playing SkyBlock for ${formatDistanceToNowStrict(new Date(embedData.joined))}`;
+  return `${embedData.username} has been playing SkyBlock for ${formatDistanceToNowStrict(new Date(embedData.joined))}`;
 }
 
 function getGenericDescription(embedData: ModelsEmbedData): string {
-  if (!embedData || (!embedData.username && !embedData.displayName)) {
+  if (!embedData || !embedData.username) {
     return "A beautiful site for sharing your SkyBlock profile 🍣";
   }
 
-  const name = embedData.displayName || embedData.username || "Player";
+  const name = embedData.username || "Player";
   const profileName = embedData.profile_cute_name ? ` (${embedData.profile_cute_name})` : "";
   const parts: string[] = [];
 
@@ -207,11 +207,11 @@ function getGenericDescription(embedData: ModelsEmbedData): string {
 }
 
 function getGenericTitle(embedData: ModelsEmbedData): string {
-  if (!embedData || (!embedData.username && !embedData.displayName)) {
+  if (!embedData || !embedData.username) {
     return "SkyBlock Stats | SkyCrypt";
   }
 
-  const name = embedData.displayName || embedData.username;
+  const name = embedData.username;
   const profile = embedData.profile_cute_name;
   const gameMode = embedData.game_mode && embedData.game_mode !== "normal" ? ` [${embedData.game_mode}]` : "";
 

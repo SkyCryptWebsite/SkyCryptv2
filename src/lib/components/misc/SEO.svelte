@@ -18,9 +18,7 @@
   );
   const canonicalUrl = $derived(`https://sky.shiiyu.moe${canonicalPath}`);
   const seoTitle = $derived(
-    embedData.username || embedData.displayName
-      ? `${getGenericTitle(embedData)} | SkyCrypt`
-      : `${profileIdentifier} | SkyCrypt`
+    embedData.username ? `${getGenericTitle(embedData)} | SkyCrypt` : `${profileIdentifier} | SkyCrypt`
   );
   const seoDescription = $derived(getGenericDescription(embedData));
   const ogTitle = $derived(getGenericTitle(embedData));
@@ -63,7 +61,7 @@
       "@type": "Person",
       "@id": `${canonicalUrl}#person`,
       name: embedData.username || profileIdentifier,
-      alternateName: embedData.displayName || embedData.username || profileIdentifier,
+      alternateName: embedData.username || profileIdentifier,
       image: profileImage,
       url: canonicalUrl
     },
@@ -100,7 +98,7 @@
         url: profileImage,
         width: 512,
         height: 512,
-        alt: embedData.displayName || embedData.username || "Player Avatar"
+        alt: embedData.username || "Player Avatar"
       }
     ],
     site_name: `SkyCrypt ${__NPM_PACKAGE_VERSION__ ? `• v${__NPM_PACKAGE_VERSION__}` : ""}`.trim()
@@ -108,7 +106,7 @@
   twitter={{
     card: "summary",
     image: profileImage,
-    imageAlt: embedData.displayName || embedData.username || "Player Avatar",
+    imageAlt: embedData.username || "Player Avatar",
     title: ogTitle,
     description: seoDescription
   }}

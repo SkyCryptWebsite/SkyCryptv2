@@ -236,7 +236,7 @@
       {:else}
         {#each favorites.current.toReversed() as favorite, index (index)}
           <ContributorCard
-            user={{ id: favorite.uuid, username: favorite.ign, role: Role.FAVORITE, displayName: favorite.displayName }}
+            user={{ id: favorite.uuid, username: favorite.ign, role: Role.FAVORITE }}
             options={{ favorite: true }}
             {iconMapper} />
         {/each}
