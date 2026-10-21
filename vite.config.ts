@@ -56,6 +56,8 @@ export default defineConfig({
             "https://textures.minecraft.net",
             "http://localhost:8080",
             "https://sky.shiiyu.moe",
+            "https://api.shiiyu.moe",
+            "https://beta-api.shiiyu.moe",
             "https://nmsr.nickac.dev",
             "https://media.shiiyu.moe",
             "https://eliteskyblock.com",
@@ -67,9 +69,11 @@ export default defineConfig({
             "https://mowojang.seraph.si",
             "http://localhost:8080",
             "https://sky.shiiyu.moe",
+            "https://api.shiiyu.moe",
+            "https://beta-api.shiiyu.moe",
             "https://*.r2.cloudflarestorage.com"
           ],
-          "media-src": ["self", "https://media.shiiyu.moe"],
+          "media-src": ["self", "https://media.shiiyu.moe", "https://api.shiiyu.moe", "https://beta-api.shiiyu.moe"],
           "font-src": ["self", "https://fonts.gstatic.com"],
           "frame-ancestors": ["https://u.shiiyu.moe"],
           // Keep the embed hosts in sync with EMBED_HOSTS in src/lib/server/rich-text.ts.
