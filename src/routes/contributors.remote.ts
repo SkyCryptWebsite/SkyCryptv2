@@ -51,7 +51,7 @@ export const getContributors = prerender(
 
       return contributorIds.map((contributor, index) => ({
         ...contributor,
-        name: usernames[index].username
+        username: usernames[index].username
       })) satisfies Contributor[];
     };
 
