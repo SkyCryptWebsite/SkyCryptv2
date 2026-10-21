@@ -37,7 +37,7 @@ Your project must not:
 - give players an unfair advantage in game;
 - get around the Hypixel API Policy, for example by using SkyCrypt to get data you couldn't get from Hypixel under its rate limits;
 - include betting or gambling;
-- break the law that applies to you or your users;
+- break any law that applies to you or your users;
 
 ## Credit SkyCrypt
 
@@ -48,7 +48,7 @@ Your project must also say clearly that it is not affiliated with or endorsed by
 ## Your key
 
 - Use one key per project. To build something new, request a new key.
-- Keep your key private. Don't share it, put it in a mod or app that other people download, or commit it to public code. Call the API from your own server.
+- Keep your key private. Don’t share it, put it in a mod or app that other people download, or commit it to public code. Call the API from your own server.
 - Stay within your key's rate limit. You can request a higher limit in your dashboard.
 - Don't use extra keys or accounts to get around a rate limit.
 
@@ -59,6 +59,7 @@ If your key leaks, delete it in your dashboard and request a new one.
 Cache each player response for at least 5 minutes and reuse it, instead of asking for the same player again and again. Stats on SkyCrypt only change every few minutes, so requesting the same player more often than that doesn't get you newer data. If our response has a `Cache-Control` header, follow it.
 
 Don't keep our data for more than 30 days. If a player asks you to delete their data, delete it.
+
 ## No money
 
 You may not make money from anything that uses the SkyCrypt API. That means no ads, subscriptions, paid features or selling data, and no selling access to the API. You can ask for donations, as long as everything in your project stays free for everyone. Your project may also not compete with SkyCrypt, for example by copying SkyCrypt's stats pages.
