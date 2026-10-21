@@ -59,9 +59,9 @@ The API only returns data SkyCrypt already has, from players someone recently lo
 
 Cache our responses and reuse them, instead of asking for the same player again and again.
 
-## Caching & Data Retention
+## Caching Practices & Data Retention
 
-Cache each player response for at least 5 minutes and reuse it, instead of asking for the same player again and again. Stats on SkyCrypt only change every few minutes, so requesting the same player more often than that doesn't get you newer data. If our response has a `Cache-Control` header, follow it.
+We highly advise each player response for at least 5 minutes and reuse it, instead of asking for the same player again and again. Stats on SkyCrypt only change every few minutes, so requesting the same player more often than that doesn't get you newer data. If our response has a `Cache-Control` header, follow it.
 
 Don't keep our data for more than 30 days. If a player asks you to delete their data, delete it.
 
