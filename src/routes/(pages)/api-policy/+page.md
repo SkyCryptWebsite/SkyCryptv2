@@ -9,7 +9,7 @@
 
 # API Policy
 
-Last updated: 20 October 2026
+Last updated: 21 October 2026
 
 This policy covers everything you build with a SkyCrypt API key. It applies on top of our [Terms of Service](/terms-of-service). If you break it, we can revoke your key and ban your account, and we don't have to warn you first.
 
