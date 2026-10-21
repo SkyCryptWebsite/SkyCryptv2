@@ -110,7 +110,7 @@ jobs:
           build-args: |
             PUBLIC_COMMIT_HASH=${{ env.SHORT_SHA }}
             PUBLIC_RELEASE_CHANNEL=${{ github.ref_name == 'prod' && 'stable' || 'beta' }}
-            PUBLIC_SERVER_API_URL=https://sky.shiiyu.moe/api/
+            PUBLIC_SERVER_API_URL=https://${{ github.ref_name == 'prod' && 'api' || 'beta-api' }}.shiiyu.moe/api/
             ORIGIN=https://sky.shiiyu.moe
           secrets: |
             maintenance_bypass=${{ secrets.MAINTENANCE_BYPASS_TOKEN }}
