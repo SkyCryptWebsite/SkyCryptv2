@@ -10,13 +10,13 @@
   import type { ModelsStatsOutput } from "#lib/shared/api/orval-generated";
 
   // Lives outside the profile boundary so the skin viewer keeps spinning from loading into the loaded profile
-  const { profileView }: { profileView: Promise<{ profile: ModelsStatsOutput }> } = $props();
+  const { profileView, ign }: { profileView: Promise<{ profile: ModelsStatsOutput }>; ign: string } = $props();
 
   const preferences = getPreferences();
   const isWide = new MediaQuery("(min-width: 1210px)");
   let skinFailed = $state(false);
   const showStaticSkin = $derived(preferences.performanceMode || skinFailed);
-  const uuid = $derived(profileView.then(({ profile }) => profile.uuid));
+  const player = $derived(profileView.then(({ profile }) => profile));
 </script>
 
 <div class="@container fixed top-1/2 left-0 z-10 hidden h-dvh w-[30vw] -translate-y-1/2 @[75rem]/parent:block">
@@ -45,7 +45,7 @@
     {/await}
   {:else if browser && isWide.current}
     {#await import("#lib/components/misc/Skin3D.svelte") then { default: Skin3D }}
-      <Skin3D {uuid} showStaticSkin={() => (skinFailed = true)} class="h-full" />
+      <Skin3D {player} {ign} showStaticSkin={() => (skinFailed = true)} class="h-full" />
     {/await}
   {/if}
 </div>

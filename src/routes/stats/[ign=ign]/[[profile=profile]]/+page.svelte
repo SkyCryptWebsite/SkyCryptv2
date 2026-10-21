@@ -111,7 +111,7 @@
 {/await}
 
 <div class="@container/parent relative">
-  <SkinColumn profileView={profileViewPromise} />
+  <SkinColumn profileView={profileViewPromise} {ign} />
 
   {#key routeKey}
     <svelte:boundary>
