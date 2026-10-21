@@ -83,9 +83,10 @@ const headersHandler = (async ({ event, resolve }) => {
   response.headers.set("X-Content-Type-Options", "nosniff");
   response.headers.set("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload");
 
-  // Clickjacking protection.
+  // Clickjacking protection. Only Umami (heatmaps) may frame the site; browsers that support
+  // frame-ancestors ignore X-Frame-Options, so DENY only applies to older ones.
   response.headers.set("X-Frame-Options", "DENY");
-  response.headers.append("Content-Security-Policy", "frame-ancestors 'none'");
+  response.headers.append("Content-Security-Policy", "frame-ancestors https://u.shiiyu.moe");
 
   // Cross-Origin policies
   // COEP intentionally unsafe-none: tightening would require all cross-origin

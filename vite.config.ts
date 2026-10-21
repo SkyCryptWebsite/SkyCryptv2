@@ -75,7 +75,6 @@ export default defineConfig({
           ],
           "media-src": ["self", "https://media.shiiyu.moe", "https://api.shiiyu.moe", "https://beta-api.shiiyu.moe"],
           "font-src": ["self", "https://fonts.gstatic.com"],
-          "frame-ancestors": ["https://u.shiiyu.moe"],
           // Keep the embed hosts in sync with EMBED_HOSTS in src/lib/server/rich-text.ts.
           "frame-src": [
             "self",
