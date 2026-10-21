@@ -24,7 +24,7 @@ If you need fresh data, more requests or a commercial project, apply for your ow
 It is not for collecting data in bulk. You may not:
 
 - crawl or scrape players, profiles or the SkyCrypt website, including through the API;
-- look up lists of players you collected elsewhere, such as guild members, leaderboards or lobby players, to build a database;
+- build a database of players, for example by looking up every guild member, leaderboard player or lobby player;
 - check players over and over to watch for items, such as exotic armor, or to track their stats or networth over time;
 - build anything that follows specific players or helps someone find them, or that reveals who is behind a nicked player;
 - store our data and share or publish it as a dataset.
@@ -54,12 +54,11 @@ Your project must also say clearly that it is not affiliated with or endorsed by
 
 If your key leaks, delete it in your dashboard and request a new one.
 
-## Cached data only
+## Caching and storing data
 
-The API only returns data SkyCrypt already has, from players someone recently looked up on SkyCrypt. It never asks Hypixel for new data on your behalf. If we don't have a player, you get no data for them, and the data you do get can be older than what the website shows.
+Cache each player response for at least 5 minutes and reuse it, instead of asking for the same player again and again. Stats on SkyCrypt only change every few minutes, so requesting the same player more often than that doesn't get you newer data. If our response has a `Cache-Control` header, follow it.
 
-Cache our responses and reuse them, instead of asking for the same player again and again.
-
+Don't keep our data for more than 30 days. If a player asks you to delete their data, delete it.
 ## No money
 
 You may not make money from anything that uses the SkyCrypt API. That means no ads, subscriptions, paid features or selling data, and no selling access to the API. You can ask for donations, as long as everything in your project stays free for everyone. Your project may also not compete with SkyCrypt, for example by copying SkyCrypt's stats pages.
@@ -72,7 +71,7 @@ Don't use the API to attack SkyCrypt or anyone else, to overload our servers, or
 
 ## Changes to this policy
 
-We will update this policy when the API or the Hypixel API Policy changes. If a change affects your project, we will announce it in the [newsroom](/newsroom). If you keep using your key after that, the new policy applies.
+We will update this policy when the API or the Hypixel API Policy changes. We announce changes that add a restriction or remove a permission in the [newsroom](/newsroom) at least 14 days before they apply. If Hypixel changes its policy with less notice, we may apply the same change sooner. If you keep using your key after a change applies, the new policy applies to you
 
 ## Contact
 
