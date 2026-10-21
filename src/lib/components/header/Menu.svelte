@@ -30,9 +30,9 @@
 </script>
 
 {#snippet ListItem({ title, content, href, class: className, icon: IconComponent }: ListItemProps)}
+  <!-- eslint-disable svelte/no-navigation-without-resolve -->
   <a
-    // @ts-ignore
-    href={resolve(href)}
+    {href}
     class={cn(
       "flex items-center gap-1.5 rounded-3xl p-3 text-sm transition-all interact:scale-95 interact:bg-background/50 [&_svg:not([class*='size-'])]:size-4 ",
       className
