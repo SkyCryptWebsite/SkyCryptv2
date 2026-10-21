@@ -170,7 +170,7 @@
     "packageManager": [
       {
         "name": "pnpm",
-        "version": "^12.11.1",
+        "version": "^12.14.0",
         "onFail": "download"
       }
     ],
@@ -183,9 +183,9 @@
   "engines": {
     "bun": "forbidden, use pnpm instead",
     "deno": "forbidden, use node instead",
-    "node": "^24",
+    "node": "^24.22.0",
     "npm": "forbidden, use pnpm instead",
-    "pnpm": "^12",
+    "pnpm": "^12.14.0",
     "yarn": "forbidden, use pnpm instead"
   }
 }
