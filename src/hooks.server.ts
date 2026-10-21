@@ -98,6 +98,12 @@ const headersHandler = (async ({ event, resolve }) => {
   // Legacy XSS protection
   response.headers.set("X-XSS-Protection", "1; mode=block");
 
+  // Signed-in responses can carry the user (header avatar, remote queries), so shared caches must not store them.
+  const cacheControl = response.headers.get("cache-control") ?? "";
+  if (event.locals.user && !cacheControl.includes("private") && !cacheControl.includes("immutable")) {
+    response.headers.set("cache-control", "private, no-store");
+  }
+
   return response;
 }) satisfies Handle;
 
