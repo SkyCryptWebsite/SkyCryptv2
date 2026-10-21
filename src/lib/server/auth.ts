@@ -207,8 +207,10 @@ const options = {
       enableMetadata: true,
       requireName: true,
       permissions: { defaultPermissions: DEFAULT_API_KEY_PERMISSIONS },
+      // The Go backend enforces each key's rateLimitMax and timeWindow and writes requestCount back. Disabled here so
+      // its verify calls don't count too; new keys still get these defaults, and createKey sets rateLimitEnabled.
       rateLimit: {
-        enabled: true,
+        enabled: false,
         maxRequests: 300,
         timeWindow: 1000 * 60 * 5 // 5 minutes
       },

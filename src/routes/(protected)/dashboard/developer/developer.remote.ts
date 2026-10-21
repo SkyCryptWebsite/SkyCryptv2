@@ -70,6 +70,8 @@ async function createKey(userId: string, requestId: string, name: string, previo
       userId,
       name: previous?.name || name,
       metadata: { ...previous?.metadata, requestId },
+      // The plugin-wide rate limit is off (see auth.ts), which would otherwise be the default for new keys.
+      rateLimitEnabled: true,
       ...(previous?.permissions && { permissions: previous.permissions }),
       ...(approved && { rateLimitMax: approved.requestedMax })
     }

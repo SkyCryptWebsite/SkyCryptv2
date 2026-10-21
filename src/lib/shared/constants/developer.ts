@@ -1,4 +1,4 @@
-export const API_DOCS_URL = "https://sky.shiiyu.moe/api/openapi";
+export const API_DOCS_URL = "https://api.shiiyu.moe/openapi";
 
 export const API_USE_CASES = [
   { value: "website", label: "Website or web app" },
