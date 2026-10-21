@@ -77,7 +77,7 @@ Don't use the API to attack SkyCrypt or anyone else, to overload our servers, or
 
 ## Changes to this policy
 
-We will update this policy when the API or the Hypixel API Policy changes. We announce changes that add a restriction or remove a permission in the [newsroom](/newsroom) at least 14 days before they apply. If Hypixel changes its policy with less notice, we may apply the same change sooner. If you keep using your key after a change applies, the new policy applies to you
+We will update this policy when the API or the Hypixel API Policy changes. We announce changes that add a restriction or remove a permission in the [newsroom](/newsroom) which apply instantly. If Hypixel changes its policy with less notice, we may apply the same change sooner. If you keep using your key after a change applies, the new policy applies to you.
 
 ## Contact
 
