@@ -17,8 +17,7 @@ export function createDiscordEmbed(data: ModelsEmbedData) {
     ? ` (${data.profile_cute_name}${gameModeIcon ? " " + gameModeIcon : ""})`
     : "";
 
-  const title =
-    rank + (data.displayName || data.username) + profileName.replace(/[\\[\]*_`<>]/g, "\\$&").replace(/[\r\n]/g, " ");
+  const title = rank + data.username + profileName.replace(/[\\[\]*_`<>]/g, "\\$&").replace(/[\r\n]/g, " ");
   const summary = {
     type: 10 as const,
     content: `### [${title}](${profileUrl})\n${getLongDescription(data).trim()}`

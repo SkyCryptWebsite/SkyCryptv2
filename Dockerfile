@@ -31,7 +31,7 @@ COPY .env.example .env
 COPY . .
 
 RUN pnpm run prepare
-RUN pnpm run build
+RUN --mount=type=secret,id=maintenance_bypass,env=MAINTENANCE_BYPASS_TOKEN pnpm run build
 RUN pnpm prune --production
 
 FROM node:24-alpine

@@ -27,7 +27,7 @@
         </div>
       </div>
     {/if}
-    <span>{profile?.displayName}</span>
+    <span>{profile?.username}</span>
   </div>
   on
   <div

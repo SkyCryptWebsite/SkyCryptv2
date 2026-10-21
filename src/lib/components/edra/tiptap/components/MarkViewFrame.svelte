@@ -11,6 +11,7 @@
     [key: string]: unknown;
   } = $props();
 
+  // eslint-disable-next-line shadcn/no-unknown-classes
   let className = $derived(`svelte-renderer mark-${extension?.name || "unknown"}`);
 </script>
 

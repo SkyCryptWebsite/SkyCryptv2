@@ -1,6 +1,7 @@
 <script lang="ts">
   import { PUBLIC_DISCORD_INVITE, PUBLIC_PATREON } from "$app/env/public";
   import { resolve } from "$app/paths";
+  import { API_DOCS_URL } from "#lib/shared/constants/developer";
 
   type FooterSection = {
     label: string;
@@ -27,7 +28,7 @@
       label: "Developers",
       links: [
         { title: "API Policy", href: resolve("/(pages)/api-policy") },
-        { title: "API Docs", href: "https://sky.shiiyu.moe/api/openapi", external: true }
+        { title: "API Docs", href: API_DOCS_URL, external: true }
       ]
     },
     {
