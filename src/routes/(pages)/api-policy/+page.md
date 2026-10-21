@@ -5,7 +5,8 @@
 <SvelteSeo
   title="API Policy | SkyCrypt"
   description="The rules for building on the SkyCrypt API."
-  canonical="https://sky.shiiyu.moe/api-policy" />
+  canonical="https://sky.shiiyu.moe/api-policy"
+/>
 
 # API Policy
 
@@ -37,7 +38,7 @@ Your project must not:
 - give players an unfair advantage in game;
 - get around the Hypixel API Policy, for example by using SkyCrypt to get data you couldn't get from Hypixel under its rate limits;
 - include betting or gambling;
-- break any law that applies to you or your users;
+- break any law that applies to you or your users.
 
 ## Credit SkyCrypt
 
@@ -48,18 +49,19 @@ Your project must also say clearly that it is not affiliated with or endorsed by
 ## Your key
 
 - Use one key per project. To build something new, request a new key.
-- Keep your key private. Don’t share it, put it in a mod or app that other people download, or commit it to public code. Call the API from your own server.
+- Keep your key private. Don't share it, put it in a mod or app that other people download, or commit it to public code. Call the API from your own server.
 - Stay within your key's rate limit. You can request a higher limit in your dashboard.
 - Don't use extra keys or accounts to get around a rate limit.
 
 If your key leaks, delete it in your dashboard and request a new one.
 
-## Cached Data only
+## Cached data only
+
 The API only returns data SkyCrypt already has, from players someone recently looked up on SkyCrypt. It never asks Hypixel for new data on your behalf. If we don't have a player, you get no data for them, and the data you do get can be older than what the website shows.
 
 Cache our responses and reuse them, instead of asking for the same player again and again.
 
-## Caching Practices & Data Retention
+## Caching practices & data retention
 
 We highly advise each player response for at least 5 minutes and reuse it, instead of asking for the same player again and again. Stats on SkyCrypt only change every few minutes, so requesting the same player more often than that doesn't get you newer data. If our response has a `Cache-Control` header, follow it.
 
