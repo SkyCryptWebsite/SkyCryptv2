@@ -20,9 +20,10 @@ export enum APIEndpointName {
   GARDEN = "Garden",
   EMBED = "Embed Data",
   RESOURCEPACK = "Resource Pack",
+  ENCHANTMENTS = "Enchantments",
   SEARCH = "Search",
   USERNAME = "Username"
 }
 
 export * from "./types.d";
-export * from "./cms";
+export * from "./newsroom";

@@ -1,13 +1,13 @@
 <script lang="ts">
   import { getPacksContext, getPreferences } from "$ctx";
-  import type { ModelsStrippedItem } from "$lib/shared/api/orval-generated";
-  import { getRarityClass, removeFormatting, renderLore } from "$lib/shared/helper";
-  import { animateObfuscatedText } from "$lib/shared/mc-text/obfuscated";
-  import { cn } from "$lib/shared/utils";
   import Image from "@lucide/svelte/icons/image";
   import Info from "@lucide/svelte/icons/info";
   import TriangleAlert from "@lucide/svelte/icons/triangle-alert";
   import { Avatar, Button } from "bits-ui";
+  import type { ModelsStrippedItem } from "#lib/shared/api/orval-generated";
+  import { getRarityClass, removeFormatting, renderLore } from "#lib/shared/helper";
+  import { animateObfuscatedText } from "#lib/shared/mc-text/obfuscated";
+  import { cn } from "#lib/shared/utils";
   import ContainedItem from "./ContainedItem.svelte";
   import ResolvedItemImage from "./ResolvedItemImage.svelte";
 
@@ -26,13 +26,10 @@
   const isMulticolor = $derived((itemNameHtml?.match(/<\/span>/g) || [])?.length > 1);
   const bgColor = $derived(getRarityClass(piece?.rarity ?? ("common".toLowerCase() as string), "bg"));
   const textColor = $derived(getRarityClass(piece?.rarity ?? ("common".toLowerCase() as string), "text"));
-  const enchanted = $derived(
-    skyblockItem?.texture_path?.includes("/api/leather/")
-      ? false
-      : skyblockItem && "shiny" in skyblockItem
-        ? skyblockItem.shiny
-        : false
-  );
+  const enchanted = $derived.by(() => {
+    if (skyblockItem?.texture_path?.includes("/api/leather/")) return false;
+    return skyblockItem && "shiny" in skyblockItem ? skyblockItem.shiny : false;
+  });
   const hasColor = $derived(skyblockItem?.lore?.some((lore) => lore.includes("Color:")) ?? false);
   const packs = $derived(getPacksContext().packs);
   const packData = $derived(packs?.find((pack) => pack.id === skyblockItem?.texture_pack));

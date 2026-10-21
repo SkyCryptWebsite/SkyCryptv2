@@ -118,32 +118,41 @@
   --color-minecraft-f: var(--§f);
 }
 
+@font-face {
+  font-family: "SkyBlockIcons";
+  font-style: normal;
+  font-display: block;
+  font-weight: 400;
+  /* @fontsource/unifontex subset to this unicode-range with pyftsubset (2 MB to 69 KB). */
+  src: url("../lib/assets/fonts/unifontex-icons.woff2") format("woff2");
+  unicode-range:
+    /* Greek and Coptic, e.g. α */
+    U+0370-03FF,
+    /* Malayalam, e.g. ൠ */ U+0D00-0D7F,
+    /* Thai, e.g. ๑ */ U+0E00-0E7F,
+    /* Mongolian, e.g. ᠅ */ U+1800-18AF,
+    /* Letterlike and enclosed symbols, e.g. Ⓟ and Ⓢ */ U+2100-24FF,
+    /* Box drawing, symbols, dingbats, arrows, operators, e.g. ❤, ☘, ⚔, ➊ */ U+2500-2BFF,
+    /* Supplemental punctuation, e.g. ⸕ and ⸎ */ U+2E00-2E7F,
+    /* Text presentation selector for emoji-capable symbols */ U+FE0E;
+}
+
+/* Unlayered and after the @fontsource import, so browsers try it before the full 2 MB face for these characters. */
+@font-face {
+  font-family: "UnifontEX";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url("../lib/assets/fonts/unifontex-icons.woff2") format("woff2");
+  unicode-range: U+0370-03FF, U+0D00-0D7F, U+0E00-0E7F, U+1800-18AF, U+2100-24FF, U+2500-2BFF, U+2E00-2E7F, U+FE0E;
+}
+
 @layer base {
   @font-face {
     font-family: "Hypixel SkyBlock Glyphs";
     font-style: normal;
     font-display: swap;
     src: url("/fonts/hypixel-glyphs/hypixel-glyphs.ttf") format("truetype");
-  }
-
-  @font-face {
-    font-family: "SkyBlockIcons";
-    font-style: normal;
-    font-display: block;
-    font-weight: 400;
-    src:
-      url("@fontsource/unifontex/files/unifontex-latin-400-normal.woff2") format("woff2"),
-      url("@fontsource/unifontex/files/unifontex-latin-400-normal.woff") format("woff");
-    unicode-range:
-      /* Greek and Coptic, e.g. α */
-      U+0370-03FF,
-      /* Malayalam, e.g. ൠ */ U+0D00-0D7F,
-      /* Thai, e.g. ๑ */ U+0E00-0E7F,
-      /* Mongolian, e.g. ᠅ */ U+1800-18AF,
-      /* Letterlike and enclosed symbols, e.g. Ⓟ and Ⓢ */ U+2100-24FF,
-      /* Box drawing, symbols, dingbats, arrows, operators, e.g. ❤, ☘, ⚔, ➊ */ U+2500-2BFF,
-      /* Supplemental punctuation, e.g. ⸕ and ⸎ */ U+2E00-2E7F,
-      /* Text presentation selector for emoji-capable symbols */ U+FE0E;
   }
 
   @font-face {
@@ -295,15 +304,6 @@
     }
     to {
       clip-path: polygon(50% -71%, -50% 71%, 50% 171%, 171% 50%);
-    }
-  }
-
-  @keyframes scroll-fade-out {
-    from {
-      opacity: 1;
-    }
-    to {
-      opacity: 0;
     }
   }
 
@@ -665,38 +665,6 @@
     left: var(--hit-area-l, 0px);
     pointer-events: inherit;
   }
-}
-
-/* On the scroll container: expose a named scroll-progress timeline per axis. */
-@utility scroll-fade-track-y {
-  scroll-timeline-name: --scroll-fade-y;
-  scroll-timeline-axis: block;
-}
-
-@utility scroll-fade-track-x {
-  scroll-timeline-name: --scroll-fade-x;
-  scroll-timeline-axis: inline;
-}
-
-@utility scroll-fade-track-both {
-  scroll-timeline-name: --scroll-fade-y, --scroll-fade-x;
-  scroll-timeline-axis: block, inline;
-}
-
-@utility scroll-fade-y {
-  opacity: 0;
-  animation-name: scroll-fade-out;
-  animation-timing-function: linear;
-  animation-fill-mode: both;
-  animation-timeline: --scroll-fade-y;
-}
-
-@utility scroll-fade-x {
-  opacity: 0;
-  animation-name: scroll-fade-out;
-  animation-timing-function: linear;
-  animation-fill-mode: both;
-  animation-timeline: --scroll-fade-x;
 }
 
 @custom-variant @stuck-top {

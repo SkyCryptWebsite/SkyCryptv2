@@ -1,10 +1,5 @@
 <script lang="ts">
   import { getHoverContext, getInternalState } from "$ctx";
-  import Misc from "$lib/components/header/settings/Misc.svelte";
-  import Order from "$lib/components/header/settings/Order.svelte";
-  import Packs from "$lib/components/header/settings/Packs.svelte";
-  import Themes from "$lib/components/header/settings/Themes.svelte";
-  import { SettingsTab } from "$lib/components/header/types";
   import { Button } from "$ui/button";
   import * as Dialog from "$ui/dialog";
   import * as Drawer from "$ui/drawer";
@@ -17,6 +12,7 @@
   import Settings from "@lucide/svelte/icons/settings";
   import { cubicOut } from "svelte/easing";
   import { crossfade } from "svelte/transition";
+  import { SettingsTab } from "#lib/components/header/types";
 
   type SettingsProps = Record<string, unknown>;
   type TabsListType = {
@@ -46,6 +42,14 @@
     }
   ] satisfies TabsListType[];
 
+  const loadPanes = () =>
+    Promise.all([
+      import("#lib/components/header/settings/Packs.svelte"),
+      import("#lib/components/header/settings/Themes.svelte"),
+      import("#lib/components/header/settings/Order.svelte"),
+      import("#lib/components/header/settings/Misc.svelte")
+    ]);
+
   const [send, receive] = crossfade({
     duration: 300,
     easing: cubicOut
@@ -72,10 +76,12 @@
         </Tabs.Trigger>
       {/each}
     </Tabs.List>
-    <Packs />
-    <Themes />
-    <Order />
-    <Misc />
+    {#await loadPanes() then [{ default: Packs }, { default: Themes }, { default: Order }, { default: Misc }]}
+      <Packs />
+      <Themes />
+      <Order />
+      <Misc />
+    {/await}
   </Tabs.Root>
 {/snippet}
 

@@ -1,10 +1,5 @@
 <script lang="ts">
   import { getSkillsContext } from "$ctx";
-  import { Item } from "$lib/components/item";
-  import { Chip } from "$lib/components/misc";
-  import { SectionSubtitle } from "$lib/components/sections";
-  import { AdditionStat, SkillGear } from "$lib/components/stats";
-  import { cn } from "$lib/shared/utils";
   import EmptyStat from "$src/lib/components/EmptyStat.svelte";
   import ScrollAreaItems from "$src/lib/components/ScrollAreaItems.svelte";
   import AxeIcon from "@lucide/svelte/icons/axe";
@@ -12,6 +7,11 @@
   import { format } from "numerable";
   import { cubicOut } from "svelte/easing";
   import { fade } from "svelte/transition";
+  import { Item } from "#lib/components/item";
+  import { Chip } from "#lib/components/misc";
+  import { SectionSubtitle } from "#lib/components/sections";
+  import { AdditionStat, SkillGear } from "#lib/components/stats";
+  import { cn } from "#lib/shared/utils";
 
   const data = $derived(getSkillsContext().skills);
   const foraging = $derived(data?.foraging);

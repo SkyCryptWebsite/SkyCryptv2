@@ -1,7 +1,5 @@
 <script lang="ts">
   import { getSkillsContext } from "$ctx";
-  import { Chip } from "$lib/components/misc";
-  import { AdditionStat } from "$lib/components/stats";
   import CollapsibleCustomTrigger from "$src/lib/components/CollapsibleCustomTrigger.svelte";
   import EmptyStat from "$src/lib/components/EmptyStat.svelte";
   import ScrollAreaItems from "$src/lib/components/ScrollAreaItems.svelte";
@@ -10,6 +8,8 @@
   import LockIcon from "@lucide/svelte/icons/lock";
   import SparklesIcon from "@lucide/svelte/icons/sparkles";
   import { formatDistanceToNowStrict } from "date-fns";
+  import { Chip } from "#lib/components/misc";
+  import { AdditionStat } from "#lib/components/stats";
 
   const data = $derived(getSkillsContext().skills);
   const enchanting = $derived(data?.enchanting);

@@ -1,16 +1,16 @@
 <script lang="ts">
   import { getSkillsContext } from "$ctx";
-  import { Chip, SearchTabs } from "$lib/components/misc";
-  import { AdditionStat } from "$lib/components/stats";
-  import type { ModelsAttributeShard } from "$lib/shared/api/orval-generated";
-  import { RARITIES } from "$lib/shared/constants/rarities";
-  import { getRarityClass, renderLore, titleCase } from "$lib/shared/helper";
-  import { cn } from "$lib/shared/utils";
   import EmptyStat from "$src/lib/components/EmptyStat.svelte";
   import { tz } from "@date-fns/tz";
   import CrosshairIcon from "@lucide/svelte/icons/crosshair";
   import { formatDate } from "date-fns";
   import { format } from "numerable";
+  import { Chip, SearchTabs } from "#lib/components/misc";
+  import { AdditionStat } from "#lib/components/stats";
+  import type { ModelsAttributeShard } from "#lib/shared/api/orval-generated";
+  import { RARITIES } from "#lib/shared/constants/rarities";
+  import { getRarityClass, renderLore, titleCase } from "#lib/shared/helper";
+  import { cn } from "#lib/shared/utils";
 
   const skills = $derived(getSkillsContext().skills);
   const hunting = $derived(skills?.hunting);
@@ -23,6 +23,11 @@
     (shard?.maxSyphon ?? 0) > 0 && (shard?.syphoned ?? 0) >= (shard?.maxSyphon ?? 0);
   const hasProgress = (shard?: ModelsAttributeShard) =>
     (shard?.owned ?? 0) > 0 || (shard?.syphoned ?? 0) > 0 || shard?.capturedTimestamp != null;
+  const getBucket = (shard?: ModelsAttributeShard) => {
+    if (isMaxed(shard)) return 0;
+    if (hasProgress(shard)) return 1;
+    return 2;
+  };
 
   const summary = $derived.by(() => {
     const shards = allShards;
@@ -41,8 +46,8 @@
     allShards
       .map((shard, index) => ({ shard, index }))
       .sort((a, b) => {
-        const bucketA = isMaxed(a.shard) ? 0 : hasProgress(a.shard) ? 1 : 2;
-        const bucketB = isMaxed(b.shard) ? 0 : hasProgress(b.shard) ? 1 : 2;
+        const bucketA = getBucket(a.shard);
+        const bucketB = getBucket(b.shard);
 
         if (bucketA !== bucketB) return bucketA - bucketB;
 

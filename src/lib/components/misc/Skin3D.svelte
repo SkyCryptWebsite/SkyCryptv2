@@ -1,23 +1,27 @@
 <script lang="ts">
-  import { getProfileContext } from "$ctx";
-  import { cn } from "$lib/shared/utils";
-  import ky from "ky";
+  import { getContributorSkins } from "$routes/contributors.remote";
   import * as skinview3d from "skinview3d";
   import { onDestroy } from "svelte";
+  import { MediaQuery } from "svelte/reactivity";
+  import { fetchSkinTextures } from "#lib/shared/skin";
+  import { cn } from "#lib/shared/utils";
 
   interface Props {
     class?: string;
+    uuid: Promise<string | undefined>;
     showStaticSkin: () => void;
   }
 
-  interface ProfileResponse {
-    properties: { name: string; value: string; signature?: string }[];
-  }
+  let { class: className, uuid, showStaticSkin }: Props = $props();
 
-  let { class: className, showStaticSkin }: Props = $props();
+  const contributorSkinsPromise = getContributorSkins(__PRERENDER_VERSION__).catch(() => []);
+  let contributorSkins: string[] = [];
+  const SPIN_DELAY = 90;
+  const LAND_DELAY = 600;
 
-  const ctx = $derived(getProfileContext().current);
-  const uuid = $derived(ctx?.uuid);
+  // Grace period before spinning again, so fast loads and profile switches keep the current skin
+  const RESPIN_DELAY = 150;
+  const prefersReducedMotion = new MediaQuery("(prefers-reduced-motion: reduce)");
 
   let minecraftAvatar = $state<HTMLCanvasElement>();
   let canvasIsLoading = $state<boolean>(true);
@@ -25,9 +29,14 @@
   let viewer: skinview3d.SkinViewer | undefined;
   let loadedUuid = "";
   let updateRequest = 0;
+  let spinId = 0;
+  let spinCount = 0;
+  let skinIndex = -1;
   let destroyed = false;
   let resizeObserver: ResizeObserver | undefined;
   let resizeAnimationFrameId: number | null = null;
+
+  const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
   function updateViewerSize() {
     if (!viewer || !minecraftAvatar?.parentElement) return;
@@ -45,61 +54,76 @@
     });
   }
 
-  function sanitizeUrl(url?: string): string | undefined {
-    return url ? url.replace(/^http:/, "https:") : undefined;
+  function createViewer(canvas: HTMLCanvasElement) {
+    const parent = canvas.parentElement;
+    const skinViewer = new skinview3d.SkinViewer({
+      canvas,
+      width: parent?.clientWidth || 300,
+      height: parent?.clientHeight || 600,
+      animation: new skinview3d.IdleAnimation(),
+      preserveDrawingBuffer: true
+    });
+
+    skinViewer.camera.position.set(-18, -3, 78);
+    skinViewer.controls.enableZoom = false;
+    skinViewer.controls.enablePan = true;
+    skinViewer.controls.enableRotate = true;
+    skinViewer.canvas.removeAttribute("tabindex");
+    return skinViewer;
   }
 
-  const updateSkinViewer = async (targetUuid: string) => {
-    const requestId = ++updateRequest;
-    if (loadedUuid === targetUuid || !minecraftAvatar) return;
-    canvasIsLoading = true;
+  async function showNextContributorSkin() {
+    if (contributorSkins.length === 0) return;
+    skinIndex =
+      skinIndex < 0 ? Math.floor(Math.random() * contributorSkins.length) : (skinIndex + 1) % contributorSkins.length;
+    await viewer?.loadSkin(contributorSkins[skinIndex]);
+    canvasIsLoading = false;
+  }
+
+  async function spin() {
+    const id = ++spinCount;
+    spinId = id;
+    loadedUuid = "";
+    viewer?.resetCape();
+    contributorSkins = await contributorSkinsPromise;
+    if (destroyed || spinId !== id) return;
+    await showNextContributorSkin();
+    while (contributorSkins.length > 0 && !prefersReducedMotion.current) {
+      await sleep(SPIN_DELAY);
+      if (destroyed || spinId !== id) return;
+      await showNextContributorSkin();
+    }
+  }
+
+  const updateSkinViewer = async (targetUuid: string, requestId: number) => {
+    const isStale = () => destroyed || requestId !== updateRequest || !viewer;
+    if (loadedUuid === targetUuid) return;
 
     try {
-      const capeData = await ky(
-        `https://mowojang.seraph.si/session/minecraft/profile/${targetUuid}`
-      ).json<ProfileResponse>();
+      const { skinUrl, capeUrl } = await fetchSkinTextures(targetUuid);
+      if (isStale()) return;
 
-      if (destroyed || requestId !== updateRequest || !minecraftAvatar) return;
-
-      const texturesProperty = capeData.properties.find((prop) => prop.name === "textures");
-
-      if (!texturesProperty?.value) {
-        throw new Error("No texture properties found");
+      if (spinId !== 0) {
+        spinId = 0;
+        if (!prefersReducedMotion.current) {
+          for (let delay = SPIN_DELAY * 1.5; delay < LAND_DELAY; delay *= 1.3) {
+            await sleep(delay);
+            if (isStale()) return;
+            await showNextContributorSkin();
+          }
+          await sleep(LAND_DELAY);
+          if (isStale()) return;
+        }
       }
 
-      const texturesJson = JSON.parse(atob(texturesProperty.value));
-      const skinUrl = sanitizeUrl(texturesJson.textures?.SKIN?.url);
-      const capeUrl = sanitizeUrl(texturesJson.textures?.CAPE?.url);
+      await viewer!.loadSkin(skinUrl);
 
-      if (!skinUrl) {
-        throw new Error("No skin URL present in texture payload");
-      }
-
-      if (!viewer) {
-        const parent = minecraftAvatar.parentElement;
-        viewer = new skinview3d.SkinViewer({
-          canvas: minecraftAvatar,
-          width: parent?.clientWidth || 300,
-          height: parent?.clientHeight || 600,
-          animation: new skinview3d.IdleAnimation(),
-          preserveDrawingBuffer: true
-        });
-
-        viewer.camera.position.set(-18, -3, 78);
-        viewer.controls.enableZoom = false;
-        viewer.controls.enablePan = true;
-        viewer.controls.enableRotate = true;
-        viewer.canvas.removeAttribute("tabindex");
-      }
-
-      await viewer.loadSkin(skinUrl);
-
-      if (destroyed || requestId !== updateRequest || !minecraftAvatar) return;
+      if (isStale()) return;
 
       if (capeUrl) {
-        await viewer.loadCape(capeUrl);
+        await viewer!.loadCape(capeUrl);
       } else {
-        viewer.resetCape();
+        viewer!.resetCape();
       }
 
       loadedUuid = targetUuid;
@@ -107,17 +131,39 @@
 
       requestAnimationFrame(updateViewerSize);
     } catch (e) {
-      if (destroyed || requestId !== updateRequest) return;
+      if (isStale()) return;
       console.error("Error loading skin viewer:", e);
+      spinId = 0;
       canvasIsLoading = false;
       showStaticSkin();
     }
   };
 
   $effect(() => {
-    if (uuid) {
-      updateSkinViewer(uuid);
-    }
+    if (!minecraftAvatar) return;
+    viewer ??= createViewer(minecraftAvatar);
+
+    const requestId = ++updateRequest;
+    const spinTimer = setTimeout(spin, loadedUuid ? RESPIN_DELAY : 0);
+    uuid.then(
+      (targetUuid) => {
+        clearTimeout(spinTimer);
+        if (requestId !== updateRequest) return;
+        if (targetUuid) {
+          updateSkinViewer(targetUuid, requestId);
+        } else {
+          spinId = 0;
+        }
+      },
+      () => {
+        clearTimeout(spinTimer);
+        if (requestId !== updateRequest) return;
+        spinId = 0;
+        canvasIsLoading = true;
+      }
+    );
+
+    return () => clearTimeout(spinTimer);
   });
 
   $effect(() => {
@@ -139,6 +185,7 @@
   onDestroy(() => {
     destroyed = true;
     updateRequest += 1;
+    spinId = 0;
     if (resizeAnimationFrameId !== null) {
       cancelAnimationFrame(resizeAnimationFrameId);
     }

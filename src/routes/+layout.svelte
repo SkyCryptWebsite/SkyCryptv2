@@ -1,7 +1,14 @@
 <script lang="ts">
   import { building } from "$app/env";
-  import { browser, dev } from "$app/environment";
-  import { beforeNavigate, replaceState } from "$app/navigation";
+  import { browser, dev } from "$app/env";
+  import {
+    PUBLIC_UMAMI_ENABLE_HEATMAPS,
+    PUBLIC_UMAMI_HOST_URL,
+    PUBLIC_UMAMI_RECORDER_URL,
+    PUBLIC_UMAMI_SCRIPT_URL,
+    PUBLIC_UMAMI_WEBSITE_ID
+  } from "$app/env/public";
+  import { beforeNavigate, goto } from "$app/navigation";
   import { page, updated } from "$app/state";
   import {
     initEnabledPacks,
@@ -16,16 +23,6 @@
     setMobileContext,
     setPacksContext
   } from "$ctx";
-  import { env as publicEnv } from "$env/dynamic/public";
-  import Header from "$lib/components/header/Header.svelte";
-  import { CommandPalette, JsonLd, PerformanceMode } from "$lib/components/misc";
-  import NewPostsNotifier from "$lib/components/newsroom/NewPostsNotifier.svelte";
-  import ThemeEditor from "$lib/components/theme-editor/ThemeEditor.svelte";
-  import { IsHover } from "$lib/hooks/is-hover.svelte";
-  import { IsMobile } from "$lib/hooks/is-mobile.svelte";
-  import { listLatestPostsForNotifications } from "$lib/shared/api/cms-api.remote";
-  import { listResourcePacks } from "$lib/shared/api/skycrypt-api.remote";
-  import { parseThemeFromURL } from "$lib/shared/themes/sharing";
   import * as Drawer from "$ui/drawer";
   import { Separator } from "$ui/separator";
   import * as Sheet from "$ui/sheet";
@@ -36,23 +33,27 @@
   import { onMount, type Snippet } from "svelte";
   import SvelteSeo from "svelte-seo";
   import { toast, Toaster, type ToasterProps } from "svelte-sonner";
-  import "./layout.css";
   import { SvelteURLSearchParams } from "svelte/reactivity";
   import { writable } from "svelte/store";
+  import Footer from "#lib/components/footer/Footer.svelte";
+  import Header from "#lib/components/header/Header.svelte";
+  import { CommandPalette, JsonLd, PerformanceMode } from "#lib/components/misc";
+  import NewPostsNotifier from "#lib/components/newsroom/NewPostsNotifier.svelte";
+  import SiteBanners from "#lib/components/newsroom/SiteBanners.svelte";
+  import { IsHover } from "#lib/hooks/is-hover.svelte.js";
+  import { IsMobile } from "#lib/hooks/is-mobile.svelte.js";
+  import "./layout.css";
+  import { listResourcePacks } from "#lib/shared/api/skycrypt-api.remote";
+  import { getActiveBanners, listLatestPostsForNotifications } from "#lib/shared/newsroom.remote";
+  import { isBeta } from "#lib/shared/release-channel";
 
   let { children }: { children: Snippet } = $props();
+  const loadThemeEditor = () => import("#lib/components/theme-editor/ThemeEditor.svelte");
   let isMobile = $state(new IsMobile());
   let isHover = $state(new IsHover());
   let toastId: string | number = $state(0);
   let commandLoading = $state(false);
 
-  const {
-    PUBLIC_UMAMI_SCRIPT_URL,
-    PUBLIC_UMAMI_WEBSITE_ID,
-    PUBLIC_UMAMI_RECORDER_URL,
-    PUBLIC_UMAMI_ENABLE_HEATMAPS,
-    PUBLIC_UMAMI_HOST_URL
-  } = publicEnv;
   const { ign } = $derived(page.params);
   const showNewsroomToast = $derived(page.url.pathname !== "/" && !page.url.pathname.startsWith("/newsroom"));
   const preferences = initPreferences();
@@ -61,6 +62,8 @@
   const internalState = initInternalState();
   const position = writable<ToasterProps["position"]>("bottom-right");
   const theme = writable<ToasterProps["theme"]>("dark");
+  // The dashboards' fixed sidebars span the full viewport height and would cover the footer.
+  const showFooter = $derived(!/^\/(admin-)?dashboard(\/|$)/.test(page.url.pathname));
   const noEmbedUrls = ["/stats/", "/newsroom", "/login", "/dashboard"];
   const packs = new PacksContext();
   const websiteJsonLd = {
@@ -113,6 +116,8 @@
   }
 
   function handleKeydown(e: KeyboardEvent) {
+    // Single-key shortcuts must not steal characters typed into fields.
+    if (e.target instanceof HTMLElement && e.target.closest("input, textarea, select, [contenteditable]")) return;
     if (e.key === preferences.keybind) {
       e.preventDefault();
       internalState.openCommand = true;
@@ -148,6 +153,7 @@
 
   initFavorites();
   initNewsroomNotifications();
+
   initRecentSearches();
   setMobileContext(isMobile);
   setHoverContext(isHover);
@@ -169,7 +175,8 @@
     }
   });
 
-  beforeNavigate(({ type }) => {
+  beforeNavigate(({ type, shallow }) => {
+    if (shallow && type === "goto") return;
     if (type === "leave" || type === "link") return;
 
     commandLoading = true;
@@ -180,7 +187,9 @@
     }, 1000);
   });
 
-  beforeNavigate(({ willUnload, to }) => {
+  beforeNavigate(({ willUnload, to, shallow, type }) => {
+    if (shallow && type === "goto") return;
+
     if (updated.current && !willUnload && to?.url) {
       location.href = to.url.href;
     }
@@ -191,7 +200,8 @@
     const themeParam = urlParams.get("theme");
     if (themeParam) {
       toast.promise(
-        parseThemeFromURL(window.location.href)
+        import("#lib/shared/themes/sharing")
+          .then(({ parseThemeFromURL }) => parseThemeFromURL(window.location.href))
           .then((decoded) => {
             if (decoded) {
               themeContext.saveTheme(decoded);
@@ -207,7 +217,7 @@
             urlParams.delete("theme");
             const newUrl = `${page.url.pathname}${urlParams.toString() ? "?" + urlParams.toString() : ""}${page.url.hash}`;
             // eslint-disable-next-line svelte/no-navigation-without-resolve
-            replaceState(newUrl, page.state);
+            goto(newUrl, { shallow: true, replace: true, state: page.state });
           }),
         {
           loading: "Importing theme...",
@@ -223,14 +233,14 @@
         urlParams.delete("theme");
         const newUrl = `${page.url.pathname}${urlParams.toString() ? "?" + urlParams.toString() : ""}${page.url.hash}`;
         // eslint-disable-next-line svelte/no-navigation-without-resolve
-        replaceState(newUrl, page.state);
+        goto(newUrl, { shallow: true, replace: true, state: page.state });
       }
     };
   });
 
   $effect(() => {
     const query = listResourcePacks(__PRERENDER_VERSION__);
-    if (query.current) {
+    if (Array.isArray(query.current)) {
       packs.packs = query.current;
       enabledPacks.configure(query.current);
     }
@@ -247,7 +257,7 @@
   lightClassNames={["light"]}
   themeColors={{ dark: "#282828", light: "#dbdbdb" }} />
 
-<svelte:document onkeydown={handleKeydown} onclick={handleOutboundClick} />
+<svelte:document onkeydown={handleKeydown} onclick={handleOutboundClick}></svelte:document>
 
 <svelte:window
   onresize={() => {
@@ -333,8 +343,8 @@
     }
   }} />
 
-{#if page.url.origin.includes("cupcake") || dev}
-  {#await import("$lib/components/notices/BetaNotice.svelte") then { default: BetaNotice }}
+{#if isBeta || dev}
+  {#await import("#lib/components/notices/BetaNotice.svelte") then { default: BetaNotice }}
     <BetaNotice />
   {/await}
 {/if}
@@ -361,19 +371,26 @@
 </div>
 
 <Header />
+<!-- The admin dashboard's fixed sidebar would sit on top of them; staff manage banners there instead. -->
+{#if !page.url.pathname.startsWith("/admin-dashboard")}
+  <svelte:boundary>
+    {#snippet failed()}{/snippet}
+    <SiteBanners banners={await getActiveBanners()} />
+  </svelte:boundary>
+{/if}
 {#if showNewsroomToast}
   <svelte:boundary>
     {#snippet failed()}{/snippet}
-    {const latestNewsroom = await listLatestPostsForNotifications({ limit: 5 })}
-    {#if latestNewsroom}
-      <NewPostsNotifier posts={latestNewsroom.docs} />
-    {/if}
+    <NewPostsNotifier posts={await listLatestPostsForNotifications({ limit: 5 })} />
   </svelte:boundary>
 {/if}
-<Tooltip.Provider delayDuration={0}>
-  {@render children()}
-</Tooltip.Provider>
 
+<div class="min-h-[calc(100dvh-3rem)]">
+  <Tooltip.Provider delayDuration={0}>{@render children()}</Tooltip.Provider>
+</div>
+{#if showFooter}
+  <Footer />
+{/if}
 <CommandPalette {ign} bind:loading={commandLoading} />
 
 {#if !isMobile.current}
@@ -385,7 +402,9 @@
       escapeKeydownBehavior="ignore"
       interactOutsideBehavior="ignore"
       preventScroll={false}>
-      <ThemeEditor />
+      {#await loadThemeEditor() then { default: ThemeEditor }}
+        <ThemeEditor />
+      {/await}
     </Sheet.Content>
   </Sheet.Root>
 {/if}
@@ -395,7 +414,9 @@
     <Drawer.Content
       class="before:glass before:glass-bg-popover standard:dark:before:bg-transparent [&>div:first-child]:my-4">
       <div class="overflow-auto p-4">
-        <ThemeEditor />
+        {#await loadThemeEditor() then { default: ThemeEditor }}
+          <ThemeEditor />
+        {/await}
       </div>
     </Drawer.Content>
   </Drawer.Root>

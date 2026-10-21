@@ -1399,6 +1399,35 @@ export const getCombinedProfileStats = async (
   });
 };
 
+export type listEnchantmentsResponse200 = {
+  data: string[];
+  status: 200;
+};
+
+export type listEnchantmentsResponseSuccess = listEnchantmentsResponse200 & {
+  headers: Headers;
+};
+
+export type listEnchantmentsResponse = listEnchantmentsResponseSuccess;
+
+export const getListEnchantmentsUrl = () => {
+  return `/api/constants/enchantments`;
+};
+
+/**
+ * Returns the lore strings for enchantments at their maximum level.
+ *
+ * @summary List max-level enchantments
+ */
+export const listEnchantments = async (
+  options?: Parameters<typeof customFetch>[1]
+): Promise<listEnchantmentsResponse> => {
+  return customFetch<listEnchantmentsResponse>(getListEnchantmentsUrl(), {
+    ...options,
+    method: "GET"
+  });
+};
+
 export type listResourcePacksResponse200 = {
   data: ModelsResourcePackConfig[];
   status: 200;

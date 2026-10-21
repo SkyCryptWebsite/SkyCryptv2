@@ -1,9 +1,9 @@
 <script lang="ts">
   import { AllStatsContext, setAllStatsContext, setHoverContext } from "$ctx";
   import { initInternalState } from "$ctx/internal.svelte";
-  import type { ModelsStatData } from "$lib/shared/api/orval-generated";
   import { Tooltip } from "bits-ui";
   import type { Component, Snippet } from "svelte";
+  import type { ModelsStatData } from "#lib/shared/api/orval-generated";
   import { MockIsHover } from "./test-wrapper.svelte";
 
   interface Props {

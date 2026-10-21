@@ -1,21 +1,43 @@
 {
-  "extends": "./.svelte-kit/tsconfig.json",
+  "extends": "$app/tsconfig",
   "compilerOptions": {
-    "rewriteRelativeImportExtensions": true,
-    "allowJs": true,
-    "checkJs": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true,
-    "skipLibCheck": true,
     "sourceMap": true,
-    "strict": true,
-    "moduleResolution": "bundler",
-    "types": ["@types/umami-browser"]
-  }
-  // Path aliases are handled by https://svelte.dev/docs/kit/configuration#alias
-  // except $lib which is handled by https://svelte.dev/docs/kit/configuration#files
-  //
-  // To make changes to top-level options such as include and exclude, we recommend extending
-  // the generated config; see https://svelte.dev/docs/kit/configuration#typescript
+    "types": ["$app/types", "@types/umami-browser", "node"],
+    "paths": {
+      "#lib/*": ["./src/lib/*"],
+      "$params": ["./src/params"],
+      "$types": ["./src/lib/types"],
+      "$db": ["./src/db"],
+      "$constants": ["./src/lib/server/constants"],
+      "$ctx": ["./src/context"],
+      "$routes": ["./src/routes"],
+      "$src": ["./src"],
+      "$ui": ["./src/lib/components/ui"],
+      "$utils": ["./src/lib/shared/utils.ts"],
+      "$hooks": ["./src/lib/hooks"],
+      "$components": ["./src/lib/components"],
+      "$params/*": ["./src/params/*"],
+      "$types/*": ["./src/lib/types/*"],
+      "$db/*": ["./src/db/*"],
+      "$constants/*": ["./src/lib/server/constants/*"],
+      "$ctx/*": ["./src/context/*"],
+      "$routes/*": ["./src/routes/*"],
+      "$src/*": ["./src/*"],
+      "$ui/*": ["./src/lib/components/ui/*"],
+      "$utils/*": ["./src/lib/shared/*"],
+      "$utils.js": ["./src/lib/shared/utils.ts"],
+      "$hooks/*": ["./src/lib/hooks/*"],
+      "$components/*": ["./src/lib/components/*"]
+    }
+  },
+  "include": [
+    ".svelte-kit/ambient.d.ts",
+    "src",
+    "vite.config.ts",
+    "evlog.config.ts",
+    "drizzle.config.ts",
+    "playwright.config.ts",
+    "eslint.config.ts"
+  ],
+  "exclude": ["src/service-worker"]
 }

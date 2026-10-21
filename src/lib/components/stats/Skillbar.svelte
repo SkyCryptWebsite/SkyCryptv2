@@ -1,6 +1,4 @@
 <script lang="ts">
-  import type { ModelsSkill } from "$lib/shared/api/orval-generated";
-  import { calculatePercentage, formatNumber } from "$lib/shared/helper";
   import * as Avatar from "$ui/avatar";
   import { Progress } from "$ui/progress";
   import { cn } from "$utils";
@@ -8,6 +6,8 @@
   import { format } from "numerable";
   import { cubicInOut } from "svelte/easing";
   import { Tween } from "svelte/motion";
+  import type { ModelsSkill } from "#lib/shared/api/orval-generated";
+  import { calculatePercentage, formatNumber } from "#lib/shared/helper";
 
   type Props = {
     skill: string;
@@ -52,7 +52,7 @@
     <Avatar.Root class="size-6.5 rounded-none select-none after:border-none">
       <Avatar.Image
         loading="lazy"
-        class="/Users/gigi/Library/Application Support/CleanShot/media/media_n1jqFH4qxo/ScreenShot 2026-06-10 at 12.47 AM cKk3jnx9.png pointer-events-none size-6.5 rounded-none group-[api=false]:grayscale"
+        class="pointer-events-none size-6.5 rounded-none group-[api=false]:grayscale"
         src={skillData.texture}
         alt={skill} />
       <Avatar.Fallback class="bg-transparent">

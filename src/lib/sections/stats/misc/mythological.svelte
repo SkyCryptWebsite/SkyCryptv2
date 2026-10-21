@@ -1,10 +1,10 @@
 <script lang="ts">
   import { getMiscContext } from "$ctx";
-  import { SectionSubtitle } from "$lib/components/sections";
-  import { AdditionStat } from "$lib/components/stats";
-  import { RARITY_COLORS } from "$lib/shared/constants/rarities";
   import { Label } from "$ui/label";
   import { format } from "numerable";
+  import { SectionSubtitle } from "#lib/components/sections";
+  import { AdditionStat } from "#lib/components/stats";
+  import { RARITY_COLORS } from "#lib/shared/constants/rarities";
 
   const misc = $derived(getMiscContext().misc);
 </script>

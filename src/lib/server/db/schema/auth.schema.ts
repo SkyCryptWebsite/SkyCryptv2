@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm";
-import { boolean, index, integer, pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, boolean, integer, index } from "drizzle-orm/pg-core";
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
@@ -15,7 +15,8 @@ export const user = pgTable("user", {
   role: text("role"),
   banned: boolean("banned").default(false),
   banReason: text("ban_reason"),
-  banExpires: timestamp("ban_expires")
+  banExpires: timestamp("ban_expires"),
+  developerMode: boolean("developer_mode").default(false)
 });
 
 export const session = pgTable(
@@ -91,10 +92,10 @@ export const apikey = pgTable(
     refillInterval: integer("refill_interval"),
     refillAmount: integer("refill_amount"),
     lastRefillAt: timestamp("last_refill_at"),
-    enabled: boolean("enabled").default(true),
+    enabled: boolean("enabled").default(false),
     rateLimitEnabled: boolean("rate_limit_enabled").default(true),
-    rateLimitTimeWindow: integer("rate_limit_time_window").default(86400000),
-    rateLimitMax: integer("rate_limit_max").default(10),
+    rateLimitTimeWindow: integer("rate_limit_time_window").default(300000),
+    rateLimitMax: integer("rate_limit_max").default(300),
     requestCount: integer("request_count").default(0),
     remaining: integer("remaining"),
     lastRequest: timestamp("last_request"),

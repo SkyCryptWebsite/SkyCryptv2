@@ -1,14 +1,14 @@
 <script lang="ts">
   import { getCombinedContext } from "$ctx";
-  import { Chip } from "$lib/components/misc";
-  import { Section, SectionSubtitle } from "$lib/components/sections";
-  import { AdditionStat } from "$lib/components/stats";
-  import { formatTime } from "$lib/shared/helper";
-  import { cn } from "$lib/shared/utils";
   import EmptyStat from "$src/lib/components/EmptyStat.svelte";
   import ScrollAreaItems from "$src/lib/components/ScrollAreaItems.svelte";
   import SwordsIcon from "@lucide/svelte/icons/swords";
   import { format } from "numerable";
+  import { Chip } from "#lib/components/misc";
+  import { Section, SectionSubtitle } from "#lib/components/sections";
+  import { AdditionStat } from "#lib/components/stats";
+  import { formatTime } from "#lib/shared/helper";
+  import { cn } from "#lib/shared/utils";
 
   let { order }: { order: number } = $props();
 

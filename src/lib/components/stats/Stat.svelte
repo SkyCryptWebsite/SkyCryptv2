@@ -1,12 +1,12 @@
 <script lang="ts">
   import { genericTooltipTether, getInternalState } from "$ctx";
-  import type { ModelsPlayerStat } from "$lib/shared/api/orval-generated";
-  import { cn } from "$lib/shared/utils";
   import * as Item from "$ui/item";
   import { Label } from "$ui/label";
   import { Separator } from "$ui/separator";
   import * as Tooltip from "$ui/tooltip";
   import { format } from "numerable";
+  import type { ModelsPlayerStat } from "#lib/shared/api/orval-generated";
+  import { cn } from "#lib/shared/utils";
 
   type Props = {
     data: ModelsPlayerStat;

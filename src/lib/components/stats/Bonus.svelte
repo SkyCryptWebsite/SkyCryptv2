@@ -1,8 +1,8 @@
 <script lang="ts">
   import { getAllStatsContext } from "$ctx";
-  import { cn } from "$lib/shared/utils";
   import type { ItemStats } from "$types";
   import { format } from "numerable";
+  import { cn } from "#lib/shared/utils";
 
   type Props = {
     stats: ItemStats;

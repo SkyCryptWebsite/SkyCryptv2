@@ -1,6 +1,6 @@
-import type { ModelsStrippedItem } from "$lib/shared/api/orval-generated";
 import { describe, it } from "vitest";
 import { render } from "vitest-browser-svelte";
+import type { ModelsStrippedItem } from "#lib/shared/api/orval-generated";
 import WithContext from "../../../test-utils/WithContext.svelte";
 import SkillGear from "./SkillGear.svelte";
 

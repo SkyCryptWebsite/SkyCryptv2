@@ -1,10 +1,8 @@
-import { env } from "$env/dynamic/public";
-import type { ModelsEmbedData } from "$lib/shared/api/orval-generated";
-import { getLongDescription } from "$lib/shared/embedGenerator";
+import { PUBLIC_DISCORD_INVITE } from "$app/env/public";
 import { gameModeIcons } from "$src/lib/shared/constants/game-modes";
 import type { APIContainerComponent } from "discord-api-types/v10";
-
-const { PUBLIC_DISCORD_INVITE } = env;
+import type { ModelsEmbedData } from "#lib/shared/api/orval-generated";
+import { getLongDescription } from "#lib/shared/embedGenerator";
 
 export function createDiscordEmbed(data: ModelsEmbedData) {
   const color =

@@ -1,11 +1,5 @@
 <script lang="ts">
   import { getSkillsContext } from "$ctx";
-  import { Item } from "$lib/components/item";
-  import { Chip, ScrollItems } from "$lib/components/misc";
-  import { SectionSubtitle } from "$lib/components/sections";
-  import { AdditionStat, SkillGear } from "$lib/components/stats";
-  import Items from "$lib/layouts/stats/Items.svelte";
-  import { cn } from "$lib/shared/utils";
   import EmptyStat from "$src/lib/components/EmptyStat.svelte";
   import ScrollAreaItems from "$src/lib/components/ScrollAreaItems.svelte";
   import { Label } from "$ui/label";
@@ -19,9 +13,16 @@
   import { format } from "numerable";
   import { cubicOut } from "svelte/easing";
   import { fade } from "svelte/transition";
+  import { Item } from "#lib/components/item";
+  import { Chip, ScrollItems } from "#lib/components/misc";
+  import { SectionSubtitle } from "#lib/components/sections";
+  import { AdditionStat, SkillGear } from "#lib/components/stats";
+  import Items from "#lib/layouts/stats/Items.svelte";
+  import { cn } from "#lib/shared/utils";
 
   const data = $derived(getSkillsContext().skills);
   const mining = $derived(data?.mining);
+  const crystalStatusClass: Record<string, string> = { PLACED: "text-minecraft-e", FOUND: "text-minecraft-a" };
 </script>
 
 <div class="contents space-y-4">
@@ -90,14 +91,7 @@
                       <span class="absolute inset-0 left-3 capitalize">
                         {crystalName}:
                         <span
-                          class={cn(
-                            "font-bold capitalize",
-                            crystalStatus === "PLACED"
-                              ? "text-minecraft-e"
-                              : crystalStatus === "FOUND"
-                                ? "text-minecraft-a"
-                                : "text-minecraft-c"
-                          )}>
+                          class={cn("font-bold capitalize", crystalStatusClass[crystalStatus] ?? "text-minecraft-c")}>
                           {crystalStatus.replace("_", " ").toLowerCase()}
                         </span>
                       </span>

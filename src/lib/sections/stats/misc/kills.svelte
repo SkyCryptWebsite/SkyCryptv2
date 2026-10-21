@@ -1,11 +1,11 @@
 <script lang="ts">
   import { getMiscContext } from "$ctx";
-  import ScrollAreaItems from "$lib/components/ScrollAreaItems.svelte";
-  import { SectionSubtitle } from "$lib/components/sections";
-  import { AdditionStat } from "$lib/components/stats";
   import { Separator } from "$ui/separator";
   import { format } from "numerable";
   import VirtualList from "svelte-tiny-virtual-list";
+  import ScrollAreaItems from "#lib/components/ScrollAreaItems.svelte";
+  import { SectionSubtitle } from "#lib/components/sections";
+  import { AdditionStat } from "#lib/components/stats";
 
   const misc = $derived(getMiscContext().misc);
 

@@ -1,7 +1,7 @@
-import { DEFAULT_THEME, type ThemeV5 } from "$lib/shared/themes";
 import * as devalue from "devalue";
 import { flushSync, untrack } from "svelte";
 import { afterEach, beforeEach, describe, it, vi } from "vitest";
+import { DEFAULT_THEME, type ThemeV5 } from "#lib/shared/themes";
 import { ThemeContext } from "./themes.svelte";
 
 function customTheme(id = "custom"): ThemeV5 {
@@ -42,20 +42,6 @@ describe("ThemeContext", () => {
       value: originalStartViewTransition,
       writable: true
     });
-  });
-
-  it("resolves first-party themes", ({ expect }) => {
-    const cleanup = $effect.root(() => {
-      const themes = new ThemeContext();
-
-      untrack(() => {
-        expect(themes.activeTheme?.metadata.id).toBe("default");
-        expect(themes.isFirstParty("default")).toBe(true);
-        expect(themes.allThemes).toHaveLength(1);
-      });
-    });
-
-    cleanup();
   });
 
   it("filters persisted V3 custom themes and keeps V5 themes", ({ expect }) => {

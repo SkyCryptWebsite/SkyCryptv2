@@ -1,6 +1,6 @@
 <script lang="ts">
-  import type { ModelsStrippedItem } from "$lib/shared/api/orval-generated";
-  import { cn } from "$lib/shared/utils";
+  import type { ModelsStrippedItem } from "#lib/shared/api/orval-generated";
+  import { cn } from "#lib/shared/utils";
   import EmptyItemSlot, { type EmptyItemSlotType } from "./EmptyItemSlot.svelte";
   import Item from "./Item.svelte";
 

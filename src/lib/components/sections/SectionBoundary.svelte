@@ -1,7 +1,7 @@
 <script lang="ts" generics="T">
-  import { Notice } from "$lib/components/notices";
   import { Spinner } from "$ui/spinner";
   import type { Snippet } from "svelte";
+  import { Notice } from "#lib/components/notices";
 
   let { query, children }: { query: () => Promise<T>; children: Snippet<[T]> } = $props();
 </script>

@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { SectionSubtitle, SectionTitle } from "$lib/components/sections";
-  import type { SectionName } from "$lib/sections/types";
   import { Separator } from "$ui/separator";
   import { cn } from "$utils";
   import type { Snippet } from "svelte";
+  import { SectionSubtitle, SectionTitle } from "#lib/components/sections";
+  import type { SectionName } from "#lib/sections/types";
 
   type Props = {
     id: SectionName | "Catacombs" | "Master_Catacombs";

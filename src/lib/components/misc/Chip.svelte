@@ -1,13 +1,13 @@
 <script lang="ts">
   import { genericTooltipTether, getInternalState } from "$ctx";
-  import { cn } from "$lib/shared/utils";
   import * as Avatar from "$ui/avatar";
   import * as Tooltip from "$ui/tooltip";
   import Image from "@lucide/svelte/icons/image";
-  import { IsInViewport } from "runed";
   import { type Snippet } from "svelte";
   import { cubicOut } from "svelte/easing";
   import { fade } from "svelte/transition";
+  import { onceInView } from "#lib/shared/in-view";
+  import { cn } from "#lib/shared/utils";
 
   type AnimationOptions =
     | {
@@ -46,18 +46,10 @@
     tooltipContent
   }: Props = $props();
 
-  let targetNode = $state<HTMLDivElement>()!;
   let hasBeenInViewport = $state(false);
   let open = $state(false);
 
-  const inViewport = new IsInViewport(() => (image ? targetNode : null), { rootMargin: "200px 0px", threshold: 0 });
   const internalState = getInternalState();
-
-  $effect(() => {
-    if (inViewport.current && !hasBeenInViewport) {
-      hasBeenInViewport = true;
-    }
-  });
 </script>
 
 <Tooltip.Trigger
@@ -78,7 +70,7 @@
   {#snippet child({ props })}
     <div
       {...props}
-      bind:this={targetNode}
+      {@attach image && onceInView(() => (hasBeenInViewport = true))}
       in:fade={{
         duration: animationOptions.animate ? 300 : 0,
         delay: animationOptions.animate ? 25 * (animationOptions.index + 1) : 0,

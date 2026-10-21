@@ -4,15 +4,15 @@
   import { Section, SectionSubtitle } from "$components/sections";
   import { AdditionStat, Bonus } from "$components/stats";
   import { getCombinedContext } from "$ctx";
-  import { formatNumber, getRarityClass, renderLore, uniqBy } from "$lib/shared/helper";
-  import { animateObfuscatedText } from "$lib/shared/mc-text/obfuscated";
-  import { cn } from "$lib/shared/utils";
   import CollapsibleCustomTrigger from "$src/lib/components/CollapsibleCustomTrigger.svelte";
   import EmptyStat from "$src/lib/components/EmptyStat.svelte";
   import { type ModelsStrippedPet } from "$src/lib/shared/api/orval-generated";
   import * as Collapsible from "$ui/collapsible";
   import { Label } from "$ui/label";
   import PawPrintIcon from "@lucide/svelte/icons/paw-print";
+  import { formatNumber, getRarityClass, renderLore, uniqBy } from "#lib/shared/helper";
+  import { animateObfuscatedText } from "#lib/shared/mc-text/obfuscated";
+  import { cn } from "#lib/shared/utils";
 
   let { order }: { order: number } = $props();
 

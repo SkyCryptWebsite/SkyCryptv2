@@ -1,9 +1,9 @@
 <script lang="ts">
-  import type { ModelsResolvedLoadout } from "$lib/shared/api/orval-generated";
   import ScrollAreaItems from "$src/lib/components/ScrollAreaItems.svelte";
   import * as Tabs from "$ui/tabs";
   import { cubicOut } from "svelte/easing";
   import { crossfade } from "svelte/transition";
+  import type { ModelsResolvedLoadout } from "#lib/shared/api/orval-generated";
   import LoadoutCard from "./LoadoutCard.svelte";
 
   type Props = {
@@ -24,7 +24,7 @@
 </script>
 
 <Tabs.Root bind:value={tabValue} class="w-full">
-  <ScrollAreaItems orientation="horizontal" viewportClasses="scroll-fade-track-x [&>div>div]:pt-0 [&>div>div]:pb-4">
+  <ScrollAreaItems orientation="horizontal" viewportClasses="scroll-fade-x [&>div>div]:pt-0 [&>div>div]:pb-4">
     <Tabs.List class="gap-2 bg-inherit">
       {#each loadouts as loadout, index (loadoutKey(loadout, index))}
         {const isActive = $derived(tabValue === (loadout.id?.toString() ?? `loadout-${index}`))}

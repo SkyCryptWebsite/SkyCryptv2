@@ -1,7 +1,7 @@
-import type { ModelsResourcePackConfig } from "$lib/shared/api/orval-generated";
-import { readEnabledPacksCookie } from "$lib/shared/resource-packs";
 import { flushSync, untrack } from "svelte";
 import { afterEach, beforeEach, describe, it } from "vitest";
+import type { ModelsResourcePackConfig } from "#lib/shared/api/orval-generated";
+import { readEnabledPacksCookie } from "#lib/shared/resource-packs";
 import { EnabledPacksContext, reconcileEnabledPacks } from "./packs.svelte";
 
 const packs = [

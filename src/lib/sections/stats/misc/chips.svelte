@@ -1,11 +1,11 @@
 <script lang="ts">
   import { getMiscContext } from "$ctx";
-  import { Chip } from "$lib/components/misc";
-  import ScrollAreaItems from "$lib/components/ScrollAreaItems.svelte";
-  import { SectionSubtitle } from "$lib/components/sections";
-  import { cn } from "$lib/shared/utils";
   import { IsMobile } from "$src/lib/hooks/is-mobile.svelte";
   import { format } from "numerable";
+  import { Chip } from "#lib/components/misc";
+  import ScrollAreaItems from "#lib/components/ScrollAreaItems.svelte";
+  import { SectionSubtitle } from "#lib/components/sections";
+  import { cn } from "#lib/shared/utils";
 
   interface ChipData {
     amount?: number;

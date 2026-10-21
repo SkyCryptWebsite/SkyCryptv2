@@ -1,11 +1,5 @@
 <script lang="ts">
   import { getCombinedContext } from "$ctx";
-  import EmptyStat from "$lib/components/EmptyStat.svelte";
-  import { Item } from "$lib/components/item";
-  import { Chip } from "$lib/components/misc";
-  import { Section, SectionSubtitle } from "$lib/components/sections";
-  import { AdditionStat, Bonus } from "$lib/components/stats";
-  import { cn } from "$lib/shared/utils";
   import ScrollAreaItems from "$src/lib/components/ScrollAreaItems.svelte";
   import { Label } from "$ui/label";
   import { Separator } from "$ui/separator";
@@ -15,6 +9,12 @@
   import SparklesIcon from "@lucide/svelte/icons/sparkles";
   import { formatDate, formatDistanceToNowStrict } from "date-fns";
   import { format } from "numerable";
+  import EmptyStat from "#lib/components/EmptyStat.svelte";
+  import { Item } from "#lib/components/item";
+  import { Chip } from "#lib/components/misc";
+  import { Section, SectionSubtitle } from "#lib/components/sections";
+  import { AdditionStat, Bonus } from "#lib/components/stats";
+  import { cn } from "#lib/shared/utils";
 
   let { order }: { order: number } = $props();
 

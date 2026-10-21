@@ -1,6 +1,4 @@
 <script lang="ts">
-  import type { ThemeV5 } from "$lib/shared/themes/schema";
-  import { getThemeShareURL } from "$lib/shared/themes/sharing";
   import { Button } from "$ui/button";
   import { Input } from "$ui/input";
   import { Label } from "$ui/label";
@@ -8,6 +6,8 @@
   import Save from "@lucide/svelte/icons/save";
   import Share2 from "@lucide/svelte/icons/share-2";
   import { toast } from "svelte-sonner";
+  import type { ThemeV5 } from "#lib/shared/themes/schema";
+  import { getThemeShareURL } from "#lib/shared/themes/sharing";
 
   let {
     workingTheme = $bindable(),
@@ -15,13 +15,13 @@
     onSave,
     handleNameChange,
     handleAuthorChange
-  } = $props<{
+  }: {
     workingTheme: ThemeV5;
     onReset: () => void;
     onSave: () => void;
     handleNameChange: (name: string) => void;
     handleAuthorChange: (author: string) => void;
-  }>();
+  } = $props();
 
   async function handleShare() {
     const url = await getThemeShareURL(workingTheme);

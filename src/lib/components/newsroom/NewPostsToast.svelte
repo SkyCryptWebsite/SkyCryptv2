@@ -1,6 +1,5 @@
 <script lang="ts">
   import { getNewsroomNotifications } from "$ctx";
-  import { clientLocale } from "$lib/hooks/client-locale.svelte";
   import TypeBadge from "$src/lib/components/newsroom/TypeBadge.svelte";
   import type { Post } from "$types";
   import { Badge } from "$ui/badge";
@@ -8,6 +7,7 @@
   import ImageIcon from "@lucide/svelte/icons/image";
   import Newspaper from "@lucide/svelte/icons/newspaper";
   import { Avatar } from "bits-ui";
+  import { clientLocale } from "#lib/hooks/client-locale.svelte.js";
 
   interface Props {
     posts: Post[];
@@ -21,20 +21,10 @@
   const dateFormatter = $derived(
     new Intl.DateTimeFormat(clientLocale.current, { year: "numeric", month: "long", day: "numeric" })
   );
-  const thumb = $derived(
-    newestUnseen.heroImage?.sizes?.card ??
-      newestUnseen.heroImage?.sizes?.thumbnail ??
-      (newestUnseen.heroImage
-        ? {
-            url: newestUnseen.heroImage.url,
-            width: newestUnseen.heroImage.width,
-            height: newestUnseen.heroImage.height
-          }
-        : null)
-  );
+  const thumb = $derived(newestUnseen.heroImage);
   const publishedDate = $derived(formatDate(newestUnseen.publishedAt));
-  const visibleTags = $derived(newestUnseen.tags?.slice(0, 3) ?? []);
-  const overflowTags = $derived((newestUnseen.tags?.length ?? 0) - visibleTags.length);
+  const visibleTags = $derived(newestUnseen.tags.slice(0, 3));
+  const overflowTags = $derived(newestUnseen.tags.length - visibleTags.length);
 
   function formatDate(iso: string | null | undefined): string {
     if (!iso) return "";
@@ -56,16 +46,16 @@
   aria-live="polite"
   class="@container-normal flex w-full max-w-sm flex-col gap-3 px-4 py-3 text-foreground shadow-lg shadow-black/10 @sm:max-w-md">
   <div class="flex min-w-0 flex-col items-start gap-3">
-    {#if thumb && newestUnseen.heroImage}
+    {#if thumb}
       <Avatar.Root class="relative mx-auto aspect-video w-full max-w-sm shrink-0 overflow-hidden rounded-xl border">
         <Avatar.Image
           src={thumb.url}
-          alt={newestUnseen.heroImage.alt ?? ""}
+          alt={thumb.alt}
           width={thumb.width}
           height={thumb.height}
           loading="lazy"
           class="size-full object-cover" />
-        <Avatar.Fallback class="bg-foretext-foreground/10 flex size-full items-center justify-center">
+        <Avatar.Fallback class="flex size-full items-center justify-center bg-foreground/10">
           <ImageIcon class="size-5" aria-label="Image failed to load" />
         </Avatar.Fallback>
         <div

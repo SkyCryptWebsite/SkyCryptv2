@@ -1,13 +1,11 @@
 import path from "node:path";
 import js from "@eslint/js";
-import { loadConfig } from "@sveltejs/load-config";
+import { plugin as shadcn } from "@shadcn/lint";
 import prettier from "eslint-config-prettier";
 import svelte from "eslint-plugin-svelte";
 import { defineConfig, includeIgnoreFile } from "eslint/config";
 import globals from "globals";
 import ts from "typescript-eslint";
-
-const svelteConfig = await loadConfig(process.cwd());
 
 const gitignorePath = path.resolve(import.meta.dirname, ".gitignore");
 
@@ -37,9 +35,15 @@ export default defineConfig(
       parserOptions: {
         projectService: true,
         extraFileExtensions: [".svelte"],
-        parser: ts.parser,
-        svelteConfig
+        parser: ts.parser
       }
+    },
+    plugins: {
+      shadcn
+    },
+    rules: {
+      "shadcn/no-raw-colors": "error",
+      "shadcn/no-unknown-classes": "warn"
     }
   },
   // Override or add rule settings here, such as:
@@ -48,6 +52,7 @@ export default defineConfig(
     rules: {
       "svelte/no-at-html-tags": "off",
       "svelte/no-useless-mustaches": "off",
+      "no-nested-ternary": "error",
       "@typescript-eslint/no-unused-vars": [
         "error",
         {
@@ -88,6 +93,19 @@ export default defineConfig(
         }
       ]
     }
+  },
+  {
+    // Server code logs through evlog (`log` / `locals.log`) so output reaches HyperDX and stays readable in Dokploy.
+    files: [
+      "src/hooks.server.ts",
+      "src/lib/server/**/*.ts",
+      "src/**/*.remote.ts",
+      "src/**/+server.ts",
+      "src/**/+page.server.ts",
+      "src/**/+layout.server.ts"
+    ],
+    ignores: ["**/*.spec.ts"],
+    rules: { "no-console": "error" }
   },
   {
     ignores: [

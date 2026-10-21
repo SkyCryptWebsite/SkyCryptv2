@@ -2,13 +2,13 @@
   import { goto } from "$app/navigation";
   import { resolve } from "$app/paths";
   import { getInternalState } from "$ctx";
-  import { resolveUuidByUsername } from "$lib/shared/api/skycrypt-api.remote";
   import { schema } from "$routes/schema";
   import * as Command from "$ui/command";
   import { Spinner } from "$ui/spinner";
   import Search from "@lucide/svelte/icons/search";
   import { isHttpError } from "@sveltejs/kit";
   import { computeCommandScore } from "bits-ui";
+  import { resolveUuidByUsername } from "#lib/shared/api/skycrypt-api.remote";
   import CommandSearchGroup from "./CommandSearchGroup.svelte";
   import CommandSettingsGroup from "./CommandSettingsGroup.svelte";
 
@@ -75,7 +75,7 @@
 
     try {
       const response = await resolveUuidByUsername({ username });
-      await goto(resolve("/stats/[ign]", { ign: response.username ?? "" }));
+      await goto(resolve("/stats/[ign=ign]/[[profile=profile]]", { ign: response.username ?? "" }));
     } catch (err) {
       submittedSearchError = getErrorMessage(err);
     } finally {

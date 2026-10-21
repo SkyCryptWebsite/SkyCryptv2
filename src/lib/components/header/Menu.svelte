@@ -1,36 +1,43 @@
 <script lang="ts">
+  import { PUBLIC_DISCORD_INVITE, PUBLIC_PATREON } from "$app/env/public";
+  import { resolve } from "$app/paths";
   import { getInternalState, getPreferences } from "$ctx";
-  import { env } from "$env/dynamic/public";
-  import Info from "$src/lib/components/header/Info.svelte";
   import { buttonVariants } from "$src/lib/components/ui/button";
   import { IsHover } from "$src/lib/hooks/is-hover.svelte";
-  import { IsMobile } from "$src/lib/hooks/is-mobile.svelte";
   import { cn } from "$src/lib/shared/utils";
+  import { Button } from "$ui/button";
   import * as Kbd from "$ui/kbd";
-  import * as NavigationMenu from "$ui/navigation-menu";
-  import { type Icon as IconType } from "@lucide/svelte";
-  import NewspaperIcon from "@lucide/svelte/icons/newspaper";
+  import * as Popover from "$ui/popover";
+  import type { LucideIcon } from "@lucide/svelte";
+  import ChevronDownIcon from "@lucide/svelte/icons/chevron-down";
+  import InfoIcon from "@lucide/svelte/icons/info";
   import SearchIcon from "@lucide/svelte/icons/search";
   import { SvglDiscordLogo, SvglPatreonLogo, type SvglLogo } from "@selemondev/svgl-svelte";
-  import type { NavigationMenuLinkProps } from "bits-ui";
 
-  type ListItemProps = NavigationMenuLinkProps & {
+  type ListItemProps = {
     title: string;
     href: string;
     content: string;
-    icon: typeof IconType | typeof SvglLogo;
+    class?: string;
+    icon: LucideIcon | typeof SvglLogo;
   };
-
-  const { PUBLIC_DISCORD_INVITE, PUBLIC_PATREON } = env;
 
   const preferences = getPreferences();
   const internalState = getInternalState();
-  const isMobile = new IsMobile();
   const isHover = new IsHover();
+
+  let popoverOpen = $state(false);
 </script>
 
-{#snippet ListItem({ title, content, href, class: className, icon: IconComponent, ...restProps }: ListItemProps)}
-  <NavigationMenu.Link {href} class={cn("interact:scale-95 interact:bg-background/50", className)} {...restProps}>
+{#snippet ListItem({ title, content, href, class: className, icon: IconComponent }: ListItemProps)}
+  <a
+    // @ts-ignore
+    href={resolve(href)}
+    class={cn(
+      "flex items-center gap-1.5 rounded-3xl p-3 text-sm transition-all interact:scale-95 interact:bg-background/50 [&_svg:not([class*='size-'])]:size-4 ",
+      className
+    )}
+    onclick={() => (popoverOpen = false)}>
     <div class="flex flex-col gap-1">
       <div class="flex items-center-safe gap-1">
         <IconComponent class="size-5" />
@@ -40,61 +47,72 @@
         {content}
       </p>
     </div>
-  </NavigationMenu.Link>
+  </a>
 {/snippet}
 
-<NavigationMenu.Root viewport={isMobile.current}>
-  <NavigationMenu.List class="gap-4">
-    <NavigationMenu.Item class="hidden md:block">
-      <NavigationMenu.Trigger class={buttonVariants({ variant: "outline", class: "data-open:focus:bg-transparent" })}
-        >Home</NavigationMenu.Trigger>
-      <NavigationMenu.Content class="glass glass-bg-popover standard:bg-transparent!">
-        <div class="sm:w-100 md:w-125">
-          {@render ListItem({
-            href: "/newsroom",
-            title: "Newsroom",
-            content: "Latest announcements and updates from the SkyCrypt team.",
-            icon: NewspaperIcon,
-            class: "[&_svg]:text-primary"
-          })}
-          {@render ListItem({
-            href: PUBLIC_DISCORD_INVITE,
-            title: "Discord",
-            content: "Announcements, Community, Bug Reports, Feature Requests, Support",
-            icon: SvglDiscordLogo
-          })}
-          {@render ListItem({
-            href: PUBLIC_PATREON,
-            title: "Patreon",
-            content: "Help keep SkyCrypt ad free by donating",
-            icon: SvglPatreonLogo
-          })}
-        </div>
-      </NavigationMenu.Content>
-    </NavigationMenu.Item>
+<div class="flex gap-4">
+  <Popover.Root bind:open={popoverOpen}>
+    <Popover.Trigger
+      class={buttonVariants({ variant: "outline", class: "group hidden md:flex data-open:focus:bg-transparent" })}
+      openOnHover={true}
+      openDelay={150}
+      closeDelay={150}>
+      Home
+      <ChevronDownIcon class="size-3 transition-all duration-300 group-data-[state=open]:rotate-180" />
+    </Popover.Trigger>
+    <Popover.Content
+      class="grid gap-1 glass sm:min-w-lg! sm:grid-cols-[16rem_auto] standard:bg-transparent!"
+      align="center"
+      side="bottom"
+      sideOffset={12}
+      arrowPadding={12}
+      collisionPadding={12}>
+      <a
+        href={resolve("/newsroom")}
+        class="row-span-3 flex h-full flex-col items-stretch gap-3 rounded-3xl p-3 text-sm transition-all interact:scale-95 interact:bg-background/50"
+        onclick={() => (popoverOpen = false)}>
+        <img
+          src="/img/newsroom.avif"
+          alt="Newsroom"
+          class="pointer-events-none min-h-0 w-full flex-1 rounded-2xl object-cover select-none" />
+        <p class="text-sm leading-snug text-muted-foreground">
+          Latest announcements and updates from the SkyCrypt team.
+        </p>
+      </a>
+      {@render ListItem({
+        href: PUBLIC_DISCORD_INVITE,
+        title: "Discord",
+        content: "Announcements, Community, Bug Reports, Feature Requests, Support",
+        icon: SvglDiscordLogo
+      })}
 
-    <NavigationMenu.Item
-      class={buttonVariants({ variant: "outline", class: "md:w-1/2 data-open:focus:bg-transparent" })}
-      onpointerdown={() => (internalState.openCommand = true)}>
-      <div class="flex items-center-safe gap-1">
-        Search
-        {#if isHover.current}
-          <Kbd.Root class="absolute right-4 hidden size-fit min-w-auto border bg-inherit py-0.5 md:block"
-            >{preferences.keybind}</Kbd.Root>
-        {:else}
-          <SearchIcon class="size-4" />
-        {/if}
-      </div>
-    </NavigationMenu.Item>
+      {@render ListItem({
+        href: PUBLIC_PATREON,
+        title: "Patreon",
+        content: "Help keep SkyCrypt ad free by donating",
+        icon: SvglPatreonLogo
+      })}
 
-    <NavigationMenu.Item class="hidden md:block">
-      <NavigationMenu.Trigger class={buttonVariants({ variant: "outline", class: "data-open:focus:bg-transparent" })}
-        >About</NavigationMenu.Trigger>
-      <NavigationMenu.Content class="gap-0 glass glass-bg-popover standard:bg-transparent!">
-        <div class="space-y-4 p-4 leading-normal sm:w-md md:w-lg">
-          <Info />
-        </div>
-      </NavigationMenu.Content>
-    </NavigationMenu.Item>
-  </NavigationMenu.List>
-</NavigationMenu.Root>
+      {@render ListItem({
+        href: resolve("/(pages)/about"),
+        title: "About",
+        content: "Learn more about SkyCrypt and the team behind it",
+        icon: InfoIcon,
+        class: "[&_svg]:text-primary"
+      })}
+    </Popover.Content>
+  </Popover.Root>
+
+  <Button
+    class={buttonVariants({ variant: "outline", class: "relative data-open:focus:bg-transparent" })}
+    onpointerdown={() => (internalState.openCommand = true)}>
+    <div class="flex items-center-safe gap-1">
+      <span class="hidden md:block">Search</span>
+      {#if isHover.current}
+        <Kbd.Root class="right-4 ml-2 hidden size-fit min-w-auto border bg-inherit py-0.5 md:block"
+          >{preferences.keybind}</Kbd.Root>
+      {/if}
+      <SearchIcon class={cn("size-4 md:size-3", isHover.current && "md:hidden")} />
+    </div>
+  </Button>
+</div>

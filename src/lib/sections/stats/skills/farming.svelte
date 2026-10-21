@@ -1,10 +1,5 @@
 <script lang="ts">
   import { getProfileContext, getSkillsContext } from "$ctx";
-  import { Chip } from "$lib/components/misc";
-  import { SectionSubtitle } from "$lib/components/sections";
-  import { AdditionStat, SkillGear } from "$lib/components/stats";
-  import Garden from "$lib/sections/stats/farming/garden.svelte";
-  import { formatNumber } from "$lib/shared/helper";
   import CollapsibleCustomTrigger from "$src/lib/components/CollapsibleCustomTrigger.svelte";
   import EmptyStat from "$src/lib/components/EmptyStat.svelte";
   import ScrollAreaItems from "$src/lib/components/ScrollAreaItems.svelte";
@@ -14,6 +9,11 @@
   import { Label } from "$ui/label";
   import ExternalLinkIcon from "@lucide/svelte/icons/external-link";
   import WheatIcon from "@lucide/svelte/icons/wheat";
+  import { Chip } from "#lib/components/misc";
+  import { SectionSubtitle } from "#lib/components/sections";
+  import { AdditionStat, SkillGear } from "#lib/components/stats";
+  import Garden from "#lib/sections/stats/farming/garden.svelte";
+  import { formatNumber } from "#lib/shared/helper";
 
   const openSections = true as const;
   const data = $derived(getSkillsContext().skills);

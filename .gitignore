@@ -109,13 +109,11 @@ vite.config.ts.timestamp-*
 .env
 .env.*
 !.env.example
-# Sentry Config File
-.env.sentry-build-plugin
 # Playwright
 test-results
 coverage/
 playwright-report/
 test-results/
 
-# Sisyphus planning artifacts
-.sisyphus/
+# Eslint cache
+.eslintcache

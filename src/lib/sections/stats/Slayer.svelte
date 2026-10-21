@@ -1,7 +1,5 @@
 <script lang="ts">
   import { getCombinedContext } from "$ctx";
-  import { Section } from "$lib/components/sections";
-  import { AdditionStat, Bonus } from "$lib/components/stats";
   import EmptyStat from "$src/lib/components/EmptyStat.svelte";
   import ScrollAreaItems from "$src/lib/components/ScrollAreaItems.svelte";
   import { formatNumber } from "$src/lib/shared/helper";
@@ -10,6 +8,8 @@
   import Image from "@lucide/svelte/icons/image";
   import SkullIcon from "@lucide/svelte/icons/skull";
   import { format } from "numerable";
+  import { Section } from "#lib/components/sections";
+  import { AdditionStat, Bonus } from "#lib/components/stats";
 
   let { order }: { order: number } = $props();
 

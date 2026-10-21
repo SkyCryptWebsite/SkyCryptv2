@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { resolveItemTexture, type ResolvedItemTexture } from "$lib/shared/items/resolve-item-texture";
   import { Avatar } from "bits-ui";
   import { getAbortSignal } from "svelte";
+  import { resolveItemTexture, type ResolvedItemTexture } from "#lib/shared/items/resolve-item-texture";
 
   type Props = {
     src?: string;
@@ -30,4 +30,12 @@
   });
 </script>
 
-<Avatar.Image {loading} src={resolvedSrc} {alt} class={className} data-enchanted={enchanted} />
+<Avatar.Image
+  {loading}
+  decoding="async"
+  width={16}
+  height={16}
+  src={resolvedSrc}
+  {alt}
+  class={className}
+  data-enchanted={enchanted} />

@@ -1,37 +1,25 @@
-import { dev } from "$app/environment";
-import { env } from "$env/dynamic/public";
-import * as Sentry from "@sentry/sveltekit";
-import {
-  browserTracingIntegration,
-  consoleLoggingIntegration,
-  contextLinesIntegration,
-  extraErrorDataIntegration,
-  handleErrorWithSentry,
-  httpClientIntegration
-} from "@sentry/sveltekit";
+import { dev } from "$app/env";
+import type { HandleClientError } from "@sveltejs/kit/hooks";
+import { initLog, log } from "evlog/client";
 
-const { PUBLIC_SENTRY_DSN } = env;
-
-Sentry.init({
-  dsn: PUBLIC_SENTRY_DSN,
-  tunnel: "/api/tunnel",
-
-  // Enable logs to be sent to Sentry
-  enableLogs: true,
-
-  // Enable debug
-  tracesSampleRate: 0.3,
-
-  integrations: [
-    browserTracingIntegration(),
-    httpClientIntegration(),
-    contextLinesIntegration(),
-    extraErrorDataIntegration(),
-    consoleLoggingIntegration()
-  ],
-  enabled: !dev,
-  environment: dev ? "development" : "production"
+// Warnings and errors go to /api/client-logs, which forwards them to the same drains as server logs.
+initLog({
+  service: "skycrypt-web",
+  minLevel: dev ? "debug" : "warn",
+  transport: { enabled: !dev, endpoint: "/api/client-logs" }
 });
 
-// If you have a custom error handler, pass it to `handleErrorWithSentry`
-export const handleError = handleErrorWithSentry();
+export const handleError: HandleClientError = ({ kind, error, event }) => {
+  if (kind !== "unknown") return;
+  log.error({ action: "client.unhandled_error", path: event.url.pathname, error });
+};
+
+window.addEventListener("unhandledrejection", (e) => {
+  log.error({ action: "client.unhandled_rejection", path: location.pathname, error: e.reason });
+});
+
+window.addEventListener("error", (e) => {
+  // Cross-origin script failures (extensions, third-party scripts) carry no usable info.
+  if (!e.filename || e.message === "Script error.") return;
+  log.error({ action: "client.window_error", path: location.pathname, message: e.message, file: e.filename });
+});

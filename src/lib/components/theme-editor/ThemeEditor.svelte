@@ -1,8 +1,5 @@
 <script lang="ts">
   import { getInternalState, getThemeContext } from "$ctx";
-  import { DEFAULT_THEME } from "$lib/shared/themes/defaults";
-  import { mergeThemeWithDefaults, PREVIEW_THEME_ID, ThemeEngine } from "$lib/shared/themes/engine";
-  import { partialThemeV5Schema, themeV5Schema, type ThemeModeName, type ThemeV5 } from "$lib/shared/themes/schema";
   import { Button } from "$ui/button";
   import * as Item from "$ui/item";
   import { Label } from "$ui/label";
@@ -18,6 +15,9 @@
   import { theme as activeModeWatcherTheme, mode, setMode, setTheme } from "mode-watcher";
   import { untrack } from "svelte";
   import { toast } from "svelte-sonner";
+  import { DEFAULT_THEME } from "#lib/shared/themes/defaults";
+  import { mergeThemeWithDefaults, PREVIEW_THEME_ID, ThemeEngine } from "#lib/shared/themes/engine";
+  import { partialThemeV5Schema, themeV5Schema, type ThemeModeName, type ThemeV5 } from "#lib/shared/themes/schema";
   import BackgroundSection from "./BackgroundSection.svelte";
   import ColorSection from "./ColorSection.svelte";
   import MCColorSection from "./MCColorSection.svelte";

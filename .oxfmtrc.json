@@ -5,6 +5,7 @@
   "singleQuote": false,
   "trailingComma": "none",
   "bracketSameLine": true,
+  "sortPackageJson": true,
   "printWidth": 120,
   "sortImports": {
     "newlinesBetween": false
@@ -12,7 +13,7 @@
   "jsdoc": true,
   "sortTailwindcss": {
     "stylesheet": "src/routes/layout.css",
-    "functions": ["cn", "clsx", "payload"],
+    "functions": ["cn", "payload"],
     "attributes": ["class", "class:*", "class:name", "payload", "/.*Classes/"],
     "preserveWhitespace": false
   },
@@ -26,6 +27,7 @@
     "/static/",
     ".changeset/",
     "/drizzle/",
-    "/src/routes/typeset.css"
+    "/src/routes/typeset.css",
+    ".github/{agents,skills}/**"
   ]
 }

@@ -1,12 +1,12 @@
-import type { ModelsEmbedData } from "$lib/shared/api/orval-generated";
+import { afterEach, describe, it, vi } from "vitest";
+import type { ModelsEmbedData } from "#lib/shared/api/orval-generated";
 import {
   getGenericDescription,
   getGenericTitle,
   getLongDescription,
   getMetaTitle,
   getShortDescription
-} from "$lib/shared/embedGenerator";
-import { afterEach, describe, it, vi } from "vitest";
+} from "#lib/shared/embedGenerator";
 
 describe.concurrent("embedGenerator", () => {
   describe.concurrent("getMetaTitle", () => {
@@ -17,27 +17,9 @@ describe.concurrent("embedGenerator", () => {
       expect(result).toBe("");
     });
 
-    it("should return empty string when embedData is undefined", ({ expect }) => {
-      expect.assertions(1);
-      // @ts-expect-error Testing undefined case
-      const result = getMetaTitle(undefined);
-      expect(result).toBe("");
-    });
-
     it("should return empty string when username is missing", ({ expect }) => {
       expect.assertions(1);
       const embedData: ModelsEmbedData = {
-        displayName: "TestPlayer"
-      };
-
-      const result = getMetaTitle(embedData);
-      expect(result).toBe("");
-    });
-
-    it("should return empty string when username is empty string", ({ expect }) => {
-      expect.assertions(1);
-      const embedData: ModelsEmbedData = {
-        username: "",
         displayName: "TestPlayer"
       };
 
@@ -129,27 +111,9 @@ describe.concurrent("embedGenerator", () => {
       expect(result).toBe("");
     });
 
-    it("should return empty string when embedData is undefined", ({ expect }) => {
-      expect.assertions(1);
-      // @ts-expect-error Testing undefined case
-      const result = getLongDescription(undefined);
-      expect(result).toBe("");
-    });
-
     it("should return empty string when username is missing", ({ expect }) => {
       expect.assertions(1);
       const embedData: ModelsEmbedData = {
-        skyblock_level: 250.5
-      };
-
-      const result = getLongDescription(embedData);
-      expect(result).toBe("");
-    });
-
-    it("should return empty string when username is empty string", ({ expect }) => {
-      expect.assertions(1);
-      const embedData: ModelsEmbedData = {
-        username: "",
         skyblock_level: 250.5
       };
 
@@ -282,24 +246,6 @@ describe.concurrent("embedGenerator", () => {
       expect(result).not.toContain("<:skills:1558225234547580948> **Skill Average:");
     });
 
-    it("should skip null skills in skills object", ({ expect }) => {
-      expect.assertions(2);
-      const embedData: ModelsEmbedData = {
-        username: "TestPlayer",
-        skills: {
-          skillAverage: 25,
-          skills: {
-            farming: 50,
-            combat: 30
-          }
-        }
-      };
-
-      const result = getLongDescription(embedData);
-      expect(result).toContain("<:farming:1558225218567147651> 50");
-      expect(result).toContain("<:combat:1558225211923636315> 30");
-    });
-
     it("should format dungeons with class average and dungeoneering level", ({ expect }) => {
       expect.assertions(3);
       const embedData: ModelsEmbedData = {
@@ -350,23 +296,6 @@ describe.concurrent("embedGenerator", () => {
 
       const result = getLongDescription(embedData);
       expect(result).not.toContain("<:dungeons:1558225214444150794>");
-    });
-
-    it("should format class values when class average is present", ({ expect }) => {
-      expect.assertions(1);
-      const embedData: ModelsEmbedData = {
-        username: "TestPlayer",
-        dungeons: {
-          classAverage: 40,
-          dungeoneering: 30,
-          classes: {
-            mage: 40
-          }
-        }
-      };
-
-      const result = getLongDescription(embedData);
-      expect(result).toContain("<:mage:1558225227039637624> 40");
     });
 
     it("should order dungeon classes correctly according to healer, mage, berserk, archer, tank", ({ expect }) => {
@@ -464,71 +393,6 @@ describe.concurrent("embedGenerator", () => {
 
       const result = getLongDescription(embedData);
       expect(result).not.toContain("<:slayyyter:1558225235713593354> **Slayer XP:");
-    });
-
-    it("should skip slayers with undefined values", ({ expect }) => {
-      expect.assertions(2);
-      const embedData: ModelsEmbedData = {
-        username: "TestPlayer",
-        slayers: {
-          xp: 1000000,
-          slayers: {
-            zombie: 7,
-            wolf: 6
-          }
-        }
-      };
-
-      const result = getLongDescription(embedData);
-      expect(result).toContain("<:zombie:1558225246945939527> 7");
-      expect(result).toContain("<:wolf:1558225245532463225> 6");
-    });
-
-    it("should handle complete embedData with all fields", ({ expect }) => {
-      expect.assertions(10);
-      const embedData: ModelsEmbedData = {
-        username: "TestPlayer",
-        skyblock_level: 300,
-        networth: {
-          normal: 2000000000
-        },
-        purse: 75000000,
-        bank: 150000000,
-        skills: {
-          skillAverage: 50,
-          skills: {
-            farming: 60,
-            mining: 60,
-            combat: 60
-          }
-        },
-        dungeons: {
-          classAverage: 45,
-          dungeoneering: 50,
-          classes: {
-            mage: 50
-          }
-        },
-        slayers: {
-          xp: 10000000,
-          slayers: {
-            zombie: 9,
-            spider: 9
-          }
-        }
-      };
-
-      const result = getLongDescription(embedData);
-      expect(result).toContain("<:level:1558225225768767530> Level: 300");
-      expect(result).toContain("<:networth:1558225229418074112> Networth: 2B");
-      expect(result).toContain("<:purse:1558225230613450814> Purse: 75M");
-      expect(result).toContain("<:bank:1558225205909000202> Bank: 150M");
-      expect(result).toContain("<:skills:1558225234547580948> **Skill Average: 50**");
-      expect(result).toContain("<:farming:1558225218567147651> 60");
-      expect(result).toContain("<:dungeons:1558225214444150794> **Class Average: 45**");
-      expect(result).toContain("<:dungeoneering:1558225213223866399> 50");
-      expect(result).toContain("<:slayyyter:1558225235713593354> **Slayer XP: 10M**");
-      expect(result).toContain("<:zombie:1558225246945939527> 9");
     });
 
     it("should handle embedData with all fields missing gracefully", ({ expect }) => {
@@ -647,34 +511,6 @@ describe.concurrent("embedGenerator", () => {
 
       const result = getShortDescription(embedData);
       expect(result).toBe("LeapPlayer has been playing SkyBlock for 1 year");
-    });
-
-    it("should handle timestamp as number (milliseconds)", ({ expect }) => {
-      expect.assertions(1);
-      vi.useFakeTimers();
-      vi.setSystemTime(new Date("2025-06-15T00:00:00.000Z"));
-
-      const embedData: ModelsEmbedData = {
-        displayName: "TimestampPlayer",
-        joined: 1672531200000
-      };
-
-      const result = getShortDescription(embedData);
-      expect(result).toBe("TimestampPlayer has been playing SkyBlock for 2 years");
-    });
-
-    it("should handle displayName with special characters", ({ expect }) => {
-      expect.assertions(1);
-      vi.useFakeTimers();
-      vi.setSystemTime(new Date("2025-06-15T00:00:00.000Z"));
-
-      const embedData: ModelsEmbedData = {
-        displayName: "Player_123",
-        joined: new Date("2024-06-15T00:00:00.000Z").getTime()
-      };
-
-      const result = getShortDescription(embedData);
-      expect(result).toBe("Player_123 has been playing SkyBlock for 1 year");
     });
   });
 

@@ -1,10 +1,5 @@
 <script lang="ts">
   import { getSkillsContext } from "$ctx";
-  import { Chip } from "$lib/components/misc";
-  import { SectionSubtitle } from "$lib/components/sections";
-  import { AdditionStat, SkillGear } from "$lib/components/stats";
-  import { renderLore, titleCase } from "$lib/shared/helper";
-  import { animateObfuscatedText } from "$lib/shared/mc-text/obfuscated";
   import CollapsibleCustomTrigger from "$src/lib/components/CollapsibleCustomTrigger.svelte";
   import EmptyStat from "$src/lib/components/EmptyStat.svelte";
   import ScrollAreaItems from "$src/lib/components/ScrollAreaItems.svelte";
@@ -15,6 +10,11 @@
   import Image from "@lucide/svelte/icons/image";
   import { Avatar } from "bits-ui";
   import { format } from "numerable";
+  import { Chip } from "#lib/components/misc";
+  import { SectionSubtitle } from "#lib/components/sections";
+  import { AdditionStat, SkillGear } from "#lib/components/stats";
+  import { renderLore, titleCase } from "#lib/shared/helper";
+  import { animateObfuscatedText } from "#lib/shared/mc-text/obfuscated";
 
   type ColorSchema = Record<(typeof tiers)[number], { bg: string; text: string }>;
 

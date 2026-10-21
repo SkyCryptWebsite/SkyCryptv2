@@ -30,21 +30,15 @@ export default defineConfig({
       afterAllFilesWrite: "oxfmt ./src/lib/shared/api/orval-generated-zod.ts"
     }
   },
-  cms: {
-    input: "http://localhost:3000/api/openapi.json",
+  patreon: {
+    input: "https://raw.githubusercontent.com/ghostrider-05/patreon-api-spec/refs/heads/main/specs/openapi.json",
     output: {
-      target: "./src/lib/shared/api/cms-generated.ts",
+      target: "./src/lib/shared/api/patreon-generated.ts",
       client: "fetch",
-      tsconfig: "./tsconfig.json",
-      override: {
-        mutator: {
-          path: "./src/lib/shared/api/mutator/cms-instance.ts",
-          name: "cmsFetch"
-        }
-      }
+      tsconfig: "./tsconfig.json"
     },
     hooks: {
-      afterAllFilesWrite: "oxfmt ./src/lib/shared/api/cms-generated.ts"
+      afterAllFilesWrite: "oxfmt ./src/lib/shared/api/patreon-generated.ts"
     }
   }
 });

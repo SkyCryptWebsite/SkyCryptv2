@@ -1,8 +1,8 @@
 <script lang="ts">
-  import type { ModelsStrippedItem } from "$lib/shared/api/orval-generated";
-  import { cn } from "$lib/shared/utils";
   import Image from "@lucide/svelte/icons/image";
   import { Avatar } from "bits-ui";
+  import type { ModelsStrippedItem } from "#lib/shared/api/orval-generated";
+  import { cn } from "#lib/shared/utils";
   import ResolvedItemImage from "./ResolvedItemImage.svelte";
 
   let { piece, isInventory }: { piece: ModelsStrippedItem; isInventory?: boolean } = $props();

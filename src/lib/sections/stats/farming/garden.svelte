@@ -1,12 +1,5 @@
 <script lang="ts">
   import { getProfileContext } from "$ctx";
-  import { Chip } from "$lib/components/misc";
-  import { SectionBoundary, SectionSubtitle } from "$lib/components/sections";
-  import { AdditionStat, GardenPlotGrid } from "$lib/components/stats";
-  import { type ModelsGarden } from "$lib/shared/api/orval-generated";
-  import { getGardenStats } from "$lib/shared/api/skycrypt-api.remote";
-  import { formatNumber, getRarityClass } from "$lib/shared/helper";
-  import { cn } from "$lib/shared/utils";
   import CollapsibleCustomTrigger from "$src/lib/components/CollapsibleCustomTrigger.svelte";
   import EmptyStat from "$src/lib/components/EmptyStat.svelte";
   import ScrollAreaItems from "$src/lib/components/ScrollAreaItems.svelte";
@@ -16,6 +9,13 @@
   import { Separator } from "$ui/separator";
   import LockIcon from "@lucide/svelte/icons/lock";
   import { format } from "numerable";
+  import { Chip } from "#lib/components/misc";
+  import { SectionBoundary, SectionSubtitle } from "#lib/components/sections";
+  import { AdditionStat, GardenPlotGrid } from "#lib/components/stats";
+  import { type ModelsGarden } from "#lib/shared/api/orval-generated";
+  import { getGardenStats } from "#lib/shared/api/skycrypt-api.remote";
+  import { formatNumber, getRarityClass } from "#lib/shared/helper";
+  import { cn } from "#lib/shared/utils";
   import { getCurrentTabContext } from "../skills/current-tab-context.svelte";
   import { TabNamesEnum } from "../types";
 
@@ -49,7 +49,7 @@
               asterisk={true}>
               <Label>
                 XP:
-                <span class="text-bold">
+                <span class="font-bold">
                   {format(garden.level?.xp)}
                 </span>
               </Label>

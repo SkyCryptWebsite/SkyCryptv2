@@ -1,10 +1,10 @@
 <script lang="ts">
   import { page } from "$app/state";
-  import { JsonLd } from "$lib/components/misc";
-  import type { ModelsEmbedData } from "$lib/shared/api/orval-generated";
-  import { getGenericDescription, getGenericTitle } from "$lib/shared/embedGenerator";
   import { mode } from "mode-watcher";
   import SvelteSeo from "svelte-seo";
+  import { JsonLd } from "#lib/components/misc";
+  import type { ModelsEmbedData } from "#lib/shared/api/orval-generated";
+  import { getGenericDescription, getGenericTitle } from "#lib/shared/embedGenerator";
 
   const { embedData }: { embedData: ModelsEmbedData } = $props();
   const isStatsPage = $derived(page.url.pathname.includes("/stats/"));

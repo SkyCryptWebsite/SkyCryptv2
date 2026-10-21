@@ -1,14 +1,17 @@
 <script lang="ts">
-  import { hexToOklch, oklchToHex } from "$lib/shared/themes/color-utils";
-  import { readComputedThemeCssVars } from "$lib/shared/themes/computed-css-vars";
-  import type { ShadcnThemeVarKey, ThemeModeName, ThemeV5 } from "$lib/shared/themes/schema";
   import { Input } from "$ui/input";
   import { Label } from "$ui/label";
+  import { hexToOklch, oklchToHex } from "#lib/shared/themes/color-utils";
+  import { readComputedThemeCssVars } from "#lib/shared/themes/computed-css-vars";
+  import type { ShadcnThemeVarKey, ThemeModeName, ThemeV5 } from "#lib/shared/themes/schema";
 
-  let { workingTheme = $bindable(), editingMode } = $props<{
+  let {
+    workingTheme = $bindable(),
+    editingMode
+  }: {
     workingTheme: ThemeV5;
     editingMode: ThemeModeName;
-  }>();
+  } = $props();
 
   const GROUPS: { name: string; keys: ShadcnThemeVarKey[] }[] = [
     {

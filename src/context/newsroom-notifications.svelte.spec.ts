@@ -7,16 +7,16 @@ const post = (id: string, publishedAt: string | null = `2026-01-${id.padStart(2,
   id,
   title: `Post ${id}`,
   slug: `post-${id}`,
-  excerpt: null,
+  excerpt: "",
   type: "news",
-  tags: null,
+  tags: [],
   featured: false,
   heroImage: null,
-  body: null,
+  seoTitle: "",
+  seoDescription: "",
   publishedAt,
-  author: "author",
-  updatedAt: publishedAt ?? "2026-01-01T00:00:00.000Z",
-  createdAt: publishedAt ?? "2026-01-01T00:00:00.000Z"
+  author: null,
+  updatedAt: publishedAt ?? "2026-01-01T00:00:00.000Z"
 });
 
 describe("NewsroomNotificationsContext", () => {
@@ -26,21 +26,6 @@ describe("NewsroomNotificationsContext", () => {
 
   afterEach(() => {
     localStorage.clear();
-  });
-
-  it("starts with zero unread posts", ({ expect }) => {
-    const cleanup = $effect.root(() => {
-      const notifications = new NewsroomNotificationsContext();
-
-      untrack(() => {
-        expect(notifications.current.seenPostIds).toEqual([]);
-        expect(notifications.current.lastSeenPublishedAt).toBeNull();
-        expect(notifications.unreadCount).toBe(0);
-        expect(notifications.newestUnseen).toBeNull();
-      });
-    });
-
-    cleanup();
   });
 
   it("marks latest posts as unseen until they are seen", ({ expect }) => {

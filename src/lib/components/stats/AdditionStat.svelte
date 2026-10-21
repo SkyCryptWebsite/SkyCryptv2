@@ -1,11 +1,11 @@
 <script lang="ts">
   import { genericTooltipTether, getInternalState } from "$ctx";
-  import { RARITY_COLORS } from "$lib/shared/constants/rarities";
   import * as Item from "$ui/item";
   import * as Tooltip from "$ui/tooltip";
   import { cn } from "$utils";
   import Info from "@lucide/svelte/icons/info";
   import { type Snippet } from "svelte";
+  import { RARITY_COLORS } from "#lib/shared/constants/rarities";
 
   type Props = {
     text: string;
@@ -74,7 +74,7 @@
 {/if}
 
 {#snippet additionalStatLabel()}
-  <Item.Content class="flex w-fit flex-row items-center text-base font-bold text-muted-foreground">
+  <Item.Content class="flex w-fit basis-auto flex-row items-center text-base font-bold text-muted-foreground">
     <div
       class={!asterisk
         ? cn(

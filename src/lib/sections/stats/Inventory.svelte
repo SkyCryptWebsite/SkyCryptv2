@@ -1,14 +1,6 @@
 <script lang="ts">
   import { Notice } from "$components/notices";
   import { getInternalState, getMobileContext, getProfileContext } from "$ctx";
-  import { InventoryGrid, InventorySearch, Item } from "$lib/components/item";
-  import { ScrollItems } from "$lib/components/misc";
-  import { Section } from "$lib/components/sections";
-  import { type ModelsInventory, type ModelsStrippedItem } from "$lib/shared/api/orval-generated";
-  import { getProfileInventory } from "$lib/shared/api/skycrypt-api.remote";
-  import { renderLore } from "$lib/shared/helper";
-  import { animateObfuscatedText } from "$lib/shared/mc-text/obfuscated";
-  import { cn } from "$lib/shared/utils";
   import * as Avatar from "$ui/avatar";
   import { ScrollArea } from "$ui/scroll-area";
   import { Separator } from "$ui/separator";
@@ -17,6 +9,14 @@
   import { Tabs } from "bits-ui";
   import { cubicOut } from "svelte/easing";
   import { crossfade } from "svelte/transition";
+  import { InventoryGrid, InventorySearch, Item } from "#lib/components/item";
+  import { ScrollItems } from "#lib/components/misc";
+  import { Section } from "#lib/components/sections";
+  import { type ModelsInventory, type ModelsStrippedItem } from "#lib/shared/api/orval-generated";
+  import { getProfileInventory } from "#lib/shared/api/skycrypt-api.remote";
+  import { renderLore } from "#lib/shared/helper";
+  import { animateObfuscatedText } from "#lib/shared/mc-text/obfuscated";
+  import { cn } from "#lib/shared/utils";
 
   const internalState = getInternalState();
   const isMobile = getMobileContext();
@@ -88,19 +88,16 @@
           </ScrollItems>
           <Separator orientation="horizontal" />
         {:else}
-          <div class="@container-scroll relative flex h-fit w-full md:sticky md:top-1/4 md:w-fit">
+          <div class="relative flex h-fit w-full md:sticky md:top-1/4 md:w-fit">
             <Tabs.List
               class="h-fit rounded-xl bg-transparent transition-colors duration-150 @stuck-top:bg-background/50">
               <ScrollArea
                 class="h-144"
                 orientation="vertical"
                 type="auto"
-                viewportClasses="rounded-xl rounded-br-none scroll-fade-track-y">
+                viewportClasses="scroll-fade-y rounded-xl rounded-br-none scroll-fade-36">
                 <div class="flex flex-col gap-3 px-4 py-4">
                   {@render inventoryTabItems(inventories, selectedTabName)}
-                </div>
-                <div
-                  class="pointer-events-none sticky -bottom-1 z-10 -mt-36 h-36 w-full bg-linear-to-t from-background/80 to-transparent scroll-fade-y blur-xs">
                 </div>
               </ScrollArea>
             </Tabs.List>

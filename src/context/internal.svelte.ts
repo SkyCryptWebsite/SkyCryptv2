@@ -1,9 +1,9 @@
-import { SettingsTab } from "$lib/components/header/types";
-import { sections } from "$lib/sections/constants";
-import type { SectionName } from "$lib/sections/types";
-import type { ModelsStrippedItem } from "$lib/shared/api/orval-generated";
 import type { Snippet } from "svelte";
 import { createContext } from "svelte";
+import { SettingsTab } from "#lib/components/header/types";
+import { sections } from "#lib/sections/constants";
+import type { SectionName } from "#lib/sections/types";
+import type { ModelsStrippedItem } from "#lib/shared/api/orval-generated";
 
 interface InternalStateData {
   tabValue: SectionName;

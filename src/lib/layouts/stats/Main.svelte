@@ -1,8 +1,9 @@
 <script lang="ts">
-  import { browser } from "$app/environment";
   import {
     CombinedContext,
     AllStatsContext,
+    EnchantmentsContext,
+    type Enchantments,
     getHoverContext,
     getInternalState,
     getPreferences,
@@ -11,34 +12,33 @@
     ProfileContext,
     setAllStatsContext,
     setCombinedContext,
+    setEnchantmentsContext,
     setProfileContext
   } from "$ctx";
-  import { ContainedItemsGrid, ItemContent } from "$lib/components/item";
-  import { Navbar } from "$lib/components/misc";
-  import Skin3D from "$lib/components/misc/Skin3D.svelte";
-  import AdditionalStats from "$lib/layouts/stats/AdditionalStats.svelte";
-  import PlayerProfile from "$lib/layouts/stats/PlayerProfile.svelte";
-  import Skills from "$lib/layouts/stats/Skills.svelte";
-  import Stats from "$lib/layouts/stats/Stats.svelte";
-  import Sections from "$lib/sections/Sections.svelte";
-  import type { ModelsCombinedOutput, ModelsStatData, ModelsStatsOutput } from "$lib/shared/api/orval-generated";
   import * as Dialog from "$ui/dialog";
   import * as Drawer from "$ui/drawer";
-  import Image from "@lucide/svelte/icons/image";
-  import { Avatar } from "bits-ui";
   import { Pane } from "paneforge";
   import { untrack } from "svelte";
-  import { cubicOut } from "svelte/easing";
-  import { fade } from "svelte/transition";
+  import { ContainedItemsGrid, ItemContent } from "#lib/components/item";
+  import { Navbar } from "#lib/components/misc";
+  import TooltipSetup from "#lib/components/tooltip/TooltipSetup.svelte";
+  import AdditionalStats from "#lib/layouts/stats/AdditionalStats.svelte";
+  import PlayerProfile from "#lib/layouts/stats/PlayerProfile.svelte";
+  import Skills from "#lib/layouts/stats/Skills.svelte";
+  import Stats from "#lib/layouts/stats/Stats.svelte";
+  import Sections from "#lib/sections/Sections.svelte";
+  import type { ModelsCombinedOutput, ModelsStatData, ModelsStatsOutput } from "#lib/shared/api/orval-generated";
 
   const {
     data: ctx,
     allStats,
-    combined
+    combined,
+    enchantments
   }: {
     data: ModelsStatsOutput;
     allStats: ModelsStatData[];
     combined: ModelsCombinedOutput | null;
+    enchantments: Enchantments;
   } = $props();
 
   const isHover = getHoverContext();
@@ -48,7 +48,6 @@
 
   const profile = $derived(ctx);
 
-  let showStaticSkin = $derived(preferences.performanceMode);
   let _rightSize = $state(0);
   let _leftSize = $state(0);
   let _skinCollapsed = $state(false);
@@ -60,9 +59,11 @@
   // Initialize the profile context
   const profileClass = new ProfileContext();
   const allStatsClass = new AllStatsContext();
+  const enchantmentsClass = new EnchantmentsContext();
   const combinedClass = new CombinedContext();
   setProfileContext(profileClass);
   setAllStatsContext(allStatsClass);
+  setEnchantmentsContext(enchantmentsClass);
   setCombinedContext(combinedClass);
   $effect.pre(() => {
     if (!ctx) return;
@@ -81,7 +82,7 @@
         recentSearches.current[existingIndex] = {
           ...recentSearches.current[existingIndex],
           ign: username,
-          uuid: uuid
+          uuid
         };
       }
     });
@@ -98,6 +99,10 @@
 
   $effect.pre(() => {
     allStatsClass.current = allStats ?? [];
+  });
+
+  $effect.pre(() => {
+    enchantmentsClass.current = enchantments ?? [];
   });
 </script>
 
@@ -140,7 +145,7 @@
                     {/snippet}
                   </Avatar.Root>
                 {:else if browser && innerWidth >= 1024}
-                   {#await import('$lib/components/misc/Skin3D.svelte') then { default: Skin3D }}
+                   {#await import('#lib/components/misc/Skin3D.svelte') then { default: Skin3D }}
                     <Skin3D class="h-full" />
                   {/await}
                 {/if}
@@ -183,27 +188,6 @@
     </Pane>
   </PaneGroup> -->
   <!-- TODO: See the paneforge todo above  -->
-  <div class="@container fixed top-1/2 left-0 z-10 hidden h-dvh w-[30vw] -translate-y-1/2 @[75rem]/parent:block">
-    {#if showStaticSkin}
-      <Avatar.Root class="flex size-full items-center justify-center">
-        {#snippet child({ props })}
-          <div transition:fade={{ duration: 300, easing: cubicOut }} {...props}>
-            <Avatar.Image
-              loading="lazy"
-              src="https://nmsr.nickac.dev/fullbody/{profile.uuid}?no=shadow"
-              alt="{profile.username}'s avatar"
-              class="max-h-128 object-cover" />
-            <Avatar.Fallback>
-              <Image class="size-24 object-cover text-foreground" />
-            </Avatar.Fallback>
-          </div>
-        {/snippet}
-      </Avatar.Root>
-    {:else if browser && innerWidth >= 1210}
-      <Skin3D showStaticSkin={() => (showStaticSkin = true)} class="h-full" />
-    {/if}
-  </div>
-
   <div class="fixed top-12 right-0 min-h-dvh w-full @[75rem]/parent:w-[70%] dark:bg-background/50"></div>
   <main data-vaul-drawer-wrapper class="@container relative mx-auto @[75rem]/parent:ml-[30%]">
     {#if getProfileContext().current}
@@ -271,10 +255,13 @@
   </Drawer.Root>
 {/if}
 
+<!-- Inside Main so tooltip item content can read the stats contexts (e.g. enchantments) -->
+<TooltipSetup />
+
 {#if preferences.showGlint}
   <svg xmlns="http://www.w3.org/2000/svg" height="0" width="0" class="fixed">
     <filter id="enchanted-glint">
-      <feImage href="/img/enchanted-glint.gif" preserveAspectRatio="none" result="IMAGE"></feImage>
+      <feImage href="/img/enchanted-glint.avif" preserveAspectRatio="none" result="IMAGE"></feImage>
       <feBlend in="IMAGE" in2="SourceGraphic" mode="screen" result="BLEND"></feBlend>
       <feComposite operator="in" in="BLEND" in2="SourceGraphic"></feComposite>
     </filter>

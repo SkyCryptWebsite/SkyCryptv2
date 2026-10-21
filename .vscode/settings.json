@@ -21,7 +21,7 @@
     "typescript": "typescript",
     "svelte": "html"
   },
-  "tailwindCSS.classFunctions": ["cn", "clsx", "payload"],
+  "tailwindCSS.classFunctions": ["cn", "payload"],
   "tailwindCSS.classAttributes": ["class", "className", "ngClass", "class:list", "payload"],
   "tailwindCSS.experimental.classRegex": [
     ["\\b\\w*Classes\\s*=\\s*[\"']([^\"']*)[\"']", "([^\\s]+)"],
@@ -29,5 +29,6 @@
   ],
   "js/ts.updateImportsOnFileMove.enabled": "prompt",
   "eslint.validate": ["javascript", "typescript", "svelte"],
-  "oxc.fmt.configPath": ".oxfmtrc.json"
+  "oxc.fmt.configPath": ".oxfmtrc.json",
+  "js/ts.tsdk.path": "node_modules/typescript/lib"
 }

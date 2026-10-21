@@ -1,12 +1,12 @@
 <script lang="ts">
   import { resolve } from "$app/paths";
   import { getFavorites, getInternalState } from "$ctx";
-  import { cn } from "$lib/shared/utils";
   import type { Contributor } from "$routes/contributors.remote";
   import { Role } from "$routes/enums";
   import * as Item from "$ui/item";
   import * as Tooltip from "$ui/tooltip";
   import type { Component } from "svelte";
+  import { cn } from "#lib/shared/utils";
 
   interface Props {
     user: Contributor;
@@ -45,7 +45,7 @@
     <svelte:element
       this={options?.tip ? "div" : "a"}
       {...props}
-      href={options?.tip ? undefined : resolve("/stats/[ign]", { ign: user.id })}>
+      href={options?.tip ? undefined : resolve("/stats/[ign=ign]/[[profile=profile]]", { ign: user.id })}>
       <Item.Media variant="image" class="size-16 translate-y-0! self-center-safe! rounded-none">
         <img
           loading="lazy"

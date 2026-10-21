@@ -1,8 +1,8 @@
 <script lang="ts">
   import { initInternalState } from "$ctx";
-  import { AdditionStat } from "$lib/components/stats";
-  import { formatNumber } from "$lib/shared/helper";
   import { formatDistanceToNowStrict } from "date-fns";
+  import { AdditionStat } from "#lib/components/stats";
+  import { formatNumber } from "#lib/shared/helper";
   import { getCardDataContext } from "../index";
   import { getDefaultCardDataContext, getDefaultCardSettingsContext } from "./Base.svelte";
 

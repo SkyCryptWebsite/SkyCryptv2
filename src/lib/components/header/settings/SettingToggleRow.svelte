@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { cn } from "$lib/shared/utils";
   import { Label } from "$ui/label";
   import { Switch } from "$ui/switch";
   import type { Snippet } from "svelte";
+  import { cn } from "#lib/shared/utils";
 
   let {
     icon,

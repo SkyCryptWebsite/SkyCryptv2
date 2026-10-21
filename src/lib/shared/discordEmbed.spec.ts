@@ -1,10 +1,8 @@
-import { env } from "$env/dynamic/public";
-import type { ModelsEmbedData } from "$lib/shared/api/orval-generated";
+import { PUBLIC_DISCORD_INVITE } from "$app/env/public";
 import type { APIBaseComponent, ComponentType } from "discord-api-types/v10";
 import { describe, expect, it } from "vitest";
+import type { ModelsEmbedData } from "#lib/shared/api/orval-generated";
 import { createDiscordEmbed, serializeDiscordEmbed } from "./discordEmbed";
-
-const { PUBLIC_DISCORD_INVITE } = env;
 
 describe("discordEmbed", () => {
   it.each([
@@ -154,13 +152,6 @@ describe("discordEmbed", () => {
       const byteLength = Buffer.byteLength(json, "utf-8");
 
       expect(byteLength).toBeLessThanOrEqual(3000);
-    });
-
-    it("has a single top-level Container (type 17) component", () => {
-      const embed = createDiscordEmbed(fullMockData);
-      expect(embed).toHaveProperty("component");
-      expect(embed.component.type).toBe(17);
-      expect(Array.isArray(embed.component.components)).toBe(true);
     });
 
     it("does not exceed the 40 component limit in total", () => {

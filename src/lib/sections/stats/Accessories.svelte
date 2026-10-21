@@ -1,18 +1,18 @@
 <script lang="ts">
   import { getAllStatsContext, getCombinedContext } from "$ctx";
-  import { Item } from "$lib/components/item";
-  import { Section, SectionSubtitle } from "$lib/components/sections";
-  import { AdditionStat, Bonus } from "$lib/components/stats";
-  import { Label } from "$lib/components/ui/label";
-  import { RARITY_COLORS } from "$lib/shared/constants/rarities";
-  import * as helper from "$lib/shared/helper";
-  import { calculatePercentage } from "$lib/shared/helper";
   import CollapsibleCustomTrigger from "$src/lib/components/CollapsibleCustomTrigger.svelte";
   import EmptyStat from "$src/lib/components/EmptyStat.svelte";
   import ScrollAreaItems from "$src/lib/components/ScrollAreaItems.svelte";
   import * as Collapsible from "$ui/collapsible";
   import { Separator } from "$ui/separator";
   import GemIcon from "@lucide/svelte/icons/gem";
+  import { Item } from "#lib/components/item";
+  import { Section, SectionSubtitle } from "#lib/components/sections";
+  import { AdditionStat, Bonus } from "#lib/components/stats";
+  import { Label } from "#lib/components/ui/label";
+  import { RARITY_COLORS } from "#lib/shared/constants/rarities";
+  import * as helper from "#lib/shared/helper";
+  import { calculatePercentage } from "#lib/shared/helper";
 
   let { order }: { order: number } = $props();
 

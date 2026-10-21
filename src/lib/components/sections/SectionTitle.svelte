@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { cn } from "$lib/shared/utils";
   import type { Snippet } from "svelte";
+  import { cn } from "#lib/shared/utils";
 
   let { text, children, class: className }: { text?: string; children?: Snippet; class?: string } = $props();
 </script>

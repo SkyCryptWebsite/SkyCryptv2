@@ -1,15 +1,15 @@
 <script lang="ts">
   import { getAllStatsContext } from "$ctx";
-  import type { EmptyItemSlotType } from "$lib/components/item/EmptyItemSlot.svelte";
-  import EmptyItemSlot from "$lib/components/item/EmptyItemSlot.svelte";
-  import GearSlotColumn from "$lib/components/item/GearSlotColumn.svelte";
-  import SkyblockItem from "$lib/components/item/Item.svelte";
-  import type { ModelsResolvedLoadout } from "$lib/shared/api/orval-generated";
-  import { titleCase } from "$lib/shared/helper";
-  import { cn } from "$lib/shared/utils";
   import ScrollAreaItems from "$src/lib/components/ScrollAreaItems.svelte";
   import * as Item from "$ui/item";
   import { Separator } from "$ui/separator";
+  import type { EmptyItemSlotType } from "#lib/components/item/EmptyItemSlot.svelte";
+  import EmptyItemSlot from "#lib/components/item/EmptyItemSlot.svelte";
+  import GearSlotColumn from "#lib/components/item/GearSlotColumn.svelte";
+  import SkyblockItem from "#lib/components/item/Item.svelte";
+  import type { ModelsResolvedLoadout } from "#lib/shared/api/orval-generated";
+  import { titleCase } from "#lib/shared/helper";
+  import { cn } from "#lib/shared/utils";
 
   type Props = {
     loadout: ModelsResolvedLoadout;
@@ -68,7 +68,7 @@
 <div
   data-slot="loadout-card"
   class={cn("w-full max-w-4xl space-y-4 overflow-clip rounded-xl border bg-background/20 p-4", className)}>
-  <ScrollAreaItems orientation="horizontal" viewportClasses="scroll-fade-track-x">
+  <ScrollAreaItems orientation="horizontal" viewportClasses="scroll-fade-x">
     <div class="flex flex-col items-start gap-4 overflow-x-auto md:mx-auto md:w-fit md:flex-row">
       <GearSlotColumn label="Armor" items={armor} emptySlots={armorSlots} slotContainerClass="flex-row" />
       <Separator orientation="vertical" class="hidden h-25! md:block" />

@@ -1,15 +1,18 @@
 <script lang="ts">
-  import { hexToOklch, oklchToHex } from "$lib/shared/themes/color-utils";
-  import { MC_PALETTES, paletteNames } from "$lib/shared/themes/presets";
-  import type { SkyCryptThemeExtras, ThemeModeName, ThemeV5 } from "$lib/shared/themes/schema";
   import { Input } from "$ui/input";
   import { Label } from "$ui/label";
   import * as Select from "$ui/select";
+  import { hexToOklch, oklchToHex } from "#lib/shared/themes/color-utils";
+  import { MC_PALETTES, paletteNames } from "#lib/shared/themes/presets";
+  import type { SkyCryptThemeExtras, ThemeModeName, ThemeV5 } from "#lib/shared/themes/schema";
 
-  let { workingTheme = $bindable(), editingMode } = $props<{
+  let {
+    workingTheme = $bindable(),
+    editingMode
+  }: {
     workingTheme: ThemeV5;
     editingMode: ThemeModeName;
-  }>();
+  } = $props();
 
   type McCode = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "a" | "b" | "c" | "d" | "e" | "f";
   type McPalette = (typeof paletteNames)[number];

@@ -1,9 +1,7 @@
 <script lang="ts">
-  import { pushState, replaceState } from "$app/navigation";
+  import { goto } from "$app/navigation";
   import { page } from "$app/state";
   import { getInternalState, getPreferences, getProfileContext } from "$ctx";
-  import ScrollAreaPrimitive from "$lib/components/ScrollAreaPrimitive.svelte";
-  import type { SectionName } from "$lib/sections/types";
   import { Button } from "$ui/button";
   import { Separator } from "$ui/separator";
   import ArrowBigLeft from "@lucide/svelte/icons/arrow-big-left";
@@ -12,6 +10,8 @@
   import { flushSync, onDestroy, tick, type Snippet } from "svelte";
   import { cubicOut } from "svelte/easing";
   import { crossfade } from "svelte/transition";
+  import ScrollAreaPrimitive from "#lib/components/ScrollAreaPrimitive.svelte";
+  import type { SectionName } from "#lib/sections/types";
 
   const { children }: { children?: Snippet } = $props();
 
@@ -56,7 +56,7 @@
     internalState.tabValue = sectionName;
     scrollToTab({ sectionName, smooth: true });
     // eslint-disable-next-line svelte/no-navigation-without-resolve
-    pushState(`#${sectionName}`, page.state);
+    goto(`#${sectionName}`, { shallow: true, state: page.state });
   }
 
   function scrollToTab({
@@ -147,7 +147,7 @@
       if (cancelled) return;
       scrollToTab({ sectionName, smooth: true });
       // eslint-disable-next-line svelte/no-navigation-without-resolve
-      replaceState(`#${sectionName}`, page.state);
+      goto(`#${sectionName}`, { shallow: true, replace: true, state: page.state });
     });
 
     return () => {
@@ -158,7 +158,7 @@
 
 <ScrollAreaPrimitive
   type="scroll"
-  class="navbar group sticky! top-[calc(3rem+env(safe-area-inset-top,0))] z-30 overflow-clip"
+  class="group sticky! top-[calc(3rem+env(safe-area-inset-top,0))] z-30 overflow-clip"
   data-pinned={internalState.navbarPinned}
   bind:ref={navbarElement}
   orientation="horizontal">

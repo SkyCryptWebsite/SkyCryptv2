@@ -1,14 +1,13 @@
 <script lang="ts">
   import { getInternalState } from "$ctx/internal.svelte";
   import { itemTooltipTether } from "$ctx/tooltips.svelte";
-  import type { ModelsStrippedItem } from "$lib/shared/api/orval-generated";
-  import { RARITIES, RARITY_COLORS } from "$lib/shared/constants/rarities";
-  import { formatNumber, getRarityClass } from "$lib/shared/helper";
-  import { cn } from "$lib/shared/utils";
   import ImageOff from "@lucide/svelte/icons/image-off";
   import { Avatar, Tooltip, type AvatarImageLoadingStatus } from "bits-ui";
-  import { IsInViewport } from "runed";
-  import { untrack } from "svelte";
+  import type { ModelsStrippedItem } from "#lib/shared/api/orval-generated";
+  import { RARITIES, RARITY_COLORS } from "#lib/shared/constants/rarities";
+  import { formatNumber, getRarityClass } from "#lib/shared/helper";
+  import { onceInView } from "#lib/shared/in-view";
+  import { cn } from "#lib/shared/utils";
   import ResolvedItemImage from "./ResolvedItemImage.svelte";
 
   type Props = {
@@ -19,26 +18,18 @@
   };
 
   let { piece, isInventory, showCount, showRecombobulated = true }: Props = $props();
-  let targetNode = $state<HTMLButtonElement | null>(null);
   let hasBeenInViewport = $state(false);
   let loadingStatus = $state<AvatarImageLoadingStatus>(null!);
   let resolvedTexturePack = $state<string>();
 
   const internalState = getInternalState();
 
-  const inViewport = new IsInViewport(() => targetNode, { rootMargin: "200px 0px", threshold: 0 });
   const skyblockItem = $derived({ ...piece, texture_pack: resolvedTexturePack ?? piece.texture_pack });
   const bgColor = $derived(getRarityClass(piece.rarity ?? ("common".toLowerCase() as string), "bg"));
   const recombobulated = $derived(showRecombobulated && (skyblockItem.recombobulated ?? false));
   const enchanted = $derived(skyblockItem?.texture_path?.includes("/api/leather/") ? false : skyblockItem.shiny);
   const showNumbers = $derived(showCount && (skyblockItem.Count ?? 0) > 1);
-  const tooltipPayload = $derived({ skyblockItem, inViewport });
-
-  $effect(() => {
-    if (inViewport.current && !untrack(() => hasBeenInViewport)) {
-      hasBeenInViewport = true;
-    }
-  });
+  const tooltipPayload = $derived({ skyblockItem, inViewport: hasBeenInViewport });
 </script>
 
 <Tooltip.Trigger
@@ -48,7 +39,6 @@
     { "rounded-xl": !isInventory },
     "standard:transition-all standard:duration-150 standard:ease-out standard:active:scale-95 standard:interact:scale-95"
   )}
-  bind:ref={targetNode}
   onclick={() => {
     if (skyblockItem.containsItems && !skyblockItem.displayInline) {
       internalState.itemContentSpecial = skyblockItem;
@@ -60,7 +50,7 @@
   tether={itemTooltipTether}
   payload={tooltipPayload}>
   {#snippet child({ props })}
-    <div {...props}>
+    <div {...props} {@attach onceInView(() => (hasBeenInViewport = true))}>
       {#if hasBeenInViewport}
         <Avatar.Root bind:loadingStatus class={cn("after:border-none", isInventory ? "size-6 sm:size-14" : "size-14")}>
           <ResolvedItemImage

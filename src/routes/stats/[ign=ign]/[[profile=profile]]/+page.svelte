@@ -1,0 +1,136 @@
+<script lang="ts">
+  import { afterNavigate, goto } from "$app/navigation";
+  import { resolve } from "$app/paths";
+  import { page } from "$app/state";
+  import { getInternalState, getPreferences } from "$ctx";
+  import { SEO } from "#lib/components/misc";
+  import { Notice } from "#lib/components/notices";
+  import Main from "#lib/layouts/stats/Main.svelte";
+  import SkinColumn from "#lib/layouts/stats/SkinColumn.svelte";
+  import StatsSkeleton from "#lib/layouts/stats/StatsSkeleton.svelte";
+  import type { SectionName } from "#lib/sections/types";
+  import type { ModelsStatsOutput } from "#lib/shared/api/orval-generated";
+  import {
+    getAllStats,
+    getCombinedProfileStats,
+    getProfileStats,
+    getSelectedProfileStats,
+    listEnchantments
+  } from "#lib/shared/api/skycrypt-api.remote";
+  import { createDiscordEmbed, serializeDiscordEmbed } from "#lib/shared/discordEmbed";
+  import { type PageServerData } from "./$types";
+
+  const { data }: { data: PageServerData } = $props();
+
+  const preferences = getPreferences();
+  const internalState = getInternalState();
+  const ign = $derived(page.params.ign || "");
+  const profileId = $derived(page.params.profile);
+  const routeKey = $derived(`${ign}/${profileId || ""}`);
+  const profileViewPromise = $derived(loadProfileView(ign, profileId));
+
+  async function loadProfileView(uuid: string, requestedProfileId: string | undefined) {
+    const allStatsPromise = getAllStats(__PRERENDER_VERSION__);
+    const enchantmentsPromise = listEnchantments(__PRERENDER_VERSION__);
+    const profile = requestedProfileId
+      ? await getProfileStats({ uuid, profileId: requestedProfileId })
+      : await getSelectedProfileStats({ uuid });
+    const combinedPromise =
+      profile.uuid && profile.profile_id
+        ? getCombinedProfileStats({ uuid: profile.uuid, profileId: profile.profile_id })
+        : Promise.resolve(null);
+    const [allStats, combined, enchantments] = await Promise.all([
+      allStatsPromise,
+      combinedPromise,
+      enchantmentsPromise
+    ]);
+
+    return { profile, allStats, combined, enchantments };
+  }
+
+  function rewriteURL(profile: ModelsStatsOutput) {
+    const { username, profile_cute_name } = profile;
+    if (!username) return;
+
+    const wanted = resolve("/stats/[ign=ign]/[[profile=profile]]", {
+      ign: username,
+      profile: profile_cute_name || ""
+    });
+
+    if (page.url.pathname !== wanted) {
+      goto(wanted, { shallow: true, replace: true, state: page.state });
+    }
+  }
+
+  $effect.pre(() => {
+    const hash = page.url.hash;
+    if (hash) {
+      const sectionName = hash.substring(1) as SectionName;
+      if (preferences.sectionOrder.some((section) => section.name === sectionName)) {
+        internalState.tabValue = sectionName;
+      }
+    }
+  });
+
+  afterNavigate(async ({ from, to, willUnload, shallow, type }) => {
+    if (shallow && type === "goto") return;
+
+    if (from && to) {
+      const { params: fromParams } = from;
+      const { params: toParams } = to;
+      if (
+        fromParams &&
+        toParams &&
+        (fromParams.ign !== toParams.ign || fromParams.profile !== toParams.profile) &&
+        !willUnload
+      ) {
+        internalState.openCommand = false;
+      }
+    }
+
+    const navigationKey = routeKey;
+    const { profile } = await profileViewPromise;
+    if (navigationKey === routeKey) {
+      rewriteURL(profile);
+    }
+  });
+</script>
+
+<!-- A plain value on the server render; a streamed promise on client-side navigation (see +page.server.ts). -->
+<svelte:head>
+  {#await data.embed then embed}
+    {#if embed.username}
+      <svelte:element this={"script"} id="discord:component-embed" type="application/json">
+        {serializeDiscordEmbed(createDiscordEmbed(embed))}</svelte:element>
+    {/if}
+  {/await}
+</svelte:head>
+
+{#await data.embed then embed}
+  <SEO embedData={embed} />
+{/await}
+
+<div class="@container/parent relative">
+  <SkinColumn profileView={profileViewPromise} />
+
+  {#key routeKey}
+    <svelte:boundary>
+      {const profileView = await profileViewPromise}
+      <Main
+        data={profileView.profile}
+        allStats={profileView.allStats}
+        combined={profileView.combined}
+        enchantments={profileView.enchantments} />
+
+      {#snippet pending()}
+        <StatsSkeleton />
+      {/snippet}
+
+      {#snippet failed(err, reset)}
+        <div class="flex h-screen items-center justify-center">
+          <Notice title="An unexpected error has occurred" type="error" error={err} retry={reset} />
+        </div>
+      {/snippet}
+    </svelte:boundary>
+  {/key}
+</div>

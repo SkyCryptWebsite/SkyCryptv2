@@ -1,7 +1,5 @@
 <script lang="ts">
   import { getCombinedContext } from "$ctx";
-  import { Section } from "$lib/components/sections";
-  import { AdditionStat, DungeonCataCard, Skillbar } from "$lib/components/stats";
   import EmptyStat from "$src/lib/components/EmptyStat.svelte";
   import SectionSubtitle from "$src/lib/components/sections/SectionSubtitle.svelte";
   import { Label } from "$ui/label";
@@ -9,6 +7,8 @@
   import LockIcon from "@lucide/svelte/icons/lock";
   import SkullIcon from "@lucide/svelte/icons/skull";
   import { format } from "numerable";
+  import { Section } from "#lib/components/sections";
+  import { AdditionStat, DungeonCataCard, Skillbar } from "#lib/components/stats";
 
   let { order }: { order: number } = $props();
 

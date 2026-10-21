@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { AdditionStat } from "$lib/components/stats";
-  import { type SkycryptSrcModelsNetworthResult } from "$lib/shared/api/orval-generated";
-  import { formatNumber } from "$lib/shared/helper";
   import { Label } from "$ui/label";
   import { Separator } from "$ui/separator";
   import { format as numberFormat } from "numerable";
+  import { AdditionStat } from "#lib/components/stats";
+  import { type SkycryptSrcModelsNetworthResult } from "#lib/shared/api/orval-generated";
+  import { formatNumber } from "#lib/shared/helper";
 
   const defaultPattern: string = "0,0";
 

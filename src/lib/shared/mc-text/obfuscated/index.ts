@@ -1,6 +1,6 @@
-import { randomRange } from "$lib/shared/mc-text/parser/utils";
 import type { Attachment } from "svelte/attachments";
 import { MediaQuery } from "svelte/reactivity";
+import { randomRange } from "#lib/shared/mc-text/parser/utils";
 
 // Respect user's accessibility preferences
 const prefersReducedMotion = new MediaQuery("(prefers-reduced-motion: reduce)");

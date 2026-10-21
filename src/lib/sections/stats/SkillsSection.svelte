@@ -1,8 +1,6 @@
 <script lang="ts">
   import { beforeNavigate } from "$app/navigation";
   import { getCombinedContext, setSkillsContext, SkillsContext } from "$ctx";
-  import { ScrollItems } from "$lib/components/misc";
-  import { Section } from "$lib/components/sections";
   import * as Tabs from "$ui/tabs";
   import { type Icon } from "@lucide/svelte";
   import CrosshairIcon from "@lucide/svelte/icons/crosshair";
@@ -15,6 +13,8 @@
   import type { Component } from "svelte";
   import { cubicOut } from "svelte/easing";
   import { crossfade } from "svelte/transition";
+  import { ScrollItems } from "#lib/components/misc";
+  import { Section } from "#lib/components/sections";
   import { CurrentTabContext, setCurrentTabContext } from "./skills/current-tab-context.svelte";
   import Enchanting from "./skills/enchanting.svelte";
   import Farming from "./skills/farming.svelte";
@@ -66,7 +66,8 @@
     easing: cubicOut
   });
 
-  beforeNavigate(({ willUnload }) => {
+  beforeNavigate(({ willUnload, shallow, type }) => {
+    if (shallow && type === "goto") return;
     if (willUnload) selectedTabState.current = null;
   });
 

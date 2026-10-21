@@ -1987,7 +1987,7 @@ export const GetCombinedProfileStatsResponse = zod.object({
                       })
                       .optional()
                       .describe(
-                        'HideFlags       int             `nbt:\"HideFlags\" json:\"HideFlags,omitempty\"`\nUnbreakable     int             `nbt:\"Unbreakable\" json:\"Unbreakable,omitempty\"`\nEnchantments    []Enchantment   `nbt:\"ench\" json:\"ench,omitempty\"`'
+                        'HideFlags       int             `nbt:"HideFlags" json:"HideFlags,omitempty"`\nUnbreakable     int             `nbt:"Unbreakable" json:"Unbreakable,omitempty"`\nEnchantments    []Enchantment   `nbt:"ench" json:"ench,omitempty"`'
                       ),
                     ItemModel: zod.string().optional(),
                     SkullOwner: zod
@@ -2510,7 +2510,7 @@ export const GetCombinedProfileStatsResponse = zod.object({
                       })
                       .optional()
                       .describe(
-                        'HideFlags       int             `nbt:\"HideFlags\" json:\"HideFlags,omitempty\"`\nUnbreakable     int             `nbt:\"Unbreakable\" json:\"Unbreakable,omitempty\"`\nEnchantments    []Enchantment   `nbt:\"ench\" json:\"ench,omitempty\"`'
+                        'HideFlags       int             `nbt:"HideFlags" json:"HideFlags,omitempty"`\nUnbreakable     int             `nbt:"Unbreakable" json:"Unbreakable,omitempty"`\nEnchantments    []Enchantment   `nbt:"ench" json:"ench,omitempty"`'
                       ),
                     ItemModel: zod.string().optional(),
                     SkullOwner: zod
@@ -2646,6 +2646,14 @@ export const GetCombinedProfileStatsResponse = zod.object({
     })
     .optional()
 });
+
+/**
+ * Returns the lore strings for enchantments at their maximum level.
+ *
+ * @summary List max-level enchantments
+ */
+export const ListEnchantmentsResponseItem = zod.string();
+export const ListEnchantmentsResponse = zod.array(ListEnchantmentsResponseItem);
 
 /**
  * Returns toggleable resource packs sorted by descending priority for the recommended default order. The enabledPacks
@@ -3027,7 +3035,7 @@ export const GetGardenStatsResponse = zod.object({
                   })
                   .optional()
                   .describe(
-                    'HideFlags       int             `nbt:\"HideFlags\" json:\"HideFlags,omitempty\"`\nUnbreakable     int             `nbt:\"Unbreakable\" json:\"Unbreakable,omitempty\"`\nEnchantments    []Enchantment   `nbt:\"ench\" json:\"ench,omitempty\"`'
+                    'HideFlags       int             `nbt:"HideFlags" json:"HideFlags,omitempty"`\nUnbreakable     int             `nbt:"Unbreakable" json:"Unbreakable,omitempty"`\nEnchantments    []Enchantment   `nbt:"ench" json:"ench,omitempty"`'
                   ),
                 ItemModel: zod.string().optional(),
                 SkullOwner: zod

@@ -1,8 +1,5 @@
 <script lang="ts">
   import { getHoverContext, getProfileContext } from "$ctx";
-  import { AdditionStat, NetworthCard } from "$lib/components/stats";
-  import { getProfileNetworth } from "$lib/shared/api/skycrypt-api.remote";
-  import { calculatePercentage, formatNumber } from "$lib/shared/helper";
   import { Button } from "$ui/button";
   import { Label } from "$ui/label";
   import * as Popover from "$ui/popover";
@@ -13,6 +10,9 @@
   import { isHttpError } from "@sveltejs/kit";
   import { format as dateFormat, formatDistanceToNowStrict } from "date-fns";
   import { format as numberFormat } from "numerable";
+  import { AdditionStat, NetworthCard } from "#lib/components/stats";
+  import { getProfileNetworth } from "#lib/shared/api/skycrypt-api.remote";
+  import { calculatePercentage, formatNumber } from "#lib/shared/helper";
 
   const profile = $derived(getProfileContext().current);
   const profileUUID = $derived(profile?.uuid);

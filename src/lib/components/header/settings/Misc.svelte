@@ -1,6 +1,5 @@
 <script lang="ts">
   import { getPreferences } from "$ctx";
-  import { SettingsTab } from "$lib/components/header/types";
   import { Button } from "$ui/button";
   import * as Kbd from "$ui/kbd";
   import { ScrollArea } from "$ui/scroll-area";
@@ -8,11 +7,14 @@
   import * as Tooltip from "$ui/tooltip";
   import CircleQuestionMark from "@lucide/svelte/icons/circle-question-mark";
   import Fan from "@lucide/svelte/icons/fan";
+  import FlaskConical from "@lucide/svelte/icons/flask-conical";
   import Keyboard from "@lucide/svelte/icons/keyboard";
   import Pickaxe from "@lucide/svelte/icons/pickaxe";
   import Rainbow from "@lucide/svelte/icons/rainbow";
   import Settings2 from "@lucide/svelte/icons/settings-2";
   import Sparkle from "@lucide/svelte/icons/sparkle";
+  import { SettingsTab } from "#lib/components/header/types";
+  import { isBeta, switchReleaseChannel } from "#lib/shared/release-channel";
   import SettingToggleRow from "./SettingToggleRow.svelte";
 
   const preferences = getPreferences();
@@ -140,6 +142,17 @@
         onCheckedChange={() => (preferences.rainbowEnchantments = !preferences.rainbowEnchantments)}>
         {#snippet icon()}
           <Rainbow class="size-5 shrink-0" />
+        {/snippet}
+      </SettingToggleRow>
+
+      <SettingToggleRow
+        id="beta"
+        title="Beta Version"
+        description="Try new features before they are released. The beta version may be less stable."
+        checked={isBeta}
+        onCheckedChange={switchReleaseChannel}>
+        {#snippet icon()}
+          <FlaskConical class="size-5 shrink-0" />
         {/snippet}
       </SettingToggleRow>
 

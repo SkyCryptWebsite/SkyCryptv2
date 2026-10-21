@@ -1,13 +1,13 @@
 <script lang="ts">
-  import { SectionBoundary } from "$lib/components/sections";
-  import { type ModelsStrippedItem } from "$lib/shared/api/orval-generated";
-  import { searchProfileInventory } from "$lib/shared/api/skycrypt-api.remote";
   import EmptyStat from "$src/lib/components/EmptyStat.svelte";
   import { Input } from "$ui/input";
   import SearchIcon from "@lucide/svelte/icons/search";
   import SearchX from "@lucide/svelte/icons/search-x";
   import { Debounced } from "runed";
   import type { Snippet } from "svelte";
+  import { SectionBoundary } from "#lib/components/sections";
+  import { type ModelsStrippedItem } from "#lib/shared/api/orval-generated";
+  import { searchProfileInventory } from "#lib/shared/api/skycrypt-api.remote";
 
   let {
     search = $bindable(),

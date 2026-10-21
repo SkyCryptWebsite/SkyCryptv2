@@ -1,4 +1,8 @@
 import { prerender, query } from "$app/server";
+import { APIEndpointName } from "$types";
+import { error, isHttpError } from "@sveltejs/kit";
+import { log } from "evlog";
+import { z } from "zod";
 import {
   getCombinedProfileStats as getCombinedProfileStatsRequest,
   getGardenStats as getGardenStatsRequest,
@@ -10,6 +14,7 @@ import {
   getSelectedProfileEmbed as getSelectedProfileEmbedRequest,
   getSelectedProfileStats as getSelectedProfileStatsRequest,
   getSourceInfo as getSourceInfoRequest,
+  listEnchantments as listEnchantmentsRequest,
   listResourcePacks as listResourcePacksRequest,
   resolveUsernameByUuid as resolveUsernameByUuidRequest,
   resolveUuidByUsername as resolveUuidByUsernameRequest,
@@ -17,7 +22,7 @@ import {
   getStatsConstants as getStatsConstantsRequest,
   type ModelsProcessingError,
   type ModelsSourceInfo
-} from "$lib/shared/api/orval-generated";
+} from "#lib/shared/api/orval-generated";
 import {
   GetCombinedProfileStatsParams,
   GetGardenStatsParams,
@@ -31,10 +36,7 @@ import {
   ResolveUsernameByUuidParams,
   ResolveUuidByUsernameParams,
   SearchProfileInventoryParams
-} from "$lib/shared/api/orval-generated-zod";
-import { APIEndpointName } from "$types";
-import { error, isHttpError } from "@sveltejs/kit";
-import { z } from "zod";
+} from "#lib/shared/api/orval-generated-zod";
 
 /** Type helper to extract the success data type from an API response Excludes ModelsProcessingError from the union type */
 type ExtractSuccessData<TResponse> = TResponse extends { data: infer TData }
@@ -56,18 +58,23 @@ async function fetchSection<TResponse extends { data: unknown; status: number }>
 ): Promise<ExtractSuccessData<TResponse>> {
   try {
     const { data, status } = await apiFetcher();
+    if (status >= 400) {
+      const message = typeof data === "object" && data !== null && "error" in data ? String(data.error) : String(data);
+      log.error({ action: "skycrypt_api.fetch_section", section: sectionName, status, message });
+      error(status, message);
+    }
     // Check if the API returned a processing error
     if (typeof data === "object" && data !== null && "error" in data && data.error) {
-      console.error(`API returned an error for ${sectionName}:`, data);
+      log.error({ action: "skycrypt_api.fetch_section", section: sectionName, status, response: data });
       error(status, data.error as string);
     }
     return data as ExtractSuccessData<TResponse>;
   } catch (err) {
     if (isHttpError(err)) {
-      console.error(`HTTP error fetching ${sectionName} section data:`, err);
-      error(err.status, err.body);
+      log.error({ action: "skycrypt_api.http_error", section: sectionName, error: err });
+      error(err.status, err.body.message);
     }
-    console.error(`Error fetching ${sectionName} section data:`, err);
+    log.error({ action: "skycrypt_api.fetch_section_failed", section: sectionName, error: err });
     error(500, `Failed to fetch ${sectionName} section data`);
   }
 }
@@ -130,21 +137,29 @@ export const resolveUuidByUsername = query(ResolveUuidByUsernameParams, async ({
 /** Resolve a UUID to a username */
 export const resolveUsernameByUuid = prerender(
   ResolveUsernameByUuidParams.extend({ version: z.string() }),
-  async ({ uuid }) => fetchSection(APIEndpointName.USERNAME, () => resolveUsernameByUuidRequest(uuid))
+  async ({ uuid }) => fetchSection(APIEndpointName.USERNAME, () => resolveUsernameByUuidRequest(uuid)),
+  { dynamic: true }
 );
 
 /** Give each build its own static catalog URL without changing the app's commit version. */
 export const listResourcePacks = prerender(
   z.string(),
   async (_version) => fetchSection(APIEndpointName.RESOURCEPACK, () => listResourcePacksRequest()),
-  { inputs: () => [__PRERENDER_VERSION__] }
+  { dynamic: true, inputs: () => [__PRERENDER_VERSION__] }
 );
 
 /** Fetch stats list */
 export const getAllStats = prerender(
   z.string(),
   async (_version) => fetchSection(APIEndpointName.STATS, () => getStatsConstantsRequest()),
-  { inputs: () => [__PRERENDER_VERSION__] }
+  { dynamic: true, inputs: () => [__PRERENDER_VERSION__] }
+);
+
+/** Fetch max-level enchantment lore strings */
+export const listEnchantments = prerender(
+  z.string(),
+  async (_version) => fetchSection(APIEndpointName.ENCHANTMENTS, () => listEnchantmentsRequest()),
+  { dynamic: true, inputs: () => [__PRERENDER_VERSION__] }
 );
 
 /** Fetch the source information for the currently running backend service. */
@@ -153,7 +168,7 @@ export const getSourceInfo = query(async (): Promise<ModelsSourceInfo | null> =>
     const { data } = await getSourceInfoRequest({ cache: "no-store" });
     return data;
   } catch (error) {
-    console.warn("Failed to load backend version information", error);
+    log.warn({ action: "skycrypt_api.get_source_info", error });
     return null;
   }
 });

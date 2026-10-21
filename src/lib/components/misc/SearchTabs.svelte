@@ -1,16 +1,16 @@
 <script lang="ts" generics="TItem">
   import { getMobileContext } from "$ctx";
-  import EmptyStat from "$lib/components/EmptyStat.svelte";
-  import ScrollAreaItems from "$lib/components/ScrollAreaItems.svelte";
-  import { cn } from "$lib/shared/utils";
   import ScrollArea from "$src/lib/components/ui/scroll-area/scroll-area.svelte";
   import { Input } from "$ui/input";
   import * as Tabs from "$ui/tabs";
-  import { type Icon as IconType } from "@lucide/svelte";
+  import type { LucideIcon } from "@lucide/svelte";
   import SearchXIcon from "@lucide/svelte/icons/search-x";
   import type { Snippet } from "svelte";
   import { cubicOut } from "svelte/easing";
   import { crossfade } from "svelte/transition";
+  import EmptyStat from "#lib/components/EmptyStat.svelte";
+  import ScrollAreaItems from "#lib/components/ScrollAreaItems.svelte";
+  import { cn } from "#lib/shared/utils";
   import ScrollItems from "./ScrollItems.svelte";
 
   type SearchTab = {
@@ -33,7 +33,7 @@
     viewportClasses?: string;
     emptyTitle?: string;
     emptyDescription?: string;
-    emptyIcon?: typeof IconType;
+    emptyIcon?: LucideIcon;
     noResultsLabel?: string;
   };
 
@@ -105,12 +105,13 @@
       {#if isVertical}
         <Tabs.List
           class="sticky top-2 flex h-fit shrink-0 flex-col items-stretch justify-start gap-1 self-start border bg-transparent text-base">
-          <ScrollArea class="h-144" orientation="vertical" type="auto" viewportClasses="rounded-xl scroll-fade-track-y">
+          <ScrollArea
+            class="h-144"
+            orientation="vertical"
+            type="auto"
+            viewportClasses="scroll-fade-y rounded-xl scroll-fade-36">
             <div class="flex flex-col gap-3 pr-4">
               {@render tabsListItems()}
-            </div>
-            <div
-              class="pointer-events-none sticky -bottom-1 z-10 -mt-36 h-36 w-full bg-linear-to-t from-background/80 to-transparent scroll-fade-y blur-xs">
             </div>
           </ScrollArea>
         </Tabs.List>

@@ -21,8 +21,8 @@
 </script>
 
 <script lang="ts">
-  import { cn } from "$lib/shared/utils";
   import { Badge } from "$ui/badge";
+  import { cn } from "#lib/shared/utils";
 
   const { type, class: className }: { type: PostType; class?: string } = $props();
 </script>

@@ -1,7 +1,4 @@
 <script lang="ts">
-  import { AdditionStat } from "$lib/components/stats";
-  import { type ModelsFormattedDungeonFloor } from "$lib/shared/api/orval-generated";
-  import { formatNumber } from "$lib/shared/helper";
   import CollapsibleCustomTrigger from "$src/lib/components/CollapsibleCustomTrigger.svelte";
   import EmptyStat from "$src/lib/components/EmptyStat.svelte";
   import ScrollAreaItems from "$src/lib/components/ScrollAreaItems.svelte";
@@ -18,6 +15,9 @@
     formatDuration as formatDurationDateFns,
     intervalToDuration
   } from "date-fns";
+  import { AdditionStat } from "#lib/components/stats";
+  import { type ModelsFormattedDungeonFloor } from "#lib/shared/api/orval-generated";
+  import { formatNumber } from "#lib/shared/helper";
 
   let { catacombs, master = false }: { catacombs: ModelsFormattedDungeonFloor[] | undefined; master?: boolean } =
     $props();

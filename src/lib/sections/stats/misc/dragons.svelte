@@ -1,10 +1,10 @@
 <script lang="ts">
   import { getMiscContext } from "$ctx";
-  import { SectionSubtitle } from "$lib/components/sections";
-  import { AdditionStat } from "$lib/components/stats";
-  import { formatTime } from "$lib/shared/helper";
   import { Label } from "$ui/label";
   import { format } from "numerable";
+  import { SectionSubtitle } from "#lib/components/sections";
+  import { AdditionStat } from "#lib/components/stats";
+  import { formatTime } from "#lib/shared/helper";
 
   const misc = $derived(getMiscContext().misc);
   const dragons = $derived(misc?.dragons);

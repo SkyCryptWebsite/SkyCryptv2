@@ -22,7 +22,7 @@
 </script>
 
 <script lang="ts">
-  import { cn } from "$lib/shared/utils";
+  import { cn } from "#lib/shared/utils";
 
   type Props = {
     slot: EmptyItemSlotType;

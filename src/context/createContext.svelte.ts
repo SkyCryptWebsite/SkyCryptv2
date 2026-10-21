@@ -1,5 +1,7 @@
-import type { IsHover } from "$lib/hooks/is-hover.svelte";
-import type { IsMobile } from "$lib/hooks/is-mobile.svelte";
+import { createContext } from "svelte";
+import type { z } from "zod";
+import type { IsHover } from "#lib/hooks/is-hover.svelte.js";
+import type { IsMobile } from "#lib/hooks/is-mobile.svelte.js";
 import type {
   ModelsCombinedOutput,
   ModelsMiscOutput,
@@ -7,11 +9,13 @@ import type {
   ModelsStatData,
   ModelsSkillsOutput,
   ModelsStatsOutput
-} from "$lib/shared/api/orval-generated";
-import { createContext } from "svelte";
+} from "#lib/shared/api/orval-generated";
+import type { ListEnchantmentsResponse } from "#lib/shared/api/orval-generated-zod";
+
+export type Enchantments = z.infer<typeof ListEnchantmentsResponse>;
 
 export class ProfileContext {
-  #current: ModelsStatsOutput | null = $state(null);
+  #current: ModelsStatsOutput | null = $state.raw(null);
 
   get current() {
     return this.#current;
@@ -23,7 +27,7 @@ export class ProfileContext {
 }
 
 export class AllStatsContext {
-  #current: ModelsStatData[] = $state([]);
+  #current: ModelsStatData[] = $state.raw([]);
 
   get current() {
     return this.#current;
@@ -34,8 +38,20 @@ export class AllStatsContext {
   }
 }
 
+export class EnchantmentsContext {
+  #current: Enchantments = $state.raw([]);
+
+  get current() {
+    return this.#current;
+  }
+
+  set current(value: Enchantments) {
+    this.#current = value;
+  }
+}
+
 export class CombinedContext {
-  #current: ModelsCombinedOutput | null = $state(null);
+  #current: ModelsCombinedOutput | null = $state.raw(null);
 
   get current() {
     return this.#current;
@@ -47,7 +63,7 @@ export class CombinedContext {
 }
 
 export class PacksContext {
-  #packs: ModelsResourcePackConfig[] = $state([]);
+  #packs: ModelsResourcePackConfig[] = $state.raw([]);
 
   get packs() {
     return this.#packs;
@@ -59,7 +75,7 @@ export class PacksContext {
 }
 
 export class MiscContext {
-  #misc: ModelsMiscOutput | null = $state(null);
+  #misc: ModelsMiscOutput | null = $state.raw(null);
 
   get misc() {
     return this.#misc;
@@ -71,7 +87,7 @@ export class MiscContext {
 }
 
 export class SkillsContext {
-  #skills: ModelsSkillsOutput | null = $state(null);
+  #skills: ModelsSkillsOutput | null = $state.raw(null);
 
   get skills() {
     return this.#skills;
@@ -84,6 +100,7 @@ export class SkillsContext {
 
 export const [getProfileContext, setProfileContext] = createContext<ProfileContext>();
 export const [getAllStatsContext, setAllStatsContext] = createContext<AllStatsContext>();
+export const [getEnchantmentsContext, setEnchantmentsContext] = createContext<EnchantmentsContext>();
 export const [getCombinedContext, setCombinedContext] = createContext<CombinedContext>();
 export const [getSkillsContext, setSkillsContext] = createContext<SkillsContext>();
 export const [getMiscContext, setMiscContext] = createContext<MiscContext>();
