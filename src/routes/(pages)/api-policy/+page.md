@@ -54,7 +54,12 @@ Your project must also say clearly that it is not affiliated with or endorsed by
 
 If your key leaks, delete it in your dashboard and request a new one.
 
-## Caching and storing data
+## Cached Data only
+The API only returns data SkyCrypt already has, from players someone recently looked up on SkyCrypt. It never asks Hypixel for new data on your behalf. If we don't have a player, you get no data for them, and the data you do get can be older than what the website shows.
+
+Cache our responses and reuse them, instead of asking for the same player again and again.
+
+## Caching & Data Retention
 
 Cache each player response for at least 5 minutes and reuse it, instead of asking for the same player again and again. Stats on SkyCrypt only change every few minutes, so requesting the same player more often than that doesn't get you newer data. If our response has a `Cache-Control` header, follow it.
 
