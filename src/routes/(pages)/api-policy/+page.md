@@ -37,7 +37,7 @@ Your project must not:
 - give players an unfair advantage in game;
 - get around the Hypixel API Policy, for example by using SkyCrypt to get data you couldn't get from Hypixel under its rate limits;
 - include betting or gambling;
-- break the law.
+- break the law that applies to you or your users;
 
 ## Credit SkyCrypt
 
