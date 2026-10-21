@@ -11,9 +11,8 @@ const MAX_BODY_BYTES = 8192;
  */
 export const POST: RequestHandler = async ({ request, url, locals, getClientAddress }) => {
   const source = request.headers.get("origin") ?? request.headers.get("referer");
-  // Compare with the host the browser used (not the build-time ORIGIN), like headersHandler does.
-  const host = request.headers.get("x-forwarded-host") ?? request.headers.get("host") ?? url.host;
-  if (!source || !URL.canParse(source) || new URL(source).host !== host) error(403, "Invalid origin");
+  // url comes from the runtime ORIGIN; Host and X-Forwarded-Host hold the internal Traefik hostname behind nginx.
+  if (!source || !URL.canParse(source) || new URL(source).host !== url.host) error(403, "Invalid origin");
   if (Number(request.headers.get("content-length")) > MAX_BODY_BYTES) error(413, "Payload too large");
   let address = "unknown";
   try {
