@@ -7,7 +7,7 @@ on:
         description: "Server API URL (without protocol or /api/ suffix)"
         required: false
         type: string
-        default: "sky.shiiyu.moe"
+        default: "api.shiiyu.moe"
     secrets:
       server-api-token:
         description: "Server API Token"

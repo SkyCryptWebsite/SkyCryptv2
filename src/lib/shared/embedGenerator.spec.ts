@@ -19,9 +19,7 @@ describe.concurrent("embedGenerator", () => {
 
     it("should return empty string when username is missing", ({ expect }) => {
       expect.assertions(1);
-      const embedData: ModelsEmbedData = {
-        displayName: "TestPlayer"
-      };
+      const embedData: ModelsEmbedData = {};
 
       const result = getMetaTitle(embedData);
       expect(result).toBe("");
@@ -30,8 +28,7 @@ describe.concurrent("embedGenerator", () => {
     it("should return title without profile name when missing", ({ expect }) => {
       expect.assertions(1);
       const embedData: ModelsEmbedData = {
-        username: "TestPlayer",
-        displayName: "TestPlayer"
+        username: "TestPlayer"
       };
 
       const result = getMetaTitle(embedData);
@@ -42,7 +39,6 @@ describe.concurrent("embedGenerator", () => {
       expect.assertions(1);
       const embedData: ModelsEmbedData = {
         username: "TestPlayer",
-        displayName: "TestPlayer",
         profile_cute_name: "Banana"
       };
 
@@ -54,7 +50,6 @@ describe.concurrent("embedGenerator", () => {
       expect.assertions(1);
       const embedData: ModelsEmbedData = {
         username: "IronPlayer",
-        displayName: "IronPlayer",
         profile_cute_name: "Iron Profile",
         game_mode: "ironman"
       };
@@ -67,7 +62,6 @@ describe.concurrent("embedGenerator", () => {
       expect.assertions(1);
       const embedData: ModelsEmbedData = {
         username: "BingoPlayer",
-        displayName: "BingoPlayer",
         profile_cute_name: "Bingo Profile",
         game_mode: "bingo"
       };
@@ -80,7 +74,6 @@ describe.concurrent("embedGenerator", () => {
       expect.assertions(1);
       const embedData: ModelsEmbedData = {
         username: "IslandPlayer",
-        displayName: "IslandPlayer",
         profile_cute_name: "Island Profile",
         game_mode: "island"
       };
@@ -93,7 +86,6 @@ describe.concurrent("embedGenerator", () => {
       expect.assertions(1);
       const embedData: ModelsEmbedData = {
         username: "UnknownPlayer",
-        displayName: "UnknownPlayer",
         profile_cute_name: "Custom Profile",
         game_mode: "unknown_mode"
       };
@@ -422,7 +414,7 @@ describe.concurrent("embedGenerator", () => {
     it("should return empty string when joined is undefined", ({ expect }) => {
       expect.assertions(1);
       const embedData: ModelsEmbedData = {
-        displayName: "TestPlayer"
+        username: "TestPlayer"
       };
 
       const result = getShortDescription(embedData);
@@ -435,7 +427,7 @@ describe.concurrent("embedGenerator", () => {
       vi.setSystemTime(new Date("2025-06-15T00:00:00.000Z"));
 
       const embedData: ModelsEmbedData = {
-        displayName: "TestPlayer",
+        username: "TestPlayer",
         joined: new Date("2023-01-01T00:00:00.000Z").getTime()
       };
 
@@ -449,7 +441,7 @@ describe.concurrent("embedGenerator", () => {
       vi.setSystemTime(new Date("2025-06-15T00:00:00.000Z"));
 
       const embedData: ModelsEmbedData = {
-        displayName: "NewPlayer",
+        username: "NewPlayer",
         joined: new Date("2025-01-15T00:00:00.000Z").getTime()
       };
 
@@ -463,7 +455,7 @@ describe.concurrent("embedGenerator", () => {
       vi.setSystemTime(new Date("2025-06-15T00:00:00.000Z"));
 
       const embedData: ModelsEmbedData = {
-        displayName: "VeryNewPlayer",
+        username: "VeryNewPlayer",
         joined: new Date("2025-06-01T00:00:00.000Z").getTime()
       };
 
@@ -477,7 +469,7 @@ describe.concurrent("embedGenerator", () => {
       vi.setSystemTime(new Date("2025-06-15T12:00:00.000Z"));
 
       const embedData: ModelsEmbedData = {
-        displayName: "BrandNewPlayer",
+        username: "BrandNewPlayer",
         joined: new Date("2025-06-15T06:00:00.000Z").getTime()
       };
 
@@ -491,7 +483,7 @@ describe.concurrent("embedGenerator", () => {
       vi.setSystemTime(new Date("2025-01-01T00:00:00.000Z"));
 
       const embedData: ModelsEmbedData = {
-        displayName: "AnniversaryPlayer",
+        username: "AnniversaryPlayer",
         joined: new Date("2024-01-01T00:00:00.000Z").getTime()
       };
 
@@ -505,7 +497,7 @@ describe.concurrent("embedGenerator", () => {
       vi.setSystemTime(new Date("2025-02-28T00:00:00.000Z"));
 
       const embedData: ModelsEmbedData = {
-        displayName: "LeapPlayer",
+        username: "LeapPlayer",
         joined: new Date("2024-02-29T00:00:00.000Z").getTime()
       };
 
@@ -515,7 +507,7 @@ describe.concurrent("embedGenerator", () => {
   });
 
   describe("getGenericTitle", () => {
-    it("returns default title when embedData is empty or missing username/displayName", ({ expect }) => {
+    it("returns default title when embedData is empty or missing username", ({ expect }) => {
       // @ts-expect-error null case
       expect(getGenericTitle(null)).toBe("SkyBlock Stats | SkyCrypt");
       expect(getGenericTitle({})).toBe("SkyBlock Stats | SkyCrypt");
@@ -524,28 +516,25 @@ describe.concurrent("embedGenerator", () => {
     it("returns formatted title with player and profile name", ({ expect }) => {
       const embedData: ModelsEmbedData = {
         username: "tiltedhoney",
-        displayName: "TiltedHoney",
         profile_cute_name: "Kiwi"
       };
-      expect(getGenericTitle(embedData)).toBe("TiltedHoney (Kiwi) | SkyBlock Stats");
+      expect(getGenericTitle(embedData)).toBe("tiltedhoney (Kiwi) | SkyBlock Stats");
     });
 
     it("includes gamemode when not normal", ({ expect }) => {
       const embedData: ModelsEmbedData = {
         username: "ironman_steve",
-        displayName: "Steve",
         profile_cute_name: "Apple",
         game_mode: "ironman"
       };
-      expect(getGenericTitle(embedData)).toBe("Steve (Apple [ironman]) | SkyBlock Stats");
+      expect(getGenericTitle(embedData)).toBe("ironman_steve (Apple [ironman]) | SkyBlock Stats");
     });
 
     it("returns title without profile when profile is missing", ({ expect }) => {
       const embedData: ModelsEmbedData = {
-        username: "tiltedhoney",
-        displayName: "TiltedHoney"
+        username: "tiltedhoney"
       };
-      expect(getGenericTitle(embedData)).toBe("TiltedHoney | SkyBlock Stats");
+      expect(getGenericTitle(embedData)).toBe("tiltedhoney | SkyBlock Stats");
     });
   });
 
@@ -559,7 +548,6 @@ describe.concurrent("embedGenerator", () => {
     it("creates a clean, human-readable SEO summary with stats", ({ expect }) => {
       const embedData: ModelsEmbedData = {
         username: "tiltedhoney",
-        displayName: "TiltedHoney",
         profile_cute_name: "Kiwi",
         skyblock_level: 420.5,
         networth: { normal: 15200000000 },
@@ -570,7 +558,7 @@ describe.concurrent("embedGenerator", () => {
 
       const desc = getGenericDescription(embedData);
       expect(desc).toBe(
-        "Check out TiltedHoney's SkyBlock profile (Kiwi) on SkyCrypt: Level 420.50 • Networth: 15.20B • Skill Avg: 55.4 • Class Avg: 50 • Slayer XP: 12M."
+        "Check out tiltedhoney's SkyBlock profile (Kiwi) on SkyCrypt: Level 420.50 • Networth: 15.20B • Skill Avg: 55.4 • Class Avg: 50 • Slayer XP: 12M."
       );
       // Ensure no Discord custom emoji IDs or Discord markdown tags are leaked
       expect(desc).not.toContain("<:");
@@ -584,22 +572,20 @@ describe.concurrent("embedGenerator", () => {
 
       const embedData: ModelsEmbedData = {
         username: "tiltedhoney",
-        displayName: "TiltedHoney",
         joined: new Date("2023-01-01T00:00:00.000Z").getTime()
       };
 
-      expect(getGenericDescription(embedData)).toBe("TiltedHoney has been playing SkyBlock for 2 years on SkyCrypt.");
+      expect(getGenericDescription(embedData)).toBe("tiltedhoney has been playing SkyBlock for 2 years on SkyCrypt.");
       vi.useRealTimers();
     });
 
     it("falls back to generic profile overview if joined and stats are absent", ({ expect }) => {
       const embedData: ModelsEmbedData = {
-        username: "tiltedhoney",
-        displayName: "TiltedHoney"
+        username: "tiltedhoney"
       };
 
       expect(getGenericDescription(embedData)).toBe(
-        "View TiltedHoney's Hypixel SkyBlock stats, skills, networth, dungeons, and gear on SkyCrypt."
+        "View tiltedhoney's Hypixel SkyBlock stats, skills, networth, dungeons, and gear on SkyCrypt."
       );
     });
   });

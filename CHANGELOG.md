@@ -1,5 +1,17 @@
 # Changelog
 
+## 4.4.0
+
+### Minor Changes
+
+- API keys now work against the backend API, which moved to api.shiiyu.moe. The API docs links point to its new home. _[`#367`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/pull/367) [`5a52f6d`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/5a52f6de32e7100c66e011f90086a3d9683b223a) [@DarthGigi](https://github.com/DarthGigi)_
+
+## 4.4.0-beta.0
+
+### Minor Changes
+
+- API keys now work against the backend API, which moved to api.shiiyu.moe. The API docs links point to its new home. _[`#367`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/pull/367) [`5a52f6d`](https://github.com/SkyCryptWebsite/SkyCrypt-Frontend/commit/5a52f6de32e7100c66e011f90086a3d9683b223a) [@DarthGigi](https://github.com/DarthGigi)_
+
 ## 4.3.0
 
 ### Minor Changes

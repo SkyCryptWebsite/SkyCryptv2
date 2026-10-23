@@ -55,7 +55,7 @@
           alt={user.username} />
       </Item.Media>
       <Item.Content>
-        <Item.Title>{user.displayName ?? user.username}</Item.Title>
+        <Item.Title>{user.username}</Item.Title>
         {#if user.quote}
           <Item.Description class={cn(user.role === Role.TECHNOBLADE ? "italic" : "")}
             >{@html user.quote}</Item.Description>

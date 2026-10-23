@@ -87,7 +87,6 @@ describe("discordEmbed", () => {
   describe("Discord Component Embed requirements and limits", () => {
     const fullMockData: ModelsEmbedData = {
       username: "tiltedhoney",
-      displayName: "TiltedHoney",
       profile_cute_name: "Kiwi",
       game_mode: "ironman",
       uuid: "debb9e1f6dcb4f5b83c291fd5388bb56",

@@ -247,10 +247,7 @@
     onclick={() => {
       if (profile == null) return;
       if (!favorites.current.some((fav) => fav.uuid === profile.uuid)) {
-        favorites.current = [
-          ...favorites.current,
-          { uuid: profile.uuid ?? "", ign: profile.username ?? "", displayName: profile.displayName ?? undefined }
-        ];
+        favorites.current = [...favorites.current, { uuid: profile.uuid ?? "", ign: profile.username ?? "" }];
         toast.dismiss(toastId);
         toastId = toast.success(`Added ${profile.username} to your favorites!`, {
           position: "top-center",

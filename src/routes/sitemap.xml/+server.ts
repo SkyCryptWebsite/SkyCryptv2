@@ -15,7 +15,7 @@ export const GET: RequestHandler = async () => {
     const contributors = await getContributors(__PRERENDER_VERSION__);
 
     for (const contributor of contributors) {
-      const ign = contributor.name ?? contributor.id;
+      const ign = contributor.username ?? contributor.id;
       if (!ign) continue;
       statsPaths.add(`/stats/${encodeURIComponent(ign)}`);
     }

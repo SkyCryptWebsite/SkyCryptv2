@@ -40,7 +40,6 @@ export const getContributors = prerender(
       } catch (error) {
         log.error({ action: "contributors.resolve_username", uuid, error });
         return {
-          displayName: "???",
           uuid: uuid,
           username: "???"
         };
@@ -52,8 +51,7 @@ export const getContributors = prerender(
 
       return contributorIds.map((contributor, index) => ({
         ...contributor,
-        name: usernames[index].username,
-        displayName: usernames[index].displayName
+        username: usernames[index].username
       })) satisfies Contributor[];
     };
 
