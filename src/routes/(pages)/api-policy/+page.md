@@ -5,11 +5,12 @@
 <SvelteSeo
   title="API Policy | SkyCrypt"
   description="The rules for building on the SkyCrypt API."
-  canonical="https://sky.shiiyu.moe/api-policy" />
+  canonical="https://sky.shiiyu.moe/api-policy"
+/>
 
 # API Policy
 
-Last updated: 20 October 2026
+Last updated: 21 October 2026
 
 This policy covers everything you build with a SkyCrypt API key. It applies on top of our [Terms of Service](/terms-of-service). If you break it, we can revoke your key and ban your account, and we don't have to warn you first.
 
@@ -24,7 +25,7 @@ If you need fresh data, more requests or a commercial project, apply for your ow
 It is not for collecting data in bulk. You may not:
 
 - crawl or scrape players, profiles or the SkyCrypt website, including through the API;
-- look up lists of players you collected elsewhere, such as guild members, leaderboards or lobby players, to build a database;
+- build a database of players, for example by looking up every guild member, leaderboard player or lobby player;
 - check players over and over to watch for items, such as exotic armor, or to track their stats or networth over time;
 - build anything that follows specific players or helps someone find them, or that reveals who is behind a nicked player;
 - store our data and share or publish it as a dataset.
@@ -37,7 +38,7 @@ Your project must not:
 - give players an unfair advantage in game;
 - get around the Hypixel API Policy, for example by using SkyCrypt to get data you couldn't get from Hypixel under its rate limits;
 - include betting or gambling;
-- break the law.
+- break any law that applies to you or your users.
 
 ## Credit SkyCrypt
 
@@ -60,6 +61,12 @@ The API only returns data SkyCrypt already has, from players someone recently lo
 
 Cache our responses and reuse them, instead of asking for the same player again and again.
 
+## Caching practices & data retention
+
+We highly advise each player response for at least 5 minutes and reuse it, instead of asking for the same player again and again. Stats on SkyCrypt only change every few minutes, so requesting the same player more often than that doesn't get you newer data. If our response has a `Cache-Control` header, follow it.
+
+Don't keep our data for more than 30 days. If a player asks you to delete their data, delete it.
+
 ## No money
 
 You may not make money from anything that uses the SkyCrypt API. That means no ads, subscriptions, paid features or selling data, and no selling access to the API. You can ask for donations, as long as everything in your project stays free for everyone. Your project may also not compete with SkyCrypt, for example by copying SkyCrypt's stats pages.
@@ -72,7 +79,7 @@ Don't use the API to attack SkyCrypt or anyone else, to overload our servers, or
 
 ## Changes to this policy
 
-We will update this policy when the API or the Hypixel API Policy changes. If a change affects your project, we will announce it in the [newsroom](/newsroom). If you keep using your key after that, the new policy applies.
+We will update this policy when the API or the Hypixel API Policy changes. We announce changes that add a restriction or remove a permission in the [newsroom](/newsroom) which apply instantly. If Hypixel changes its policy with less notice, we may apply the same change sooner. If you keep using your key after a change applies, the new policy applies to you.
 
 ## Contact
 
