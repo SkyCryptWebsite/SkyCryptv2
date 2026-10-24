@@ -12,3 +12,7 @@ updateConfig:
 
 publicHoistPattern:
   - "@takumi-rs/core-*"
+
+permissions:
+  "@tanstack/svelte-table":
+    skills: true

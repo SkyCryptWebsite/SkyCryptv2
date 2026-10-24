@@ -748,6 +748,10 @@ export type SkycrypttypesExtraAttributesGems = { [key: string]: unknown };
 
 export type SkycrypttypesExtraAttributesRunes = { [key: string]: number };
 
+/**
+ * HideFlags int `nbt:"HideFlags" json:"HideFlags,omitempty"` Unbreakable int `nbt:"Unbreakable"
+ * json:"Unbreakable,omitempty"` Enchantments []Enchantment `nbt:"ench" json:"ench,omitempty"`
+ */
 export interface SkycrypttypesExtraAttributes {
   ability_scroll?: string[];
   additional_coins?: number;
@@ -832,10 +836,6 @@ export interface SkycrypttypesDisplay {
 }
 
 export interface SkycrypttypesTag {
-  /**
-   * HideFlags int `nbt:"HideFlags" json:"HideFlags,omitempty"` Unbreakable int `nbt:"Unbreakable"
-   * json:"Unbreakable,omitempty"` Enchantments []Enchantment `nbt:"ench" json:"ench,omitempty"`
-   */
   ExtraAttributes?: SkycrypttypesExtraAttributes;
   ItemModel?: string;
   SkullOwner?: SkycrypttypesSkullOwner;
@@ -1369,13 +1369,23 @@ export type getCombinedProfileStatsResponse429 = {
 };
 
 export type getCombinedProfileStatsResponse500 = {
-  data: ModelsProcessingError;
+  data: ModelsAPIError;
   status: 500;
+};
+
+export type getCombinedProfileStatsResponse502 = {
+  data: ModelsAPIError;
+  status: 502;
 };
 
 export type getCombinedProfileStatsResponse503 = {
   data: ModelsAPIError;
   status: 503;
+};
+
+export type getCombinedProfileStatsResponse504 = {
+  data: ModelsAPIError;
+  status: 504;
 };
 
 export type getCombinedProfileStatsResponseSuccess = getCombinedProfileStatsResponse200 & {
@@ -1386,7 +1396,9 @@ export type getCombinedProfileStatsResponseError = (
   | getCombinedProfileStatsResponse404
   | getCombinedProfileStatsResponse429
   | getCombinedProfileStatsResponse500
+  | getCombinedProfileStatsResponse502
   | getCombinedProfileStatsResponse503
+  | getCombinedProfileStatsResponse504
 ) & {
   headers: Headers;
 };
@@ -1520,11 +1532,6 @@ export type getSelectedProfileEmbedResponse200 = {
   status: 200;
 };
 
-export type getSelectedProfileEmbedResponse400 = {
-  data: ModelsProcessingError;
-  status: 400;
-};
-
 export type getSelectedProfileEmbedResponse401 = {
   data: ModelsAPIError;
   status: 401;
@@ -1541,8 +1548,13 @@ export type getSelectedProfileEmbedResponse429 = {
 };
 
 export type getSelectedProfileEmbedResponse500 = {
-  data: ModelsProcessingError;
+  data: ModelsAPIError;
   status: 500;
+};
+
+export type getSelectedProfileEmbedResponse502 = {
+  data: ModelsAPIError;
+  status: 502;
 };
 
 export type getSelectedProfileEmbedResponse503 = {
@@ -1550,16 +1562,22 @@ export type getSelectedProfileEmbedResponse503 = {
   status: 503;
 };
 
+export type getSelectedProfileEmbedResponse504 = {
+  data: ModelsAPIError;
+  status: 504;
+};
+
 export type getSelectedProfileEmbedResponseSuccess = getSelectedProfileEmbedResponse200 & {
   headers: Headers;
 };
 export type getSelectedProfileEmbedResponseError = (
-  | getSelectedProfileEmbedResponse400
   | getSelectedProfileEmbedResponse401
   | getSelectedProfileEmbedResponse404
   | getSelectedProfileEmbedResponse429
   | getSelectedProfileEmbedResponse500
+  | getSelectedProfileEmbedResponse502
   | getSelectedProfileEmbedResponse503
+  | getSelectedProfileEmbedResponse504
 ) & {
   headers: Headers;
 };
@@ -1593,11 +1611,6 @@ export type getProfileEmbedResponse200 = {
   status: 200;
 };
 
-export type getProfileEmbedResponse400 = {
-  data: ModelsProcessingError;
-  status: 400;
-};
-
 export type getProfileEmbedResponse401 = {
   data: ModelsAPIError;
   status: 401;
@@ -1614,8 +1627,13 @@ export type getProfileEmbedResponse429 = {
 };
 
 export type getProfileEmbedResponse500 = {
-  data: ModelsProcessingError;
+  data: ModelsAPIError;
   status: 500;
+};
+
+export type getProfileEmbedResponse502 = {
+  data: ModelsAPIError;
+  status: 502;
 };
 
 export type getProfileEmbedResponse503 = {
@@ -1623,16 +1641,22 @@ export type getProfileEmbedResponse503 = {
   status: 503;
 };
 
+export type getProfileEmbedResponse504 = {
+  data: ModelsAPIError;
+  status: 504;
+};
+
 export type getProfileEmbedResponseSuccess = getProfileEmbedResponse200 & {
   headers: Headers;
 };
 export type getProfileEmbedResponseError = (
-  | getProfileEmbedResponse400
   | getProfileEmbedResponse401
   | getProfileEmbedResponse404
   | getProfileEmbedResponse429
   | getProfileEmbedResponse500
+  | getProfileEmbedResponse502
   | getProfileEmbedResponse503
+  | getProfileEmbedResponse504
 ) & {
   headers: Headers;
 };
@@ -1666,11 +1690,6 @@ export type getGardenStatsResponse200 = {
   status: 200;
 };
 
-export type getGardenStatsResponse400 = {
-  data: ModelsProcessingError;
-  status: 400;
-};
-
 export type getGardenStatsResponse401 = {
   data: ModelsAPIError;
   status: 401;
@@ -1686,20 +1705,37 @@ export type getGardenStatsResponse429 = {
   status: 429;
 };
 
+export type getGardenStatsResponse500 = {
+  data: ModelsAPIError;
+  status: 500;
+};
+
+export type getGardenStatsResponse502 = {
+  data: ModelsAPIError;
+  status: 502;
+};
+
 export type getGardenStatsResponse503 = {
   data: ModelsAPIError;
   status: 503;
+};
+
+export type getGardenStatsResponse504 = {
+  data: ModelsAPIError;
+  status: 504;
 };
 
 export type getGardenStatsResponseSuccess = getGardenStatsResponse200 & {
   headers: Headers;
 };
 export type getGardenStatsResponseError = (
-  | getGardenStatsResponse400
   | getGardenStatsResponse401
   | getGardenStatsResponse404
   | getGardenStatsResponse429
+  | getGardenStatsResponse500
+  | getGardenStatsResponse502
   | getGardenStatsResponse503
+  | getGardenStatsResponse504
 ) & {
   headers: Headers;
 };
@@ -1845,11 +1881,6 @@ export type getProfileInventoryResponse200 = {
   status: 200;
 };
 
-export type getProfileInventoryResponse400 = {
-  data: ModelsProcessingError;
-  status: 400;
-};
-
 export type getProfileInventoryResponse401 = {
   data: ModelsAPIError;
   status: 401;
@@ -1865,20 +1896,37 @@ export type getProfileInventoryResponse429 = {
   status: 429;
 };
 
+export type getProfileInventoryResponse500 = {
+  data: ModelsAPIError;
+  status: 500;
+};
+
+export type getProfileInventoryResponse502 = {
+  data: ModelsAPIError;
+  status: 502;
+};
+
 export type getProfileInventoryResponse503 = {
   data: ModelsAPIError;
   status: 503;
+};
+
+export type getProfileInventoryResponse504 = {
+  data: ModelsAPIError;
+  status: 504;
 };
 
 export type getProfileInventoryResponseSuccess = getProfileInventoryResponse200 & {
   headers: Headers;
 };
 export type getProfileInventoryResponseError = (
-  | getProfileInventoryResponse400
   | getProfileInventoryResponse401
   | getProfileInventoryResponse404
   | getProfileInventoryResponse429
+  | getProfileInventoryResponse500
+  | getProfileInventoryResponse502
   | getProfileInventoryResponse503
+  | getProfileInventoryResponse504
 ) & {
   headers: Headers;
 };
@@ -2057,11 +2105,6 @@ export type getProfileNetworthResponse200 = {
   status: 200;
 };
 
-export type getProfileNetworthResponse400 = {
-  data: ModelsProcessingError;
-  status: 400;
-};
-
 export type getProfileNetworthResponse401 = {
   data: ModelsAPIError;
   status: 401;
@@ -2078,8 +2121,13 @@ export type getProfileNetworthResponse429 = {
 };
 
 export type getProfileNetworthResponse500 = {
-  data: ModelsProcessingError;
+  data: ModelsAPIError;
   status: 500;
+};
+
+export type getProfileNetworthResponse502 = {
+  data: ModelsAPIError;
+  status: 502;
 };
 
 export type getProfileNetworthResponse503 = {
@@ -2087,16 +2135,22 @@ export type getProfileNetworthResponse503 = {
   status: 503;
 };
 
+export type getProfileNetworthResponse504 = {
+  data: ModelsAPIError;
+  status: 504;
+};
+
 export type getProfileNetworthResponseSuccess = getProfileNetworthResponse200 & {
   headers: Headers;
 };
 export type getProfileNetworthResponseError = (
-  | getProfileNetworthResponse400
   | getProfileNetworthResponse401
   | getProfileNetworthResponse404
   | getProfileNetworthResponse429
   | getProfileNetworthResponse500
+  | getProfileNetworthResponse502
   | getProfileNetworthResponse503
+  | getProfileNetworthResponse504
 ) & {
   headers: Headers;
 };
@@ -2129,11 +2183,6 @@ export type getPlayerStatsResponse200 = {
   status: 200;
 };
 
-export type getPlayerStatsResponse400 = {
-  data: ModelsProcessingError;
-  status: 400;
-};
-
 export type getPlayerStatsResponse401 = {
   data: ModelsAPIError;
   status: 401;
@@ -2149,20 +2198,37 @@ export type getPlayerStatsResponse429 = {
   status: 429;
 };
 
+export type getPlayerStatsResponse500 = {
+  data: ModelsAPIError;
+  status: 500;
+};
+
+export type getPlayerStatsResponse502 = {
+  data: ModelsAPIError;
+  status: 502;
+};
+
 export type getPlayerStatsResponse503 = {
   data: ModelsAPIError;
   status: 503;
+};
+
+export type getPlayerStatsResponse504 = {
+  data: ModelsAPIError;
+  status: 504;
 };
 
 export type getPlayerStatsResponseSuccess = getPlayerStatsResponse200 & {
   headers: Headers;
 };
 export type getPlayerStatsResponseError = (
-  | getPlayerStatsResponse400
   | getPlayerStatsResponse401
   | getPlayerStatsResponse404
   | getPlayerStatsResponse429
+  | getPlayerStatsResponse500
+  | getPlayerStatsResponse502
   | getPlayerStatsResponse503
+  | getPlayerStatsResponse504
 ) & {
   headers: Headers;
 };
@@ -2282,13 +2348,23 @@ export type getSelectedProfileStatsResponse429 = {
 };
 
 export type getSelectedProfileStatsResponse500 = {
-  data: ModelsProcessingError;
+  data: ModelsAPIError;
   status: 500;
+};
+
+export type getSelectedProfileStatsResponse502 = {
+  data: ModelsAPIError;
+  status: 502;
 };
 
 export type getSelectedProfileStatsResponse503 = {
   data: ModelsAPIError;
   status: 503;
+};
+
+export type getSelectedProfileStatsResponse504 = {
+  data: ModelsAPIError;
+  status: 504;
 };
 
 export type getSelectedProfileStatsResponseSuccess = getSelectedProfileStatsResponse200 & {
@@ -2299,7 +2375,9 @@ export type getSelectedProfileStatsResponseError = (
   | getSelectedProfileStatsResponse404
   | getSelectedProfileStatsResponse429
   | getSelectedProfileStatsResponse500
+  | getSelectedProfileStatsResponse502
   | getSelectedProfileStatsResponse503
+  | getSelectedProfileStatsResponse504
 ) & {
   headers: Headers;
 };
@@ -2349,13 +2427,23 @@ export type getProfileStatsResponse429 = {
 };
 
 export type getProfileStatsResponse500 = {
-  data: ModelsProcessingError;
+  data: ModelsAPIError;
   status: 500;
+};
+
+export type getProfileStatsResponse502 = {
+  data: ModelsAPIError;
+  status: 502;
 };
 
 export type getProfileStatsResponse503 = {
   data: ModelsAPIError;
   status: 503;
+};
+
+export type getProfileStatsResponse504 = {
+  data: ModelsAPIError;
+  status: 504;
 };
 
 export type getProfileStatsResponseSuccess = getProfileStatsResponse200 & {
@@ -2366,7 +2454,9 @@ export type getProfileStatsResponseError = (
   | getProfileStatsResponse404
   | getProfileStatsResponse429
   | getProfileStatsResponse500
+  | getProfileStatsResponse502
   | getProfileStatsResponse503
+  | getProfileStatsResponse504
 ) & {
   headers: Headers;
 };
@@ -2404,10 +2494,36 @@ export type resolveUsernameByUuidResponse400 = {
   status: 400;
 };
 
+export type resolveUsernameByUuidResponse404 = {
+  data: ModelsAPIError;
+  status: 404;
+};
+
+export type resolveUsernameByUuidResponse500 = {
+  data: ModelsAPIError;
+  status: 500;
+};
+
+export type resolveUsernameByUuidResponse502 = {
+  data: ModelsAPIError;
+  status: 502;
+};
+
+export type resolveUsernameByUuidResponse504 = {
+  data: ModelsAPIError;
+  status: 504;
+};
+
 export type resolveUsernameByUuidResponseSuccess = resolveUsernameByUuidResponse200 & {
   headers: Headers;
 };
-export type resolveUsernameByUuidResponseError = resolveUsernameByUuidResponse400 & {
+export type resolveUsernameByUuidResponseError = (
+  | resolveUsernameByUuidResponse400
+  | resolveUsernameByUuidResponse404
+  | resolveUsernameByUuidResponse500
+  | resolveUsernameByUuidResponse502
+  | resolveUsernameByUuidResponse504
+) & {
   headers: Headers;
 };
 
@@ -2447,14 +2563,34 @@ export type resolveUuidByUsernameResponse401 = {
   status: 401;
 };
 
+export type resolveUuidByUsernameResponse404 = {
+  data: ModelsAPIError;
+  status: 404;
+};
+
 export type resolveUuidByUsernameResponse429 = {
   data: ModelsAPIError;
   status: 429;
 };
 
+export type resolveUuidByUsernameResponse500 = {
+  data: ModelsAPIError;
+  status: 500;
+};
+
+export type resolveUuidByUsernameResponse502 = {
+  data: ModelsAPIError;
+  status: 502;
+};
+
 export type resolveUuidByUsernameResponse503 = {
   data: ModelsAPIError;
   status: 503;
+};
+
+export type resolveUuidByUsernameResponse504 = {
+  data: ModelsAPIError;
+  status: 504;
 };
 
 export type resolveUuidByUsernameResponseSuccess = resolveUuidByUsernameResponse200 & {
@@ -2463,8 +2599,12 @@ export type resolveUuidByUsernameResponseSuccess = resolveUuidByUsernameResponse
 export type resolveUuidByUsernameResponseError = (
   | resolveUuidByUsernameResponse400
   | resolveUuidByUsernameResponse401
+  | resolveUuidByUsernameResponse404
   | resolveUuidByUsernameResponse429
+  | resolveUuidByUsernameResponse500
+  | resolveUuidByUsernameResponse502
   | resolveUuidByUsernameResponse503
+  | resolveUuidByUsernameResponse504
 ) & {
   headers: Headers;
 };
