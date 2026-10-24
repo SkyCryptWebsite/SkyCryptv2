@@ -14,5 +14,5 @@ publicHoistPattern:
   - "@takumi-rs/core-*"
 
 permissions:
-  '@tanstack/svelte-table':
+  "@tanstack/svelte-table":
     skills: true
