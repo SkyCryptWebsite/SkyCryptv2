@@ -16,3 +16,7 @@ publicHoistPattern:
 permissions:
   "@tanstack/svelte-table":
     skills: true
+
+skills:
+  dirs:
+    - .github/skills
